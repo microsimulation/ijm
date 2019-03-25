@@ -4,7 +4,7 @@ IJM has been selected as the first journal to use the open-source Libero Publish
 
 This repository serves as a central store of issues, documents, scripts and resources relating to the IJM implentation of Libero Publisher.
 
-- [Create a new Feature Issue](https://github.com/microsumulation/ijm/issues/new?template=feature_ticket.md&labels=feature-ticket)
-- [Create a new Technical Issue](https://github.com/microsumulation/ijm/issues/new?template=task.md&labels=technical-ticket)
-- [Create a new Bug Issue](https://github.com/microsumulation/ijm/issues/new?template=bug.md&labels=bug)
+- [Create a new Feature Issue](https://github.com/microsimulation/ijm/issues/new?template=feature_ticket.md&labels=feature-ticket)
+- [Create a new Technical Issue](https://github.com/microsimulation/ijm/issues/new?template=task.md&labels=technical-ticket)
+- [Create a new Bug Issue](https://github.com/microsimulation/ijm/issues/new?template=bug.md&labels=bug)
 
