@@ -1,0 +1,45 @@
+{% extends '::article.html.twig' %}
+
+{% block article_body %}
+
+    {% embed 'grid/content.html.twig' %}
+
+        {% block navigation %}
+
+            {% if viewSelector %}
+
+                {{ render_pattern(viewSelector) }}
+
+            {% endif %}
+
+        {% endblock %}
+
+        {% block main %}
+
+            {% if hasFigures %}
+
+                {% fragment_link_rewrite figuresPath %}
+
+                {% for part in body %}
+
+                    {{ render_pattern(part) }}
+
+                {% endfor %}
+
+                {% end_fragment_link_rewrite %}
+
+            {% else %}
+
+                {% for part in body %}
+
+                    {{ render_pattern(part) }}
+
+                {% endfor %}
+
+            {% endif %}
+
+        {% endblock %}
+
+    {% endembed %}
+
+{% endblock %}

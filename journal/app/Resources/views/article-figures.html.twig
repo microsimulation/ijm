@@ -1,0 +1,39 @@
+{% extends '::article.html.twig' %}
+
+{% block canonical %}
+    {{ path('article-figures', {id: item.id}) }}
+{% endblock %}
+
+{% block article_body %}
+
+    {% embed 'grid/content.html.twig' %}
+
+        {% block navigation %}
+
+            {% if viewSelector %}
+
+                {{ render_pattern(viewSelector) }}
+
+            {% endif %}
+
+        {% endblock %}
+
+        {% block main %}
+
+            {{ render_pattern(messageBar) }}
+
+            {% fragment_link_rewrite textPath %}
+
+            {% for part in body %}
+
+                {{ render_pattern(part) }}
+
+            {% endfor %}
+
+            {% end_fragment_link_rewrite %}
+
+        {% endblock %}
+
+    {% endembed %}
+
+{% endblock %}

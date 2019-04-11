@@ -1,4 +1,4 @@
-version: '3'
+version: '3.4'
 
 services:
     api:
@@ -6,3 +6,27 @@ services:
             context: api
         ports:
             - '8081:8080'
+    journal:
+        build:
+            context: journal
+            args:
+                app_env: prod
+                api_url: http://api:8080
+                api_url_public: http://localhost:8081
+                api_key: public
+        volumes:
+            - public-journal:/app/web/
+        depends_on:
+            - api
+    web:
+        image: nginx:1.15.5-alpine
+        volumes:
+            - ./journal/.docker/nginx.conf:/etc/nginx/conf.d/journal.conf
+            - public-journal:/app/journal/:ro
+        ports:
+            - 8080:8080
+        depends_on:
+            - journal
+
+volumes:
+    public-journal:

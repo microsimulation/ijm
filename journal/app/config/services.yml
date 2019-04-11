@@ -1,0 +1,1229 @@
+services:
+
+    _defaults:
+        public: true
+
+    elife.api_client.client:
+        class: eLife\ApiClient\HttpClient\Guzzle6HttpClient
+        arguments:
+          - '@csa_guzzle.client.elife_api'
+
+    elife.api_client.client.warning_checking:
+        class: eLife\ApiClient\HttpClient\WarningCheckingHttpClient
+        decorates: elife.api_client.client
+        arguments:
+          - '@elife.api_client.client.warning_checking.inner'
+          - '@monolog.logger.api'
+
+    elife.api_client.client.user_agent_prepending:
+        class: eLife\ApiClient\HttpClient\UserAgentPrependingHttpClient
+        decorates: elife.api_client.client
+        arguments:
+          - '@elife.api_client.client.warning_checking.inner'
+          - 'MicrosimulationJournal'
+
+    elife.api_sdk:
+        class: eLife\ApiSdk\ApiSdk
+        public: false
+        arguments:
+          - '@elife.api_client.client'
+
+    elife.api_sdk.serializer:
+        class: Symfony\Component\Serializer\Serializer
+        factory: ['@elife.api_sdk', getSerializer]
+
+    elife.api_sdk.annotations:
+        class: eLife\ApiSdk\Client\Annotations
+        factory: ['@elife.api_sdk', annotations]
+
+    elife.api_sdk.annual_reports:
+        class: eLife\ApiSdk\Client\AnnualReports
+        factory: ['@elife.api_sdk', annualReports]
+
+    elife.api_sdk.articles:
+        class: eLife\ApiSdk\Client\Articles
+        factory: ['@elife.api_sdk', articles]
+
+    elife.api_sdk.blog_articles:
+        class: eLife\ApiSdk\Client\BlogArticles
+        factory: ['@elife.api_sdk', blogArticles]
+
+    elife.api_sdk.collections:
+        class: eLife\ApiSdk\Client\Collections
+        factory: ['@elife.api_sdk', collections]
+
+    elife.api_sdk.community:
+        class: eLife\ApiSdk\Client\Community
+        factory: ['@elife.api_sdk', community]
+
+    elife.api_sdk.covers:
+        class: eLife\ApiSdk\Client\Covers
+        factory: ['@elife.api_sdk', covers]
+
+    elife.api_sdk.digests:
+        class: eLife\ApiSdk\Client\Digests
+        factory: ['@elife.api_sdk', digests]
+
+    elife.api_sdk.events:
+        class: eLife\ApiSdk\Client\Events
+        factory: ['@elife.api_sdk', events]
+
+    elife.api_sdk.highlights:
+        class: eLife\ApiSdk\Client\Highlights
+        factory: ['@elife.api_sdk', highlights]
+
+    elife.api_sdk.interviews:
+        class: eLife\ApiSdk\Client\Interviews
+        factory: ['@elife.api_sdk', interviews]
+
+    elife.api_sdk.job_adverts:
+        class: eLife\ApiSdk\Client\JobAdverts
+        factory: ['@elife.api_sdk', jobAdverts]
+
+    elife.api_sdk.labs_posts:
+        class: eLife\ApiSdk\Client\LabsPosts
+        factory: ['@elife.api_sdk', labsPosts]
+
+    elife.api_sdk.metrics:
+        class: eLife\ApiSdk\Client\Metrics
+        factory: ['@elife.api_sdk', metrics]
+
+    elife.api_sdk.people:
+        class: eLife\ApiSdk\Client\People
+        factory: ['@elife.api_sdk', people]
+
+    elife.api_sdk.podcast_episodes:
+        class: eLife\ApiSdk\Client\PodcastEpisodes
+        factory: ['@elife.api_sdk', podcastEpisodes]
+
+    elife.api_sdk.press_packages:
+        class: eLife\ApiSdk\Client\PressPackages
+        factory: ['@elife.api_sdk', pressPackages]
+
+    elife.api_sdk.profiles:
+        class: eLife\ApiSdk\Client\Profiles
+        factory: ['@elife.api_sdk', profiles]
+
+    elife.api_sdk.recommendations:
+        class: eLife\ApiSdk\Client\Recommendations
+        factory: ['@elife.api_sdk', recommendations]
+
+    elife.api_sdk.search:
+        class: eLife\ApiSdk\Client\Search
+        factory: ['@elife.api_sdk', search]
+
+    elife.api_sdk.subjects:
+        class: eLife\ApiSdk\Client\Subjects
+        factory: ['@elife.api_sdk', subjects]
+
+    microsimulation.journal.guzzle.cache:
+        class: Kevinrob\GuzzleCache\CacheMiddleware
+        public: false
+        arguments:
+          - '@microsimulation.journal.guzzle.cache.strategy'
+        calls:
+          - ['setClient', ['@microsimulation.journal.guzzle.cache.client']]
+        tags:
+          - name: csa_guzzle.middleware
+            alias: cache
+            priority: -1500
+
+    microsimulation.journal.guzzle.cache.client:
+        class: GuzzleHttp\Client
+        public: false
+        arguments:
+          - connect_timeout: 1
+            timeout: 2
+        tags:
+          - name: csa_guzzle.client
+
+    microsimulation.journal.guzzle.cache.storage:
+        class: Kevinrob\GuzzleCache\Storage\Psr6CacheStorage
+        public: false
+        arguments:
+          - '@cache.guzzle'
+
+    microsimulation.journal.guzzle.cache.strategy:
+        class: Kevinrob\GuzzleCache\Strategy\PrivateCacheStrategy
+        public: false
+        arguments:
+          - '@microsimulation.journal.guzzle.cache.storage'
+
+    microsimulation.journal.guzzle.stale_logging:
+        class: Microsimulation\Journal\Guzzle\StaleLoggingMiddleware
+        public: false
+        arguments:
+          - '@monolog.logger.api'
+        tags:
+          - name: csa_guzzle.middleware
+            alias: state_logging
+            priority: -1499
+
+    microsimulation.journal.helper.fragment_link_rewriter:
+        class: Microsimulation\Journal\Helper\FragmentLinkRewriter
+        public: false
+
+    microsimulation.journal.helper.download_link_uri_generator:
+        class: Microsimulation\Journal\Helper\DownloadLinkUriGenerator
+        arguments:
+          - '@router'
+          - '@uri_signer'
+
+    microsimulation.journal.helper.http_proxy:
+        class: Microsimulation\Journal\Helper\HttpProxy
+        arguments:
+          - '@csa_guzzle.client.streamer'
+
+    microsimulation.journal.listener.cache_control:
+        class: Microsimulation\Journal\EventListener\CacheControlSubscriber
+        arguments:
+          - '%cache_control%'
+        tags:
+          - name: kernel.event_subscriber
+
+    microsimulation.journal.listener.early_response:
+        class: Microsimulation\Journal\EventListener\EarlyResponseSubscriber
+        tags:
+          - name: kernel.event_subscriber
+
+    microsimulation.journal.listener.api_timeout:
+        class: Microsimulation\Journal\EventListener\ApiTimeoutSubscriber
+        tags:
+          - name: kernel.event_subscriber
+
+    microsimulation.journal.listener.api_too_many_requests:
+        class: Microsimulation\Journal\EventListener\ApiTooManyRequestsSubscriber
+        tags:
+          - name: kernel.event_subscriber
+
+    microsimulation.journal.mustache.loader:
+        class: Mustache_Loader_ProductionFilesystemLoader
+        public: false
+        arguments:
+          - '@=service("kernel").getProjectDir()~"/app/Resources"'
+          - stat_props: '%mustache_stat_props%'
+
+    microsimulation.journal.router.parameter_resolver.model:
+      class: Microsimulation\Journal\Router\ModelParameterResolver
+      public: false
+      arguments:
+        - '@slugify'
+
+    microsimulation.journal.router.parameter_resolving:
+      class: Microsimulation\Journal\Router\ParameterResolvingRouter
+      public: false
+      decorates: router
+      arguments:
+        - '@microsimulation.journal.router.parameter_resolving.inner'
+        - '@microsimulation.journal.router.parameter_resolver.model'
+
+    microsimulation.journal.templating.promise_aware:
+        class: Microsimulation\Journal\Templating\PromiseAwareEngine
+        decorates: templating
+        arguments:
+          - '@microsimulation.journal.templating.promise_aware.inner'
+
+    microsimulation.journal.twig.extension.fragment_link_rewriter:
+        class: Microsimulation\Journal\Twig\FragmentLinkRewriterExtension
+        arguments:
+          - '@microsimulation.journal.helper.fragment_link_rewriter'
+        tags:
+          - name: twig.extension
+
+    microsimulation.journal.twig.extension.iiif_open_graph:
+        class: Microsimulation\Journal\Twig\IiifOpenGraphExtension
+        tags:
+          - name: twig.extension
+
+    microsimulation.journal.twig.extension.info_bar:
+        class: Microsimulation\Journal\Twig\InfoBarExtension
+        arguments:
+          - '@microsimulation.journal.patterns.pattern_renderer'
+        tags:
+          - name: twig.extension
+
+    microsimulation.journal.twig.extension.model_name:
+        class: Microsimulation\Journal\Twig\ModelNameExtension
+        tags:
+          - name: twig.extension
+
+    microsimulation.journal.twig.extension.pattern:
+        class: Microsimulation\Journal\Patterns\Twig\PatternExtension
+        arguments:
+          - '@microsimulation.journal.patterns.pattern_renderer'
+        tags:
+          - name: twig.extension
+
+    microsimulation.journal.twig.extension.reference_type:
+        class: Microsimulation\Journal\Twig\ReferenceTypeExtension
+        tags:
+          - name: twig.extension
+
+    microsimulation.journal.twig.extension.ris:
+        class: Microsimulation\Journal\Twig\RisExtension
+        tags:
+          - name: twig.extension
+
+    microsimulation.journal.twig.extension.single_line:
+        class: Microsimulation\Journal\Twig\SingleLineExtension
+        tags:
+          - name: twig.extension
+
+    microsimulation.journal.twig.extension.tex:
+        class: Microsimulation\Journal\Twig\TexExtension
+        tags:
+          - name: twig.extension
+
+    microsimulation.journal.view_model.factory.picture_builder:
+        class: Microsimulation\Journal\ViewModel\Factory\PictureBuilderFactory
+
+    microsimulation.journal.view_model.factory.content_header_image:
+        class: Microsimulation\Journal\ViewModel\Factory\ContentHeaderImageFactory
+        arguments:
+          - '@microsimulation.journal.view_model.factory.picture_builder'
+          - '@assets.packages'
+
+    microsimulation.journal.view_model.factory.footer:
+        class: Microsimulation\Journal\ViewModel\Factory\FooterFactory
+        arguments:
+          - '@router'
+
+    microsimulation.journal.view_model.factory.site_header:
+        class: Microsimulation\Journal\ViewModel\Factory\SiteHeaderFactory
+        arguments:
+          - '@router'
+          - '@assets.packages'
+          - '@request_stack'
+
+    microsimulation.journal.view_model.converter:
+        class: Microsimulation\Journal\ViewModel\Converter\ViewModelConverterRegistry
+
+    microsimulation.journal.view_model.converter.annotation.annotation_teaser:
+        class: Microsimulation\Journal\ViewModel\Converter\AnnotationAnnotationTeaserConverter
+        public: false
+        arguments:
+          - '@microsimulation.journal.view_model.converter'
+          - '@microsimulation.journal.patterns.pattern_renderer'
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.annual_report.teaser:
+        class: Microsimulation\Journal\ViewModel\Converter\AnnualReportTeaserConverter
+        public: false
+        arguments:
+          - '@microsimulation.journal.patterns.pattern_renderer'
+          - '@microsimulation.journal.helper.download_link_uri_generator'
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.article.decision_letter_header:
+        class: Microsimulation\Journal\ViewModel\Converter\ArticleDecisionLetterHeaderConverter
+        public: false
+        arguments:
+          - '@microsimulation.journal.view_model.converter'
+          - '@microsimulation.journal.patterns.pattern_renderer'
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.article.download_links_list:
+        class: Microsimulation\Journal\ViewModel\Converter\ArticleDownloadLinksListConverter
+        public: false
+        arguments:
+          - '@router'
+          - '@microsimulation.journal.helper.download_link_uri_generator'
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.article.header:
+        class: Microsimulation\Journal\ViewModel\Converter\ArticleContentHeaderConverter
+        public: false
+        arguments:
+          - '@router'
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.article.meta:
+        class: Microsimulation\Journal\ViewModel\Converter\ArticleMetaConverter
+        public: false
+        arguments:
+          - '@router'
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.article.read_more_item:
+        class: Microsimulation\Journal\ViewModel\Converter\ArticleReadMoreItemConverter
+        public: false
+        arguments:
+          - '@microsimulation.journal.view_model.converter'
+          - '@microsimulation.journal.patterns.pattern_renderer'
+          - '@router'
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.article.teaser:
+        class: Microsimulation\Journal\ViewModel\Converter\ArticleTeaserConverter
+        public: false
+        arguments:
+          - '@microsimulation.journal.view_model.converter'
+          - '@router'
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.article.teaser.related_item:
+        class: Microsimulation\Journal\ViewModel\Converter\ArticleRelatedItemTeaserConverter
+        public: false
+        arguments:
+          - '@microsimulation.journal.view_model.converter'
+          - '@router'
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.article.teaser.secondary:
+        class: Microsimulation\Journal\ViewModel\Converter\ArticleSecondaryTeaserConverter
+        public: false
+        arguments:
+          - '@microsimulation.journal.view_model.converter'
+          - '@router'
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.asset_file_additional_asset:
+        class: Microsimulation\Journal\ViewModel\Converter\AssetFileAdditionalAssetConverter
+        public: false
+        arguments:
+          - '@microsimulation.journal.view_model.converter'
+          - '@microsimulation.journal.patterns.pattern_renderer'
+          - '@microsimulation.journal.helper.download_link_uri_generator'
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.author_group.details:
+        class: Microsimulation\Journal\ViewModel\Converter\GroupAuthorDetailsConverter
+        public: false
+        arguments:
+          - '@microsimulation.journal.view_model.converter'
+          - '@microsimulation.journal.patterns.pattern_renderer'
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.author_person.details:
+        class: Microsimulation\Journal\ViewModel\Converter\PersonAuthorDetailsConverter
+        public: false
+        arguments:
+          - '@microsimulation.journal.view_model.converter'
+          - '@microsimulation.journal.patterns.pattern_renderer'
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.block.box:
+        class: Microsimulation\Journal\ViewModel\Converter\Block\BoxConverter
+        arguments:
+          - '@microsimulation.journal.view_model.converter'
+          - '@microsimulation.journal.patterns.pattern_renderer'
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.block.button:
+        class: Microsimulation\Journal\ViewModel\Converter\Block\ButtonConverter
+        public: false
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.block.code:
+        class: Microsimulation\Journal\ViewModel\Converter\Block\CodeConverter
+        public: false
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.block.excerpt:
+        class: Microsimulation\Journal\ViewModel\Converter\Block\ExcerptConverter
+        public: false
+        arguments:
+          - '@microsimulation.journal.view_model.converter'
+          - '@microsimulation.journal.patterns.pattern_renderer'
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.block.figure:
+        class: Microsimulation\Journal\ViewModel\Converter\Block\FigureConverter
+        public: false
+        arguments:
+          - '@microsimulation.journal.view_model.converter'
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.block.figure.image:
+        class: Microsimulation\Journal\ViewModel\Converter\Block\FigureAssetImageConverter
+        public: false
+        arguments:
+          - '@microsimulation.journal.view_model.converter'
+          - '@microsimulation.journal.patterns.pattern_renderer'
+          - '@microsimulation.journal.helper.download_link_uri_generator'
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.block.figure.table:
+        class: Microsimulation\Journal\ViewModel\Converter\Block\FigureAssetTableConverter
+        public: false
+        arguments:
+          - '@microsimulation.journal.view_model.converter'
+          - '@microsimulation.journal.patterns.pattern_renderer'
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.block.figure.video:
+        class: Microsimulation\Journal\ViewModel\Converter\Block\FigureAssetVideoConverter
+        public: false
+        arguments:
+          - '@microsimulation.journal.view_model.converter'
+          - '@microsimulation.journal.patterns.pattern_renderer'
+          - '@microsimulation.journal.helper.download_link_uri_generator'
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.block.image:
+        class: Microsimulation\Journal\ViewModel\Converter\Block\ImageConverter
+        public: false
+        arguments:
+          - '@microsimulation.journal.view_model.converter'
+          - '@microsimulation.journal.patterns.pattern_renderer'
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.block.listing:
+        class: Microsimulation\Journal\ViewModel\Converter\Block\ListingConverter
+        public: false
+        tags:
+          - name: view_model.converter
+        arguments:
+          - '@microsimulation.journal.view_model.converter'
+          - '@microsimulation.journal.patterns.pattern_renderer'
+
+    microsimulation.journal.view_model.converter.block.math:
+        class: Microsimulation\Journal\ViewModel\Converter\Block\MathConverter
+        public: false
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.block.paragraph:
+        class: Microsimulation\Journal\ViewModel\Converter\Block\ParagraphConverter
+        public: false
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.block.profile:
+        class: Microsimulation\Journal\ViewModel\Converter\Block\ProfileConverter
+        public: false
+        arguments:
+          - '@microsimulation.journal.view_model.converter'
+          - '@microsimulation.journal.patterns.pattern_renderer'
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.block.question:
+        class: Microsimulation\Journal\ViewModel\Converter\Block\QuestionConverter
+        public: false
+        arguments:
+          - '@microsimulation.journal.view_model.converter'
+          - '@microsimulation.journal.patterns.pattern_renderer'
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.block.quote:
+        class: Microsimulation\Journal\ViewModel\Converter\Block\QuoteConverter
+        public: false
+        arguments:
+          - '@microsimulation.journal.view_model.converter'
+          - '@microsimulation.journal.patterns.pattern_renderer'
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.block.section:
+        class: Microsimulation\Journal\ViewModel\Converter\Block\SectionConverter
+        public: false
+        arguments:
+          - '@microsimulation.journal.view_model.converter'
+          - '@microsimulation.journal.patterns.pattern_renderer'
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.block.table:
+        class: Microsimulation\Journal\ViewModel\Converter\Block\TableConverter
+        public: false
+        arguments:
+          - '@microsimulation.journal.view_model.converter'
+          - '@microsimulation.journal.patterns.pattern_renderer'
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.block.video:
+        class: Microsimulation\Journal\ViewModel\Converter\Block\VideoConverter
+        public: false
+        arguments:
+          - '@microsimulation.journal.view_model.converter'
+          - '@microsimulation.journal.patterns.pattern_renderer'
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.block.youtube:
+        class: Microsimulation\Journal\ViewModel\Converter\Block\YouTubeConverter
+        public: false
+        arguments:
+          - '@microsimulation.journal.view_model.converter'
+          - '@microsimulation.journal.patterns.pattern_renderer'
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.blog_article.header:
+        class: Microsimulation\Journal\ViewModel\Converter\BlogArticleContentHeaderConverter
+        public: false
+        arguments:
+          - '@router'
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.blog_article.teaser:
+        class: Microsimulation\Journal\ViewModel\Converter\BlogArticleTeaserConverter
+        public: false
+        arguments:
+          - '@router'
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.blog_article.teaser.secondary:
+        class: Microsimulation\Journal\ViewModel\Converter\BlogArticleSecondaryTeaserConverter
+        public: false
+        arguments:
+          - '@router'
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.collection.header:
+        class: Microsimulation\Journal\ViewModel\Converter\CollectionContentHeaderConverter
+        public: false
+        arguments:
+          - '@microsimulation.journal.view_model.converter'
+          - '@router'
+          - '@microsimulation.journal.view_model.factory.content_header_image'
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.collection.read_more_item:
+        class: Microsimulation\Journal\ViewModel\Converter\CollectionReadMoreItemConverter
+        public: false
+        arguments:
+          - '@microsimulation.journal.patterns.pattern_renderer'
+          - '@router'
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.collection.teaser:
+        class: Microsimulation\Journal\ViewModel\Converter\CollectionTeaserConverter
+        public: false
+        arguments:
+          - '@microsimulation.journal.view_model.converter'
+          - '@router'
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.collection.teaser.related_item:
+        class: Microsimulation\Journal\ViewModel\Converter\CollectionRelatedItemTeaserConverter
+        public: false
+        arguments:
+          - '@microsimulation.journal.view_model.converter'
+          - '@router'
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.collection.teaser.secondary:
+        class: Microsimulation\Journal\ViewModel\Converter\CollectionSecondaryTeaserConverter
+        public: false
+        arguments:
+          - '@microsimulation.journal.view_model.converter'
+          - '@router'
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.cover.article.carousel_item:
+        class: Microsimulation\Journal\ViewModel\Converter\CoverArticleCarouselItemConverter
+        public: false
+        arguments:
+          - '@router'
+          - '@microsimulation.journal.view_model.factory.content_header_image'
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.cover.article.teaser.secondary:
+        class: Microsimulation\Journal\ViewModel\Converter\CoverArticleSecondaryTeaserConverter
+        public: false
+        arguments:
+          - '@microsimulation.journal.view_model.converter'
+          - '@router'
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.cover.blog_article.carousel_item:
+        class: Microsimulation\Journal\ViewModel\Converter\CoverBlogArticleCarouselItemConverter
+        public: false
+        arguments:
+          - '@router'
+          - '@microsimulation.journal.view_model.factory.content_header_image'
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.cover.blog_article.teaser.secondary:
+        class: Microsimulation\Journal\ViewModel\Converter\CoverBlogArticleSecondaryTeaserConverter
+        public: false
+        arguments:
+          - '@microsimulation.journal.view_model.converter'
+          - '@router'
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.cover.collection.carousel_item:
+        class: Microsimulation\Journal\ViewModel\Converter\CoverCollectionCarouselItemConverter
+        public: false
+        arguments:
+          - '@router'
+          - '@microsimulation.journal.view_model.factory.content_header_image'
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.cover.collection.teaser.secondary:
+        class: Microsimulation\Journal\ViewModel\Converter\CoverCollectionSecondaryTeaserConverter
+        public: false
+        arguments:
+          - '@microsimulation.journal.view_model.converter'
+          - '@router'
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.cover.block_link:
+        class: Microsimulation\Journal\ViewModel\Converter\CoverBlockLinkConverter
+        public: false
+        arguments:
+          - '@microsimulation.journal.view_model.factory.picture_builder'
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.data_set:
+        class: Microsimulation\Journal\ViewModel\Converter\DataSetConverter
+        public: false
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.digest.header:
+        class: Microsimulation\Journal\ViewModel\Converter\DigestContentHeaderConverter
+        public: false
+        arguments:
+          - '@router'
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.digest.teaser:
+        class: Microsimulation\Journal\ViewModel\Converter\DigestTeaserConverter
+        public: false
+        arguments:
+          - '@microsimulation.journal.view_model.converter'
+          - '@router'
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.digest.teaser.grid:
+        class: Microsimulation\Journal\ViewModel\Converter\DigestGridTeaserConverter
+        public: false
+        arguments:
+          - '@microsimulation.journal.view_model.converter'
+          - '@router'
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.digest.teaser.secondary:
+        class: Microsimulation\Journal\ViewModel\Converter\DigestSecondaryTeaserConverter
+        public: false
+        arguments:
+          - '@microsimulation.journal.view_model.converter'
+          - '@router'
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.event.header:
+        class: Microsimulation\Journal\ViewModel\Converter\EventContentHeaderConverter
+        public: false
+        arguments:
+          - '@router'
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.event.teaser:
+        class: Microsimulation\Journal\ViewModel\Converter\EventTeaserConverter
+        public: false
+        arguments:
+          - '@router'
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.external_article.read_more_item:
+        class: Microsimulation\Journal\ViewModel\Converter\ExternalArticleReadMoreItemConverter
+        public: false
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.external_article.teaser.related_item:
+        class: Microsimulation\Journal\ViewModel\Converter\ExternalArticleRelatedItemTeaserConverter
+        public: false
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.highlight.article.teaser.secondary:
+        class: Microsimulation\Journal\ViewModel\Converter\HighlightArticleSecondaryTeaserConverter
+        public: false
+        arguments:
+          - '@microsimulation.journal.view_model.converter'
+          - '@router'
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.highlight.blog_article.teaser.secondary:
+        class: Microsimulation\Journal\ViewModel\Converter\HighlightBlogArticleSecondaryTeaserConverter
+        public: false
+        arguments:
+          - '@microsimulation.journal.view_model.converter'
+          - '@router'
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.highlight.collection.teaser.secondary:
+        class: Microsimulation\Journal\ViewModel\Converter\HighlightCollectionSecondaryTeaserConverter
+        public: false
+        arguments:
+          - '@microsimulation.journal.view_model.converter'
+          - '@router'
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.highlight.digest.teaser.secondary:
+        class: Microsimulation\Journal\ViewModel\Converter\HighlightDigestSecondaryTeaserConverter
+        public: false
+        arguments:
+          - '@microsimulation.journal.view_model.converter'
+          - '@router'
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.highlight.event.teaser.secondary:
+        class: Microsimulation\Journal\ViewModel\Converter\HighlightEventSecondaryTeaserConverter
+        public: false
+        arguments:
+          - '@microsimulation.journal.view_model.converter'
+          - '@router'
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.highlight.labs_post.teaser.secondary:
+        class: Microsimulation\Journal\ViewModel\Converter\HighlightLabsPostSecondaryTeaserConverter
+        public: false
+        arguments:
+          - '@microsimulation.journal.view_model.converter'
+          - '@router'
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.highlight.interview.teaser.secondary:
+        class: Microsimulation\Journal\ViewModel\Converter\HighlightInterviewSecondaryTeaserConverter
+        public: false
+        arguments:
+          - '@microsimulation.journal.view_model.converter'
+          - '@router'
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.highlight.podcast_episode.teaser.secondary:
+        class: Microsimulation\Journal\ViewModel\Converter\HighlightPodcastEpisodeSecondaryTeaserConverter
+        public: false
+        arguments:
+          - '@microsimulation.journal.view_model.converter'
+          - '@router'
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.highlight.podcast_episode_chapter.teaser.secondary:
+        class: Microsimulation\Journal\ViewModel\Converter\HighlightPodcastEpisodeChapterSecondaryTeaserConverter
+        public: false
+        arguments:
+          - '@microsimulation.journal.view_model.converter'
+          - '@router'
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.image:
+        class: Microsimulation\Journal\ViewModel\Converter\ImagePictureConverter
+        public: false
+        arguments:
+          - '@microsimulation.journal.view_model.factory.picture_builder'
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.interview.header:
+        class: Microsimulation\Journal\ViewModel\Converter\InterviewContentHeaderConverter
+        public: false
+        arguments:
+          - '@router'
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.interview.teaser:
+        class: Microsimulation\Journal\ViewModel\Converter\InterviewTeaserConverter
+        public: false
+        arguments:
+          - '@microsimulation.journal.view_model.converter'
+          - '@router'
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.interview.teaser.secondary:
+        class: Microsimulation\Journal\ViewModel\Converter\InterviewSecondaryTeaserConverter
+        public: false
+        arguments:
+          - '@microsimulation.journal.view_model.converter'
+          - '@router'
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.job_advert.header:
+        class: Microsimulation\Journal\ViewModel\Converter\JobAdvertContentHeaderConverter
+        public: false
+        arguments:
+          - '@router'
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.job_advert.teaser:
+        class: Microsimulation\Journal\ViewModel\Converter\JobAdvertTeaserConverter
+        public: false
+        arguments:
+          - '@router'
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.labs_post.header:
+        class: Microsimulation\Journal\ViewModel\Converter\LabsPostContentHeaderConverter
+        public: false
+        arguments:
+          - '@router'
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.labs_post.teaser:
+        class: Microsimulation\Journal\ViewModel\Converter\LabsPostTeaserConverter
+        public: false
+        arguments:
+          - '@microsimulation.journal.view_model.converter'
+          - '@router'
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.labs_post.teaser.grid:
+        class: Microsimulation\Journal\ViewModel\Converter\LabsPostGridTeaserConverter
+        public: false
+        arguments:
+          - '@microsimulation.journal.view_model.converter'
+          - '@router'
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.labs_post.teaser.secondary:
+        class: Microsimulation\Journal\ViewModel\Converter\LabsPostSecondaryTeaserConverter
+        public: false
+        arguments:
+          - '@microsimulation.journal.view_model.converter'
+          - '@router'
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.media_contact.paragraph:
+        class: Microsimulation\Journal\ViewModel\Converter\MediaContactParagraphConverter
+        public: false
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.paginator.grid_listing:
+        class: Microsimulation\Journal\ViewModel\Converter\PaginatorGridListingConverter
+        public: false
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.paginator.listing_read_more:
+        class: Microsimulation\Journal\ViewModel\Converter\PaginatorListingReadMoreConverter
+        public: false
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.paginator.listing_teasers:
+        class: Microsimulation\Journal\ViewModel\Converter\PaginatorListingTeasersConverter
+        public: false
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.person.about_profile:
+        class: Microsimulation\Journal\ViewModel\Converter\PersonAboutProfileConverter
+        public: false
+        arguments:
+          - '@microsimulation.journal.view_model.converter'
+          - '@microsimulation.journal.patterns.pattern_renderer'
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.person.profile_snippet:
+        class: Microsimulation\Journal\ViewModel\Converter\PersonProfileSnippetConverter
+        public: false
+        arguments:
+          - '@microsimulation.journal.view_model.converter'
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.podcast_episode.audio_player:
+        class: Microsimulation\Journal\ViewModel\Converter\PodcastEpisodeAudioPlayerConverter
+        public: false
+        arguments:
+          - '@microsimulation.journal.view_model.converter'
+          - '@router'
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.podcast_episode.header:
+        class: Microsimulation\Journal\ViewModel\Converter\PodcastEpisodeContentHeaderConverter
+        public: false
+        arguments:
+          - '@microsimulation.journal.view_model.converter'
+          - '@router'
+          - '@microsimulation.journal.helper.download_link_uri_generator'
+          - '@microsimulation.journal.view_model.factory.content_header_image'
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.podcast_episode.media_chapter_listing_item:
+        class: Microsimulation\Journal\ViewModel\Converter\PodcastEpisodeMediaChapterListingItemConverter
+        public: false
+        arguments:
+          - '@router'
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.podcast_episode.teaser:
+        class: Microsimulation\Journal\ViewModel\Converter\PodcastEpisodeTeaserConverter
+        public: false
+        arguments:
+          - '@microsimulation.journal.view_model.converter'
+          - '@router'
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.podcast_episode.teaser.grid:
+        class: Microsimulation\Journal\ViewModel\Converter\PodcastEpisodeGridTeaserConverter
+        public: false
+        arguments:
+          - '@microsimulation.journal.view_model.converter'
+          - '@router'
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.podcast_episode.teaser.secondary:
+        class: Microsimulation\Journal\ViewModel\Converter\PodcastEpisodeSecondaryTeaserConverter
+        public: false
+        arguments:
+          - '@microsimulation.journal.view_model.converter'
+          - '@router'
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.podcast_episode_chapter.read_more_item:
+        class: Microsimulation\Journal\ViewModel\Converter\PodcastEpisodeChapterReadMoreItemConverter
+        public: false
+        arguments:
+          - '@microsimulation.journal.patterns.pattern_renderer'
+          - '@router'
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.podcast_episode_chapter.teaser.related_item:
+        class: Microsimulation\Journal\ViewModel\Converter\PodcastEpisodeChapterRelatedItemTeaserConverter
+        public: false
+        arguments:
+          - '@router'
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.press_package.header:
+        class: Microsimulation\Journal\ViewModel\Converter\PressPackageContentHeaderConverter
+        public: false
+        arguments:
+          - '@router'
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.press_package.teaser:
+        class: Microsimulation\Journal\ViewModel\Converter\PressPackageTeaserConverter
+        public: false
+        arguments:
+          - '@router'
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.profile.header:
+        class: Microsimulation\Journal\ViewModel\Converter\ProfileContentHeaderProfileConverter
+        public: false
+        arguments:
+          - '@router'
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.reference.book:
+        class: Microsimulation\Journal\ViewModel\Converter\Reference\BookReferenceConverter
+        public: false
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.reference.book_chapter:
+        class: Microsimulation\Journal\ViewModel\Converter\Reference\BookChapterReferenceConverter
+        public: false
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.reference.clinical_trial:
+        class: Microsimulation\Journal\ViewModel\Converter\Reference\ClinicalTrialReferenceConverter
+        public: false
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.reference.conference_proceeding:
+        class: Microsimulation\Journal\ViewModel\Converter\Reference\ConferenceProceedingReferenceConverter
+        public: false
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.reference.data:
+        class: Microsimulation\Journal\ViewModel\Converter\Reference\DataReferenceConverter
+        public: false
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.reference.journal:
+        class: Microsimulation\Journal\ViewModel\Converter\Reference\JournalReferenceConverter
+        public: false
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.reference.patent:
+        class: Microsimulation\Journal\ViewModel\Converter\Reference\PatentReferenceConverter
+        public: false
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.reference.periodical:
+        class: Microsimulation\Journal\ViewModel\Converter\Reference\PeriodicalReferenceConverter
+        public: false
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.reference.preprint:
+        class: Microsimulation\Journal\ViewModel\Converter\Reference\PreprintReferenceConverter
+        public: false
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.reference.report:
+        class: Microsimulation\Journal\ViewModel\Converter\Reference\ReportReferenceConverter
+        public: false
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.reference.software:
+        class: Microsimulation\Journal\ViewModel\Converter\Reference\SoftwareReferenceConverter
+        public: false
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.reference.thesis:
+        class: Microsimulation\Journal\ViewModel\Converter\Reference\ThesisReferenceConverter
+        public: false
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.reference.unknown:
+        class: Microsimulation\Journal\ViewModel\Converter\Reference\UnknownReferenceConverter
+        public: false
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.reference.web:
+        class: Microsimulation\Journal\ViewModel\Converter\Reference\WebReferenceConverter
+        public: false
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.reference_list:
+        class: Microsimulation\Journal\ViewModel\Converter\ReferenceListConverter
+        public: false
+        arguments:
+          - '@microsimulation.journal.view_model.converter'
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.reviewer.profile_snippet:
+        class: Microsimulation\Journal\ViewModel\Converter\ReviewerProfileSnippetConverter
+        public: false
+        arguments:
+          - '@microsimulation.journal.view_model.converter'
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.subject.block_link:
+        class: Microsimulation\Journal\ViewModel\Converter\SubjectBlockLinkConverter
+        public: false
+        arguments:
+          - '@router'
+          - '@microsimulation.journal.view_model.factory.picture_builder'
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.view_model.converter.subject.header:
+        class: Microsimulation\Journal\ViewModel\Converter\SubjectContentHeaderConverter
+        public: false
+        arguments:
+          - '@microsimulation.journal.view_model.factory.content_header_image'
+        tags:
+          - name: view_model.converter
+
+    microsimulation.journal.patterns.pattern_renderer:
+        class: Microsimulation\Journal\Patterns\PatternRenderer\MustachePatternRenderer
+        arguments:
+          - '@mustache'
+
+    microsimulation.journal.patterns.mustache.helpers.asset_rewrite:
+        class: Microsimulation\Journal\Mustache\PackagesHelper
+        public: false
+        arguments:
+          - '@assets.packages'
+
+    monolog.processor.http_message:
+        class: eLife\ApiClient\Log\HttpMessageProcessor
+        tags:
+            - { name: monolog.processor, method: __invoke }
+
+    # Public aliases for private services
+
+    elife.assets.packages:
+        alias: 'assets.packages'
+
+    elife.csa_guzzle.client.elife_api:
+        alias: 'csa_guzzle.client.elife_api'
+
+    elife.logger:
+        alias: 'logger'
+
+    elife.slugify:
+        alias: 'slugify'
+
+    elife.uri_signer:
+        alias: 'uri_signer'

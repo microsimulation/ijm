@@ -1,0 +1,71 @@
+imports:
+  - resource: parameters.yml
+  - resource: services.yml
+
+parameters:
+    api_connect_timeout: 2
+    api_timeout: 5
+    api_connect_timeout_slow: 3
+    api_timeout_slow: 10
+    mustache_stat_props: [size, mtime]
+
+bobthecow_mustache:
+    globals:
+        assetRewrite: '@microsimulation.journal.patterns.mustache.helpers.asset_rewrite'
+        assetsPath: 'assets/patterns'
+    loader_id: microsimulation.journal.mustache.loader
+    partials_loader_id: microsimulation.journal.mustache.loader
+
+cocur_slugify:
+    strip_tags: true
+
+csa_guzzle:
+    clients:
+        elife_api:
+            config:
+                base_uri: '%api_url%'
+                connect_timeout: '%api_connect_timeout%'
+                headers:
+                    Authorization: '%api_key%'
+                timeout: '%api_timeout%'
+        oauth:
+            config:
+                connect_timeout: '%api_connect_timeout_slow%'
+                timeout: '%api_timeout_slow%'
+        streamer:
+            config:
+                connect_timeout: '%api_connect_timeout%'
+                stream: true
+
+framework:
+    cache:
+        pools:
+            cache.doi:
+                adapter: cache.app
+                default_lifetime: 31536000 # 1 year
+                public: true
+            cache.guzzle:
+                adapter: cache.app
+                clearer: ~
+                default_lifetime: 31536000 # 1 year
+                public: true
+    form: ~
+    router:
+        resource: '%kernel.project_dir%/app/config/routing.yml'
+    secret: '%secret%'
+    templating:
+        engines:
+          - mustache
+          - twig
+    web_link: ~
+
+monolog:
+    channels:
+      - api
+
+twig:
+    debug: '%kernel.debug%'
+    exception_controller: AppBundle:Exception:show
+    paths:
+        '%kernel.project_dir%/app/Resources/patterns': 'patterns'
+    strict_variables: '%kernel.debug%'
