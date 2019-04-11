@@ -2,26 +2,15 @@
 
 namespace Microsimulation\Journal\Controller;
 
-use eLife\ApiSdk\Collection\PromiseSequence;
 use eLife\ApiSdk\Collection\Sequence;
-use eLife\ApiSdk\Model\Person;
 use eLife\ApiSdk\Model\Subject;
 use Microsimulation\Journal\Exception\EarlyResponse;
 use Microsimulation\Journal\Helper\Callback;
 use Microsimulation\Journal\Helper\CreatesIiifUri;
 use Microsimulation\Journal\Helper\Paginator;
 use Microsimulation\Journal\Pagerfanta\SequenceAdapter;
-use Microsimulation\Journal\ViewModel\EmptyListing;
-use Microsimulation\Journal\Patterns\ViewModel\BlockLink;
 use Microsimulation\Journal\Patterns\ViewModel\ContentHeader;
-use Microsimulation\Journal\Patterns\ViewModel\ContentHeaderSimple;
-use Microsimulation\Journal\Patterns\ViewModel\GridListing;
-use Microsimulation\Journal\Patterns\ViewModel\Link;
-use Microsimulation\Journal\Patterns\ViewModel\ListHeading;
-use Microsimulation\Journal\Patterns\ViewModel\ListingProfileSnippets;
 use Microsimulation\Journal\Patterns\ViewModel\ListingTeasers;
-use Microsimulation\Journal\Patterns\ViewModel\ProfileSnippet;
-use Microsimulation\Journal\Patterns\ViewModel\SeeMoreLink;
 use Microsimulation\Journal\Patterns\ViewModel\Teaser;
 use Pagerfanta\Pagerfanta;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -33,29 +22,6 @@ use function GuzzleHttp\Promise\promise_for;
 final class SubjectsController extends Controller
 {
     use CreatesIiifUri;
-
-    public function listAction(Request $request) : Response
-    {
-        $arguments = $this->defaultPageArguments($request);
-
-        $arguments['title'] = 'Research categories';
-
-        $arguments['contentHeader'] = new ContentHeaderSimple('Browse our research categories');
-
-        $arguments['subjects'] = $this->get('elife.api_sdk.subjects')
-            ->reverse()
-            ->slice(1, 100)
-            ->map($this->willConvertTo(BlockLink::class))
-            ->then(function (Sequence $subjects) {
-                if ($subjects->isEmpty()) {
-                    return new EmptyListing(null, 'No subjects available.');
-                }
-
-                return GridListing::forBlockLinks($subjects->toArray());
-            });
-
-        return new Response($this->get('templating')->render('::subjects.html.twig', $arguments));
-    }
 
     public function subjectAction(Request $request, string $id) : Response
     {
@@ -122,40 +88,6 @@ final class SubjectsController extends Controller
     {
         $arguments['contentHeader'] = $arguments['item']
             ->then($this->willConvertTo(ContentHeader::class));
-
-        $arguments['highlights'] = (new PromiseSequence($this->get('elife.api_sdk.highlights')
-            ->get($arguments['id'])
-            ->slice(0, 3)))
-            ->map($this->willConvertTo(Teaser::class, ['variant' => 'secondary']))
-            ->then(Callback::emptyOr(function (Sequence $result) {
-                return ListingTeasers::basic($result->toArray(), new ListHeading('Highlights'));
-            }))
-            ->otherwise($this->softFailure('Failed to load highlights for '.$arguments['id']));
-
-        $arguments['seniorEditors'] = (new PromiseSequence($this->get('elife.api_sdk.people')
-            ->forType('leadership', 'senior-editor')
-            ->forSubject($arguments['id'])
-            ->reverse()
-            ->slice(0, 100)))
-            ->sort(Callback::call('rand', 0, 1))
-            ->slice(0, 3)
-            ->sort(function (Person $a, Person $b) {
-                return $a->getDetails()->getIndexName() <=> $b->getDetails()->getIndexName();
-            })
-            ->map($this->willConvertTo(ProfileSnippet::class, ['title' => 'institution']))
-            ->then(Callback::emptyOr(function (Sequence $result) use ($arguments) {
-                return ListingProfileSnippets::withSeeMoreLink(
-                    $result->toArray(),
-                    new SeeMoreLink(
-                        new Link(
-                            'See more editors',
-                            $this->get('router')->generate('about-people', ['type' => $arguments['id']])
-                        )
-                    ),
-                    new ListHeading('Senior editors')
-                );
-            }))
-            ->otherwise($this->softFailure("Failed to load senior editors for {$arguments['id']}"));
 
         return new Response($this->get('templating')->render('::subject.html.twig', $arguments));
     }

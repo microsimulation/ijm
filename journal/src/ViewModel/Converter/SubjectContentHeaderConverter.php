@@ -3,18 +3,10 @@
 namespace Microsimulation\Journal\ViewModel\Converter;
 
 use eLife\ApiSdk\Model\Subject;
-use Microsimulation\Journal\ViewModel\Factory\ContentHeaderImageFactory;
 use Microsimulation\Journal\Patterns\ViewModel;
 
 final class SubjectContentHeaderConverter implements ViewModelConverter
 {
-    private $contentHeaderImageFactory;
-
-    public function __construct(ContentHeaderImageFactory $contentHeaderImageFactory)
-    {
-        $this->contentHeaderImageFactory = $contentHeaderImageFactory;
-    }
-
     /**
      * @param Subject $object
      */
@@ -22,7 +14,7 @@ final class SubjectContentHeaderConverter implements ViewModelConverter
     {
         return new ViewModel\ContentHeader(
             $object->getName(),
-            $this->contentHeaderImageFactory->forImage($object->getBanner()),
+            null,
             $object->getImpactStatement()
         );
     }

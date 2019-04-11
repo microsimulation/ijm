@@ -137,6 +137,34 @@ $app['subjects'] = static function () {
     $subjects = [];
     foreach ($finder as $file) {
         $json = json_decode($file->getContents(), true);
+        $json['image'] = [
+            'banner' => [
+                'alt' => '',
+                'uri' => 'https://www.example.com',
+                'source' => [
+                    'mediaType' => 'image/png',
+                    'uri' => 'https://www.example.com',
+                    'filename' => 'example.png',
+                ],
+                'size' => [
+                    'width' => 2000,
+                    'height' => 2000,
+                ],
+            ],
+            'thumbnail' => [
+                'alt' => '',
+                'uri' => 'https://www.example.com',
+                'source' => [
+                    'mediaType' => 'image/png',
+                    'uri' => 'https://www.example.com',
+                    'filename' => 'example.png',
+                ],
+                'size' => [
+                    'width' => 2000,
+                    'height' => 2000,
+                ],
+            ],
+        ];
         $subjects[$json['id']] = $json;
     }
 
