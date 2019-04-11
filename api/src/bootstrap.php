@@ -24,51 +24,23 @@ $app['articles'] = static function () {
     $articles = [];
     foreach ($finder as $file) {
         $json = json_decode($file->getContents(), true);
-        $articles[$json['versions'][0]['id']] = $json;
+        $articles[$json['id']] = $json;
     }
 
     uasort(
         $articles,
-        static function (array $article1, array $article2) {
-            $article1Dates = [
-                'poa' => null,
-                'vor' => null,
-            ];
-
-            $article2Dates = [
-                'poa' => null,
-                'vor' => null,
-            ];
-
-            foreach ($article1['versions'] as $version) {
-                if (null === $article1Dates[$version['status']]) {
-                    $article1Dates[$version['status']] = DateTimeImmutable::createFromFormat(
-                        DATE_ATOM,
-                        $version['published']
-                    );
-                }
-            }
-
-            foreach ($article2['versions'] as $version) {
-                if (null === $article2Dates[$version['status']]) {
-                    $article2Dates[$version['status']] = DateTimeImmutable::createFromFormat(
-                        DATE_ATOM,
-                        $version['published']
-                    );
-                }
-            }
-
-            $article1Date = $article1Dates['vor'] ?? $article1Dates['poa'];
-            $article2Date = $article2Dates['vor'] ?? $article2Dates['poa'];
-
-            return $article1Date <=> $article2Date;
+        static function (array $a, array $b) {
+            return DateTimeImmutable::createFromFormat(
+                    DATE_ATOM,
+                    $b['statusDate']
+                ) <=> DateTimeImmutable::createFromFormat(DATE_ATOM, $a['statusDate']);
         }
     );
 
     return $articles;
 };
 
-$app['collections'] = static function () {
+$app['collections'] = static function () use ($app) {
     $finder = (new Finder())->files()->name('*.json')->in(__DIR__.'/../data/collections');
 
     $collections = [];
@@ -114,6 +86,35 @@ $app['collections'] = static function () {
                 ],
             ],
         ];
+        $json['content'] = array_map(
+            static function (string $id) use ($app) : array {
+                $article = $app['articles'][$id];
+
+                unset(
+                    $article['issue'],
+                    $article['copyright'],
+                    $article['authors'],
+                    $article['researchOrganisms'],
+                    $article['keywords'],
+                    $article['digest'],
+                    $article['body'],
+                    $article['decisionLetter'],
+                    $article['authorResponse'],
+                    $article['reviewers'],
+                    $article['references'],
+                    $article['ethics'],
+                    $article['funding'],
+                    $article['additionalFiles'],
+                    $article['dataSets'],
+                    $article['acknowledgements'],
+                    $article['appendices'],
+                    $article['image']['banner']
+                );
+
+                return $article;
+            },
+            $json['content']
+        );
         $collections[$json['id']] = $json;
     }
 
@@ -156,8 +157,6 @@ $app->get(
             $articles = array_filter(
                 $articles,
                 static function (array $article) use ($request) : bool {
-                    $latestVersion = $article['versions'][count($article['versions']) - 1];
-
                     return count(
                         array_intersect(
                             (array) $request->query->get('subject'),
@@ -165,7 +164,7 @@ $app->get(
                                 static function (array $subject) {
                                     return $subject['id'];
                                 },
-                                $latestVersion['subjects'] ?? []
+                                $article['subjects'] ?? []
                             )
                         )
                     );
@@ -189,30 +188,28 @@ $app->get(
         }
 
         foreach ($articles as $i => $article) {
-            $latestVersion = $article['versions'][count($article['versions']) - 1];
-
             unset(
-                $latestVersion['issue'],
-                $latestVersion['copyright'],
-                $latestVersion['authors'],
-                $latestVersion['researchOrganisms'],
-                $latestVersion['keywords'],
-                $latestVersion['digest'],
-                $latestVersion['body'],
-                $latestVersion['decisionLetter'],
-                $latestVersion['authorResponse'],
-                $latestVersion['reviewers'],
-                $latestVersion['references'],
-                $latestVersion['ethics'],
-                $latestVersion['funding'],
-                $latestVersion['additionalFiles'],
-                $latestVersion['dataSets'],
-                $latestVersion['acknowledgements'],
-                $latestVersion['appendices'],
-                $latestVersion['image']['banner']
+                $article['issue'],
+                $article['copyright'],
+                $article['authors'],
+                $article['researchOrganisms'],
+                $article['keywords'],
+                $article['digest'],
+                $article['body'],
+                $article['decisionLetter'],
+                $article['authorResponse'],
+                $article['reviewers'],
+                $article['references'],
+                $article['ethics'],
+                $article['funding'],
+                $article['additionalFiles'],
+                $article['dataSets'],
+                $article['acknowledgements'],
+                $article['appendices'],
+                $article['image']['banner']
             );
 
-            $content['items'][] = $latestVersion;
+            $content['items'][] = $article;
         }
 
         return new JsonResponse($content);
@@ -226,10 +223,8 @@ $app->get(
             throw new NotFoundHttpException('Article not found');
         }
 
-        $latestVersion = count($app['articles'][$number]['versions']);
-
         $subRequest = Request::create(
-            '/articles/'.$number.'/versions/'.$latestVersion,
+            '/articles/'.$number.'/versions/1',
             'GET',
             [],
             $request->cookies->all(),
@@ -250,40 +245,30 @@ $app->get(
 
         $article = $app['articles'][$number];
 
-        if (!empty($article['received'])) {
-            $content = [
-                'received' => $article['received'],
-                'accepted' => $article['accepted'],
-            ];
-        }
+        unset(
+            $article['issue'],
+            $article['copyright'],
+            $article['authors'],
+            $article['researchOrganisms'],
+            $article['keywords'],
+            $article['digest'],
+            $article['body'],
+            $article['decisionLetter'],
+            $article['authorResponse'],
+            $article['reviewers'],
+            $article['references'],
+            $article['ethics'],
+            $article['funding'],
+            $article['additionalFiles'],
+            $article['dataSets'],
+            $article['acknowledgements'],
+            $article['appendices'],
+            $article['image']['banner']
+        );
 
         $content['versions'] = [];
-        foreach ($article['versions'] as $articleVersion) {
-            unset(
-                $articleVersion['issue'],
-                $articleVersion['copyright'],
-                $articleVersion['authors'],
-                $articleVersion['researchOrganisms'],
-                $articleVersion['keywords'],
-                $articleVersion['digest'],
-                $articleVersion['body'],
-                $articleVersion['decisionLetter'],
-                $articleVersion['authorResponse'],
-                $articleVersion['reviewers'],
-                $articleVersion['references'],
-                $articleVersion['ethics'],
-                $articleVersion['funding'],
-                $articleVersion['additionalFiles'],
-                $articleVersion['dataSets'],
-                $articleVersion['acknowledgements'],
-                $articleVersion['appendices'],
-                $articleVersion['image']['banner']
-            );
 
-            $content['versions'][] = $articleVersion;
-        }
-
-        return new JsonResponse($content);
+        return new JsonResponse(['versions' => [$article]]);
     }
 );
 
@@ -296,13 +281,11 @@ $app->get(
 
         $article = $app['articles'][$number];
 
-        if (false === isset($article['versions'][$version - 1])) {
+        if (1 !== $version) {
             throw new NotFoundHttpException('Version not found');
         }
 
-        $articleVersion = $article['versions'][$version - 1];
-
-        return new JsonResponse($articleVersion);
+        return new JsonResponse($article);
     }
 );
 
@@ -434,7 +417,6 @@ $app->get(
         $results = [];
 
         foreach ($app['articles'] as $result) {
-            $result = $result['versions'][count($result['versions']) - 1];
             $result['_search'] = strtolower(json_encode($result));
 
             unset(
