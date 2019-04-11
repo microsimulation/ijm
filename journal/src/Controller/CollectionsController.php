@@ -85,7 +85,7 @@ final class CollectionsController extends Controller
 
                 yield ListingTeasers::basic(
                     $collection->getContent()->map($this->willConvertTo(Teaser::class))->toArray(),
-                    new ListHeading('Collection')
+                    new ListHeading('Articles')
                 );
             });
 

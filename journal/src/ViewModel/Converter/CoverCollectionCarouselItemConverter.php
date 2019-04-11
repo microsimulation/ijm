@@ -5,6 +5,7 @@ namespace Microsimulation\Journal\ViewModel\Converter;
 use eLife\ApiSdk\Model\Collection;
 use eLife\ApiSdk\Model\Cover;
 use eLife\ApiSdk\Model\Subject;
+use Microsimulation\Journal\Helper\ModelName;
 use Microsimulation\Journal\ViewModel\Factory\ContentHeaderImageFactory;
 use Microsimulation\Journal\Patterns\ViewModel;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -36,7 +37,7 @@ final class CoverCollectionCarouselItemConverter implements ViewModelConverter
             })->toArray(),
             new ViewModel\Link($object->getTitle(), $this->urlGenerator->generate('collection', [$collection])),
             'Read collection',
-            ViewModel\Meta::withLink(new ViewModel\Link('Collection', $this->urlGenerator->generate('collections')), $this->simpleDate($collection, $context)),
+            ViewModel\Meta::withLink(new ViewModel\Link(ModelName::singular('collection'), $this->urlGenerator->generate('collections')), $this->simpleDate($collection, $context)),
             $this->contentHeaderImageFactory->pictureForImage($object->getBanner())
         );
     }

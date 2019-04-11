@@ -4,6 +4,7 @@ namespace Microsimulation\Journal\ViewModel\Converter;
 
 use eLife\ApiSdk\Model\Collection;
 use eLife\ApiSdk\Model\Highlight;
+use Microsimulation\Journal\Helper\ModelName;
 use Microsimulation\Journal\Patterns\ViewModel;
 use Microsimulation\Journal\Patterns\ViewModel\Meta;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -44,7 +45,7 @@ final class HighlightCollectionSecondaryTeaserConverter implements ViewModelConv
             $object->getThumbnail() ? $this->smallTeaserImage($object) : null,
             ViewModel\TeaserFooter::forNonArticle(
                 Meta::withLink(
-                    new ViewModel\Link('Collection', $this->urlGenerator->generate('collections')),
+                    new ViewModel\Link(ModelName::singular('collection'), $this->urlGenerator->generate('collections')),
                     $this->simpleDate($collection, $context)
                 )
             )

@@ -3,6 +3,7 @@
 namespace Microsimulation\Journal\ViewModel\Converter;
 
 use eLife\ApiSdk\Model\Collection;
+use Microsimulation\Journal\Helper\ModelName;
 use Microsimulation\Journal\ViewModel\Factory\ContentHeaderImageFactory;
 use Microsimulation\Journal\Patterns\ViewModel;
 use Microsimulation\Journal\Patterns\ViewModel\Link;
@@ -48,7 +49,7 @@ final class CollectionContentHeaderConverter implements ViewModelConverter
             ),
             null,
             ViewModel\Meta::withLink(
-                new Link('Collection', $this->urlGenerator->generate('collections')),
+                new Link(ModelName::singular('collection'), $this->urlGenerator->generate('collections')),
                 $this->simpleDate($object, ['date' => 'published'] + $context)
             )
         );

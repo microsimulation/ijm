@@ -3,6 +3,7 @@
 namespace Microsimulation\Journal\ViewModel\Converter;
 
 use eLife\ApiSdk\Model\Collection;
+use Microsimulation\Journal\Helper\ModelName;
 use Microsimulation\Journal\Helper\ModelRelationship;
 use Microsimulation\Journal\Patterns\ViewModel;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -40,7 +41,7 @@ final class CollectionRelatedItemTeaserConverter implements ViewModelConverter
             ViewModel\TeaserFooter::forNonArticle(
                 ViewModel\Meta::withLink(
                     new ViewModel\Link(
-                        'Collection',
+                        ModelName::singular('collection'),
                         $this->urlGenerator->generate('collections')
                     )/*,
                     $this->simpleDate($object, $context)*/
