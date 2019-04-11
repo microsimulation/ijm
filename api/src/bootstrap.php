@@ -74,6 +74,18 @@ $app['collections'] = static function () {
     $collections = [];
     foreach ($finder as $file) {
         $json = json_decode($file->getContents(), true);
+        $json['selectedCurator'] = [
+            'id' => 'id',
+            'type' => [
+                'id' => 'senior-editor',
+                'label' => 'Senior Editor',
+            ],
+            'name' => [
+                'preferred' => '',
+                'index' => '',
+            ],
+        ];
+        $json['curators'] = [];
         $collections[$json['id']] = $json;
     }
 
@@ -348,7 +360,7 @@ $app->get(
 
         $collection = $app['collections'][$id];
 
-        return new JsonResponse(array_filter($collection));
+        return new JsonResponse($collection);
     }
 );
 

@@ -37,13 +37,8 @@ final class PodcastEpisodeMediaChapterListingItemConverter implements ViewModelC
             } elseif ($model instanceof Collection) {
                 $name = ModelName::singular('collection');
                 $url = $this->urlGenerator->generate('collection', [$model]);
-                $text = ' curated by '.$model->getSelectedCurator()->getDetails()->getPreferredName();
 
-                if ($model->selectedCuratorEtAl()) {
-                    $text .= ' et al.';
-                }
-
-                return new ViewModel\ContentSource(new ViewModel\Link($name, $url), $text);
+                return new ViewModel\ContentSource(new ViewModel\Link($name, $url));
             }
 
             throw new UnexpectedValueException('Unknown type '.get_class($model));

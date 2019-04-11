@@ -27,15 +27,10 @@ final class CollectionRelatedItemTeaserConverter implements ViewModelConverter
      */
     public function convert($object, string $viewModel = null, array $context = []) : ViewModel
     {
-        $curatedBy = 'Curated by '.$object->getSelectedCurator()->getDetails()->getPreferredName();
-        if ($object->selectedCuratorEtAl()) {
-            $curatedBy .= ' et al.';
-        }
-
         return ViewModel\Teaser::relatedItem(
             $object->getTitle(),
             $this->urlGenerator->generate('collection', [$object]),
-            $curatedBy,
+            null,
             new ViewModel\ContextLabel(new ViewModel\Link(ModelRelationship::get($context['from'], 'collection', $context['related'] ?? false))),
             $this->smallTeaserImage($object),
             ViewModel\TeaserFooter::forNonArticle(

@@ -28,11 +28,6 @@ final class CollectionReadMoreItemConverter implements ViewModelConverter
      */
     public function convert($object, string $viewModel = null, array $context = []) : ViewModel
     {
-        $curatedBy = 'Curated by '.$object->getSelectedCurator()->getDetails()->getPreferredName();
-        if ($object->selectedCuratorEtAl()) {
-            $curatedBy .= ' et al.';
-        }
-
         return new ViewModel\ReadMoreItem(
             new ViewModel\ContentHeaderReadMore(
                 $object->getTitle(),
@@ -40,7 +35,7 @@ final class CollectionReadMoreItemConverter implements ViewModelConverter
                 $object->getSubjects()->map(function (Subject $subject) {
                     return new ViewModel\Link($subject->getName());
                 })->toArray(),
-                $curatedBy,
+                null,
                 ViewModel\Meta::withLink(
                     new ViewModel\Link(ModelName::singular('collection'), $this->urlGenerator->generate('collections')),
                     $this->simpleDate($object, $context)

@@ -32,15 +32,10 @@ final class HighlightCollectionSecondaryTeaserConverter implements ViewModelConv
         /** @var Collection $collection */
         $collection = $object->getItem();
 
-        $curatedBy = 'Curated by '.$collection->getSelectedCurator()->getDetails()->getPreferredName();
-        if ($collection->selectedCuratorEtAl()) {
-            $curatedBy .= ' et al.';
-        }
-
         return ViewModel\Teaser::secondary(
             $object->getTitle(),
             $this->urlGenerator->generate('collection', [$collection]),
-            $curatedBy,
+            null,
             $this->createContextLabel($collection),
             $object->getThumbnail() ? $this->smallTeaserImage($object) : null,
             ViewModel\TeaserFooter::forNonArticle(

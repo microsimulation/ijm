@@ -30,15 +30,10 @@ final class CoverCollectionSecondaryTeaserConverter implements ViewModelConverte
         /** @var Collection $collection */
         $collection = $object->getItem();
 
-        $curatedBy = 'Curated by '.$collection->getSelectedCurator()->getDetails()->getPreferredName();
-        if ($collection->selectedCuratorEtAl()) {
-            $curatedBy .= ' et al.';
-        }
-
         return ViewModel\Teaser::secondary(
             $object->getTitle(),
             $this->urlGenerator->generate('collection', [$collection]),
-            $curatedBy,
+            null,
             $this->createContextLabel($collection),
             ViewModel\TeaserImage::small(
                 $this->viewModelConverter->convert($object->getBanner(), null, ['width' => 72, 'height' => 72])

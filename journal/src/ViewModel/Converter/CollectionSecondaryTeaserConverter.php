@@ -31,15 +31,10 @@ final class CollectionSecondaryTeaserConverter implements ViewModelConverter
      */
     public function convert($object, string $viewModel = null, array $context = []) : ViewModel
     {
-        $curatedBy = 'Curated by '.$object->getSelectedCurator()->getDetails()->getPreferredName();
-        if ($object->selectedCuratorEtAl()) {
-            $curatedBy .= ' et al.';
-        }
-
         return Teaser::secondary(
             $object->getTitle(),
             $this->urlGenerator->generate('collection', [$object]),
-            $curatedBy,
+            null,
             $this->createContextLabel($object),
             $this->smallTeaserImage($object),
             TeaserFooter::forNonArticle(
