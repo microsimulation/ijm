@@ -35,9 +35,7 @@ final class CoverCollectionSecondaryTeaserConverter implements ViewModelConverte
             $this->urlGenerator->generate('collection', [$collection]),
             null,
             $this->createContextLabel($collection),
-            ViewModel\TeaserImage::small(
-                $this->viewModelConverter->convert($object->getBanner(), null, ['width' => 72, 'height' => 72])
-            ),
+            null,
             ViewModel\TeaserFooter::forNonArticle(
                 ViewModel\Meta::withLink(
                     new ViewModel\Link(ModelName::singular('collection'), $this->urlGenerator->generate('collections')),

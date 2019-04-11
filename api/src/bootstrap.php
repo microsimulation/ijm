@@ -86,6 +86,34 @@ $app['collections'] = static function () {
             ],
         ];
         $json['curators'] = [];
+        $json['image'] = [
+            'banner' => [
+                'alt' => '',
+                'uri' => 'https://www.example.com',
+                'source' => [
+                    'mediaType' => 'image/png',
+                    'uri' => 'https://www.example.com',
+                    'filename' => 'example.png',
+                ],
+                'size' => [
+                    'width' => 2000,
+                    'height' => 2000,
+                ],
+            ],
+            'thumbnail' => [
+                'alt' => '',
+                'uri' => 'https://www.example.com',
+                'source' => [
+                    'mediaType' => 'image/png',
+                    'uri' => 'https://www.example.com',
+                    'filename' => 'example.png',
+                ],
+                'size' => [
+                    'width' => 2000,
+                    'height' => 2000,
+                ],
+            ],
+        ];
         $collections[$json['id']] = $json;
     }
 

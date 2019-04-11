@@ -15,7 +15,6 @@ final class CollectionSecondaryTeaserConverter implements ViewModelConverter
 {
     use CreatesContextLabel;
     use CreatesDate;
-    use CreatesTeaserImage;
 
     private $viewModelConverter;
     private $urlGenerator;
@@ -36,7 +35,7 @@ final class CollectionSecondaryTeaserConverter implements ViewModelConverter
             $this->urlGenerator->generate('collection', [$object]),
             null,
             $this->createContextLabel($object),
-            $this->smallTeaserImage($object),
+            null,
             TeaserFooter::forNonArticle(
                 Meta::withLink(new Link(ModelName::singular('collection'), $this->urlGenerator->generate('collections')), $this->simpleDate($object, $context))
             )

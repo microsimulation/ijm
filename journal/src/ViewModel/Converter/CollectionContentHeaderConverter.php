@@ -4,7 +4,6 @@ namespace Microsimulation\Journal\ViewModel\Converter;
 
 use eLife\ApiSdk\Model\Collection;
 use Microsimulation\Journal\Helper\ModelName;
-use Microsimulation\Journal\ViewModel\Factory\ContentHeaderImageFactory;
 use Microsimulation\Journal\Patterns\ViewModel;
 use Microsimulation\Journal\Patterns\ViewModel\Link;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -16,13 +15,11 @@ final class CollectionContentHeaderConverter implements ViewModelConverter
 
     private $viewModelConverter;
     private $urlGenerator;
-    private $contentHeaderImageFactory;
 
-    public function __construct(ViewModelConverter $viewModelConverter, UrlGeneratorInterface $urlGenerator, ContentHeaderImageFactory $contentHeaderImageFactory)
+    public function __construct(ViewModelConverter $viewModelConverter, UrlGeneratorInterface $urlGenerator)
     {
         $this->viewModelConverter = $viewModelConverter;
         $this->urlGenerator = $urlGenerator;
-        $this->contentHeaderImageFactory = $contentHeaderImageFactory;
     }
 
     /**
@@ -32,7 +29,7 @@ final class CollectionContentHeaderConverter implements ViewModelConverter
     {
         return new ViewModel\ContentHeader(
             $object->getTitle(),
-            $this->contentHeaderImageFactory->forImage($object->getBanner(), true), $object->getImpactStatement(), true, [], null, [], [], null,
+            null, $object->getImpactStatement(), true, [], null, [], [], null,
             new ViewModel\SocialMediaSharers(
                 strip_tags($object->getTitle()),
                 $this->urlGenerator->generate('collection', [$object], UrlGeneratorInterface::ABSOLUTE_URL)

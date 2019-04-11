@@ -11,7 +11,6 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 final class CollectionRelatedItemTeaserConverter implements ViewModelConverter
 {
     use CreatesDate;
-    use CreatesTeaserImage;
 
     private $viewModelConverter;
     private $urlGenerator;
@@ -32,7 +31,7 @@ final class CollectionRelatedItemTeaserConverter implements ViewModelConverter
             $this->urlGenerator->generate('collection', [$object]),
             null,
             new ViewModel\ContextLabel(new ViewModel\Link(ModelRelationship::get($context['from'], 'collection', $context['related'] ?? false))),
-            $this->smallTeaserImage($object),
+            null,
             ViewModel\TeaserFooter::forNonArticle(
                 ViewModel\Meta::withLink(
                     new ViewModel\Link(
