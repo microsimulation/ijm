@@ -348,7 +348,7 @@ $app->get(
 
         $collection = $app['collections'][$id];
 
-        return new Response(array_filter($collection));
+        return new JsonResponse(array_filter($collection));
     }
 );
 
