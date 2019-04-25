@@ -26,7 +26,6 @@ final class PictureBuilderFactory
         $builder = $builder
             ->addType($originalType)
             ->addType($defaultType)
-            ->addType('image/webp')
         ;
 
         if ($defaultWidth) {

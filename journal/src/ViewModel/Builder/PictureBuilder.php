@@ -13,7 +13,6 @@ final class PictureBuilder
     private $originalHeight;
     private $types = [
         'image/svg+xml' => false,
-        'image/webp' => false,
         'image/png' => false,
         'image/jpeg' => false,
     ];

@@ -42,8 +42,6 @@ final class MediaType implements CastsToArray
             case 'audio/webm':
             case 'video/webm':
                 return 'WebM';
-            case 'image/webp':
-                return 'WebP';
         }
 
         $parts = explode('/', $parts[0]);

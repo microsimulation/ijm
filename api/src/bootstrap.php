@@ -735,8 +735,8 @@ $app->after(
 
         $response->setContent(
             str_replace(
-                '%base_url%',
-                $request->getSchemeAndHttpHost().$request->getBasePath(),
+                '%iiif_uri%',
+                $_ENV['IIIF_URI'],
                 $content
             )
         );

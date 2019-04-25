@@ -10,7 +10,6 @@ final class MediaTypes
         'image/jpeg' => 'jpg',
         'image/png' => 'png',
         'image/svg+xml' => 'svg',
-        'image/webp' => 'webp',
     ];
 
     public static function toExtension(string $mediaType) : string
