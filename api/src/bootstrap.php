@@ -731,6 +731,8 @@ $app->after(
             $response->headers->set('Vary', 'Accept', false);
         }
 
+        $response->headers->set('Content-Type', 'application/json; version=1');
+
         $content = $response->getContent();
 
         $response->setContent(
