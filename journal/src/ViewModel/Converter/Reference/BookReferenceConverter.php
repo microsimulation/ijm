@@ -32,9 +32,11 @@ final class BookReferenceConverter implements ViewModelConverter
             $abstracts[] = new ViewModel\Link('PubMed', 'https://www.ncbi.nlm.nih.gov/pubmed/'.$object->getPmid());
         }
 
+        $referenceAuthors = $this->pruneAuthors($object->getAuthors());
+
         $query = [
             'title' => strip_tags($object->getBookTitle()),
-            'author' => array_map(Callback::method('toString'), $object->getAuthors()),
+            'author' => array_map(Callback::method('toString'), $referenceAuthors),
             'publication_year' => $object->getDate()->getYear(),
             'pmid' => $object->getPmid(),
             'isbn' => $object->getIsbn(),
@@ -42,9 +44,12 @@ final class BookReferenceConverter implements ViewModelConverter
 
         $abstracts[] = new ViewModel\Link('Google Scholar', 'https://scholar.google.com/scholar_lookup?'.str_replace(['%5B0%5D=', '%5B1%5D='], '=', http_build_query($query)));
 
-        $authorsSuffix = [$object->getDate()->format().$object->getDiscriminator()];
+        // hack for missing date
+        $authorsSuffix = $this->createAuthorsSuffix($object);
 
-        if (empty($object->getAuthors())) {
+        if (empty($referenceAuthors) && empty($object->getEditors())) {
+            $authors = [$this->createAuthors($object->getEditors(), $object->editorsEtAl(), [])];
+        } elseif (empty($referenceAuthors)) {
             $authors = [$this->createAuthors($object->getEditors(), $object->editorsEtAl(), array_merge(['editors'], $authorsSuffix))];
         } else {
             $authors = [$this->createAuthors($object->getAuthors(), $object->authorsEtAl(), $authorsSuffix)];

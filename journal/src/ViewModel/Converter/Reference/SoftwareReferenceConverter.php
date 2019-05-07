@@ -20,7 +20,12 @@ final class SoftwareReferenceConverter implements ViewModelConverter
             $title .= ', version '.$object->getVersion();
         }
 
-        $authors = [$this->createAuthors($object->getAuthors(), $object->authorsEtAl(), [$object->getDate()->format().$object->getDiscriminator()])];
+        // hack for missing date
+        $authorsSuffix = $this->createAuthorsSuffix($object);
+
+        $referenceAuthors = $this->pruneAuthors($object->getAuthors());
+
+        $authors = [$this->createAuthors($referenceAuthors, $object->authorsEtAl(), $authorsSuffix)];
 
         return ViewModel\Reference::withOutDoi(new ViewModel\Link($title, $object->getUri()), [$object->getPublisher()->toString()], $authors);
     }

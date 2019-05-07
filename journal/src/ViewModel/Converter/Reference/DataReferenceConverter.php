@@ -25,8 +25,18 @@ final class DataReferenceConverter implements ViewModelConverter
 
         $authors = [];
         $year = true;
+
+        // hack for missing date
+        $authorsSuffix = $this->createAuthorsSuffix($object);
+        if (empty($authorsSuffix)) {
+            $yearSuffix = '';
+            $year = false;
+        } else {
+            $yearSuffix = $authorsSuffix[0];
+        }
+
         if ($object->getCurators()) {
-            $authors[] = $this->createAuthors($object->getCurators(), $object->curatorsEtAl(), ['curators', $object->getDate()->format().$object->getDiscriminator()]);
+            $authors[] = $this->createAuthors($object->getCurators(), $object->curatorsEtAl(), ['curators', $yearSuffix]);
             $year = false;
         }
         if ($object->getCompilers()) {
@@ -34,7 +44,9 @@ final class DataReferenceConverter implements ViewModelConverter
             $year = false;
         }
         if ($object->getAuthors()) {
-            array_unshift($authors, $this->createAuthors($object->getAuthors(), $object->authorsEtAl(), ['authors', $year ? $object->getDate()->format().$object->getDiscriminator() : '']));
+            $referenceAuthors = $this->pruneAuthors($object->getAuthors());
+
+            array_unshift($authors, $this->createAuthors($referenceAuthors, $object->authorsEtAl(), ['authors', $year ? $object->getDate()->format().$object->getDiscriminator() : '']));
         }
 
         if ($object->getDoi()) {

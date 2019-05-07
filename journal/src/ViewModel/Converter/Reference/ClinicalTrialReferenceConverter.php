@@ -15,7 +15,23 @@ final class ClinicalTrialReferenceConverter implements ViewModelConverter
      */
     public function convert($object, string $viewModel = null, array $context = []) : ViewModel
     {
-        $authors = [$this->createAuthors($object->getAuthors(), $object->authorsEtAl(), [$object->getAuthorsType(), $object->getDate()->format().$object->getDiscriminator()])];
+        // hack for missing date
+        $authorsSuffix = $this->createAuthorsSuffix($object);
+        if(empty($authorsSuffix))
+        {
+            $yearSuffix = '';
+        } else {
+            $yearSuffix = $authorsSuffix[0];
+        }
+
+        if ($object->getDate()->getYear() > 1000) {
+            $yearSuffix = $object->getDate()->format().$object->getDiscriminator();
+        } else {
+            $yearSuffix = '';
+        }
+        $referenceAuthors = $this->pruneAuthors($object->getAuthors());
+
+        $authors = [$this->createAuthors($referenceAuthors, $object->authorsEtAl(), [$object->getAuthorsType(), $yearSuffix])];
 
         return ViewModel\Reference::withOutDoi(new ViewModel\Link($object->getTitle(), $object->getUri()), [], $authors);
     }

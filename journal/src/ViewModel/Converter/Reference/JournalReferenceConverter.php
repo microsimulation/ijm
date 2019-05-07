@@ -31,7 +31,12 @@ final class JournalReferenceConverter implements ViewModelConverter
 
         $origin = [$journal];
 
-        $authors = [$this->createAuthors($object->getAuthors(), $object->authorsEtAl(), [$object->getDate()->format().$object->getDiscriminator()])];
+        // hack for missing date
+        $authorsSuffix = $this->createAuthorsSuffix($object);
+
+        $referenceAuthors = $this->pruneAuthors($object->getAuthors());
+
+        $authors = [$this->createAuthors($referenceAuthors, $object->authorsEtAl(), $authorsSuffix)];
 
         $abstracts = [];
         if ($object->getPmid()) {
