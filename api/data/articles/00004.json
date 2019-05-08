@@ -1,0 +1,1381 @@
+{
+    "status": "vor",
+    "id": "00004",
+    "version": 1,
+    "type": "research-article",
+    "doi": "10.34196/ijm.00004",
+    "authorLine": "Moshe B. Hoshen et al.",
+    "title": "Simulating disease transmission dynamics at a multi-scale level",
+    "published": "2007-04-30T00:00:00Z",
+    "versionDate": "2007-04-30T00:00:00Z",
+    "statusDate": "2007-04-30T00:00:00Z",
+    "volume": 1,
+    "issue": 1,
+    "elocationId": "n/a",
+    "pdf": "http://web:8082/00004/ijm-00004.pdf",
+    "subjects": [
+        {
+            "id": "health",
+            "name": "Health"
+        }
+    ],
+    "abstract": {
+        "content": [
+            {
+                "text": "We present a model of the global spread of a generic human infectious disease using a Monte Carlo micro-simulation with large-scale parallel-processing. This prototype has been constructed and tested on a model of the entire population of the British Isles. Typical results are presented. A microsimulation of this order of magnitude of population simulation has not been previously attained. Further, an efficiency assessment of processor usage indicates that extension to the global scale is feasible. We conclude that the flexible approach outlined provides the framework for a virtual laboratory capable of supporting public health policy making at a variety of spatial scales.",
+                "type": "paragraph"
+            }
+        ]
+    },
+    "copyright": {
+        "license": "CC-BY-4.0",
+        "holder": "Hoshen et al.",
+        "statement": "This article is distributed under the terms of the <a href=\"http://creativecommons.org/licenses/by/4.0/\">Creative Commons Attribution License</a>, which permits unrestricted use and redistribution provided that the original author and source are credited."
+    },
+    "authors": [
+        {
+            "affiliations": [
+                {
+                    "address": {
+                        "components": {
+                            "country": "UK",
+                            "locality": [
+                                "Liverpool"
+                            ]
+                        },
+                        "formatted": [
+                            "Liverpool",
+                            "UK"
+                        ]
+                    },
+                    "name": [
+                        "Department of Physics",
+                        "University of Liverpool"
+                    ]
+                }
+            ],
+            "emailAddresses": [
+                "hoshen@liv.ac.uk"
+            ],
+            "name": {
+                "index": "Hoshen, Moshe B.",
+                "preferred": "Moshe B. Hoshen"
+            },
+            "type": "person"
+        },
+        {
+            "affiliations": [
+                {
+                    "address": {
+                        "components": {
+                            "country": "Switzerland",
+                            "locality": [
+                                "Geneva"
+                            ]
+                        },
+                        "formatted": [
+                            "Geneva",
+                            "Switzerland"
+                        ]
+                    },
+                    "name": [
+                        "Vaccines and Biologicals",
+                        "World Health Organization"
+                    ]
+                }
+            ],
+            "name": {
+                "index": "Burton, Anthony H.",
+                "preferred": "Anthony H. Burton"
+            },
+            "type": "person"
+        },
+        {
+            "affiliations": [
+                {
+                    "address": {
+                        "components": {
+                            "country": "UK",
+                            "locality": [
+                                "Liverpool"
+                            ]
+                        },
+                        "formatted": [
+                            "Liverpool",
+                            "UK"
+                        ]
+                    },
+                    "name": [
+                        "Department of Physics",
+                        "University of Liverpool"
+                    ]
+                }
+            ],
+            "name": {
+                "index": "Bowcock, Themis J. V.",
+                "preferred": "Themis J. V. Bowcock"
+            },
+            "type": "person"
+        }
+    ],
+    "keywords": [
+        "high-performance computing",
+        "global modelling",
+        "disease transmission"
+    ],
+    "body": [
+        {
+            "content": [
+                {
+                    "content": [
+                        {
+                            "text": "In recent years the focus of medicine in the developed world has been on chronic diseases related to behaviour or local physical environment, while the major causes of death in developing countries, however, remain infectious diseases (<a href=\"#bib19\">Morens <i>et al</i>., 2004</a>). This rift in the global focus is counter-balanced by a fear of the emergence or re-emergence of novel infectious diseases and of the introduction of infectious diseases into regions in which immunity is low or non-existent. The current worry of a within-species strain of avian influenza is typical of the need to understand the patterns of global diseases, their emergence, spread (<a href=\"#bib8\">Galvani and May, 2005</a>; <a href=\"#bib15\">Lloyd-Smith <i>et al</i>., 2005</a>) and the mechanisms of transmission (<a href=\"#bib20\">Sattenspiel and Herring, 2003</a>), and by those means also the potential value of alternative interventions (<a href=\"#bib3\">Chatterjee, 2005</a>; <a href=\"#bib6\">Ferguson <i>et al</i>., 2005</a>; <a href=\"#bib10\">Halloran and Longini, 2006</a>; <a href=\"#bib16\">Longini <i>et al</i>., 2005</a>). While some of the public fear of potential new global epidemics generated by news headlines is perhaps unfounded, the expert concern about between-species transmission is real, founded and consequential (<a href=\"#bib21\">Tran <i>et al</i>. 2004</a>). The HIV-AIDS pandemic is an example for a contact-transmitted disease, while sudden acute respiratory syndrome (SARS) is an example of an air-borne disease, both diseases having made a major impact on the public horizon.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Human infectious diseases are defined here as those diseases in which most cases are contracted as a result of contact with an already infected person. The actual mechanism of transmission between humans varies between diseases (<a href=\"#bib1\">Anderson and May, 1991</a>). Such mechanisms include: physical contact, sexual contact, airborne, waterborne, foodborne or vector-borne. These mechanisms are some of the most determining factors in understanding and modelling transmission. Specifically, infectious diseases transmitted through physical contact are wholly dependent on human behaviour, while vector-borne diseases require an understanding of life cycle and natural history of the vector (<a href=\"#bib13\">Hoshen and Morse, 2004</a>). Waterborne and foodborne diseases (such as cholera) are usually modifiable in practice by improved hygiene and sanitation. In contrast, airborne diseases tend to be dependent solely upon close physical proximity, with transmission typically dependent upon human density, rather than upon \u2018risky\u2019 behaviours.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "In the following we shall, for simplicity, focus on modelling airborne disease, although the approach outlined allows for more complex processes to be modelled.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s1-1",
+                    "title": "Global disease",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "Due to the practical and ethical difficulties of conducting large scale experimental research in infectious diseases, the modelling of transmission dynamics using analytical and computational simulations is both attractive and necessary. Analytical solutions are elegant and general and are widely used (<a href=\"#bib1\">Anderson and May, 1991</a>). They allow the generalisation of results to different diseases under different conditions, through the exchange of parameter values or interaction elements. They may allow the extension of the model to large populations or large areas. They can typically serve to establish conditions for a steady-state solution of the prevalence and incidence of the disease, the increase in infection rate at a single location, or the spread of disease through an isotropic homogenous surrounding. While such a model may be conceived for a disease with limited stage dependence based on a homogeneous background, there are as yet no analytical solutions for the spatial and temporal spread of disease on an inhomogeneous plane. An analytical model allowing for individual stochastic variation seems to be unattainable. One solution to this shortcoming is the use of computer simulations.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Simulations allow the modeller to create a reduced representation of the complexities of reality, while leaving in place aspects deemed relevant, and to test their relevance by successive exclusions of model sections. Input data to the simulation may be based on observed data or on a limited characteristic representation. Most biological models consist of some measurable parameters which are determined by empirical data (<a href=\"#bib6\">Ferguson <i>et al</i>., 2005</a>). The simulation outputs will typically be expressed in terms of data with both spatial and temporal dimensions. While the temporal aspect is inherent to transmission models, a spatial aspect is important for models which represent either the spread of new diseases or else spatial variation due to spatially-expressed local conditions. The ability to simulate <i>in silico</i> the progression of a disease thus forms the basis for a virtual laboratory, which replaces the natural laboratory of chronic diseases. This virtual laboratory allows the evaluation of interventions to be tested, by assessing their impacts upon infection rates.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "In simulating disease there has been a tendency to choose deterministic models in which individuals are bound to become infected within a set time (<a href=\"#bib1\">Anderson and May, 1991</a>). More recent elaborations of these models describes the probabilistic flow of individuals from one status to another (e.g. <a href=\"#bib6\">Ferguson <i>et al</i>. 2005</a>). Such models, unless containing an elaborate lag structure, however, often neglect a proper representation of the time-course and allow individuals to develop an infectious status faster than biologically feasible. A more valid method is to create separate \u201chuman\u201d objects, followed individually, with dynamics that approximate those of actual humans (<a href=\"#bib4\">Chen and Bokka, 2005</a>). By dynamics we refer here to the ability of the <i>in silico</i> humans to move within the virtual world and interact with other virtual objects and with the process of disease. These virtual objects could include not only disease status but also individual characteristics, which may range from age and gender to genetic traits. As may be expected, this method will in general carry the computational cost of a large population structure in terms of both time and memory. In particular, to represent the behaviour of the human system at the early stages of an outbreak the size of the virtual population must be of the order of magnitude of the real population. Perhaps the closest work in this field to our own is that of Ferguson <i>et al</i>. (<a href=\"#bib6\">2005</a>, <a href=\"#bib7\">2006</a>) and <a href=\"#bib16\">Longini <i>et al</i>. (2005)</a>, both of which focus on avian influenza. Both are experimenting with large scale simulations, and have conflicting predictions of the potential risk associated with an outbreak. However, neither is targeting the global simulation of disease spread.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Due to the stochastic aspect of infection patterns, only this kind of dynamic microsimulation model will be able to simulate the full set of population processes required. Unfortunately, to fully generate the probability distribution will, in general, require many runs and huge memory and data resources. The additional complication of spatial transmission makes such models too complex for single processor machines. As a result, until now such models either compromised their geographic dynamic aspect, and simulated discrete individual locations, or else simulated only relatively small populations, either by limiting themselves to small countries (such as Sweden \u2013 c.f. <a href=\"#bib12\">Holm <i>et al</i>., undated</a>) or by scaling the population. The innovative use of parallel-processing techniques introduced in this paper allows for the simulation of the entire macroscopic population.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s1-2",
+                    "title": "Simulation approaches",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "Modern computing facilities, based on parallel computing, enable user access to very large scale processing and memory resources many thousands of times greater than that available on a single PC. These facilities are typically clusters of low cost PCs which may easily be supplemented modularly, or else may be time-shared using inactive machines. Suitable software packages are freely available to enable linking machines. Large programs which exploit many hundreds of processors may thus be run interactively, allowing rapid evaluation of results and comparison of various parameters settings.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "High performance computing (HPC) based on parallel-processors cuts costs and provides access to groups which would otherwise not have the facilities. Parallel processing has been used for years in military and large-scale-management systems, in physics and chemistry academic research and various other fields. In biology, utilisation is sparse, and mainly focussed in bioinformatics. Social science simulations seem to not have taken this path yet. The Virtual Population Laboratory at the University of Liverpool seeks to take advantage of the availability of the local HPC facilities and to use these resources to perform micro-simulations of disease patterns on a multiprocessor computer system, in order to develop operational disease forecasts.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s1-3",
+                    "title": "Development of hardware",
+                    "type": "section"
+                }
+            ],
+            "id": "s1",
+            "title": "Introduction",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "In the work reported here we have simulated the spread of a contagious disease over the UK and the Republic of Ireland. We have used this simulation to evaluate the impact of some basic intervention strategies such as the closure of schools, which otherwise allow large-scale inter-household transmission between school-children. The primary purpose of the example presented, however, is simply to demonstrate the feasibility of micro-simulating large (tens of millions) populations.",
+                    "type": "paragraph"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "The computing facility at the HPC centre at the Department of Physics, University of Liverpool has 940 nodes, each of which is a single core 3.06 gigahertz DELL PowerEdge 650 server PC, with 1gigabyte of Random Access Memory. This computer cluster, known as MAP2, has an effective performance of 1.2 terraflops. Thirty seven nodes were allocated to the present pilot project. In such a computer cluster, inter-processor communications can impose a significant communications overhead. The switch fabric used in MAP2 is Gbit Ethernet linked into a Force 10 E600 fully non-blocking switch (with no oversubscription) directly connected to each processing node. The hardware interface was provided by a front-end server remotely accessed using RedHat Linux version 9.0. Parallel-processing was enabled using message-passing interface protocol (MPI, implemented by MPICH (<a href=\"#bib9\">Gropp <i>et al</i>., 2006</a>). Programming was in C/C++ as implemented by MPICH, with the code compiled under mpiCC and gcc.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s2-1",
+                    "title": "Hardware and packages",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "For the simulation of the UK population we utilised a subgroup of a global dataset we previously constructed. The data consist of a global population density map fitted to a Cartesian grid format, and are taken from Gridded Population of the World (GPW) (<a href=\"#bib5\">CIESIN/CIAT, 2005</a>). The resolution of the GPW is 0.25% or approximately 27 km by 27 km at the equator. This dataset was divided into countries using ArcGIS 9 and the supplied country boundary map. The total population within each grid cell was then subdivided by age-group and sex using country-specific age-sex structures provided by <a href=\"#bib22\">United Nations (2005)</a>. The resulting grid-based populations, disaggregated by age and sex, are adequate for the proof-of-concept model reported here. An obvious future refinement would be to use more detailed maps and census data where possible, although inter-country differences would necessitate additional work on data harmonization before the result could be used as the input to a global model.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The gridded population outlined above gives us a global structure of virtual \u201ctowns\u201d (populated grid cells, each of approximately 27 \u00d7 27 km, depending upon location relative to the equator). These towns are further subdivided into grids of 1000 by 1000 buildings or \u201chouses\u201d, each sized approximately 27 m by 27 m. For each town we also created classrooms or \u201cschools\u201d (number of schools = 1/30 of the number of children &lt; 15 years), workplaces (number of workplaces = 1/6 of the total adult population) and homes (number of homes = 1/3 of adult population). These three groups (houses, workplaces, homes) are placed at random in the grid and may overlap. Not all locations need be occupied and many areas are uninhabitable (sea for instance). To provide a simple but functional model of the British Isles, the choice of house size, along with the definition of schools, workplaces and homes, were fixed <i>ad hoc</i>. In a fully operational model the size of each element could be altered to better reflect the known demographic / geographic reality, although for running a global model using currently available technology we would not recommend using a spatial grid with a size below that of a standard room (approximately 3m \u00d7 3m).",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Having created a spatial framework, each towns is populated by creating virtual \u201chumans\u201d, objects (agents) possessing day and night locations, personal schedules (at this time only time of starting and ending work), age, sex and disease status. The total population and the age-sex structure of each town\u2019s population is already known. These adults and children are randomly allocated to homes within that town (i.e. to \u2018houses\u2019 designated as being available for occupation). Adults and children in each home are then also randomly allocated to, respectively, workplaces and schools within the town, a small proportion being randomly allocated to a workplace or school in an adjacent town. Each individual is also assigned a disease status from one of a sequence of possible states: susceptible, infected, latent (non-infectious), infectious and immune. The lengths of the latent and immune stages are variable and can be modified by disease type, as can the infection and clearance rates. In a typical model run the vast majority of individuals are assigned an initial disease status of susceptible, with only a few individuals, in a few selected towns, being randomly allocated the disease status of infected.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Because a full model for a large land mass is typically beyond the capacity of a single processor, the total surface area is subdivided into \u201cregions\u201d each controlled by a single processor. For simplicity the mesh of houses towns and regions is currently a Cartesian grid, but there exists no intrinsic computational reason that this geometry could not be refined (as is usual within finite element analysis) to further optimize the performance of the model. Adjacent processors overlap by two rows of towns, which are duplicated on each. This is a computational artefact to allow transfer across region boundaries, with each inner row belonging to the self region, and the outer row being attributed principally to the remote region. This is illustrated in <a href=\"#fig1\">Figure 1</a>, in which the cells represent \u2018towns\u2019 and the numbers within each cell represent the controlling processor. Regions are denoted by a thicker borderline. The shaded cells (towns) are those which are mirrored in adjacent processors.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "fig1",
+                                    "image": {
+                                        "alt": "",
+                                        "uri": "%iiif_uri%/00004%2Fijm-00004-fig1.tif",
+                                        "size": {
+                                            "width": 466,
+                                            "height": 246
+                                        },
+                                        "source": {
+                                            "mediaType": "image/jpeg",
+                                            "uri": "%iiif_uri%/00004%2Fijm-00004-fig1.tif/full/full/0/default.jpg",
+                                            "filename": "ijm-00004-fig1.jpg"
+                                        }
+                                    },
+                                    "label": "Figure 1",
+                                    "title": "Example of the grid structure of regions, towns and overlaps",
+                                    "type": "image"
+                                }
+                            ],
+                            "type": "figure"
+                        }
+                    ],
+                    "id": "s2-2",
+                    "title": "Data structure",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "content": [
+                                {
+                                    "text": "The time evolution of the system is modelled in time or clock steps. Our investigation used a clock step representing 15 minutes, or 1/96 of a day.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "Further refinements of the system allowing for more detailed simulation of human behaviour could use a faster clock speed. Currently at each clock step the following processes occur.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "The first process takes place in each town independently. People move from night to day location at the start of their scheduled day, and vice versa at its end. In the case of quarantine or curfew, part of the movement may be limited. For example, schools may be closed, in which case children remain in their homes (night location) during the day.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "A second tier process is the movement of population between adjacent towns. This may be of two kinds: daily commuters who work in one town and live in the next, corresponding to suburban homes; and migrants who move away for a sustained period, and as such may be treated as residents at their new location. In the commuting case, both local home and remote workplace are stored for the individual. At the end of each time step the population of each town located on the border of two regions is copied across to its mirror image in the adjacent region.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "A third tier process is long-distance movement, defined as movement to a non-adjacent town. In the present setting this movement may be either within a region or between regions. In this process there is no memory of initial location and the new member person is attributed a new home and workplace. This is clearly artificial and further work would allow for the same person to return home after an extended long distance trip. Unlike the first and second tier processes above, long-distance movement is only implemented once per day.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "Rates for commuting and migrations are proportional to the size of the remote town (which prevents short term net population flux) and are controlled by a parameter which reflects local conditions (such as socioeconomic status). These parameters may be replaced by data on travel where available. This process would render the model more accurate, but would not otherwise affect the functionality of the model provided in this paper.",
+                                    "type": "paragraph"
+                                }
+                            ],
+                            "id": "s2-3-1",
+                            "title": "Population dynamics",
+                            "type": "section"
+                        },
+                        {
+                            "content": [
+                                {
+                                    "text": "The starting point for the model is the introduction of one or more cases of a disease into the population. At each subsequent time step the following procedure is followed.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "items": [
+                                        [
+                                            {
+                                                "text": "The number of infectious people in each house is counted.",
+                                                "type": "paragraph"
+                                            }
+                                        ],
+                                        [
+                                            {
+                                                "text": "The entire population list is traversed. For each person a new infection state is evaluated. The per-step probability for an uninfected person to become infected by a single infected person is designated <i>\u03b1</i>. Assuming infection by different infectious people being independent, the probability of being infected by <i>n</i> people in a house is calculated by the joint probability of not being infected by any of them. Thus a susceptible person may become infected (latent) if residing in the same house with <i>n</i> infectious persons with the probability 1\u2212(1\u2212<i>\u03b1</i>)<i><sup>n</sup></i>. Latent patients progress one stage towards infectious status, with the last stage representing their becoming infectious. Infectious patients become not infectious and immune with clearance probability <i>\u03b2</i>, whilst immune persons make one step towards becoming susceptible, with the last step being susceptibility. An implementation of a non-exponential distribution of the duration of infection may be introduced when applicable.",
+                                                "type": "paragraph"
+                                            }
+                                        ],
+                                        [
+                                            {
+                                                "text": "The number of infectious persons is summed for each town, for each region (processor) and globally. As individual move between towns or regions, their individual disease status is transferred with them.",
+                                                "type": "paragraph"
+                                            }
+                                        ]
+                                    ],
+                                    "prefix": "number",
+                                    "type": "list"
+                                }
+                            ],
+                            "id": "s2-3-2",
+                            "title": "Disease dynamics",
+                            "type": "section"
+                        }
+                    ],
+                    "id": "s2-3",
+                    "title": "Algorithms",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "In this paper we evaluate two issues: the feasibility of the model structure for larger scale models; and ways of splitting the total investigation area into regions. To fulfil these twin goals we ran the program using differing configurations of processors and differing methods of grouping towns into regions. The total number of processors used ranged from 4 to 36. Two alternative methods were used to group the grid cells (towns) required to represent the British Isles into regions. The first involved grouping towns into lateral slices, the second involved grouping towns longitudinally and latitudinally. The subdivisions were geared to test the scalability of the program, the limitations regarding numbers of processors, the minimum time for a run and the use of alternative processor architectures to reduce data-swapping. For this testing we used either a 24 by 24 grid subdivided as described in <a href=\"#table1\">Table 1</a>, or a 36 by 36 grid subdivided as described in <a href=\"#table2\">Table 2</a>. In both tables the first column reports the total number of processors used in each configuration, whilst the second (third) column gives the number of towns that each processor controls in the x (y) direction. In all cases the model was run for 30 virtual days and the real world time was monitored.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "table1",
+                                    "label": "Table 1",
+                                    "tables": [
+                                        "<table>\n<thead>\n<tr>\n<th rowspan=\"2\">Total regions<br/>(processors)</th>\n<th colspan=\"2\">Shape of region</th>\n<th rowspan=\"2\">Simulation Time<br/>(seconds)</th>\n</tr>\n<tr>\n<th>Towns along X-length</th>\n<th>Towns along Y-length</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>1</td>\n<td>24</td>\n<td>24</td>\n<td>921</td>\n</tr>\n<tr>\n<td>2</td>\n<td>12</td>\n<td>24</td>\n<td>878</td>\n</tr>\n<tr>\n<td>2</td>\n<td>24</td>\n<td>12</td>\n<td>835</td>\n</tr>\n<tr>\n<td>3</td>\n<td>24</td>\n<td>8</td>\n<td>815</td>\n</tr>\n<tr>\n<td>4</td>\n<td>24</td>\n<td>6</td>\n<td>826</td>\n</tr>\n<tr>\n<td>4</td>\n<td>12</td>\n<td>12</td>\n<td>791</td>\n</tr>\n<tr>\n<td>4</td>\n<td>6</td>\n<td>24</td>\n<td>722</td>\n</tr>\n<tr>\n<td>6</td>\n<td>24</td>\n<td>4</td>\n<td>595</td>\n</tr>\n<tr>\n<td>8</td>\n<td>24</td>\n<td>3</td>\n<td>460</td>\n</tr>\n<tr>\n<td>12</td>\n<td>24</td>\n<td>2</td>\n<td>356</td>\n</tr>\n<tr>\n<td>24</td>\n<td>8</td>\n<td>3</td>\n<td>444</td>\n</tr>\n<tr>\n<td>24</td>\n<td>6</td>\n<td>4</td>\n<td>427</td>\n</tr>\n<tr>\n<td>24</td>\n<td>12</td>\n<td>2</td>\n<td>359</td>\n</tr>\n<tr>\n<td>24</td>\n<td>24</td>\n<td>1</td>\n<td>281</td>\n</tr>\n<tr>\n<td>24</td>\n<td>1</td>\n<td>24</td>\n<td>211</td>\n</tr>\n<tr>\n<td>36</td>\n<td>8</td>\n<td>2</td>\n<td>345</td>\n</tr>\n<tr>\n<td>36</td>\n<td>4</td>\n<td>4</td>\n<td>328</td>\n</tr>\n<tr>\n<td>36</td>\n<td>2</td>\n<td>8</td>\n<td>296</td>\n</tr>\n</tbody>\n</table>"
+                                    ],
+                                    "title": "Alternative 24 \u00d7 24 grid configurations",
+                                    "type": "table"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "table2",
+                                    "label": "Table 2",
+                                    "tables": [
+                                        "<table>\n<thead>\n<tr>\n<th rowspan=\"2\">Total regions<br/>(processors)</th>\n<th colspan=\"2\">Shape of region</th>\n</tr>\n<tr>\n<th>Towns along X-length</th>\n<th>Towns along Y-length</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>4</td>\n<td>18</td>\n<td>18</td>\n</tr>\n<tr>\n<td>9</td>\n<td>12</td>\n<td>12</td>\n</tr>\n<tr>\n<td>36</td>\n<td>1</td>\n<td>36</td>\n</tr>\n<tr>\n<td>36</td>\n<td>3</td>\n<td>12</td>\n</tr>\n<tr>\n<td>36</td>\n<td>2</td>\n<td>18</td>\n</tr>\n<tr>\n<td>27</td>\n<td>4</td>\n<td>12</td>\n</tr>\n<tr>\n<td>18</td>\n<td>6</td>\n<td>12</td>\n</tr>\n<tr>\n<td>12</td>\n<td>9</td>\n<td>12</td>\n</tr>\n</tbody>\n</table>"
+                                    ],
+                                    "title": "Alternative 36 \u00d7 36 grid configurations",
+                                    "type": "table"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "text": "Spatially, the grids share a common origin to the North West of England. Hence the 24 \u00d7 24 grid covers most of Ireland, Western Scotland and parts of Wales (population ~5 million); whilst the 36 \u00d7 36 grid covers Scotland, Ireland, Wales and northern England, including Manchester, Leeds and Birmingham (population ~20 million). To further test model scalability, a final set of model runs involved a 48 \u00d7 48 grid covering the entire British Isles with the exception of the Kent lowlands (total population ~70 million).",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s2-4",
+                    "title": "Evaluation of output",
+                    "type": "section"
+                }
+            ],
+            "id": "s2",
+            "title": "Materials and methods",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "content": [
+                        {
+                            "text": "One typical time course for the development is presented here (<a href=\"#fig2\">Figure 2</a>). It represents the number of cases of an airborne respiratory disease, after the introduction of a single infectious case in the English Midlands. The latency was set to 3 days, as was the post-clearance immunity (though larger times showed no significant difference). One hundredth of adults commuted between towns daily, and there were no long distance movements. The rate of infection of a susceptible person when within the house of an infectious person was 0.9. The red line represents the number of cases without public health intervention, and the black line the number when a policy of closed schools is implemented.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "fig2",
+                                    "image": {
+                                        "alt": "",
+                                        "uri": "%iiif_uri%/00004%2Fijm-00004-fig2.tif",
+                                        "size": {
+                                            "width": 472,
+                                            "height": 346
+                                        },
+                                        "source": {
+                                            "mediaType": "image/jpeg",
+                                            "uri": "%iiif_uri%/00004%2Fijm-00004-fig2.tif/full/full/0/default.jpg",
+                                            "filename": "ijm-00004-fig2.jpg"
+                                        }
+                                    },
+                                    "label": "Figure 2",
+                                    "title": "A typical time course for disease spread (origin = Midlands)",
+                                    "type": "image"
+                                }
+                            ],
+                            "type": "figure"
+                        }
+                    ],
+                    "id": "s3-1",
+                    "title": "Time course",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "The incorporation of the stochastic elements of disease transmission requires multiple runs. The results presented in <a href=\"#fig3\">Figure 3</a> display the mean, median and first and third quartiles. Because the data are not normally distributed this representation is preferable to the use of the standard deviation or standard error. We note that an important feature of this model is that a frequency distribution is a natural output of the model.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "fig3",
+                                    "image": {
+                                        "alt": "",
+                                        "uri": "%iiif_uri%/00004%2Fijm-00004-fig3.tif",
+                                        "size": {
+                                            "width": 500,
+                                            "height": 354
+                                        },
+                                        "source": {
+                                            "mediaType": "image/jpeg",
+                                            "uri": "%iiif_uri%/00004%2Fijm-00004-fig3.tif/full/full/0/default.jpg",
+                                            "filename": "ijm-00004-fig3.jpg"
+                                        }
+                                    },
+                                    "label": "Figure 3",
+                                    "title": "Time course for 20 runs, assuming 1% of adults commute daily and schools are kept open",
+                                    "type": "image"
+                                }
+                            ],
+                            "type": "figure"
+                        }
+                    ],
+                    "id": "s3-2",
+                    "title": "Statistics",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "The spread of the infected cases among the general population is fairly isotropic. The largest numbers are, as expected, in the metropolitan areas, which afterwards serve as sources for subsequent transmission. This is because the high density regions have a higher commuter in-migration rate, there are more people to be infected within a populous town and there are more people to exit the town carrying the disease. In <a href=\"#fig4\">Figure 4</a> we present three snapshots of a series of 30 daily pictures of the distribution of a rapidly spreading disease.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "caption": [
+                                        {
+                                            "text": "Disease outbreak was seeded randomly in three initial centres.",
+                                            "type": "paragraph"
+                                        }
+                                    ],
+                                    "id": "fig4",
+                                    "image": {
+                                        "alt": "",
+                                        "uri": "%iiif_uri%/00004%2Fijm-00004-fig4.tif",
+                                        "size": {
+                                            "width": 1041,
+                                            "height": 329
+                                        },
+                                        "source": {
+                                            "mediaType": "image/jpeg",
+                                            "uri": "%iiif_uri%/00004%2Fijm-00004-fig4.tif/full/full/0/default.jpg",
+                                            "filename": "ijm-00004-fig4.jpg"
+                                        }
+                                    },
+                                    "label": "Figure 4",
+                                    "title": "Spatial distribution of cases after 3, 19 and 25 days for a highly infectious disease, allowing for long distance transmission. The size of the dot represents the number of cases at the grid point.",
+                                    "type": "image"
+                                }
+                            ],
+                            "type": "figure"
+                        }
+                    ],
+                    "id": "s3-3",
+                    "title": "Spatial patterns",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "The practicality of such a model relies on the speed required to perform a run. The typical run times for the 48 x 48 grid model covering almost the entire British Isles required about 100s/run using 36 nodes (processors). Assuming that 100 runs are performed to obtain a useful distribution this means an effective run-time of ~10<sup>4</sup>s (3hrs) is required to simulate the daily commuting, migration and disease spread behaviour of a population of ~70 million over a virtual time-period of 30 days (2880 time steps, each representing 15 minutes of elapsed time). However, a complex interaction exists between regional topology, the number of processors involved in the simulation and total execution time. This is discussed further below.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s3-4",
+                    "title": "Speed and numbers of nodes",
+                    "type": "section"
+                }
+            ],
+            "id": "s3",
+            "title": "Results",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "content": [
+                        {
+                            "text": "Despite the simplicity of our current \u2018proof-of-concept\u2019 model, some of the results generated already match well-known reports. Our model is able to create a representation of nationwide transmission (<a href=\"#fig4\">Figure 4</a>). This spread does not occur in all cases, nor in all runs. In fact, the probability of self-containment of the disease decreases with the number of persons already infectious, in line with expectation (<a href=\"#bib17\">Mills <i>et al</i>., 2006</a>). Closure of schools, as depicted in <a href=\"#fig2\">Figure 2</a>, has also been shown elsewhere to be an effective means for limiting transmission (<a href=\"#bib11\">Heymann <i>et al</i>., 2004</a>; <a href=\"#bib18\">Monto, 2006</a>), although more so in rural situations, as urban children tend to fraternise in extra-school settings. Leisure activity has yet to be implemented in our model; if it had been we would expect our results to reflect this additional observation.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Additional improvements planned for the future include enhanced modelling of variable person mobility tendencies, which should peak at around middle age, with elderly persons moving much more infrequently. Diurnal movements will also be modified to allow for visiting additional places and at additional times. At the same time transport modelling will introduced to allow for <i>en route</i> infection, for example in buses, trains and aircraft (<a href=\"#bib2\">Brockmann <i>et al</i>., 2006</a>; <a href=\"#bib14\">Hufnagel <i>et al</i>., 2004</a>). Similarly, the model will be revised to implement disease-induced absenteeism from work.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s4-1",
+                    "title": "Model validity and future refinements",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "The principal value of our model\u2019s structure is its modularity and conceptual simplicity, allowing the model to be scaled up, in principle, to a global model. In such scaling up a primary constraint on model execution time is the region with maximal population. The reason for this is that, in our model structure, there is a pause at the end of each time step to allow the swapping of information between regions, principally the mirroring of towns located on a regional border to the adjacent regional processor. As a result the processor dealing with the region containing the highest population, and which therefore takes the longest to complete its computational task, is the one which will dictate the pace of the simulation. This is illustrated by results produced using the 36 by 36 grid (<a href=\"#fig5\">Figure 5a</a>). As the number of processors increases, the maximal population of each region falls, thereby reducing the overall simulation time. This suggests that scaling the model from a national (British Isles) to global scale will simply require more processors.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "fig5",
+                                    "image": {
+                                        "alt": "",
+                                        "uri": "%iiif_uri%/00004%2Fijm-00004-fig5.tif",
+                                        "size": {
+                                            "width": 1036,
+                                            "height": 435
+                                        },
+                                        "source": {
+                                            "mediaType": "image/jpeg",
+                                            "uri": "%iiif_uri%/00004%2Fijm-00004-fig5.tif/full/full/0/default.jpg",
+                                            "filename": "ijm-00004-fig5.jpg"
+                                        }
+                                    },
+                                    "label": "Figure 5",
+                                    "title": "Changes in MPI usage efficiency in response to grid size and processor nodes",
+                                    "type": "image"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "text": "However, the story is not quite that simple. The mirroring process has associated communication overheads, with the overhead being proportional to the size of the population that has to be mirrored. When sub-dividing a less densely populated region across multiple processors, the gains in computation power more than out-weigh the slight increase in communications overhead entailed. On the other hand, when sub-dividing a densely populated region (e.g. London), the increase in communications overhead, with far greater volumes of population having to be mirrored between regions, can potentially off-set any gain in computing power. This is the cause of the diminishing returns shown at work in <a href=\"#fig5\">Figure 5b</a>, based upon results from model runs using a 24 \u00d7 24 grid. Communication overheads are also affected by the arrangement of towns within a region into rows and columns. This is demonstrated visually in <a href=\"#fig5\">Figure 5b</a> where, for the same number of processors, multiple points are plotted, indicating the range of run times that can arise depending upon the precise arrangement of towns within regions. (The specific regional configurations associated with each run time are shown in <a href=\"#table1\">Table 1</a>.)",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Several lessons can be drawn from <a href=\"#fig5\">Figure 5</a>. First, provided region size is large enough to allow the modelling of major metropolitan areas on one processor, communication overheads do not play a limiting factor in model run times. Rather, scaling the model up from national to global coverage is simply a case of increasing the number of processors used. To simulate the world we estimate approximately 1000\u201310000 processors would be necessary, already within the range of some existing regional computer cluster facilities. Second, the way in which populations are distributed across processors is important. We are currently developing an algorithm that will partition the total population into equally populated regions, while allowing for boundary interfaces to be managed simply. This will sharply reduce the maximal processing speed-limit caused by highly dense metropolitan centres such as London. Of course, in a more sophisticated microsimulation, with an increase in the amount of data per individual, the limitations imposed by communication overheads would be more severe, but the lessons above still apply. In any case, we believe efficient packing of the data should limit this additional effect.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s4-2",
+                    "title": "Model scalability",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "The principal goal of this project was to demonstrate the feasibility of large-scale microsimulation of disease dynamics using high performance cluster computing resources. Using currently available technology, the model structure proposed has been shown to be able to run a microsimulation of the entire UK population, and, by extrapolation (using additional processors), of a continent or the world. The model at this stage is a transmission model, with a simple \u201cblack box\u201d of transmission dynamics. This black box can be adapted to different forms of directly transmitted disease. Microsimulation modelling particularly suits the stochastic dynamics observed at the early stage of a potentially global disease, as both transmission and clearance from the individual are probabilistic, and at the individual level may cause survival or eradication of the virulent strain. On the other hand, microsimulation only seems appropriate for modelling the spread of a disease from a region with moderate prevalence to other regions when the travel rate is low. When a large proportion of the population are mobile, less computationally demanding deterministic methods are sufficient.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "After the epidemic simulations reported here and elsewhere (<a href=\"#bib6\">Ferguson 2005</a>, 6), perhaps the largest dynamic microsimulation reported in print is SVERIGE (Holm <i>et al</i>., undated), which models the lifepaths of c. 9 million separate individuals. Of course, in comparison to SVERIGE epidemic simulations are limited in scope, modelling only transmissible disease. Nor do these models base themselves on the type of detailed data-structure which is available to the SVERIGE group, due to the extensive data-collection system of the Swedish government, and its availability to researchers. Such personal data are rarely available in other countries, either because the data do not exist (as in developing countries) or due to regulation of data (as in most other developed countries). In addition, SVERIGE places its basic human focus on the family, a term missing in the reported epidemic microsimulations, which focus instead on the health of individuals living in households. However, these differences are not intrinsic to the simulation structure outlined in this paper, but rather are a result of our own distinct modelling goals. According to modelling need either the \u2018home\u2019 or \u2018individual\u2019 objects in our model could be treated instead as a \u2018family\u2019. Similarly, additional personal characteristics and behaviours could be factored in, either readily (e.g. earnings and taxes; family formation and dissolution; localised mortality and fertility rates), or after some additional work (e.g. matching of employees with local, regional and national job vacancies). Even the uniform grid currently utilised in our model can be simply transformed, via topological mapping, to cater for existing non-grid-based administrative geographies, tying in directly with existing census data sources without affecting model functionality (c.f. <a href=\"#bib6\">Ferguson <i>et al</i>., 2005</a>). The real difference between SVERIGE and our model is simply that of scale. Our model demonstrates how the modelled population of a geographically detailed microsimulation can be scaled up through the computationally efficient subdivision of spatial units across multiple processors.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s4-3",
+                    "title": "The generic nature of the model",
+                    "type": "section"
+                }
+            ],
+            "id": "s4",
+            "title": "Discussion",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "content": [
+                        {
+                            "text": "The model presented appears to bear promise as a tool for the future evaluation of alternative interventions in the control of infectious diseases. We emphasize that this computational framework could support multiple diseases and virtual populations differentiated by parameters values. While the current underlying disease transmission model would remain transparent, the addition of extra layers of environmental and clinical data would allow the study of sophisticated phenomena with increasing spatial and temporal resolution. Thus the model is not static and inflexible, but open to a process of successive refinement. Naturally such development would require access to international epidemiological data.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The model is, of course, strictly dependent on the assumptions regarding the black box of the individual disease pattern. Indeed, the variation of the parameter values, and some of the interaction assumptions of the population reflect the difference between diseases, and hence the potential virulence (<a href=\"#bib1\">Anderson and May, 1991</a>; <a href=\"#bib15\">Lloyd-Smith <i>et al</i>., 2005</a>; <a href=\"#bib23\">Weiss and McMichael, 2004</a>). Inevitably, the insertion of inappropriate parameter values will necessarily cause incorrect evaluation of the impact of interventions. A corollary of this, from a policy point of view, is that if adjusting a parameter yields radically varying results this indicates a gross sensitivity which can act as an indicator to where further study of the disease or the intervention should be pursued.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s5-1",
+                    "title": "Potential for use in decision making",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "The program is modular, requiring only the definition of the simulation boundaries. The population is readily structured for the simulation, and the program can, with minimal changes, be used for any size region, although the partitioning to regions must be performed efficiently. We are currently investigating the use of meshing algorithms to refine this partitioning and the effect of these meshes on performance. However the current algorithm is adequate.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "At present the model has been developed and has demonstrated the capacity to model disease transmission in the UK and Ireland. The main limitation on the model is the number of processors available on the local prototype cluster. A cluster of ~1000 processors (or cores) (1 terraflop) would permit the modelling of Europe and of order 10,000 the modelling of the world (10\u2013100 terraflops). With efficient partitioning of populations across processors the authors believe these numbers could be reduced by an order of magnitude, making global modelling accessible to typical current national or regional computing clusters. For example the UK North-West Science Grid (<a href=\"http://www.nw-grid.ac.uk\">http://www.nw-grid.ac.uk</a>) will provide up to about 4000 cores capable of running this global model by 2007.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "We believe that the generic modelling approach presented in this paper provides a first step towards the creation of a novel tool for use by the international microsimulation community. We also hope, more broadly, that it provides a challenge to this same community to revisit the issue of the computational limits to microsimulation modelling. As we have demonstrated, microsimulation models no longer have to confine themselves to use of a single computing processor.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s5-2",
+                    "title": "Feasibility of extension",
+                    "type": "section"
+                }
+            ],
+            "id": "s5",
+            "title": "Conclusion",
+            "type": "section"
+        }
+    ],
+    "references": [
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Anderson, R M",
+                        "preferred": "R M Anderson"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "May, R M",
+                        "preferred": "R M May"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "Infectious Diseases of Humans",
+            "date": "1000",
+            "id": "bib1",
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "Oxford"
+                        ]
+                    },
+                    "formatted": [
+                        "Oxford"
+                    ]
+                },
+                "name": [
+                    "Oxford University Press"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "articleTitle": "The scaling laws of human travel",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Brockmann, D",
+                        "preferred": "D Brockmann"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Hufnagel, L",
+                        "preferred": "L Hufnagel"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Geisel, T",
+                        "preferred": "T Geisel"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1000",
+            "id": "bib2",
+            "journal": "Nature",
+            "pages": {
+                "first": "462",
+                "last": "5",
+                "range": "462\u20135"
+            },
+            "type": "journal",
+            "volume": "439"
+        },
+        {
+            "articleTitle": "Hong Kong battens down the hatches",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Chatterjee, P",
+                        "preferred": "P Chatterjee"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1000",
+            "id": "bib3",
+            "journal": "Lancet",
+            "pages": {
+                "first": "2073",
+                "last": "4",
+                "range": "2073\u20134"
+            },
+            "type": "journal",
+            "volume": "366"
+        },
+        {
+            "articleTitle": "Stochastic modeling of nonlinear epidemiology",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Chen, W Y",
+                        "preferred": "W Y Chen"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Bokka, S",
+                        "preferred": "S Bokka"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1000",
+            "id": "bib4",
+            "journal": "Journal of Theoretical Biology",
+            "pages": {
+                "first": "455",
+                "last": "70",
+                "range": "455\u201370"
+            },
+            "type": "journal",
+            "volume": "234"
+        },
+        {
+            "bookTitle": "Gridded Population of the World, Version 3, Center for International Earth Science Information Network and Centro Internacional de Agricultura Tropical",
+            "date": "1000",
+            "id": "bib5",
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "Palisades, New York"
+                        ]
+                    },
+                    "formatted": [
+                        "Palisades, New York"
+                    ]
+                },
+                "name": [
+                    "Columbia University"
+                ]
+            },
+            "type": "book",
+            "uri": "http://sedac.ciesin.columbia.edu/gpw/index.jsp",
+            "authors": [
+                {
+                    "name": "n/a",
+                    "type": "group"
+                }
+            ]
+        },
+        {
+            "articleTitle": "Strategies for containing an emerging influenza pandemic in Southeast Asia",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Ferguson, N M",
+                        "preferred": "N M Ferguson"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Cummings, D A T",
+                        "preferred": "D A T Cummings"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Cauchemez, S",
+                        "preferred": "S Cauchemez"
+                    },
+                    "type": "person"
+                }
+            ],
+            "authorsEtAl": true,
+            "date": "1000",
+            "id": "bib6",
+            "journal": "Nature",
+            "pages": {
+                "first": "209",
+                "last": "14",
+                "range": "209\u201314"
+            },
+            "type": "journal",
+            "volume": "437"
+        },
+        {
+            "articleTitle": "Strategies for mitigating an influenza pandemic",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Ferguson, N M",
+                        "preferred": "N M Ferguson"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Cummings, D A T",
+                        "preferred": "D A T Cummings"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Fraser, C",
+                        "preferred": "C Fraser"
+                    },
+                    "type": "person"
+                }
+            ],
+            "authorsEtAl": true,
+            "date": "1000",
+            "id": "bib7",
+            "journal": "Nature",
+            "pages": {
+                "first": "448",
+                "last": "52",
+                "range": "448\u201352"
+            },
+            "type": "journal",
+            "volume": "442"
+        },
+        {
+            "articleTitle": "Epidemiology: dimensions of superspreading",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Galvani, A P",
+                        "preferred": "A P Galvani"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "May, R M",
+                        "preferred": "R M May"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1000",
+            "id": "bib8",
+            "journal": "Nature",
+            "pages": {
+                "first": "293",
+                "last": "5",
+                "range": "293\u20135"
+            },
+            "type": "journal",
+            "volume": "438"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Gropp, W",
+                        "preferred": "W Gropp"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Lusk, E",
+                        "preferred": "E Lusk"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Ashton, D",
+                        "preferred": "D Ashton"
+                    },
+                    "type": "person"
+                }
+            ],
+            "authorsEtAl": true,
+            "bookTitle": "MPICH2 User\u2019s Guide, version 1.0.4",
+            "date": "1000",
+            "id": "bib9",
+            "publisher": {
+                "name": [
+                    "Argonne National Laboratory"
+                ]
+            },
+            "type": "book",
+            "uri": "http://www-unix.mcs.anl.gov/mpi/mpich2/downloads/mpich2-doc-user.pdf"
+        },
+        {
+            "articleTitle": "Public health. Community studies for vaccinating schoolchildren against influenza",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Halloran, M E",
+                        "preferred": "M E Halloran"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Longini, I M, Jr",
+                        "preferred": "I M Longini Jr"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1000",
+            "id": "bib10",
+            "journal": "Science",
+            "pages": {
+                "first": "615",
+                "last": "6",
+                "range": "615\u20136"
+            },
+            "type": "journal",
+            "volume": "311"
+        },
+        {
+            "articleTitle": "Influence of school closure on the incidence of viral respiratory diseases among children and on health care utilization",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Heymann, A",
+                        "preferred": "A Heymann"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Chodick, G",
+                        "preferred": "G Chodick"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Reichman, B",
+                        "preferred": "B Reichman"
+                    },
+                    "type": "person"
+                }
+            ],
+            "authorsEtAl": true,
+            "date": "1000",
+            "id": "bib11",
+            "journal": "Pediatric Infectious Diseases Journal",
+            "pages": {
+                "first": "675",
+                "last": "7",
+                "range": "675\u20137"
+            },
+            "type": "journal",
+            "volume": "23"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Holm, E",
+                        "preferred": "E Holm"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Holme, K",
+                        "preferred": "K Holme"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "M\u00e4kil\u00e4, K",
+                        "preferred": "K M\u00e4kil\u00e4"
+                    },
+                    "type": "person"
+                }
+            ],
+            "authorsEtAl": true,
+            "bookTitle": "The SVERIGE spatial microsimulation model \u2013 content, validation and example applications",
+            "date": "1000",
+            "id": "bib12",
+            "publisher": {
+                "name": [
+                    "Spatial Modelling Centre, Universitet Umea"
+                ]
+            },
+            "type": "book",
+            "uri": "http://www3.umu.se/soc_econ_geography/sm c/PDF/SVERIGE_validation.pdf"
+        },
+        {
+            "articleTitle": "A weather-driven model of malaria transmission",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Hoshen, M B",
+                        "preferred": "M B Hoshen"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Morse, A P",
+                        "preferred": "A P Morse"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1000",
+            "id": "bib13",
+            "journal": "Malaria Journal",
+            "pages": "32",
+            "type": "journal",
+            "volume": "3"
+        },
+        {
+            "articleTitle": "Forecast and control of epidemics in a globalized world",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Hufnagel, L",
+                        "preferred": "L Hufnagel"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Brockmann, D",
+                        "preferred": "D Brockmann"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Geisel, T",
+                        "preferred": "T Geisel"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1000",
+            "id": "bib14",
+            "journal": "Proceedings of the National Academy of Science U S A",
+            "pages": {
+                "first": "15124",
+                "last": "9",
+                "range": "15124\u20139"
+            },
+            "type": "journal",
+            "volume": "101"
+        },
+        {
+            "articleTitle": "Superspreading and the effect of individual variation on disease emergence",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Lloyd-Smith, J O",
+                        "preferred": "J O Lloyd-Smith"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Schreiber, S J",
+                        "preferred": "S J Schreiber"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Kopp, P E",
+                        "preferred": "P E Kopp"
+                    },
+                    "type": "person"
+                }
+            ],
+            "authorsEtAl": true,
+            "date": "1000",
+            "id": "bib15",
+            "journal": "Nature",
+            "pages": {
+                "first": "355",
+                "last": "9",
+                "range": "355\u20139"
+            },
+            "type": "journal",
+            "volume": "438"
+        },
+        {
+            "articleTitle": "Containing pandemic influenza at the source",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Longini, IM, Jr",
+                        "preferred": "IM Longini Jr"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Nizam, A",
+                        "preferred": "A Nizam"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Xu, S",
+                        "preferred": "S Xu"
+                    },
+                    "type": "person"
+                }
+            ],
+            "authorsEtAl": true,
+            "date": "1000",
+            "id": "bib16",
+            "journal": "Science",
+            "pages": {
+                "first": "1083",
+                "last": "7",
+                "range": "1083\u20137"
+            },
+            "type": "journal",
+            "volume": "309"
+        },
+        {
+            "articleTitle": "Pandemic Influenza: Risk of Multiple Introductions and the Need to Prepare for Them",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Mills, C E",
+                        "preferred": "C E Mills"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Robins, J M",
+                        "preferred": "J M Robins"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Bergstrom, C T",
+                        "preferred": "C T Bergstrom"
+                    },
+                    "type": "person"
+                }
+            ],
+            "authorsEtAl": true,
+            "date": "1000",
+            "id": "bib17",
+            "journal": "Public Library of Science Medicine",
+            "pages": "e135",
+            "type": "journal",
+            "volume": "3"
+        },
+        {
+            "articleTitle": "Vaccines and antiviral drugs in pandemic preparedness",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Monto, A S",
+                        "preferred": "A S Monto"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1000",
+            "id": "bib18",
+            "journal": "Emerging Infectious Diseases",
+            "pages": {
+                "first": "55",
+                "last": "60",
+                "range": "55\u201360"
+            },
+            "type": "journal",
+            "volume": "12"
+        },
+        {
+            "articleTitle": "The challenge of emerging and re-emerging infectious diseases",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Morens, D M",
+                        "preferred": "D M Morens"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Folkers, G K",
+                        "preferred": "G K Folkers"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Fauci, A S",
+                        "preferred": "A S Fauci"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1000",
+            "id": "bib19",
+            "journal": "Nature",
+            "pages": {
+                "first": "242",
+                "last": "9",
+                "range": "242\u20139"
+            },
+            "type": "journal",
+            "volume": "430"
+        },
+        {
+            "articleTitle": "Simulating the effect of quarantine on the spread of the 1918\u201319 flu in central Canada",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Sattenspiel, L",
+                        "preferred": "L Sattenspiel"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Herring, D A",
+                        "preferred": "D A Herring"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1000",
+            "id": "bib20",
+            "journal": "Bulletin of Mathematical Biology",
+            "pages": {
+                "first": "1",
+                "last": "26",
+                "range": "1\u201326"
+            },
+            "type": "journal",
+            "volume": "65"
+        },
+        {
+            "articleTitle": "Avian influenza A (H5N1) in 10 patients in Vietnam",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Tran, TH",
+                        "preferred": "TH Tran"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Nguyen, TL",
+                        "preferred": "TL Nguyen"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Nguyen, TD",
+                        "preferred": "TD Nguyen"
+                    },
+                    "type": "person"
+                }
+            ],
+            "authorsEtAl": true,
+            "date": "1000",
+            "id": "bib21",
+            "journal": "New England Journal of Medicine",
+            "pages": {
+                "first": "1179",
+                "last": "88",
+                "range": "1179\u201388"
+            },
+            "type": "journal",
+            "volume": "350"
+        },
+        {
+            "bookTitle": "World Population and Prospects: The 2004 Revision",
+            "date": "1000",
+            "id": "bib22",
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "New York"
+                        ]
+                    },
+                    "formatted": [
+                        "New York"
+                    ]
+                },
+                "name": [
+                    "United Nations Population Division"
+                ]
+            },
+            "type": "book",
+            "uri": "http://esa.un.org/unpp/",
+            "authors": [
+                {
+                    "name": "n/a",
+                    "type": "group"
+                }
+            ]
+        },
+        {
+            "articleTitle": "Social and environmental risk factors in the emergence of infectious diseases",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Weiss, R A",
+                        "preferred": "R A Weiss"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "McMichael, A J",
+                        "preferred": "A J McMichael"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1000",
+            "id": "bib23",
+            "journal": "Nature Medicine",
+            "pages": {
+                "first": "S70",
+                "last": "6",
+                "range": "S70\u20136"
+            },
+            "type": "journal",
+            "volume": "10"
+        }
+    ],
+    "acknowledgements": [
+        {
+            "text": "The MAP2 DELL Cluster is part of the North-West Grid, which is funded by the North-West Development Agency, the CCLRC Daresbury Laboratory and the Universities of Lancaster, Liverpool and Manchester. MBH was supported by the North-West Grid.",
+            "type": "paragraph"
+        }
+    ],
+    "-meta": {
+        "patched": true
+    },
+    "stage": "published"
+}
