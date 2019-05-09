@@ -318,7 +318,7 @@ final class ArticlesController extends Controller
                 $copyright = '<p>'.$item->getCopyright()->getStatement().'</p>';
 
                 if ($item->getCopyright()->getHolder()) {
-                    $copyright = sprintf('<p>© %s, %s</p>', 2011 + $item->getVolume(), $item->getCopyright()->getHolder()).$copyright;
+                    $copyright = sprintf('<p>© %s, %s</p>', $item->getPublishedDate()->format('Y'), $item->getCopyright()->getHolder()).$copyright;
                 }
 
                 $infoSections[] = ArticleSection::basic('Copyright', 3, $copyright);
