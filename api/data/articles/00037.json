@@ -1,0 +1,1641 @@
+{
+    "status": "vor",
+    "id": "00037",
+    "version": 1,
+    "type": "research-article",
+    "doi": "10.34196/ijm.00037",
+    "authorLine": "J Richard Cumpston",
+    "title": "Alignment and Matching in Multi-Purpose Household Microsimulations",
+    "published": "2010-08-31T00:00:00Z",
+    "versionDate": "2010-08-31T00:00:00Z",
+    "statusDate": "2010-08-31T00:00:00Z",
+    "volume": 3,
+    "issue": 2,
+    "elocationId": "n/a",
+    "pdf": "http://web:8082/00037/ijm-00037.pdf",
+    "subjects": [
+        {
+            "id": "methodology",
+            "name": "Methodology"
+        }
+    ],
+    "abstract": {
+        "content": [
+            {
+                "text": "Household microsimulations are often required to align with deterministic projections from other sources. This paper suggests the use of random sampling within alignment pools to give one-pass event alignment. An iterative process is suggested for alignment of person types, but gives disturbingly high numbers of changes. Type alignment may be better done by manually adjusting assumptions to give approximate alignment.",
+                "type": "paragraph"
+            },
+            {
+                "text": "Many forms of matching are needed in household microsimulations. The paper suggests two different immediate matching methods - probability-weighted, and best of n. Performance measures are derived for these methods, and for two existing batch methods - stochastic and order of decreasing difficulty. Probability-weighted matching gave slightly better results than best of n and stochastic, and order of decreasing difficulty gave poor results. The suggested matching methods may be useful in a wide range of applications.",
+                "type": "paragraph"
+            }
+        ]
+    },
+    "copyright": {
+        "license": "CC-BY-4.0",
+        "holder": "Cumpston",
+        "statement": "This article is distributed under the terms of the <a href=\"http://creativecommons.org/licenses/by/4.0/\">Creative Commons Attribution License</a>, which permits unrestricted use and redistribution provided that the original author and source are credited."
+    },
+    "authors": [
+        {
+            "affiliations": [
+                {
+                    "address": {
+                        "components": {
+                            "country": "Australia 3205"
+                        },
+                        "formatted": [
+                            "Australia 3205"
+                        ]
+                    },
+                    "name": [
+                        "National Centre for Social and Economic Modelling (NATSEM)",
+                        "University of Canberra"
+                    ]
+                }
+            ],
+            "emailAddresses": [
+                "richard.cumpston@gmail.com"
+            ],
+            "name": {
+                "index": "Cumpston, J Richard",
+                "preferred": "J Richard Cumpston"
+            },
+            "type": "person"
+        }
+    ],
+    "keywords": [
+        "alignment",
+        "marriage market",
+        "performance measures"
+    ],
+    "body": [
+        {
+            "content": [
+                {
+                    "text": "Although dynamic household microsimulation models are often used to help policy decisions by national governments, projections at regional and sub-regional levels are potentially useful to state and local governments. Models at fine geographic scales can also be commercially useful, for example to the developers of retirement care facilities. Such models require detailed assumptions about location choices, and large numbers of persons being modelled. Some models, such as SVERIGE (<a href=\"#bib13\">Holm, Holme, Makilla, Maffsson-Kauppi and Mortvik, 2004</a>), ILUTE (<a href=\"#bib17\">Miller 2008</a>) and Moses (<a href=\"#bib26\">Wu, Birkin and Rees, 2009</a>) have attempted to meet these challenges.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Although the model described by <a href=\"#bib21\">Orcutt, Greenberger, Korbel and Rivlin (1961</a>) had monthly projection cycles, nearly all subsequent models have had yearly cycles. The APPSIM model is designed to allow monthly cycles (<a href=\"#bib23\">Percival 2007</a>). Short cycles help overcome the simulation errors identified by <a href=\"#bib11\">Galler (1997</a>), and allow a wider range of uses. For example, monthly cycles are needed to simulate the aggressive development of diseases such as cancer.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The last decade has seen a more critical approach to the performance of household microsimulation models. <a href=\"#bib6\">Bouffard, Easther, Johnson, Morrison and Vink (2001</a>) noted the poor results from the widely used stable marriage algorithm, and <a href=\"#bib16\">Leblanc, Morrison and Redway (2009</a>) found poor results from stochastic and order of decreasing difficulty matching. These are three forms of batch matching, where persons to be matched are selected during a cycle, and paired off at the end of the cycle. Some models use immediate matching, where a person is selected to be matched, and a match found immediately.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "This paper suggests one alignment and two matching methods, which may help meet present and new needs for microsimulation models. The suggested methods are unlikely to help reduce the wide disparities between run times of current national models, as these may reflect programming and data storage issues, as well as excessive use of alignment.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s1",
+            "title": "Introduction",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "<a href=\"#bib21\">Orcutt, Greenberger, Korbel and Rivlin (1961</a>) described an alignment process where event probabilities during each monthly simulation cycle were adjusted to try to eliminate any accumulated discrepancies with external control totals. <a href=\"#bib18\">Morrison (2006</a>) described the evolution of alignment, identifying two needs - consistency with beliefs about the future, and elimination of stochastic variation.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Governments may have national population projections that underpin planning in many areas. Household microsimulations for policy purposes need to have assumptions consistent with those in the national projections, and give comparable results to them. As Morrison notes, even when considerable care and expertise are used in estimating behavioural equations from past data, very rarely do the microsimulations match expectations about the future. Harding (<a href=\"#bib12\">2007</a>:12) asks whether aligning everything at a very disaggregated level may reduce the predictive usefulness of the dynamic model, by imposing upon the micro results predetermined macro outcomes.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Morrison (<a href=\"#bib18\">2006</a>:16) comments that clients almost invariably prefer point estimates, and do not usually value information about likely distributions of results. This is not universal. For example, regulatory authorities for insurers now want information on the range of possible results, including unlikely but costly disasters. Many investors want to understand the risks and potential returns from each investment, as well as the risk reductions from diversification. The use of alignment to eliminate stochastic variation may thus be concealing valuable information. Note however that stochastic variation during a projection may only be a minor source of overall uncertainty. Uncertainties inherent in the estimation of model coefficients, and changes over time in individual behavior, government policy and economic conditions may be much greater sources of uncertainty.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Morrison (<a href=\"#bib19\">2008</a>:20) notes that DYNACAN had been misinterpreting mortality coefficients inherited from CORSIM, and that alignment had masked the misinterpretation. This appears to be one of the risks of using alignment, where a major underlying error may lead to a variety of distortions. A wide range of problems can cause microsimulation results to differ from national projections. For example, low births may result from low partnering rates or wrong age assumptions about immigrants. Wherever possible, it seems better to correct such problems early, rather than during alignment.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Three types of alignment may be needed",
+                    "type": "paragraph"
+                },
+                {
+                    "items": [
+                        [
+                            {
+                                "text": "- event alignment, for numbers of events such as births and deaths",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "- state alignment, for numbers in particular states (for example, married persons in a particular age group and area)",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "- monetary alignment, for totals such as wages.",
+                                "type": "paragraph"
+                            }
+                        ]
+                    ],
+                    "prefix": "none",
+                    "type": "list"
+                },
+                {
+                    "text": "Sometimes it may be possible to use event alignment to achieve the desired numbers of persons in particular states. In Australia, however, no national projections exist of partnership formations or dissolutions, forcing the use of state alignment to national projections of partner numbers. Another problem is that a single household exit can change household types in both the source and destination household, requiring an iterative state alignment process. A two-tier monetary alignment process is described by <a href=\"#bib7\">Dekkers et al (2009</a>:4-5).",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s2",
+            "title": "General comments on alignment",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "This section describes two existing methods of event alignment, and suggests a third. The performance of the three methods is tested by looking at mean ages at death.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "In 1995 Baekgaard suggested a \u201csampling by sorting\u201d alignment method where events are randomly simulated, and any departure from the alignment total corrected by reversing the outcomes of those events where the generated random number is closest to the probability of occurrence (see <a href=\"#bib5\">Baekgaard 2002</a>:12). This is the first of the methods tested here.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "In 2001 Johnson proposed \u201calignment by sorting\u201d, a method also involving reversing some of the simulated events. For each prospective event i, a value v<sub>i</sub> is calculated, where",
+                    "type": "paragraph"
+                },
+                {
+                    "text": [
+                        {
+                            "text": "v<sub>i</sub> = f(r<sub>i</sub>) - f(p<sub>i</sub>)",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "f(x) has the form -In( (1-x)/x )",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "p<sub>i</sub> is the prospective event\u2019s probability",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "r<sub>i</sub> is a random number drawn from a (0,1) distribution.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "type": "quote"
+                },
+                {
+                    "text": "The prospective events with the lowest v<sub>i</sub> magnitudes are then reversed to match the alignment total. In 2006, this was DYNACAN\u2019s primary alignment method (<a href=\"#bib18\">Morrison 2006</a> p6). This is the second of the methods tested here. It is similar to sampling by sorting, except that both the probability and the random number are transformed before selecting events for reversal.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "If random selection is being used to select persons for event testing, then alignment can be included in the process",
+                    "type": "paragraph"
+                },
+                {
+                    "items": [
+                        [
+                            {
+                                "text": "- randomly select an individual to be tested for the event",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "- compare a random number with the event probability for that individual, and decide if the event occurs",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "- repeat until the desired event total is reached.",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "- This is the third of the methods tested here, and is called \u201calignment by random selection\u201d.",
+                                "type": "paragraph"
+                            }
+                        ]
+                    ],
+                    "prefix": "none",
+                    "type": "list"
+                },
+                {
+                    "text": "One simple test of an alignment method is to measure the mean age of persons experiencing an event, without and with alignment. Any large age difference is an indication that the alignment method is flawed. For example, the first row of <a href=\"#table1\">table 1</a> shows that the mean age of death, when 20 different simulations were made of deaths in a year from 20,000 persons without alignment, was 77.57 years. The ages of these persons were representative of Australians in 2001. Using sampling by sorting, the observed mean age at death was 86.88 years when the alignment total was 63 per cent of the unaligned mean number of deaths, and 69.16 years when the alignment total was 127 per cent of the unaligned mean number of deaths.",
+                    "type": "paragraph"
+                },
+                {
+                    "assets": [
+                        {
+                            "id": "table1",
+                            "label": "Table 1",
+                            "tables": [
+                                "<table>\n<thead>\n<tr>\n<th>Alignment method</th>\n<th>Not aligned</th>\n<th>Aligned to 63% of mean</th>\n<th>Aligned to 100% of mean</th>\n<th>Aligned to 127% of mean</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>Sampling by sorting</td>\n<td>77.57</td>\n<td>86.88</td>\n<td>76.93</td>\n<td>69.16</td>\n</tr>\n<tr>\n<td>Alignment by sorting</td>\n<td>77.57</td>\n<td>77.82</td>\n<td>77.53</td>\n<td>77.21</td>\n</tr>\n<tr>\n<td>Random selection</td>\n<td>77.24</td>\n<td>77.22</td>\n<td>77.27</td>\n<td>77.06</td>\n</tr>\n</tbody>\n</table>"
+                            ],
+                            "title": "Mean ages at death",
+                            "type": "table"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "text": "The second row of <a href=\"#table1\">table 1</a> shows that much better results were obtained with alignment by sorting, again making 20 different simulations of deaths in a year from 20,000 persons without and with alignment. The observed mean age was 77.82 years when the alignment total was 63 per cent of the unaligned mean number, and 77.21 years when the alignment total was 127 per cent of the unaligned mean number. Both are close to the unaligned mean age at death of 77.57 years. The third row of <a href=\"#table1\">table 1</a> shows that even better results were obtained with alignment by random selection. For this method, 3 simulations were made of the deaths in a year from 175,044 persons, based on a 1 per cent sample of Australians in 2001. The observed mean age was 77.22 years when the alignment total was 63 per cent of the unaligned mean number, and 77.06 years when the alignment total was 127 per cent of the unaligned mean number. Both are close to the unaligned mean of 77.24 years.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "As shown in <a href=\"#table1\">table 1</a>, sampling by sorting only works reasonably for alignment totals close to expected means. Because alignment is done by reversing the outcomes of those events where the generated random number is closest to the probability of occurrence, most reversals occur at the young ages. An alignment total below the mean thus leaves most of the old deaths unchanged, and gets rid of many of the younger deaths, giving a high average age on death.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The probability transformation used in alignment by sorting means that reversals occur where the difference between the log of the probability and the log of the random number is small. Reversals should thus be shared fairly evenly between young and old deaths, leaving the average age at death reasonably stable. Alignment by random selection does not involve any event reversals, and should not alter average ages. Trials showed no correlation between the between the ages at death of consecutively simulated deaths, or between their file positions.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s3",
+            "title": "Event alignment",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "content": [
+                        {
+                            "text": "The Australian Bureau of Statistics estimated the resident population of Australia at 30 June 2001 as 19.482m. Their 1 per cent sample of the August 2001 census returns gave unit records for 188,013 persons, living in 75,451 households. As the sample was based on location at census night, rather than usual location, there were some incomplete households, with missing partners or children without adults. Omitting clearly incomplete families left 175,044 persons.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "For the sample of 175,044 Australians, alignment was carried out separately for 8 areas (each state and the Australian Capital Territory). Births in each cycle were aligned for 4 age groups (15-24, 24-34,35-44,45-54), and deaths, emigration and immigration were aligned over 9 age groups (0-14,15-24, \u202675-84,85+). Numbers of persons, and births, deaths, emigrants and immigrants were aligned against national projections (<a href=\"#bib1\">Australian Bureau of Statistics, 2003a</a>). As the necessary details by age group and area were not published, they were obtained from a deterministic projection program closely replicating the national population projections.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s4-1",
+                    "title": "Test data and alignment pools",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "Where alignment by number, age and type was needed for each area, it was found easier to do this in a three-stage process",
+                            "type": "paragraph"
+                        },
+                        {
+                            "items": [
+                                [
+                                    {
+                                        "text": "alignment of the total numbers of persons in each age group, for Australia as a whole (9 alignment pools)",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "alignment of the total numbers of persons in each age group, for each area (72 pools)",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "alignment of the total numbers of persons of each type in each age group, for each area (576 pools).",
+                                        "type": "paragraph"
+                                    }
+                                ]
+                            ],
+                            "prefix": "number",
+                            "type": "list"
+                        },
+                        {
+                            "text": "<a href=\"#table2\">Table 2</a> shows numbers of household changes, without and with alignment. Most of the entries in <a href=\"#table2\">Table 2</a> relate to exits, where an \u201cexit\u201d is a departure from a household of a person, possibly followed by one or more of the other household members. By contrast, a \u201cmove\u201d is where the whole household moves to another dwelling. A \u201cnormal\u201d exit is one simulated using the assumed probabilities of exit, rather than an exit artificially created for alignment purposes. Ideally, few extra exits should be needed for alignment.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "table2",
+                                    "label": "Table 2",
+                                    "tables": [
+                                        "<table>\n<thead>\n<tr>\n<th>Year</th>\n<th>Normal exits (unaligned)</th>\n<th>Normal exits (aligned)</th>\n<th>Immigrants to align</th>\n<th>State exits to align</th>\n<th>Type exits to align</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>0</td>\n<td>0</td>\n<td>0</td>\n<td>892</td>\n<td>1327</td>\n<td>12949</td>\n</tr>\n<tr>\n<td>1</td>\n<td>7588</td>\n<td>7546</td>\n<td>346</td>\n<td>1134</td>\n<td>9649</td>\n</tr>\n<tr>\n<td>2</td>\n<td>7766</td>\n<td>7905</td>\n<td>530</td>\n<td>1178</td>\n<td>9002</td>\n</tr>\n<tr>\n<td>3</td>\n<td>7792</td>\n<td>7970</td>\n<td>484</td>\n<td>860</td>\n<td>8945</td>\n</tr>\n<tr>\n<td>4</td>\n<td>8014</td>\n<td>8213</td>\n<td>403</td>\n<td>1009</td>\n<td>9137</td>\n</tr>\n<tr>\n<td>5</td>\n<td>8190</td>\n<td>8505</td>\n<td>563</td>\n<td>1082</td>\n<td>9764</td>\n</tr>\n<tr>\n<td>Average</td>\n<td>7870</td>\n<td>8028</td>\n<td>465</td>\n<td>1053</td>\n<td>9299</td>\n</tr>\n</tbody>\n</table>"
+                                    ],
+                                    "title": "Numbers of household changes without and with alignment",
+                                    "type": "table"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "text": "Normal exits are about 5 per cent of the initial sample population of 175,044 persons. The numbers of normal exits grow broadly in line with population increases, and are only slightly higher when event alignment is being used.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "<a href=\"#table2\">Table 2</a> shows large numbers of alignments at \u201cyear 0\u201d, ie at the start of the projection. These alignments are needed to correct the under reporting inherent in the 1 per cent census sample used as the projection starting point. The Australian Bureau of Statistics does detailed post- census surveys to estimate the extent of census under-reporting, and uses these to publish \u201cestimated resident populations\u201d, the starting points for their population projections.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Three types of alignment were used at the start of the projection",
+                            "type": "paragraph"
+                        },
+                        {
+                            "items": [
+                                [
+                                    {
+                                        "text": "alignment of the total numbers of persons in each of 9 age groups, done by simulating emigration by persons in over-represented ages, and immigration by those in under-represented ages (892 emigrants and 892 immigrants were needed)",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "alignment of the total numbers of persons in each age group in each of the 8 areas (done by 1,327 exits of individuals between areas)",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "alignment of the total numbers of persons of each of 8 person types, for each age group in each area (done by 12,949 exits of individuals within areas).",
+                                        "type": "paragraph"
+                                    }
+                                ]
+                            ],
+                            "prefix": "number",
+                            "type": "list"
+                        },
+                        {
+                            "text": "When using alignment, the numbers of births, deaths, emigrants and immigrants in each age group were exactly constrained to the numbers of these events derived from Australian national population projections. In theory, the correct number of persons in each age group at the end of the year should have automatically resulted. In practice, it was not possible to fully replicate the event numbers in the national projections, and small numbers of emigrants and emigrants were simulated to correct over or under-represented age groups (generally about 400 of each).",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Movements between areas were simulated without constraint, using independently derived assumptions. At the end of each projection period exits between areas were simulated so as to bring the numbers in each age group in each area into line with national projections. Movements of exit \u201cleaders\u201d were simulated from areas where their age group was in surplus, to areas were in deficit. As exit leaders were sometimes followed by family members of varying ages, an iterative process was needed to reach equilibrium. Given the independent assumptions about movements between areas, it was pleasing that only about 1,000 simulated exits a year were needed to align area numbers. Given more knowledge of the movement assumptions underlying the national projections, fewer alignment exits might have been needed.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Numbers of partnership formations and breakups were not available from national projections. Alignments of persons of each type were done against the percentages of persons of each type and age group at the end of each year, which were available from Australian 25-year projections (<a href=\"#bib3\">Australian Bureau of Statistics 2004</a>). Alignment was done in the following sequence",
+                            "type": "paragraph"
+                        },
+                        {
+                            "items": [
+                                [
+                                    {
+                                        "text": "- persons in non-private dwellings",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "- lone parents",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "- partners",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "- children",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "- related persons in family households",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "- unrelated persons in family households",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "- group households lone persons.",
+                                        "type": "paragraph"
+                                    }
+                                ]
+                            ],
+                            "prefix": "none",
+                            "type": "list"
+                        },
+                        {
+                            "text": "For example, if the number of partners in an area and age group was less than the alignment total, persons of the area and age group, not in non private dwellings, and not lone parents or partners, were randomly selected, and partners found for them by \u201cbest of n\u201d matching. If the numbers of partners were too high, partners of the area and age group were selected, and their departure from partnership simulated. Restrictions were placed on the simulations used to align partner numbers, to avoid altering the numbers of lone parents. Some exits involved multiple persons, and could alter previously aligned totals in other age groups. An iterative process was used to reach equilibrium.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s4-2",
+                    "title": "Multi-stage alignment of numbers, ages and types of persons",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "<a href=\"#table3\">Table 3</a> shows the average numbers of exits needed to correct an area misalignment. A \u201cmisalignment\u201d is a difference between an actual and a target number of persons in any pool, whether positive or negative.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "table3",
+                                    "label": "Table 3",
+                                    "tables": [
+                                        "<table>\n<thead>\n<tr>\n<th>Year</th>\n<th>Number of misalignments</th>\n<th>Exits to correct Misalignments</th>\n<th>Exits per misalignment</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>0</td>\n<td>2362</td>\n<td>1327</td>\n<td>0.56</td>\n</tr>\n<tr>\n<td>1</td>\n<td>1884</td>\n<td>1134</td>\n<td>0.60</td>\n</tr>\n<tr>\n<td>2</td>\n<td>2046</td>\n<td>1178</td>\n<td>0.58</td>\n</tr>\n<tr>\n<td>3</td>\n<td>1520</td>\n<td>860</td>\n<td>0.57</td>\n</tr>\n<tr>\n<td>4</td>\n<td>1770</td>\n<td>1009</td>\n<td>0.57</td>\n</tr>\n<tr>\n<td>5</td>\n<td>1822</td>\n<td>1082</td>\n<td>0.59</td>\n</tr>\n<tr>\n<td>Average 1\u20135</td>\n<td>1808</td>\n<td>1053</td>\n<td>0.58</td>\n</tr>\n</tbody>\n</table>"
+                                    ],
+                                    "title": "Average number of exits per area misalignment",
+                                    "type": "table"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "text": "The total numbers of persons in the wrong areas were low, averaging about 1 per cent of the population during the first five projection years. On average, about 0.58 exits were needed to correct an area misalignment. This low number is because most of the simulated exits were of persons without followers, and each of these exits corrected a misalignment in the source area and the new area. By contrast, <a href=\"#table4\">table 4</a> shows that about 3 per cent of the population had the wrong household type in the first five years, and about 1.75 exits were needed to correct a type misalignment. No attempt was made to direct persons from one type in excess to another type in deficit, so that something over 1 exit per misalignment was expected (after allowing for the effects of followers).",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "In part, these high numbers of type misalignments were due to the use of 576 separate alignment pools (8 states, 9 ages and 8 types). The average number of normal exits in the first 5 years was about 8,000, which was about 14 per pool. Each exit is both a departure from a pool and an entry into another, so that on average each pool had about 28 exit changes a year. The net movement of persons in or out of the pool may be distributed about N(0,5.3), and the average number of misalignments may be about 4.2. This suggests that about 2,400 misalignments a year might occur if there were 576 equal alignment pools. <a href=\"#table4\">Table 4</a> shows an average of 5,314 misalignments a year, and this higher number may reflect the considerable disparity in the numbers of expected exits from each of the alignment pools. The more alignment pools, the larger the numbers of likely type misalignments.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "table4",
+                                    "label": "Table 4",
+                                    "tables": [
+                                        "<table>\n<thead>\n<tr>\n<th>Year</th>\n<th>Number of misalignments</th>\n<th>Exits to correct misalignments</th>\n<th>Exits per misalignment</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>0</td>\n<td>11194</td>\n<td>12949</td>\n<td>1.16</td>\n</tr>\n<tr>\n<td>1</td>\n<td>5278</td>\n<td>9649</td>\n<td>1.83</td>\n</tr>\n<tr>\n<td>2</td>\n<td>5238</td>\n<td>9002</td>\n<td>1.72</td>\n</tr>\n<tr>\n<td>3</td>\n<td>4950</td>\n<td>8945</td>\n<td>1.81</td>\n</tr>\n<tr>\n<td>4</td>\n<td>5314</td>\n<td>9137</td>\n<td>1.72</td>\n</tr>\n<tr>\n<td>5</td>\n<td>5788</td>\n<td>9764</td>\n<td>1.69</td>\n</tr>\n<tr>\n<td>Average 1\u20135</td>\n<td>5314</td>\n<td>9299</td>\n<td>1.75</td>\n</tr>\n</tbody>\n</table>"
+                                    ],
+                                    "title": "Average number of exits per type misalignment",
+                                    "type": "table"
+                                }
+                            ],
+                            "type": "figure"
+                        }
+                    ],
+                    "id": "s4-3",
+                    "title": "Average numbers of exits needed to correct misalignments",
+                    "type": "section"
+                }
+            ],
+            "id": "s4",
+            "title": "State alignment of person numbers, ages and types",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "content": [
+                        {
+                            "text": "Many different types of matches may be needed in closed household microsimulations. For example, males and females may have to be matched to form partnerships, individuals matched to form groups, and households matched to dwellings. Orcutt, Greenberger, Korbel and Rivlin (<a href=\"#bib21\">1961</a>:75- 76) selected individuals to be married, and then used functions describing the relations between persons marrying to randomly select the characteristics of the partner. Individuals to be married were held in temporary storage until a person with the selected characteristics was identified during the pass through the household file. Orcutt, Caldwell and Wertheimer (<a href=\"#bib22\">1976</a>:34- 35) selected males and females to be married during a year, then ranked them based on race, age, education and region. After the rank orderings of males and females were merged, the excess male or females who happened to fit least well were returned to the single population.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "These two early processes have many of the features of matching processes used subsequently. In the model described in 1961, a marriage partner was found almost immediately for a person selected to be married. In the model described in 1976, males and females to be married were selected during the year, then merged in a batch process at the end of the year, with the poorest fits being rejected. <a href=\"#table5\">Table 5</a> shows that immediate and batch matching methods have been used in recent models, with considerable diversity in their detail.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "footnotes": [
+                                        {
+                                            "text": [
+                                                {
+                                                    "text": "<i>Sources</i>",
+                                                    "type": "paragraph"
+                                                },
+                                                {
+                                                    "text": "APPSIM - Bacon and Pennec (<a href=\"#bib4\">2007</a>:19)",
+                                                    "type": "paragraph"
+                                                },
+                                                {
+                                                    "text": "CBOLT - Perese (<a href=\"#bib24\">2002</a>:17)",
+                                                    "type": "paragraph"
+                                                },
+                                                {
+                                                    "text": "DYNACAN - Leblanc, Morrison and Redway (<a href=\"#bib16\">2009</a>:6,11-12)",
+                                                    "type": "paragraph"
+                                                },
+                                                {
+                                                    "text": "DYNASIM3 - Favreault and Smith (<a href=\"#bib10\">2004</a>:9)",
+                                                    "type": "paragraph"
+                                                },
+                                                {
+                                                    "text": "INAHSIM - Inagaki (<a href=\"#bib14\">2009</a>)",
+                                                    "type": "paragraph"
+                                                },
+                                                {
+                                                    "text": "MIDAS - Dekkers et al (<a href=\"#bib7\">2009</a>:33)",
+                                                    "type": "paragraph"
+                                                },
+                                                {
+                                                    "text": "Pensim2 - Emmerson, Reed and Shephard (<a href=\"#bib9\">2004</a>:30)",
+                                                    "type": "paragraph"
+                                                },
+                                                {
+                                                    "text": "SESIM \u2013 Petterson (<a href=\"#bib25\">2009</a>)",
+                                                    "type": "paragraph"
+                                                },
+                                                {
+                                                    "text": "SMILE - O\u2019Donoghue, Lennon and Hynes (<a href=\"#bib20\">2009</a>:24)",
+                                                    "type": "paragraph"
+                                                },
+                                                {
+                                                    "text": "SVERIGE - Holm, Holme, Makilla, Maffsson-Kauppi and Mortvik (<a href=\"#bib13\">2004</a>:20-23)",
+                                                    "type": "paragraph"
+                                                }
+                                            ]
+                                        }
+                                    ],
+                                    "id": "table5",
+                                    "label": "Table 5",
+                                    "tables": [
+                                        "<table>\n<thead>\n<tr>\n<th>Model name</th>\n<th>Version</th>\n<th>Immediate or batch</th>\n<th>Matching method</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>APPSIM</td>\n<td>2009?</td>\n<td>Immediate</td>\n<td>Statistical selection from eligible partners</td>\n</tr>\n<tr>\n<td>CBOLT</td>\n<td>2002?</td>\n<td>Batch</td>\n<td>Normalised match probabilities</td>\n</tr>\n<tr>\n<td>DYNACAN</td>\n<td>2002?</td>\n<td>Batch</td>\n<td>Stochastic</td>\n</tr>\n<tr>\n<td>DYNASIM3</td>\n<td>2002?</td>\n<td>Batch</td>\n<td>Random within race, age &amp; education</td>\n</tr>\n<tr>\n<td>INAHSIM</td>\n<td>1986</td>\n<td>Batch</td>\n<td>Merge by age order</td>\n</tr>\n<tr>\n<td>MIDAS-BE</td>\n<td>2008</td>\n<td>Batch</td>\n<td>Order of decreasing difficulty</td>\n</tr>\n<tr>\n<td>Pensim2</td>\n<td>2004</td>\n<td>Batch</td>\n<td>Order of decreasing difficulty</td>\n</tr>\n<tr>\n<td>SESIM</td>\n<td>1997</td>\n<td>Immediate</td>\n<td>First male 3 years older in region</td>\n</tr>\n<tr>\n<td>SMILE</td>\n<td>2005?</td>\n<td>Batch</td>\n<td>Order of decreasing difficulty</td>\n</tr>\n<tr>\n<td>SVERIGE</td>\n<td>2002</td>\n<td>Batch</td>\n<td>Replication of patterns of recent pairs</td>\n</tr>\n</tbody>\n</table>"
+                                    ],
+                                    "title": "Matching methods used in some recent national models",
+                                    "type": "table"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "text": "Bouffard, Easther, Johnson, Morrison and Vink (<a href=\"#bib6\">2001</a>:6) noted that the CORSIM, DYNACAN, POLSIM and SVIERGE models all used something similar to CORSIM\u2019s stable marriage algorithm to form specific couples from pools of prospective marriage partners. In spite of its theoretical elegance, this was found to produce too many close partnerships, and too many distant ones.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Stochastic matching, proposed by <a href=\"#bib8\">Easther and Vink in 2000</a>, calculates the relative probability of each potential pairing from two equal pools of males and females, and randomly selects a pairing on a probability-weighted basis. This proceeds sequentially until pairing is complete. This process was implemented in CORSIM and DYNACAN. <a href=\"#bib16\">Leblanc, Morrison and Redway (2009</a>) tested stochastic matching, tournament selection and order of decreasing difficulty matching, and concluded that none gave good results, but stochastic matching was the best of the available methods. All the methods tested were batch methods.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Perese (<a href=\"#bib24\">2002</a>:17) proposed a sequential matching process for male and female pools, where the probabilities of marriage to a male are calculated for each remaining female, and normalized so that the highest probability is 1. For each female in turn, a random number is drawn, and a match made if the number is less than the calculated probability. As a result of the normalization, a match is always found. This process was implemented in CBOLT, apparently on a batch basis. INAHSIM selects equal numbers of males and females to be married, sorts both by age, them merges (<a href=\"#bib14\">Inagaki, 2009</a>). SESIM randomly selects females in a region to be married, and creates a pool of all eligible males in the region. For each selected female in turn, a male 3 years older is selected. If no such male can be found, age differences of 2 to 4 years are considered (<a href=\"#bib25\">Petterson, 2009</a>).",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "<a href=\"#bib16\">Leblanc, Morrison and Redway (2009</a>) tested a modified version of a batch matching procedure by order of decreasing difficulty (ODD) proposed by Redway. Good matches are first made for those hardest to pair off, with pairing proceeding in order of decreasing difficulty. Although this algorithm did extremely well in terms of not creating marriages with extreme age differences, it also generated far too many marriages in which the husband is a single year of age greater than his wife. The authors suggested that the poor quality of the compatibility measure used prevented any true testing of matching procedures. Matching by order of decreasing difficulty is being used by PENSIM2, and by LIAM-based models such as SMILE (<a href=\"#bib20\">O\u2019Donoghue, Lennon and Hynes, 2009</a>) and MIDAS (<a href=\"#bib7\">Dekkers et al., 2009</a>).",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s5-1",
+                    "title": "Past and current matching methods",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "This paper suggests the use of immediate probability-weighted matching. As soon as a male or female is simulated to marry, all the potential marriage partners for that person are identified. One of these potential partners is then randomly selected, with a procedure where a partner\u2019s probability of selection is proportional to their probability of marriage to the person. Although this procedure appears similar to stochastic matching, there are important differences. Probabilities have to be those for marriage to randomly selected single persons, rather than to persons already selected to marry. The numbers of potential matches are much higher, so that calculation times can be much longer than for stochastic matching. As batches are not used, there is no problem with the last matches being unlikely.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The calculation times needed for immediate probability-weighted matching can be greatly reduced if selections are made from a small number of randomly sampled single persons, rather than from all single persons. Performance tests with sample sizes of 10, 20, 30, 50, 100 and 200 suggest that sample sizes of about 30 may be sufficient, at least for the Australian test data used (see <a href=\"#table7\">table 7</a>). Calculation times should be directly proportional to the sample size, and to the total number of persons.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The paper also suggests the use of immediate \u201cbest of n\u201d matching, where a number of potential partners are randomly selected from single persons, and the potential partner with the highest probability of marriage chosen. Trials show that the number of randomly selected potential partners needs to vary with the age of the person seeking a partner. For the Australian test data, the numbers needed were 6 at ages 18\u201319, 4 at ages 35\u201349, and 5 at all other ages. These low numbers make \u201cbest of n\u201d matching a fast method. Calculation times will be proportional to the average value of n, and to the total number of persons.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s5-2",
+                    "title": "Suggested matching methods",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "Test data were derived from data on the ages of persons in 105,435 new marriages in 2002 (<a href=\"#bib2\">Australian Bureau of Statistics, 2003b</a>). The published data show the cross-classified ages of brides and grooms in single-year age groups up to 54, then 55\u201359, 60\u201364, and 65 and over. In addition, the ages of males marrying are shown in single years up to age 74, then 75 and over, as are the ages of females marrying. The data showed very few persons marrying below age 18, and these persons were omitted from analysis, leaving 105,372 marriages. To fill the data gaps over age 54, it was assumed that, for each age of a male at marriage, the ages of brides were normally distributed. Normal distributions for each male age were obtained by minimising the sum of the squares of differences of the actual and fitted numbers for each single age or age-group. While this Australian data only contains ages, it is sufficiently detailed to test fitting methods, and to identify matching methods unlikely to work with more complex data. Its simplicity made it possible to write fast algorithms to exhaustively test different matching methods. The mean age differences in <a href=\"#fig1\">figure 1</a>, and their standard deviations, were obtained from the actual one-year data were available, and from the fitted normal curves where one-year data were not available. The mean age differences show that very young males tend to marry females a little older than themselves. After age 23 males become progressively older than their brides, with the estimated age difference being 6.8 years for males aged 54. The fitted standard deviation of female ages for males aged 18 is 3.9 years, dropping to 2.5 years at age 19, and then climbing to 7.6 years at age 54. The low numbers of persons marrying after age 54, and the unavailability of single-year data, create very wide confidence limits for the estimates for males over 54. The mean age difference and its standard deviation may in fact continue to increase with male ages well past 54.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "fig1",
+                                    "image": {
+                                        "alt": "",
+                                        "uri": "%iiif_uri%/00037%2Fijm-00037-fig1.tif",
+                                        "size": {
+                                            "width": 630,
+                                            "height": 336
+                                        },
+                                        "source": {
+                                            "mediaType": "image/jpeg",
+                                            "uri": "%iiif_uri%/00037%2Fijm-00037-fig1.tif/full/full/0/default.jpg",
+                                            "filename": "ijm-00037-fig1.jpg"
+                                        }
+                                    },
+                                    "label": "Figure 1",
+                                    "title": "Age differences of persons married in Australia in 2002",
+                                    "type": "image"
+                                }
+                            ],
+                            "type": "figure"
+                        }
+                    ],
+                    "id": "s5-3",
+                    "title": "Test data from persons married in Australia in 2002",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "A variety of criteria have been used to test the validity of matching methods. If these criteria are too weak, then quite poor matching methods may be accepted as useful. As <a href=\"#fig1\">figure 1</a> shows, age differences and age standard deviations for persons marrying are strongly dependent on the age of the male, and comparisons of overall age differences may fail to detect major problems at particular ages. <a href=\"#bib6\">Bouffard et al (2001</a>) used graphs of the percentages of couples with each age difference, as well as percentile graphs of compatibility levels. These graphs allow visual comparisons between the pairing results and population values. The authors noted (p. 4)",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": [
+                                {
+                                    "text": "<i>\u201c\u2026the synthetic marriages should resemble actual new marriages in both their central tendencies and their dispersion\u201d</i>",
+                                    "type": "paragraph"
+                                }
+                            ],
+                            "type": "quote"
+                        },
+                        {
+                            "text": "Graphs of means and standard deviations of age differences at marriage help assess the extent to which the synthetic marriages resemble actual new marriages. Graphs of the ratios of simulated to actual marriages for each probability percentile can show problems at the extremes, even where overall test statistics are reasonable.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "<a href=\"#table6\">Tables 6</a> and <a href=\"#table7\">7</a> use three different measures of goodness of fit",
+                            "type": "paragraph"
+                        },
+                        {
+                            "items": [
+                                [
+                                    {
+                                        "text": "- sum of squares of the differences between actual and simulated marriages for each age combination",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "- chi square test statistics, calculated for each age combination for which at least five marriages are observed in the data",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "- the standard deviation of the ratio of simulated to actual marriages for each probability percentile.",
+                                        "type": "paragraph"
+                                    }
+                                ]
+                            ],
+                            "prefix": "none",
+                            "type": "list"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "table6",
+                                    "label": "Table 6",
+                                    "tables": [
+                                        "<table>\n<thead>\n<tr>\n<th>Probability model</th>\n<th>Fitting method</th>\n<th>Degrees freedom</th>\n<th>Sum of squares</th>\n<th>Chi square</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>Quadratic</td>\n<td>Least squares</td>\n<td>1,309</td>\n<td>672,472</td>\n<td>4,880</td>\n</tr>\n<tr>\n<td>Gamma</td>\n<td>Least squares</td>\n<td>1,242</td>\n<td>1,576,369</td>\n<td>8,323</td>\n</tr>\n<tr>\n<td>Quartic</td>\n<td>Least squares</td>\n<td>1,175</td>\n<td>727,746</td>\n<td>4,397</td>\n</tr>\n<tr>\n<td>Piecewise quadratic</td>\n<td>Least squares</td>\n<td>1,237</td>\n<td>122,323</td>\n<td>1,233</td>\n</tr>\n<tr>\n<td>Piecewise quadratic</td>\n<td>Logistic</td>\n<td>1,237</td>\n<td>214,934</td>\n<td>1,468</td>\n</tr>\n</tbody>\n</table>"
+                                    ],
+                                    "title": "Performance measures for models fitted to Australian data",
+                                    "type": "table"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "table7",
+                                    "label": "Table 7",
+                                    "tables": [
+                                        "<table>\n<thead>\n<tr>\n<th>Immediate/ Batch</th>\n<th>Matching Method</th>\n<th>Sample size</th>\n<th>Sum of squares</th>\n<th>Chi Square</th>\n<th>Percentile SD</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>Immediate</td>\n<td>Probability weighted</td>\n<td>10</td>\n<td>1,026,008</td>\n<td>5,476</td>\n<td/>\n</tr>\n<tr>\n<td>Immediate</td>\n<td>Probability weighted</td>\n<td>20</td>\n<td>497,016</td>\n<td>3,457</td>\n<td/>\n</tr>\n<tr>\n<td>Immediate</td>\n<td>Probability weighted</td>\n<td>30</td>\n<td>364,242</td>\n<td>3,049</td>\n<td>0.068</td>\n</tr>\n<tr>\n<td>Immediate</td>\n<td>Probability weighted</td>\n<td>50</td>\n<td>308,535</td>\n<td>2,816</td>\n<td/>\n</tr>\n<tr>\n<td>Immediate</td>\n<td>Probability weighted</td>\n<td>100</td>\n<td>279,732</td>\n<td>2,709</td>\n<td/>\n</tr>\n<tr>\n<td>Immediate</td>\n<td>Probability weighted</td>\n<td>200</td>\n<td>259,819</td>\n<td>2,700</td>\n<td/>\n</tr>\n<tr>\n<td>Immediate</td>\n<td>Best of n</td>\n<td/>\n<td>484,912</td>\n<td>3,879</td>\n<td>0.090</td>\n</tr>\n<tr>\n<td>Batch</td>\n<td>Stochastic</td>\n<td>105,372</td>\n<td>409,197</td>\n<td>5,636</td>\n<td>0.078</td>\n</tr>\n<tr>\n<td>Batch</td>\n<td>Order of decreasing difficulty</td>\n<td>105,372</td>\n<td>185,184,957</td>\n<td>621,141</td>\n<td>1.485</td>\n</tr>\n<tr>\n<td>Batch</td>\n<td>ODD/probability weighted</td>\n<td>105,372</td>\n<td>2,214,049</td>\n<td>12,395</td>\n<td/>\n</tr>\n</tbody>\n</table>"
+                                    ],
+                                    "title": "Test results for different matching methods",
+                                    "type": "table"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "text": "<a href=\"#table6\">Table 6</a> shows sum of squares and chi square performance measures obtained when fitting different relative probability models to the Australian test data described in 5.3. The lower the measures, the better the fit.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The first line in <a href=\"#table6\">table 6</a> was obtained by fitting relative probabilities of marriage, where the relative probability of a male age \u00d7 marrying a female age <i>y</i> was defined as exp(score) / (1 + exp(score)), where",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": [
+                                {
+                                    "text": "score <i>= a + b(x - y) + c(x - y</i>)<sup>2</sup>",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "<i>x</i> is the age of the male",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "<i>y</i> is the age of the female",
+                                    "type": "paragraph"
+                                }
+                            ],
+                            "type": "quote"
+                        },
+                        {
+                            "text": "and <i>a</i>, <i>b</i> and <i>c</i> are regression coefficients fitted for each separate male age.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "As the fitting procedure provided no guidance as to the value of the regression constant <i>a</i>, it was held at -3 throughout. Regression coefficients <i>b</i> and <i>c</i> were fitted for each age of male by minimizing the sums of squares of the differences between the numbers of marriages with each combination of male and female ages. Fitting was done within a spreadsheet, using Excel\u2019s Solver, fitting each year of age for males separately. Poor fits were obtained with the quadratic function, and also with gamma and quartic functions. A much better fit was obtained with piecewise quadratic functions, where one quadratic was fitted for all females below or equal to the male age, and a separate quadratic function fitted for all females above the male age. Only one quadratic was needed for each age from 60 on.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Chi square test statistics were calculated as",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": [
+                                {
+                                    "text": "\u03c7<sup>2</sup> = \u2211\u2211 (<i>O<sub>ij</sub></i> - <i>E<sub>ij</sub>)<sup>2</sup>/O<sub>ij</sub></i>",
+                                    "type": "paragraph"
+                                }
+                            ],
+                            "type": "quote"
+                        },
+                        {
+                            "text": "where <i>E<sub>ij</sub></i> is the number of females age <i>j</i> expected to marry males of age <i>i</i>, as estimated from the fitted coefficients and equations and <i>O<sub>ij</sub></i> is the number of females age <i>j</i> who did marry males of age <i>i</i> in 2002.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The chi square statistic was calculated by summing across all cells with at least 5 observed marriages. Observed marriages were used in the denominator, as this gave more stability when comparing different fits. The mean of a chi square distribution with k degrees of freedom is k, so that the piecewise quadratics gave a chi square statistic close to its expected value.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The last line of table 5.2 was obtained by using logistic regression as described below, with 10 dummy records of non-marrying couples for each of the 105,372 records of couples marrying.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s5-4",
+                    "title": "Performance measures and graphs for different matching methods",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "CORSIM and DYNACAN used compatibility measures derived from logistic regression applied to census data. Variables used included age difference and its square, difference in years of education, number of children, race, labour force participation, earnings difference and some interaction effects (<a href=\"#bib6\">Bouffard et al, 2001</a> p5). The compatibility index was estimated using logistic regression on a potential pairs data file of recent marriages. The potential pairs may have included each possible pairing of the persons recently married, as well as the pairs which did marry (<a href=\"#bib24\">Perese, 2002</a>:9).",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Logistic regression is widely used to estimate probabilities of events occurring, and the data needs to have some cases where the event occurs, and others where it does not. The addition of potential pairs is thus a device to make the regression feasible, and there is no need to add any particular number of potential pairs. Logistic regression fits probability models of the form",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": [
+                                {
+                                    "text": "Score = \u03b2<sub>0</sub> + \u2211\u03b2<sub>i</sub>x<sub>i</sub>",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "probability = exp (score) / (1+exp(score))",
+                                    "type": "paragraph"
+                                }
+                            ],
+                            "type": "quote"
+                        },
+                        {
+                            "text": "where \u03b2<sub>i</sub> are the fitted parameters, and x<sub>i</sub> the explanatory variables.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "If the potential partner with the highest probability is to be selected, then comparisons can be made between regression scores, and the value of the constant \u03b2<sub>0</sub> is immaterial. But if partners are to be selected on a probability-weighted basis, as in stochastic matching, then the value of \u03b2<sub>0</sub> will matter. The number of potential pairs added for the regression analysis will thus have some effect on the results of stochastic matching.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "For male ages 18 to 36, the logistic regressions gave positive quadratic coefficients for females older than the males. To avoid unrealistically high probabilities of marriage to much older females, it was initially assumed that probabilities of marriage to females more than 20 years older than males were zero. This expedient caused program errors during stochastic batch matching, and had to be abandoned. Instead, the quadratic component for males aged 18 to 36 was assumed to remain constant for females aged 12 or more years older.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Absolute probabilities of marriage are needed for immediate probability-weighted matching, and for batch stochastic matching. They were obtained by using Solver to find regression constants for each male age giving probabilities of marriage to females of each age summing to unity. The validity of this process is uncertain.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s5-5",
+                    "title": "Fitting probabilities of marriage using logistic regression",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "<a href=\"#table7\">Table 7</a> shows performance measures for immediate probability-weighted matching, using sample sizes between 10 and 200. It also shows measures for immediate best of n matching, and for three different batch methods. As in <a href=\"#table6\">table 6</a>, the lower the measure, the better the fit. <a href=\"#table7\">Table 7</a> shows that the different goodness of fit measures give broadly similar results. Probability-weighted matching with samples of at least 30 gives slightly better results than best of n and stochastic, and order of decreasing difficulty gives very poor results.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s5-6",
+                    "title": "Test results for different matching methods",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "From <a href=\"#fig2\">figure 2</a>, the average simulated age difference is quite close to those observed in Australian data, but with increasing random variations at older ages due to the small numbers of marriages. Apart from age 18, the simulated standard deviations are also quite close to observed values. For most practical purposes, the simulated marriages could be considered to be close enough to real marriage age distributions.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "fig2",
+                                    "image": {
+                                        "alt": "",
+                                        "uri": "%iiif_uri%/00037%2Fijm-00037-fig2.tif",
+                                        "size": {
+                                            "width": 637,
+                                            "height": 316
+                                        },
+                                        "source": {
+                                            "mediaType": "image/jpeg",
+                                            "uri": "%iiif_uri%/00037%2Fijm-00037-fig2.tif/full/full/0/default.jpg",
+                                            "filename": "ijm-00037-fig2.jpg"
+                                        }
+                                    },
+                                    "label": "Figure 2",
+                                    "title": "Age differences of persons with probability-weighted matching",
+                                    "type": "image"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "text": "<a href=\"#fig3\">Figure 3</a> shows the numbers of fitted marriages, divided by the numbers of observed marriages, for each probability percentile. These percentiles were derived by taking each male/female age combination, calculating the relative probability of marriage, and sorting by probability. Numbers of observed marriages were then added, with each age combination being assigned to the probability percentile applying to its last member. This process resulted in probability percentiles averaging 1 per cent of marriages, but with some variations around this size. The simulated to observed ratios in <a href=\"#fig3\">figure 3</a> have an average of 1.0, and a standard deviation of 0.068. This standard deviation is higher than the 0.031 expected from random variations in a sample size of 1,054. There appears to be a slight under-representation of high-probability marriages.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "fig3",
+                                    "image": {
+                                        "alt": "",
+                                        "uri": "%iiif_uri%/00037%2Fijm-00037-fig3.tif",
+                                        "size": {
+                                            "width": 654,
+                                            "height": 343
+                                        },
+                                        "source": {
+                                            "mediaType": "image/jpeg",
+                                            "uri": "%iiif_uri%/00037%2Fijm-00037-fig3.tif/full/full/0/default.jpg",
+                                            "filename": "ijm-00037-fig3.jpg"
+                                        }
+                                    },
+                                    "label": "Figure 3",
+                                    "title": "Percentile ratios for probability-weighted matching",
+                                    "type": "image"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "text": "Graphs of cumulative probability distributions were used by <a href=\"#bib16\">Leblanc, Morrison and Redway (2009</a>) to show relatively poor fits. When fits are reasonable, graphs of the fit within each probability percentile may be more useful. Probability percentiles remain useful l even with many explanatory variables.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "<a href=\"#fig4\">Figure 4</a> shows that average simulated age differences are higher than observed values from about age 50 on. Simulated standard deviations are a little high from about age 30 to 40. But for most practical purposes, the simulated marriages could be considered to be close enough to real marriage age distributions. <a href=\"#fig5\">Figure 5</a> shows a slight shortfall in simulated marriages for the first two probability percentiles. Overall, stochastic matching appears to be giving slightly inferior results to probability-weighted matching with samples of 30.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "fig4",
+                                    "image": {
+                                        "alt": "",
+                                        "uri": "%iiif_uri%/00037%2Fijm-00037-fig4.tif",
+                                        "size": {
+                                            "width": 651,
+                                            "height": 328
+                                        },
+                                        "source": {
+                                            "mediaType": "image/jpeg",
+                                            "uri": "%iiif_uri%/00037%2Fijm-00037-fig4.tif/full/full/0/default.jpg",
+                                            "filename": "ijm-00037-fig4.jpg"
+                                        }
+                                    },
+                                    "label": "Figure 4",
+                                    "title": "Age differences of persons with stochastic matching",
+                                    "type": "image"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "fig5",
+                                    "image": {
+                                        "alt": "",
+                                        "uri": "%iiif_uri%/00037%2Fijm-00037-fig5.tif",
+                                        "size": {
+                                            "width": 637,
+                                            "height": 350
+                                        },
+                                        "source": {
+                                            "mediaType": "image/jpeg",
+                                            "uri": "%iiif_uri%/00037%2Fijm-00037-fig5.tif/full/full/0/default.jpg",
+                                            "filename": "ijm-00037-fig5.jpg"
+                                        }
+                                    },
+                                    "label": "Figure 5",
+                                    "title": "Percentile ratios for stochastic matching",
+                                    "type": "image"
+                                }
+                            ],
+                            "type": "figure"
+                        }
+                    ],
+                    "id": "s5-7",
+                    "title": "Performance graphs for matching methods",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "Household microsimulation models are being put to an increasing range of uses, some with challenging technical requirements. This paper suggests new alignment and matching techniques to help meet some of these challenges.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Event alignment can be readily done by random selection, without distortions. Initial misalignments are inevitable with census samples, and a systematic process for correcting them is needed. Alignment of person types during projections can produce large numbers of household changes, exaggerating household instability. The larger the numbers of alignment pools for person types, the more household changes will be needed for alignment. If approximate type alignment will suffice, this can be done by adjusting exit assumptions until the desired person type distributions are approximately obtained. In general, state alignment is much harder to do than event alignment, and if over-ambitious can cause severe distortions.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Household microsimulation models have used immediate or batch matching. This paper suggests two immediate matching methods - probability- weighted and \u201cbest of n\u201d. Performance tests with Australian data show that both are likely to better reproduce partnership patterns than currently used batch matching methods. Probability-weighted matching can be greatly speeded by limiting the sample of potential partners to about 30, without much loss of fidelity. Immediate matching seems likely to give better matching and shorter run times, particularly when used with large populations, multiple regions and short time cycles.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "This paper reflects the more rigorous evaluation of microsimulation techniques introduced by the dynacan team. The performance of different methods can be measured, and the best selected. Models that are slow, limited or unrealistic are unlikely to attract continuing funding.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s6",
+                    "title": "Conclusions",
+                    "type": "section"
+                }
+            ],
+            "id": "s5",
+            "title": "Matching",
+            "type": "section"
+        }
+    ],
+    "references": [
+        {
+            "authors": [
+                {
+                    "name": "Australian Bureau of Statistics",
+                    "type": "group"
+                }
+            ],
+            "date": "2003",
+            "details": "iii, catalog no 3222.0, Canberra, September, 3, + 186 pages, www.abs.gov.au",
+            "id": "bib1",
+            "title": "Population projections Australia 2002\u20132101",
+            "type": "unknown",
+            "uri": "http://www.abs.gov.au"
+        },
+        {
+            "authors": [
+                {
+                    "name": "Australian Bureau of Statistics",
+                    "type": "group"
+                }
+            ],
+            "date": "2003",
+            "details": "Marriages and divorces Australia 2002, catalog no 3310.0, Canberra, November, 6, 92 pages",
+            "id": "bib2",
+            "title": "Marriages and divorces Australia 2002, catalog no 3310.0, Canberra, November, 6, 92 pages",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": "Australian Bureau of Statistics",
+                    "type": "group"
+                }
+            ],
+            "date": "2004",
+            "details": "iii, Household and family projections Australia 2001 to 2026, catalog no 3236.0, Canberra, June, 18, + 138 pages, www.abs.gov.au",
+            "id": "bib3",
+            "title": "+ 138 pages",
+            "type": "unknown",
+            "uri": "http://www.abs.gov.au"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Bacon, B",
+                        "preferred": "B Bacon"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Pennec, S",
+                        "preferred": "S Pennec"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2007",
+            "details": "v, APPSIM \u2013 modelling family formation and dissolution, National Centre for Social and Economic Modelling, Canberra, Working Paper no 4, November, + 29 pages",
+            "id": "bib4",
+            "title": "National Centre for Social and Economic Modelling",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Baekgaard, H",
+                        "preferred": "H Baekgaard"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2002",
+            "details": "v, Micro-macro linkage and the alignment of transition processes \u2013 some issues, techniques and examples, National Centre for Social and Economic Modelling, University of Canberra, Technical Paper No 25, June, + 29 pages",
+            "id": "bib5",
+            "title": "National Centre for Social and Economic Modelling",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Bouffard, N",
+                        "preferred": "N Bouffard"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Easther, R",
+                        "preferred": "R Easther"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Johnson, T",
+                        "preferred": "T Johnson"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Morrison, RJ",
+                        "preferred": "RJ Morrison"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Vink, J",
+                        "preferred": "J Vink"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2001",
+            "details": "Joint CORSIM and DYNACAN Project Document, September, 19 pages (also in Brazilian Electronic Journal of Economics, vol 4, no 2)",
+            "id": "bib6",
+            "title": "Matchmaker, matchmaker, make me a match",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Dekkers, G",
+                        "preferred": "G Dekkers"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Buslei, H",
+                        "preferred": "H Buslei"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Cozzlino, M",
+                        "preferred": "M Cozzlino"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Desmet, R",
+                        "preferred": "R Desmet"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Geyer, J",
+                        "preferred": "J Geyer"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Hofmann, D",
+                        "preferred": "D Hofmann"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Raitano, M",
+                        "preferred": "M Raitano"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Steiner, V",
+                        "preferred": "V Steiner"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Tanda, P",
+                        "preferred": "P Tanda"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Tedeschi, S",
+                        "preferred": "S Tedeschi"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Verschueren, F",
+                        "preferred": "F Verschueren"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2009",
+            "details": "ENEPRI Research Report No 65 AIM WP4, January, 340 pages, www.enepri.org",
+            "id": "bib7",
+            "title": "What are the consequences of the AWG-projections for the adequacy of social security pensions?",
+            "type": "unknown",
+            "uri": "http://www.enepri.org"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Easther, R",
+                        "preferred": "R Easther"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Vink, J",
+                        "preferred": "J Vink"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2000",
+            "details": "Strategic Forecasting Technical Report, October, 8 pages",
+            "id": "bib8",
+            "title": "A stochastic marriage market for CORSIM",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Emmerson, C",
+                        "preferred": "C Emmerson"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Reed, H",
+                        "preferred": "H Reed"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Shephard, A",
+                        "preferred": "A Shephard"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2004",
+            "details": "An assessment of Pensim2, The Institute for Fiscal Studies, London, WP04/21, 51 pages",
+            "id": "bib9",
+            "title": "The Institute for Fiscal Studies",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Favreault, M",
+                        "preferred": "M Favreault"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Smith, K",
+                        "preferred": "K Smith"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2004",
+            "details": "A primer on the dynamic simulation of income model (DYNASIM3), The Urban Institute, Washington DC, February, 22 pages",
+            "id": "bib10",
+            "title": "A primer on the dynamic simulation of income model (DYNASIM3), The Urban Institute, Washington DC, February, 22 pages",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Galler, HP",
+                        "preferred": "HP Galler"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1997",
+            "details": "v, Discrete time and continuous-time approaches to dynamic microsimulation reconsidered, National Centre for Social & Economic Modelling, Canberra, Technical Paper No 13, October, + 35",
+            "id": "bib11",
+            "title": "National Centre for Social & Economic Modelling",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Harding, A",
+                        "preferred": "A Harding"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2007",
+            "details": "plenary paper to the first general conference of the International Microsimulation Association, Vienna, August 21, 23 pages",
+            "id": "bib12",
+            "title": "Challenges and opportunities of dynamic microsimulation modelling",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Holm, E",
+                        "preferred": "E Holm"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Holme, K",
+                        "preferred": "K Holme"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Makila, K",
+                        "preferred": "K Makila"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Mattsson-Kauppi, M",
+                        "preferred": "M Mattsson-Kauppi"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Mortvik, G",
+                        "preferred": "G Mortvik"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2004",
+            "details": "Spatial Modelling Centre, Kiruna, Sweden, 74 pages, www.umu.se",
+            "id": "bib13",
+            "title": "The SVERIGE spatial microsimulation model \u2013 content, validation, and example application",
+            "type": "unknown",
+            "uri": "http://www.umu.se"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Inagaki, S",
+                        "preferred": "S Inagaki"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2009",
+            "details": "personal communication, September, 11",
+            "id": "bib14",
+            "title": "personal communication, September, 11",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Johnson, T",
+                        "preferred": "T Johnson"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2001",
+            "details": "CORSIM Working Paper, February",
+            "id": "bib15",
+            "title": "Nonlinear alignment by sorting",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Leblanc, N",
+                        "preferred": "N Leblanc"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Morrison, R",
+                        "preferred": "R Morrison"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Redway, H",
+                        "preferred": "H Redway"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2009",
+            "details": "paper presented to the second general conference of the International Microsimulation Association, Ottawa, June 8\u201310, 27 pages",
+            "id": "bib16",
+            "title": "A match made in silicon: Marriage matching algorithms for dynamic microsimulation",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Miller, EJ",
+                        "preferred": "EJ Miller"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2008",
+            "details": "v, Development of an operational integrated urban model system \u2013 volume I project final report, Urban Transport Research 7 Advancement Centre, University of Toronto, December, + 95 pages",
+            "id": "bib17",
+            "title": "v, Development of an operational integrated urban model system \u2013 volume I project final report, Urban Transport Research 7 Advancement Centre, University of Toronto, December, + 95 pages",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Morrison, R",
+                        "preferred": "R Morrison"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2006",
+            "details": "Make it so: event alignment in dynamic microsimulation, DYNACAN Team, 7th floor, Narono Building, 360 Laurier Avenue West, Ottawa, Ontario, May, 21 pages",
+            "id": "bib18",
+            "title": "DYNACAN Team, 7th floor, Narono Building, 360 Laurier Avenue West",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Morrison, R",
+                        "preferred": "R Morrison"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2008",
+            "details": "National Centre for Social and Economic Modelling, University of Canberra, Working Paper No 8, March, 41 pages",
+            "id": "bib19",
+            "title": "Validation of longitudinal microsimulation models",
+            "type": "unknown"
+        },
+        {
+            "articleTitle": "The life-cycle income analysis model (LIAM): A study of a flexible dynamic microsimulation modelling computing framework",
+            "authors": [
+                {
+                    "name": {
+                        "index": "O\u2019Donoghue, C",
+                        "preferred": "C O\u2019Donoghue"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Lennon, J",
+                        "preferred": "J Lennon"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Hynes, S",
+                        "preferred": "S Hynes"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2009",
+            "id": "bib20",
+            "journal": "International Journal of Microsimulation",
+            "pages": {
+                "first": "16",
+                "last": "31",
+                "range": "16\u201331"
+            },
+            "type": "journal",
+            "volume": "2"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Orcutt, GH",
+                        "preferred": "GH Orcutt"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Greenberger, M",
+                        "preferred": "M Greenberger"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Korbel, J",
+                        "preferred": "J Korbel"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Rivlin, A",
+                        "preferred": "A Rivlin"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1961",
+            "details": "vxiii, Microanalysis of socioeconomic systems - a simulation study, Harper & Brothers, New York, + 425",
+            "id": "bib21",
+            "title": "vxiii, Microanalysis of socioeconomic systems - a simulation study, Harper & Brothers, New York, + 425",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Orcutt, GH",
+                        "preferred": "GH Orcutt"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Caldwell, S",
+                        "preferred": "S Caldwell"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Wertheimer, R",
+                        "preferred": "R Wertheimer"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1976",
+            "details": "xvi, Policy exploration through microanalytic simulation, The Urban Institute, Washington DC, + 370",
+            "id": "bib22",
+            "title": "xvi, Policy exploration through microanalytic simulation, The Urban Institute, Washington DC, + 370",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Percival, R",
+                        "preferred": "R Percival"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2007",
+            "details": "APPSIM \u2013 software selection and data structures, National Centre for Social and Economic Modelling, Canberra, working paper no 3, April, 15 pages",
+            "id": "bib23",
+            "title": "National Centre for Social and Economic Modelling",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Perese, K",
+                        "preferred": "K Perese"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2002",
+            "details": "Mate matching for microsimulation models, Technical Paper 2002-3, Long-term Modelling Group, Congressional Budget Office, Washington DC, 32 pages",
+            "id": "bib24",
+            "title": "Technical Paper 2002-3",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Petterson, T",
+                        "preferred": "T Petterson"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2009",
+            "details": "personal communications, June, 24, September, 22",
+            "id": "bib25",
+            "title": "personal communications, June, 24, September, 22",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Wu, B",
+                        "preferred": "B Wu"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Birkin, MH",
+                        "preferred": "MH Birkin"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Rees, PH",
+                        "preferred": "PH Rees"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2009",
+            "details": "A hybrid spatial microsimulation model for decision support in demographic planning, paper presented to the, second general conference of the International Microsimulation Association, Ottawa, June 8\u201310, 17 pages, http://www.microsimulation.org/IMA/Ottawa_2009.htm15/11/09",
+            "id": "bib26",
+            "title": "paper presented to the",
+            "type": "unknown",
+            "uri": "http://www.microsimulation.org/IMA/Ottawa_2009.htm15/11/09"
+        }
+    ],
+    "acknowledgements": [
+        {
+            "text": "I am very grateful for help received from Gijs Dekkers, Richard Easther, Seiichi Inagaki, Rick Morrison, Cathal O\u2019Donoghue, Tomas Petterson and Howard Redway.",
+            "type": "paragraph"
+        }
+    ],
+    "-meta": {
+        "patched": true
+    },
+    "stage": "published"
+}

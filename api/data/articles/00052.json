@@ -1,0 +1,1390 @@
+{
+    "status": "vor",
+    "id": "00052",
+    "version": 1,
+    "type": "research-article",
+    "doi": "10.34196/ijm.00052",
+    "authorLine": "Andr\u00e9 Decoster et al.",
+    "title": "Microsimulation of indirect taxes",
+    "published": "2011-08-31T00:00:00Z",
+    "versionDate": "2011-08-31T00:00:00Z",
+    "statusDate": "2011-08-31T00:00:00Z",
+    "volume": 4,
+    "issue": 2,
+    "elocationId": "n/a",
+    "pdf": "http://web:8082/00052/ijm-00052.pdf",
+    "subjects": [
+        {
+            "id": "taxes-benefits",
+            "name": "Taxes and benefits"
+        }
+    ],
+    "abstract": {
+        "content": [
+            {
+                "text": "The goal of this paper is to simulate a tax shift from labour to consumption and perform a distributional analysis of the reform. Microsimulation programs are often uniquely focussed on the personal income tax system and on social security contributions and benefits. However, against a political background where income taxes are under increased pressure and alternative, less distortive forms of taxation come under consideration, microsimulation models enriched with expenditure data and consumption tax structures could play an important role in sharpening the (distributional) picture of such systemic changes. The current paper discusses an algorithm for this enrichment - mainly with VAT, excises and other consumption taxes - within the context of the EUROMOD-framework and applies the obtained program to the simulation of a decrease of social security contributions compensated by a rise in standard VAT rate to maintain government budget neutrality for four EU countries. The measure is found to have a (first order) regressive effect, pointing to the fact that keeping redistribution constant would require the remaining post-reform income taxation to become more progressive.",
+                "type": "paragraph"
+            }
+        ]
+    },
+    "copyright": {
+        "license": "CC-BY-4.0",
+        "holder": "Decoster",
+        "statement": "This article is distributed under the terms of the <a href=\"http://creativecommons.org/licenses/by/4.0/\">Creative Commons Attribution License</a>, which permits unrestricted use and redistribution provided that the original author and source are credited."
+    },
+    "authors": [
+        {
+            "affiliations": [
+                {
+                    "name": [
+                        "University of Leuven"
+                    ]
+                }
+            ],
+            "name": {
+                "index": "Decoster, Andr\u00e9",
+                "preferred": "Andr\u00e9 Decoster"
+            },
+            "type": "person"
+        },
+        {
+            "affiliations": [
+                {
+                    "name": [
+                        "Rural Economy Research Centre, Teagasc"
+                    ]
+                }
+            ],
+            "name": {
+                "index": "Loughrey, Jason",
+                "preferred": "Jason Loughrey"
+            },
+            "type": "person"
+        },
+        {
+            "affiliations": [
+                {
+                    "name": [
+                        "Rural Economy Research Centre, Teagasc"
+                    ]
+                }
+            ],
+            "name": {
+                "index": "O'Donoghue, Cathal",
+                "preferred": "Cathal O'Donoghue"
+            },
+            "type": "person"
+        },
+        {
+            "affiliations": [
+                {
+                    "name": [
+                        "university of Leuven"
+                    ]
+                }
+            ],
+            "name": {
+                "index": "Verwerft, Dirk",
+                "preferred": "Dirk Verwerft"
+            },
+            "type": "person"
+        }
+    ],
+    "body": [
+        {
+            "content": [
+                {
+                    "text": "The current economic crisis and rising unemployment has put the plea for a reduction of the tax wedge on employment and an \u201calternative financing of the welfare state\" again in the spotlight (see e.g. <a href=\"#bib22\">OECD, 2008</a>). A major difficulty in the debate is that, although the arguments rest upon theoretical economic foundations<sup><a href=\"#fn1\">1</a></sup>, little is known about the concrete consequences of policy proposals on the government budget and the redistribution level in society. Indeed, the lack of reliable predictions may be one of the reasons why so few of the reform proposals are eventually put into practice.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Since microsimulation models (MSM) are the tools par excellence for assessing the distributional impact of policy instruments, they form a good starting point in generating the desired predictions. Currently however, the prominent role of the consumption tax instrument both in practice (see <a href=\"#fig1\">figure 1</a> and <a href=\"#fig2\">2</a>) and in the public debate, stands in sharp contrast with the poor attention it got within the microsimulation community. Indeed, most MSM'S have focussed on the arithmetic micromodelling of personal income taxes, social security contributions and benefits, not indirect taxes, despite the relative simplicity of most VAT and excise systems.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The basic reason for the omission of indirect taxes in standard MSM-modelling is of a practical nature: often the micro level income datasets used in tax benefit microsimulation do not contain information on expenditures which is detailed enough to calculate indirect tax liabilities with sufficient precision. To overcome this shortcoming (besides more comprehensive socio-economic surveys, in the long run), one could either design a separate indirect tax microsimulation model, running on e.g. a budget survey dataset, or impute expenditure information into the income dataset underlying an existing tax benefit model. In this paper, we adopted the second strategy for two reasons. Firstly, budget surveys in many countries do not contain enough detailed information to enable a microsimulation model like EUROMOD to run upon it. In most cases disposable income is available and sometimes a gross income measure. But, a disaggregation according to income source is seldom available in budget surveys. Secondly, the microsimulation model used here, EUROMOD<sup><a href=\"#fn2\">2</a></sup>, makes standard use of European income datasets, the EU-SILC, because of the detail of income variables that it provides as well as the advantage of it offering standardized datasets across the countries of the European Union. EU-SILC, however, has no or only very limited expenditure information. Hence, the first objective of the paper is to suggest an algorithm for dealing with missing expenditure and consumption tax information in the context of a direct tax-and-benefit simulation context, like EUROMOD. In practice, we have been able to use budget surveys of four countries (Belgium, Hungary, Ireland and the UK) and implement our method for them.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The second objective of the paper is to simulate a concrete policy proposal involving a shift from labour to consumption tax, more specifically a 25% decrease of social security contributions combined with an offsetting increase in the standard VAT rate. While government budget neutrality is maintained, the analysis of the reform will focus on the distributional consequences. However, several caveats are in order in the interpretation of the results. First, the model is embedded in a partial equilibrium framework where producer prices are taken as exogenously given, which may be problematic since the price of labour changes<sup><a href=\"#fn3\">3</a></sup>. Moreover, the routine contains only an (Engel-curve based) behavioural model for consumption, but not for labour supply. Since a shift of revenue collection from social security contributions towards indirect taxes is mostly intended to stimulate labour market participation and/or labour supply, which of course affects the income redistribution, the results presented here can only be taken as first-order effects. The incorporation of a labour supply model is an issue that will be addressed in future work.",
+                    "type": "paragraph"
+                },
+                {
+                    "assets": [
+                        {
+                            "id": "fig1",
+                            "image": {
+                                "alt": "",
+                                "uri": "%iiif_uri%/00052%2Fijm-00052-fig1.tif",
+                                "size": {
+                                    "width": 2935,
+                                    "height": 1901
+                                },
+                                "source": {
+                                    "mediaType": "image/jpeg",
+                                    "uri": "%iiif_uri%/00052%2Fijm-00052-fig1.tif/full/full/0/default.jpg",
+                                    "filename": "ijm-00052-fig1.jpg"
+                                }
+                            },
+                            "label": "Figure 1",
+                            "title": "Share of different components of government revenue OECD 1955\u20132005",
+                            "type": "image"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "assets": [
+                        {
+                            "id": "fig2",
+                            "image": {
+                                "alt": "",
+                                "uri": "%iiif_uri%/00052%2Fijm-00052-fig2.tif",
+                                "size": {
+                                    "width": 3029,
+                                    "height": 1231
+                                },
+                                "source": {
+                                    "mediaType": "image/jpeg",
+                                    "uri": "%iiif_uri%/00052%2Fijm-00052-fig2.tif/full/full/0/default.jpg",
+                                    "filename": "ijm-00052-fig2.jpg"
+                                }
+                            },
+                            "label": "Figure 2",
+                            "title": "Share of different components of government revenue - <span class=\"small-caps\">oecd</span> 2005",
+                            "type": "image"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "text": "The structure of the paper is as follows: in <a href=\"#s2\">section 2</a> we describe the data that are available and the implementation of the indirect tax system in the model. The imputation of expenditure data in the EUROMOD datasets is considered in <a href=\"#s3\">section 3</a>. Finally, <a href=\"#s4\">section 4</a> contains the description and the results of the combined direct-indirect tax simulations.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s1",
+            "title": "Introduction",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "The countries for which the imputation of expenditures into an income dataset took place are Belgium, Hungary, Ireland and the UK. These countries formed the subject of subproject 3 in the AIM-AP-project, the aim of which was to enrich EUROMOD with expenditure information and an indirect tax module. <a href=\"#table1\">Table 1</a> summarizes the income and expenditure datasets used for each country.",
+                    "type": "paragraph"
+                },
+                {
+                    "assets": [
+                        {
+                            "id": "table1",
+                            "label": "Table 1",
+                            "tables": [
+                                "<table>\n<thead>\n<tr>\n<th align=\"center\">Country</th>\n<th align=\"center\">budget survey</th>\n<th align=\"center\"># of households</th>\n<th align=\"center\">income survey</th>\n<th align=\"center\"># of households</th>\n<th align=\"center\">policy year indirect taxes</th>\n</tr>\n</thead>\n<tbody>\n<tr><td align=\"center\">BE</td>\n<td align=\"center\">Household Budget Survey 2003</td>\n<td align=\"center\">3550</td>\n<td align=\"center\">EU-SILC 2004</td>\n<td align=\"center\">5275</td>\n<td align=\"center\">2003</td></tr>\n<tr><td align=\"center\">HU</td>\n<td align=\"center\">Household Budget Survey 2005</td>\n<td align=\"center\">8710</td>\n<td align=\"center\">EU-SILC 2005</td>\n<td align=\"center\">6924</td>\n<td align=\"center\">2005</td></tr>\n<tr><td align=\"center\">IE</td>\n<td align=\"center\">Household Budget Survey 1999</td>\n<td align=\"center\">7644</td>\n<td align=\"center\">Living In Ireland 2000</td>\n<td align=\"center\">3644</td>\n<td align=\"center\">2001</td></tr>\n<tr><td align=\"center\">UK</td>\n<td align=\"center\">Family Expenditures Survey 2003/2004</td>\n<td align=\"center\">7048</td>\n<td align=\"center\">Family Resources Survey 2003/2004</td>\n<td align=\"center\">28768</td>\n<td align=\"center\">2003</td></tr>\n</tbody>\n</table>"
+                            ],
+                            "title": "Expenditure datasets and income datasets for the four countries",
+                            "type": "table"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "text": "Typically, a euromod dataset contains sociodemographic background variables like age, sex, education level etc., as well as income and personal income tax variables. Euromod then subsequently performs a number of policy modules, which may be actual or reform policies, on the input variables to obtain the household disposable income.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Household budget surveys, on the other hand, consist of socio-demographic background variables, some of which overlap with those in the euromod datasets, and detailed expenditure information. To ensure comparability across these four countries, the same expenditure aggregation was used across the countries, close to the highest level of the coicop -scheme4. An indirect tax module was constructed, which calculated the average indirect tax rates for each coicop-aggregate, by aggregating the VAT, ad valorem taxes and excise paid at the most detailed level of the available budget surveys across all commodities belonging to a specific coicop-aggregate. This implicitly defined a VAT- and excise-rate for this specific coicop-aggregate, which was then applied to calculate indirect tax liabilities in the income surveys. More information on the calculation of these indirect tax liabilities for aggregate commodity groups can be found in <a href=\"#bib11\">Decoster et al. (2008)</a>. In the appendix we also present a flow chart with the different steps of imputation and simulation.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "<a href=\"#table2\">Table 2</a> summarizes the VAT-structure for the four countries. The indirect tax legislation of the year of the expenditure survey was used, except for Ireland. The main change in indirect tax legislation between the year of the survey and the current legislation (as of 2009) has occurred in Hungary, where the standard rate has been lowered from 25 to 20% and the reduced rate from 15 to 5%. This substantial change has to be kept in mind when interpreting the results. Also the temporary reduction of the VAT-rate from 17.5% to 15% in the UK as part of the macro-economic stimulus package, decided at the end of 2008, is not taken up.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The excise duties, which are levied as an amount per unit of quantity rather than as a percentage of the producer price, differ a lot across the four countries. The tax base for excise duties however, i.e. the commodities on which an excise tax is levied, are more or less the same across the different countries. In summary, the excise products are:mineraloilproducts(gasoline, (un)leaded petrol, ...), alcoholic products (spirits, beer, wine, ...) and tobacco products (cigarettes, cigars, ...). The Ad Valorem excise tax mostly concerns tobacco products. In order to make the VAT and excise systems comparable, excise duties are here expressed as implied tax rates (meaning as a function of observed expenditures and quantities) rather than on a unit basis.",
+                    "type": "paragraph"
+                },
+                {
+                    "assets": [
+                        {
+                            "id": "table2",
+                            "label": "Table 2",
+                            "tables": [
+                                "<table>\n<thead>\n<tr>\n<th align=\"center\">Country and policy year</th>\n<th align=\"center\" colspan=\"5\">VAT</th>\n<th align=\"center\" colspan=\"3\">Excise</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td/>\n<td/>\n<td align=\"center\">standar d rate 18\u201325%</td>\n<td align=\"center\">not taxed or exempte d</td>\n<td align=\"center\">reduced rate 1 4\u20136%</td>\n<td align=\"center\">reduced rate 2 8\u201315%</td>\n<td align=\"center\">Alcohol</td>\n<td align=\"center\">Tobacco</td>\n<td align=\"center\">Private transpor t</td>\n</tr>\n<tr><td align=\"center\" rowspan=\"2\">BE-2003</td>\n<td align=\"center\">Rates</td>\n<td align=\"center\">21</td>\n<td align=\"center\">0</td>\n<td align=\"center\">6</td>\n<td align=\"center\">12</td>\n<td align=\"center\">43.9</td>\n<td align=\"center\">162.9</td>\n<td align=\"center\">34.7</td></tr>\n<tr>\n<td align=\"center\"><i>Shares</i></td>\n<td align=\"center\"><i>41.9</i></td>\n<td align=\"center\"><i>37.9</i></td>\n<td align=\"center\"><i>19.8</i></td>\n<td align=\"center\"><i>0.4</i></td>\n<td align=\"center\"><i>1.7</i></td>\n<td align=\"center\"><i>1.3</i></td>\n<td align=\"center\"><i>8.9</i></td></tr>\n<tr><td align=\"center\" rowspan=\"2\">HU-2005</td>\n<td align=\"center\">Rates</td>\n<td align=\"center\">25</td>\n<td align=\"center\">0</td>\n<td align=\"center\">5</td>\n<td align=\"center\">15</td>\n<td align=\"center\">64.3</td>\n<td align=\"center\">273.0</td>\n<td align=\"center\">79.0</td></tr>\n<tr>\n<td align=\"center\"><i>Shares</i></td>\n<td align=\"center\"><i>42.7</i></td>\n<td align=\"center\"><i>8.1</i></td>\n<td align=\"center\"><i>4.1</i></td>\n<td align=\"center\"><i>45.1</i></td>\n<td align=\"center\"><i>0.6</i></td>\n<td align=\"center\"><i>2.6</i></td>\n<td align=\"center\"><i>4.1</i></td></tr>\n<tr><td align=\"center\" rowspan=\"2\">IE-2001</td>\n<td align=\"center\">Rates</td>\n<td align=\"center\">20</td>\n<td align=\"center\">0</td>\n<td align=\"center\">-</td>\n<td align=\"center\">12.5</td>\n<td align=\"center\">26.6</td>\n<td align=\"center\">300.0</td>\n<td align=\"center\">75.4</td></tr>\n<tr>\n<td align=\"center\"><i>Shares</i></td>\n<td align=\"center\"><i>36.2</i></td>\n<td align=\"center\"><i>42.0</i></td>\n<td align=\"center\">-</td>\n<td align=\"center\"><i>21.8</i></td>\n<td align=\"center\"><i>4.5</i></td>\n<td align=\"center\"><i>3.4</i></td>\n<td align=\"center\"><i>5.3</i></td></tr>\n<tr><td align=\"center\" rowspan=\"2\">UK-2003</td>\n<td align=\"center\">Rates</td>\n<td align=\"center\">17.5</td>\n<td align=\"center\">0</td>\n<td align=\"center\">5</td>\n<td align=\"center\">-</td>\n<td align=\"center\">89.7</td>\n<td align=\"center\">414.7</td>\n<td align=\"center\">58.8</td></tr>\n<tr>\n<td align=\"center\"><i>shares</i></td>\n<td align=\"center\"><i>57.7</i></td>\n<td align=\"center\"><i>36.3</i></td>\n<td align=\"center\"><i>6.1</i></td>\n<td align=\"center\"><i>-</i></td>\n<td align=\"center\"><i>1.9</i></td>\n<td align=\"center\"><i>2.2</i></td>\n<td align=\"center\"><i>8.0</i></td></tr></tbody></table>"
+                            ],
+                            "title": "VAT-structure and expenditure shares per vat-category; excise rates and shares for the 3 most important excise good categories",
+                            "type": "table"
+                        }
+                    ],
+                    "type": "figure"
+                }
+            ],
+            "id": "s2",
+            "title": "Expenditure and tax data",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "As stated earlier, we started from income datasets that are used in EUROMOD but contain no expenditure information. As far as the imputation of COICOP-expenditures in these income datasets is concerned, the relative performance of four different imputation methods was evaluated: using a distance function, grade correspondence, non parametric Engel curves and parametric Engel curves.<sup><a href=\"#fn5\">5</a></sup> A detailed account of this comparison is found in <a href=\"#bib14\">Decoster et al. (2007)</a>. The final choice, based both on theoretical, empirical and practical arguments of future implementation in MSM-models, was to use the parametric Engel curves (see e.g. <a href=\"#bib5\">Banks et al., 1997</a>, for a thorough discussion). An Engel curve was estimated for each COICOP-aggregate on the expenditure dataset and used to predict values in the income dataset, using the specification:",
+                    "type": "paragraph"
+                },
+                {
+                    "id": "ueqn1",
+                    "mathml": "<math><mrow><mi>s</mi><mi>h</mi><mi>a</mi><mi>r</mi><msub><mi>e</mi><mi>i</mi></msub><mo>=</mo><msub><mi>\u03b1</mi><mi>i</mi></msub><mi>log</mi><mo stretchy=\"false\">(</mo><mi>x</mi><mo stretchy=\"false\">)</mo><mo>+</mo><msub><mi>\u03b2</mi><mi>i</mi></msub><msup><mrow><mi>log</mi></mrow><mn>2</mn></msup><mo stretchy=\"false\">(</mo><mi>x</mi><mo stretchy=\"false\">)</mo><mo>+</mo><mrow><msub><mover accent=\"true\"><mi>\u03b3</mi><mo stretchy=\"true\">\u00af</mo></mover><mi>i</mi></msub></mrow><mi>O</mi></mrow></math>",
+                    "type": "mathml"
+                },
+                {
+                    "text": "where x is a measure of income or total expenditures (cf. infra) and O is a vector of household characteristics common to both datasets.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Three considerations are relevant in this context. Firstly, since the regressors used in the Engel curve have to be selected from variables that are common to both datasets, this puts a serious limitation on model specification. It also required a phase of thorough comparison and harmonization of these common variables. As an example, <a href=\"#fig3\">figure 3</a> plots the quantiles of disposable income in the budget dataset as a function of the quantiles in the EUROMOD dataset for Belgium. Two conclusions can be drawn: first that there is a straight line component, pointing to equality of distributions, containing 98.7 % of the data; second, that there are divergences in the tails of the distributions. So for extremely low or high incomes, the matching procedure may not be very accurate.",
+                    "type": "paragraph"
+                },
+                {
+                    "assets": [
+                        {
+                            "id": "fig3",
+                            "image": {
+                                "alt": "",
+                                "uri": "%iiif_uri%/00052%2Fijm-00052-fig3.tif",
+                                "size": {
+                                    "width": 1420,
+                                    "height": 1034
+                                },
+                                "source": {
+                                    "mediaType": "image/jpeg",
+                                    "uri": "%iiif_uri%/00052%2Fijm-00052-fig3.tif/full/full/0/default.jpg",
+                                    "filename": "ijm-00052-fig3.jpg"
+                                }
+                            },
+                            "label": "Figure 3",
+                            "title": "QQ-plot for disposable income quantiles in budget dataset (dib) versus quantiles in income dataset (dii), Belgium (Euros per year)",
+                            "type": "image"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "text": "Secondly, using disposable income in the estimation of expenditures per category was problematic for two reasons. Firstly, the income distributions in the expenditure dataset used for estimation and the income dataset on which we impute often differ, especially in the tails, as indicated above. If the latter distribution has fatter tails, the imputation has the character of an extrapolation and is hence much less stable. This leads to some undesirable imputation properties, such as a large proportion of negative expenditures in each category and a large proportion of very high expenditures for some consumption categories. In the latter case, the implied savings rate becomes extremely negative in the income dataset. Secondly, disposable income in the expenditure datasets can be negative or 0, though in practice only in about 0.1% of the cases. Reasons for this can be direct taxation, and in some countries loss or theft of stolen goods and loss of capital income. Note that this already makes the estimation of income shares very cumbersome. Moreover, it excludes the specification in terms of the logarithm of disposable income and its square, which is dominantly present in the literature.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "To deal with these problems the imputation was split up in two steps. First, total expenditures and total durable expenditures were estimated upon disposable income and the common sociodemographic variables<sup><a href=\"#fn6\">6</a></sup>. The (empiric) relation between disposable income and total expenditures is much smoother and hence more robust to problems of the kind described above. These two estimated equations were then used to predict total expenditures and total durable expenditures in the EUROMOD dataset (and to construct total nondurable expenditures by taking the difference between the two). In the second step, nondurable budget shares for each nondurable category were constructed as the share of the category in total nondurable expenditure. These shares were then estimated by the formula above (using total nondurable expenditures as x). The obtained equations (one for each category) were then used to impute shares in the income dataset. In this way, both total nondurable expenditures and nondurable expenditure shares per category were present in the income dataset. By multiplying these, the expenditures per category could be derived. A priori, it cannot be excluded that this method yields negative budget shares in the imputation. But since there are no observed negative values and because of the smoothening effect on extreme incomes in the first step, in practice it did not occur in this exercise. A program line was however included that would set the negative budget shares to zero and would standardize the shares to sum to one in case this would occur for other datasets.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "A third remark concerns the replication of so called zero expenditures in the target dataset. Estimating a regression on a consumption aggregate like tobacco, which is not consumed by a majority of households, and then imputing tobacco expenditures, fails to reproduce a sufficient number of exact zeroes. For distributional analyses, this might produce a significant bias in the target dataset. The population was therefore divided into subgroups according to whether or not the households have expenditures on the different zero expenditure aggregates: smokers and non smokers, renters and home owners, users and non-users of public transport and users and non-users of education. Then it was assumed that all the 16 resulting subgroups have different preference structures. Hence, the Engel curves are estimated for each subgroup separately. To determine to which group a household in the income dataset belonged, a Tobit regression model was used for the group identification in the budget survey. For each zero expenditure variable, like smoking, an underlying propensity to smoke model was estimated in the budget survey. This model was then used to predict this probability for the observations in the income dataset. For each observation a random number was drawn from the inverse normal distribution function: if this number was smaller than the estimated probability, the observation was categorized as respectively a smoker, renter, etc. Finally the budget shares in the income dataset were predicted with the Engel curves for the right subgroup to complete the imputation procedure. When the subgroups were too small to estimate a model the technique of subgroup-referencing was used (see <a href=\"#bib13\">Decoster et al., 2009</a>). This boils down to increasing the number of observations, and hence reducing the variation of the estimates, by adding observations of other subgroups. However, because of the different preference structures of thegroups, this introduces estimation bias. To reduce this bias a weighting scheme and dummy variables for the different subgroups are introduced.<sup><a href=\"#fn7\">7</a></sup>",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "<a href=\"#table3\">Table 3</a> gives a comparison between average observed expenditures per consumption aggregate in the budget survey and the average imputed value in the EUROMOD dataset, for the four countries. The results show that the imputation was fairly accurate, with some notable exceptions, e.g. the category food and non-alcoholic beverages in Ireland. This points to the fact that there is a large difference in the marginal distributions for some of the explanatory variables between the two datasets. For the particular case of Ireland, there was an overrepresentation of single-person, retired households in the budget survey (see <a href=\"#bib16\">Decoster et al., 2009</a>), or an underrepresentation of these households in the EUROMOD dataset. Note that \u2013 in the absence of unaccounted interaction effects - this will not affect the conclusions presented here as long as the EUROMOD dataset is representative for the population. Home production is not included in the table.",
+                    "type": "paragraph"
+                },
+                {
+                    "assets": [
+                        {
+                            "id": "table3",
+                            "label": "Table 3",
+                            "tables": [
+                                "<table>\n<thead>\n<tr>\n<th rowspan=\"2\">Commodity</th>\n<th align=\"center\" colspan=\"2\">expenditures in \u20ac, BE</th>\n<th align=\"center\" colspan=\"2\">expenditures in \u20ac, HU</th>\n<th align=\"center\" colspan=\"2\">expenditures in \u20ac, IE</th>\n<th align=\"center\" colspan=\"2\">expenditures in GBP, UK</th>\n</tr>\n<tr>\n<td align=\"center\">Budget Survey</td>\n<td align=\"center\">EUROMOD</td>\n<td align=\"center\">Budget Survey</td>\n<td align=\"center\">EUROMOD</td>\n<td align=\"center\">Budget Survey</td>\n<td align=\"center\">EUROMOD</td>\n<td align=\"center\">Budget Survey</td>\n<td align=\"center\">EUROMOD</td>\n</tr>\n</thead>\n<tbody>\n<tr><td>food, non-alcoholic beverages</td>\n<td align=\"center\">4183</td>\n<td align=\"center\">4050</td>\n<td align=\"center\">1813</td>\n<td align=\"center\">1675</td>\n<td align=\"center\">4620</td>\n<td align=\"center\">8215</td>\n<td align=\"center\">2617</td>\n<td align=\"center\">2121</td></tr>\n<tr><td>alcoholic beverages</td>\n<td align=\"center\">466</td>\n<td align=\"center\">400</td>\n<td align=\"center\">82</td>\n<td align=\"center\">36</td>\n<td align=\"center\">1663</td>\n<td align=\"center\">1513</td>\n<td align=\"center\">325</td>\n<td align=\"center\">296</td></tr>\n<tr><td>tobacco</td>\n<td align=\"center\">275</td>\n<td align=\"center\">279</td>\n<td align=\"center\">191</td>\n<td align=\"center\">170</td>\n<td align=\"center\">644</td>\n<td align=\"center\">1098</td>\n<td align=\"center\">280</td>\n<td align=\"center\">321</td></tr>\n<tr><td>clothing and footwear</td>\n<td align=\"center\">1395</td>\n<td align=\"center\">1284</td>\n<td align=\"center\">442</td>\n<td align=\"center\">380</td>\n<td align=\"center\">1848</td>\n<td align=\"center\">1493</td>\n<td align=\"center\">1183</td>\n<td align=\"center\">916</td></tr>\n<tr><td>home fuels and electricity</td>\n<td align=\"center\">1321</td>\n<td align=\"center\">1284</td>\n<td align=\"center\">831</td>\n<td align=\"center\">844</td>\n<td align=\"center\">1128</td>\n<td align=\"center\">1987</td>\n<td align=\"center\">623</td>\n<td align=\"center\">590</td></tr>\n<tr><td>rents</td>\n<td align=\"center\">1418</td>\n<td align=\"center\">1560</td>\n<td align=\"center\">59</td>\n<td align=\"center\">62</td>\n<td align=\"center\">681</td>\n<td align=\"center\">913</td>\n<td align=\"center\">691</td>\n<td align=\"center\">543</td></tr>\n<tr><td>household services</td>\n<td align=\"center\">1268</td>\n<td align=\"center\">1157</td>\n<td align=\"center\">666</td>\n<td align=\"center\">685</td>\n<td align=\"center\">1230</td>\n<td align=\"center\">1365</td>\n<td align=\"center\">999</td>\n<td align=\"center\">818</td></tr>\n<tr><td>health</td>\n<td align=\"center\">1608</td>\n<td align=\"center\">1507</td>\n<td align=\"center\">245</td>\n<td align=\"center\">323</td>\n<td align=\"center\">582</td>\n<td align=\"center\">391</td>\n<td align=\"center\">174</td>\n<td align=\"center\">144</td></tr>\n<tr><td>private transport</td>\n<td align=\"center\">2660</td>\n<td align=\"center\">2214</td>\n<td align=\"center\">590</td>\n<td align=\"center\">325</td>\n<td align=\"center\">1394</td>\n<td align=\"center\">1808</td>\n<td align=\"center\">1814</td>\n<td align=\"center\">1413</td></tr>\n<tr><td>public transport</td>\n<td align=\"center\">161</td>\n<td align=\"center\">158</td>\n<td align=\"center\">185</td>\n<td align=\"center\">148</td>\n<td align=\"center\">513</td>\n<td align=\"center\">534</td>\n<td align=\"center\">292</td>\n<td align=\"center\">242</td></tr>\n<tr><td>communication</td>\n<td align=\"center\">803</td>\n<td align=\"center\">758</td>\n<td align=\"center\">460</td>\n<td align=\"center\">437</td>\n<td align=\"center\">739</td>\n<td align=\"center\">1223</td>\n<td align=\"center\">551</td>\n<td align=\"center\">457</td></tr>\n<tr><td>recreation and culture</td>\n<td align=\"center\">2058</td>\n<td align=\"center\">1752</td>\n<td align=\"center\">390</td>\n<td align=\"center\">384</td>\n<td align=\"center\">1931</td>\n<td align=\"center\">2171</td>\n<td align=\"center\">1760</td>\n<td align=\"center\">1472</td></tr>\n<tr><td>education</td>\n<td align=\"center\">207</td>\n<td align=\"center\">141</td>\n<td align=\"center\">76</td>\n<td align=\"center\">76</td>\n<td align=\"center\">405</td>\n<td align=\"center\">368</td>\n<td align=\"center\">529</td>\n<td align=\"center\">248</td></tr>\n<tr><td>restaurants and hotels</td>\n<td align=\"center\">2344</td>\n<td align=\"center\">1972</td>\n<td align=\"center\">246</td>\n<td align=\"center\">153</td>\n<td align=\"center\">1695</td>\n<td align=\"center\">1652</td>\n<td align=\"center\">2105</td>\n<td align=\"center\">1746</td></tr>\n<tr><td>other goods and services</td>\n<td align=\"center\">2491</td>\n<td align=\"center\">2175</td>\n<td align=\"center\">471</td>\n<td align=\"center\">466</td>\n<td align=\"center\">4869</td>\n<td align=\"center\">3917</td>\n<td align=\"center\">1408</td>\n<td align=\"center\">1210</td></tr>\n<tr><td>Durables</td>\n<td align=\"center\">2671</td>\n<td align=\"center\">2372</td>\n<td align=\"center\">656</td>\n<td align=\"center\">658</td>\n<td align=\"center\">5306</td>\n<td align=\"center\">3384</td>\n<td align=\"center\">3405</td>\n<td align=\"center\">3212</td></tr>\n<tr><td>All</td>\n<td align=\"center\">25330</td>\n<td align=\"center\">23062</td>\n<td align=\"center\">7645</td>\n<td align=\"center\">7056</td>\n<td align=\"center\">29248</td>\n<td align=\"center\">32032</td>\n<td align=\"center\">18754</td>\n<td align=\"center\">15748</td></tr>\n</tbody>\n</table>"
+                            ],
+                            "title": "Average expenditures per consumption category in budget and EUROMOD dataset",
+                            "type": "table"
+                        }
+                    ],
+                    "type": "figure"
+                }
+            ],
+            "id": "s3",
+            "title": "Imputation of expenditures",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "Finally, matched income and expenditure data are used to simulate changes in indirect taxation and evaluate the distributional consequences of these changes for the four aforementioned countries. The social security contributions of the employees are decreased by 25%. Assuming government budget neutrality, the rise in the standard VAT rate necessary to compensate fully for this loss is calculated. Further assumptions are that the savings of the households are constant, as well as the amount of durable goods they purchase. Note that expenditure on durables can increase due to a rise in the VAT-rate. The households have the possibility to change their behaviour according to the Engel curves estimated in the imputation step. This means that only the direct effect of a rise in total nondurable expenditures on the budget shares of the aggregates is taken into account, not the cross price effects between the aggregates.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "To evaluate the distributional implications of the tax reform, a measure of consumption based welfare gain was adopted, as explained in <a href=\"#bib9\">Cap\u00e9au et al. (2008)</a>. A summary is given below.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Write the Marshallian demand functions as:",
+                    "type": "paragraph"
+                },
+                {
+                    "id": "ueqn2",
+                    "mathml": "<math><mrow><mtext>x=</mtext><mi>f</mi><mo stretchy=\"false\">(</mo><mtext mathvariant=\"bold\">q</mtext><mo>,</mo><mtext>\u2009</mtext><mi>e</mi><mo stretchy=\"false\">)</mo><mo>,</mo></mrow></math>",
+                    "type": "mathml"
+                },
+                {
+                    "text": "where <b>x</b> and <b>q</b> denote quantities and consumer prices<sup><a href=\"#fn8\">8</a></sup> respectively. In this case the expenditure function for the non durable commodities becomes:",
+                    "type": "paragraph"
+                },
+                {
+                    "id": "ueqn3",
+                    "mathml": "<math><mrow><mi>e</mi><mtext>=</mtext><mi>c</mi><mo stretchy=\"false\">(</mo><mtext mathvariant=\"bold\">q</mtext><mo>,</mo><mtext>\u2009</mtext><mi>U</mi><mo stretchy=\"false\">)</mo><mo>,</mo></mrow></math>",
+                    "type": "mathml"
+                },
+                {
+                    "text": "<i>U</i> denoting the welfare level obtained from the preference representation function <i>u</i> (<i>f</i>(<b>q</b>, <i>y</i>)). This expenditure function is homogeneous of degree 0 in the level of non durable expenditures and consumer prices, allowing to transform each proportionate price change into a corresponding change of <i>e</i>. The function <i>c</i>(.) is the building block of the money metric welfare function (see <a href=\"#bib19\">King, 1983</a>). E.g. for a household with non durable expenditures <i>e</i><sup>0</sup> and facing prices <b>q</b><sup>0</sup> welfare is measured as:",
+                    "type": "paragraph"
+                },
+                {
+                    "id": "ueqn4",
+                    "mathml": "<math><mi>m</mi><mo stretchy=\"false\">(</mo><msup><mtext mathvariant=\"bold\">q</mtext><mi>r</mi></msup><mo>,</mo><msup><mtext mathvariant=\"bold\">q</mtext><mn>0</mn></msup><mo>,</mo><msup><mi>e</mi><mn>0</mn></msup><mo stretchy=\"false\">)</mo><mo>=</mo><mi>c</mi><mrow><mo>(</mo><mrow><msup><mtext mathvariant=\"bold\">q</mtext><mi>r</mi></msup><mo>,</mo><mi>u</mi><mrow><mo>(</mo><mrow><mi>f</mi><mrow><mo>(</mo><mrow><msup><mtext mathvariant=\"bold\">q</mtext><mn>0</mn></msup><mo>,</mo><msup><mi>e</mi><mn>0</mn></msup></mrow><mo>)</mo></mrow></mrow><mo>)</mo></mrow></mrow><mo>)</mo></mrow><mo>,</mo></math>",
+                    "type": "mathml"
+                },
+                {
+                    "text": "where <b>q</b><sup><i>r</i></sup> is a set of reference prices to convert welfare <i>U</i><sup>0</sup> in the situation (<b>q</b><sup>0</sup>, <i>e</i><sup>0</sup> ) into monetary units. Now use as reference prices the baseline prices <b>q</b><sup>0</sup>. The welfare change due to the change in nominal non durable expenditures (from <i>e</i><sup>0</sup> to <i>e</i><sup>1</sup> ) and in consumer prices (from <b>q</b><sup>0</sup> to <b>q</b><sup>1</sup>) is then calculated as follows:",
+                    "type": "paragraph"
+                },
+                {
+                    "id": "ueqn5",
+                    "mathml": "<math><mrow><mtable columnalign=\"left\"><mtr columnalign=\"left\"><mtd columnalign=\"left\"><mrow><mi>W</mi><mi>G</mi><mo stretchy=\"false\">(</mo><msup><mtext mathvariant=\"bold\">q</mtext><mn>0</mn></msup><mo>,</mo><msup><mtext mathvariant=\"bold\">q</mtext><mn>1</mn></msup><mo>,</mo><msup><mi>e</mi><mn>0</mn></msup><mo>,</mo><msup><mi>e</mi><mn>1</mn></msup><mo stretchy=\"false\">)</mo></mrow></mtd><mtd columnalign=\"left\"><mo>\u2261</mo></mtd><mtd columnalign=\"left\"><mrow><mi>c</mi><mo stretchy=\"false\">(</mo><msup><mtext mathvariant=\"bold\">q</mtext><mn>0</mn></msup><mo>,</mo><msup><mi>U</mi><mn>1</mn></msup><mo stretchy=\"false\">)</mo><mo>\u2212</mo><mi>c</mi><mo stretchy=\"false\">(</mo><msup><mtext mathvariant=\"bold\">q</mtext><mn>0</mn></msup><mo>,</mo><msup><mi>U</mi><mn>0</mn></msup><mo stretchy=\"false\">)</mo></mrow></mtd></mtr><mtr columnalign=\"left\"><mtd columnalign=\"left\"><mrow/></mtd><mtd columnalign=\"left\"><mo>=</mo></mtd><mtd columnalign=\"left\"><mrow><mi>c</mi><mrow><mo>(</mo><mrow><msup><mtext mathvariant=\"bold\">q</mtext><mn>0</mn></msup><mo>,</mo><mi>u</mi><mrow><mo>(</mo><mrow><mi>f</mi><mrow><mo>(</mo><mrow><msup><mtext mathvariant=\"bold\">q</mtext><mn>1</mn></msup><mo>,</mo><msup><mi>e</mi><mn>1</mn></msup></mrow><mo>)</mo></mrow></mrow><mo>)</mo></mrow></mrow><mo>)</mo></mrow><mo>\u2212</mo><mi>c</mi><mrow><mo>(</mo><mrow><msup><mtext mathvariant=\"bold\">q</mtext><mn>0</mn></msup><mo>,</mo><mi>u</mi><mrow><mo>(</mo><mrow><mi>f</mi><mrow><mo>(</mo><mrow><msup><mtext mathvariant=\"bold\">q</mtext><mn>0</mn></msup><mo>,</mo><msup><mi>e</mi><mn>0</mn></msup></mrow><mo>)</mo></mrow></mrow><mo>)</mo></mrow></mrow><mo>)</mo></mrow><mo>,</mo></mrow></mtd></mtr></mtable></mrow></math>",
+                    "type": "mathml"
+                },
+                {
+                    "text": "where <i>U</i><sup>1</sup> \u2261 <i>u</i> ( <i>f</i> (<b>q</b><sup>1</sup>, <i>e</i><sup>1</sup> )) denotes the utility level in the post-reform situation and WG denotes the welfare gain.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The second term in the last equation equals <i>e</i><sup>0</sup>. The first term in the right hand side of equation embodies the counterfactual situation of reaching the post-reform utility level at the pre-reform prices. This can be calculated by means of the Hicksian, or compensated demand functions, denoted here as:",
+                    "type": "paragraph"
+                },
+                {
+                    "id": "ueqn6",
+                    "mathml": "<math><mrow><mtext>x\u2009=\u2009</mtext><mi>h</mi><mtext>\u2009</mtext><mo stretchy=\"false\">(</mo><mtext mathvariant=\"bold\">q</mtext><mo>,</mo><mtext>\u2009</mtext><mi>U</mi><mo stretchy=\"false\">)</mo><mo>,</mo></mrow></math>",
+                    "type": "mathml"
+                },
+                {
+                    "text": "leading to:",
+                    "type": "paragraph"
+                },
+                {
+                    "id": "ueqn7",
+                    "mathml": "<math><mrow><mi>c</mi><mrow><mo>(</mo><mrow><msup><mtext mathvariant=\"bold\">q</mtext><mn>0</mn></msup><mo>,</mo><msup><mi>U</mi><mn>1</mn></msup></mrow><mo>)</mo></mrow><mo>\u2261</mo><msup><mi>e</mi><mo>*</mo></msup><mo>=</mo><mstyle displaystyle=\"true\"><munderover><mo>\u2211</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mrow><mn>15</mn></mrow></munderover><mrow><msubsup><mtext mathvariant=\"bold\">q</mtext><mi>i</mi><mn>0</mn></msubsup><mi>h</mi><mrow><mo>(</mo><mrow><msup><mtext mathvariant=\"bold\">q</mtext><mn>0</mn></msup><mo>,</mo><msup><mi>U</mi><mn>1</mn></msup></mrow><mo>)</mo></mrow></mrow></mstyle><mo>.</mo></mrow></math>",
+                    "type": "mathml"
+                },
+                {
+                    "text": "These compensated demands only take-up the real income effect, leaving relative prices unchanged. Hence they correspond to the quantities calculated as follows:",
+                    "type": "paragraph"
+                },
+                {
+                    "id": "ueqn8",
+                    "mathml": "<math><msubsup><mi>x</mi><mi>i</mi><mo>*</mo></msubsup><mo>=</mo><mfrac><mrow><msubsup><mi>e</mi><mi>i</mi><mo>*</mo></msubsup></mrow><mrow><msubsup><mtext mathvariant=\"bold\">q</mtext><mi>i</mi><mn>0</mn></msubsup></mrow></mfrac><mtext>\u2009\u2009</mtext><mi>i</mi><mo>=</mo><mn>1</mn><mo>,</mo><mtext>\u2009</mtext><mn>...</mn><mo>,</mo><mn>15.</mn></math>",
+                    "type": "mathml"
+                },
+                {
+                    "text": "<i>e</i><sup>*</sup> is therefore calculated as:",
+                    "type": "paragraph"
+                },
+                {
+                    "id": "ueqn9",
+                    "mathml": "<math><msup><mi>e</mi><mo>*</mo></msup><mo>=</mo><mstyle displaystyle=\"true\"><munderover><mo>\u2211</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mrow><mn>15</mn></mrow></munderover><mrow><msubsup><mtext mathvariant=\"bold\">q</mtext><mi>i</mi><mn>0</mn></msubsup><msubsup><mi>x</mi><mi>i</mi><mo>*</mo></msubsup></mrow></mstyle><mo>.</mo></math>",
+                    "type": "mathml"
+                },
+                {
+                    "text": "The welfare gain is then calculated as:",
+                    "type": "paragraph"
+                },
+                {
+                    "id": "ueqn10",
+                    "mathml": "<math><mi>W</mi><mi>G</mi><mo stretchy=\"false\">(</mo><msup><mtext mathvariant=\"bold\">q</mtext><mn>0</mn></msup><mo>,</mo><msup><mtext mathvariant=\"bold\">q</mtext><mn>1</mn></msup><mo>,</mo><msup><mi>e</mi><mn>0</mn></msup><mo>,</mo><msup><mi>e</mi><mn>1</mn></msup><mo stretchy=\"false\">)</mo><mo>=</mo><msup><mi>e</mi><mo>*</mo></msup><mo>\u2212</mo><msup><mi>e</mi><mn>0</mn></msup><mo>.</mo></math>",
+                    "type": "mathml"
+                },
+                {
+                    "text": "Note that this welfare gain can be decomposed into three different effects: one effect coming from the change in nominal non durable expenditures, an effect coming from the change in the aggregate price level of the nondurable consumer items, discarding the relative price change, and an effect coming from the change in the relative prices of the non durable consumer items. The decomposition is as follows:",
+                    "type": "paragraph"
+                },
+                {
+                    "id": "ueqn11",
+                    "mathml": "<math><mrow><mtable columnalign=\"left\"><mtr columnalign=\"left\"><mtd columnalign=\"left\"><mrow><mi>W</mi><mi>G</mi><mo stretchy=\"false\">(</mo><msup><mtext mathvariant=\"bold\">q</mtext><mn>0</mn></msup><mo>,</mo><msup><mtext mathvariant=\"bold\">q</mtext><mn>1</mn></msup><mo>,</mo><msup><mi>e</mi><mn>0</mn></msup><mo>,</mo><msup><mi>e</mi><mn>1</mn></msup><mo stretchy=\"false\">)</mo></mrow></mtd><mtd columnalign=\"left\"><mo>=</mo></mtd><mtd columnalign=\"left\"><mrow><msup><mi>e</mi><mo>*</mo></msup><mo>\u2212</mo><msup><mi>e</mi><mn>0</mn></msup></mrow></mtd></mtr><mtr columnalign=\"left\"><mtd columnalign=\"left\"><mrow/></mtd><mtd columnalign=\"left\"><mo>=</mo></mtd><mtd columnalign=\"left\"><mrow><msup><mi>e</mi><mn>1</mn></msup><mo>\u2212</mo><msup><mi>e</mi><mn>0</mn></msup><mo>\u2212</mo><mrow><mo>(</mo><mrow><msup><mi>e</mi><mn>1</mn></msup><mo>\u2212</mo><msup><mi>e</mi><mo>*</mo></msup></mrow><mo>)</mo></mrow></mrow></mtd></mtr><mtr columnalign=\"left\"><mtd columnalign=\"left\"><mrow/></mtd><mtd columnalign=\"left\"><mo>=</mo></mtd><mtd columnalign=\"left\"><mrow><mi>\u0394</mi><mi>e</mi><mo>\u2212</mo><mrow><mo>[</mo> <mrow><mstyle displaystyle=\"true\"><mo>\u2211</mo> <mrow><msubsup><mtext mathvariant=\"bold\">q</mtext><mi>i</mi><mn>1</mn></msubsup><msubsup><mi>x</mi><mi>i</mi><mn>1</mn></msubsup><mo>\u2212</mo><mstyle displaystyle=\"true\"><mo>\u2211</mo> <mrow><msubsup><mtext mathvariant=\"bold\">q</mtext><mi>i</mi><mn>0</mn></msubsup><msubsup><mi>x</mi><mi>i</mi><mo>*</mo></msubsup></mrow></mstyle></mrow></mstyle></mrow> <mo>]</mo></mrow></mrow></mtd></mtr><mtr columnalign=\"left\"><mtd columnalign=\"left\"><mrow/></mtd><mtd columnalign=\"left\"><mo>=</mo></mtd><mtd columnalign=\"left\"><mrow><mi>\u0394</mi><mi>e</mi><mo>\u2212</mo><mrow><mo>[</mo> <mrow><msup><mstyle displaystyle=\"true\" mathsize=\"140%\"><mo>\u2211</mo></mstyle><mtext>\u200b</mtext></msup><msubsup><mtext mathvariant=\"bold\">q</mtext><mi>i</mi><mn>1</mn></msubsup><msubsup><mi>x</mi><mi>i</mi><mn>1</mn></msubsup><mo>\u2212</mo><msup><mstyle displaystyle=\"true\" mathsize=\"140%\"><mo>\u2211</mo></mstyle><mtext>\u200b</mtext></msup><msubsup><mtext mathvariant=\"bold\">q</mtext><mi>i</mi><mn>0</mn></msubsup><msubsup><mi>x</mi><mi>i</mi><mo>*</mo></msubsup><mo>+</mo><msup><mrow><msup><mstyle displaystyle=\"true\" mathsize=\"140%\"><mo>\u2211</mo></mstyle><mtext>\u200b</mtext></msup></mrow><mtext>\u200b</mtext></msup><msubsup><mtext mathvariant=\"bold\">q</mtext><mi>i</mi><mn>1</mn></msubsup><msubsup><mi>x</mi><mi>i</mi><mo>*</mo></msubsup><mo>\u2212</mo><msup><mrow><msup><mstyle displaystyle=\"true\" mathsize=\"140%\"><mo>\u2211</mo></mstyle><mtext>\u200b</mtext></msup></mrow><mtext>\u200b</mtext></msup><msubsup><mtext mathvariant=\"bold\">q</mtext><mi>i</mi><mn>1</mn></msubsup><msubsup><mi>x</mi><mi>i</mi><mo>*</mo></msubsup></mrow> <mo>]</mo></mrow></mrow></mtd></mtr><mtr columnalign=\"left\"><mtd columnalign=\"left\"><mrow/></mtd><mtd columnalign=\"left\"><mo>=</mo></mtd><mtd columnalign=\"left\"><mrow><mi>\u0394</mi><mi>e</mi><mo>\u2212</mo><mrow><mo>[</mo> <mrow><msup><mrow><msup><mstyle displaystyle=\"true\" mathsize=\"140%\"><mo>\u2211</mo></mstyle><mtext>\u200b</mtext></msup></mrow><mtext>\u200b</mtext></msup><mrow><mo>(</mo><mrow><msubsup><mtext mathvariant=\"bold\">q</mtext><mi>i</mi><mn>1</mn></msubsup><msup><mo>\u2212</mo><mtext>\u200b</mtext></msup><msubsup><mtext mathvariant=\"bold\">q</mtext><mi>i</mi><mn>0</mn></msubsup></mrow><mo>)</mo></mrow><msubsup><mi>x</mi><mi>i</mi><mo>*</mo></msubsup><mo>+</mo><msup><mrow><msup><mstyle displaystyle=\"true\" mathsize=\"140%\"><mo>\u2211</mo></mstyle><mtext>\u200b</mtext></msup></mrow><mtext>\u200b</mtext></msup><msup><mrow/><mtext>\u200b</mtext></msup><msubsup><mtext mathvariant=\"bold\">q</mtext><mi>i</mi><mn>1</mn></msubsup><mrow><mo>(</mo><mrow><msubsup><mi>x</mi><mi>i</mi><mn>1</mn></msubsup><mo>\u2212</mo><msubsup><mi>x</mi><mi>i</mi><mo>*</mo></msubsup></mrow><mo>)</mo></mrow></mrow> <mo>]</mo></mrow></mrow></mtd></mtr><mtr columnalign=\"left\"><mtd columnalign=\"left\"><mrow/></mtd><mtd columnalign=\"left\"><mo>=</mo></mtd><mtd columnalign=\"left\"><mrow><mi>\u0394</mi><mi>e</mi><mo>\u2212</mo><mrow><mo>[</mo> <mrow><msup><mi>\u0394</mi><mn>1</mn></msup><mtext mathvariant=\"bold\">q</mtext><mo>+</mo><msup><mi>\u0394</mi><mn>2</mn></msup><mtext mathvariant=\"bold\">q</mtext></mrow> <mo>]</mo></mrow><mo>.</mo></mrow></mtd></mtr></mtable></mrow></math>",
+                    "type": "mathml"
+                },
+                {
+                    "text": "The first term in the above expression is the change in nominal non durable expenditures. But this difference would be an overestimation of the welfare gain. The other two terms in squared brackets give the effect of the changing consumer prices. The first is the change in the general price level, discarding the relative price change. Concretely, it is an aggregate measure of price changes, namely the weighted average of the individual price changes, weighted by the quantities <math id=\"inf1\"><mrow><msubsup><mi>x</mi><mi>i</mi><mo>*</mo></msubsup></mrow></math> (to be interpreted as the Hicksian quantities, after adjusting the price level in a proportionate way). The inclusion of this term is intuitive:a rise in the general price level decreases the gain in welfare as measured by nominal expenditures alone, since one can purchase fewer quantities with the same money. The second term between square brackets, \u0394<sup>2</sup><b>q</b>, accounts then for the relative price effect, i.e. for the changing of the slope of the budget constraint. With our specific assumptions, <math id=\"inf2\"><mrow><msubsup><mi>x</mi><mi>i</mi><mo>*</mo></msubsup><mo>=</mo><msubsup><mi>x</mi><mi>i</mi><mn>1</mn></msubsup></mrow></math>, and hence the third price-change-term \u0394<sup>2</sup><b>q</b> vanishes. The term between square brackets then simplifies to:",
+                    "type": "paragraph"
+                },
+                {
+                    "id": "ueqn12",
+                    "mathml": "<math><mrow><mstyle displaystyle=\"true\"><munderover><mo>\u2211</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mrow><mn>15</mn></mrow></munderover><mrow><mrow><mo>(</mo><mrow><msubsup><mtext mathvariant=\"bold\">q</mtext><mi>i</mi><mn>1</mn></msubsup><mo>\u2212</mo><msubsup><mtext mathvariant=\"bold\">q</mtext><mi>i</mi><mn>0</mn></msubsup></mrow><mo>)</mo></mrow></mrow></mstyle><msubsup><mi>x</mi><mi>i</mi><mn>1</mn></msubsup><mo>,</mo></mrow></math>",
+                    "type": "mathml"
+                },
+                {
+                    "text": "and the welfare gain to",
+                    "type": "paragraph"
+                },
+                {
+                    "id": "ueqn112",
+                    "mathml": "<math><mtable columnalign=\"left\"><mtr columnalign=\"left\"><mtd columnalign=\"left\"><mi>W</mi><mi>G</mi></mtd><mtd columnalign=\"left\"><mo>=</mo></mtd><mtd columnalign=\"left\"><mi>\u0394</mi><mi>e</mi><mo>\u2212</mo><munderover><mstyle displaystyle=\"true\" mathsize=\"140%\"><mo>\u2211</mo></mstyle><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mrow><mn>15</mn></mrow></munderover><mrow><mo>(</mo><mrow><msubsup><mi>q</mi><mi>i</mi><mn>1</mn></msubsup><mo>\u2212</mo><msubsup><mi>q</mi><mi>i</mi><mn>0</mn></msubsup></mrow><mo>)</mo></mrow><msubsup><mi>x</mi><mi>i</mi><mn>1</mn></msubsup></mtd></mtr><mtr><mtd columnalign=\"left\"/><mtd columnalign=\"left\"><mo>=</mo></mtd><mtd columnalign=\"left\"><msup><mi>e</mi><mn>1</mn></msup><mo>\u2212</mo><msup><mi>e</mi><mn>0</mn></msup><mo>\u2212</mo><mrow><mo>(</mo><mrow><msup><mi>e</mi><mn>1</mn></msup><mo>\u2212</mo><mstyle displaystyle=\"true\"><munderover><mo>\u2211</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mrow><mn>15</mn></mrow></munderover><mrow><msubsup><mi>q</mi><mi>i</mi><mn>0</mn></msubsup><msubsup><mi>x</mi><mi>i</mi><mn>1</mn></msubsup></mrow></mstyle></mrow><mo>)</mo></mrow></mtd></mtr><mtr><mtd columnalign=\"left\"/><mtd columnalign=\"left\"><mo>=</mo></mtd><mtd columnalign=\"left\"><mstyle displaystyle=\"true\"><munderover><mo>\u2211</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mrow><mn>15</mn></mrow></munderover><mrow><msubsup><mi>q</mi><mi>i</mi><mn>0</mn></msubsup><msubsup><mi>x</mi><mi>i</mi><mn>1</mn></msubsup><mo>\u2212</mo></mrow></mstyle><munderover><mstyle displaystyle=\"true\" mathsize=\"140%\"><mo>\u2211</mo></mstyle><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mrow><mn>15</mn></mrow></munderover><msubsup><mi>q</mi><mi>i</mi><mn>0</mn></msubsup><msubsup><mi>x</mi><mi>i</mi><mn>0</mn></msubsup></mtd></mtr><mtr><mtd columnalign=\"left\"/><mtd columnalign=\"left\"><mo>=</mo></mtd><mtd columnalign=\"left\"><mstyle displaystyle=\"true\"><munderover><mo>\u2211</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mrow><mn>15</mn></mrow></munderover><mrow><msubsup><mi>q</mi><mi>i</mi><mn>0</mn></msubsup><mrow><mo>(</mo><mrow><msubsup><mi>x</mi><mi>i</mi><mn>1</mn></msubsup><mo>\u2212</mo><msubsup><mi>x</mi><mi>i</mi><mn>0</mn></msubsup></mrow><mo>)</mo></mrow></mrow></mstyle><mo>.</mo></mtd></mtr></mtable></math>",
+                    "type": "mathml"
+                },
+                {
+                    "text": "The last expression is very intuitive: to measure the welfare impact one looks at changes in quantities. These changes are evaluated at pre reform prices. The first expression allows for a decomposition of the welfare gain in an expenditure and a price effect. This decomposition will be used in the tables.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The results are summarized in the following three tables. <a href=\"#table4\">Table 4</a> presents the changes in the government budget. The decrease of the social security contributions of the employees by 25% leads to a substantial necessary increase in the standard VAT-rate: 4 to 5 percentage points in Belgium, Ireland and the UK. But up to 9 percentage points for Hungary. It is clear that the rise in standard VAT rate is proportional to the relative importance of the social security contributions and the indirect tax system. Note that for Belgium, part of the government's loss is recuperated by an increase in taxable income and hence by a rise in personal income tax. The other countries do not exclude social security contributions from the taxable base and hence their PIT revenue stays the same.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "<a href=\"#table5\">Tables 5</a> and <a href=\"#table6\">6</a> show the welfare consequences for different subgroups of society. For each group and country, the average change in welfare WG is depicted, together with its two components: the change in nondurable expenditures and the price effect. The first component is everywhere positive, explained by the fact that disposable income can only increase by the tax reform and because savings are kept constant<sup><a href=\"#fn9\">9</a></sup>.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The second component represents the price effect, which captures the rise in price levels. As no goods have their prices decreased, this effect is negative for every household. Taken together, one can see from <a href=\"#table4\">table 4</a> that the price effect dominates the change in expenditures in the lower equivalized expenditure deciles, so that the welfare effect of the reform is negative for those groups. For the higher deciles, the situation is reversed and these groups become better off after the reform.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "This analysis of gainers and losers can be carried out for other subgroups of the population as well. The upper rows of <a href=\"#table5\">table 5</a> show the effects along the division poor - non poor, where poverty is defined as having equivalized expenditures lower than 60% of the median equivalized expenditures. As can be expected from the previous table, the reform is beneficiary to the group of non poor as a whole, but the group of poor is affected very badly. The same conclusion can be drawn for socio-economic divisions as in the lower part of the third table:people in more vulnerable positions, like the unemployed (except for Hungary, where they are almost unaffected), retired people and people receiving income support, lose by the reform, while employed workers gain by it.",
+                    "type": "paragraph"
+                },
+                {
+                    "assets": [
+                        {
+                            "id": "table4",
+                            "label": "Table 4",
+                            "tables": [
+                                "<table>\n<thead>\n<tr>\n<th/>\n<th align=\"center\" colspan=\"2\">BE</th>\n<th align=\"center\" colspan=\"2\">HU</th>\n<th align=\"center\" colspan=\"2\">IE</th>\n<th align=\"center\" colspan=\"2\">UK</th>\n</tr>\n<tr>\n<th/>\n<th align=\"center\">baseline</th>\n<th align=\"center\">simulation</th>\n<th align=\"center\">baseline</th>\n<th align=\"center\">simulation</th>\n<th align=\"center\">baseline</th>\n<th align=\"center\">simulation</th>\n<th align=\"center\">baseline</th>\n<th align=\"center\">simulation</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td align=\"center\">SIC employee</td>\n<td align=\"center\">17,490</td>\n<td align=\"center\">-3,900</td>\n<td align=\"center\">2,777</td>\n<td align=\"center\">-693</td>\n<td align=\"center\">168,875</td>\n<td align=\"center\">-33,902</td>\n<td align=\"center\">42,283</td>\n<td align=\"center\">-9,713</td>\n</tr>\n<tr>\n<td align=\"center\">PIT</td>\n<td align=\"center\">35,500</td>\n<td align=\"center\">+ 1,763</td>\n<td align=\"center\">4,608</td>\n<td align=\"center\">+0</td>\n<td align=\"center\">1136,416</td>\n<td align=\"center\">+0</td>\n<td align=\"center\">164,813</td>\n<td align=\"center\">+0</td>\n</tr>\n<tr>\n<td align=\"center\">Indirect tax</td>\n<td align=\"center\">14,400</td>\n<td align=\"center\">+ 2,309</td>\n<td align=\"center\">4,300</td>\n<td align=\"center\">+ 731</td>\n<td align=\"center\">443,139</td>\n<td align=\"center\">34,791</td>\n<td align=\"center\">71,717</td>\n<td align=\"center\">+ 10,655</td></tr>\n<tr><td align=\"center\">VAT rate</td>\n<td align=\"center\">21%</td>\n<td align=\"center\">26%</td>\n<td align=\"center\">25%</td>\n<td align=\"center\">34%</td>\n<td align=\"center\">20%</td>\n<td align=\"center\">23.5%</td>\n<td align=\"center\">17.5%</td>\n<td align=\"center\">21.5%</td>\n</tr>\n</tbody>\n</table>"
+                            ],
+                            "title": "Revenue effects of the simulation",
+                            "type": "table"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "assets": [
+                        {
+                            "id": "table5",
+                            "label": "Table 5",
+                            "tables": [
+                                "<table>\n<thead>\n<tr>\n<th align=\"center\" rowspan=\"2\">Decile equiv. non durable expend.</th>\n<th align=\"center\" colspan=\"3\">BE (EUR)</th>\n<th align=\"center\" colspan=\"3\">HU (EUR)</th>\n<th align=\"center\" colspan=\"3\">IR (EUR)</th>\n<th align=\"center\" colspan=\"3\">UK (EUR)</th>\n</tr>\n<tr>\n<th align=\"center\">Change nondur. exp.</th>\n<th align=\"center\">Price effect</th>\n<th align=\"center\">WG</th>\n<th align=\"center\">Change nondur. exp.</th>\n<th align=\"center\">Price effect</th>\n<th align=\"center\">WG</th>\n<th align=\"center\">Change nondur. Exp.</th>\n<th align=\"center\">Price effect</th>\n<th align=\"center\">WG</th>\n<th align=\"center\">Change nondur. Exp.</th>\n<th align=\"center\">Price effect</th>\n<th align=\"center\">WG</th>\n</tr>\n</thead>\n<tbody>\n<tr><td align=\"center\">1</td>\n<td align=\"center\">43</td>\n<td align=\"center\">-193</td>\n<td align=\"center\">-150</td>\n<td align=\"center\">22</td>\n<td align=\"center\">-70</td>\n<td align=\"center\">-47</td>\n<td align=\"center\">0</td>\n<td align=\"center\">-59</td>\n<td align=\"center\">-58</td>\n<td align=\"center\">9</td>\n<td align=\"center\">-50</td>\n<td align=\"center\">-42</td></tr>\n<tr><td align=\"center\">2</td>\n<td align=\"center\">79</td>\n<td align=\"center\">-262</td>\n<td align=\"center\">-183</td>\n<td align=\"center\">34</td>\n<td align=\"center\">-90</td>\n<td align=\"center\">-56</td>\n<td align=\"center\">38</td>\n<td align=\"center\">-152</td>\n<td align=\"center\">-114</td>\n<td align=\"center\">39</td>\n<td align=\"center\">-99</td>\n<td align=\"center\">-60</td></tr>\n<tr><td align=\"center\">3</td>\n<td align=\"center\">159</td>\n<td align=\"center\">-308</td>\n<td align=\"center\">-149</td>\n<td align=\"center\">57</td>\n<td align=\"center\">-105</td>\n<td align=\"center\">-48</td>\n<td align=\"center\">108</td>\n<td align=\"center\">-202</td>\n<td align=\"center\">-94</td>\n<td align=\"center\">90</td>\n<td align=\"center\">-134</td>\n<td align=\"center\">-44</td></tr>\n<tr><td align=\"center\">4</td>\n<td align=\"center\">237</td>\n<td align=\"center\">-366</td>\n<td align=\"center\">-129</td>\n<td align=\"center\">82</td>\n<td align=\"center\">-124</td>\n<td align=\"center\">-41</td>\n<td align=\"center\">213</td>\n<td align=\"center\">-277</td>\n<td align=\"center\">-64</td>\n<td align=\"center\">134</td>\n<td align=\"center\">-168</td>\n<td align=\"center\">-34</td></tr>\n<tr><td align=\"center\">5</td>\n<td align=\"center\">389</td>\n<td align=\"center\">-417</td>\n<td align=\"center\">-28</td>\n<td align=\"center\">112</td>\n<td align=\"center\">-139</td>\n<td align=\"center\">-27</td>\n<td align=\"center\">321</td>\n<td align=\"center\">-313</td>\n<td align=\"center\">8</td>\n<td align=\"center\">196</td>\n<td align=\"center\">-200</td>\n<td align=\"center\">-4</td></tr>\n<tr><td align=\"center\">6</td>\n<td align=\"center\">482</td>\n<td align=\"center\">-455</td>\n<td align=\"center\">26</td>\n<td align=\"center\">141</td>\n<td align=\"center\">-157</td>\n<td align=\"center\">-16</td>\n<td align=\"center\">364</td>\n<td align=\"center\">-328</td>\n<td align=\"center\">36</td>\n<td align=\"center\">278</td>\n<td align=\"center\">-233</td>\n<td align=\"center\">45</td></tr>\n<tr><td align=\"center\">7</td>\n<td align=\"center\">614</td>\n<td align=\"center\">-509</td>\n<td align=\"center\">105</td>\n<td align=\"center\">192</td>\n<td align=\"center\">-183</td>\n<td align=\"center\">9</td>\n<td align=\"center\">390</td>\n<td align=\"center\">-338</td>\n<td align=\"center\">52</td>\n<td align=\"center\">360</td>\n<td align=\"center\">-269</td>\n<td align=\"center\">91</td></tr>\n<tr><td align=\"center\">8</td>\n<td align=\"center\">735</td>\n<td align=\"center\">-557</td>\n<td align=\"center\">178</td>\n<td align=\"center\">231</td>\n<td align=\"center\">-205</td>\n<td align=\"center\">26</td>\n<td align=\"center\">483</td>\n<td align=\"center\">-403</td>\n<td align=\"center\">80</td>\n<td align=\"center\">473</td>\n<td align=\"center\">-316</td>\n<td align=\"center\">158</td></tr>\n<tr><td align=\"center\">9</td>\n<td align=\"center\">837</td>\n<td align=\"center\">-607</td>\n<td align=\"center\">230</td>\n<td align=\"center\">310</td>\n<td align=\"center\">-237</td>\n<td align=\"center\">73</td>\n<td align=\"center\">523</td>\n<td align=\"center\">-399</td>\n<td align=\"center\">124</td>\n<td align=\"center\">620</td>\n<td align=\"center\">-376</td>\n<td align=\"center\">245</td></tr>\n<tr><td align=\"center\">10</td>\n<td align=\"center\">1162</td>\n<td align=\"center\">-858</td>\n<td align=\"center\">305</td>\n<td align=\"center\">527</td>\n<td align=\"center\">-339</td>\n<td align=\"center\">188</td>\n<td align=\"center\">722</td>\n<td align=\"center\">-531</td>\n<td align=\"center\">191</td>\n<td align=\"center\">764</td>\n<td align=\"center\">-570</td>\n<td align=\"center\">194</td></tr>\n<tr><td align=\"center\">Mean</td>\n<td align=\"center\">473</td>\n<td align=\"center\">-453</td>\n<td align=\"center\">20</td>\n<td align=\"center\">171</td>\n<td align=\"center\">-165</td>\n<td align=\"center\">6</td>\n<td align=\"center\">316</td>\n<td align=\"center\">-300</td>\n<td align=\"center\">16</td>\n<td align=\"center\">296</td>\n<td align=\"center\">-241</td>\n<td align=\"center\">55</td></tr>\n</tbody>\n</table>"
+                            ],
+                            "title": "Decomposition of welfare change into total expenditure effect and price change \u2013 by decile",
+                            "type": "table"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "assets": [
+                        {
+                            "id": "table6",
+                            "label": "Table 6",
+                            "tables": [
+                                "<table>\n<thead>\n<tr>\n<th align=\"center\" rowspan=\"2\">group</th>\n<th align=\"center\" colspan=\"3\">BE (EUR)</th>\n<th align=\"center\" colspan=\"3\">HU (EUR)</th>\n<th align=\"center\" colspan=\"3\">IE (EUR)</th>\n<th align=\"center\" colspan=\"3\">UK(GBP)</th>\n</tr>\n<tr>\n<th align=\"center\">Change nondur. exp.</th>\n<th align=\"center\">Price effect</th>\n<th align=\"center\">WG</th>\n<th align=\"center\">Change nondur. exp.</th>\n<th align=\"center\">Price effect</th>\n<th align=\"center\">WG</th>\n<th align=\"center\">Change nondur. exp.</th>\n<th align=\"center\">Price effect</th>\n<th align=\"center\">WG</th>\n<th align=\"center\">Change nondur. Exp.</th>\n<th align=\"center\">Price effect</th>\n<th align=\"center\">WG</th>\n</tr>\n</thead>\n<tbody>\n<tr><td align=\"center\">poor</td>\n<td align=\"center\">55</td>\n<td align=\"center\">-367</td>\n<td align=\"center\">-312</td>\n<td align=\"center\">30</td>\n<td align=\"center\">-90</td>\n<td align=\"center\">-60</td>\n<td align=\"center\">4</td>\n<td align=\"center\">-22</td>\n<td align=\"center\">-18</td>\n<td align=\"center\">17</td>\n<td align=\"center\">-177</td>\n<td align=\"center\">-160</td></tr>\n<tr><td align=\"center\">non poor</td>\n<td align=\"center\">554</td>\n<td align=\"center\">-470</td>\n<td align=\"center\">84</td>\n<td align=\"center\">197</td>\n<td align=\"center\">-178</td>\n<td align=\"center\">18</td>\n<td align=\"center\">329</td>\n<td align=\"center\">305</td>\n<td align=\"center\">24</td>\n<td align=\"center\">362</td>\n<td align=\"center\">-257</td>\n<td align=\"center\">106</td></tr>\n<tr><td align=\"center\">on income support</td>\n<td align=\"center\">0</td>\n<td align=\"center\">-277</td>\n<td align=\"center\">-277</td>\n<td align=\"center\">0</td>\n<td align=\"center\">-106</td>\n<td align=\"center\">-106</td>\n<td align=\"center\">0</td>\n<td align=\"center\">-24</td>\n<td align=\"center\">-24</td>\n<td align=\"center\">0</td>\n<td align=\"center\">-232</td>\n<td align=\"center\">-232</td></tr>\n<tr><td align=\"center\">retired</td>\n<td align=\"center\">112</td>\n<td align=\"center\">-289</td>\n<td align=\"center\">-177</td>\n<td align=\"center\">117</td>\n<td align=\"center\">-120</td>\n<td align=\"center\">-3</td>\n<td align=\"center\">22</td>\n<td align=\"center\">-46</td>\n<td align=\"center\">24</td>\n<td align=\"center\">35</td>\n<td align=\"center\">-164</td>\n<td align=\"center\">-130</td></tr>\n<tr><td align=\"center\">un-employed</td>\n<td align=\"center\">54</td>\n<td align=\"center\">-323</td>\n<td align=\"center\">-269</td>\n<td align=\"center\">35</td>\n<td align=\"center\">-107</td>\n<td align=\"center\">-72</td>\n<td align=\"center\">2</td>\n<td align=\"center\">-7</td>\n<td align=\"center\">-5</td>\n<td align=\"center\">16</td>\n<td align=\"center\">-148</td>\n<td align=\"center\">-133</td></tr>\n<tr><td align=\"center\">mean</td>\n<td align=\"center\">473</td>\n<td align=\"center\">-453</td>\n<td align=\"center\">20</td>\n<td align=\"center\">171</td>\n<td align=\"center\">-165</td>\n<td align=\"center\">6</td>\n<td align=\"center\">316</td>\n<td align=\"center\">-300</td>\n<td align=\"center\">16</td>\n<td align=\"center\">296</td>\n<td align=\"center\">-241</td>\n<td align=\"center\">55</td></tr>\n</tbody>\n</table>"
+                            ],
+                            "title": "Decomposition of welfare change into total expenditure effect and price change - by group",
+                            "type": "table"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "text": "The regressive nature of the tax reform reflects essentially the regressive nature of indirect taxation with respect to income. This, in itself, follows from the progressivity of savings, as shown <a href=\"#table7\">in table 7</a>, meaning that the more income a household has, the more it saves. Indeed, if indirect tax rates are expressed in terms of total expenditures rather than income, the resulting image shows proportionality or even a slight progressivity for all four countries, caused by a differentiated tax structure whereby necessities often are subject to a reduced rate (cf. <a href=\"#table2\">table 2</a>). However, the progressivity or regressivity of taxes is not the only factor that plays a role. For instance, in <a href=\"#table5\">table 5</a>, the magnitude of the welfare changes is larger in Belgium than in the other countries. The reason of this is not that social security contributions are more progressive or the VAT system is more regressive in Belgium than in other countries. The larger distributional effect of the reform in Belgium is explained by the fact that social security contributions are more important in the sense that the average tax rate is higher.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The principle underlying this argument is that the redistributive effect of a tax, the extent to which it decreases inequality, is a function both of its progressivity and its average rate. <a href=\"#table8\">Table 8</a> shows the Suits index (progressivity) of the personal income and consumption tax system in the four countries studied in the left panel, and the redistributive effect (roughly the Gini index before minus after tax<sup><a href=\"#fn10\">10</a></sup>) of the systems in the right panel. So in Belgium, the progressivity of the entire tax system is lower than in Hungary, but the redistribution is higher due to a higher average tax rate.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The regressive effect of the reform in <a href=\"#table5\">table 5</a> could thus be observed even if indirect taxes had been progressive, as long as they had been less progressive than the social security contributions. Essential for the reduction in redistribution is that the weight (average tax rate) of a more progressive tax is lowered and the weight of a less progressive tax is increased. However, with respect to the possible shift from income to consumption tax this also means that the redistributive effect could be kept constant, namely by increasing the progressivity of the remaining income tax (under the assumption that the progressivity of the indirect taxes does not change)",
+                    "type": "paragraph"
+                },
+                {
+                    "assets": [
+                        {
+                            "id": "table7",
+                            "label": "Table 7",
+                            "tables": [
+                                "<table>\n<thead>\n<tr>\n<th align=\"center\">Deciles</th>\n<th align=\"center\">BE</th>\n<th align=\"center\">HU</th>\n<th align=\"center\">IE</th>\n<th align=\"center\">UK</th>\n</tr>\n</thead>\n<tbody>\n<tr><td align=\"center\">1</td>\n<td align=\"center\">-63.4</td>\n<td align=\"center\">-50.4</td>\n<td align=\"center\">-109.9</td>\n<td align=\"center\">-37.1</td></tr>\n<tr><td align=\"center\">2</td>\n<td align=\"center\">-17.5</td>\n<td align=\"center\">-14.3</td>\n<td align=\"center\">-67.3</td>\n<td align=\"center\">1.7</td></tr>\n<tr><td align=\"center\">3</td>\n<td align=\"center\">-8.1</td>\n<td align=\"center\">-3.9</td>\n<td align=\"center\">-38.8</td>\n<td align=\"center\">10.4</td></tr>\n<tr><td align=\"center\">4</td>\n<td align=\"center\">-2.1</td>\n<td align=\"center\">1.6</td>\n<td align=\"center\">-25.0</td>\n<td align=\"center\">16.3</td></tr>\n<tr><td align=\"center\">5</td>\n<td align=\"center\">3.8</td>\n<td align=\"center\">6.4</td>\n<td align=\"center\">-22.3</td>\n<td align=\"center\">21.3</td></tr>\n<tr><td align=\"center\">6</td>\n<td align=\"center\">9.3</td>\n<td align=\"center\">10.1</td>\n<td align=\"center\">-11.2</td>\n<td align=\"center\">24.2</td></tr>\n<tr><td align=\"center\">7</td>\n<td align=\"center\">13.3</td>\n<td align=\"center\">12.1</td>\n<td align=\"center\">-2.9</td>\n<td align=\"center\">28.6</td></tr>\n<tr><td align=\"center\">8</td>\n<td align=\"center\">18.0</td>\n<td align=\"center\">14.4</td>\n<td align=\"center\">4.5</td>\n<td align=\"center\">32.5</td></tr>\n<tr><td align=\"center\">9</td>\n<td align=\"center\">22.7</td>\n<td align=\"center\">17.6</td>\n<td align=\"center\">15.4</td>\n<td align=\"center\">37.8</td></tr>\n<tr><td align=\"center\">10</td>\n<td align=\"center\">33.3</td>\n<td align=\"center\">27.1</td>\n<td align=\"center\">38.5</td>\n<td align=\"center\">50.4</td></tr>\n</tbody>\n</table>"
+                            ],
+                            "title": "Savings rate per decile",
+                            "type": "table"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "assets": [
+                        {
+                            "footnotes": [
+                                {
+                                    "text": [
+                                        {
+                                            "text": "Note: <math id=\"inf10\"><mrow><msubsup><mi>\u03c0</mi><mi>S</mi><mi>Y</mi></msubsup></mrow></math> denotes the Suits index for tax component Y, <math id=\"inf11\"><mrow><msubsup><mi>\u03c0</mi><mrow><mi>R</mi><mi>S</mi></mrow><mrow><mi>Y</mi></mrow></msubsup></mrow></math> the Reynolds-Smolensky index; the superscript PIT refers to Personal Income Taxes, IND to Indirect Taxation and TOT to Personal Income Taxes and Indirect taxation.",
+                                            "type": "paragraph"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "id": "table8",
+                            "label": "Table 8",
+                            "tables": [
+                                "<table>\n<thead>\n<tr>\n<th align=\"center\">Country</th>\n<th align=\"center\"><math id=\"inf4\"><mrow><msubsup><mi>\u03c0</mi><mi>S</mi><mrow><mi>P</mi><mi>I</mi><mi>T</mi></mrow></msubsup></mrow></math></th>\n<th align=\"center\"><math id=\"inf5\"><mrow><msubsup><mi>\u03c0</mi><mi>S</mi><mrow><mi>I</mi><mi>N</mi><mi>D</mi></mrow></msubsup></mrow></math></th>\n<th align=\"center\"><math id=\"inf6\"><mrow><msubsup><mi>\u03c0</mi><mi>S</mi><mrow><mi>T</mi><mi>O</mi><mi>T</mi></mrow></msubsup></mrow></math></th>\n<th align=\"center\"><math id=\"inf7\"><mrow><msubsup><mi>\u03c0</mi><mrow><mi>R</mi><mi>S</mi></mrow><mrow><mi>P</mi><mi>I</mi><mi>T</mi></mrow></msubsup></mrow></math>\n</th>\n<th align=\"center\"><math id=\"inf8\"><mrow><msubsup><mi>\u03c0</mi><mrow><mi>R</mi><mi>S</mi></mrow><mrow><mi>I</mi><mi>N</mi><mi>D</mi></mrow></msubsup></mrow></math></th>\n<th align=\"center\"><math id=\"inf9\"><mrow><msubsup><mi>\u03c0</mi><mrow><mi>R</mi><mi>S</mi></mrow><mrow><mi>T</mi><mi>O</mi><mi>T</mi></mrow></msubsup></mrow></math></th>\n</tr>\n</thead>\n<tbody>\n<tr><td align=\"center\">Belgium</td>\n<td align=\"center\">0.219</td>\n<td align=\"center\">-0.079</td>\n<td align=\"center\">0.113</td>\n<td align=\"center\">0.057</td>\n<td align=\"center\">-0.010</td>\n<td align=\"center\">0.046</td></tr>\n<tr><td align=\"center\">Greece</td>\n<td align=\"center\">0.492</td>\n<td align=\"center\">-0.101</td>\n<td align=\"center\">0.094</td>\n<td align=\"center\">0.035</td>\n<td align=\"center\">-0.024</td>\n<td align=\"center\">0.01</td></tr>\n<tr><td align=\"center\">Hungary</td>\n<td align=\"center\">0.424</td>\n<td align=\"center\">-0.086</td>\n<td align=\"center\">0.144</td>\n<td align=\"center\">0.056</td>\n<td align=\"center\">-0.015</td>\n<td align=\"center\">0.041</td></tr>\n<tr><td align=\"center\">Ireland</td>\n<td align=\"center\">0.140</td>\n<td align=\"center\">-0.143</td>\n<td align=\"center\">0.044</td>\n<td align=\"center\">0.043</td>\n<td align=\"center\">-0.019</td>\n<td align=\"center\">0.024</td></tr>\n<tr><td align=\"center\">UK</td>\n<td align=\"center\">0.200</td>\n<td align=\"center\">-0.120</td>\n<td align=\"center\">0.092</td>\n<td align=\"center\">0.038</td>\n<td align=\"center\">-0.011</td>\n<td align=\"center\">0.026</td></tr>\n</tbody>\n</table>"
+                            ],
+                            "title": "Suits and Reynolds-Smolensky index for personal income and indirect taxes",
+                            "type": "table"
+                        }
+                    ],
+                    "type": "figure"
+                }
+            ],
+            "id": "s4",
+            "title": "Simulations of direct and indirect taxation",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "This paper proposes a method to integrate indirect taxes within the EUROMOD microsimulation framework. Expenditure information is imputed by means of Engel curves estimated on expenditure surveys. The indirect tax system for each country is summarized by calculating implicit tax rates per consumption aggregate, so that indirect taxes can be calculated as a fraction of the imputed expenditures.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The combination of income and direct tax data on the one hand and expenditures and indirect tax data on the other hand are used to simulate a possible shift from income to consumption tax. A 25% decrease of social security contributions is simulated in EUROMOD. The loss in government revenue is compensated by raising the standard VAT-rate. Behavioural responses are allowed by recalculating budget shares with Engel curves.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The increase in VAT-rate ranges from 2.5 to 9 percentage points. The precise percentage is a function of the possibility of other sources for compensation of government revenue loss (as in Belgium) and the relative size of indirect taxes and social security contributions.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The consumption based welfare measure shows that the policy change has a regressive effect with the lower total nondurable expenditure deciles losing. Although the disposable income rises in every decile, for the lower deciles this effect is surpassed by the effect of rising prices, even with savings kept constant. A way to counter this decrease in redistribution consists in increasing the progressivity of the remaining income tax system.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s5",
+            "title": "Conclusion",
+            "type": "section"
+        }
+    ],
+    "references": [
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Adema, W.",
+                        "preferred": "W. Adema"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Ladaique, M.",
+                        "preferred": "M. Ladaique"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "Net social expenditure, 2005 edition - More comprehensive measures of social support",
+            "date": "2005",
+            "id": "bib1",
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "Paris"
+                        ]
+                    },
+                    "formatted": [
+                        "Paris"
+                    ]
+                },
+                "name": [
+                    "OECD"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "articleTitle": "The Theory of Reform and Indian Indirect Taxes",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Ahmad, E.",
+                        "preferred": "E. Ahmad"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Stern, N.",
+                        "preferred": "N. Stern"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1984",
+            "id": "bib2",
+            "journal": "Journal of Public Economics",
+            "pages": {
+                "first": "259",
+                "last": "298",
+                "range": "259\u2013298"
+            },
+            "type": "journal",
+            "volume": "25"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Atkinson, A. B.",
+                        "preferred": "A. B. Atkinson"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Stiglitz, J.E.",
+                        "preferred": "J.E. Stiglitz"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "Lectures on Public Economics",
+            "date": "1980",
+            "id": "bib3",
+            "publisher": {
+                "name": [
+                    "Mc Graw Hill"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Auerbach, A.",
+                        "preferred": "A. Auerbach"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2006",
+            "details": "The choice between income and consumption taxes: a primer, NBER Working Paper 12307",
+            "id": "bib4",
+            "title": "The choice between income and consumption taxes: a primer",
+            "type": "unknown"
+        },
+        {
+            "articleTitle": "Quadratic Engel Curves and Consumer Demand",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Banks, J.",
+                        "preferred": "J. Banks"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Blundell, R.W.",
+                        "preferred": "R.W. Blundell"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Lewbel, A.",
+                        "preferred": "A. Lewbel"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1997",
+            "id": "bib5",
+            "journal": "The Review of Economics and Statistics",
+            "pages": {
+                "first": "527",
+                "last": "539",
+                "range": "527\u2013539"
+            },
+            "type": "journal",
+            "volume": "79"
+        },
+        {
+            "articleTitle": "Consumption inequality and income uncertainty",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Blundell, R.",
+                        "preferred": "R. Blundell"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Preston, I.",
+                        "preferred": "I. Preston"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1998",
+            "id": "bib6",
+            "journal": "Quarterly Journal of Economics",
+            "pages": {
+                "first": "603",
+                "last": "640",
+                "range": "603\u2013640"
+            },
+            "type": "journal",
+            "volume": "113"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Boadway, R.",
+                        "preferred": "R. Boadway"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Pestieau, P.",
+                        "preferred": "P. Pestieau"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2003",
+            "details": "Indirect taxation and redistribution: the scope of the Atkinson-Stiglitz theorem, Economics for an Imperfect World: Essays in Honor of Joseph Stiglitz, Cambridge, MA, MIT Press",
+            "id": "bib7",
+            "title": "Economics for an Imperfect World: Essays in Honor of Joseph Stiglitz",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Brewer, M.",
+                        "preferred": "M. Brewer"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Goodman, Alissa",
+                        "preferred": "Alissa Goodman"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Leicester, A.",
+                        "preferred": "A. Leicester"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2006",
+            "details": "Household spending in Britian, What can it teach us about poverty?, The Policy Press",
+            "id": "bib8",
+            "title": "Household spending in Britian",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Cap\u00e9au, Bart",
+                        "preferred": "Bart Cap\u00e9au"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Decoster, Andr\u00e9",
+                        "preferred": "Andr\u00e9 Decoster"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "De Swerdt, Kris",
+                        "preferred": "Kris De Swerdt"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Orsini, Kristian",
+                        "preferred": "Kristian Orsini"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "Welfare effects of alternative financing of social security. Some calculations for Belgium.",
+            "date": "2008",
+            "id": "bib9",
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "Leuven"
+                        ]
+                    },
+                    "formatted": [
+                        "Leuven"
+                    ]
+                },
+                "name": [
+                    "Centre for Economic Studies"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "articleTitle": "Is a value added tax regressive? Annual versus lifetime incidence measures",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Caspersen, E.",
+                        "preferred": "E. Caspersen"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Metcalf, G.",
+                        "preferred": "G. Metcalf"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1994",
+            "id": "bib10",
+            "journal": "National Tax Journal",
+            "pages": {
+                "first": "731",
+                "last": "746",
+                "range": "731\u2013746"
+            },
+            "type": "journal",
+            "volume": "47"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Decoster, A.",
+                        "preferred": "A. Decoster"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "De Swerdt, K.",
+                        "preferred": "K. De Swerdt"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Loughrey, J.",
+                        "preferred": "J. Loughrey"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "O\u2019Donoghue, C.",
+                        "preferred": "C. O\u2019Donoghue"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Verwerft, D.",
+                        "preferred": "D. Verwerft"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2008",
+            "details": "Matching indirect tax rates on budget surveys for five selected countries, AIM-AP-deliverable, available at:, http://www.iser.essex.ac.uk/files/msu/emod/aim-ap/deliverables/AIM-AP3.3.pdf",
+            "id": "bib11",
+            "title": "AIM-AP-deliverable, available at:",
+            "type": "unknown",
+            "uri": "http://www.iser.essex.ac.uk/files/msu/emod/aim-ap/deliverables/AIM-AP3.3.pdf"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Decoster, A.",
+                        "preferred": "A. Decoster"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "De Swerdt, K.",
+                        "preferred": "K. De Swerdt"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Loughrey, J.",
+                        "preferred": "J. Loughrey"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "O\u2019Donoghue, C.",
+                        "preferred": "C. O\u2019Donoghue"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Verwerft, D.",
+                        "preferred": "D. Verwerft"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2009",
+            "details": "Harmonization of the income and budget surveys, AIM-AP-deliverable, available at:, http://www.iser.essex.ac.uk/files/msu/emod/aim-ap/deliverables/AIM-AP3.2.pdf",
+            "id": "bib12",
+            "title": "AIM-AP-deliverable, available at:",
+            "type": "unknown",
+            "uri": "http://www.iser.essex.ac.uk/files/msu/emod/aim-ap/deliverables/AIM-AP3.2.pdf"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Decoster, A.",
+                        "preferred": "A. Decoster"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "De Swerdt, K.",
+                        "preferred": "K. De Swerdt"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Loughrey, J.",
+                        "preferred": "J. Loughrey"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "O\u2019Donoghue, C.",
+                        "preferred": "C. O\u2019Donoghue"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Verwerft, D.",
+                        "preferred": "D. Verwerft"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2009",
+            "details": "Imputation of expenditures into the income datasets of five European countries, AIM-AP-deliverable, soon available at:, http://www.iser.essex.ac.uk/files/msu/emod/aim-ap/deliverables",
+            "id": "bib13",
+            "title": "AIM-AP-deliverable, soon available at:",
+            "type": "unknown",
+            "uri": "http://www.iser.essex.ac.uk/files/msu/emod/aim-ap/deliverables"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Decoster, A.",
+                        "preferred": "A. Decoster"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "De Rock, B.",
+                        "preferred": "B. De Rock"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "De Swerdt, K.",
+                        "preferred": "K. De Swerdt"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Loughrey, J.",
+                        "preferred": "J. Loughrey"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "O'Donoghue, C.",
+                        "preferred": "C. O'Donoghue"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Verwerft, D.",
+                        "preferred": "D. Verwerft"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2007",
+            "details": "Comparative analysis of different techniques to impute expenditures into an income data set, AIM-AP-deliverable, available at:, http://www.iser.essex.ac.uk/files/msu/emod/aim-ap/deliverables/AIM-AP3.4.pdf",
+            "id": "bib14",
+            "title": "AIM-AP-deliverable, available at:",
+            "type": "unknown",
+            "uri": "http://www.iser.essex.ac.uk/files/msu/emod/aim-ap/deliverables/AIM-AP3.4.pdf"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Decoster, A.",
+                        "preferred": "A. Decoster"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Schokkaert, E.",
+                        "preferred": "E. Schokkaert"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Van Camp, G.",
+                        "preferred": "G. Van Camp"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1997",
+            "details": "Horizontal Neutrality and Vertical Redistribution with Indirect Taxes, Inequality and Taxation, 7, JAI Press, Greenwich, Connecticut",
+            "id": "bib15",
+            "title": "Inequality and Taxation",
+            "type": "unknown"
+        },
+        {
+            "articleTitle": "Is Redistribution through Indirect Taxes Equitable?",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Decoster, A.",
+                        "preferred": "A. Decoster"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Schokkaert, E.",
+                        "preferred": "E. Schokkaert"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Van Camp, G.",
+                        "preferred": "G. Van Camp"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1997",
+            "discriminator": "b",
+            "id": "bib16",
+            "journal": "European Economic Review",
+            "pages": {
+                "first": "599",
+                "last": "608",
+                "range": "599\u2013608"
+            },
+            "type": "journal",
+            "volume": "41"
+        },
+        {
+            "articleTitle": "Lifetime versus annual perspectives on tax incidence",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Fullerton, D.",
+                        "preferred": "D. Fullerton"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Rogers, D.L.",
+                        "preferred": "D.L. Rogers"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1991",
+            "id": "bib17",
+            "journal": "National Tax Journal",
+            "pages": {
+                "first": "277",
+                "last": "287",
+                "range": "277\u2013287"
+            },
+            "type": "journal",
+            "volume": "44"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Immervoll, H",
+                        "preferred": "H Immervoll"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "O'Donoghue, C.",
+                        "preferred": "C. O'Donoghue"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Sutherland, H.",
+                        "preferred": "H. Sutherland"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1999",
+            "details": "An Introduction to EUROMOD, EUROMOD Working Papers number EM0/99",
+            "id": "bib18",
+            "title": "An Introduction to EUROMOD",
+            "type": "unknown"
+        },
+        {
+            "articleTitle": "Welfare analysis of tax reforms using household data",
+            "authors": [
+                {
+                    "name": {
+                        "index": "King, M. A.",
+                        "preferred": "M. A. King"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1983",
+            "id": "bib19",
+            "journal": "Journal of Public Economics",
+            "pages": {
+                "first": "183",
+                "last": "214",
+                "range": "183\u2013214"
+            },
+            "type": "journal",
+            "volume": "21"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Lambert, P.",
+                        "preferred": "P. Lambert"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "The distribution and redistribtuion of income",
+            "date": "2001",
+            "edition": "3",
+            "id": "bib20",
+            "publisher": {
+                "name": [
+                    "Manchester University Press"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "O'Donoghue, C.",
+                        "preferred": "C. O'Donoghue"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Baldini, M.",
+                        "preferred": "M. Baldini"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Mantovani, D.",
+                        "preferred": "D. Mantovani"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2004",
+            "details": "Modelling the redistributive impact of indirect taxes in Europe: an application of EUROMO, Euromod Working Paper EM7/01",
+            "id": "bib21",
+            "title": "Modelling the redistributive impact of indirect taxes in Europe: an application of EUROMO",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": "OECD",
+                    "type": "group"
+                }
+            ],
+            "bookTitle": "Taxing Wages 2008",
+            "date": "2008",
+            "id": "bib22",
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "Paris"
+                        ]
+                    },
+                    "formatted": [
+                        "Paris"
+                    ]
+                },
+                "name": [
+                    "Organisation for Economic Cooperation and Development"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "articleTitle": "Lifetime incidence and the distributional burden of excise taxes",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Poterba, J.M.",
+                        "preferred": "J.M. Poterba"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1989",
+            "id": "bib23",
+            "journal": "American Economic Review",
+            "pages": {
+                "first": "325",
+                "last": "330",
+                "range": "325\u2013330"
+            },
+            "type": "journal",
+            "volume": "79"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Warren, N.",
+                        "preferred": "N. Warren"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "A review of studies on the distributional impact of consumption taxes in OECD countries",
+            "date": "2008",
+            "id": "bib24",
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "Paris"
+                        ]
+                    },
+                    "formatted": [
+                        "Paris"
+                    ]
+                },
+                "name": [
+                    "OECD"
+                ]
+            },
+            "type": "book"
+        }
+    ],
+    "appendices": [
+        {
+            "content": [
+                {
+                    "text": "The figure below depicts a flow chart of the imputation and simulation steps. The upper left box represents the expenditure survey. For all M households, it contains disposable income and socio-demographic variables also present in the EUROMOD income dataset (hence the name \u201ccommon variables\"), and expenditures at a very detailed level. The upper right box contains information about the indirect tax rates for every consumption item at this most detailed level of the expenditure survey, as well as a variable (\"coicop\") that indicates to which consumption aggregate a consumption item belongs.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "We first calculate indirect taxes per item and per household in the budget dataset at this most detailed level. We then aggregate expenditures and taxes into 17 COICOP aggregates. This generates the \u201cexpenditure aggregates and indirect taxes\" dataset on the second layer of the flow chart. This newly constructed dataset is used to estimate Engel curve coefficients for the consumption categories and to calculate implicit indirect tax rates for the aggregates.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The EUROMOD income dataset originally consists of common variables and income and tax variables under a baseline and a reform condition. Via the Engel curves obtained earlier, expenditure information on the 17 aggregates is imputed for every household in the baseline. The aggregate indirect tax rates are then used to calculate the corresponding indirect tax variables (per consumption category). Moreover, since disposable income is different in the reform condition, the consumption patterns also change. These \u201creform expenditures\" are also derived from the Engel curves.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "During the simulation phase, the idea is to compensate the loss in government budget due to a direct tax reform (calculated by EUROMOD) with e.g. a rise in the standard VAT rate. First the new consumption patterns resulting from the direct tax change (in most cases a rise in disposable income) are simulated using the Engel curves. This is achieved by altering the detailed VAT information in the tax file in the upper right corner (e.g. raising the rate by one point), calculating new aggregate tax rates and applying these on the reform expenditures. If the rise in indirect tax liabilities is enough to compensate the government for the direct tax loss, the algorithm stops. If not, the standard VAT rate is raised by another point and so on, until budget neutrality is reached.",
+                    "type": "paragraph"
+                },
+                {
+                    "id": "ufig1",
+                    "image": {
+                        "alt": "",
+                        "uri": "%iiif_uri%/00052%2Fijm-00052-ufig1.tif",
+                        "size": {
+                            "width": 3156,
+                            "height": 2312
+                        },
+                        "source": {
+                            "mediaType": "image/jpeg",
+                            "uri": "%iiif_uri%/00052%2Fijm-00052-ufig1.tif/full/full/0/default.jpg",
+                            "filename": "ijm-00052-ufig1.jpg"
+                        }
+                    },
+                    "type": "image"
+                }
+            ],
+            "id": "app1",
+            "title": "Appendix: flow chart of imputation and simulation"
+        }
+    ],
+    "acknowledgements": [
+        {
+            "text": "This research was carried out in the context of the AIM-AP-project: Accurate Income Measurement for the Assessment of Public Policies (AIM-AP) \u2013 FP6 Contract no 028412.",
+            "type": "paragraph"
+        }
+    ],
+    "-meta": {
+        "patched": true
+    },
+    "stage": "published"
+}

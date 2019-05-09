@@ -1,0 +1,1645 @@
+{
+    "status": "vor",
+    "id": "00044",
+    "version": 1,
+    "type": "research-article",
+    "doi": "10.34196/ijm.00044",
+    "authorLine": "Gianni Betti et al.",
+    "title": "The siena microsimulation model (SM2) for net-gross conversion of EU-silc income variables",
+    "published": "2011-04-30T00:00:00Z",
+    "versionDate": "2011-04-30T00:00:00Z",
+    "statusDate": "2011-04-30T00:00:00Z",
+    "volume": 4,
+    "issue": 1,
+    "elocationId": "n/a",
+    "pdf": "http://web:8082/00044/ijm-00044.pdf",
+    "subjects": [
+        {
+            "id": "taxes-benefits",
+            "name": "Taxes and benefits"
+        }
+    ],
+    "abstract": {
+        "content": [
+            {
+                "text": "In interview surveys collecting information on personal income, the respondents may report income amounts as gross or net of taxes and other deductions. These data must be made homogenous before use for analysis, especially when undertaking comparisons across population groups and countries. The Siena Microsimulation Model (SM2) has been developed as a practical tool providing a robust and convenient procedure for the conversion between net and gross forms of household income. In this paper we describe the logic and structure of the SM2. Starting from data on household and personal income given in different forms, and on the basis of the prevailing tax regime in a country, the SAS routines of the model are designed to estimate full information on income by component, with a breakdown of gross amounts into taxes, social insurance contributions of various types, and net income. Given this specific purpose, SM2 is not meant to be an alternative to general tax-benefit simulation models, but as a complementary tool which those models can usefully exploit. The usefulness of SM2, of course, goes beyond these specific objectives. The distinguishing feature of SM2 is that it can handle diverse tax-benefit regimes using a common logic and a standard set of procedures making it particularly useful for multi-country comparative application; these are explained in the paper in some detail. The immediate context for the development of SM2 has been the requirements of EU-SILC (EU Statistics on Income and Living Conditions). Recently SM2 has been implemented for Italy based on EU-SILC data. The application and some results from it are described. Applications have also been developed for France, Spain and Greece. Selected aspects of these applications are illustrated for France and Spain.",
+                "type": "paragraph"
+            }
+        ]
+    },
+    "copyright": {
+        "license": "CC-BY-4.0",
+        "holder": "Betti et al.",
+        "statement": "This article is distributed under the terms of the <a href=\"http://creativecommons.org/licenses/by/4.0/\">Creative Commons Attribution License</a>, which permits unrestricted use and redistribution provided that the original author and source are credited."
+    },
+    "authors": [
+        {
+            "affiliations": [
+                {
+                    "address": {
+                        "components": {
+                            "country": "Italy"
+                        },
+                        "formatted": [
+                            "Italy"
+                        ]
+                    },
+                    "name": [
+                        "University of Siena"
+                    ]
+                }
+            ],
+            "emailAddresses": [
+                "betti2@unisi.it"
+            ],
+            "name": {
+                "index": "Betti, Gianni",
+                "preferred": "Gianni Betti"
+            },
+            "type": "person"
+        },
+        {
+            "affiliations": [
+                {
+                    "address": {
+                        "components": {
+                            "country": "Italy"
+                        },
+                        "formatted": [
+                            "Italy"
+                        ]
+                    },
+                    "name": [
+                        "ISTAT"
+                    ]
+                }
+            ],
+            "emailAddresses": [
+                "donatiel@istat.it"
+            ],
+            "name": {
+                "index": "Donatiello, Gabriella",
+                "preferred": "Gabriella Donatiello"
+            },
+            "type": "person"
+        },
+        {
+            "affiliations": [
+                {
+                    "address": {
+                        "components": {
+                            "country": "Italy"
+                        },
+                        "formatted": [
+                            "Italy"
+                        ]
+                    },
+                    "name": [
+                        "University of Siena"
+                    ]
+                }
+            ],
+            "emailAddresses": [
+                "verma@unisi.it"
+            ],
+            "name": {
+                "index": "Verma, Vijay",
+                "preferred": "Vijay Verma"
+            },
+            "type": "person"
+        }
+    ],
+    "keywords": [
+        "ECHP",
+        "EU-SILC",
+        "household income",
+        "income components",
+        "income surveys",
+        "Italian fiscal system",
+        "net-gross conversion",
+        "SM2",
+        "taxable income"
+    ],
+    "body": [
+        {
+            "content": [
+                {
+                    "text": "Microsimulation models are widely used as an integral part of the policy-making process in tax and social policy areas, especially in the US, Canada, the UK and in several Northern European countries (<a href=\"#bib10\">Martini and Trivellato, 1997</a>; <a href=\"#bib1\">Atkinson, 2005</a>). over the past three decades, microsimulation has moved from a description of the distributional impact of the existing tax and transfer systems to a more complex tool for assessing the different impacts of alternatives proposal for changing existing systems. Nevertheless, most microsimulation models are what may be termed as \u2018static\u2019. Such models are used to measure the immediate impact of policy changes concerning the tax-benefit system, without taking into account longer-term changes in the composition, characteristics and behavioural relationships of the population. In such models, changing the rules of eligibility or liability produces outcomes showing the gains or losses from the policy change in a given situation. By contrast, \u2018dynamic\u2019 models are used to compare the effects of alternatives policies in the medium to long term, such as studying the evolution of retirement systems. They aim to analyse the development of the socio-demographic structure of the population. Such models age the original unit records on the basis of probabilities of different real life events (e.g. birth, death, marriage, separation, unemployment, retirement).",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Reviews of static models may be found in <a href=\"#bib2\">Atkinson and Sutherland (1988)</a> and <a href=\"#bib15\">Sutherland (1995)</a>, and of dynamic models in <a href=\"#bib9\">Harding (1990)</a> and <a href=\"#bib17\">Zaidi and Rake (2001)</a>. For a comprehensive list of the main microsimulation models, see the website of the <i>International Microsimulation Association</i> (<a href=\"http://www.microsimulation.org\">http://www.microsimulation.org</a>).",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The choice in using a static or dynamic microsimulation model largely depends on the institutional context and also on the quality and suitability of micro data (<a href=\"#bib11\">Mitton <i>et al.</i>, 2000</a>). Well-known examples of static tax-benefit models include: TAXBEN, realized by the Institute for Fiscal Studies of UK; STINMOD, a microsimulation model of Australia\u2019s income tax and transfer system built up by the National Centre for Social and Economic Modelling; TRIM (Transfer Income Model), a comprehensive microsimulation model at the Urban Institute in Washington DC, USA; the Canadian SPSD/M (Social Policy Simulation Database and Model) developed by Statistics Canada for evaluating the financial interactions of governments and individuals; and Euromod (<a href=\"#bib4\">Euromod, 2001</a>; <a href=\"#bib14\">Sutherland <i>et al.</i>, 2008</a>), representing an integrated multi-country model for the European Union.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Dynamic microsimulation models have been largely developed from 1990s. DYNASIM was the pioneering model for the US developed at the Urban Institute in Washington, D.C., with DYNASIM2 as its current version; another famous example is DYNAMOD implemented by NATSEM, with DYNAMOD-2 as the present working version. There is also the Canadian DYNACAN for public pension analysis; the UK model PENSIM for evaluating income security in old age, and the French DESTINIE for studying pension projections (<a href=\"#bib17\">Zaidi and Rake, 2001</a>).",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "This paper concerns an aspect of purely static microsimulation involving the modelling of the income of private households and persons. Many static microsimulation models have been developed to simulate taxes, social insurance contributions, benefits and other transfers received to affect the transformation between gross and net forms of income, mediated through complexities of the national fiscal systems. In the EU, important examples are Euromod, already mentioned, and similar national microsimulation models. The primary objective of these models is to provide, on the basis of specific micro-datasets incorporated into the system, a comprehensive facility for simulation of the effect of varying parameters of the tax-benefit system on the income received by various segments of the population. Simulation of taxes and benefits under different regimes (fiscal policy options) forms the output of the system. Such models involving tax-benefit simulation require very detailed and standardised information on household and personal income by component. The logic of such modelling essentially requires household income components in the gross form as <i>inputs</i> which are used to produce corresponding net amounts under the assumed tax-benefit system. In practice, however, generally the required input data are not available in a homogeneous gross form, especially when they come from interview surveys. The required data transformation can of course be done on an <i>ad hoc</i> basis, but it is more efficient, convenient and comparable to a develop systematic procedures and tools for the purpose.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The Siena Microsimulation Model (SM2) described in this paper has been developed as a versatile <i>tool</i> for transforming detailed information on income collected from surveys or other sources into standardised forms required for diverse analyses, including tax-benefit simulation (<a href=\"#bib16\">Verma <i>et al.</i>, 2003</a>). The microsimulation involved in SM2 has certain special aspects. On the one hand, it is limited to a fixed tax-benefit regime \u2013 the one that actually exists, under which the available income amounts in different forms have been generated. On the other hand, it does not expect inputs in a homogeneous form but generate income amounts in both gross and net forms as <i>outputs.</i> Furthermore, at the outset, SM2 is designed for <i>multi-country application</i>, as a <i>flexible tool</i> which is <i>portable</i> to the maximum extent possible across (at least the European) countries despite great differences in fiscal systems. A distinguishing feature of SM2 is that it can handle diverse tax-benefit regimes using a common logic and a standard set of procedures making it particularly useful for multi-country comparative application.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The need for transformation between gross and net forms of income of course goes well beyond the specific context of microsimulation modelling. In broader terms, therefore, this paper is concerned with the following important practical problem in the collection and use of information on income of households and persons, in particular when it is obtained through personal interviewing.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Income of households is made up of diverse components received by different members. Its elements may be compiled from different types of sources, which may differ in concepts and definitions and may not refer to exactly the same reference time. The different sources may be subject to differing patterns of response and recording errors, sampling errors, inconsistencies and incompleteness etc. We are not concerned here with such conceptual and measurement issues, but with the following additional important problem.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Income can be recorded in various forms \u2013 such as gross, or net of taxes and/or other retentions at source, or as the final amounts actually received \u2013 differently for different components and for different income earners in the household. Aggregating these elements of income into the household\u2019s total income and its main components requires not only that information is available on all the elements, but also that it exists in a <i>homogeneous form to permit aggregation.</i> The form must also be the same for all households so as to permit aggregation to the sample or the population. Furthermore, the same information in <i>more than one form</i> is often required to meet different analytical objectives. For instance, for poverty and social exclusion research it is necessary to have information on total household <i>disposable income.</i> Total disposable income means gross income <i>less</i> income tax, regular taxes on wealth, compulsory social insurance contributions, employers\u2019 social insurance contributions, and inter household transfers paid. To study the effect on income distribution, the breakdown of disposable household income separating out old-age and survivors\u2019 benefits and other social transfers is needed. On the other hand, for the study of redistributive effect of taxes, for microsimulation and many other research and policy purposes, information is also required on <i>gross income</i> and its detailed breakdown by component and individual income recipient.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Different forms of income (gross, disposable or net, etc.) are related through extremely complex rules of national fiscal systems, often with subnational variations as well. This complexity has many aspects. (i) The relationships or rules vary by income component and according to characteristics and circumstances of the income recipient, in great detail and with many special cases. Some components may be exempt from tax and other deductions, while others may be subject to either or both, fully or in part. (ii) The rules may apply to different types of units \u2013 to individual persons, whole households, or some other intermediate \u2018tax units\u2019 within households. (iii) Different aggregations across income components may be involved in the application of the rules: some components may be treated individually, while others pooled together. (iv) How income is <i>received</i> can vary: it may for instance be received after retentions at source, or received gross to be taxed later. (v) What form it is <i>reported</i> in may vary from one component and recipient to another in the same data set. (vi) Who receives income may vary: while most income is received by individuals, some parts (e.g. certain transfers) may actually pertain to the whole household. (vii) When the income is received or deductions made and the period to they which relate may differ. All this complexity is increased where individuals have a choice among alternative rule-sets to be applied to their particular case. We hardly need to mention discrepancies between rules and their actual application: individuals failing to claim benefits, other transfers and reimbursements to which they are entitled; or not paying taxes and deductions which are due.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The immediate context for the development of SM2 has been certain specific requirements of EU-SILC (EU Statistics on Income and Living Conditions). EU-SILC is a statistical source, developed by European Commission (Eurostat) and implemented by all EU and also many other European countries, for the generation of comparable and detailed information on living conditions and income of households and persons. The central issue to be addressed is that, while the source, type and form of input (collected) information varies across and even within countries, the output required at the European level has to be comparable and standardised (<a href=\"#bib5\">Eurostat, 2002</a>). Furthermore, while the information which can be collected is limited to particular forms because of limitations of the sources providing it, it is required in both net and gross forms for diverse academic and policy research. We see SM2 as a <i>tool</i>, under continuing development, for meeting these objectives in the international, comparative context. Starting from data on household and personal income given in different forms (including some missing data), and on the basis of the prevailing fiscal system in a country, the model estimates full information on income by component, with breakdown of gross amounts into taxes, social insurance contributions, social transfers, and net and disposable income. Therefore it can be applied to diverse data sets to generate variables (such as the EU-SILC Target Variables) in a standard form. Furthermore, it is designed to be <i>flexible</i> to deal with an annual flux of data in different forms across and within countries and also with periodic changes in the national tax systems, which a longitudinal data source such as EU-SILC must deal with.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "In order to meet these objectives, SM2 is designed such that its core consists of a <i>standardised set of routines</i> which can handle a great diversity of input data forms and national tax systems. <i>Country-specific routines</i> are required to convert the input data intox standardised forms, and also to specify parameters of the national tax system in an appropriately standardised form. These, then, form inputs to the central core of the system designed to generate the required standardised outputs. The system has been developed to maintain a clear distinction between the common and the country-specific parts, and even more importantly, to maximise the part which can be standardised. This feature makes the system an appropriate and convenient tool for multi-country application.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Given the specific context and objectives of its development, SM2 is fully \u2018data based\u2019. It is taken as given that information on all income components has been collected, compiled or imputed in some form, and that the objective is to convert it, under a specified national tax system applicable at the time, to the standard form. It incorporates generally the same or similar level of detail as other major microsimulation models \u2013 a little less detailed on some points but also more complete on some others.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The paper is structured as follows. <a href=\"#s2\">Section 2</a> describes the basic relationships between different forms of income and presents the simple model for the gross-to-net conversion. This basic model is elaborated in the following sections by introducing complexities step-by-step. <a href=\"#s3\">Section 3</a> describes the net-to-gross conversion through the iterative procedure on which SM2 is based. This also describes how the problems of local convergence and non-convergence are addressed. <a href=\"#s4\">Section 4</a> introduces the additional complexity resulting from differences among tax regimes in how particular components of income are treated. An outstanding feature of SM2 is that these special features of the different tax systems can be captured within the general structure of the model simply by appropriately defining special types of \u2018deductions\u2019 and \u2018tax credits\u2019 for the component concerned. A number of examples are provided in <a href=\"#s4\">Section 4</a>.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Detailed applications have already been developed for France, Italy and Spain using European Community Household Panel (ECHP) data as the input (<a href=\"#bib7\">Eurostat, 2004</a>) in order to test the country-specific routines. Recently, the <a href=\"#bib12\">National Statistical Service for Greece (2007)</a> has applied the SM2 routines to the first wave of EU-SILC data for Greece. We have developed an equivalent EU-SILC based application for Italy. This provides the basis for a more fully-worked illustration of the application of SM2, which is described in <a href=\"#s5\">Sections 5</a> and <a href=\"#s6\">6</a>. <a href=\"#s7\">Section 7</a> concludes by summarising the main points in the paper and expanding upon the potential utility of SM2 for wider application.",
+                    "type": "paragraph"
+                },
+                {
+                    "assets": [
+                        {
+                            "id": "fig1",
+                            "image": {
+                                "alt": "",
+                                "uri": "%iiif_uri%/00044%2Fijm-00044-fig1.tif",
+                                "size": {
+                                    "width": 1088,
+                                    "height": 1231
+                                },
+                                "source": {
+                                    "mediaType": "image/jpeg",
+                                    "uri": "%iiif_uri%/00044%2Fijm-00044-fig1.tif/full/full/0/default.jpg",
+                                    "filename": "ijm-00044-fig1.jpg"
+                                }
+                            },
+                            "label": "Figure 1",
+                            "title": "Basic relationship between net and gross amounts",
+                            "type": "image"
+                        }
+                    ],
+                    "type": "figure"
+                }
+            ],
+            "id": "s1",
+            "title": "Introduction",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "<a href=\"#fig1\">Figure 1</a> shows the basic relationship between gross and net forms of income when more than one income component and possibly more than one individual in the tax unit are involved. The relationships between gross taxable income for a particular component, <i>H<sub>i</sub></i> and quantities like gross income <i>G<sub>i</sub></i> and income after retentions at source <i>XST<sub>i</sub></i> are usually simple, dependent only on <i>i</i>, the income component concerned and determined independently of other components and other persons in the tax unit. The same applies to the relationship between <i>H<sub>i</sub></i> and net <i>N<sub>i</sub></i> for components which are taxed separately at a flat rate or a rate determined by the level of income from that component alone, and of course also for tax exempt components. Sometimes, dependence of the relationship on other sources of income may also be involved, but mostly these are simply in the form of upper limits which may apply to certain quantities pooled over more than one component.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Generally, however, all or most taxable income is pooled together over components and over persons in the tax units for the purpose of determining the amount of tax due. The relationship between <i>H<sub>i</sub></i> and <i>N<sub>i</sub></i> for components in the pool is more complex than shown above. In any case, going from known <i>H<sub>i</sub></i> to <i>N<sub>i</sub></i> is less problematic since the relationships (the tax rules) are a function of the former. These relationships are specified in more detail in <a href=\"#table1\">Table 1</a>. Going from given <i>N<sub>i</sub></i> to <i>H</i>, required iterative solutions, and are described in the next section. Entries in <a href=\"#table1\">Table 1</a> have the following interpretation. The last two columns of the table define the various income measures in terms of measures defined in the preceding rows; those in the first column concern total income, in the second they concern income components.",
+                    "type": "paragraph"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "The social insurance contributions <i>S<sub>i</sub></i>, if applicable to the component, are generally a function of the gross amount <i>G<sub>i</sub></i>, but in the case of employment income excluding the employer\u2019s contribution (see note (b) tois specific to the component <a href=\"#table1\">Table 1</a>). The functional relationship <i>S<sub>i</sub></i>(<i>G<sub>i</sub></i>) is specific to the component and the country. In SM2 this is specified (and \u2018called\u2019 as a subroutine in the application programs) separately from the common structure represented in <a href=\"#table1\">Table 1</a>. However, some more complex situations can be allowed for in the model while retaining its basic structure. Specifically, it can allow for the dependence of <i>S<sub>i</sub></i> for any particular component <i>i</i> on any set of income components, i.e., a functional relationship of the form <i>S<sub>i</sub></i> = <i>S<sub>i</sub></i>(<i>G<sub>I</sub></i>), where subscript <i>I</i> refers to any set of income components (normally including the particular <i>i</i>, of course). In the French system for instance, the pooled contributions for a number of components may be subject to a common maximum limit.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "footnotes": [
+                                        {
+                                            "id": "tfn1",
+                                            "label": "a",
+                                            "text": [
+                                                {
+                                                    "text": "The functional relationships in this column may be somewhat more complex or varied.",
+                                                    "type": "paragraph"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "id": "tfn2",
+                                            "label": "b",
+                                            "text": [
+                                                {
+                                                    "text": "Gross including employers\u2019 social insurance contribution (SS) is: <i>GG</i> = <i>G</i> + <i>SS</i>(<i>G</i><sub>1</sub>)",
+                                                    "type": "paragraph"
+                                                }
+                                            ]
+                                        }
+                                    ],
+                                    "id": "table1",
+                                    "label": "Table 1",
+                                    "tables": [
+                                        "<table>\n<thead>\n<tr>\n<th colspan=\"2\">Income measure</th>\n<th>Total</th>\n<th>By component <sup><a href=\"#tfn1\">a</a></sup></th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>1</td>\n<td>GROSS <sup><a href=\"#tfn2\">b</a></sup></td>\n<td><i>G</i>=\u03a3<i>G<sub>i</sub></i> <b>\u2190</b></td>\n<td><i>G<sub>i</sub></i></td>\n</tr>\n<tr>\n<td>2</td>\n<td>Social Insurance contribution</td>\n<td/>\n<td><b><i>S<sub>i</sub></i> = <i>S<sub>i</sub></i>(<i>G<sub>i</sub></i>)</b></td>\n</tr>\n<tr>\n<td>3</td>\n<td>GROSS TAXABLE</td>\n<td><i>H</i>=\u03a3<i>H<sub>i</sub></i> <b>\u2190</b></td>\n<td><i>H<sub>i</sub></i> = <i>G<sub>i</sub></i> \u2212 <i>S<sub>i</sub></i></td>\n</tr>\n<tr>\n<td>4</td>\n<td>Component-specific deductions</td>\n<td/>\n<td><b><i>D<sub>i</sub></i> = <i>D<sub>i</sub></i>(<i>H<sub>i</sub></i>)</b></td>\n</tr>\n<tr>\n<td align=\"center\" colspan=\"4\"><i>Aggregation over components and individuals in tax unit</i></td></tr>\n<tr>\n<td>5</td>\n<td>TAXABLE INCOME</td>\n<td> <i>Y</i>=\u03a3<i>y<sub>i</sub></i> <b>\u2190</b></td>\n<td><i>Y<sub>i</sub></i> = <i>H<sub>i</sub></i> \u2212 <i>D<sub>i</sub></i></td>\n</tr>\n<tr>\n<td>6</td>\n<td>Common deductions</td>\n<td><b><i>D<sub>0</sub></i> = <i>D<sub>0</sub></i>(<i>H</i>)</b></td>\n<td/>\n</tr>\n<tr>\n<td>7</td>\n<td>Taxable income (after deduction)</td>\n<td><i>Y<sub>0</sub></i> = <i>Y</i> \u2212 <i>D<sub>0</sub></i></td>\n<td/>\n</tr>\n<tr>\n<td>8</td>\n<td>Tax due (before credits)</td>\n<td><b><i>W<sub>0</sub></i> = <i>W<sub>0</sub></i>(<i>Y<sub>0</sub></i>)</b></td>\n<td/>\n</tr>\n<tr>\n<td>9</td>\n<td>Common tax credits</td>\n<td><b><i>C<sub>0</sub></i> = <i>C<sub>0</sub></i>(<i>Y<sub>0</sub></i>)</b></td>\n<td/>\n</tr>\n<tr>\n<td>10</td>\n<td>TAX DUE</td>\n<td><i>W</i> = <i>W</i><sub>0</sub> \u2212 <i>C</i><sub>0</sub></td>\n<td/>\n</tr>\n<tr>\n<td>11</td>\n<td>Component-specific tax credits</td>\n<td><i>C</i> = \u03a3<i>C<sub>i</sub></i> <b>\u2190</b></td>\n<td><b><i>C<sub>i</sub></i> = <i>C<sub>i</sub></i>(<i>Y<sub>i</sub></i>)</b></td>\n</tr>\n<tr>\n<td>12</td>\n<td>TAX PAID</td>\n<td><i>X</i> = <i>W</i> \u2212 <i>C</i></td>\n<td/>\n</tr>\n<tr>\n<td>13</td>\n<td>TOTAL NET INCOME</td>\n<td><i>N</i> = <i>H</i> \u2212 <i>X</i></td>\n<td/>\n</tr>\n<tr>\n<td>14</td>\n<td>Tax rate (descriptive)</td>\n<td><i>R</i><sub>0</sub> = <i>X/H</i></td>\n<td/>\n</tr>\n<tr>\n<td>15</td>\n<td>TAX RATE = TAX DUE/ TAXABLE INCOME</td>\n<td><b><i>R</i> = <i>W/Y</i></b></td>\n<td/>\n</tr>\n<tr>\n<td align=\"center\" colspan=\"4\"><i>Disaggregation \u2013 personal income by component</i></td>\n</tr>\n<tr>\n<td>16</td>\n<td>Proportionate tax by component</td>\n<td/>\n<td><i>X<sub>i</sub></i> = (<b><i>R</i></b>*<i>Y<sub>i</sub></i>) \u2013 <i>C<sub>i</sub></i></td>\n</tr>\n<tr>\n<td>17</td>\n<td>NET INCOME BY COMPONENT</td>\n<td/>\n<td><i>N<sub>i</sub></i> = <i>H<sub>i</sub></i> \u2013 <i>X<sub>i</sub></i></td>\n</tr>\n</tbody>\n</table>"
+                                    ],
+                                    "title": "Gross-to-Net conversion algorithm",
+                                    "type": "table"
+                                }
+                            ],
+                            "type": "figure"
+                        }
+                    ],
+                    "id": "s2-1",
+                    "title": "Social insurance contributions",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "(Net) taxable income (row 7 of <a href=\"#table1\">Table 1</a>) is obtained by subtracting from gross taxable income the part which is tax exempt (\u2018deductions\u2019). These deductions are a function of gross taxable income and may be of two types: (i) specific deductions which apply to the particular income components <i>D<sub>i</sub></i> (row 4); and (ii) common deductions which apply to the (remaining taxable) income from all sources together (row 6). In case (i), in most situations the functional relationship <i>D<sub>i</sub></i>(<i>H<sub>i</sub></i>) is specific to the component <i>i</i>, i.e., <i>D<sub>i</sub></i> depends on the gross taxable income <i>H<sub>i</sub></i> for the component concerned. As a generalisation, the model can allow for the dependence of <i>D<sub>i</sub></i> for any particular component <i>i</i> on any set of income components, i.e., a functional relationship of the form <i>D<sub>i</sub></i> = <i>D<sub>i</sub></i>(<i>H<sub>I</sub></i>); or even more generally as <i>D<sub>i</sub></i> = <i>D<sub>i</sub></i>(<i>H<sub>I</sub></i>, <i>G<sub>I</sub></i>), where subscript <i>I</i> refers to any set of income components (normally including the particular <i>i</i>, of course). In case (ii), a functional relationship of the form <i>D<sub>0</sub></i>(<i>H</i>) is in terms of total gross taxable income i.e. all components together. Both types of functions are of course country-specific. Again, in SM2 these relationships can be specified separately from the common structure represented in the table.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s2-2",
+                    "title": "Deductions",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "After the removal of component-specific deductions, it is necessary to pool the income over individuals in the same tax unit and across components which are treated together for taxation purposes. Certain income components may be excluded from this common \u2018pool\u2019 and taxed separately; this type of situation is accommodated in the present model (see <a href=\"#s4\">Section 4</a>).",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s2-3",
+                    "title": "Aggregation",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "Initial tax due is computed as a function of total taxable income (row 8). This is determined by the country\u2019s \u2018basic\u2019 income tax schedule, normally applied to pooled income from different sources. This tax liability is normally reduced by tax credits. Tax credits are mostly based on characteristics of the unit (single parent, pensioner, etc.) or are given in compensation for particular expenses (medical, educational, etc.), i.e., are not specific to a particular income <i>source.</i> We refer to these as \u2018common tax credits\u2019 (row 9); these are normally expressed as a function of the total taxable income. The result is a more precise expression of \u2018total tax due\u2019 (row 10). In addition to the common tax credits, there may also be component-specific tax credits (row 11). Generally, these are based on net taxable income for the component concerned. However, the functional relationship may be more complex, involving other components of income and/or income in other forms (gross, gross taxable, etc.).",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s2-4",
+                    "title": "Tax credits",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "Deduction of these tax credits from the amount of tax due (as defined in row 10), gives the final tax to be paid (row 12): i.e., total tax to be actually paid is tax due, less all (common as well as component-specific) tax credits. Total net income is total gross taxable income less tax paid (row 13)<a href=\"#fn1\"><sup>1</sup></a>. The above two quantities, tax paid and net income (rows 12\u201313) refer at this stage to total income, and not to income by individual component.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s2-5",
+                    "title": "Tax paid and net income",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "This refers to the effective tax rate which applies to pooled components. Tax rate in <a href=\"#table1\">Table 1</a> has been defined in two forms. (i) The first (row 14) is a descriptive measure. It is the ratio of the total amount of tax to be paid, to the total gross taxable income (row 12/row 3). Hence it is indicative of the overall tax burden. (ii) The second (row 15) provides a more analytical measure in the following sense. It is the ratio of the total amount of tax due before taking into account any <i>component-specific tax credits</i> (row 10), to the total taxable income after removing <i>component-specific deduction</i> (row 5). By removing all known component-specific aspects, that is component-specific deductions and tax credits, <i>R</i> can be seen as the <i>common rate</i> which applies to all taxable income, from whatever source, which has been pooled and is subject to a common tax schedule.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Parameter <i>R</i> has two functions. Firstly, it provides a means for the disaggregation of total tax and net income into components when required (see below). Secondly, it is the parameter of the iteration in going from net to gross, as described in the next section. The parameter is particularly useful when modelling in conjunction with imputation for missing data (see below).",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s2-6",
+                    "title": "Tax rate",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "This common \u2018tax rate\u2019 can be seen as a rate applying to each component individually, and not merely some average rate applicable only at the level of total income. This permits the decomposition of tax paid by income components (row 16), and consequently the decomposition of total net income into components (row 17). This decomposition is essential for the construction of variables such as net income before and after social transfers. Generally such decomposition is required in less detail than the breakdown of gross income by individual component.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The table involves six country-specific relationships or tax schedules. Three concerning total income:",
+                            "type": "paragraph"
+                        },
+                        {
+                            "id": "uequ1",
+                            "mathml": "<math><msub><mi>D</mi><mn>0</mn></msub><mo>=</mo><msub><mi>D</mi><mn>0</mn></msub><mo stretchy=\"false\">(</mo><mi>H</mi><mo stretchy=\"false\">)</mo><mo>,</mo><mtext>\u2009</mtext><msub><mi>W</mi><mn>0</mn></msub><mo>=</mo><msub><mi>W</mi><mn>0</mn></msub><mo stretchy=\"false\">(</mo><msub><mi>Y</mi><mn>0</mn></msub><mo stretchy=\"false\">)</mo><mo>,</mo><mtext>\u2009</mtext><msub><mi>C</mi><mn>0</mn></msub><mo>=</mo><msub><mi>C</mi><mn>0</mn></msub><mo stretchy=\"false\">(</mo><msub><mi>Y</mi><mn>0</mn></msub><mo stretchy=\"false\">)</mo><mo>;</mo></math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "And another three specific to each component (i):",
+                            "type": "paragraph"
+                        },
+                        {
+                            "id": "uequ2",
+                            "mathml": "<math><msub><mi>S</mi><mi>i</mi></msub><mo>=</mo><msub><mi>S</mi><mi>i</mi></msub><mo stretchy=\"false\">(</mo><msub><mi>G</mi><mi>i</mi></msub><mo stretchy=\"false\">)</mo><mo>,</mo><mtext>\u2009</mtext><msub><mi>D</mi><mi>i</mi></msub><mo>=</mo><msub><mi>D</mi><mi>i</mi></msub><mo stretchy=\"false\">(</mo><msub><mi>H</mi><mi>i</mi></msub><mo stretchy=\"false\">)</mo><mo>,</mo><mtext>\u2009</mtext><msub><mi>C</mi><mi>i</mi></msub><mo>=</mo><msub><mi>C</mi><mi>i</mi></msub><mo stretchy=\"false\">(</mo><msub><mi>Y</mi><mi>i</mi></msub><mo stretchy=\"false\">)</mo><mo>.</mo></math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "The functional dependence can be somewhat more complex than indicated above, as explained earlier. In addition, there may be parameters determining retentions at source, taxation of parts of social insurance contributions, and so on. Finally, it should be mentioned that the application of various formulae and relationships requires certain constraints to be met, such as to ensure that all quantities which, to be meaningful, must be non-negative are in fact so. It is not useful to list here such (and many other) programming details. The structure in <a href=\"#table1\">Table 1</a> is very general and provides a common framework accommodating a wide variety of specific situations. We have tested this in the case at least of the four European countries (Italy, Spain, France and Greece) for which the fiscal systems by individual income component have been examined in some detail.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s2-7",
+                    "title": "Disaggregation of tax and net income by component",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "The role of \u2018analytical tax rate\u2019 as defined above is even more important in the presence of missing data where modelling has to be used in conjunction with imputation. The problem is that, on the one hand, the available information on income is in heterogeneous forms, and on the other, some of this information is missing and needs to be imputed. This requires the use of imputation and modelling techniques in conjunction. The issue has been explored in a separate paper (<a href=\"#bib3\">Betti <i>et al.</i>, 2003</a>); here we summarise the main points.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "<i>Imputation</i> refers to the process of using the information existing in a dataset, as well as external information where appropriate, to produce improved estimates for missing, implausible or inconsistent elements in the dataset. The aspect with which SM2 is concerned with involves <i>modelling</i> in the context of household and personal income data, meaning generating and relating detailed information on income, by source (component) and type in its different forms, according to \u2018destination\u2019, i.e. according to how gross income accrued by households and individuals is partitioned into taxes, social insurance contributions, and the remaining net amounts available for private consumption.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "These two statistical processes of imputation and modelling have to be implemented in conjunction with each other \u2013 in so far as imputation must be based on \u2018donor\u2019 data in a homogeneous form (which is the function of microsimulation in the above sense to create), while microsimulation generally requires data with no missing values (which is the function of imputation to ensure).",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Any good micro-level imputation procedure must meet some basic standards. The imputed values generated should preserve the correlation structure of the data, should be determined stochastically rather than deterministically, and should be consistent or at least plausible. There are added requirements when we are dealing with complex, composite variables such as survey information on household and personal incomes. To impute where possible and reasonable is more critical for this type of data: total household income is made up of a large number of components, and rejecting a unit with incomplete information is unacceptable as it would result in the loss of much valuable information. Income components as variables do not form an independent set: they are mere components of the same \u2018organic\u2019 aggregate (total income of the household), and hence it is not meaningful to impute individual components separately. Even how that aggregate is partitioned is not predetermined, and hence nor is the resulting correlation structure of the data.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "table2",
+                                    "label": "Table 2",
+                                    "tables": [
+                                        "<table>\n<tbody>\n<tr>\n<td colspan=\"2\">Income component (<i>i</i>) subject to tax and social insurance contributions</td>\n</tr>\n<tr>\n<td colspan=\"2\">Form (<i>X<sub>i</sub></i>) in which data on the income component have been collected:</td>\n</tr>\n<tr>\n<td>\u2009\u2009<i>G<sub>i</sub></i></td>\n<td>gross income (before tax and social insurance contributions, if applicable)</td>\n</tr>\n<tr>\n<td>\u2009\u2009<i>H<sub>i</sub></i></td>\n<td>gross taxable (before tax, but after social insurance contributions, if any)</td>\n</tr>\n<tr>\n<td>\u2009\u2009<i>N<sub>i</sub></i></td>\n<td>net income (after deducing \u2018final\u2019 tax and social insurance contributions, i.e., as the final amount actually received)</td>\n</tr>\n<tr>\n<td colspan=\"2\">Income received after retentions at source:</td>\n</tr>\n<tr>\n<td>\u2009\u2009<i>XT<sub>i</sub></i></td>\n<td>taxed at source (but no social insurance contribution); <i>T<sub>i</sub></i> = tax at source</td>\n</tr>\n<tr>\n<td>\u2009\u2009<i>XS<sub>i</sub></i></td>\n<td>Social insurance contributions (but not tax) at source; <i>S<sub>i</sub></i> = social insurance contributions at source</td>\n</tr>\n<tr>\n<td>\u2009\u2009<i>XTS<sub>i</sub></i></td>\n<td>both tax and social insurance contributions at source; T<sub>i</sub> + S<sub>i</sub></td>\n</tr>\n</tbody>\n</table>"
+                                    ],
+                                    "title": "Forms of reporting of an income component",
+                                    "type": "table"
+                                }
+                            ],
+                            "type": "figure"
+                        }
+                    ],
+                    "id": "s2-8",
+                    "title": "Tax rate for modelling in conjunction with imputation",
+                    "type": "section"
+                }
+            ],
+            "id": "s2",
+            "title": "The basic gross-to-net conversion algorithm of SM2",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "The form in which data on income by component are available may vary from one country (tax regime) to another, and also among individuals and households within the same country. There are two dimensions of this variation:",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "(A) <i>Whether and how a particular component is subject to social insurance contributions and to income tax.</i> Income tax may apply in various forms. (i) Some components may be pooled together, across components and also across individuals in some appropriately defined tax unit. (ii) Some may be subject to tax separately, each at a certain flat rate. (iii) Some components in the \u2018pool\u2019 may be tax-exempt up to a certain flat rate but taxed beyond that if a higher rate applies. (iv) Some may be subject to double taxation, perhaps representing some combination of the other forms.<a href=\"#fn2\"><sup>2</sup></a> (v) And of course, many types of incomes, in particular social transfers, may be tax exempt. Mostly, the form applicable to each type of income is determined by the national tax regime, normally uniform for all respondents in a country. Hence this information can be compiled at the aggregate level and need not be collected at the micro level. There can be exceptions, however, for persons in special circumstances. There can also be other complications, such as more than one components, otherwise treated separately, being subject to common ceilings. In some systems, individuals have a choice among the various options.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "(B) <i>The form in which the information has been collected.</i> This may generally vary from one individual to another in the same survey, though a uniform reporting form for the whole sample may prevail for some components. In any case, the information on the form in which the data are available is required at the micro-level. The amount may for instance be reported as gross, or as net of social insurance contributions and/or tax. In the case of tax retentions, details may vary by, for example, whether they are \u2018retentions at source\u2019 according to some rules or depend on individual arrangements, and whether they are the \u2018final retentions\u2019 of the tax actually due.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "<a href=\"#table2\">Table 2</a> lists the various reporting forms.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "In this section, we describe the standardised \u2018core\u2019 of the SM2 system, taking account of complexities of (B), but assuming for the moment that through the information may be reported in diverse forms, all income components over individuals in the tax unit are pooled together and subject to a common tax schedule. A remarkable feature of the system is that by appropriately defining certain \u2018deductions\u2019 and tax credits, much more complex variation can be incorporated into this standardised procedures; this will be explained in <a href=\"#s4\">Section 4</a>.",
+                    "type": "paragraph"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "As noted above, in the case of tax retentions, an important distinction is to be made between: (i) \u2018retentions at source\u2019 (withholding taxes), and (ii) the \u2018final retentions\u2019 as appropriate for the income source concerned. This is a very important distinction. It is essential to know what is meant when a component is reported as \u2018net of tax\u2019. Does the information on retentions refer to withholding taxes, to final taxes, or even to some mixture? In some systems the withholding tax is quite different in size as well as structure to the final tax liability, and the taxpayers may even be able to choose their withholding rate of tax.<a href=\"#fn3\"><sup>3</sup></a>",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s3-1",
+                    "title": "Income net of tax",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "Among the two forms of tax deductions, this may be the more common form in which net income is reported. We take \u2018retention at source\u2019 to mean that <i>the amount of tax has been assessed depending only on the income received from the particular source concerned, not taking into account income received from any other sources or the individual\u2019s (the tax unit\u2019s) personal characteristics.</i>",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Indeed, in many situations, these retentions may be according to relatively simple and standard rules, which may be expressed, say, as <i>T</i> = (<i>H<sub>i</sub></i> \u2212 <i>XST</i>) = <i>T<sub>i</sub></i>(<i>H<sub>i</sub></i>), where tax retention at source (<i>T</i>), being the difference between gross taxable income (<i>H</i>) and the amount received after social insurance and tax retention at source (<i>XST</i>), is some known function of gross taxable income for only the component concerned. Provided that these rules are standard and known, <i>XST</i>, is directly convertible to <i>H<sub>i</sub></i> without reference to other components of income for the unit. By comparison, the relationship with Hi of the \u2018final net\u2019 <i>N<sub>i</sub></i> is more complex, as it depends on the unit\u2019s total income from all sources. The real difficulty however arises when the rules for retention at source are not standard, are not applied uniformly, or are even non-existent in the sense that the taxpayers can choose or negotiate their withholding tax rates. In such situations, the construction of the gross taxable amount from the reported amount after withholding tax will require separate information on the amount withheld (or the withholding rule applied) in the particular case.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "footnotes": [
+                                        {
+                                            "text": [
+                                                {
+                                                    "text": "Set <i>N</i>: set of income components which are subject to income tax (irrespective of whether the component is also subject to social insurance contributions), and for which the \u2018final net\u2019 amount (<i>X<sub>i</sub></i> = <i>N<sub>i</sub></i>) has been specified in the data collected.",
+                                                    "type": "paragraph"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "text": [
+                                                {
+                                                    "text": "Set <i>H</i>: all other income component (not subject to tax, or for which the data has been collected in a form other than",
+                                                    "type": "paragraph"
+                                                }
+                                            ]
+                                        }
+                                    ],
+                                    "id": "table3",
+                                    "label": "Table 3",
+                                    "tables": [
+                                        "<table>\n<tbody>\n<tr>\n<td colspan=\"4\"><b>Set <i>H</i></b></td>\n</tr>\n<tr>\n<td rowspan=\"4\">given value <i>P<sub>i</sub></i> =</td>\n<td><i>XS<sub>i</sub></i></td>\n<td><i>H<sub>i</sub></i> = <i>XS<sub>i</sub></i></td>\n<td rowspan=\"4\">Simple iteration, generally separately for each component</td>\n</tr>\n<tr>\n<td><i>G<sub>i</sub></i></td>\n<td><i>H<sub>i</sub></i> = <i>G<sub>i</sub></i> \u2212 <b><i>S<sub>i</sub></i>(<i>G<sub>i</sub></i>)</b></td>\n</tr>\n<tr>\n<td><i>XT<sub>i</sub></i></td>\n<td><i>H<sub>i</sub></i> = <i>G<sub>i</sub></i> \u2212 <b><i>S<sub>i</sub></i>(<i>G<sub>i</sub></i>)</b> where <i>G<sub>i</sub></i> = <i>XT<sub>i</sub></i> + <b><i>T<sub>i</sub></i>(<i>H<sub>i</sub></i>)</b></td>\n</tr>\n<tr>\n<td><i>XTS<sub>i</sub></i></td>\n<td><i>H<sub>i</sub></i> = <i>XTS<sub>i</sub></i> + <b><i>T<sub>i</sub></i>(<i>H<sub>i</sub></i>)</b></td>\n</tr>\n<tr>\n<td colspan=\"4\"><b>Set <i>N</i></b></td>\n</tr>\n<tr>\n<td>given value <i>P<sub>i</sub></i> =</td>\n<td><i>N<sub>i</sub></i></td>\n<td><i>H<sub>i</sub></i> = <i>Y<sub>i</sub></i> + <b><i>D<sub>i</sub></i>(<i>H<sub>i</sub></i>)</b><br/>where<br/><i>Y<sub>i</sub></i> = [<i>H<sub>i</sub></i> \u2212 <i>N<sub>i</sub></i> + <b><i>C<sub>i</sub></i>(<i>Y<sub>i</sub></i>)</b>] / <b><i>R</i></b></td>\n<td>Double iteration<br/>(i) with assumed <i>R</i>, for each component in turn<br/>(ii) for determining <i>R</i>, common to all pooled components</td>\n</tr>\n</tbody>\n</table>"
+                                    ],
+                                    "title": "Calculation of <i>H<sub>i</sub></i> according to the form in which the component is specified",
+                                    "type": "table"
+                                }
+                            ],
+                            "type": "figure"
+                        }
+                    ],
+                    "id": "s3-2",
+                    "title": "Tax retention at source",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "In contrast to the above, the final tax retention is meant to reflect the tax actually due after taking into account the total income situation and characteristics of the tax unit. Consequently, the rules involved in this case tend to be more complex and involve the nature of the unit (individual person, household, or some other tax unit), the unit\u2019s particular circumstances, and its income from all sources simultaneously. On the other hand, those rules are supposed to be applied (except for tax evasion and similar factors not considered here) in a standard way, not subject to variations according to individual arrangements as may apply to some retentions at source.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "In practice, there may often be some ambiguity as to what a figure reported as \u2018net\u2019 by a survey respondent actually represents. For instance, employers often adjust the employee\u2019s \u2018tax code\u2019 on the basis of tax returns for previous years, such that the amount withheld at source actually approximates the amount of \u2018final tax\u2019 which the employee would have to pay on this income in accordance with the prevailing tax rules. In the presence of such ambiguity, it is perhaps safer to interpret the amount reported in the sense of \u2018net after paying the final tax due\u2019.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s3-3",
+                    "title": "Final tax retention",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "In contrast to tax retentions, social insurance contributions are essentially component-specific, i.e. determined only or mainly in relation to the income component concerned, so that the above distinction between \u2018retention at source\u2019 and \u2018final retention\u2019 is generally not relevant. They are usually collected at source in any case.<a href=\"#fn4\"><sup>4</sup></a>",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s3-4",
+                    "title": "Social insurance contributions",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "<a href=\"#table3\">Table 3</a> shows the procedure for converting the reported amount with any combinations of the above dimensions of variation into a standard form. As noted at the bottom of the table, the income components may be divided into two sets, <i>N</i> and <i>H</i>, depending on whether the amount reported is \u2018final net\u2019 (<i>N<sub>i</sub></i>), or is in some other form (<i>G<sub>i</sub></i>, <i>XS<sub>i</sub></i>, <i>XT<sub>i</sub></i>, <i>XTS<sub>i</sub></i>, <i>H<sub>i</sub></i>) more directly convertible to the \u2018gross taxable\u2019 form <i>H<sub>i</sub></i>. For all forms other than \u2018final net\u2019 <i>N<sub>i</sub></i>, it is convenient to take \u2018gross taxable income\u2019 <i>H<sub>i</sub></i> as the standard target of the conversion:",
+                            "type": "paragraph"
+                        },
+                        {
+                            "id": "uequ3",
+                            "mathml": "<math><mrow><mo stretchy=\"false\">[</mo><msub><mi>G</mi><mi>i</mi></msub><mo>,</mo><mtext>\u2009</mtext><mtext>\u2009</mtext><msub><mi>H</mi><mi>i</mi></msub><mo>,</mo><mtext>\u2009</mtext><mtext>\u2009</mtext><mi>X</mi><msub><mi>S</mi><mi>i</mi></msub><mo>,</mo><mtext>\u2009</mtext><mtext>\u2009</mtext><mi>X</mi><mi>T</mi><msub><mi>S</mi><mi>i</mi></msub><mo>,</mo><mtext>\u2009</mtext><mi>X</mi><msub><mi>T</mi><mi>i</mi></msub><mo stretchy=\"false\">]</mo><mo>\u21d2</mo><msub><mi>H</mi><mi>i</mi></msub><mo>.</mo></mrow></math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "This conversion involves the component and country-specific functional relationships or schedules, namely <i>S<sub>i</sub></i> = <i>S<sub>i</sub></i>(<i>G<sub>i</sub></i>), for social insurance contributions, and <i>T<sub>i</sub></i> = <i>T<sub>i</sub></i>(<i>H<sub>i</sub></i>), for tax retention at source.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "As noted, tax retentions at source may be according to fixed schedules, or according to arrangements determined at the individual (micro) level. In a majority of the cases, <i>H<sub>i</sub></i> can be determined directly from the collected amount, for instance from gross amount (<i>G<sub>i</sub></i>) reported for an income component <i>i</i> subject to social insurance contributions, we have: <i>H<sub>i</sub></i> = <i>G<sub>i</sub></i> \u2212 <i>S<sub>i</sub></i>(<i>G<sub>i</sub></i>). In other cases, an iterative procedure may be required. However, generally the iteration is very simple and converges quickly. This is because by and large component-specific schedules apply to each component separately. There are no other parameters to be estimated. The need for numerical iteration arises simply from the fact that the unknown quantity to be determined (<i>H<sub>i</sub></i>) appears in an implicit equation.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The second panel of <a href=\"#table3\">Table 3</a> shows the relationship between <i>H<sub>i</sub></i> and the reported amount in the form \u2018final net\u2019 <i>N<sub>i</sub>.</i> Going from <i>N<sub>i</sub></i> to <i>H<sub>i</sub></i> in fact involves a double iterative loop. The inner loop of iteration is applied with an assumed value of the parameter \u2018tax rate\u2019 (<i>R</i>, as defined in <a href=\"#table1\">Table 1</a>). Once this has been done for every income component in the group (including over all individuals in the same tax unit), an outer iterative loop obtains a convergent value of this parameter which is common to all those components. The <i>N<sub>i</sub></i> to <i>H<sub>i</sub></i> conversion process is therefore considerably more complex. Furthermore, this complexity is substantially increased in the presence of missing data, where the modelling and imputation procedures will have to be applied interactively.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "table4",
+                                    "label": "Table 4",
+                                    "tables": [
+                                        "<table>\n<tbody>\n<tr>\n<td>&lt;graphic mime-subtype=\"tiff\" mimetype=\"image\" xlink:href=\"ijm-00044-tbl4.tif\"/&gt;</td>\n</tr>\n</tbody>\n</table>"
+                                    ],
+                                    "title": "Common structure of the iterative model",
+                                    "type": "table"
+                                }
+                            ],
+                            "type": "figure"
+                        }
+                    ],
+                    "id": "s3-5",
+                    "title": "Conversion routines",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "<a href=\"#table4\">Table 4</a> demonstrates the common structure of the iterative procedure. The procedure distinguishes between sets <i>H</i> and <i>N</i> as defined in <a href=\"#table3\">Table 3</a>, and may be applied as follows. The required <i>H<sub>i</sub></i> quantities for set <i>H</i> are computed (only once) using <a href=\"#table3\">Table 3</a>, and form an input into the iterative cycle for parameter <i>R</i> required for set N. The parameter is best estimated by using information on all income components from both the sets.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The net-to-gross iterative procedure can be affected by two common problems in microsimulation modelling: non-convergence and multiple-convergence.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "By non-convergence we mean that starting from a net value, the procedure is not able to find any gross value. This may be because no gross value exists as a result of some peculiarities of the data, tax-benefit rules, or hypotheses made concerning deductions or tax credits which cannot be calculated from available data or rules. Alternatively, this may happen when in principle a solution exists but the SAS routine does not converge to the solution in an \u2018acceptable\u2019 number of iterations. In SM2 SAS routines, this problem is dealt with as follows. The system finds a gross value the net corresponding to which is the closest to the given net value. Then the ratio (given / computed) net for each component is used to adjust its computed gross proportionately. The adjusted gross value can be taken to correspond to the given net amount. The adjustment required is usually very small.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "For identifying the problem of multiple convergence, the SAS routine introduces small random perturbations in the computed \u2018tax rate\u2019 R in order to identify whether it is a \u2018local convergence\u2019, i.e. whether there exist multiple values of gross which correspond to exactly the same given net value. If the problem of multiple convergence is identified, some judgemental (\u2018reasonable\u2019) criteria have to be used to select a particular solution.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s3-6",
+                    "title": "Iterative procedure",
+                    "type": "section"
+                }
+            ],
+            "id": "s3",
+            "title": "The core iterative procedure: Net-to-gross conversion",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "A remarkable feature of SM2 is that by appropriately defining certain \u2018special deductions\u2019 and tax credits, many special features and complexities of different tax regimes can be incorporated into the standardised procedures described in the previous section without altering them in any way.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Deductions refer to the part of gross taxable income which is tax exempt. As noted, these deductions may be component-specific, or may be common deductions which apply to taxable income as a whole. Initial tax due is computed as a function of total net taxable income. This tax liability is normally reduced by tax credits. Again, these may be component-specific, or may be common credits which apply to the initial tax due as a whole. In addition to these \u2018normal\u2019 deductions and tax credits, we can define \u2018special\u2019 component-specific deductions and tax credits to accommodate variations in the form in which the component is taxed without altering any other aspect of model specification. <a href=\"#table5\">Table 5</a> lists a number of such possibilities. In fact, it covers all the situations we have encountered in the diverse fiscal systems of various EU countries, notably those of France, Italy and Spain for which we have developed detailed applications of SM2.",
+                    "type": "paragraph"
+                },
+                {
+                    "assets": [
+                        {
+                            "footnotes": [
+                                {
+                                    "text": [
+                                        {
+                                            "text": "Different forms may apply to cases like 3, 4 and 7: for instance the tax rate being a more general function of the amount of income involved for the component concerned.",
+                                            "type": "paragraph"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "id": "table5",
+                            "label": "Table 5",
+                            "tables": [
+                                "<table>\n<thead>\n<tr>\n<th colspan=\"2\">Form of taxation of component i</th>\n<th>Special deduction</th>\n<th>Special tax credit</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>1</td>\n<td>Tax exempt</td>\n<td><i>D<sub>i</sub></i> = <i>H<sub>i</sub></i></td>\n<td>\u2212</td>\n</tr>\n<tr>\n<td>2</td>\n<td>Taxed at flat rate f<sub>i</sub></td>\n<td><i>D<sub>i</sub></i> = <i>H<sub>i</sub></i></td>\n<td><i>C<sub>i</sub></i> = <i>\u2212f<sub>i</sub></i> \u00d7 <i>H<sub>i</sub></i></td>\n</tr>\n<tr>\n<td>3</td>\n<td>Tax-exempt at flat rate f<sub>i</sub></td>\n<td>\u2212</td>\n<td><i>C<sub>i</sub></i> = <i>+f<sub>i</sub></i> \u00d7 <i>H<sub>i</sub></i></td>\n</tr>\n<tr>\n<td>4</td>\n<td>Deductions for expenses</td>\n<td>+ common deductions</td>\n<td>\u2212</td></tr>\n<tr>\n<td>5</td>\n<td>Tax credit for expenses</td>\n<td>\u2212</td>\n<td>+ common tax credits</td>\n</tr>\n<tr>\n<td>6</td>\n<td>Special tax not related to income</td>\n<td>\u2212</td>\n<td>\u2212 common tax credits</td></tr>\n<tr>\n<td>7</td>\n<td>Double taxation at flat rate f<sub>i</sub></td>\n<td>\u2212</td>\n<td>C<sub>i</sub> = \u2212<i>f<sub>i</sub></i> \u00d7 <i>H<sub>i</sub></i></td>\n</tr>\n<tr>\n<td>8</td>\n<td>Part \u0394S<sub>i</sub> of social insurance contributions subject to tax</td>\n<td>\u2212\u0394<i>S<sub>i</sub></i></td>\n<td>\u2212</td>\n</tr></tbody></table>"
+                            ],
+                            "title": "Examples of special deductions and tax credits",
+                            "type": "table"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "text": "Consider for instance the common situation with one component (such as family benefits) tax exempt, and the remaining components pooled together and subject to a common tax regime (row 1 of <a href=\"#table5\">Table 5</a>). By simply specifying \u2018special deduction\u2019 for the tax exempt component as <i>D<sub>i</sub></i> = <i>H<sub>i</sub></i>, i.e. the same as its gross taxable amount, we automatically retain its tax-exempt nature and it is no more necessary to separate it from rest of the pool. It makes no contribution to the total net taxable income, and its original gross taxable income appears automatically as a part of the final net income. Similarly, if a component is taxed at a flat rate (say <i>f<sub>i</sub></i>) separately from the pool (row 2), we can simply specify its \u2018special deduction\u2019 as <i>D<sub>i</sub></i> = <i>H<sub>i</sub></i>, and its \u2018special tax credit\u2019 as a <i>negative</i> quantity <i>C<sub>i</sub></i> = \u2013<i>f<sub>i</sub></i> \u00d7 <i>H<sub>i</sub></i>. It makes no contribution to the tax liability of the pool, but the final tax liability is automatically increased by the appropriate amount. Again, no other treatment separate from the pool is required for this component.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The situation in the case of a component tax-exempt at a flat rate is just the opposite (row 3). Deductions for expenses can be specified as common deductions applicable to the total income i. e. not associated with any specific income component (row 4), and similarly for tax credits for expenses (row 5). Sometimes components are subject to \u2018double\u2019 taxation. For example, in Italy self-employment income is liable to income tax as a part of the total income in the normal way, and also to an additional tax (\u2018IRAP\u2019) at a rate depending only on the component concerned. This complexity is easily handled as shown in row 7.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The last case (row 8) is an important one, as it handles a special and complicating factor in the treatment of social insurance contributions, which themselves are subject to tax, as in France for instance. By specifying the taxable part of social insurance contributions as <i>negative deductions</i> from (i.e. in effect as additions to) gross taxable income (<i>H<sub>i</sub></i> = <i>G<sub>i</sub></i> \u2212 <i>S<sub>i</sub></i>), the net taxable income (the amount actually subject to tax) is augmented by the taxable part of the social insurance contribution, say \u0394<i>S<sub>i</sub></i>: <i>Y<sub>i</sub></i> = <i>H<sub>i</sub></i> + \u0394<i>S<sub>i</sub></i>. No further special treatment of this feature of the system is required in the model, despite the complexity and unusual nature of this feature.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s4",
+            "title": "Special deductions and tax credits: A device to treat diversity",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "By way of illustration, this section describes the use of the SM2 model to construction of EU-SILC target variables on income for elements of the Italian fiscal system, and implemented for the reference year 2003. Applications have also been developed for other countries. The essentials of the national systems in terms of main components of income, tax and social insurance contributions will be described below in <a href=\"#table6\">Table 6</a> for Italy. Similar tables for Spain and France are provided in the appendix (<a href=\"#tableA1\">Tables A.1</a> and <a href=\"#tableA2\">A.2</a>). There we also note briefly some features of these countries\u2019 fiscal systems that appear particularly difficult to model in principle, but are handled in a relatively straightforward way within SM2 structure. See also comments in <a href=\"#s4\">Section 4</a>.",
+                    "type": "paragraph"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "<a href=\"#table6\">Table 6</a> summarises the main income components and shows whether or not they are liable to social insurance contributions and income tax in the Italian system. The table depicts the relationship between gross income, net income and the structure of the fiscal system.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Income from work (employment and self-employment) is subject to social insurance contributions, determined as a function of <i>gross income</i> (<i>G<sub>i</sub></i>). These contributions are subtracted from gross income to obtain the <i>gross taxable income.</i> Social insurance contributions are not liable to income taxation, IRPEF. The only exception is the non-compulsory social insurance, which is taxed.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The main Italian income tax (IRPEF) is computed by applying marginal progressive rates to increasing income brackets. Most types of income are pooled together for this purpose. Self-Employment income is <i>additionally</i> subject to a special tax IRAP, determined as a function of gross taxable income from self-employment. As explained in <a href=\"#s4\">Section 4</a>, such \u2018double taxation\u2019 is handled in our model by simply treating it as a \u2018negative tax credit\u2019; it is for this reason that this additional tax on self-employment income is shown in the last column of the table under \u2018component-specific tax credits\u2019.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "footnotes": [
+                                        {
+                                            "id": "tfn3",
+                                            "label": "a",
+                                            "text": [
+                                                {
+                                                    "text": "Above a certain limit and if it not taxed at source",
+                                                    "type": "paragraph"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "id": "tfn4",
+                                            "label": "b",
+                                            "text": [
+                                                {
+                                                    "text": "Additional tax on self-employment income (IRAP, Tax on income from production activities). f(..) stands for \"a function of\"",
+                                                    "type": "paragraph"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "id": "tfn5",
+                                            "label": "c",
+                                            "text": [
+                                                {
+                                                    "text": "On total cadastral and on 85% of the rental income",
+                                                    "type": "paragraph"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "id": "tfn6",
+                                            "label": "d",
+                                            "text": [
+                                                {
+                                                    "text": "Part of the benefits may be taxable",
+                                                    "type": "paragraph"
+                                                }
+                                            ]
+                                        }
+                                    ],
+                                    "id": "table6",
+                                    "label": "Table 6",
+                                    "tables": [
+                                        "<table>\n<thead>\n<tr>\n<th rowspan=\"2\">N</th>\n<th rowspan=\"2\">Income Components</th>\n<th rowspan=\"2\">Social Insurance Contributions (<i>Si</i>)</th>\n<th rowspan=\"2\">Tax</th>\n<th rowspan=\"2\">Included in common pool</th>\n<th colspan=\"2\">Component-specific</th>\n</tr>\n<tr>\n<th>Deduction (<i>D<sub>i</sub></i>)</th>\n<th>Tax Credits (<i>C<sub>i</sub></i>)<sup><a href=\"#tfn5\">c</a></sup></th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>1</td>\n<td>Employment income</td>\n<td>Employer\u2019s <i>S</i><sub>0</sub>(<i>G</i><sub>1</sub>)<br/>Employer\u2019s <i>S</i><sub>0</sub>(<i>G</i><sub>1</sub>)</td>\n<td>IRPEF <sup><a href=\"#tfn3\">a</a></sup></td>\n<td>X</td>\n<td><i>D</i><sub>1</sub>(<i>Y</i><sub>1</sub>)</td>\n<td/>\n</tr>\n<tr>\n<td>2</td>\n<td>Self-employment income</td>\n<td><i>S<sub>2</sub></i>(<i>G</i><sub>2</sub>)</td>\n<td>IRPEF</td>\n<td>X</td>\n<td><i>D</i><sub>2</sub>(<i>Y</i><sub>2</sub>)</td>\n<td>\u2212<i>f</i><sub>2</sub>(<i>H</i><sub>2</sub>) IRAP <sup><a href=\"#tfn6\">d</a></sup></td>\n</tr>\n<tr>\n<td>3</td>\n<td>Pensions</td>\n<td/>\n<td>IRPEF</td>\n<td>X</td>\n<td><i>D</i><sub>3</sub>(<i>Y</i><sub>3</sub>)</td>\n<td/>\n</tr>\n<tr><td>4</td>\n<td>Non-financial capital income</td>\n<td/>\n<td>IRPEF</td>\n<td>X</td>\n<td/>\n<td/>\n</tr>\n<tr>\n<td>5</td>\n<td>Property (rental and cadastral) income</td>\n<td/>\n<td>IRPEF <sup><a href=\"#tfn5\">c</a></sup></td>\n<td>X</td>\n<td/>\n<td/>\n</tr>\n<tr>\n<td rowspan=\"2\">6</td>\n<td>Financial Capital income</td>\n<td/>\n<td>Taxed at source (flat rate <i>K</i><sub>6</sub>)</td>\n<td/>\n<td><i>H</i><sub>6</sub></td>\n<td>\u2212<i>K</i><sub>6</sub> \u00d7 <i>H</i><sub>6</sub></td>\n</tr>\n<tr>\n<td>Education related benefits, Unemployment benefits</td>\n<td/>\n<td>IRPEF</td>\n<td>X</td>\n<td/>\n<td/>\n</tr>\n<tr>\n<td>7</td>\n<td>Family benefits, Sickness invalidity benefits <sup><a href=\"#tfn6\">d</a></sup>, Housing allowances, Any other personal benefits.</td>\n<td/>\n<td>Tax exempt</td>\n<td/>\n<td><i>H</i><sub>7</sub></td>\n<td/>\n</tr>\n<tr>\n<td colspan=\"7\"><i>Assets</i></td>\n</tr>\n<tr>\n<td>8</td>\n<td>Property value</td>\n<td/>\n<td>ICI (on value of real estate)</td>\n<td/><td/>\n<td>\u2212<i>f</i><sub>8</sub>(value)</td>\n</tr>\n</tbody>\n</table>"
+                                    ],
+                                    "title": "Main components of income, and tax and social insurance deductions in the Italian fiscal system (year 2003)",
+                                    "type": "table"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "text": "Financial capital income is not subject to IRPEF but is taxed at source at a flat rate, which can again be specified as a negative \u2018component- specific tax credit\u2019 in our model. Special tax on property assets is handled in a similar way. Components which are not subject to the common IRPEF are removed from the common pool by simply specifying their \u2018component-specific deductions\u2019 as equal to the component\u2019s total gross taxable income (so that their resulting contribution to <i>net taxable income</i> is automatically zero). This applies to financial capital income and to tax-exempt benefits.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "A brief description of the different kind of income follows.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The employment income (wages and salaries) is earned by dependent workers \u2013 it is liable to social insurance contributions (paid both by the employers and the employee) and to income taxation, IRPEF. The self employment income is earned by non-dependent workers \u2013 it is liable to social insurance contributions and income taxation, IRPEF. Pensions are treated in the same way as the employees\u2019 income, but they are liable only to income taxation (IRPEF) and not to social insurance contributions. The non-Financial Capital Income includes share dividends, and is liable to income taxation (IRPEF). The property income includes income earned from the possession of lands and buildings which are registered in the cadastral register. It is made up of rental and cadastral income. The tax base includes imputed income from owner occupied housing, income from letting or sub-letting, and other income from real estate property. Of rental income 85% is liable to IRPEF. When real estate property does not produce rental income, it is still taxed as cadastral income. Financial capital income includes mortgage, interest on deposits and accounts, bonds yields, complementary income from pensions and insurance, etc. It is subject to tax withholding at source at some flat rate.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Education related benefits are liable to income taxation IRPEF, the only exception are the university grants. They are not liable to social insurance contribution. Unemployment benefits are treated like employee\u2019s income, they are liable to income taxation, IRPEF but not to social insurance contribution. Family benefits are not liable to social insurance contribution or income taxation. Family allowance is given to the head of the household provided that he/she is a dependent worker or pensioner and that wage or pension earnings are the main component (greater than 70%) of the total household taxable income. Their amount varies according to the level and composition of household income, and according to the presence or not of both parents. Housing allowances and any other personal benefits are not liable to social insurance contribution or income taxation. Sickness invalidity benefits are not liable to social insurance contribution but can be liable to income taxation. It depends on the institution which allocates them. If the disability is due to a work accident, the benefit is paid out by INAIL (Italian Workers\u2019 Compensation Authority) and it is not liable to taxation. Otherwise the pension is paid by INPS (National Institute of Social Security) and it is liable to IRPEF. Finally, the property value is based on the cadastral value of the real estate. It is liable to a tax on wealth called ICI (Local Property Tax). In the SM2 incomes that are not considered in the income taxation are severance pay, income from main house, arrears subject to separate taxation, and the amount of pension needed to top-up a certain threshold.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s5-1",
+                    "title": "Income components",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "Social insurance contributions on income from employment and self-employment in the Italian fiscal system are determined taking into account many different characteristics of the individual and the family and work situation. It is not possible (nor useful) to enumerate those details in this paper, except to note a few salient points. These details are of course taken into account in the \u2018country-specific\u2019 routines of SM2 to the maximum extent possible, limited only by the type of information available for Italy in the data source such as ECHP or EU-SILC.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Since the incidence of contributions on earned income is different according to the type of income, occupational status and sector of activity, the model identifies their different characteristics. Employers\u2019 and employees\u2019 social insurance contributions are levied on <i>gross earnings from wages<a href=\"#fn5\"><sup>5</sup></a>.</i> For dependent workers there is a minimum and maximum amount of contribution to be paid. These two limits do not depend on earned income, but depend on firm size, sector of activity and occupational status. The social insurance contribution to be paid for self-employed workers is divided into three categories: that for general self-employed (i.e. craftsmen or workers in commerce), agricultural self-employed, and professional persons. The social insurance contribution rates are different in these categories and depend also on the age of the worker. There is also a common minimum and maximum base of contribution.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "A special category of status in employment needs to be taken into account in Italy. This is the status of the \u2018co-ordinated and continuative collaborator\u2019, <i>CoCoCo.</i> This status, intermediate between dependent and independent employment, is likely to increase in importance in Italy. Actually the <i>CoCoCo</i> are self-employed, but because of their particular treatment in the Italian fiscal system, their position is not clear. The income produced by these collaborators is treated as employee\u2019s income and, for this reason, the social insurance contributions are also paid by the employer. These contributions are, however, much lower than the normal ones for employees.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s5-2",
+                    "title": "Social security contributions",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "In the SM2 net taxable income is obtained by subtracting from gross taxable income some deductible expenses: some medical expenses; alimony; donations to religious institutions; and so on.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "There is no survey information on these deductible expenses, which vary from household to household according to preferences and medical conditions. In order to have actual deduction values, Euromod Country Report on Italy (<a href=\"#bib6\">Euromod, 2004</a>, Table 19), has been used in SM2 to provide an empirical basis for estimating the deduction rate as a parametric function of the logarithm of the income.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s5-3",
+                    "title": "Deductible expenses",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "In the Italian fiscal system taxation is levied at individual level or at the level of family nucleus. In particular, we have the following two types of tax units in a household:",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "<i>Family Unit -</i> includes the head of household and all dependent persons. The essential condition defining members of the household as dependent is that their income does not exceed a certain threshold. The income considered for tax purposes is only the income of the head of household; any income received by dependent persons is effectively tax exempt (i.e., is not pooled with that of the head of household for the purpose of tax assessment).",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "<i>Individuals</i> \u2013 who are part of the family, who are not dependent persons and declare their income separately. Each such person forms a separate tax unit.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The income of the Family Unit is the base for the calculation of the incidence of deductions and the eligibility for tax credits and family allowance. For all other persons who are members of the household but are not dependents, deductions and benefits apply at the individual level since they are taxed separately.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s5-4",
+                    "title": "Tax units",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "The main Italian income tax is IRPEF (Tax on Income of Individuals). There is no obligation to fill in the tax return under certain conditions. In any case, a person is obliged to make a tax return if he/she wants to claim deductions, tax credits or rebate of taxes already paid (at source or the previous year). The amount of gross income tax is determined by summing up IRPEF, <i>Additional Regional</i> IRPEF and <i>Additional Municipal</i> IRPEF. All residents who receive income, even if not in Italy, are subjected to IRPEF. The IRPEF tax is obtained by applying marginal progressive rates to the increasing income brackets. There are some typologies of income that, because of their characteristics of being either lump sum (<i>una tantum</i>) or of a special nature (concerning more than one fiscal year), are not subjected to income taxation (IRPEF) but to a different type of tax. An example is severance pay.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Capital income is composed of four different categories: dividends from shares, interest on bank account and other short-term investments, interest on private or government bonds, and gains on time contracts. All these categories are taxed in different ways. The IRAP represents tax on productive activity collected at a regional level. It is the main regional tax, and the first important example of administrative devolution in the Italian system. The IRAP tax is calculated as a percentage of self-employment income according to the typology of productive activities. In effect, IRAP amounts to \u2018double taxation\u2019 on self-employment income, which is also subject to IRPEF.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s5-5",
+                    "title": "Income taxation",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "Tax credits are subtracted from gross income tax to obtain the value of net income tax to be paid. In the Italian fiscal system, there are different kinds of tax credits, some general ones depending on the household composition (tax credit for dependent spouse, children, and other dependent persons), and other component-specific depending on the income received (tax credit for dependent workers, pensioners and self-employed). In Italy some tax credits are also based on consumption expenditure on several categories of goods (e.g. medical expenses). In order to estimate those tax credits, information on the level and composition of consumption of households is needed. It has been necessary to use external sources to obtain such information.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s5-6",
+                    "title": "Tax credits",
+                    "type": "section"
+                }
+            ],
+            "id": "s5",
+            "title": "A description of the italian fiscal system",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "In Italy the new EU-SILC survey was conducted for the first time in 2004: 24,270 households and 61,542 individuals were interviewed. The new survey replaced the ECHP (European Community Households Panel) survey as the main reference source at EU level for comparative statistics on income distribution and social exclusion.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "For the net-gross conversion of EU-SILC income target variables, ISTAT decided to test the application of the SM2 model using the new survey data and to experiment with some methodological innovations based on the ISTAT experience in using both administrative data and sample survey data. The development of the SM2-EU-SILC for Italy required through revision and update of the existing ECHP-based SM2, developed by Verma, Betti and co-researchers as reported in <a href=\"#bib7\">Eurostat (2004)</a>. For one thing, EU-SILC collects additional relevant variables, and the model had to be extended to incorporate them.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Particular attention has been paid in the construction of the tax units for the estimation of tax credits for dependent persons. The tax credits for dependent relatives establish a connection between the household members; as mentioned previously, two types of tax units can be found in a household \u2013 a \u2018family unit\u2019 and the \u2018individual\u2019. To identify these two types of tax units at the household level, the \u2018family procedure\u2019 used in ISTAT social surveys was applied. The procedure allows the construction of family relationships in the households the identification of dependent persons.",
+                    "type": "paragraph"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "The quality of the microsimulation results and their international comparability depend on the detail of the tax system incorporated in the model, and above all on the quality of input data. The production of net and gross income microdata derived from the same sample survey is an important innovation for Italy. Two aspects contributed to the new EU-SILC-based application being a major enhancement of the previous ECHP- based SM2.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "<i>Data improvement:</i>",
+                            "type": "paragraph"
+                        },
+                        {
+                            "items": [
+                                [
+                                    {
+                                        "text": "a better estimation of social security contribution of <i>CoCoCo</i> (co-ordinated and continuative collaborators);",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "a wider range of available data, for example concerning pension contributions to private entities, sickness and invalidity benefits, local property tax (ICI), etc;",
+                                        "type": "paragraph"
+                                    }
+                                ]
+                            ],
+                            "prefix": "bullet",
+                            "type": "list"
+                        },
+                        {
+                            "text": "<i>Methodological improvement:</i>",
+                            "type": "paragraph"
+                        },
+                        {
+                            "items": [
+                                [
+                                    {
+                                        "text": "tax credits and deductions estimated from tax returns instead of imputations;",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "possibilities of comparison of microsimulation results with administrative data.",
+                                        "type": "paragraph"
+                                    }
+                                ]
+                            ],
+                            "prefix": "bullet",
+                            "type": "list"
+                        },
+                        {
+                            "text": "Since in Italy both survey and tax data are used for the estimation of employee income, selfemployed income and old age benefits for the EU-SILC target variables, administrative data are used as inputs to SM2 as exogenous information on tax credits and deductions. The calculation of income deductions and tax credits is based on consumption expenditure and the available administrative data derived from tax returns. Two relevant data sets are used for the record linkage: the \u2018UNICO tax returns\u2019 used by all the taxpayers and in particular by self-employed workers, and the \u2018730 tax returns\u2019 used by employees and pensioners. Through an exact matching of administrative and survey records, the two tax data sets are integrated with survey microdata so as to construct the needed income deduction and tax credit variables.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "This combined use of tax and survey data represents the most important methodological improvement in the SM2 implementation for Italy. Administrative data are used in the input file of the model instead of estimation by regression technique based on external sources. Moreover, the linkage with administrative data permits validation of microsimulation results. Of course, some problems can be expected in using tax and income data from administrative sources. The definition of taxable income or tax units in administrative sources can be different from that in surveys. In addition, the tax data derived from individual tax returns generally have an incomplete coverage of non-taxable income. Of course, register data cannot take account of tax evasion and tax avoidance. Some additional problems of inconsistency between survey and tax data can also be foreseen.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "In the case of Italy, combined use of tax and survey data seems by far to be the best approach. Using only the sample survey income in the microsimulation model is likely to involve an underestimation of gross and net incomes, and of taxes. Using only the tax data would involve a possible mismatch of income definitions and the problem of incomplete coverage of income, including as a result of tax evasion. Using both tax and survey microdata for the microsimulation has the advantage of reciprocal comparison and validation of data. Some problems could come up when income is reported in only one data source, and when the net survey income is larger than the gross tax income in tax records. The handling of these problems will be a priority objective in the further development of SM2 EU-SILC application for Italy.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "table7",
+                                    "label": "Table 7",
+                                    "tables": [
+                                        "<table>\n<thead>\n<tr>\n<th/>\n<th/>\n<th>Ratio net/gross</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td><i>6.1.1.1.1.1</i></td>\n<td><i>\u2009\u2009Income from work</i></td>\n<td>64.5</td>\n</tr>\n<tr>\n<td rowspan=\"3\">PY010</td>\n<td>employee cash or near cash income</td>\n<td>85.9</td>\n</tr>\n<tr>\n<td>employer\u2019s SI contribution</td>\n<td/>\n</tr>\n<tr>\n<td>employee\u2019s SI contribution</td>\n<td/>\n</tr>\n<tr>\n<td rowspan=\"2\">PY050</td>\n<td>cash benefits or losses from self-employment</td>\n<td>76.3</td>\n</tr>\n<tr>\n<td>Self-employed SI contribution</td>\n<td/>\n</tr>\n<tr>\n<td><i>6.1.1.1.1.2</i></td>\n<td><i>\u2009\u2009Property income</i></td>\n<td>80.7</td></tr>\n<tr>\n<td>HY090</td>\n<td>interest, dividends, profit from capital investments in unincorporated business</td>\n<td>81.1</td>\n</tr>\n<tr>\n<td>HY040</td>\n<td>income from rental of a property or land</td>\n<td>80.2</td></tr>\n<tr>\n<td><i>6.1.1.1.1.3</i></td>\n<td>\u2009\u2009<i>Taxable benefits</i></td>\n<td>88.6</td>\n</tr>\n<tr>\n<td>PY090</td>\n<td>unemployment benefits</td>\n<td>92.5</td>\n</tr>\n<tr>\n<td>PY100</td>\n<td>old-age benefits</td>\n<td>88.7</td></tr>\n<tr>\n<td>PY110</td>\n<td>survivor\u2019 benefits</td>\n<td>87.9</td></tr>\n<tr>\n<td>PY130</td>\n<td>disability benefits</td>\n<td>90.2</td></tr>\n<tr>\n<td><i>6.1.1.1.1.4</i></td>\n<td>\u2009\u2009<i>Tax-exempt social transfers</i></td>\n<td>100.0</td>\n</tr>\n<tr>\n<td>PY140</td>\n<td>education-related allowances</td>\n<td>100.0</td>\n</tr>\n<tr>\n<td>HY050</td>\n<td>family related allowances</td>\n<td>100.0</td>\n</tr>\n<tr>\n<td>HY060</td>\n<td>social assistance</td>\n<td>100.0</td>\n</tr>\n<tr>\n<td>HY070</td>\n<td>housing allowances</td>\n<td>100.0</td>\n</tr>\n<tr>\n<td>HY080</td>\n<td>regular inter-household cash transfer received</td>\n<td>100.0</td>\n</tr>\n<tr>\n<td><b>Total</b></td>\n<td/>\n<td>71.3</td>\n</tr>\n</tbody>\n</table>"
+                                    ],
+                                    "title": "EU-SILC target variables: distribution of income by component",
+                                    "type": "table"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "text": "At this stage, Italy SM2 should be considered as a work in progress. The next steps should introduce into the model procedures for the calculation of severance pay and the local property tax (ICI), which are not available in the application so far. The model should also account for the tax relief or the preferential tax regime that grants special benefits to some categories of employers (e.g. those with businesses in particular disadvantaged areas), and also improve the estimation of taxation on capital income of different types.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s6-1",
+                    "title": "Implementation of italy SM2-EU-SILC",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "The SM2 SAS routines for Italy have been used for all individuals or tax units receiving non-zero income during the calendar year 2003. Most income components, collected as net (<i>N</i>) or taxed at source (<i>X</i>), have been converted into taxable income form (<i>H</i>) and to gross form (<i>G</i>) through the simulation of social insurance contributions. All EU-SILC income target variables can be constructed on the basis of appropriate aggregation of such classification by component.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "<a href=\"#table7\">Table 7</a> shows the main EU-SILC target variables. Actually, the model provides a breakdown for gross income, net income and the net-to-gross ratio, though all of these are not included in the required target variables in EU-SILC. Because of differences in component-specific deductions and tax credits, and also in the social insurance contributions, the net/gross ratio varies by component.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The net-to-gross ratio is much lower for income from work (64.5%) than for other components. This results from the social insurance contributions to which such income is subject. Leaving aside the effect of social insurance contributions, the ratio of net-to-gross taxable income varies approximately from the low of 80.7% for property income, to 85.9% for work income, to 92.5% for various taxable benefits, and of course to 100% for housing, social assistance and other tax-exempt benefits. These results appear plausible, though external data are not at hand to validate the breakdown in detail by component.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "<a href=\"#table8\">Table 8</a> shows the breakdown of total gross income into total net, social insurance, and tax amounts. According to SM2 estimates, net income, after tax and social insurance contributions including employers\u2019 contributions, accounts for 71.3% of total gross. The table also shows comparison with figures published by ISTAT. The agreement is very good (with less than one percentage point difference in the net/gross ratio for the two sources); the SM2 can indeed be considered very satisfactory. Employers\u2019 social insurance contributions are a little underestimated in SM2 compared with the ISTAT figures, while taxes and employee and selfemployed contributions are somewhat overestimated.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s6-2",
+                    "title": "Results of the SM2 model",
+                    "type": "section"
+                }
+            ],
+            "id": "s6",
+            "title": "The development of italy SM2-EU-SILC",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "The Siena Microsimulation Model (SM2) has been developed to meet a very practical need in a systematic and efficient manner. In interview surveys collecting information on household and personal income, the respondents may report income amounts as gross or net of taxes and other deductions. The data must be made homogenous before use for analysis, especially comparisons across population groups and countries. SM2 provides a robust and convenient procedure for this purpose. Starting from data on household and personal income given in different forms, and on the basis of the prevailing tax regime in a country, the SAS routines of the model are designed to estimate full information on income by component, with a breakdown of gross amounts into taxes, social insurance contributions of various types, and net income.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "There are at least three main \u2018clients\u2019 or potential users of this model.",
+                    "type": "paragraph"
+                },
+                {
+                    "assets": [
+                        {
+                            "footnotes": [
+                                {
+                                    "text": [
+                                        {
+                                            "text": "<i>Sources:</i> ISTAT: National Accounts (2003); SM2: Model run using Italy EU SILC Wave 1 (2003) as input",
+                                            "type": "paragraph"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "id": "table8",
+                            "label": "Table 8",
+                            "tables": [
+                                "<table>\n<thead>\n<tr>\n<th/>\n<th>SM2</th>\n<th>ISTAT</th>\n<th>Error (% point)</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>Gross including SI</td>\n<td>100.0</td>\n<td>100.0</td>\n<td/>\n</tr>\n<tr>\n<td>SI contributions</td>\n<td>15.9</td>\n<td>15.7</td>\n<td>0.2</td></tr>\n<tr>\n<td>\u2212 Employers\u2019 contribution</td>\n<td>9.9</td>\n<td>11.4</td>\n<td>\u22121.5</td></tr>\n<tr>\n<td>\u2212 Employees\u2019 contribution</td>\n<td>3.5</td>\n<td>2.8</td>\n<td>0.7</td></tr>\n<tr>\n<td>\u2212 Self -employment contribution</td>\n<td>2.5</td>\n<td>1.6</td>\n<td>0.9</td></tr>\n<tr>\n<td>Gross taxable</td>\n<td>84.1</td>\n<td>84.3</td>\n<td>\u22120.2</td></tr>\n<tr>\n<td>Personal income tax and financial tax</td>\n<td>12.8</td>\n<td>12.0</td>\n<td>0.8</td></tr>\n<tr>\n<td>Net income</td>\n<td>71.3</td>\n<td>72.2</td>\n<td>\u22120.9</td></tr>\n</tbody>\n</table>"
+                            ],
+                            "title": "Comparison with external sources: distribution of total gross income",
+                            "type": "table"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "text": "First potential users are the more general microsimulation models. Such models are widely used as an integral part of the policy-making process in tax and social policy areas, and over the past three decades, microsimulation has moved from the description of the distributional impact of the existing tax and transfer systems to a more complex tool for assessing the different impact of alternatives proposal for changing existing systems. The primary objective of these models is to provide, on the basis of specific micro-datasets incorporated into the system, a comprehensive facility for simulation of the effect of varying parameters of the tax-benefit system on the disposable income received by various segments of the population. Simulation of taxes and benefits under different regimes (fiscal policy options) also forms an output of the system. Such models involving tax-benefit simulation require very detailed and standardised information on household and personal income by component. The logic of such modelling essentially requires household income components in the gross form as <i>inputs</i> which are used to produce corresponding net amounts under the assumed tax-benefit system as <i>outputs.</i> In practice, however, generally the required input data are not available in a homogeneous gross form, especially when they come from interview surveys. The required data transformation can of course be done on an ad hoc basis, but it is more efficient, convenient and comparable to develop systematic procedures and tools for the purpose.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Consequently, given its specific purpose of estimating full information on income by component in both gross and net forms from empirical data, SM2 is not meant to be an alternative to general tax-benefit simulation models, but as a complementary tool which those models can usefully exploit. Of course SM2 itself is a microsimulation model. However, the microsimulation involved in SM2 has certain special aspects, which make SM2 somewhat unique. On the one hand, it is limited to a fixed tax-benefit regime \u2013 the one that actually exists, under which the available income amounts in different forms have been generated. On the other hand, it does not expect inputs in a homogeneous form but generates income amounts in both gross and net forms as outputs.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The need for gross-net transformation of course goes well beyond the specific context of microsimulation modelling. The second important clients of the model are Eurostat and the countries participating in EU Statistics on Income and Living Conditions (EU-SILC) project. As noted, the immediate context for the development of SM2 has been certain specific requirements of EU-SILC. The need arises from the fact that, while the source, type and form of input information varies across and even within countries, the output required at the European level has to be comparable and standardised. The information which can be collected is limited to particular forms because of limitations of the sources providing it. For instance in some countries, especially those with income registers, all income components are available in the gross forms; by contrast in many other countries, in particular in southern Europe, generally net received amounts only can be provided by the survey respondents. However, the information is required as a standard set of \u2018target variables\u2019 involving both gross and net forms from all countries participating in EU-SILC. SM2 is specifically designed to meet this requirement. Furthermore, the model has flexibility to deal with an annual flux of data in different forms across and within countries and also with periodic changes in the national tax systems, which a longitudinal data source such as EU-SILC must deal with. Hitherto, SM2 has been implemented for constructing EU-SILC target variables by National Statistical Institutes of Greece and, as described in this paper, Italy; moreover, Portugal (<a href=\"#bib13\">Rodrigues, 2007</a>) and Spain have utilised procedures on the lines of SM2 (in the sense of using aspects of the SM2 logic and structure but developing country-specific software for implementation). Earlier, implementations using ECHP data were developed for Italy, France and Spain. It can be expected that, with the EU countries having to deliver to Eurostat microdata on household income components in the standard gross form (which became mandatory from 2007, EU-SILC wave 4), the need and opportunities for the use of SM2 are likely to expand further. Moreover, EU-SILC data are becoming available to a very wide body of researchers, including those engaged in tax-benefit simulations. Some of those may wish to use SM2 independently to generate more complete series of household income components in net and gross forms.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Hence the third important client of SM2 is international comparative social research, whether for policy or academic purposes. Diverse academic and policy research may require income components in both net and gross forms in greater detail. As emphasised in this paper, SM2 is designed at the outset for multi-country application, as a flexible tool which is portable to the maximum extent possible across countries despite great differences in fiscal systems. As noted in <a href=\"#s4\">Section 4</a>, a distinguishing feature of SM2 is that it can handle diverse tax-benefit regimes using a common logic and a standard set of procedures making it particularly useful for multicountry comparative application.<a href=\"#fn6\"><sup>6</sup></a> Reflecting this, the system is designed such that its core consists of a standardised set of routines which can handle a great diversity of input data forms and national tax systems. Country-specific routines are required to specify parameters of the national tax system in an appropriately standardised form; they also standardise the input data format. These, then, form inputs to the central core of the system designed to generate the required standardised outputs. The system has been developed to maintain a clear distinction between the common and the country-specific parts, and even more importantly, to maximise the part which can be standardised. This feature makes the system an appropriate and convenient tool for multi-country application.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "As an illustration of all these three aspects appearing in conjunction, let us consider in conclusion the potential use of SM2 for Euromod already referred to. At European level, the increasing need for cross-country comparison has led to the development of Euromod, an integrated multi-country model for the European Union implemented by a consortium of teams in 15 countries (currently being extended to 4 of the New Member States) for policy simulation. Euromod is a static tax-benefit microsimulation model that provides estimates of the distributional effects of national or European level changes in social and fiscal policy. EU-SILC now forms the reference source for Euromod at European level. Before the introduction of this reference, microdata from different sources were used, requiring a lot of efforts for harmonising national sources and for transforming available data into the required model database. One of the main advantage of using EU-SILC is that it potentially provides the microdata for policy simulation for all EU and closely related countries, and does so with increased comparability across countries (<a href=\"#bib8\">Figari <i>et al.</i>, 2007</a>).<a href=\"#fn7\"><sup>7</sup></a> In order to maintain and even enhance this comparability, it is highly desirable that uniform net-to-gross conversion procedures are followed, and if possible to even avoid country-specific development of net-to gross conversion procedures. Clearly, the development and implementation of SM2 for countries where necessary would help in the harmonisation of the conversion procedures, with advantages for national EU-SILC data bases, for tax-benefit modelling such as in the context of Euromod, and for the wider requirements of inter-country comparative research. An added but not-always-obvious practical advantage is that often it would be easier for individual countries to adapt and complete SM2 application than to develop their country-specific net-to-gross conversion procedures ad hoc.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s7",
+            "title": "Concluding remarks",
+            "type": "section"
+        }
+    ],
+    "references": [
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Atkinson, A B",
+                        "preferred": "A B Atkinson"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2005",
+            "details": "Euromod and the Development of EU Social Policy, DIW Discussion Paper 467, Berlin, DIW",
+            "id": "bib1",
+            "title": "Euromod and the Development of EU Social Policy, DIW Discussion Paper 467, Berlin, DIW",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Atkinson, A B",
+                        "preferred": "A B Atkinson"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Sutherland, H",
+                        "preferred": "H Sutherland"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "Tax Benefits Models",
+            "date": "1988",
+            "id": "bib2",
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "London"
+                        ]
+                    },
+                    "formatted": [
+                        "London"
+                    ]
+                },
+                "name": [
+                    "London School of Economics"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "articleTitle": "Statistical Imputation in Conjunction with Microsimulation of Income Data",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Betti, G",
+                        "preferred": "G Betti"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Verma, V",
+                        "preferred": "V Verma"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Ballini, F",
+                        "preferred": "F Ballini"
+                    },
+                    "type": "person"
+                }
+            ],
+            "authorsEtAl": true,
+            "date": "2003",
+            "id": "bib3",
+            "journal": "Rivista Italiana di Economia, Demografia e Statistica",
+            "pages": {
+                "first": "35",
+                "last": "43",
+                "range": "35\u201343"
+            },
+            "type": "journal",
+            "volume": "58"
+        },
+        {
+            "authors": [
+                {
+                    "name": "Euromod",
+                    "type": "group"
+                }
+            ],
+            "bookTitle": "Euromod: an integrated European benefits-tax model",
+            "date": "2001",
+            "id": "bib4",
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "University of Essex"
+                        ]
+                    },
+                    "formatted": [
+                        "University of Essex"
+                    ]
+                },
+                "name": [
+                    "ISER"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "authors": [
+                {
+                    "name": "Eurostat",
+                    "type": "group"
+                }
+            ],
+            "bookTitle": "Commission Regulation concerning EU-SILC as regards the list of primary target variables",
+            "date": "2002",
+            "id": "bib5",
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "Luxembourg"
+                        ]
+                    },
+                    "formatted": [
+                        "Luxembourg"
+                    ]
+                },
+                "name": [
+                    "European Commission"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "authors": [
+                {
+                    "name": "Euromod",
+                    "type": "group"
+                }
+            ],
+            "date": "2004",
+            "id": "bib6",
+            "title": "http://www.iser.essex.ac.uk/files/msu/emod/documentation/countries/italy/cr01it0904.pdf",
+            "type": "web",
+            "uri": "http://www.iser.essex.ac.uk/files/msu/emod/documentation/countries/italy/cr01it0904.pdf",
+            "website": "Euromod Country Report Italy (2001 Tax-Benefit System)"
+        },
+        {
+            "authors": [
+                {
+                    "name": "Eurostat",
+                    "type": "group"
+                }
+            ],
+            "conference": {
+                "name": [
+                    "EU-SILC 133/04, Working Group on Statistics on Income and Living Conditions (EU-SILC)"
+                ]
+            },
+            "date": "2004",
+            "id": "bib7",
+            "source": "Income in EU-SILC: Net-Gross-Net Conversion; Common Structure of the Model; Model Description; and Application to ECHP Data for France, Italy and Spain",
+            "title": "Income in EU-SILC: Net-Gross-Net Conversion; Common Structure of the Model; Model Description; and Application to ECHP Data for France, Italy and Spain",
+            "type": "conference-proceeding"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Figari, F",
+                        "preferred": "F Figari"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Levy, H",
+                        "preferred": "H Levy"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Sutherland, H",
+                        "preferred": "H Sutherland"
+                    },
+                    "type": "person"
+                }
+            ],
+            "chapterTitle": "Using the EU-SILC for policy simulation: prospects, some limitations and some suggestions",
+            "conference": {
+                "name": [
+                    "Comparative EU statistics on Income and Living Conditions: Issues and Challenges \u2013 Proceedings of the EU-SILC conference"
+                ]
+            },
+            "date": "2007",
+            "id": "bib8",
+            "pages": {
+                "first": "345",
+                "last": "373",
+                "range": "345\u2013373"
+            },
+            "type": "conference-proceeding"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Harding, A",
+                        "preferred": "A Harding"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "Dynamic microsimulation models: problems and prospects, Discussion paper",
+            "date": "1990",
+            "id": "bib9",
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "London"
+                        ]
+                    },
+                    "formatted": [
+                        "London"
+                    ]
+                },
+                "name": [
+                    "STICERD, London School of Economics"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "articleTitle": "The Role of Survey Data in Microsimulation Models for Social Policy Analysis",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Martini, A",
+                        "preferred": "A Martini"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Trivellato, U",
+                        "preferred": "U Trivellato"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1997",
+            "id": "bib10",
+            "journal": "LABOUR",
+            "pages": {
+                "first": "83",
+                "last": "112",
+                "range": "83\u2013112"
+            },
+            "type": "journal",
+            "volume": "11"
+        },
+        {
+            "bookTitle": "Microsimulation Modelling for Policy Analysis. Challenges and Innovations",
+            "date": "2000",
+            "editors": [
+                {
+                    "name": {
+                        "index": "Mitton, L",
+                        "preferred": "L Mitton"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Sutherland, H",
+                        "preferred": "H Sutherland"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Weeks, M",
+                        "preferred": "M Weeks"
+                    },
+                    "type": "person"
+                }
+            ],
+            "id": "bib11",
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "Cambridge"
+                        ]
+                    },
+                    "formatted": [
+                        "Cambridge"
+                    ]
+                },
+                "name": [
+                    "Cambridge University Press"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "authors": [
+                {
+                    "name": "National Statistical Service of Greece",
+                    "type": "group"
+                }
+            ],
+            "bookTitle": "Statistics on income and living conditions model: net gross income conversion, Report to Eurostat",
+            "date": "2007",
+            "id": "bib12",
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "Pireus"
+                        ]
+                    },
+                    "formatted": [
+                        "Pireus"
+                    ]
+                },
+                "name": [
+                    "NSSG"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Rodrigues, C F",
+                        "preferred": "C F Rodrigues"
+                    },
+                    "type": "person"
+                }
+            ],
+            "chapterTitle": "Income in EU-SILC \u2013 Net/Gross Techniques for Building and Using EU-SILC Databases",
+            "conference": {
+                "name": [
+                    "Proceedings of the EU-SILC conference"
+                ]
+            },
+            "date": "2007",
+            "id": "bib13",
+            "source": "Comparative EU Statistics on Income and Living Conditions: Issues and Challenges",
+            "title": "Comparative EU Statistics on Income and Living Conditions: Issues and Challenges",
+            "type": "conference-proceeding"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Sutherland, H",
+                        "preferred": "H Sutherland"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Figari, F",
+                        "preferred": "F Figari"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Lelkes, O",
+                        "preferred": "O Lelkes"
+                    },
+                    "type": "person"
+                }
+            ],
+            "authorsEtAl": true,
+            "bookTitle": "Improving the Capacity and Usability of Euromod \u2013 Final Report",
+            "date": "2008",
+            "id": "bib14",
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "University of Essex"
+                        ]
+                    },
+                    "formatted": [
+                        "University of Essex"
+                    ]
+                },
+                "name": [
+                    "ISER"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Sutherland, H",
+                        "preferred": "H Sutherland"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "Static microsimulation models in Europe: a survey",
+            "date": "1995",
+            "id": "bib15",
+            "publisher": {
+                "name": [
+                    "University of Cambridge"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Verma, V",
+                        "preferred": "V Verma"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Betti, G",
+                        "preferred": "G Betti"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Ballini, F",
+                        "preferred": "F Ballini"
+                    },
+                    "type": "person"
+                }
+            ],
+            "authorsEtAl": true,
+            "bookTitle": "Personal income in the gross and net forms: applications of the Siena Microsimulation Model (SM2)",
+            "date": "2003",
+            "id": "bib16",
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "Universita degli Studi di Padova"
+                        ]
+                    },
+                    "formatted": [
+                        "Universita degli Studi di Padova"
+                    ]
+                },
+                "name": [
+                    "Dipartimento di Scienze Statistiche"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Zaidi, A",
+                        "preferred": "A Zaidi"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Rake, K",
+                        "preferred": "K Rake"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "Dynamic Microsimulation Models: A Review and Some Lessons for SAGE",
+            "date": "2001",
+            "id": "bib17",
+            "publisher": {
+                "name": [
+                    "London School of Economics"
+                ]
+            },
+            "type": "book"
+        }
+    ],
+    "appendices": [
+        {
+            "content": [
+                {
+                    "assets": [
+                        {
+                            "footnotes": [
+                                {
+                                    "id": "tfn7",
+                                    "label": "a",
+                                    "text": [
+                                        {
+                                            "text": "All these components are taxed at source following the same rules as applied to employment income. The tax rate for deduction at source is determined on the basis of incomes from components 1\u20136, taken one at a time. By contrast, the final tax rate (IRPF) is determined on the basis of pooled income from all taxable components 1\u201310.",
+                                            "type": "paragraph"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "id": "tfn8",
+                                    "label": "b",
+                                    "text": [
+                                        {
+                                            "text": "Some benefits in these categories are tax exempt, e.g. when the individual is completely disabled, or receive sickness benefit due to HIV",
+                                            "type": "paragraph"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "id": "tfn9",
+                                    "label": "c",
+                                    "text": [
+                                        {
+                                            "text": "Taxed at source at the same rate as determined on the basis of (and applied to) employee\u2019s income.",
+                                            "type": "paragraph"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "id": "tfn10",
+                                    "label": "d",
+                                    "text": [
+                                        {
+                                            "text": "Taxed at source at a fixed (flat) rate, depending on the component concerned.",
+                                            "type": "paragraph"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "id": "tfn11",
+                                    "label": "e",
+                                    "text": [
+                                        {
+                                            "text": "Certain (in particular non-financial) forms of capital income are not subject to withholding at source. Also special or local withholding rates apply to some forms. Similarly, only a part of rental income is subject to withholding. <i>Assumption in the application using available data:</i> As it was not possible to distinguish between different forms of capital income, in our application to ECHP data all capital income was treated in a uniform way as financial capital income.",
+                                            "type": "paragraph"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "id": "tfn12",
+                                    "label": "f",
+                                    "text": [
+                                        {
+                                            "text": "Employee\u2019s \u2018gross income\u2019 (including tax and social insurance contributions of the employee), plus employer\u2019s social insurance contribution gives \u2018labour cost\u2019.",
+                                            "type": "paragraph"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "id": "tfn13",
+                                    "label": "g",
+                                    "text": [
+                                        {
+                                            "text": "<i>Assumption in the application using available data:</i> It was assumed that unemployment insurance contributions are made by all employees, but only during the time they are in employment. In reality, not all persons in employment may make this contribution because it is not obligatory. On the other hand, persons may continue to make this contribution also during any periods of unemployment. Such variations are not available in data such as ECHP at the micro-level.",
+                                            "type": "paragraph"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "id": "tableA1",
+                            "label": "Table A.1",
+                            "tables": [
+                                "<table>\n<thead>\n<tr>\n<th/>\n<th>Income component</th>\n<th>ECHP/SILC variable</th>\n<th>Social insurance contribution</th>\n<th>Taxed at source</th>\n<th>Tax-exempt</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>1</td>\n<td>Employees\u2019 income</td>\n<td>(PI1111/PY010), regular wage/salary earnings excluding lump-sum</td>\n<td>Employers\u2019 contribution <sup><a href=\"#tfn12\">f</a></sup> ; Employees contribution; Unemployment. Insurance. <sup><a href=\"#tfn13\">g</a></sup></td>\n<td>X <sup><a href=\"#tfn7\">a</a></sup></td>\n<td/>\n</tr>\n<tr>\n<td>2</td>\n<td>Unemployment benefits</td>\n<td>(PI131/PY090)</td>\n<td/>\n<td>X <sup><a href=\"#tfn7\">a</a></sup></td>\n<td/>\n</tr>\n<tr>\n<td>3</td>\n<td>Pensions</td>\n<td>(PI132/PY100 + PY110) includes old age and survivor\u2019s benefits (2 EU-SILC variables)</td> <td>X <sup><a href=\"#tfn7\">a</a></sup></td>\n<td/>\n<td/>\n</tr>\n<tr>\n<td>4</td>\n<td>Family related benefits</td>\n<td>(PI133/HY050)</td>\n<td/>\n<td>X <sup><a href=\"#tfn7\">a</a></sup></td>\n<td/>\n</tr>\n<tr>\n<td>5</td>\n<td>Sickness invalidity benefits</td>\n<td>(PI134/PY120 + PY130) (2 EU-SILC variables)</td>\n<td/>\n<td>X <sup><a href=\"#tfn7\">a</a></sup></td>\n<td>X <sup><a href=\"#tfn8\">b</a></sup></td>\n</tr>\n<tr>\n<td>6</td>\n<td>Other taxable personal benefits</td>\n<td>(PI136/PY150)</td>\n<td/>\n<td>X <sup><a href=\"#tfn7\">a</a></sup></td>\n<td/>\n</tr>\n<tr>\n<td colspan=\"6\"><i>Flat rate taxed withholding</i></td>\n</tr>\n<tr>\n<td>7</td>\n<td>Employees\u2019 lump-sum income</td>\n<td>(PI1112)</td>\n<td/>\n<td>X <sup><a href=\"#tfn9\">c</a></sup></td>\n<td/>\n</tr>\n<tr>\n<td>8</td>\n<td>Self-employment income</td>\n<td>(PI112/PY050)</td>\n<td>Self-employed social insurance</td>\n<td>X <sup><a href=\"#tfn10\">d</a></sup></td>\n<td/>\n</tr>\n<tr>\n<td>9</td>\n<td>Capital income</td>\n<td>includes both financial and non-financial capital income (PI121/HY090)</td>\n<td/>\n<td>X <sup><a href=\"#tfn10\">d</a>,<a href=\"#tfn11\">e</a></sup></td>\n<td/>\n</tr>\n<tr>\n<td>10</td>\n<td>income from renting out buildings or land</td>\n<td>(PI122/HY040)</td>\n<td/>\n<td>X <sup><a href=\"#tfn10\">d</a>,<a href=\"#tfn11\">e</a></sup></td>\n<td/>\n</tr>\n<tr>\n<td colspan=\"6\"><i>Tax exempt</i>\n</td>\n</tr>\n<tr>\n<td>11</td>\n<td>Education related benefits</td>\n<td>(PI135/PY140)</td>\n<td/>\n<td/>\n<td>X</td>\n</tr>\n<tr>\n<td>12</td>\n<td>Housing benefits</td>\n<td>(HI138/HY070)</td>\n<td/>\n<td/>\n<td>X</td>\n</tr>\n<tr>\n<td>13</td>\n<td>Social assistance</td>\n<td>(HI137/HY060)</td>\n<td/>\n<td/>\n<td>X</td>\n</tr>\n<tr>\n<td>14</td>\n<td>Private transfer received</td>\n<td>(PI123/HY080)</td>\n<td/>\n<td/>\n<td>X</td>\n</tr>\n</tbody>\n</table>"
+                            ],
+                            "title": "Main components of income, and tax and social insurance deductions: Spain (year 2003)",
+                            "type": "table"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "assets": [
+                        {
+                            "footnotes": [
+                                {
+                                    "id": "tfn14",
+                                    "label": "a",
+                                    "text": [
+                                        {
+                                            "text": "<i>H</i><sub>8</sub> are tax and social insurance (SI) exempt benefits; hence <i>H</i><sub>8</sub> = <i>N</i><sub>8</sub>",
+                                            "type": "paragraph"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "id": "tfn15",
+                                    "label": "b",
+                                    "text": [
+                                        {
+                                            "text": "<i>D</i><sub>5</sub> to <i>D</i><sub>7</sub> are in fact zero (no component-specific deductions)",
+                                            "type": "paragraph"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "id": "tableA2",
+                            "label": "Table A.2",
+                            "tables": [
+                                "<table>\n<tbody>\n<tr>\n<td colspan=\"2\"><b>Income from employment</b></td>\n</tr>\n<tr>\n<td>\u2009\u2009\u2009\u2009\u2009Total Cost of Labour</td>\n<td><i>GG</i><sub>1</sub></td>\n</tr>\n<tr>\n<td>\u2009\u2009\u2009\u2009\u2009Gross wages</td>\n<td><i>G</i><sub>1</sub> = <i>GG</i><sub>1</sub> \u2212 <i>S</i><sub>0</sub></td>\n</tr>\n<tr>\n<td>\u2009\u2009\u2009\u2009\u2009Wages Net of Social Insurance Contributions</td>\n<td><i>H</i><sub>1</sub> = <i>G</i><sub>1</sub> \u2212 <i>S</i><sub>1</sub></td>\n</tr>\n<tr>\n<td colspan=\"2\"><b>Income net of social contributions</b></td>\n</tr>\n<tr>\n<td>\u2009\u2009\u2009\u2009\u2009Net Income</td>\n<td><i>H</i> \u2212 <i>H</i><sub>8</sub> <sup><a href=\"#tfn14\">a</a></sup></td>\n</tr>\n<tr>\n<td>\u2009\u2009\u2009\u2009\u2009Total Net Income</td>\n<td><i>H</i></td>\n</tr>\n<tr>\n<td colspan=\"2\"><b>Tax base and tax</b></td>\n</tr>\n<tr>\n<td>\u2009\u2009\u2009\u2009\u2009Revenus Cat\u00e9goriels</td>\n<td><i>Y<sub>g</sub></i> = (<i>H</i> \u2212 <i>H<sub>s</sub></i>) + \u0394<i>S</i></td>\n</tr>\n<tr>\n<td>\u2009\u2009\u2009\u2009\u2009Revenus Cat\u00e9goriels Net</td>\n<td><i>Y<sub>n</sub></i> = <i>Y<sub>g</sub></i> \u2212 (<i>D<sub>1</sub></i> + <i>D</i><sub>2</sub> + <i>D</i><sub>3</sub> + <i>D</i><sub>4</sub>)</td>\n</tr>\n<tr>\n<td>\u2009\u2009\u2009\u2009\u2009Taxable Income</td>\n<td><i>Y</i> = <i>Y<sub>n</sub></i> \u2212 (<i>D</i><sub>5</sub> + <i>D</i><sub>6</sub> + <i>D<sub>7</sub></i> + <i>D</i><sub>0</sub>)<sup><a href=\"#tfn15\">b</a></sup></td>\n</tr>\n<tr>\n<td>\u2009\u2009\u2009\u2009\u2009(basis for Quotient Familial and Income Taxation)</td>\n<td/>\n</tr>\n<tr>\n<td>\u2009\u2009\u2009\u2009\u2009<i>Quotient Familial</i></td>\n<td><i>Q</i></td>\n</tr>\n<tr>\n<td>\u2009\u2009\u2009\u2009\u2009<b>Net Income taxes</b> (IR)</td>\n<td><i>X</i> = <i>Q</i> \u00d7 <i>W</i>(<i>Y/Q</i>) \u2212 (<i>C</i> + <i>C<sub>0</sub></i>)</td>\n</tr>\n<tr>\n<td>Income after tax</td>\n<td><i>N</i>\u2032 = <i>H</i> \u2212 <i>X</i></td>\n</tr>\n<tr>\n<td>\n<b>Disposable Income</b></td>\n<td><b><i>N</i></b> = <i>N</i>\u2032 + <i>H</i><sub>8</sub></td>\n</tr>\n<tr>\n<td><b>Constructing the income components in SM2</b></td>\n<td/>\n</tr>\n<tr>\n<td><b>Gross income</b> (including employers\u2019 SI contributions)</td>\n<td><i>GG</i> = <i>G</i> + <i>S</i><sub>8</sub></td>\n</tr>\n<tr>\n<td>Employers\u2019 social insurance contributions</td>\n<td><i>S</i><sub>8</sub></td>\n</tr>\n<tr>\n<td><b>Gross income</b> (excluding employers\u2019 SI contributions)</td>\n<td><i>G<sub>i</sub></i>; <i>G</i> = \u03a3<i>G<sub>i</sub></i></td>\n</tr>\n<tr>\n<td>Income component (<i>i</i>)</td>\n<td/>\n</tr>\n<tr>\n<td>\u2009\u2009\u2009\u2009\u20091. Employment income</td>\n<td/>\n</tr>\n<tr>\n<td>\u2009\u2009\u2009\u2009\u20092. Self-employment income</td>\n<td/>\n</tr>\n<tr>\n<td>\u2009\u2009\u2009\u2009\u20093. Pensions</td>\n<td/>\n</tr>\n<tr>\n<td>\u2009\u2009\u2009\u2009\u20094. Unemployment benefits</td>\n<td/>\n</tr>\n<tr>\n<td>\u2009\u2009\u2009\u2009\u20095. Invalidity benefits</td>\n<td/>\n</tr>\n<tr>\n<td>\u2009\u2009\u2009\u2009\u20096. Capital income \u2018A\u2019; Capital income \u2018B\u2019 (in fact all capital income treated as \u2018A\u2019)</td>\n<td/>\n</tr>\n<tr>\n<td>\u2009\u2009\u2009\u2009\u20097. Other incomes: including property and rental income</td>\n<td/>\n</tr>\n<tr>\n<td>\u2009\u2009\u2009\u2009\u20098. Benefits \u2018A\u2019; Benefits \u2018B\u2019 (in fact all benefits treated as \u2018B\u2019)</td>\n<td/>\n</tr>\n<tr>\n<td>Social insurance contributions (other than employers\u2019)</td>\n<td><i>S<sub>i</sub></i>; taxable part <i>\u0394S<sub>i</sub></i></td>\n</tr>\n<tr>\n<td>\n<b>Gross taxable income</b></td>\n<td><i>H<sub>i</sub></i> = <i>G<sub>i</sub></i> \u2212 <i>S<sub>i</sub></i>; <i>H</i> = <i>\u03a3H<sub>i</sub></i></td>\n</tr>\n<tr>\n<td>\u2009\u2009\u2009\u2009\u2009Component-specific deductions</td>\n<td><i>D<sub>i</sub>; D</i> = <i>\u03a3D<sub>i</sub></i></td>\n</tr>\n<tr>\n<td>\u2009\u2009\u2009\u2009\u2009Net taxable income</td>\n<td><i>Y<sub>i</sub></i> = <i>H<sub>i</sub></i> \u2212 (<i>D<sub>i</sub></i> \u2212 \u0394<i>S<sub>i</sub></i>) ; <i>Y</i> = \u03a3<i>Y<sub>i</sub></i> = <i>H</i> \u2212 <i>D</i></td>\n</tr>\n<tr>\n<td>\u2009\u2009\u2009\u2009\u2009Common deductions</td>\n<td><i>D</i><sup>0</sup>; <i>Y</i><sup>0</sup> = <i>Y</i> \u2212 <i>D</i><sub>0</sub></td>\n</tr>\n<tr>\n<td>\u2009\u2009\u2009\u2009\u2009Common tax credits</td>\n<td><i>C</i><sub>0</sub></td>\n</tr>\n<tr>\n<td>\u2009\u2009\u2009\u2009\u2009<i>Quotient Familial</i></td>\n<td><i>Q</i></td>\n</tr>\n<tr>\n<td>\u2009\u2009\u2009\u2009\u2009Tax due</td>\n<td><i>W</i> = <i>Q</i> \u00d7 <i>W<sub>0</sub></i>(<i>Y</i><sub>0</sub>/<i>Q</i>) \u2212 <i>C</i><sub>0</sub></td>\n</tr>\n<tr>\n<td>\u2009\u2009\u2009\u2009\u2009Component-specific tax credits</td>\n<td><i>C<sub>i</sub></i>; <i>C</i> = \u03a3<i>C<sub>i</sub></i></td>\n</tr>\n<tr>\n<td><b>Tax to be paid</b></td>\n<td><i>X</i> = <i>W</i> \u2212 <i>C</i></td>\n</tr>\n<tr>\n<td><b>Total net income</b></td>\n<td><i>N</i> = <i>H</i> \u2212 <i>X</i></td>\n</tr>\n<tr>\n<td>\u2009\u2009\u2009\u2009\u2009Net by component</td>\n<td>N<sub>i</sub> = H<sub>i</sub> \u2212 [{Y<sub>i</sub> (W/Y)} \u2212 C<sub>i</sub>]</td>\n</tr>\n</tbody>\n</table>"
+                            ],
+                            "title": "Main components of income, and tax and social insurance deductions: France (year 2003)",
+                            "type": "table"
+                        }
+                    ],
+                    "type": "figure"
+                }
+            ],
+            "id": "app1",
+            "title": "Appendix"
+        }
+    ],
+    "-meta": {
+        "patched": true
+    },
+    "stage": "published"
+}

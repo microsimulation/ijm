@@ -1,0 +1,1785 @@
+{
+    "status": "vor",
+    "id": "00039",
+    "version": 1,
+    "type": "research-article",
+    "doi": "10.34196/ijm.00039",
+    "authorLine": "Cathal O\u2019Donoghue et al.",
+    "title": "Simulating Migration in the PENSIM2 Dynamic Microsimulation Model",
+    "published": "2010-08-31T00:00:00Z",
+    "versionDate": "2010-08-31T00:00:00Z",
+    "statusDate": "2010-08-31T00:00:00Z",
+    "volume": 3,
+    "issue": 2,
+    "elocationId": "n/a",
+    "pdf": "http://web:8082/00039/ijm-00039.pdf",
+    "subjects": [
+        {
+            "id": "demography",
+            "name": "Demography"
+        }
+    ],
+    "abstract": {
+        "content": [
+            {
+                "text": "Modelling migration is fundamentally important to maintaining the appropriate population structure in a dynamic microsimulation model. It is particularly important as it is faster changing than other demographic processes such as fertility and mortality and so can impact upon the structure of the population quickly. In this paper we review methods that have been used by other models and describe the choices and methods used in the Pensim2 dynamic microsimulation model. In particular we model immigration flows, emigration flows and the overseas population. We divide our method into modelling how many migrate using external macro data and who emigrates, based upon micro processes.",
+                "type": "paragraph"
+            }
+        ]
+    },
+    "copyright": {
+        "license": "CC-BY-4.0",
+        "holder": "O\u2019Donoghue  et al.",
+        "statement": "This article is distributed under the terms of the <a href=\"http://creativecommons.org/licenses/by/4.0/\">Creative Commons Attribution License</a>, which permits unrestricted use and redistribution provided that the original author and source are credited."
+    },
+    "authors": [
+        {
+            "affiliations": [
+                {
+                    "address": {
+                        "components": {
+                            "country": "Ireland"
+                        },
+                        "formatted": [
+                            "Ireland"
+                        ]
+                    },
+                    "name": [
+                        "Teagasc Rural Economy Research Centre, Athenry, Co. Galway"
+                    ]
+                }
+            ],
+            "emailAddresses": [
+                "cathal.odonoghue@nuigalway.ie"
+            ],
+            "name": {
+                "index": "O\u2019Donoghue, Cathal",
+                "preferred": "Cathal O\u2019Donoghue"
+            },
+            "type": "person"
+        },
+        {
+            "affiliations": [
+                {
+                    "address": {
+                        "components": {
+                            "country": "UK",
+                            "locality": [
+                                "London, SW1A 9NA"
+                            ]
+                        },
+                        "formatted": [
+                            "London, SW1A 9NA",
+                            "UK"
+                        ]
+                    },
+                    "name": [
+                        "Department for Work and Pensions (DWP)"
+                    ]
+                }
+            ],
+            "name": {
+                "index": "Redway, Howard",
+                "preferred": "Howard Redway"
+            },
+            "type": "person"
+        },
+        {
+            "affiliations": [
+                {
+                    "address": {
+                        "components": {
+                            "country": "UK"
+                        },
+                        "formatted": [
+                            "UK"
+                        ]
+                    },
+                    "name": [
+                        "Teagasc Rural Economy Research Centre Athenry"
+                    ]
+                }
+            ],
+            "name": {
+                "index": "Lennon, John",
+                "preferred": "John Lennon"
+            },
+            "type": "person"
+        }
+    ],
+    "keywords": [
+        "Migration",
+        "Dynamic Microsimulation"
+    ],
+    "body": [
+        {
+            "content": [
+                {
+                    "text": "With mortality and fertility, migration is one of the demographic processes that determine the population within a country. Fertility and especially mortality are relatively slow moving processes as they reflect long-term trends in society and in the health status of society. Migration, the flows of people into and out of a location, however changes relatively quickly in response to change in economic circumstances and in policy as witnessed by the recent entry of the new-entrant states to the EU. As a result this process can add significant uncertainty as to the size of the population and to population projections.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Given the long-term impacts of demographic change, they have potentially major impacts on long-term policy instruments such as pension\u2019s policy. Modelling demographic characteristics such as migration therefore is important within analytical programmes for evaluating and designing pension\u2019s policy reform such as dynamic microsimulation models. Migrants can be seen as a contributor to reducing the dependency ratio and improving the sustainability of the pensions system in OECD countries (See <a href=\"#bib18\">St\u00f8len, amd Texmon, 2007</a>). These immigrants, given the typical age profile may reduce the ratio of retirement to working age. However they themselves will build up future pension entitlements. In addition if one\u2019s focus is on trying to capture the financial cost of the pension system, also depending upon the design of the pension system, people may accumulate pension entitlement while working in a country and then be eligible for receipt of pensions while living overseas. As most dynamic microsimulation models have a single country focus, these people with pension entitlement are typically not covered in nationally focused microsimulation models.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "This paper focuses in particular at modelling migration in a dynamic microsimulation model whose focus is on both the distributional impact of pension policy in the home country and on the overall fiscal cost of public pensions. Specifically we focus on incorporating migration in the UK model based at the Department of Work and Pensions, Pensim2. The purpose of the paper is to describe and evaluate a methodology for undertaking this task.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The scope of Pensim2 is Great Britain (GB), simulating the main public and private pension instruments in Britain as well as the demographic, labour market and income processes that influence pension entitlement, membership, contribution and benefits as well as other income sources of pensioners.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Migration while important from the point of view of population coverage is of particular relevance for the UK pension system. This is the case for a number of reasons.",
+                    "type": "paragraph"
+                },
+                {
+                    "items": [
+                        [
+                            {
+                                "text": "- Firstly the pension system in Northern Ireland (NI), part of the UK, but not part of Pensim2 is the same as that of the rest of the UK and financed by the Treasury but administered by the Northern Ireland Civil Service. Migrants from NI to GB carry with them, transferable rights to a UK pension and as do GB migrants to NI.",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "- Non-national (or at least non-members of the UK national insurance system) migrants may carry with them entitlement or partial entitlement to foreign pensions, but this is beyond the scope of this paper. However if they work in the UK, they may build up eligibility for UK entitlement and their tax and contribution payments help to finance the pension and social security system.",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "- Returning emigrants similarly may have held rights overseas which is not relevant for the scope of this model or rights from previous residence in the UK, which is relevant.",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "- Similarly emigrants who accrue rights in Britain may result in overseas obligations \u2013 however the size of the obligation depends upon the country of residence as non-reciprocal countries, countries without a bilateral social security agreement will not be eligible for increments due to indexation in their pensions.",
+                                "type": "paragraph"
+                            }
+                        ]
+                    ],
+                    "prefix": "none",
+                    "type": "list"
+                },
+                {
+                    "text": "In this paper we focus on the methodological aspects of modelling migration in a dynamic microsimulation model. Heavy use of calibration is used in this analysis. As a result aggregate results are trivial as the population is precisely adjusted by the calibrated number of immigrants and emigrants. We therefore do not undertake an empirical analysis of migration. Rather this paper focuses on the description and analysis of the methodology of modelling migration. What is more interesting empirically is the impact migration has on pensions including the impact of migration on the economic dependency ratio and its consequences for pension sustainability and the welfare of pensioners. This analysis is beyond the scope this paper and thus this analysis is deferred until a later paper.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "In this paper, we shall firstly overview recent trends in UK migration. In <a href=\"#s3\">section 3</a>, we shall review what other dynamic microsimulation models have done to model migration. <a href=\"#s4\">Section 4</a> overviews the Pensim2 dynamic microsimulation model. <a href=\"#s5\">Section 5</a> describes the data available for the UK as well as the methodology used for modelling migration.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s1",
+            "title": "Introduction",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "<a href=\"#table1\">Table 1</a> details recent trends in migration to the UK in relation to the origin and destination of immigrants and emigrants. In the early 1990\u2019s the number of immigrants and emigrants was quite similar, with emigration exceeding immigration in 1992 and 1993. In the early to mid 1990\u2019s both emigration and immigration declined or at least remained relatively static. In 1998, annual immigration increased by about 20%, while emigration did not exceed early 1990\u2019s levels until 2000. These trends however have accelerated since this period, but with immigration accelerating at a more rapid pace. Between 1991 and 2006, emigration increased by over 60% while immigration increased by about 130%.",
+                    "type": "paragraph"
+                },
+                {
+                    "assets": [
+                        {
+                            "footnotes": [
+                                {
+                                    "text": [
+                                        {
+                                            "text": "<i>Source</i>: ONS (2007) International Migration: Migrants entering or leaving the United Kingdom and England and Wales, 2005.",
+                                            "type": "paragraph"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "id": "table1",
+                            "label": "Table 1",
+                            "tables": [
+                                "<table>\n<thead>\n<tr>\n<th/>\n<th>British</th>\n<th>EU</th>\n<th><i>Immigrants</i> Commonwealth</th>\n<th>Other</th>\n<th>Total</th>\n<th>British</th>\n<th>EU</th>\n<th><i>Emigrants</i> Commonwealth</th>\n<th>Other</th>\n<th>Total</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>1991</td>\n<td>110</td>\n<td>53</td>\n<td>85</td>\n<td>82</td>\n<td>330</td>\n<td>154</td>\n<td>53</td>\n<td>35</td>\n<td>43</td>\n<td>285</td>\n</tr>\n<tr>\n<td>1992</td>\n<td>93</td>\n<td>44</td>\n<td>65</td>\n<td>67</td>\n<td>269</td>\n<td>155</td>\n<td>38</td>\n<td>31</td>\n<td>57</td>\n<td>281</td>\n</tr>\n<tr>\n<td>1993</td>\n<td>86</td>\n<td>44</td>\n<td>70</td>\n<td>65</td>\n<td>265</td>\n<td>149</td>\n<td>40</td>\n<td>34</td>\n<td>43</td>\n<td>266</td>\n</tr>\n<tr>\n<td>1994</td>\n<td>109</td>\n<td>50</td>\n<td>80</td>\n<td>76</td>\n<td>315</td>\n<td>125</td>\n<td>42</td>\n<td>31</td>\n<td>40</td>\n<td>238</td>\n</tr>\n<tr>\n<td>1995</td>\n<td>84</td>\n<td>61</td>\n<td>85</td>\n<td>82</td>\n<td>312</td>\n<td>135</td>\n<td>38</td>\n<td>29</td>\n<td>34</td>\n<td>236</td>\n</tr>\n<tr>\n<td>1996</td>\n<td>94</td>\n<td>72</td>\n<td>78</td>\n<td>74</td>\n<td>318</td>\n<td>156</td>\n<td>44</td>\n<td>32</td>\n<td>32</td>\n<td>264</td>\n</tr>\n<tr>\n<td>1997</td>\n<td>90</td>\n<td>71</td>\n<td>90</td>\n<td>76</td>\n<td>327</td>\n<td>149</td>\n<td>53</td>\n<td>40</td>\n<td>37</td>\n<td>279</td>\n</tr>\n<tr>\n<td>1998</td>\n<td>104</td>\n<td>82</td>\n<td>105</td>\n<td>101</td>\n<td>392</td>\n<td>126</td>\n<td>49</td>\n<td>33</td>\n<td>44</td>\n<td>252</td>\n</tr>\n<tr>\n<td>1999</td>\n<td>115</td>\n<td>66</td>\n<td>123</td>\n<td>150</td>\n<td>454</td>\n<td>139</td>\n<td>59</td>\n<td>41</td>\n<td>52</td>\n<td>291</td>\n</tr>\n<tr>\n<td>2000</td>\n<td>99</td>\n<td>63</td>\n<td>147</td>\n<td>169</td>\n<td>478</td>\n<td>161</td>\n<td>57</td>\n<td>47</td>\n<td>55</td>\n<td>320</td>\n</tr>\n<tr>\n<td>2001</td>\n<td>110</td>\n<td>57</td>\n<td>149</td>\n<td>164</td>\n<td>480</td>\n<td>158</td>\n<td>49</td>\n<td>51</td>\n<td>49</td>\n<td>307</td>\n</tr>\n<tr>\n<td>2002</td>\n<td>97</td>\n<td>59</td>\n<td>155</td>\n<td>201</td>\n<td>512</td>\n<td>185</td>\n<td>52</td>\n<td>58</td>\n<td>64</td>\n<td>359</td>\n</tr>\n<tr>\n<td>2003</td>\n<td>99</td>\n<td>64</td>\n<td>167</td>\n<td>177</td>\n<td>507</td>\n<td>191</td>\n<td>50</td>\n<td>59</td>\n<td>62</td>\n<td>362</td>\n</tr>\n<tr>\n<td>2004</td>\n<td>88</td>\n<td>256</td>\n<td>215</td>\n<td>155</td>\n<td>714</td>\n<td>195</td>\n<td>83</td>\n<td>53</td>\n<td>52</td>\n<td>383</td>\n</tr>\n<tr>\n<td>2005</td>\n<td>96</td>\n<td>295</td>\n<td>180</td>\n<td>137</td>\n<td>708</td>\n<td>185</td>\n<td>108</td>\n<td>60</td>\n<td>59</td>\n<td>412</td>\n</tr>\n<tr>\n<td>2006</td>\n<td>81</td>\n<td>330</td>\n<td>201</td>\n<td>142</td>\n<td>754</td>\n<td>207</td>\n<td>132</td>\n<td>67</td>\n<td>61</td>\n<td>467</td>\n</tr>\n</tbody>\n</table>"
+                            ],
+                            "title": "Migration Trends in the UK 1991\u20132006 (000\u2019s)",
+                            "type": "table"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "text": "The composition of migration has also changed. About a third of immigrants to the UK in 1991 were British citizens, with about 15% from the EU and a quarter each from the commonwealth and other countries. While the return flow of British citizens has been relatively stable, the proportion of total immigration has declined to about 10%. Other than a period in the mid 1990\u2019s, EU immigration remained stable until the entrance of the new member states of the EU in 2004, now accounting for about 45% of immigrants, although the in-flow from Eastern Europe was visible in the other countries since 1999. The in-flow from commonwealth countries also has more than doubled in the period. The rationale for migration has changed with only 39% of immigrants coming to the UK to work or study in 1991 compared with 68% in 2005, evidencing the economic rationale for migration and the potential volatility that may arise in different economic circumstances.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "While emigration has increased, the pattern has not changed much with about 50% (but a declining proportion) of emigrants being British nationals. About 30% of emigrants are EU citizens. Overall there is a greater number of British nationals emigrating than immigrating with the gap reaching 126,000 in 2006. All other nationalities have positive net inflows, particularly in recent times for EU nationals. Most of the inflow and out-flow is concentrated in and around London, but there has been a slight trend since the mid 1990\u2019s for greater dispersal across the country of immigrants.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s2",
+            "title": "Migration trends in the UK",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "In this section we review the methods used by existing dynamic microsimulation models, described in <a href=\"#table2\">table 2</a> drawing upon previous reviews of dynamic microsimulation models in <a href=\"#bib11\">O\u2019Donoghue (2001</a>), <a href=\"#bib17\">Spielauer (2002</a>) and <a href=\"#bib12\">Pennec and Keegan (2007</a>). There are a number of different possibilities in modelling migration. However because of the technicalities and/or focus on national populations, a number of models, especially dynamic cohort models such as LIFEMOD, HARDING and the LIAM cohort model but also dynamic population models such as SAGEMOD, INAHSIM (<a href=\"#bib8\">Inagaki, 2005</a>) and Pensim2 (until now) did not include migration processes.",
+                    "type": "paragraph"
+                },
+                {
+                    "assets": [
+                        {
+                            "footnotes": [
+                                {
+                                    "text": [
+                                        {
+                                            "text": "<b>Source</b>: <a href=\"#bib12\">Pennec and Keegan (2007</a>) and <a href=\"#bib11\">O\u2019Donoghue (2001</a>). Note 1: APPSIM is based upon the proposed in Pennec and Keegan.",
+                                            "type": "paragraph"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "id": "table2",
+                            "label": "Table 2",
+                            "tables": [
+                                "<table>\n<thead>\n<tr>\n<th/>\n<th>Data source</th>\n<th>Migration flows</th>\n<th>Emigration explanatory variables</th>\n<th>Immigrant characteristics</th>\n<th>Re-entry of emigrants</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>APPSIM (Australia)1</td>\n<td>2001 census, LSIA, overseas departure data</td>\n<td>Immigration and Emigration</td>\n<td>Age, sex, marital status, Australian or overseas-born</td>\n<td/>\n<td>No</td>\n</tr>\n<tr>\n<td>CORSIM (USA)</td>\n<td>Immigration statistics</td>\n<td>Net Immigration</td>\n<td>Age, marital status, race, sex of HOH</td>\n<td>Age, marital status, race, sex</td>\n<td/>\n</tr>\n<tr>\n<td>DESTINIE (France)</td>\n<td>1998 Financial Assets Survey, 1999 census</td>\n<td>Net migration only</td>\n<td>n/a</td>\n<td>Population projections, birth cohort distributions</td>\n<td>No</td>\n</tr>\n<tr>\n<td>DYNACAN (Canada)</td>\n<td/>\n<td>Immigration and Emigration</td>\n<td>HH process Number of Age, Number of gender and region</td>\n<td>Age, gender, Clones existing family characteristics except CPP contributions</td>\n<td/>\n</tr>\n<tr>\n<td>DYNAMOD (Australia)</td>\n<td>1986 census, LSIA, emigration records</td>\n<td>Immigration (by visa status) and emigration flows, net long term migration</td>\n<td>Age, sex, marital status, Australian or overseas-born</td>\n<td>LSIA, cloned from census data</td>\n<td>No</td>\n</tr>\n<tr>\n<td>LIAM (Ireland)</td>\n<td>1986\u20132006 Census, 1994\u20131997 Labour Force Survey</td>\n<td>Immigration and Emigration Flows</td>\n<td>Age, Region</td>\n<td>Quarterly National Household Survey divided into national and nonnational samples, Census</td>\n<td>No</td>\n</tr>\n<tr>\n<td>LifePaths (Canada)</td>\n<td>1921\u20131998 censuses, birth and immigration records</td>\n<td>Immigration and emigration flows; international and interprovincial movement</td>\n<td>Age, sex, province of residence, year, immigrant status, year of immigration</td>\n<td>Immigration data</td>\n<td>Yes</td>\n</tr>\n<tr>\n<td>MOSART (Norway)</td>\n<td>1993 National Insurance data</td>\n<td>Net migration only</td>\n<td>n/a</td>\n<td>General Norwegian population characteristics</td>\n<td>No</td>\n</tr>\n<tr>\n<td>NEDYMAS (Netherlan ds)</td>\n<td/>\n<td>Immigration and emigration flows</td>\n<td>Age, Year of birth, Family type, sex, marital status</td>\n<td>Age, Year of birth, Family type, sex, marital status, year of previous emigration</td>\n<td/>\n</tr>\n<tr>\n<td>Sverige (Sweden)</td>\n<td>Immigration data from 1989\u201390</td>\n<td>Immigration and emigration flows</td>\n<td>Age, sex, education level, previous immigration, country of origin, labour force participation, income</td>\n<td>Immigration pool of 60 000 individuals</td>\n<td>No</td>\n</tr>\n<tr>\n<td>SESIM (Sweden)</td>\n<td>Linda</td>\n<td>Immigration and emigration flows</td>\n<td>Swedish or foreign born, number of children, adults in household, highest education and oldest age in household, time since immigration</td>\n<td>Linda</td>\n<td>Yes</td>\n</tr>\n</tbody>\n</table>"
+                            ],
+                            "title": "Components of Migration Modules used in Dynamic Microsimulation Models Internationally",
+                            "type": "table"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "text": "In order to maintain the correct population distribution, a model requires at a minimum <i>net migration.</i> This would adjust the population by the net change in migration (immigration minus emigration) each year. This is the method used by the CORSIM, DESTINIE and MOSART models Although requiring little extra external information, there are not that many computational gains from modelling migration in this way, as net migration can be positive or negative, thus requiring both immigration and emigration to be modelled. Also modelling net migration may bias the structure of the population as the number of foreign born may be too low as it will ignore the emigration. For example <a href=\"#bib12\">Pennec and Keegan (2007</a>) identified that when modelling net migration, one may face a problem that while one may have information on immigrants and use this to model the population structure of net migrants, it may in fact be different to the population of emigrants.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Once a model contains decision to go down the route of modelling migration one needs to decide a number of issues",
+                    "type": "paragraph"
+                },
+                {
+                    "items": [
+                        [
+                            {
+                                "text": "- the nationality;",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "- the unit of analysis;",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "- permanent residents;",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "- how to produce immigrants",
+                                "type": "paragraph"
+                            }
+                        ]
+                    ],
+                    "prefix": "none",
+                    "type": "list"
+                },
+                {
+                    "text": "Modelling the nationality of the individual is relevant for a number of reasons. Nationality may impact future labour market and demographic transitions, but also it may have an effect on pension membership as previous contributions may have been made previously. More precisely for the latter point it is national pension scheme membership that should be modelled. A number of models distinguish between national and nonnational migrants including DYNAMOD, LIAM, Lifepaths, NEDYMAS, Sverige and SESIM. SESIM and Lifepaths in addition model re-entry. SESIM uses data on overseas Swedish residents for this.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The unit of analysis relates to the decision making unit, which could vary from the household to the tax or benefit unit or the individual. In other words when migration is modelled do we move individuals by themselves or together with other individuals. We face a choice as to which unit will be modelled. Typically migration is modelled using the same unit of analysis as for other processes, typically the tax or benefit unit or household. This poses slight methodological issues as external control totals are typically only available at the individual level which is at a different level to the unit of analysis and so calibration routines need to be altered.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Some models such as Lifepaths exclude nonpermanent residents from their models. In the UK an increasing number of immigrants express a preference of staying for shorter periods with about half planning to stay 1\u20132 years. DYNAMOD distinguishes between different types of emigrants such as permanent (differentiated by skill level) and long-term migrants",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Emigration tends to be modelled as a regression based upon characteristics such as age, sex, marital status nationality, residence and labour force status. While emigration is relatively easy to do as existing individuals are simulated to leave the model,<sup><a href=\"#fn1\">1</a></sup> immigration requires the generation of new individuals, which creates the problem of how to maintain multi-dimensional characteristics of the population. A number of models such as Lifepaths and DESTINIE synthetically generate new individuals and assign individual characteristics, the main method used in dynamic microsimulation models is to clone individuals either from the existing population as in the case of DYNAMOD and DYNACAN or from specific immigrant pools such as LIAM and SVERIGE.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s3",
+            "title": "Modelling international migration in dynamic microsimulation models",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "Pensim2 is a dynamic microsimulation model developed by the UK Department of Work and Pensions (See <a href=\"#bib2\">Drane, 2006</a>). The model is a second generation model based upon a combination of administrative data (the LLMDB described below) and survey data (Family Resources Survey and British Household Panel Survey), combined using data fusion (See <a href=\"#bib14\">Redway, 2003</a>). The coverage of the model is Great Britain, so the United Kingdom excluding Northern Ireland, whose pension system is managed by a different Ministry. <a href=\"#bib13\">Pudney (1992</a>) describes the earlier Pensim model. The model is constructed using the GENESIS modelling framework, constructed in SAS, (See <a href=\"#bib6\">Edwards, 2004</a>), which has been used to develop a suite of models within the DWP for benefit forecasting and labour market analysis.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Utilising the categorisation of <a href=\"#bib11\">O\u2019Donoghue (2001</a>), the model can be categorised as a",
+                    "type": "paragraph"
+                },
+                {
+                    "items": [
+                        [
+                            {
+                                "text": "- Cross-sectional longitudinal model, projecting cross-section of the population forward in time",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "- Discrete time intervals, although containing episode data to be able to generate semi-continuous time episodes",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "- Closed model, where spouses are married within the sample. New children are imported into the model",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "- Aligned model, using extensive alignment of demographic and labour market characteristics",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "- Statistical, in that currently behaviour is not modelled endogenous to policy",
+                                "type": "paragraph"
+                            }
+                        ]
+                    ],
+                    "prefix": "none",
+                    "type": "list"
+                },
+                {
+                    "text": "The model contains detailed demographic, labour market and pension\u2019s data. Tax-benefit policy is simulated via the DWP\u2019s Policy Simulation Model (PSM). At present other income sources such as capital income and housing costs are modelled solely for pension age individuals. A key gap is in the maintenance of the actual GB population. The unit of analysis is the benefit unit. An evaluation of the processes contained with the model is described in <a href=\"#bib7\">Emmerson et al., (2004</a>).",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The model is fully operational, although subject to continuous updating and improvement and particularly used for pensions analysis. It formed the basis of the UK Pensions Commission Report (<a href=\"#bib19\">Turner et al., 2005</a>) and the subsequent White Paper on Pensions.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Data and Methodology",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "In this section we consider how to model migration in the UK as part of Pensim2. The objective of the module is to",
+                    "type": "paragraph"
+                },
+                {
+                    "items": [
+                        [
+                            {
+                                "text": "Enable the model to reflect the population totals of the population projections of the Office for National Statistics",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "Include sufficient information to be able to simulate the expenditure of the GB Pension model<sup><a href=\"#fn2\">2</a></sup>",
+                                "type": "paragraph"
+                            }
+                        ]
+                    ],
+                    "prefix": "bullet",
+                    "type": "list"
+                },
+                {
+                    "text": "In making our modelling choices, we base our decision on the experience of other models internationally, highlighted above.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "As there are few extra modelling components required to simulate immigration and emigration instead of net migration alone, unless one makes the assumption as the Norwegian MOSART model does that there is always positive inward net migration, we model these processes separately. This will help us to avoid producing biased population estimates due to the different characteristics of emigrants (mainly UK nationals) and immigrants (mainly non-UK nationals).",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Fundamentally the modelling strategy is multistage see <a href=\"#fig1\">Figure 1</a>. For both immigration and emigration, we have macro level processes known as alignment or calibration containing external control totals to model the number of migrants, or the how question and micro equations and processes to model what types of individuals migrate, the who question. As we are also interested in the population living overseas due to their eligibility for pensions, we must also model some of the processes relevant to their eligibility.",
+                    "type": "paragraph"
+                },
+                {
+                    "assets": [
+                        {
+                            "id": "fig1",
+                            "image": {
+                                "alt": "",
+                                "uri": "%iiif_uri%/00039%2Fijm-00039-fig1.tif",
+                                "size": {
+                                    "width": 742,
+                                    "height": 449
+                                },
+                                "source": {
+                                    "mediaType": "image/jpeg",
+                                    "uri": "%iiif_uri%/00039%2Fijm-00039-fig1.tif/full/full/0/default.jpg",
+                                    "filename": "ijm-00039-fig1.jpg"
+                                }
+                            },
+                            "label": "Figure 1",
+                            "title": "Migration Model Outline",
+                            "type": "image"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "text": "Migration poses a number of challenges to a closed microsimulation model as:",
+                    "type": "paragraph"
+                },
+                {
+                    "items": [
+                        [
+                            {
+                                "text": "- we have to bring the people into the population,",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "- we have to model processes where the external control totals have different units of analysis to the micro equations, and",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "- we may have to model a population living overseas.",
+                                "type": "paragraph"
+                            }
+                        ]
+                    ],
+                    "prefix": "none",
+                    "type": "list"
+                },
+                {
+                    "text": "In the following sections we discuss the choices and the decisions made in developing the model.",
+                    "type": "paragraph"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "Key to our simulation of the number of migrants is appropriate control totals.<sup><a href=\"#fn3\">3</a></sup> Frequently, population projections publish only net migration totals, rather than the gross flows into and out of the country. One must then make an assumption as to how to disaggregate this net variable into these gross components. One possibility is to use historic ratios of emigration and immigration totals. However the question then is how to transform changes in the net migration totals to the gross migration totals. If net outward migration or net inward migration increases, then it may be reasonable to apply the ratio of the net migration to the gross migration totals to produce new estimated gross flows. However the difficulty occurs when the net migration total changes sign. In this case the ratio will be negative, having no sensible meaning in adjusting the gross control totals. Our solution is rather than concentrating on the level of the net totals, we focus on the absolute change in the net totals. Consider the following.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": [
+                                {
+                                    "text": "Net migration in baseline: <i>NM<sub>1</sub> = I<sub>1</sub> - E<sub>1</sub>.</i>",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "Net migration in future year: <i>NM<sub>2</sub> = I<sub>2</sub> - E<sub>2</sub>.</i>",
+                                    "type": "paragraph"
+                                }
+                            ],
+                            "type": "quote"
+                        },
+                        {
+                            "text": "We observe the following values: historic net migration (<i>NM<sub>1</sub></i>), historic inward migration (<i>I<sub>1</sub></i>) and historic outward migration (<i>E<sub>1</sub></i>) as well as the future assumed value of net migration (<i>NM1).</i> The change in net migration is also known:",
+                            "type": "paragraph"
+                        },
+                        {
+                            "id": "equ1",
+                            "mathml": "<math>\n<mo>\u2206</mo><mi>N</mi><mi>M</mi><mo>=</mo><mo>\u00a0</mo><mi>N</mi><msub><mi>M</mi><mn>2</mn></msub><mo>\u00a0</mo><mo>-</mo><mo>\u00a0</mo><mi>N</mi><msub><mi>M</mi><mn>1</mn></msub><mo>.</mo></math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "One arbitrary assumption is to assume that the change in migration is borne in proportion to the original gross flows. Thus if <i>ANM</i> are positive then, immigration increases by",
+                            "type": "paragraph"
+                        },
+                        {
+                            "id": "equ1a",
+                            "mathml": "<math><mfrac><mrow><msub><mi>I</mi><mn>1</mn></msub></mrow><mrow><msub><mi>I</mi><mn>1</mn></msub><mo>+</mo><msub><mi>E</mi><mn>1</mn></msub></mrow></mfrac><mo>\u00d7</mo><mi>\u0394</mi><mi>N</mi><mi>M</mi></math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "id": "equ2a",
+                            "mathml": "<math><mi>\u0394</mi><mi>I</mi><mo>=</mo><mfrac><mrow><msub><mi>I</mi><mn>1</mn></msub></mrow><mrow><msub><mi>I</mi><mn>1</mn></msub><mo>+</mo><msub><mi>E</mi><mn>1</mn></msub></mrow></mfrac><mo>\u00d7</mo><mi>\u0394</mi><mi>N</mi><mi>M</mi><mo>=</mo><msub><mi>I</mi><mn>2</mn></msub><mo>\u2212</mo><msub><mi>I</mi><mn>1</mn></msub></math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "and emigration decreases by",
+                            "type": "paragraph"
+                        },
+                        {
+                            "id": "equ3a",
+                            "mathml": "<math><mfrac><mrow><msub><mi>E</mi><mn>1</mn></msub></mrow><mrow><msub><mi>I</mi><mn>1</mn></msub><mo>+</mo><msub><mi>E</mi><mn>1</mn></msub></mrow></mfrac><mo>\u00d7</mo><mi>\u0394</mi><mi>N</mi><mi>M</mi><mo>:</mo></math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "id": "equ4a",
+                            "mathml": "<math><mi>\u0394</mi><mi>E</mi><mo>=</mo><mfrac><mrow><msub><mi>E</mi><mn>1</mn></msub></mrow><mrow><msub><mi>I</mi><mn>1</mn></msub><mo>+</mo><msub><mi>E</mi><mn>1</mn></msub></mrow></mfrac><mo>\u00d7</mo><mi>\u0394</mi><mi>N</mi><mi>M</mi><mo>=</mo><msub><mi>E</mi><mn>2</mn></msub><mo>\u2212</mo><msub><mi>E</mi><mn>1</mn></msub><mo>.</mo></math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "If \u0394<i>M</i> is negative then the gross flows decrease by these proportions. Therefore summing:",
+                            "type": "paragraph"
+                        },
+                        {
+                            "id": "equ5a",
+                            "mathml": "<math><mi>\u0394</mi><mi>N</mi><mi>M</mi><mo>=</mo><mfrac><mrow><msub><mi>I</mi><mn>1</mn></msub></mrow><mrow><msub><mi>I</mi><mn>1</mn></msub><mo>+</mo><msub><mi>E</mi><mn>1</mn></msub></mrow></mfrac><mo>\u00d7</mo><mi>\u0394</mi><mi>N</mi><mi>M</mi><mo>+</mo><mfrac><mrow><msub><mi>E</mi><mn>1</mn></msub></mrow><mrow><msub><mi>I</mi><mn>1</mn></msub><mo>+</mo><msub><mi>E</mi><mn>1</mn></msub></mrow></mfrac><mo>\u00d7</mo><mi>\u0394</mi><mi>N</mi><mi>M</mi><mo>.</mo></math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "Also",
+                            "type": "paragraph"
+                        },
+                        {
+                            "id": "equ6a",
+                            "mathml": "<math><mi>\u0394</mi><mi>N</mi><mi>M</mi><mo>=</mo><mi>\u0394</mi><mi>I</mi><mo>\u2212</mo><mi>\u0394</mi><mi>E</mi><mo>=</mo><mo>(</mo><msub><mi>I</mi><mn>2</mn></msub><mo>\u2212</mo><msub><mi>I</mi><mn>1</mn></msub><mo>)</mo><mo>\u2212</mo><mo>(</mo><msub><mi>E</mi><mn>2</mn></msub><mo>\u2212</mo><msub><mi>E</mi><mn>1</mn></msub><mo>)</mo><mo>=</mo><mo>(</mo><msub><mi>I</mi><mn>2</mn></msub><mo>\u2212</mo><msub><mi>E</mi><mn>2</mn></msub><mo>)</mo><mo>\u2212</mo><mo>(</mo><msub><mi>I</mi><mn>1</mn></msub><mo>\u2212</mo><msub><mi>E</mi><mn>1</mn></msub><mo>)</mo></math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "thus",
+                            "type": "paragraph"
+                        },
+                        {
+                            "id": "equ7a",
+                            "mathml": "<math><mo stretchy=\"false\">(</mo><msub><mi>I</mi><mn>2</mn></msub><mo>\u2212</mo><msub><mi>E</mi><mn>2</mn></msub><mo stretchy=\"false\">)</mo><mo>=</mo><mo stretchy=\"false\">(</mo><msub><mi>I</mi><mn>1</mn></msub><mo>\u2212</mo><msub><mi>E</mi><mn>1</mn></msub><mo stretchy=\"false\">)</mo><mo>+</mo><mfrac><mrow><msub><mi>I</mi><mn>1</mn></msub></mrow><mrow><msub><mi>I</mi><mn>1</mn></msub><mo>+</mo><msub><mi>E</mi><mn>1</mn></msub></mrow></mfrac><mo>\u00d7</mo><mi>\u0394</mi><mi>N</mi><mi>M</mi><mo>+</mo><mfrac><mrow><msub><mi>E</mi><mn>1</mn></msub></mrow><mrow><msub><mi>I</mi><mn>1</mn></msub><mo>+</mo><msub><mi>E</mi><mn>1</mn></msub></mrow></mfrac><mo>\u00d7</mo><mi>\u0394</mi><mi>N</mi><mi>M</mi></math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "or",
+                            "type": "paragraph"
+                        },
+                        {
+                            "id": "equ8a",
+                            "mathml": "<math><mi>N</mi><msub><mi>M</mi><mn>2</mn></msub><mo>=</mo><msub><mi>I</mi><mn>1</mn></msub><mo>\u00d7</mo><mrow><mo>(</mo><mrow><mn>1</mn><mo>+</mo><mfrac><mrow><mi>\u0394</mi><mi>N</mi><mi>M</mi></mrow><mrow><msub><mi>I</mi><mn>1</mn></msub><mo>+</mo><msub><mi>E</mi><mn>1</mn></msub></mrow></mfrac></mrow><mo>)</mo></mrow><mo>\u2212</mo><msub><mi>E</mi><mn>1</mn></msub><mo>\u00d7</mo><mrow><mo>(</mo><mrow><mn>1</mn><mo>\u2212</mo><mfrac><mrow><mi>\u0394</mi><mi>N</mi><mi>M</mi></mrow><mrow><msub><mi>I</mi><mn>1</mn></msub><mo>+</mo><msub><mi>E</mi><mn>1</mn></msub></mrow></mfrac></mrow><mo>)</mo></mrow><mo>=</mo><msub><mi>I</mi><mn>1</mn></msub><mo>\u00d7</mo><mrow><mo>(</mo><mrow><mn>1</mn><mo>+</mo><mi>k</mi></mrow><mo>)</mo></mrow><mo>\u2212</mo><msub><mi>E</mi><mn>1</mn></msub><mo>\u00d7</mo><mrow><mo>(</mo><mrow><mn>1</mn><mo>\u2212</mo><mi>k</mi></mrow><mo>)</mo></mrow></math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "Thus we can express the future net migration in terms of known values, where",
+                            "type": "paragraph"
+                        },
+                        {
+                            "id": "equ9a",
+                            "mathml": "<math><msub><mi>I</mi><mn>2</mn></msub><mo>=</mo><msub><mi>I</mi><mn>1</mn></msub><mo>+</mo><mfrac><mrow><msub><mi>I</mi><mn>1</mn></msub></mrow><mrow><msub><mi>I</mi><mn>1</mn></msub><mo>+</mo><msub><mi>E</mi><mn>1</mn></msub></mrow></mfrac><mo>\u00d7</mo><mi>\u0394</mi><mi>N</mi><mi>M</mi><mo>=</mo><msub><mi>I</mi><mn>1</mn></msub><mo>\u00d7</mo><mrow><mo>(</mo><mrow><mn>1</mn><mo>+</mo><mfrac><mrow><mi>\u0394</mi><mi>N</mi><mi>M</mi></mrow><mrow><msub><mi>I</mi><mn>1</mn></msub><mo>+</mo><msub><mi>E</mi><mn>1</mn></msub></mrow></mfrac></mrow><mo>)</mo></mrow><mo>=</mo><msub><mi>I</mi><mn>1</mn></msub><mo>\u00d7</mo><mrow><mo>(</mo><mrow><mn>1</mn><mo>+</mo><mi>k</mi></mrow><mo>)</mo></mrow></math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "and",
+                            "type": "paragraph"
+                        },
+                        {
+                            "id": "equ10a",
+                            "mathml": "<math><msub><mi>E</mi><mn>2</mn></msub><mo>=</mo><msub><mi>E</mi><mn>1</mn></msub><mo>\u2212</mo><mfrac><mrow><msub><mi>E</mi><mn>1</mn></msub></mrow><mrow><msub><mi>I</mi><mn>1</mn></msub><mo>+</mo><msub><mi>E</mi><mn>1</mn></msub></mrow></mfrac><mo>\u00d7</mo><mi>\u0394</mi><mi>N</mi><mi>M</mi><mo>=</mo><msub><mi>E</mi><mn>1</mn></msub><mrow><mo>(</mo><mrow><mn>1</mn><mo>\u2212</mo><mfrac><mrow><mi>\u0394</mi><mi>N</mi><mi>M</mi></mrow><mrow><msub><mi>I</mi><mn>1</mn></msub><mo>+</mo><msub><mi>E</mi><mn>1</mn></msub></mrow></mfrac></mrow><mo>)</mo></mrow><mo>=</mo><msub><mi>E</mi><mn>1</mn></msub><mo>\u00d7</mo><mo stretchy=\"false\">(</mo><mn>1</mn><mo>\u2212</mo><mi>k</mi><mo stretchy=\"false\">).</mo></math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "We face a choice in what we use for <i>k.</i> In <a href=\"#fig2\">figure 2</a> we consider a number of different possibilities. In this graphic we consider the performance of our assumptions based upon a dataset that exhibited relatively small variations from 35,000 to 105,000 in the period 1991\u20131997, but increased rapidly to 150,000 to 225,000 in the 1998\u20132005 periods. In <a href=\"#fig1\">figure 1</a>, we consider in turn the assumption that (a) <i>k</i> depends upon the transition in the previous year, (b) that <i>k</i> depends upon the average transition over the period and (c) that <i>k</i> depends upon the value based upon 1991 transitions. We find that assumption (a) performs the best as the transitions year on year are smaller than over longer periods, while the average in (b) performs better than when <i>k</i> is based upon the 1991 transitions in (c). This is particularly noticeable in the 1998\u20132005 when there is greater volatility, but less important in the less volatile 1991\u20131997 period. This is not surprising as a sudden surge is likely to be as a result of either a large increase in immigration or emigration, due to an asymmetric shock such as immigration due to a war or entry of new states to the EU or emigration due to a downturn in the national economy. We would therefore argue for <i>k</i> based upon the shortest time, the lag order one.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "fig2a",
+                                    "image": {
+                                        "alt": "",
+                                        "uri": "%iiif_uri%/00039%2Fijm-00039-fig2a.tif",
+                                        "size": {
+                                            "width": 1698,
+                                            "height": 1004
+                                        },
+                                        "source": {
+                                            "mediaType": "image/jpeg",
+                                            "uri": "%iiif_uri%/00039%2Fijm-00039-fig2a.tif/full/full/0/default.jpg",
+                                            "filename": "ijm-00039-fig2a.jpg"
+                                        }
+                                    },
+                                    "label": "(a)",
+                                    "title": "k - based upon lagged transitions (1991-2000)",
+                                    "type": "image"
+                                },
+                                {
+                                    "id": "fig2b",
+                                    "image": {
+                                        "alt": "",
+                                        "uri": "%iiif_uri%/00039%2Fijm-00039-fig2b.tif",
+                                        "size": {
+                                            "width": 1698,
+                                            "height": 980
+                                        },
+                                        "source": {
+                                            "mediaType": "image/jpeg",
+                                            "uri": "%iiif_uri%/00039%2Fijm-00039-fig2b.tif/full/full/0/default.jpg",
+                                            "filename": "ijm-00039-fig2b.jpg"
+                                        }
+                                    },
+                                    "label": "(b)",
+                                    "title": "k - based upon average transitions (1991-2000)",
+                                    "type": "image"
+                                },
+                                {
+                                    "id": "fig2c",
+                                    "image": {
+                                        "alt": "",
+                                        "uri": "%iiif_uri%/00039%2Fijm-00039-fig2c.tif",
+                                        "size": {
+                                            "width": 1683,
+                                            "height": 937
+                                        },
+                                        "source": {
+                                            "mediaType": "image/jpeg",
+                                            "uri": "%iiif_uri%/00039%2Fijm-00039-fig2c.tif/full/full/0/default.jpg",
+                                            "filename": "ijm-00039-fig2c.jpg"
+                                        }
+                                    },
+                                    "label": "(c)",
+                                    "title": "k - based upon first transition in 1991 (1991-2000)",
+                                    "type": "image"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "text": "Utilising ONS net migration projections and the disaggregation method described here, based on historical gross migration flows, we describe in <a href=\"#fig3\">Figure 3</a> the control totals used in the model for the total number of immigrants and emigrants.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "fig3",
+                                    "image": {
+                                        "alt": "",
+                                        "uri": "%iiif_uri%/00039%2Fijm-00039-fig3.tif",
+                                        "size": {
+                                            "width": 1778,
+                                            "height": 1065
+                                        },
+                                        "source": {
+                                            "mediaType": "image/jpeg",
+                                            "uri": "%iiif_uri%/00039%2Fijm-00039-fig3.tif/full/full/0/default.jpg",
+                                            "filename": "ijm-00039-fig3.jpg"
+                                        }
+                                    },
+                                    "label": "Figure 3",
+                                    "title": "External Control Totals for Emigration and Immigration",
+                                    "type": "image"
+                                }
+                            ],
+                            "type": "figure"
+                        }
+                    ],
+                    "id": "s5-1",
+                    "title": "Control Totals",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "In this section we develop a framework to simulate who immigrates having produced external controls totals above as to how many immigrate. Immigrants are relatively difficult to model as new people have to enter the model. In many ways it is similar to generating a new child. However the characteristics of a new immigrant are more complicated. A new immigrant may have demographic, education and labour market histories that are relevant for future transitions. They may themselves bring with them other dependants such as children and spouses. Therefore as for emigrants we face the issue that the relevant unit of analysis is wider than the individual. We choose for our purposes the tax or benefit unit.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Modelling entry characteristics of immigrants and their dependants can be difficult as it is a multi dimensional problem. It would require the estimation of models to simulate the entry characteristics of all new immigrants and this is quite time consuming.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "<a href=\"#bib3\">Duleep and Dowha (2008a</a>) discuss a number of methods for incorporating immigrants in a microsimulation model; (a) the \u201chuman capital\u201d approach, (b) the \u201cpast-is-prologue\u201d approach, and (c) the \u201cdonor\u201d approach. We utilise a donor or cloning approach. As outlined in <a href=\"#table1\">table 1</a>, a number of models such as DYNACAN, DYNAMOD, LIAM and CBOLT (<a href=\"#bib16\">Simpson, 2009</a>) etc clone individuals from a stored sample of immigrants. When immigrants are required we sample without replacement and treat these new immigrants as new people.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "As outlined above, immigration like other migration processes faces the problem that external control totals have a different unit of analysis to that used for simulation. In other words the total number of immigrants depends upon the Office for National Statistics (ONS) individual level population statistics, while we desire benefit units to immigrate together. Therefore cloning is not simply the case of taking a random sample of individual immigrants and bringing them into the model, we need to take a random sample of immigrant families and ensure that the numbers of individuals are consistent with the external control totals. These individual control totals can themselves be decomposed into sub-groups such as age-sex-nationality further complicating the process. As outlined above, we need to distinguish between UK-national immigrants and non-UK national immigrants on the grounds of location and thus pension entitlement while abroad to produce the consistency with the emigration module. Also native and non native immigrants have quite different characteristics. For example native reimmigrants tend to be older than non-native immigrants. Therefore, we store two immigration samples to clone individuals, containing (a) a sample of UK-national immigrants and their UK and non-UK national dependants and (b) a sample of non UK national immigrants. This sample is drawn from the 2003 Labour Force survey spring sample.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "This sampling process uses a variant of the pageant algorithm due to <a href=\"#bib1\">Ch\u00e8nard (2000</a>) to produce the appropriate age-sex distribution. This algorithm is described in the <a href=\"#s1\">appendix</a> below and essentially ensures that sampled families produce consistent individual unit targets. While the algorithm is generic the sample size is important in determining how many dimensions one can use in the sampling. We initially started with age and sex categories, however due to the small sample size, we restrict the selection to total numbers of migrants.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "content": [
+                                {
+                                    "text": "While simulating the emigration of an individual or family is not particularly difficult as it involves the simulation of a process of individuals within the model as a function of their characteristics, accessing the data necessary to estimate a model of emigration is more difficult.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "In producing population and migration estimates and projections, the Office for National Statistics (ONS) uses data from the International Passenger Survey. This survey contains details about the personal and migration characteristics of emigrants and immigrants and is conducted at ports, airports and the channel tunnel in the UK. It is combined with data from the Republic of Ireland to include migration between Ireland and the UK. This data is useful in quantifying absolute flows. However for the purpose of modelling emigration transitions, we require not only information on those who emigrated, but also those who did not, so as to model the probability of leaving.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "The Lifetime Labour Market Database (LLMDB) is a 1% sample drawn from administrative records of the national insurance system of UK. It is an individual based panel dataset containing income, labour market, demographic, national insurance and pension characteristics. Of particular relevance to us is the availability of a migration flag. Although emigration is not collected as part of the administrative procedures emigration has been modelled in the data by the data providers.<sup><a href=\"#fn4\">4</a></sup> This variable is generated using two pieces of information,",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "items": [
+                                        [
+                                            {
+                                                "text": "- those who have registered as living abroad such as those in receipt of benefits",
+                                                "type": "paragraph"
+                                            }
+                                        ]
+                                    ],
+                                    "prefix": "none",
+                                    "type": "list"
+                                },
+                                {
+                                    "text": "and",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "items": [
+                                        [
+                                            {
+                                                "text": "- a calibrated adjustment based upon a proportion those who have a gap in their connection with the social security system of two years or more for those who are aged over 23 and a gap of 5 years for women aged 45 or over. The gap for women is greater due to the longer employment gaps of women from the labour market due to caring.",
+                                                "type": "paragraph"
+                                            }
+                                        ]
+                                    ],
+                                    "prefix": "none",
+                                    "type": "list"
+                                },
+                                {
+                                    "text": "These results have been calibrated to ensure that the dataset agrees with the ONS population estimates for the country by age and sex.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "This dataset has been used to estimate a probit model of emigration detailed in <a href=\"#table3\">table 3</a> below. The summary statistics of the variables are contained in <a href=\"#table4\">table 4</a>. The model estimates contain age decade dummies interacted with previous immigrant status, showing that the emigration probability for men and women rises to a peak in the mid to late 20\u2019s before falling back. Immigrants are significantly more likely to emigrate. These results are consistent with external totals given by the ONS. In testing the model, we considered the inclusion of lagged employment and out of work status variables, however as these variables were used in creating the emigrant flag, we found that all had negative signs, due in part to the fact that individuals who are classified as emigrants are people who, in part, have developed a history of non-interaction with the insurance system.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "assets": [
+                                        {
+                                            "footnotes": [
+                                                {
+                                                    "text": [
+                                                        {
+                                                            "text": "<i>Note</i>: Year dummy variables are also included in the model",
+                                                            "type": "paragraph"
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "text": [
+                                                        {
+                                                            "text": "<i>Data source</i>: LLMDB (1975\u20132006), working age population",
+                                                            "type": "paragraph"
+                                                        }
+                                                    ]
+                                                }
+                                            ],
+                                            "id": "table3",
+                                            "label": "Table 3",
+                                            "tables": [
+                                                "<table>\n<thead>\n<tr>\n<th>Variable</th>\n<th>Coefficient</th>\n<th>p-value</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>Male</td>\n<td>0.085838</td>\n<td/>\n</tr>\n<tr>\n<td>Age 20\u201329</td>\n<td>1.147498</td>\n<td>0</td>\n</tr>\n<tr>\n<td>Age 30\u201339</td>\n<td>1.040151</td>\n<td/>\n</tr>\n<tr>\n<td>Age 40\u201349</td>\n<td>0.876858</td>\n<td/>\n</tr>\n<tr>\n<td>Age 50\u201359</td>\n<td>0.812458</td>\n<td/>\n</tr>\n<tr>\n<td>Age 60\u201365</td>\n<td>1.432797</td>\n<td/>\n</tr>\n<tr>\n<td>Immigrant \u00d7 Age 20\u201329</td>\n<td>0.908987</td>\n<td>0</td>\n</tr>\n<tr>\n<td>Immigrant \u00d7 Age 30\u201339</td>\n<td>0.656066</td>\n<td/>\n</tr>\n<tr>\n<td>Immigrant \u00d7 Age 40\u201349</td>\n<td>0.545079</td>\n<td/>\n</tr>\n<tr>\n<td>Immigrant \u00d7 Age 50\u201359</td>\n<td>0.574327</td>\n<td/>\n</tr>\n<tr>\n<td>Immigrant \u00d7 Age 60\u201365</td>\n<td>0.732853</td>\n<td/>\n</tr>\n<tr>\n<td>Immigrant</td>\n<td>\u22120.0267</td>\n<td>0</td>\n</tr>\n<tr>\n<td>Constant</td>\n<td>\u22123.91427</td>\n<td>0</td>\n</tr>\n<tr>\n<td>Sample Size</td>\n<td>1305652</td>\n<td/>\n</tr>\n<tr>\n<td>Pseudo R2</td>\n<td>0.072</td>\n<td/>\n</tr>\n<tr>\n<td>Proportion Emigrate</td>\n<td>0.0046</td>\n<td/>\n</tr>\n</tbody>\n</table>"
+                                            ],
+                                            "title": "Probit Model of Emigration",
+                                            "type": "table"
+                                        }
+                                    ],
+                                    "type": "figure"
+                                },
+                                {
+                                    "assets": [
+                                        {
+                                            "footnotes": [
+                                                {
+                                                    "text": [
+                                                        {
+                                                            "text": "<i>Note</i>: Year and Cohort dummy variables are also included in the model <i>Data source</i>: LLMDB 1975\u20132006, working age population",
+                                                            "type": "paragraph"
+                                                        }
+                                                    ]
+                                                }
+                                            ],
+                                            "id": "table4",
+                                            "label": "Table 4",
+                                            "tables": [
+                                                "<table>\n<tbody>\n<tr>\n<td>Variable</td>\n<td>Males</td>\n<td>Females</td>\n</tr>\n<tr>\n<td>Age</td>\n<td>39.4</td>\n<td>37.7</td>\n</tr>\n<tr>\n<td>Immigrant</td>\n<td>0.104</td>\n<td>0.101</td>\n</tr>\n</tbody>\n</table>"
+                                            ],
+                                            "title": "Summmary Statistics Emigration",
+                                            "type": "table"
+                                        }
+                                    ],
+                                    "type": "figure"
+                                },
+                                {
+                                    "text": "One other problem that was identified when simulating using the model was that there was an unexpected number of emigrants over 60. Because the simulations are calibrated by total number of emigrants, this tends to skew the age structure of the emigrants. The issue we identified for this problem relates also to the construction of the emigration variable in the underlying data, which depends upon a period of lack of contact with the social insurance system for a period of years. It is likely that individuals with personal pensions or savings who take early retirement may neither be in employment, nor in receipt of benefits and thus may appear to meet the criteria for having emigrated.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "We therefore have to use an alternative methodology. In this case we disaggregate emigration totals into ages 15\u201359 and 60+. For the younger age group, we continue to utilise the emigration probit model and for the older age group we use a transition probability based upon official statistics.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "Partners and dependent children are likely to move with the emigrant (unless there is a family break-up which is modelled separately or where an individual moves temporarily away for work purposes which is difficult to model). Therefore emigration should be modelled using the family or benefit unit of analysis. As the unit of analysis of the LLMDB is individual, to produce the ranking variable used to select benefit units for emigration, we select the highest emigration probability within a benefit unit. Benefit units are then ranked by this probability to select emigrant families.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "Our choice of data causes us some problems as the estimation data is based upon individual characteristics rather than family characteristics. One of our objectives is to hit the ONS population projection totals by age and sex. Therefore when we simulate emigration we utilise these totals as our external control total. Again however these external control totals are at the individual level not the family level. Our solution therefore is to simulate first the probability of an adult emigrating including a stochastic component. A running total is retained of the number of emigrants until we have reached the desired control total.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "One issue that arose was in determining whether to use a single total of emigrants or to vary it by age and sex. We chose the former for test purposes however an algorithm has been developed to ensure that the ONS age-sex assumptions can be achieved to be implemented later in the development stage of the model. The algorithm takes the following form and is akin to quota sampling without replacement.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "items": [
+                                        [
+                                            {
+                                                "text": "- Sort possible emigrant families by the probability of emigration as above",
+                                                "type": "paragraph"
+                                            }
+                                        ],
+                                        [
+                                            {
+                                                "text": "- Divide the population into groups corresponding to the ONS age-sex migration profiles at the individual level",
+                                                "type": "paragraph"
+                                            }
+                                        ],
+                                        [
+                                            {
+                                                "text": "- As a family emigrates the numbers in the individual emigration \u201cbins\u201d are incremented",
+                                                "type": "paragraph"
+                                            }
+                                        ],
+                                        [
+                                            {
+                                                "text": "- Once a bin is full, no further family with a member with the characteristic of this bin may emigrate. The next family to emigrate is a family where the bins are not full",
+                                                "type": "paragraph"
+                                            }
+                                        ],
+                                        [
+                                            {
+                                                "text": "- Continue until all emigrant bins are full",
+                                                "type": "paragraph"
+                                            }
+                                        ]
+                                    ],
+                                    "prefix": "none",
+                                    "type": "list"
+                                },
+                                {
+                                    "text": "This method is distinct from the Pageant algorithm due to <a href=\"#bib1\">Ch\u00e8nard (2000</a>), which uses the gap between desired emigrant numbers per bin and the number selected to influence the probability of each new emigrant.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "<a href=\"#fig3\">Figure 3</a> above outlines the external control totals. The ONS based results have been adjusted to exclude emigrants from Northern Ireland.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "However at present no adjustment has been made to include people who leave Great Britain to live in Northern Ireland.",
+                                    "type": "paragraph"
+                                }
+                            ],
+                            "title": "Modelling Who Emigrates",
+                            "type": "section"
+                        },
+                        {
+                            "content": [
+                                {
+                                    "text": "Another question we would like to address is whether we want to keep a pool of emigrants who can return as return migrants later? The SESIM model does this to be able to model the pension entitlements of foreign residents, a requirement also of Pensim2. APPSIM because of the difficulty in maintaining all characteristics of emigrants chose not to simulate this group. These issues make it impossible to maintain representative characteristics of the emigrant population due to the fact that their behaviour and characteristics are likely to be different to the home population, requiring in effect a different or even multiple microsimulation models to simulate their characteristics.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "However there is an intermediate possibility. In order to model pension expenditures, we merely require information about the age, pension contributions and mortality of overseas retirees. What is required therefore is to maintain an external sample of these retirees and to model flows to and from this sample. As individuals do not accumulate pension rights abroad, we simply model the mortality rate of these emigrants. When a family emigrates they move into the emigrant pool or overseas sample, bringing with them their pension entitlements.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "Returning immigrants are simulated using a model outlined above. However as we do not simulate their life-cycle characteristics such as marriage, children, labour market, incomes, savings etc, we cannot move an individual from the emigrant population. Rather for each returning emigrant we select randomly (without replacement and individual from the emigrant pool) and discard them. Instead we assign their pension contribution to sampled returning immigrant (containing the full range of characteristics required for immigrants) described above on the basis of their age and sex. Thus we maintain the total sum of pension contributions and accrued obligations under the national insurance system, while also maintaining the representativity of the immigrant population.",
+                                    "type": "paragraph"
+                                }
+                            ],
+                            "title": "Flows to and from the Overseas Population",
+                            "type": "section"
+                        },
+                        {
+                            "content": [
+                                {
+                                    "text": "As the purpose of the model is to model total entitlement to UK state pensions, we need to not only model the number of people who leave and enter, which are flow variables, but also model the stock of people living abroad who either have entitlement to the state pension or have accumulated entitlement to state pensions in the future. This stock will depend upon the initial stock of emigrants plus flows due to emigration from the Britain and re-immigration of emigrants back to Britain and deaths of the emigrant population.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "We now describe the process of creating this initial stock of the population living overseas. This component of the model adds an additional layer of complexity as it extends the scope of the model beyond a single nation state. This poses significant data problems. While, although nontrivial, it is relatively straight forward to produce a base dataset for a population living within a country as this tends to be consistent with existing datasets, creating a base dataset of people living abroad in many different countries is typically not available in a single source. In this section we describe the creation of the initial stock or sample of emigrants at the start of the simulation and the maintenance of this stock over time. We call this our emigrant pool.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "In order to solve the base dataset problem we utilise a number of different datasets. While no single dataset exists of those living abroad, we can achieve our objective through a number of steps.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "Firstly administrative data on retirement pensions, the RP dataset, contains all pension recipients for the British pension system. Although the data is only at the individual unit of analysis and has limited contextual variables, it has sufficient information to model current pension entitlements. This is our starting sample contains a sample of pension age individuals drawn randomly from the RP dataset to be consistent with the sample size of the Pensim2 starting population.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "For working age emigrants, the situation is less straightforward as no single dataset contains a sample of these emigrants. Rather we utilise information on the characteristics of emigrants contained in the LLMDB dataset described above to serve as our pool of working age emigrants.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "While the RP dataset contains the number of emigrant pensioners, we do not know precisely the number of British nationals of working age living overseas. We calculate the stock of working age emigrants from estimates in the IPPR Brits Abroad study which using Census, passport and social security data estimates the number of British emigrants. Subtracting the number of pension emigrants in the RP dataset we get the number of working age emigrants.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "In addition we want to know not only the number of emigrants, but also the country of residence. This is relevant as social security benefits are only indexed for countries for which Britain has a Social Security Agreement. Using the IPPR data, we find that 8% of pensioners and 18% of all emigrants are living in countries without social security agreements. At present we assign individuals to countries randomly.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "As both samples represent different proportions of the population, we create an emigrant pool with the correct proportion of working age and pension age using external control totals from the RP and IPPR data and sample randomly from each dataset. The unit of analysis in the first year is the individual due to the structure of the available data.",
+                                    "type": "paragraph"
+                                }
+                            ],
+                            "title": "Modelling the initial stock of the Overseas Population",
+                            "type": "section"
+                        },
+                        {
+                            "content": [
+                                {
+                                    "text": "As individuals emigrate within the emigration process above, they are moved from the nationally resident dataset into the emigrant pool and are then subject to a number emigrant processes. One of the intentions of the model is to be able to simulate the cost of pensions to overseas residents. This is particularly relevant given recent changes to the pension legislation that give benefits proportional to the years of contributions, without requiring a minimum threshold. In other words, spending even a year in the UK will entitle someone to a partial pension from Britain and thus given the substantial number of immigration and emigration in recent years, there will be potentially very many emigrants with future pension entitlement.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "While immigrants in the model enter the dataset and are then simulated like other individuals, for emigrants this is not possible. This is because (a) they are not subject to the control totals used within the model and (b) have different contextual information and so from a technical perspective can not be simulated using existing code.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "Therefore we need to model a number of relevant processes separately. We have chosen to model a subset of processes as we do not have models that contain the transition processes for other countries. These are:",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "items": [
+                                        [
+                                            {
+                                                "text": "- Mortality",
+                                                "type": "paragraph"
+                                            }
+                                        ],
+                                        [
+                                            {
+                                                "text": "- Re-immigration",
+                                                "type": "paragraph"
+                                            }
+                                        ],
+                                        [
+                                            {
+                                                "text": "- State Pension Simulations",
+                                                "type": "paragraph"
+                                            }
+                                        ]
+                                    ],
+                                    "prefix": "none",
+                                    "type": "list"
+                                },
+                                {
+                                    "text": "The mortality model in Pensim2 is quite complicated requiring information about incomes, disability and IS membership etc. As we really only have information on age and sex, we make the simplifying assumption that emigrants have the same mortality rate as individuals of the same age and sex in the UK.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "We also model re-immigration using the same control totals for the GB born in the immigration module. However, because we do not model family formation for emigrants, if we were to reintroduce these families to Pensim2, our population distribution may be affected. Therefore our strategy is to take out one for one an individual from the emigrant pool and treat them as if they were dead.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "Lastly we model pension entitlement. <a href=\"#table5\">Table 5</a> below outlines the processes simulated. Work thus far has focused on preparing the variables in the base-data required to simulate these processes. In terms of pension simulation, we assume pensions received by those in pension age continue as is, while for working age emigrants, their pension will be simulated using the entitlement rules based upon their accumulated contributions and earnings histories. This entitlement depends both upon simulated variables for periods an individual spends in the future part of the model and variables contained in the base data. For simulated emigrants, this is consistent with the simulation for nationally resident, however those who start the model within the emigrant pool, we have to generate the appropriate variables.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "assets": [
+                                        {
+                                            "id": "table5",
+                                            "label": "Table 5",
+                                            "tables": [
+                                                "<table>\n<thead>\n<tr>\n<th>Name</th>\n<th>Description</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>sp01 SetVarStatePenPe</td>\n<td>Set Variables to PE for state pension calculation</td>\n</tr>\n<tr>\n<td>sp02_SetVarStatePenPa</td>\n<td>Set Variables to PA for state pension calculation</td>\n</tr>\n<tr>\n<td>sp03_WaBspAccrual1</td>\n<td>Calculate the accrual of BSP/HRP rights</td>\n</tr>\n<tr>\n<td>sp04_WaGrossApAccrual</td>\n<td>Gross AP accrual</td>\n</tr>\n<tr>\n<td>sp07_WaAPValue</td>\n<td>Net AP accrual</td>\n</tr>\n<tr>\n<td>sp08_ClaimStatePen</td>\n<td>Whether individual will claim state pensions</td>\n</tr>\n<tr>\n<td>sp09_AmountStatePen</td>\n<td>Amount/Value of state pensions claimed</td>\n</tr>\n</tbody>\n</table>"
+                                            ],
+                                            "title": "Processes used to calculated for state pension",
+                                            "type": "table"
+                                        }
+                                    ],
+                                    "type": "figure"
+                                }
+                            ],
+                            "title": "Emigrant Processes",
+                            "type": "section"
+                        }
+                    ],
+                    "id": "s5-2",
+                    "title": "Modelling Who Immigrates",
+                    "type": "section"
+                }
+            ],
+            "id": "s4",
+            "title": "PENSIM2",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "In this paper we developed a methodology for simulating migration in a dynamic microsimulation model. The method builds on methodologies used in other models, particularly in Sweden, Canada and Australia and focuses in particular on defining the algorithms used. We hope that these algorithms will prove useful to other model builders. Our migration module consisted of a number of parts. Firstly immigration was modelled using a sampling routine from an external sample of British and non-British migrants.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Emigrants were modelled utilising an emigration regression. Emigrants move into an external pool of emigrants who are then subjected to a sub-set of processes in order to be able to model pension expenditure amongst pensioners living abroad. Unlike the domestic pensioners, at present it is not possible to model the relative welfare of these pensioners as we neither model other family members and family formation, nor do we model other income sources. However the model is useful in capturing future liability for pensions paid to overseas pensioners and to assess the cost of pension reforms for this group.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "One key gap in the model is migration between Northern Ireland which has a separate pension system and mainland GB. Given the transferability of eligibility for migrants between these different parts of the UK, this is an issue that will have to be dealt with in medium term improvements in the model.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Lastly once immigrants are introduced into the model, the question then remains what we do with them once they enter the model. <a href=\"#bib15\">Sulaheen and Shadforth (2006</a>) and <a href=\"#bib10\">Haque et al. (2002</a>) describe the situation of migrants in the UK, highlighting that immigrants tend to be younger, more like to be in work, but also likely to be both in the highest paid professions and the lowest paid professions, but less represented in the middle of the distribution. New immigrants are also more educated than older immigrants. Also there is quite a significant wage gap between immigrants and UK born. However for background information, it would be useful to have a handle on the extent to which migrant and non-migrant histories differ, even if only to provide some contextual background for simulations.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Incorporating this information would require the re-estimation of the entire labour market and demographic processes of the model and thus adjusting the other modules to account for alternative transitions for migrant and non-migrants is a very large task. Re-estimating existing models of labour market characteristics was beyond the scope of this project.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Therefore labour market processes for immigrants were not differentially simulated. Rather it was assumed that the difference in education and experience variables will account for the earnings and employment differential. However <a href=\"#bib5\">Duleep and Dowha (2008c</a>) acknowledge that this approach from the point of view of simulating migrant earnings is problematical. It is likely to misrepresent the earnings profiles of migrants. They also recommend that in estimating models of migrant earnings, that separate equations should be estimated for migrants rather than simply including dummy variables in existing earnings regression models. This recommendation is likely to apply to other components of the labour market as well. Therefore it is hoped to improve this aspect in future developments of the model.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s5",
+            "title": "Conclusions",
+            "type": "section"
+        }
+    ],
+    "references": [
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Ch\u00e8nard, D.",
+                        "preferred": "D. Ch\u00e8nard"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2000",
+            "details": "Individual alignment and group processing: an application to migration processes in DYNACAN, (eds), Microsimulation Modelling for Policy Analysis, Cambridge University Press, Cambridge",
+            "id": "bib1",
+            "title": "Microsimulation Modelling for Policy Analysis",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Drane, C.",
+                        "preferred": "C. Drane"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2006",
+            "details": "Presentation to the, Pensions Policy Institute Modelling Seminar, http://www.pensionspolicyinstitute.org.uk/uploadeddocuments/Events/DWP_Presentation_at_PPI_Modelling_Seminar_06_2006.pdf, March, 3rd",
+            "id": "bib2",
+            "title": "Pensim2: Analysing the Effect of Government Policy in the Long-term",
+            "type": "unknown",
+            "uri": "http://www.pensionspolicyinstitute.org.uk/uploadeddocuments/Events/DWP_Presentation_at_PPI_Modelling_Seminar_06_2006.pdf"
+        },
+        {
+            "articleTitle": "Adding immigrants to microsimulation models",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Duleep, H.O.",
+                        "preferred": "H.O. Duleep"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": "Dowhan",
+                    "type": "group"
+                }
+            ],
+            "date": "2008",
+            "discriminator": "a",
+            "id": "bib3",
+            "journal": "Social Security Bulletin",
+            "pages": {
+                "first": "51",
+                "last": "66",
+                "range": "51\u201366"
+            },
+            "type": "journal",
+            "volume": "68"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Duleep, H.O.",
+                        "preferred": "H.O. Duleep"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Dowha, D.J.",
+                        "preferred": "D.J. Dowha"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2008",
+            "details": "Incorporating Immigrant Flows into Microsimulation Models Social Security Bulletin, 68, 1",
+            "id": "bib4",
+            "title": "Incorporating Immigrant Flows into Microsimulation Models Social Security Bulletin",
+            "type": "unknown"
+        },
+        {
+            "articleTitle": "Research on immigrant earnings",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Duleep, H.O.",
+                        "preferred": "H.O. Duleep"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Dowha, D.J.",
+                        "preferred": "D.J. Dowha"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2008",
+            "discriminator": "c",
+            "id": "bib5",
+            "journal": "Social Security Bulletin",
+            "pages": {
+                "first": "31",
+                "last": "50",
+                "range": "31\u201350"
+            },
+            "type": "journal",
+            "volume": "68"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Edwards, S.",
+                        "preferred": "S. Edwards"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "GENESIS: SAS based computing environment for dynamic microsimulation models",
+            "date": "2004",
+            "id": "bib6",
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "Mimeo"
+                        ]
+                    },
+                    "formatted": [
+                        "Mimeo"
+                    ]
+                },
+                "name": [
+                    "Department of Work and Pensions"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Emmerson, C.",
+                        "preferred": "C. Emmerson"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Reed, H.",
+                        "preferred": "H. Reed"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Shephard, A.",
+                        "preferred": "A. Shephard"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2004",
+            "details": "IFS Working Paper W04/21",
+            "id": "bib7",
+            "title": "An Assessment of Pensim2",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Inagaki, S.",
+                        "preferred": "S. Inagaki"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2005",
+            "details": "IPSS Discussion Paper Series No.2005-03",
+            "id": "bib8",
+            "title": "A Microsimulation Model for Projections of the Japanese Socioeconomic Structure (INAHSIM)",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": "IPPR",
+                    "type": "group"
+                }
+            ],
+            "bookTitle": "Brits Abroad",
+            "date": "2006",
+            "id": "bib9",
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "London"
+                        ]
+                    },
+                    "formatted": [
+                        "London"
+                    ]
+                },
+                "name": [
+                    "Institute for Public Policy Research"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Haque, R.",
+                        "preferred": "R. Haque"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Dustmann, C.",
+                        "preferred": "C. Dustmann"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Fabbri, F.",
+                        "preferred": "F. Fabbri"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Preston, I.",
+                        "preferred": "I. Preston"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Wadsworth, J.",
+                        "preferred": "J. Wadsworth"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": "Michael Shields and Stephen Wheatley Price",
+                    "type": "group"
+                }
+            ],
+            "date": "2002",
+            "details": "RDS Occasional Paper No 82",
+            "id": "bib10",
+            "title": "Migrants in the UK: their characteristics and labour market outcomes and impacts",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "O\u2019Donoghue, C.",
+                        "preferred": "C. O\u2019Donoghue"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2001",
+            "details": "Brazilian Electronic Journal of Economics, 4, 2",
+            "id": "bib11",
+            "title": "Dynamic Microsimulation: A Survey",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Pennec, S.",
+                        "preferred": "S. Pennec"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Keegan, M.",
+                        "preferred": "M. Keegan"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2007",
+            "details": "APPSIM -Modelling Migration National Centre for Social and Economic Modelling (NATSEM), University of Canberra, Working Paper No. 5",
+            "id": "bib12",
+            "title": "APPSIM -Modelling Migration National Centre for Social and Economic Modelling (NATSEM)",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Pudney, S.E.",
+                        "preferred": "S.E. Pudney"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1992",
+            "details": "Dynamic Simulation of Pensioner\u2019s incomes: methodological issues and a model design for Great Britain, Dept. of Applied Economics Microsimulation Unit Discussion, paper no. MSPMU 9201, University of Cambridge",
+            "id": "bib13",
+            "title": "Dept. of Applied Economics Microsimulation Unit Discussion",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Redway, H.",
+                        "preferred": "H. Redway"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2003",
+            "details": "Presentation to the, Microsimulation Conference, Canberra, 2003, https://guard.canberra.edu.au/natsem/conference2003/papers/pdf/ppt_redway_h.pdf, March, 3rd",
+            "id": "bib14",
+            "title": "Data Fusion through Statistical Matching \u2013 Creating the Base Dataset for Pensim2",
+            "type": "unknown",
+            "uri": "https://guard.canberra.edu.au/natsem/conference2003/papers/pdf/ppt_redway_h.pdf"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Sulaheen, J.",
+                        "preferred": "J. Sulaheen"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Shadforth, C.",
+                        "preferred": "C. Shadforth"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2006",
+            "details": "Q4, Quarterly Bulletin",
+            "id": "bib15",
+            "title": "Immigrant characteristics and the supply potential of the economy",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Simpson, M.",
+                        "preferred": "M. Simpson"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2009",
+            "details": "Paper Presented to the, 2nd General Conference of the International Microsimulation Association, Ottawa",
+            "id": "bib16",
+            "title": "Incorporating Immigration into Microsimulation Models",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Spielauer, M.",
+                        "preferred": "M. Spielauer"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2002",
+            "details": "Working Paper 18-2002",
+            "id": "bib17",
+            "title": "The Potential Dynamic of Microsimulation in Family Studies: A Review and Some Lessons for FAMSIM+",
+            "type": "unknown"
+        },
+        {
+            "articleTitle": "Effects from Higher Immigration on Demographic Development, Labour Supply and Pension Expenditures",
+            "authors": [
+                {
+                    "name": {
+                        "index": "St\u00f8len, N.M.",
+                        "preferred": "N.M. St\u00f8len"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Texmon, I.",
+                        "preferred": "I. Texmon"
+                    },
+                    "type": "person"
+                }
+            ],
+            "conference": {
+                "name": [
+                    "1st General Conference of the International Microsimulation Association"
+                ]
+            },
+            "date": "2007",
+            "id": "bib18",
+            "type": "conference-proceeding"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Turner, A",
+                        "preferred": "A Turner"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Hills, J",
+                        "preferred": "J Hills"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Drake, J",
+                        "preferred": "J Drake"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "Pensions Commission, Second Report",
+            "date": "2005",
+            "id": "bib19",
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "London"
+                        ]
+                    },
+                    "formatted": [
+                        "London"
+                    ]
+                },
+                "name": [
+                    "The Stationery Office"
+                ]
+            },
+            "type": "book"
+        }
+    ],
+    "appendices": [
+        {
+            "content": [
+                {
+                    "content": [
+                        {
+                            "text": "In the appendices below, we detail the algorithms used for migration within Pensim2. Data is stored in different tables. In this glossary we define the different tables",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "\u2013 Person Annual Table: Annual changing values for individuals",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "\u2013 Person Table: Non changing values for individuals",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "\u2013 Benefit Unit Annual Table: Changing values for Benefit Units",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "\u2013 Benefit Unit Table: Non changing values for Benefit Units",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "title": "Glossary of Terms",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "items": [
+                                [
+                                    {
+                                        "text": "Select Number of GB national individuals GB(g) and non-nationals F(g) per group to be migrated. We set this number as a proportion of the sample size so as to allow for different base data samples to be used, pGB(g) and pF(g) such that N(g) = N * pGB(g) and F(g) = N*pF(g).",
+                                        "type": "paragraph"
+                                    },
+                                    {
+                                        "items": [
+                                            [
+                                                {
+                                                    "text": "In Pensim2, the rates are stored as assignments pGB(g) and pF(g)",
+                                                    "type": "paragraph"
+                                                }
+                                            ],
+                                            [
+                                                {
+                                                    "text": "In BU table of GB Immigrants (for simpler selection)",
+                                                    "type": "paragraph"
+                                                },
+                                                {
+                                                    "items": [
+                                                        [
+                                                            {
+                                                                "text": "- Generate variables nGBImmig and nForImmig as products of N*pGB(g) and N*pF(g).",
+                                                                "type": "paragraph"
+                                                            }
+                                                        ],
+                                                        [
+                                                            {
+                                                                "text": "- Generate a random number in BU table",
+                                                                "type": "paragraph"
+                                                            }
+                                                        ],
+                                                        [
+                                                            {
+                                                                "text": "- Sort BU\u2019s by random number",
+                                                                "type": "paragraph"
+                                                            }
+                                                        ],
+                                                        [
+                                                            {
+                                                                "text": "- Calculate the cumulative number of GB members of BU by this order cumulnGBImmig",
+                                                                "type": "paragraph"
+                                                            }
+                                                        ],
+                                                        [
+                                                            {
+                                                                "text": "- Calculate the cumulative number of Foreign members of BU by this order cumulnForImmig",
+                                                                "type": "paragraph"
+                                                            }
+                                                        ],
+                                                        [
+                                                            {
+                                                                "text": "- Store the lagged value of cumulnGBImmig _1",
+                                                                "type": "paragraph"
+                                                            }
+                                                        ],
+                                                        [
+                                                            {
+                                                                "text": "- Select BU\u2019s if cumulative sum is less than nGBImmig \u2192 SelectGBImmig = 1",
+                                                                "type": "paragraph"
+                                                            }
+                                                        ],
+                                                        [
+                                                            {
+                                                                "text": "- Generate a random number r_GBImmig",
+                                                                "type": "paragraph"
+                                                            }
+                                                        ],
+                                                        [
+                                                            {
+                                                                "text": "- If there is a BU where cumulnGBImmig &gt; nGBImmig and cumulnGBImmig _1 &lt; nGBImmig, calculate the difference diff_cumulnGBImmig = cumulnGBImmig -cumulnGBImmig_1",
+                                                                "type": "paragraph"
+                                                            }
+                                                        ],
+                                                        [
+                                                            {
+                                                                "text": "- If r_GBImmig &lt; [nGBImmig/cumulnGBImmig_1]/ diff_cumulnGBImmig then also select this BU set SelectGBImmig = 1",
+                                                                "type": "paragraph"
+                                                            }
+                                                        ],
+                                                        [
+                                                            {
+                                                                "text": "- Drop if SelectGBImmig = 0",
+                                                                "type": "paragraph"
+                                                            }
+                                                        ],
+                                                        [
+                                                            {
+                                                                "text": "- Save as TempGBImmigBU",
+                                                                "type": "paragraph"
+                                                            }
+                                                        ],
+                                                        [
+                                                            {
+                                                                "text": "- Merge with PA and PE",
+                                                                "type": "paragraph"
+                                                            }
+                                                        ],
+                                                        [
+                                                            {
+                                                                "text": "- In PA and PE keep if SelectGBImmig = 1, store respectively as TempGBImmigPA and TempGBImmigBE",
+                                                                "type": "paragraph"
+                                                            }
+                                                        ],
+                                                        [
+                                                            {
+                                                                "text": "- Transform variables in all 3 Temporary files to be consistent with new people",
+                                                                "type": "paragraph"
+                                                            },
+                                                            {
+                                                                "items": [
+                                                                    [
+                                                                        {
+                                                                            "text": "New Person ID in PA and PE tables",
+                                                                            "type": "paragraph"
+                                                                        }
+                                                                    ],
+                                                                    [
+                                                                        {
+                                                                            "text": "New BU ID in BU table",
+                                                                            "type": "paragraph"
+                                                                        }
+                                                                    ],
+                                                                    [
+                                                                        {
+                                                                            "text": "New BU ID in PA and PE tables consistent with their BU",
+                                                                            "type": "paragraph"
+                                                                        }
+                                                                    ],
+                                                                    [
+                                                                        {
+                                                                            "text": "Change date of birth so that age is consistent with year of entry to country",
+                                                                            "type": "paragraph"
+                                                                        }
+                                                                    ]
+                                                                ],
+                                                                "prefix": "none",
+                                                                "type": "list"
+                                                            }
+                                                        ]
+                                                    ],
+                                                    "prefix": "none",
+                                                    "type": "list"
+                                                }
+                                            ],
+                                            [
+                                                {
+                                                    "text": "Subtract cumulnForImmig from nForImmig and set to New_nForImmig \u2192 Remainder of foreign immigrants come from all foreign benefit units",
+                                                    "type": "paragraph"
+                                                }
+                                            ],
+                                            [
+                                                {
+                                                    "text": "In BU table for the subset of Foreign Immigrants",
+                                                    "type": "paragraph"
+                                                }
+                                            ]
+                                        ],
+                                        "prefix": "alpha-lower",
+                                        "type": "list"
+                                    }
+                                ]
+                            ],
+                            "prefix": "number",
+                            "type": "list"
+                        },
+                        {
+                            "text": "Steps required for a more complicated age specific alignment.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "items": [
+                                [
+                                    {
+                                        "text": "Initialise by setting to zero the number of national individuals N\u2019(g) and non-nationals F\u2019(g) per group that have been allocated",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "Assign each family in migrant sample pool 1 (containing national returning - can include non-national dependants) a random number",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "For this we need a benefit unit file \u2192 link PE and PA tables to do this.",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "Sort migrant sample pool 1 according to random number",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "Select family of all individuals can be accommodated in a group if N\u2019(g) &lt; N(g) and F\u2019(g) &lt; F(g)",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "If N\u2019(g) \u2265 N(g) or F\u2019(g) \u2265 F(g), then skip family and consider next family in order",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "Increment N\u2019(g) for each national born individual (according to their group g) and F\u2019(g) for non-national dependants who are to enter the model",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "Copy family from sample pool 1 to model data structure",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "Initialise individual with new ID\u2019s and assign location and housing information etc.",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "Repeat these steps until N\u2019(g) = N(g) for all groups g.",
+                                        "type": "paragraph"
+                                    }
+                                ]
+                            ],
+                            "prefix": "number",
+                            "type": "list"
+                        },
+                        {
+                            "text": "Repeat for sample 2, containing only non-national born families.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "title": "Immigration Algorithm",
+                    "type": "section"
+                }
+            ],
+            "id": "appendix-1",
+            "title": "Appendix"
+        }
+    ],
+    "-meta": {
+        "patched": true
+    },
+    "stage": "published"
+}

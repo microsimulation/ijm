@@ -1,0 +1,1495 @@
+{
+    "status": "vor",
+    "id": "00016",
+    "version": 1,
+    "type": "research-article",
+    "doi": "10.34196/ijm.00016",
+    "authorLine": "Herwig Immervoll, Cathal O\u2019Donoghue",
+    "title": "Towards A Multi-Purpose Framework For Tax-Benefit Microsimulation: Lessons From EUROMOD",
+    "published": "2009-08-31T00:00:00Z",
+    "versionDate": "2009-08-31T00:00:00Z",
+    "statusDate": "2009-08-31T00:00:00Z",
+    "volume": 2,
+    "issue": 2,
+    "elocationId": "n/a",
+    "pdf": "http://web:8082/00016/ijm-00016.pdf",
+    "subjects": [
+        {
+            "id": "methodology",
+            "name": "Methodology"
+        },
+        {
+            "id": "taxes-benefits",
+            "name": "Taxes and benefits"
+        }
+    ],
+    "abstract": {
+        "content": [
+            {
+                "text": "Tax-benefit models provide tools for policy analyses that should enable researchers to focus their attention on formulating policy scenarios and analysing their effects. From the users\u2019 and the developers\u2019 points of view, numerous characteristics and features are desirable to maximise the model\u2019s usefulness. A model framework that offers generalised components essential for tax-benefit modelling while at the same time providing a large degree of flexibility in defining the specific parameters can be re-used for a multitude of modelling purposes. This paper discusses issues arising in the construction of such a general framework and illustrates possible approaches by reference to the the framework developed for construction of the EUROMOD tax-benefit model. EUROMOD is an integrated tax-benefit microsimulation model covering 15 (pre 2004) countries that are members of the European Union (<a href=\"#bib16\">Immervoll <i>et al</i>, 1999</a>) as well as 4 of the New Member States. Implementing this many tax-benefit systems in one single consistent framework requires a robust yet flexible structure. The framework needs to reflect the basic structural characteristics of tax-benefit systems while leaving enough room for a diversity of particular instruments and rules. This paper outlines the general model framework adopted. We argue that, apart from its direct usefulness for EUROMOD, the framework has far wider applicability as a general approach to static tax-benefit microsimulation modelling.",
+                "type": "paragraph"
+            }
+        ]
+    },
+    "copyright": {
+        "license": "CC-BY-4.0",
+        "holder": "Immervoll and O\u2019Donoghue",
+        "statement": "This article is distributed under the terms of the <a href=\"http://creativecommons.org/licenses/by/4.0/\">Creative Commons Attribution License</a>, which permits unrestricted use and redistribution provided that the original author and source are credited."
+    },
+    "authors": [
+        {
+            "affiliations": [
+                {
+                    "address": {
+                        "components": {
+                            "country": "France"
+                        },
+                        "formatted": [
+                            "France"
+                        ]
+                    },
+                    "name": [
+                        "Social Policy Division OECD"
+                    ]
+                }
+            ],
+            "emailAddresses": [
+                "herwig.immervoll@oecd.org"
+            ],
+            "name": {
+                "index": "Immervoll, Herwig",
+                "preferred": "Herwig Immervoll"
+            },
+            "type": "person"
+        },
+        {
+            "affiliations": [
+                {
+                    "address": {
+                        "components": {
+                            "country": "Galway"
+                        },
+                        "formatted": [
+                            "Galway"
+                        ]
+                    },
+                    "name": [
+                        "Rural Economy Research Centre Teagasc, National University of Ireland"
+                    ]
+                }
+            ],
+            "emailAddresses": [
+                "Cathal.ODonoghue@teagasc.ie"
+            ],
+            "name": {
+                "index": "O\u2019Donoghue, Cathal",
+                "preferred": "Cathal O\u2019Donoghue"
+            },
+            "type": "person"
+        }
+    ],
+    "body": [
+        {
+            "content": [
+                {
+                    "text": "Tax-benefit microsimulation models (MSMs) have been widely used in many countries for a number of years. Recently there has been interest in carrying out cross-country comparative exercises, examining the performance of policy instruments in different countries. Because of the limitations of national specific models in this regard (See <a href=\"#bib6\">Callan and Sutherland, 1997</a>), an integrated multi-country model, EUROMOD, has been developed by a consortium of teams in 19 EU countries. This paper describes the generalised software framework used to construct EUROMOD.",
+                    "type": "paragraph"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "Tax-benefit microsimulation models (MSMs) are computer programs that calculate tax liabilities and benefit entitlements for individuals, families or households in a nationally representative micro-data sample of the population and are used by both governments and academics to study existing social and fiscal policies as well as policy reforms. As micro models, they take as the basis of their analytical framework the micro-level, typically individuals, families and households.<a href=\"#fn1\"><sup>1</sup></a> As simulation models, they simulate the detail of tax-benefit policy legislation and thus are in a position to evaluate existing tax-benefit policies and aid in the design of new individual schemes or entire systems. They calculate applicable amounts of each element of the tax-benefit system in the legal order so that interactions between different elements of the system are fully taken into account. The resulting taxes, benefits and income measures for each individual, family or household are weighted to provide results at the population level. MSMs have been developed and are in use in many OECD countries (see <a href=\"#bib24\">Sutherland, 1995</a> for a survey).",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "By incorporating the interactions of different elements of the tax-benefit system and by taking full account of the diversity of characteristics in the population, this approach allows a very detailed analysis of the revenue, distributional and incentive effects of individual policy instruments and the system as a whole. In particular, they provide a powerful means of performing \u201cwhat if\u201d analyses by allowing the analyst to manipulate all relevant parameters of the system such as tax rates, thresholds, amounts, income concepts, in an intuitive and user-friendly environment (see <a href=\"#bib22\">Redmond, Sutherland and Wilson, 1998</a>).",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "In what follows we highlight the most important advantages of tax-benefit microsimulation models, drawing upon experience and examples from the EUROMOD model building project. The principal uses of MSMs are:",
+                            "type": "paragraph"
+                        },
+                        {
+                            "items": [
+                                [
+                                    {
+                                        "text": "simulating and evaluating existing policy;",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "examining the effects of alternative policies;",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "indicating pressures on behaviour created by existing and alternative policies.",
+                                        "type": "paragraph"
+                                    }
+                                ]
+                            ],
+                            "prefix": "bullet",
+                            "type": "list"
+                        },
+                        {
+                            "text": "Being based on representative household micro-data, MSMs have the capability of looking at the incidence of policy effects across the income distribution or across different types of individuals (for example, for different ages or by gender). They can also be used to examine the effectiveness and efficiency of policy in achieving various objectives such as the reduction of poverty or satisfying a set of desired redistributive properties.<a href=\"#fn2\"><sup>2</sup></a> Capturing the detail of actual legal rules, they allow for complex interactions between different policy instruments to be identified. Perhaps the most important use of MSMs is to examine the effects of alternative (both actual and hypothetical) policy reforms. They can thus be used to compute revenue effects of such reforms or to ensure policy reforms meet certain budgetary requirements (such being revenue \u2018neutral\u2019). Since both social protection programs and taxation instruments are modelled, one can explore both changes to social policy programs and means to finance them. As with existing policies, reform scenarios can be analysed in terms of their consequences for different population or income groups, the numbers of winners and losers (e.g., <a href=\"#bib3\">Atkinson <i>et al</i>., 2002</a>; <a href=\"#bib21\">Piachaud and Sutherland, 2000</a>).",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "While most tax-benefit models are open to behavioural extensions or can be embedded in a dynamic model that is able to \u2018age\u2019 the underlying population, many of them are of a \u2018static\u2019 nature. That is, they concentrate on \u2018first round\u2019 effects of policy reforms and disregard any behavioural consequences (e.g., in terms of labour supply or other choices that have an impact on household income) and inter-generational effects of policies. Even though such a \u2018static\u2019 simulation cannot measure the direct impact on behaviour of reforms, it can be used to determine the <i>pressures</i> on behaviour (\u2018incentive effects\u2019) such as marginal tax rates and replacement rates.<a href=\"#fn3\"><sup>3</sup></a>",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Apart from their main use as tools for analysing the effects of fiscal and social policy measures, these models are frequently used to impute tax- and benefit variables that are not elicited in the survey questionnaire. <a href=\"#bib26\">Weinberg (1999)</a>, for example, finds that, of seventeen data sources surveyed, taxes and/or social insurance contributions are imputed in five. Also, income variables in household survey data are frequently recorded net of income taxes and other levies on income, notably social insurance contributions. Using an iterative procedure together with the tax-benefit rules contained in MSMs, these models can be used to \u2018recover\u2019 gross incomes from net amounts by computing taxes and contributions which, after being deducted, result in the net amounts recorded in the original data (<a href=\"#bib15\">Immervoll and O\u2019Donoghue, 2001b</a>).",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s1-1",
+                    "title": "Tax-benefit microsimulation models",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "Recent years have seen an increasing demand for tools to perform international studies, particularly in Europe. This has been driven by stronger socio-economic links between countries, a more comparative focus in policy analysis and through a desire to verify theories in different national settings. While building country specific MSMs is a complex and very resource intensive task, designing a multi-country model brings up entirely new issues. Previous research using cross-country microsimulation provides a guide to some of the approaches, opportunities and pitfalls.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "This research can essentially be divided into three types:",
+                            "type": "paragraph"
+                        },
+                        {
+                            "items": [
+                                [
+                                    {
+                                        "text": "comparisons using a single country MSM;",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "comparisons using different national models; and",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "models embedded in a consistent and comparative design.",
+                                        "type": "paragraph"
+                                    }
+                                ]
+                            ],
+                            "prefix": "alpha-lower",
+                            "type": "list"
+                        },
+                        {
+                            "text": "Type (a) models apply different national systems on the population of a single country. Examples include <a href=\"#bib2\">Atkinson <i>et al</i>., (1988)</a>, who compared the impact of replacing the French tax-benefit system with the UK system and <a href=\"#bib20\">O\u2019Donoghue and Sutherland (1999)</a> who studied different European family tax instruments using UK data. Abstracting from differences in population structures they can examine the direct impact of different national systems. However because policy instruments are designed with a particular national policy, or social context in mind, care must be taken in interpreting results that ignore these differences. Type (b) models incorporate the differences in national populations and income distributions by using different national datasets. For example, <a href=\"#bib5\">Callan <i>et al</i>. (1996)</a> compared the Irish and UK tax-benefit systems. Comparing two very similar systems in this way is a relatively straightforward process. Yet, due to large conceptual differences between national models in terms of their structure, definitions, scope and output, extending the analysis to cover additional countries while maintaining comparability proved to be insurmountable (<a href=\"#bib6\">Callan and Sutherland, 1997</a>).",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Type (c) models, which have recently started to be developed, try to address these difficulties. As a step towards an EU-wide model, a prototype six country model, Eur6 (<a href=\"#bib4\">Bourguignon <i>et al</i>, 1997</a>) was constructed and has avoided many of the pitfalls associated with using different national models. As an integrated methodology, designed from the outset for comparative purposes, such models allow for flexibility in specifying the optimal data and modelling definitions. Using this type of model it is possible not only to compare national model results but also to pool them across countries, e.g., allowing for the position of individuals from different countries to be located within the multi-country income distribution.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s1-2",
+                    "title": "Multi-country tax-benefit models",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "This paper describes a microsimulation modelling framework that draws on the experiences from the development of the Eur6 prototype. Tax-benefit models need to be flexible enough to allow the simulation of far-reaching and <i>ex ante</i> unknown policy alternatives, while keeping the specification of relatively minor policy changes reasonably simple. The framework was first designed with the aim to run the national modules that make up EUROMOD, on one single platform. The principles developed, however, are more widely generalisable.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Creating a generic modelling framework presents several challenges. Each national tax-benefit system has a different structural logic and accommodating this structural diversity while keeping the model logically correct, robust and transparent to users is a major task. This is complicated further by the aim to be able to transfer policy instruments <i>between</i> countries to see, for example, what effects benefit X of country A would have if implemented in country B. Also, operating on a cross-national basis, there is a need to be able to evaluate the differential effects that a common policy instrument would have in the different countries. In essence, these requirements mean that each instrument needs to have a common interface so that it can be taken out of its original context and \u201cplugged\u201d into another system.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "We will consider some of these design issues and illustrate possible approaches by reference to the EUROMOD tax-benefit model. The structure of the paper is as follows. <a href=\"#s2\">Section 2</a> discusses the general objectives and desirable features of MSMs. Using a single platform for a multitude of different tax-benefit systems requires the essential \u2018building blocks\u2019 of tax-benefit systems to be identified independently of any given country. <a href=\"#s3\">Section 3</a> outlines our generalised structure of tax-benefit systems on which the modelling framework is based. <a href=\"#s4\">Section 4</a> describes the principal design philosophy behind the framework, detailing some key concepts of tax-benefit model building. The implementation of these key concepts in the framework is described in <a href=\"#s5\">section 5</a>, while the last section concludes.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s1-3",
+                    "title": "Aims of the paper",
+                    "type": "section"
+                }
+            ],
+            "id": "s1",
+            "title": "Introduction",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "Previous studies which have focused on the overall design of tax-benefit models have mainly focused on data- and broader design issues (Hoschka, 1986; <a href=\"#bib18\">Merz, 1991</a>; <a href=\"#bib7\">Citro and Hanushek, 1991a</a>, <a href=\"#bib8\">1991b</a>; <a href=\"#bib24\">Sutherland, 1995</a>). Our paper aims to build on previous work by operationalising accepted concepts in terms of the detailed computational design of MSMs. In addition, it will also discuss entirely new aspects which only arise in building an integrated multi-country model.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "To set the scene as to how a microsimulation framework should be created for tax-benefit modelling, it is useful to start by discussing the potential demands placed on the model. Broadly the objectives can be classified under the following headings:",
+                    "type": "paragraph"
+                },
+                {
+                    "items": [
+                        [
+                            {
+                                "text": "Flexibility;",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "Ease of use;",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "Robustness;",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "Transparency and consistency of structure and concepts;",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "Maintainability; and",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "Cost effectiveness.",
+                                "type": "paragraph"
+                            }
+                        ]
+                    ],
+                    "prefix": "bullet",
+                    "type": "list"
+                },
+                {
+                    "text": "It is the role of tax-benefit models to assist in the analysis of existing and alternative policy scenarios. Depending on the purpose of the analysis, scenarios to be analysed will often need to satisfy a number of requirements such as revenue neutrality, improving work incentives, reducing poverty, etc. Because tax-benefit systems are highly non-linear with a large number of parameters, the list of possible constraints is literally endless (see, for example, <a href=\"#bib23\">Sutherland, 1991</a>). It follows that the design of tax-benefit models should be <i>flexible</i>, enabling users to specify a wide range of different policy scenarios and make it easy to switch between scenarios. <a href=\"#bib11\">Hancock (1997)</a> argues in a first analysis of the computing requirements for EUROMOD that flexibility is probably the most important corner stone of the computing strategy.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Although MSMs may in part be constructed by computer programmers, typical users will include economists, statisticians and social policy analysts in both academia and government. <i>Ease of Use</i> should ensure that all relevant features of the model are accessible to a wide range of users rather than just programmers. As a result, as much of the internal workings of the model should be accessible for users. At the same time, the complexity of the model should be organised hierarchically.<a href=\"#fn4\"><sup>4</sup></a> In other words, it should be possible to use \u2018basic\u2019 features of the model without having to know all the details about more \u2018complex\u2019 model components. This ensures that the model is powerful while at the same time being useful for users with different backgrounds or different analyses in mind.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "To enable users to make changes to tax-benefit algorithms in a relatively safe environment, one would ideally have a standardised set of pre-fabricated building blocks that can be adapted for specifying the algorithm of every possible tax-benefit instrument without any need for major reprogramming. Each element should be a derivative of a basic template and should have the same type of input and output data structures. Only the core algorithm which determines the behaviour of the element would need to be element specific. Once users have become familiar with this structure, they can then adapt any tax-benefit algorithm without having to \u2018dig\u2019 through program code. However, in general there exists a trade-off between flexibility and <i>robustness</i>. It is technically possible to develop highly flexible elements that, through parameterisation, can be used for many different purposes. For example, a generalised tax allowance that can be used to construct all types of tax-allowance used in different countries. However, a very large number of parameters which attempt to provide for any potential use of an instrument may result in a model that is both difficult to use and is more prone to produce errors through mis-specification of parameters. In the case of our example, it may result in a tax allowance module that is very long and difficult to follow.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Once accustomed to the operation of one country module, users of a multi-country model need to be able to access the parameters of other countries\u2019 tax-benefit systems in a similar way. The multitude of necessary definitions and concepts (e.g., income taxes, fiscal units, sharing rules: see below) mean that <i>consistent</i> specification of relevant concepts across countries is essential. As highlighted in the previous section, simply lining up national models next to each other is not suitable as the design of national models will tend to reflect national priorities. Such conceptual differences will make it hard or impossible to compare the results of different models and prevent a consistent specification of policy reforms. A generalised modelling framework should therefore allow <i>consistency</i> in the specification of different systems. Given the fact that a typical tax-benefit system of one single country encompasses thousands of parameters, all of these parameters need to be readily accessible and organised in a <i>transparent</i> manner.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "In order to be able to contribute to the debate of contemporary policy issues, tax-benefit models will need <i>maintenance</i> on a regular basis. In addition to frequent revisions of tax-benefit rules, underlying micro-data will need to be updated regularly so that model results continue to be based on representative data. The model framework should therefore be able to access and organise different data sets with ease. In addition, the complexity of tax-benefit systems make validation of the logical correctness of the model an essential component of any model building project. Finding and analysing discrepancies between model results and reference figures should be aided by a model structure which allows tax-benefit algorithms to be \u2018traced\u2019 in order to find any modelling errors. Similarly, it is important to break complex algorithms down into manageable pieces that can be analysed separately.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The development of microsimulation models is a resource intensive process, involving the construction of a software environment to handle the data, policy simulation and output routines, the transformation and matching of existing micro-datasets and translation of tax-benefit laws into a computational framework (<a href=\"#bib17\">McCrae, 1999</a>). Another important expense is updating the model.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Repeating all these steps separately for each country multiplies costs, while re-using one single microsimulation framework for different countries or purposes can be a very <i>cost-effective</i> method of building new models.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s2",
+            "title": "Desirable features of micro-simulation models",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "A general tax-benefit modelling framework will ideally be able to accommodate any existing or hypothetical tax-benefit system. In designing such a framework it is therefore essential to identify the principal elements of tax-benefit systems. In other words, it is necessary to find a suitable \u2018common denominator\u2019 of all (reasonably) possible structures. However, in general, there exists a trade-off between structure and flexibility: The modelling framework needs to provide the structure necessary for setting up a simulation model without limiting the breadth of tax-benefit systems that can be simulated.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "In \u2018real world\u2019 tax-benefit systems, elementary policy rules are grouped together to form identifiable blocks such as \u2018instruments\u2019 (e.g., a tax credit), \u2018policies\u2019 (e.g., income tax), etc. In modelling a country\u2019s system, it is desirable to match the real system\u2019s hierarchy as closely as possible so that the logical representation provides a good intuitive equivalent of the original. From a model construction point of view it is desirable to try to generalise this representation as much as possible, so that most national systems can be described utilising the same structure.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "<a href=\"#fig1\">Figure 1</a> shows the hierarchical structure that we use for a general tax-benefit modelling framework and introduces the terminology used in the remainder of this paper. Each tax-benefit <i>system</i> is made up of individual <i>policies</i>. These are elementary collections of tax-benefit instruments. Examples for a policy are Income Tax, Social Insurance Contributions or Social Assistance Benefits. The <i>policy spine</i> is a list of policies indicating the sequence by which they are applied in the tax-benefit system. For example, if social insurance contributions are tax deductible, then the entry Social Insurance Contributions would have to appear <i>before</i> Income Tax because the model requires the amount of social insurance contributions as a prerequisite for calculating income tax; similarly, if social assistance benefits depend on after tax income, then the entry Social Assistance Benefits would have to appear <i>after</i> Income Tax since income taxes would be a necessary input for calculating Social Assistance. At the lowest level is the tax-benefit <i>module</i>, which performs the calculation of a certain part of the tax or benefit (e.g., a deduction, or applying a rate schedule to a tax base) on each fiscal unit. The modules represent the elementary building blocks of the tax-benefit system: only the modules contain actual tax-benefit rules. All other levels are merely necessary to structure these rules and to apply them in the appropriate sequence.",
+                    "type": "paragraph"
+                },
+                {
+                    "assets": [
+                        {
+                            "id": "fig1",
+                            "image": {
+                                "alt": "",
+                                "uri": "%iiif_uri%/00016%2Fijm-00016-fig1.tif",
+                                "size": {
+                                    "width": 851,
+                                    "height": 561
+                                },
+                                "source": {
+                                    "mediaType": "image/jpeg",
+                                    "uri": "%iiif_uri%/00016%2Fijm-00016-fig1.tif/full/full/0/default.jpg",
+                                    "filename": "ijm-00016-fig1.jpg"
+                                }
+                            },
+                            "label": "Figure 1",
+                            "title": "Structure of Tax-Benefit System",
+                            "type": "image"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "text": "The tax-benefit structure that we have just described is linearly sequential. However in certain cases a decision must be made between a range of choices. For example a fiscal unit may be entitled to a range of different benefits and must choose one; or, as in the case of optional joint taxation, individuals may have to choose between being taxed individually and pooling income to form a joint tax base. Similarly, behavioural reactions to policy change are best modelled as an optimisation over a range of alternative decisions. The framework allows for such typologies by providing decision-rule elements. If required, these can be inserted anywhere along the policy spine to construct necessary \u2018branches\u2019 of a decision.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "In terms of the actual computing environment, the MSM framework itself has been implemented as follows. In choosing the environment and programming language for the model framework, an effort has been made to ensure its longevity by not irrevocably attaching it to one specific computing environment. In addition, the aim has been to use software of a type that is familiar to potential users as well as easily available. However, care has been taken to avoid a rigidity, which would prevent future adaptations to other platforms such as UNIX.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The programming language used is C/C++ (Microsoft Visual C++). This facilitates efficiency in programming. However, the ability of C/C++ to write very streamlined and \u201cdirect\u201d algorithms sometimes reduces the readability and transparency for less experienced users. As a rule, where trade-offs existed between transparency and speed, we accepted decreases in the model\u2019s speed in return for improved readability and usability.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "By using a method for database access (ODBC) which is available for all major relational database management systems, database systems other than the one used as a default can be used for data storage and management. Both the input micro-data and the model\u2019s micro-output (simulation results) can be stored in one of the widely used relational database systems (Oracle, Microsoft SQL, etc.) Microsoft Access is used as the default. Input and output data are stored in two separate databases. In this way, the input micro-data can remain \u201cread-only\u201d. However, the relational data structure makes it possible to combine the physically separate input and output data into one logical table to analyse the impact of a tax-benefit system in relation to all sorts of characteristics (age, household size, etc.).",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "All parameter lists are stored as spreadsheet tables and can be read and manipulated with any spreadsheet software (e.g. Microsoft Excel).",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s3",
+            "title": "The structure of tax-benefit systems",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "In order to accommodate the numerous requirements and different uses outlined in <a href=\"#s2\">section 2</a> and to \u2018fill\u2019 the individual boxes of the hierarchy described in <a href=\"#s3\">section 3</a> with actual tax-benefit algorithms, the modelling framework will necessarily need to be quite generalised. The degree of generalisation relates to the degree to which a model is \u2018parameterised\u2019 so that model code can be used for different purposes without re-coding. For instance, a \u2018tax-schedule\u2019 module that is programmed in a way that works with any number of tax bands and any set of tax-rates can be re-used for modelling the income tax system of many different countries. While generalising as much as possible makes the model more flexible, it also has the effect of making it more difficult to develop and also potentially less transparent, conceptually and computationally more complex (and, hence, slower) than a similar model which is built for a narrow and <i>a priori</i> clearly defined set of applications.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "As briefly mentioned above, designing any MSM framework is a very resource intensive task. In a survey by <a href=\"#bib19\">Mot (1992)</a>, it was found that static <i>national</i> models generally took 2 to 3 man-years to develop. More sophisticated models, such as the TRIM2 model in the USA, took much longer. Although more costly to build initially, a <i>generalised</i> model is less costly in the long run if the framework can be re-used for a multitude of purposes. In addition, the robustness and reliability of a modelling framework will be positively related to the number of users and uses. As a result, a generalised modelling platform will \u2018mature\u2019 more quickly than purpose-built model frameworks with a more narrowly defined scope. A generalised multi-purpose framework will also facilitate communication and co-operation between researchers and reduce training costs as many people will share similar experiences and problems.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The use of parameterisation aids all the primary objectives of a generalised framework outlined in <a href=\"#s2\">section 2</a>. Modelling flexibility can be achieved by enabling the user to make adaptations and definitions without changing the program code itself, making changes instead to certain sets of parameters. As a result, the specification of policy reform scenarios becomes easier. The parameterisation of tax-benefit algorithm also ensures that their operation remains transparent and adaptable which in turn make the model more robust. Similarly, model maintenance is considerably simplified if all one needs to do to update policy rules is to change the relevant parameters (such as new amounts, rates or definitions). Parameterising common model elements which can be used in many different contexts also aids consistency and transparency. An example is the generalised social benefit routines described below.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Parameterisation also facilitates experiments with different parameter values. For example, one may wish to analyse how including unemployment benefits in the income tax base, changing the definition of the fiscal unit (e.g., changing the maximum age at which a person is considered a \u2018child\u2019 for the purpose of computing a certain benefit), or altering the number of tax brackets affect the distribution of disposable income. In the present framework, all such changes can be specified by setting appropriate parameters in the parameter lists. The actual tax-benefit algorithms are coded as functions of these externally defined parameters and will not normally have to be accessed by the model user.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The key elements of the tax-benefit framework that are parameterised are:",
+                    "type": "paragraph"
+                },
+                {
+                    "items": [
+                        [
+                            {
+                                "text": "<i>Modules</i>, the primary building blocks of the model. Components to be parameterised include the definition of parameters directly related to the tax-benefit algorithm relevant for each module (e.g., rates, bands thresholds, type of income concepts, fiscal units).",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "<i>Policies</i> and <i>Policy Spine</i>, the structuring mechanism within the framework. The parameters relate to the types of module/policy (i.e., which modules make up a policy and which policies make up the tax-benefit system) as well as their order.",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "The definition of the <i>fiscal units</i> relevant for an instrument (e.g., who belongs to a \u2018family\u2019 receiving the instrument, who belong to a \u2018couple\u2019 whose income is taxed jointly, who counts as a \u2018child\u2019 for the purpose of computing child benefits).",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "The definition of <i>sharing rules</i> within the unit (i.e., which unit member receives what part of a benefit and how are tax burdens shared between members of the tax unit).",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "The definition of <i>aggregate income concepts</i> that combine income variables used either by an instrument (e.g., \u2018taxable income\u2019 such as market incomes plus benefits minus deductions and allowances) or as an output of the model (e.g., \u2018disposable income\u2019).",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "The set of <i>variables</i> to be used in the framework as well as their characteristics such as whether they are to be simulated (e.g., taxes) or read from the data (e.g., employment income) or whether they are monetary variables.",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "\u2018<i>Uprating\u2019 factors</i> for each monetary variable, used for updating purposes. If the data was collected in 1996 and the policy we wish to examine is for 1998, then we need to alter the data to bring all monetary variables forward to 1998 (accounting, e.g., for inflation, earnings growth, etc.).",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "<i>Output functions</i>, including the variables to be written to the output file, as well as the types of summary statistics required as output.",
+                                "type": "paragraph"
+                            }
+                        ]
+                    ],
+                    "prefix": "number",
+                    "type": "list"
+                },
+                {
+                    "text": "In the following section we describe the implementation of these key concepts and elements of MSMs in more detail.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s4",
+            "title": "Generalisation & parameterisation",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "In the previous section, we have alluded to a number of different concepts such as \u2018modules\u2019. \u2018fiscal units\u2019, \u2018sharing rules\u2019, \u2018income concepts\u2019 and \u2018common routines\u2019. In this section, we shall discuss the actual implementation of these elements in the MSM framework.",
+                    "type": "paragraph"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "The concept of modules as distinct building-blocks of the simulation has special advantages. By using the same building blocks for different tax-benefit systems, one can build up a large \u2018library\u2019 of national specific modules. It is therefore possible to select modules from this library when either designing a new system or examining the effect of introducing aspects of other systems in a given country. The flexible order of modules and the high degree of parameterisation ensure that the same modules can be used for a multitude of different purposes.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "In terms of the actual implementation, there a number of desirable features. The structure of the module should be a function with clearly defined inputs and outputs. The body of the function should look similar for each tax-benefit instrument. Every section should be clearly labelled and documented so that users wishing to adapt an existing instrument would readily see where changes have to be made while those wishing to implement a new instrument would only have to fill in the blank spaces. It should be possible to freely define intuitive variable names used in the algorithm to make interpretation as straightforward as possible.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "<a href=\"#fig2\">Figure 2</a> describes the general structure of modules as implemented in the framework. The inward arrows define the set of input variables. Before the actual tax-benefit algorithm coded into the module is initiated, each module performs several steps. The first step involves determination of the relevant fiscal unit such as individual household or family etc. that the instrument applies to. The next step involves reading the parameters such as rates, bands thresholds, age limits etc. used by the algorithm. Other parameters include the definitions of aggregate income concepts used within the module such as earnings, total benefits and tax-base. Once these parameters have been read, the actual calculations take place.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "fig2",
+                                    "image": {
+                                        "alt": "",
+                                        "uri": "%iiif_uri%/00016%2Fijm-00016-fig2.tif",
+                                        "size": {
+                                            "width": 825,
+                                            "height": 603
+                                        },
+                                        "source": {
+                                            "mediaType": "image/jpeg",
+                                            "uri": "%iiif_uri%/00016%2Fijm-00016-fig2.tif/full/full/0/default.jpg",
+                                            "filename": "ijm-00016-fig2.jpg"
+                                        }
+                                    },
+                                    "label": "Figure 2",
+                                    "title": "Module description",
+                                    "type": "image"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "text": "To minimise the scope for errors and interference with other parts of the model, each module should only contain those parts of the program code, which are absolutely necessary for specifying the algorithm. Everything else should be \u201chidden\u201d from the user.<a href=\"#fn5\"><sup>5</sup></a> Applying this design philosophy ensures that individual modules can be developed independently and thus the operation of one module does not interact with the operation of other modules. This improves the robustness of model, so that errors in one part of the code do not influence other parts. Once a module has been thoroughly tested and is found to work, it can be added to the system as a whole. This is a method also employed to varying degrees by the US model TRIM2 (<a href=\"#bib19\">Mot, 1992</a>) and the Institute for Fiscal Studies model, TAXBEN (<a href=\"#bib10\">Giles and McCrae, 1995</a>). Equally important, a strictly modular design simplifies the maintenance of a model considerably. It ensures that changes, which inevitably have to be made during the lifetime of any tax-benefit model, do not have unexpected side effects on other modules and enables separate parts of a MSM to be developed independently by different members of a team. For the development of EUROMOD, this has been a critical feature since the implementation of 19 tax-benefit systems cannot be completed by one person alone.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "In order to support safe and efficient implementation of new instruments, the MSM framework provides a large number of frequently used standard functions. These are routines that perform operations or determine characteristics which are relevant for the calculation of a large number of policy instruments (e.g., N<span class=\"small-caps\">umber</span>C<span class=\"small-caps\">hildren</span>I<span class=\"small-caps\">n</span>T<span class=\"small-caps\">axunit</span>, I<span class=\"small-caps\">s</span>M<span class=\"small-caps\">arried</span>, I<span class=\"small-caps\">s</span>L<span class=\"small-caps\">one</span> P<span class=\"small-caps\">arent</span>). This approach ensures a consistent interpretation of variable values (especially categorical variables, such as marital status) across all modules, considerably simplifies the maintenance of the model and means that users do not have to access variables in the microdata directly.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "<a href=\"#table1\">Table 1</a> illustrates typical module parameter sheets. Each module starts with the name of the module (<span class=\"small-caps\">co_it_main_tfa; co_it_ schedule</span>) followed by a number of parameters. Parameters common to each module are TAX_UNIT and SWITCH. The former specifies the fiscal unit relevant for this module while the latter determines whether or not this module should be included in the calculations. All other parameters are module-specific (i.e., they depend on the specific tax-benefit algorithm coded into the module).",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "table1",
+                                    "label": "Table 1",
+                                    "tables": [],
+                                    "title": "Example Policy Parameter Sheet",
+                                    "type": "table"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "text": "In addition to modules that have been designed for a specific purpose in a specific country the framework also provides a large number of common modules, which were designed without any single country or use in mind. Instead they can be used for many different purposes. Examples are schedules where the number of rates or other parameters is flexible and where the income base to which the schedule is to be applied can be freely defined (e.g., <span class=\"small-caps\">co_it_schedule</span> in <a href=\"#table1\">Table 1</a>). All these parameters can be specified in parameter sheets, which means that in many cases, even very complicated instruments can be implemented without any need for programming. Apart from the considerable amount of time and effort that can be saved by re-using already existing building blocks, there is, again, the added advantage that these general modules have already been thoroughly tested. One can therefore be confident that the risk of programming errors is minimal.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Because for many countries, the sub-components of social benefits can be classified in a similar manner across countries, it is possible to classify benefits into a number of common modules, resulting in one of the most powerful set of common modules in the framework. Eligibility is determined first. If a unit is eligible for the benefit then their \u2018means\u2019 (i.e., the income that is set against a benefit) are calculated.<a href=\"#fn6\"><sup>6</sup></a> Next we specify the \u2018equivalence scale\u2019 for determining the benefit amount as a function of characteristics of the fiscal unit (such as age, number of people in the family and number of children). By imposing a common structure on seemingly often very different benefits, it also allows for the relative generosity of benefits for different family types to be easily compared across countries without having to adjust for currency differences. Finally, the majority of all benefits in western countries can be classified as the base amount times the equivalence scale minus means times a withdrawal rate (r).",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Both eligibility and equivalence scale modules contain large numbers of different types of parameters to permit modelling of many different types of benefits and reforms. A list of parameters that exist in the framework and can be used for specifying eligibility conditions and equivalence scales is provided in appendix 2 of <a href=\"#bib14\">Immervoll and O\u2019Donoghue (2001a)</a>. In total, one can chose between more than 1000 possible parameters. Because such a large number of parameters would be extremely difficult to manage, we allow the user to select only the parameters they wish to use, ignoring the rest. The parameters can therefore be seen as a library of possible conditions to determine eligibility and equivalence scales. All eligibility conditions can be combined using a combination of logical AND, OR and NOT operators as described in the appendix of <a href=\"#bib14\">Immervoll and O\u2019Donoghue (2001a)</a>. In constructing EUROMOD, we were able to implement almost all benefit instruments that existed in the EU using the common modules described here.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s5-1",
+                    "title": "Modules",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "In this section we describe how <i>policies</i> and the <i>policy spine</i> operate in the generalised framework. Different policies can only communicate with each in terms of well-defined output variables as specified by the model user. For example, if the only output of the Social Insurance Contribution policy is a variable called SIC then the only way this policy can influence the calculations of other policies (e.g., Income Tax) is via this variable.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "For example, if social insurance contributions are tax-deductible the variable SIC would be subtracted from the tax base during the implementation of the Income Tax policy. Policies therefore improve robustness by preventing any unintended interactions.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "A significant feature of the MSM framework is that the order in which both policies within the spine and modules within policies are simulated can be altered by the user without recoding the model. For example if one decides to make child benefits taxable, one would place child benefits before income tax in the spine (and include them in the definition of the tax-base), while if child benefits were to be means tested on post tax income, one would put child benefits after income taxes in the spine. Similarly, the sequence of the modules contained in the policy determines the sequence of module calculations. For instance, in the case shown in <a href=\"#table1\">Table 1</a>, the main tax allowance is computed before the income tax schedule is applied to the TAXBASE.<a href=\"#fn7\"><sup>7</sup></a> The sequence can be changed by simply moving around the parameter blocks in the parameter sheet.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s5-2",
+                    "title": "Policies and Policy Spine",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "Tax-benefit rules relate to certain fiscal units, i.e., the person(s) on which the tax-benefit rules are to be performed (e.g., the persons over whom taxable incomes are to be aggregated in order to determine total taxable income in a joint tax system). In the present framework, each module must contain the name of the <i>type</i> of fiscal unit on which the tax-benefit algorithm is to be performed (e.g., INCTAX_UNIT). Fiscal unit types themselves can be defined in a separate parameter sheet.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "In the simplest case, the fiscal unit type is either the largest identifiable unit in the micro-data (usually the \u2018household\u2019) or the smallest (the individual). If it is neither then one has to define exactly which members of the largest unit (household) belong to the same unit as the \u2018head\u2019 of the fiscal unit. Possible choices are Cohabiting Partner, Married Partner, Child and Dependent Parent. For the latter two, a powerful set of conditions is available for defining what constitutes a \u2018child\u2019 or a \u2018dependent parent\u2019 (including age limits, income limits, conditions relating to marital-, labour market-, or education status). All of these conditions can again be combined with logical AND, OR and NOT operators. A pseudo-code of the routine used to assign people to fiscal units is described in Appendix 1 of <a href=\"#bib14\">Immervoll and O\u2019Donoghue (2001a)</a>.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "In each household, there may be one or more instances of a fiscal unit <i>type</i>. For each fiscal unit type, each person in the household receives a number indicating the fiscal unit (of this type) they belong to. Using the conditions mentioned above, it is possible to decide for each person whether or not they are member of a specific fiscal unit.<a href=\"#fn8\"><sup>8</sup></a> A fiscal unit can be fully or partly occupied so that if the fiscal unit type is, for example, \u2018married couple\u2019 then one person living in a one-person household can be allocated to the fiscal unit of type \u2018married couple\u2019 even though there is no spouse present. Persons who are not assigned to a fiscal unit together with other persons form their own fiscal unit.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s5-3",
+                    "title": "Definition of Fiscal Units",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "By default, the outcome of all tax-benefit instruments is assigned to the head of fiscal unit. However frequently it is desirable to be able to use other incidence assumptions. In order to do this, it is necessary to provide information about assumed sharing arrangements. The framework supports a number of different assumptions. As currently implemented, it is possible to share amongst:",
+                            "type": "paragraph"
+                        },
+                        {
+                            "items": [
+                                [
+                                    {
+                                        "text": "Adults/children;",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "Economically active/inactive persons;",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "Part-time/full-time workers;",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "Male/female head of unit",
+                                        "type": "paragraph"
+                                    }
+                                ]
+                            ],
+                            "prefix": "bullet",
+                            "type": "list"
+                        },
+                        {
+                            "text": "The instrument to be shared can be divided equally amongst all those to whom the instrument is to be shared, or divided in proportion to the level of a particular income amount held by each individual. Allowing such explicit definitions of intra-unit assignments of taxes/benefits, it becomes possible in principle to analyse simulation results at any level of analysis (e.g., gender specific), rather than just at the household level.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s5-4",
+                    "title": "Sharing benefits and tax burdens within the Fiscal Unit",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "Income concepts used in the tax-benefit algorithms (e.g., taxable income and \u2018means\u2019) or as output of the model (e.g., disposable income) can be defined in terms of all monetary variables available in the model, whether contained in the micro-data or simulated by the tax-benefit model. Each income concept is defined in terms of a vector of numbers between \u20131 and +1. The size of the vector is equal to the number of monetary variables in the model. For each of the variables, the number in the vector indicates what fraction of this monetary variable is part of the income concept. For example, if \u2018mortgage interest payments\u2019 are deductible from taxable income then the \u2018taxable income\u2019 vector would contain a \u2018\u20131\u2019 entry for the \u2018mortgage interest payments\u2019 variable.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s5-5",
+                    "title": "Income Concepts",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "In addition to parameters related to the tax-benefit algorithms <i>per se</i>, a number of parameters included in the modelling framework relate to the micro-data on which the tax-benefit system is to be simulated. One of the desirable features of a microsimulation modelling framework is that it should be possible to add new variables with ease. To this end, all variables used in the model are specified in a list containing the variable names and additional information such as whether the variable relates to individuals or to households as a whole, and whether or not it is a monetary variable. Once specified in this way, the model automatically carries out all the procedures necessary to make the variable useable by the model (i.e., as input or output of a tax-benefit calculation).",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "For cases where certain variables are not available in the micro-data underlying a simulation, default values can be specified. This is especially important in a multi-country context, where one may want to simulate the effects of introducing a tax-benefit instrument from country A in country B. If the tax-benefit rules of this instrument require a variable which is not available in country B\u2019s micro-data, then one can specify appropriate default-values for this variable. Default values can be specified either directly (i.e., by specifying an actual value) or by referring to a variable that <i>is</i> available in the micro-data and is considered a good approximation of the missing variable. For example, in a situation where the tax-benefit rules of country A require information on whether someone is a civil servant and where there is no civil servant variable in country B micro-data, one can specify that the variable \u2018public sector\u2019 available in country B data should be used as a proxy for \u2018civil servant\u2019.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s5-6",
+                    "title": "Data Manipulation",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "Frequently the data available for microsimulation are not from the same year as the year to which the policy scenario of interest relates. This is because tax-benefit policy changes most years, while data are often only collected infrequently. To still be as \u2018representative\u2019 of the population as possible, adjustments are necessary. The first of these relates to adjustment of the weights in the data. Because aspects of the population may have changed between data collection and the year of analysis, it may be desirable to adjust the weights in the data to account for these changes. Examples of population changes include the level of unemployment, the number of households with children and the age distribution. It should be noted that extreme care needs to be exercised when doing this. \u2018Correcting\u2019 the data by adjusting weights in relation to many different dimensions can cause anomalies (such as very big weights for certain household types), because re-weighting in relation to any set of characteristics (e.g., the level of unemployment) will invariably distort other dimensions for which the weights have originally been designed for (e.g., non-response, regions).",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "In addition, the values of monetary variables will have changed due to price changes and real increases between \u2018data year\u2019 and \u2018policy year\u2019. This aspect has been parameterised in the MSM framework, where uprating factors can be specified for each monetary variable. Different incomes may increase at different rates and since these rates may themselves differ for different groups (for example employment income may increase at a different rate for males/females, civil servants etc.), we allow for differential uprating. A potential use of the updating mechanism is for short-term forecasting of fiscal variables, where the underlying data is adjusted to match expected changes in the population and incomes. Data thus adjusted can then be used as input into the tax-benefit model to explore projected aggregate revenue/costs and or distributional features.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s5-7",
+                    "title": "Updating",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "The principal output of a simulation run is a micro output file that can output any variable for any fiscal unit in the model. The micro output file can then be used with any statistical package for performing more elaborate analyses. An important feature of the output routine is that it can be integrated into the policy spine of the tax-benefit system just like any other \u2018policy\u2019. This means that it is possible to produce output <i>at any stage</i> of the tax-benefit calculation and thus trace variables of interest. Users can, for example, specify that they want output to be generated both before and after the Social Assistance policy instrument. By comparing different outputs, one can then easily observe the differential impact of one individual policy or a set of policies (whether for analytical or model validation purposes). Of course, the typical position of the output element will be at the very end of the policy spine, writing simulation results for the tax-benefit system as a whole.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Even though any desired statistical package can be used to analyse these micro-level outputs it is, for a number of reasons, desirable to have most of this analytical capability available within the model framework. Keeping track of numerous large micro-output files for many different simulation runs can be difficult and a source for errors. This is the case for any tax-benefit model since it is often necessary to formulate a large number of policy scenarios in order to explore the research question at hand. For a multi-country model, the number of output files is potentially much larger. In addition, the total sample size of the micro-data underlying a multi-country MSM can be very large. In the case of EUROMOD, these data represent more than 100,000 households containing more than a quarter of a million people. Any multi-country micro-output will therefore be of a similar size which may exceed the relevant limits of some commercially available software tools. Most importantly, analysing micro-output can be very time consuming. Many different analyses are possible and each of them entails a set of assumptions and definition which needs to be decided upon. As a result, it is convenient to have a \u2018standard output\u2019 which can reliably perform most of the desired analyses while keeping all the related choices and assumptions as transparent and accessible to the user as possible. In this way, it is possible to ensure consistent output across uses, users and countries. Users can rely on the \u2018standard output\u2019 routine to have been tested and to produce correct calculations that are robust and consistent across different applications.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "A standard output routine has, therefore, been embedded into the MSM framework. As implemented it can also be run separately and can thus be used as an analytical tool for analysing any micro-data file, whether generated by a tax-benefit model or not. The standard output routine is designed to:",
+                            "type": "paragraph"
+                        },
+                        {
+                            "items": [
+                                [
+                                    {
+                                        "text": "provide statistics and summary indicators that are accepted standards among researchers and policy analysts and that can be used in a consistent way across different countries and uses of the model;",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "permit users to analyse the sensitivity of the various indicators by allowing them to vary underlying concepts and definitions such as exchange rates, poverty lines, equivalence scales, etc.;",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "mirror the flexibility of the tax-benefit simulation framework by not imposing any a priori definition of concepts such as disposable income, a \u2018child\u2019, etc.;",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "be able to handle the very large amounts of data resulting from the simulation of policy instruments for all households contained in micro-datasets of several or all EU countries;",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "provide a user interface that is similar to that in other parts of EUROMOD;",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "attach a comprehensive description to the numerical output which clearly shows the kinds of choices made by the user of the output program. Given the multitude of possible definitions and concepts such \u2019labelling\u2019 is essential to ensure that the numbers produced by the output program are interpreted in an appropriate way;",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "be computationally reliable and robust.",
+                                        "type": "paragraph"
+                                    }
+                                ]
+                            ],
+                            "prefix": "bullet",
+                            "type": "list"
+                        }
+                    ],
+                    "id": "s5-8",
+                    "title": "Output",
+                    "type": "section"
+                }
+            ],
+            "id": "s5",
+            "title": "Implementation of key concepts for tax-benefit modelling",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "This paper describes the rationale for microsimulation tax-benefit modelling and the demands placed on the method by users. We note the high cost of developing microsimulation models in different countries and argue for the need to control these costs. We present a generalised microsimulation framework that, if adopted, provides substantial economies of scale in the design of microsimulation models. Although the time taken to construct this general framework has been considerable, the subsequent economies of scale that result have already become evident as the framework and its components have successfully been used to implement an integrated European tax-benefit model comprising the tax-benefit systems of 19 EU member countries. This implementation has taken three years whereas a separate development of individual country specific MSMs would have taken much longer.<a href=\"#fn9\"><sup>9</sup></a>",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The principal design feature of the generalised framework is the extent to which routines and operations have been generalised and parameterised and are thus re-usable for different purposes. Examples not typically found in national specific tax-benefit microsimulation models include the consistent parameterisation of:",
+                    "type": "paragraph"
+                },
+                {
+                    "items": [
+                        [
+                            {
+                                "text": "The fiscal unit of analysis;",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "The order in which instruments are simulated;",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "Income concepts; and",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "The input database and related operations such as data updating, etc.",
+                                "type": "paragraph"
+                            }
+                        ]
+                    ],
+                    "prefix": "bullet",
+                    "type": "list"
+                },
+                {
+                    "text": "The use of encapsulated policy components makes resulting tax-benefit models flexible and robust. It also allows users to focus on those parts of the tax-benefit system which are of interest for the research question at hand while not having to worry about computational details of the modelling framework as a whole.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "A frequent criticism of static microsimulation modelling is that it only measures the day-after effect while some reforms may initiate relevant behavioural responses such as reduced work effort. While incorporating behavioural changes can be a worthwhile exercise, its usefulness depends on the questions to be addressed. For example, for the purpose of understanding the interactions between different tax-benefit instruments a model, which does not mix immediate effects with longer-term behavioural dimensions, will often be preferable. Nevertheless, because of the framework, future expansions of the model to incorporate behavioural response are feasible without radical redesign. For example <a href=\"#bib9\">Colombino <i>et al</i>. (2008)</a> introduced a module that called the tax-benefit system in EUROMOD to generate a budget set required to estimate a labour supply model in a number of EU countries.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s6",
+            "title": "Conclusions and future directions",
+            "type": "section"
+        }
+    ],
+    "references": [
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Albuquerque, J L",
+                        "preferred": "J L Albuquerque"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Bargain, O",
+                        "preferred": "O Bargain"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Baldini, M",
+                        "preferred": "M Baldini"
+                    },
+                    "type": "person"
+                }
+            ],
+            "authorsEtAl": true,
+            "date": "2001",
+            "details": "The impact of means tested assistance in Southern Europe, EUROMOD Working Paper 6/01, Department of Applied Economics, University of Cambridge",
+            "id": "bib1",
+            "title": "The impact of means tested assistance in Southern Europe, EUROMOD Working Paper 6/01, Department of Applied Economics, University of Cambridge",
+            "type": "unknown"
+        },
+        {
+            "articleTitle": "What do we learn about tax reform from international comparisons? France and Britain",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Atkinson, A B",
+                        "preferred": "A B Atkinson"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Bourguignon, F",
+                        "preferred": "F Bourguignon"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Chiappori, P-A",
+                        "preferred": "P-A Chiappori"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1988",
+            "id": "bib2",
+            "journal": "European Economic Review",
+            "pages": {
+                "first": "343",
+                "last": "352",
+                "range": "343\u2013352"
+            },
+            "type": "journal",
+            "volume": "32"
+        },
+        {
+            "articleTitle": "Microsimulation of social policy in the European Union: Case Study of a European Minimum Pension",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Atkinson, A B",
+                        "preferred": "A B Atkinson"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Bourguignon, F",
+                        "preferred": "F Bourguignon"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "O\u2019Donoghue, C",
+                        "preferred": "C O\u2019Donoghue"
+                    },
+                    "type": "person"
+                }
+            ],
+            "authorsEtAl": true,
+            "date": "2002",
+            "id": "bib3",
+            "journal": "Economica",
+            "pages": {
+                "first": "229",
+                "last": "243",
+                "range": "229\u2013243"
+            },
+            "type": "journal",
+            "volume": "69"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Bourguignon, F",
+                        "preferred": "F Bourguignon"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "O\u2019Donoghue, C",
+                        "preferred": "C O\u2019Donoghue"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Sastre-Descals, J",
+                        "preferred": "J Sastre-Descals"
+                    },
+                    "type": "person"
+                }
+            ],
+            "authorsEtAl": true,
+            "date": "1997",
+            "details": "Eur3: a prototype European tax-benefit model, Microsimulation Unit Discussion Paper No. 9703, Department of Applied Economics, Cambridge",
+            "id": "bib4",
+            "title": "Eur3: a prototype European tax-benefit model, Microsimulation Unit Discussion Paper No. 9703, Department of Applied Economics, Cambridge",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Callan, T",
+                        "preferred": "T Callan"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "O\u2019Donoghue, C",
+                        "preferred": "C O\u2019Donoghue"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "O\u2019Neill, C",
+                        "preferred": "C O\u2019Neill"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "Simulating welfare and income tax changes: the ESRI tax-benefit model",
+            "date": "1996",
+            "id": "bib5",
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "Dublin"
+                        ]
+                    },
+                    "formatted": [
+                        "Dublin"
+                    ]
+                },
+                "name": [
+                    "The Economic and Social Research Institute"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "articleTitle": "The impact of comparable policies in European countries: microsimulation approaches",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Callan, T",
+                        "preferred": "T Callan"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Sutherland, H",
+                        "preferred": "H Sutherland"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1997",
+            "id": "bib6",
+            "journal": "European Economic Review",
+            "pages": {
+                "first": "627",
+                "last": "633",
+                "range": "627\u2013633"
+            },
+            "type": "journal",
+            "volume": "41"
+        },
+        {
+            "bookTitle": "The uses of microsimulation modelling, Volume 1, Review and Recommendations",
+            "date": "1991",
+            "discriminator": "a",
+            "editors": [
+                {
+                    "name": {
+                        "index": "Citro, C F",
+                        "preferred": "C F Citro"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Hanushek, E A",
+                        "preferred": "E A Hanushek"
+                    },
+                    "type": "person"
+                }
+            ],
+            "id": "bib7",
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "Washington"
+                        ]
+                    },
+                    "formatted": [
+                        "Washington"
+                    ]
+                },
+                "name": [
+                    "National Academy Press"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "date": "1991",
+            "details": "The uses of microsimulation modelling, 2, Technical Papers, Washington, National Academy Press",
+            "id": "bib8",
+            "title": "The uses of microsimulation modelling",
+            "type": "unknown",
+            "authors": [
+                {
+                    "name": "n/a",
+                    "type": "group"
+                }
+            ]
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Colombino, U",
+                        "preferred": "U Colombino"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Locatelli, M",
+                        "preferred": "M Locatelli"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Narazani, E",
+                        "preferred": "E Narazani"
+                    },
+                    "type": "person"
+                }
+            ],
+            "authorsEtAl": true,
+            "date": "2008",
+            "details": "Behavioural and welfare effects of basic income policies: a simulation for European countries, CHILD \u2013 Centre for Household, Income, Labour and Demographic Economics Working Papers, wp03_08, Dept. of Economics, University of Turin, http://www.child-centre.it/",
+            "id": "bib9",
+            "title": "CHILD \u2013 Centre for Household, Income",
+            "type": "unknown",
+            "uri": "http://www.child-centre.it/"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Giles, C",
+                        "preferred": "C Giles"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "McCrae, J",
+                        "preferred": "J McCrae"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1995",
+            "details": "The IFS micro-simulation tax and benefit model, IFS Working Paper W95/19, Institute for Fiscal Studies, London",
+            "id": "bib10",
+            "title": "The IFS micro-simulation tax and benefit model",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Hancock, R",
+                        "preferred": "R Hancock"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1997",
+            "details": "Computing strategy for a European tax-benefit model, Microsimulation Unit Discussion Paper MU9704, Department of Applied Economics, University of Cambridge",
+            "id": "bib11",
+            "title": "Computing strategy for a European tax-benefit model, Microsimulation Unit Discussion Paper MU9704, Department of Applied Economics, University of Cambridge",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Hoshka, P",
+                        "preferred": "P Hoshka"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1986",
+            "details": "Requisite research on methods and tools for microanalytic simulation models, Microanalytic Simulation Models to Support Social and Financial Policy, Amsterdam, North-Holland",
+            "id": "bib12",
+            "title": "Microanalytic Simulation Models to Support Social and Financial Policy",
+            "type": "unknown"
+        },
+        {
+            "articleTitle": "Fiscal drag - an automatic stabiliser?",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Immervoll, H",
+                        "preferred": "H Immervoll"
+                    },
+                    "type": "person"
+                }
+            ],
+            "conference": {
+                "name": [
+                    "Paper presented at the 56th Congress of the International Institute of Public Finance"
+                ]
+            },
+            "date": "2000",
+            "id": "bib13",
+            "type": "conference-proceeding"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Immervoll, H",
+                        "preferred": "H Immervoll"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "O\u2019Donoghue, C",
+                        "preferred": "C O\u2019Donoghue"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2001",
+            "details": "Welfare benefits and work incentives: the distribution of net replacement rates in Europe, EUROMOD Working Paper 4/01, Department of Applied Economics, University of Cambridge",
+            "id": "bib14",
+            "title": "Welfare benefits and work incentives: the distribution of net replacement rates in Europe, EUROMOD Working Paper 4/01, Department of Applied Economics, University of Cambridge",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Immervoll, H",
+                        "preferred": "H Immervoll"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "O\u2019Donoghue, C",
+                        "preferred": "C O\u2019Donoghue"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2001",
+            "details": "Net to Gross, EUROMOD Working Paper 1/01, Department of Applied Economics, University of Cambridge",
+            "id": "bib15",
+            "title": "Net to Gross, EUROMOD Working Paper 1/01, Department of Applied Economics, University of Cambridge",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Immervoll, H",
+                        "preferred": "H Immervoll"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "O\u2019Donoghue, C",
+                        "preferred": "C O\u2019Donoghue"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Sutherland, H",
+                        "preferred": "H Sutherland"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1999",
+            "details": "An introduction to EUROMOD, EUROMOD Working Paper 0/99, Department of Applied Economics, University of Cambridge",
+            "id": "bib16",
+            "title": "An introduction to EUROMOD, EUROMOD Working Paper 0/99, Department of Applied Economics, University of Cambridge",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "McCrae, J",
+                        "preferred": "J McCrae"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1999",
+            "details": "Brazilian Electronic Journal of Economics, 2, 1",
+            "id": "bib17",
+            "title": "The development and uses of tax and benefit simulation models",
+            "type": "unknown"
+        },
+        {
+            "articleTitle": "Microsimulation - a survey of principles, developments and applications",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Merz, J",
+                        "preferred": "J Merz"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1991",
+            "id": "bib18",
+            "journal": "International Journal of Forecasting",
+            "pages": {
+                "first": "77",
+                "last": "104",
+                "range": "77\u2013104"
+            },
+            "type": "journal",
+            "volume": "7"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Mot, E S",
+                        "preferred": "E S Mot"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "Survey of microsimulation models",
+            "date": "1992",
+            "id": "bib19",
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "The Hague"
+                        ]
+                    },
+                    "formatted": [
+                        "The Hague"
+                    ]
+                },
+                "name": [
+                    "VUGA"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "articleTitle": "For richer, for poorer?: The treatment of marriage and the family in European income tax systems",
+            "authors": [
+                {
+                    "name": {
+                        "index": "O\u2019Donoghue, C",
+                        "preferred": "C O\u2019Donoghue"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Sutherland, H",
+                        "preferred": "H Sutherland"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1999",
+            "id": "bib20",
+            "journal": "Cambridge Journal of Economics",
+            "pages": {
+                "first": "565",
+                "last": "598",
+                "range": "565\u2013598"
+            },
+            "type": "journal",
+            "volume": "23"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Piachaud, D",
+                        "preferred": "D Piachaud"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Sutherland, H",
+                        "preferred": "H Sutherland"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2000",
+            "details": "CASE paper 38, CASE, London School of Economics",
+            "id": "bib21",
+            "title": "CASE paper 38, CASE, London School of Economics",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Redmond, G",
+                        "preferred": "G Redmond"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Sutherland, H",
+                        "preferred": "H Sutherland"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Wilson, M",
+                        "preferred": "M Wilson"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "The arithmetic of tax and social security reform: a user\u2019s guide to microsimulation methods and analysis",
+            "date": "1998",
+            "id": "bib22",
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "Cambridge"
+                        ]
+                    },
+                    "formatted": [
+                        "Cambridge"
+                    ]
+                },
+                "name": [
+                    "CUP"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "articleTitle": "Constructing a tax-benefit model: what advice can one give?",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Sutherland, H",
+                        "preferred": "H Sutherland"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1991",
+            "id": "bib23",
+            "journal": "Review of Income and Wealth",
+            "pages": {
+                "first": "199",
+                "last": "219",
+                "range": "199\u2013219"
+            },
+            "type": "journal",
+            "volume": "37"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Sutherland, H",
+                        "preferred": "H Sutherland"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1995",
+            "details": "Static microsimulation models in Europe: A survey, Microsimulation Unit Discussion Paper, MU9503, Department of Applied Economics, Cambridge",
+            "id": "bib24",
+            "title": "Static microsimulation models in Europe: A survey, Microsimulation Unit Discussion Paper, MU9503, Department of Applied Economics, Cambridge",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Wiener, R S",
+                        "preferred": "R S Wiener"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Pinson, L J",
+                        "preferred": "L J Pinson"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "An introduction to Object-Oriented Programming and C++",
+            "date": "1988",
+            "id": "bib25",
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "New York"
+                        ]
+                    },
+                    "formatted": [
+                        "New York"
+                    ]
+                },
+                "name": [
+                    "Addison-Wesley Publishing"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Weinberg, DH",
+                        "preferred": "DH Weinberg"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1999",
+            "details": "Paper presented at the , 3rd Meeting of the Canberra Group in Ottawa, Canada, June7-9",
+            "id": "bib26",
+            "title": "Income data collection in international household surveys",
+            "type": "unknown"
+        }
+    ],
+    "-meta": {
+        "patched": true
+    },
+    "stage": "published"
+}

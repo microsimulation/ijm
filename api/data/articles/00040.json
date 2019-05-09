@@ -1,0 +1,787 @@
+{
+    "status": "vor",
+    "id": "00040",
+    "version": 1,
+    "type": "research-article",
+    "doi": "10.34196/ijm.00040",
+    "authorLine": "Sally Edwards",
+    "title": "Techniques for Managing Changes to Existing Simulation Models",
+    "published": "2010-08-31T00:00:00Z",
+    "versionDate": "2010-08-31T00:00:00Z",
+    "statusDate": "2010-08-31T00:00:00Z",
+    "volume": 3,
+    "issue": 2,
+    "elocationId": "n/a",
+    "pdf": "http://web:8082/00040/ijm-00040.pdf",
+    "subjects": [
+        {
+            "id": "methodology",
+            "name": "Methodology"
+        }
+    ],
+    "abstract": {
+        "content": [
+            {
+                "text": "In This paper provides guidance for managing the enhancement and maintenance of an existing microsimulation model. It focuses on techniques and practices that have been developed to maintain Pensim2; the Department for Work and Pensions (DWP) dynamic microsimulation model that simulates state and private pension entitlement. This guidance is appropriate for any type of model. Standard project management techniques and bespoke simulation model procedures are explained. This guidance is aimed at new modellers and project managers and is particularly relevant for models that are supported by a team, rather than an individual.",
+                "type": "paragraph"
+            },
+            {
+                "text": "Models are generally used for many years after they are launched, so it is essential that strong maintenance procedures and project governance structures are put in place. Specifically, this paper includes guidance and examples of structured Change Control processes that are used to manage enhancements and fixes to the model. The Change Control process includes: defining requirements, estimation, design, code reviews, testing/validation, managing multiple modellers changing the same programs and the use of development checklists. Structured Release management guidance is also included in this paper",
+                "type": "paragraph"
+            }
+        ]
+    },
+    "copyright": {
+        "license": "CC-BY-4.0",
+        "holder": "Edwards",
+        "statement": "This article is distributed under the terms of the <a href=\"http://creativecommons.org/licenses/by/4.0/\">Creative Commons Attribution License</a>, which permits unrestricted use and redistribution provided that the original author and source are credited."
+    },
+    "authors": [
+        {
+            "affiliations": [
+                {
+                    "address": {
+                        "components": {
+                            "country": "UK",
+                            "locality": [
+                                "London, SW1A 9NA"
+                            ]
+                        },
+                        "formatted": [
+                            "London, SW1A 9NA",
+                            "UK"
+                        ]
+                    },
+                    "name": [
+                        "Department for Work and Pensions (DWP)",
+                        "Model Development Unit"
+                    ]
+                }
+            ],
+            "emailAddresses": [
+                "Sally.Edwards@dwp.gsi.gov.uk"
+            ],
+            "name": {
+                "index": "Edwards, Sally",
+                "preferred": "Sally Edwards"
+            },
+            "type": "person"
+        }
+    ],
+    "body": [
+        {
+            "content": [
+                {
+                    "text": "Typically dynamic microsimulation models are developed by Economists and Statisticians, who have an extensive knowledge of econometrics and the economic theory that underpins their models. Often modellers do not have a formal IT development background or training, so non standard development and maintenance procedures are often used.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The purpose of this paper is to provide clear guidance in how to use standard techniques to manage the maintenance of existing dynamic microsimulation models, after the first version of the model has been released. This guidance is not limited to microsimulation models, but could be applied to any computer system, regardless of size, number of developers or users. Most of the recommendations documented in this paper are standard practices in use throughout the IT industry, although the examples have been tailored to suit the maintenance of a microsimulation model.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Microsimulation models typically take between one and five years to develop, depending on the level of complexity of the events being simulated. At the end of the Development Stage, the model is released to the organisation. Shortly prior to release, the model is thoroughly validated to ensure that the results can be used with confidence. Model users analyse the model outputs in order to assess potential and future economic policies. After the model has been initially released, the model moves into the Maintenance Stage. During this stage, a model is improved and enhanced, with new releases of the model being implemented on a regular basis, with rigorous validation taking place prior to each release. Usually a new release will contain a package of changes. Models need to be continuously enhanced and maintained otherwise they quickly become out-of-date and unusable.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Microsimulation models are based on a number of assumptions about the future which are obtained from external sources, e.g. inflation rates from the Government Treasury department, Demographic rates from the Government Statistics department. These assumptions are revised periodically and the models that use them must be modified to reflect these changes in order for the results of the models to remain credible. Enhancements are also required as a result of changes to legislation that must be reflected in the model.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "It is essential that models are maintained and documented in a structured manner, so that the differences in outcomes from a new version of the model compared to the outcomes from a previous version can be explained and validated. Also, when questions arise about how a particular change has been incorporated into the model, it is essential that the associated documentation is clear and easy to locate. Documentation detailing how to change assumptions in the model is also essential as they need to be modified on a periodic basis.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Typically, there are more changes required than there are resources to code them, so some changes requested will inevitably be delayed or dropped. It is important that all the stakeholders, i.e. model users, senior managers and developers, have an opportunity to be involved in prioritising the requests and that a suitable forum is in place for this to occur. If stakeholders don\u2019t gain a sense of ownership and control over the development of the model, there is the risk that they may lose confidence in the model outcomes and the model will fall into disuse. This requires the change process to be well structured and accessible to all stakeholders.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "This paper aims to provide simple, easy to follow guidance. The techniques described are straight forward and commonly used, but it took the Pensim2 team some time before these maintenance procedures were fully developed and utilised. It is hoped that these techniques may be useful to other modellers.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s1",
+            "title": "Introduction",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "content": [
+                        {
+                            "text": "The dynamic micro-simulation models used at the DWP are based on the standard architecture, Genesis. This architecture enables each model to be coded in standard Excel spreadsheets that are easy to develop, understand and modify. These sheets define the parameters, the filters, the regressions and probability matrices used in the model. The Genesis engine generates the simulation model code from the Excel sheets and runs the model for the required simulation period.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The dynamic micro-simulation models generated using the Genesis modelling tool and used at the DWP are: Pensim2, which models private pension and state pension income to 2100; Inform, an Integrated Forecasting model for working age benefit claimants to 2020; a Suite of Benefit Forecasting models for short/medium term forecasts; and the Labour Force Survey (LFS) Model of employment & demographics to 2020.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s2-1",
+                    "title": "Models at DWP",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "A number of factors were taken into consideration when the DWP modelling team developed the procedures that are documented in this paper. These factors have caused problems in the past for the team, so the techniques that have been developed attempt to alleviate the risks and create an easy environment in which modellers can work.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Several modellers work on the same model at the same time, thereby creating the possibility that new code can be accidentally over-written if the development is not carefully managed. The modelling unit has a large staff turnover, with junior economists moving to a new post each year, so it is essential that the models can be quickly and easily understood by new team members. Each model has a range of stakeholders from across the Department for Work and Pensions. Some models also have stakeholders based in other government departments. These stakeholders are predominantly policy analysts and benefit forecasters.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The models are intended for long term use (15 years+) and consequently most of the people who use or maintain the models were not involved during the initial development stage. Hence the code and documentation must be as clear as possible. If the models were not structured in a manner that is easy for a new modeller to understand then the models would quickly fall into disuse and become un-maintainable.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Although these factors are not common to all modelling units, the general guidelines are particularly applicable if a model is run or maintained by more than one person, or if the model will be handed over to someone else in the future. Even when a model is maintained by one modeller, these guidelines may still be useful to follow \u2013 as they do not rely solely on a good memory.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s2-2",
+                    "title": "Developing the Maintenance Procedures",
+                    "type": "section"
+                }
+            ],
+            "id": "s2",
+            "title": "Context",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "This section outlines the documentation that the DWP modelling team have developed and maintain for the Pensim2 model and the Genesis modelling tool. This level of documentation is important for the modelling team, particularly the department has a large turnover of users and modellers, who need to gain a quick understanding of the model. Not all models will need the level of documentation listed here, but the documents considered essential for all models have been marked.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Some of the documentation that was produced during the development stage of the project was not considered relevant to keep up-to-date during the maintenance stage. This included detailed technical design specifications and the justification for design & development decisions.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The analytical papers supporting each module within the model have been filed and are accessible to all users.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The following key documentation for the Genesis modelling tool is kept up-to-date and reviewed and revised with each release of the modelling tool: Training materials, User Guide and Problem Resolution Guidance.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "For the Pensim2 model, the following documents are kept up-to-date and revised with each release: How to Run the Model guidance; Assumptions audit; Release Document; also all changes to the model are documented in detail, as explained in the Change Control section below.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Much of the documentation was produced after the first micro-simulation model was released. There was a consolidation period, during which time the essential documents were produced and the maintenance procedures were put in place. These documents and processes have been invaluable, as there are a large number of users who access and run the models themselves and also a high turnover of modelling and user staff. Without the supporting documentation, extensive usage of the models would not have been viable.",
+                    "type": "paragraph"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "A short training course is run on a regular basis for new users. The training course materials include a Powerpoint presentation, sample models and a self-study pack, which explains how to develop and run a Genesis model. The training material is updated with each new release of the Genesis tool.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s3-1",
+                    "title": "Training materials",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "An extensive User Guide provides a detailed explanation of the Genesis modelling tool, particularly explaining how the standard spreadsheets are defined and the options that can be used. It is a comprehensive reference manual and is used by modellers to dip into when questions occur about the syntax of the templates spreadsheets.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s3-2",
+                    "title": "User Guide (Essential)",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "Users have full access to the dynamic micro simulation model code at DWP. They are provided with a training course when they begin to use the models. The users can modify the model parameters and the code, and run their own versions of the models to enable them to try out various policy scenarios.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The flexibility this provides for the users consequently has a support overhead for the modelling team, as the users sometimes inadvertently introduce errors into their own versions of the models.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "A Problem Solving Process and a Problem Solving Guide are available for the model users. The process lists the steps to be followed take when encountered with a problem \u2013 one of these steps is a referral to the Problem Resolution Guide. The Problem Resolution Guide lists all the errors that are issued by the Genesis code generator and provides an explanation of the likely cause and suggestions to fix the code.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "We have found the Problem Solving Guide to be particularly useful, as errors tend to re-occur, but their resolution is often forgotten. This Guide has been built up over the years as is editable by all users.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s3-3",
+                    "title": "Problem Solving Guidance",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "A clear, concise document explaining how to run the model is essential for all models. This is written for a new user with no previous experience of simulation modelling.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s3-4",
+                    "title": "How to Run the Model (Essential)",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "An Assumptions Audit log containing the changes to the assumptions in the model is an important document to maintain. Assumptions are often questioned, so a clear explanation of where they have come from and when they were last updated is vitally important.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s3-5",
+                    "title": "Assumptions Audit (Essential)",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "When each Release is implemented, a Release Note is issued explaining how the specific changes cause the differences in the outcomes and how the changes interact to give overall differences. The Release Note is aimed at users and does not include any technical detail, but it includes references the change request and problem logs that have been included in the release. If desired, the user can review the change in more detail via the Change Request (CR) or Problem Log (PL) reference number.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s3-6",
+                    "title": "Release documentation (Essential)",
+                    "type": "section"
+                }
+            ],
+            "id": "s3",
+            "title": "Documentation",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "content": [
+                        {
+                            "content": [
+                                {
+                                    "text": "The modellers use a set of key processes during the maintenance of a model. Each process is documented with an overview diagram and a checklist. The processes followed are: Change Management, Problem Management, Release Management, Software Configuration Management. Examples are provided below for each of these processes.",
+                                    "type": "paragraph"
+                                }
+                            ],
+                            "id": "s4-1-1",
+                            "title": "Processes",
+                            "type": "section"
+                        }
+                    ],
+                    "id": "s4-1",
+                    "title": "Overview",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "The Change Management and Problem Management processes are very similar and this guidance applies to both changes and problems. It is recommended that changes and problems are recorded separately as problems are generally considered high priority and they usually need to be fixed in the next release of a model (see <a href=\"#fig1\">Figure 1</a> \u2013 Change Request / Problem Log process).",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "caption": [
+                                        {
+                                            "text": "<b>Change Request / Problem Log Process</b>",
+                                            "type": "paragraph"
+                                        }
+                                    ],
+                                    "id": "fig1",
+                                    "image": {
+                                        "alt": "",
+                                        "uri": "%iiif_uri%/00040%2Fijm-00040-fig1.tif",
+                                        "size": {
+                                            "width": 774,
+                                            "height": 381
+                                        },
+                                        "source": {
+                                            "mediaType": "image/jpeg",
+                                            "uri": "%iiif_uri%/00040%2Fijm-00040-fig1.tif/full/full/0/default.jpg",
+                                            "filename": "ijm-00040-fig1.jpg"
+                                        }
+                                    },
+                                    "label": "Figure 1",
+                                    "title": "Change Management and Problem Management Process, as detailed in <a href=\"#s4-2\">section 4.2</a>",
+                                    "type": "image"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "text": "Every change / problem fix goes through a formal Change Request / Problem Log procedure. The term \u201cchange\u201d in this guidance is used to represent both changes to the original requirements and to \u201cproblems\u201d, i.e. errors in the code that need to be fixed.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "A change to the model may be generated by a request from any user of the model, a regular scheduled change to specific assumptions or a request by a modeller to tidy or improve the model without affecting the outputs.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "A Change Register / Problem Log Register is maintained listing all changes carried out to the model, including those that don\u2019t affect the results or are considered trivial. Each Change Request (CR) / Problem Log (PL) is assigned a reference number (see <a href=\"#fig2\">Figure 2</a> \u2013 Change Control Register).",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "caption": [
+                                        {
+                                            "text": "Note: all changes to the model are included in the register, including those that do not affect the outputs.",
+                                            "type": "paragraph"
+                                        },
+                                        {
+                                            "text": "<b>Change Control Register \u2013 sample</b>",
+                                            "type": "paragraph"
+                                        }
+                                    ],
+                                    "id": "fig2",
+                                    "image": {
+                                        "alt": "",
+                                        "uri": "%iiif_uri%/00040%2Fijm-00040-fig2.tif",
+                                        "size": {
+                                            "width": 826,
+                                            "height": 385
+                                        },
+                                        "source": {
+                                            "mediaType": "image/jpeg",
+                                            "uri": "%iiif_uri%/00040%2Fijm-00040-fig2.tif/full/full/0/default.jpg",
+                                            "filename": "ijm-00040-fig2.jpg"
+                                        }
+                                    },
+                                    "label": "Figure 2",
+                                    "title": "Sample Change Control Register, as detailed in <a href=\"#s4-2\">section 4.2</a>.",
+                                    "type": "image"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "text": "All changes are formally recorded. A CR or PL form is completed before the model code is amended. The change requirements or problem details are clearly documented in the CR / PL form \u2013 this may be carried out by model user or a member of the modelling team. Any background material that is relevant is also included and occasionally strings of emails are added to the CR / PL form. Documenting the requirements and supporting evidence is particularly important, especially when the model assumptions are being modified, as these are often questioned at a later date (see <a href=\"#fig3\">Figure 3</a> \u2013 Change Control Form).",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "caption": [
+                                        {
+                                            "text": "Note: a form is completed for every change, including those that do not affect the outputs.",
+                                            "type": "paragraph"
+                                        },
+                                        {
+                                            "text": "<b>Change Control Form - sample</b>",
+                                            "type": "paragraph"
+                                        }
+                                    ],
+                                    "id": "fig3",
+                                    "image": {
+                                        "alt": "",
+                                        "uri": "%iiif_uri%/00040%2Fijm-00040-fig3.tif",
+                                        "size": {
+                                            "width": 783,
+                                            "height": 615
+                                        },
+                                        "source": {
+                                            "mediaType": "image/jpeg",
+                                            "uri": "%iiif_uri%/00040%2Fijm-00040-fig3.tif/full/full/0/default.jpg",
+                                            "filename": "ijm-00040-fig3.jpg"
+                                        }
+                                    },
+                                    "label": "Figure 3",
+                                    "title": "Sample Change Request, as detailed in <a href=\"#s4-2\">section 4.2</a>.",
+                                    "type": "image"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "text": "The impact of the change is assessed, an estimate is produced and the modelling team assess whether or not the change is viable and sensible. Each model has a User Group, which consists of individuals representing the users and the model developers. The User Group assess all the changes put forward and determine whether or not to include the change in the model, based on the cost and the impact. The User Group also agree which release of the model is appropriate for the change.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Where a large change is taking place, the design is documented and reviewed by the users before it is included in the model. This is a valuable stage that ensures that the requirement has been accurately understood and this enables the users to gain a better knowledge of how the model is structured. The design stage is signed-off before the model code is changed.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Complex code changes are peer reviewed by another member of the modelling team. All code changes that are associated with the change are commented with a reference to the CR / PL number.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Each change is added to the Released \u201clive\u201d version of the model one at a time. This enables the user who has requested the specific change to check that the outputs are appropriate and to sign-off the change for inclusion in the next Release. Different requirements are not bundled up into a single change request. By separating the individual changes, it is easy for the impact of each specific change to be clearly identified and it also enables a specific change to be easily removed from a release if necessary.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s4-2",
+                    "title": "Change Management and Problem Management",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "New releases of models are carefully controlled and thoroughly validated before they are released to the user community. Each model has a new Release implemented approximately every 6 to 9 months. If a major problem occurs and needs to be fixed before a scheduled release is implemented, then a sub-release is considered, but these are rare and most problem are fixed in the next scheduled release.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Each Release includes one or two large components, e.g. new Base Data, new Migration module, new State Pension policy, together with a number of smaller changes and problem fixes. Usually between 20 and 30 changes are implemented in each scheduled release.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The provisional timing and content of each Release are agreed with the Model User Group several months before the release date, with additional changes accepted up until the cut-off date, three weeks before the Release date.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Each Release is built and signed off in a step-by-step process, with each change added to the model individually, as the new release is built (see <a href=\"#fig4\">Figure 4</a> \u2013 Release Control Log). The impact of each change is reviewed &amp; signed off by the user who has requested the change and also by any other users who are interested in the difference in outputs caused by change. By implementing the changes one at a time, the impact of each change can be fully understood and agreed. Although this is a time consuming process, it gives the modellers and users confidence in the results and removes the stress, confusion and risk from the release process. The final stage in each release is to remove redundant code and variables that are no longer required.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "caption": [
+                                        {
+                                            "text": "<b>Release Control Log - sample</b>",
+                                            "type": "paragraph"
+                                        }
+                                    ],
+                                    "id": "fig4",
+                                    "image": {
+                                        "alt": "",
+                                        "uri": "%iiif_uri%/00040%2Fijm-00040-fig4.tif",
+                                        "size": {
+                                            "width": 800,
+                                            "height": 445
+                                        },
+                                        "source": {
+                                            "mediaType": "image/jpeg",
+                                            "uri": "%iiif_uri%/00040%2Fijm-00040-fig4.tif/full/full/0/default.jpg",
+                                            "filename": "ijm-00040-fig4.jpg"
+                                        }
+                                    },
+                                    "label": "Figure 4",
+                                    "title": "Sample Release Control Log, showing how each change is added to the model code and signed off one at a time",
+                                    "type": "image"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "text": "Prior to adopting the step-by-step approach it was very difficult to explain the differences in outputs between different releases, particularly when changes conflicted with each other. It was also easier to inadvertently slip in an error to the model when we attempted to implement multiple changes at the same time.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "All previous versions of the model remain available for access, if required. A clear audit trail is maintained detailing the new functionality included in each release. This is documented in a Release Note that is issued with each release of the model.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Maintaining a checklist of the tasks that need to be carried out for a Release can be particularly useful (see <a href=\"#fig5\">Figure 5</a> \u2013 Release Checklist).",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "caption": [
+                                        {
+                                            "text": "<b>Release Checklist \u2013 sample</b>",
+                                            "type": "paragraph"
+                                        }
+                                    ],
+                                    "id": "fig5",
+                                    "image": {
+                                        "alt": "",
+                                        "uri": "%iiif_uri%/00040%2Fijm-00040-fig5.tif",
+                                        "size": {
+                                            "width": 827,
+                                            "height": 975
+                                        },
+                                        "source": {
+                                            "mediaType": "image/jpeg",
+                                            "uri": "%iiif_uri%/00040%2Fijm-00040-fig5.tif/full/full/0/default.jpg",
+                                            "filename": "ijm-00040-fig5.jpg"
+                                        }
+                                    },
+                                    "label": "Figure 5",
+                                    "title": "Sample Release Checklist",
+                                    "type": "image"
+                                }
+                            ],
+                            "type": "figure"
+                        }
+                    ],
+                    "id": "s4-3",
+                    "title": "Release Management",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "The term software configuration management is a general term that is used to describe the control and maintenance of software. This is essential for a number of reasons. A modeller may need to access or re-instate a previous version of the code and an audit trail of changes must be maintained. It is also important if multiple people work on the same model at the same time. It can be difficult to keep track of changes to the code and easy for one person\u2019s change to inadvertently over-write another change that is being implemented by someone else in the same release.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Most organisations use standard source code control software, and it is recommended that this software is used if it is available. If not, then a Change Control Matrix (<a href=\"#fig6\">Figure 6</a> \u2013 Change Control Matrix) can be used to track the changes to specific modules within a model. The column headings show the test version reference number and the individual cells indicate which modules have been changed for each test version. As a release is built, modellers can identify whether a module they are changing has been altered by another member of the team, as different sets of changes may need to be integrated. In the example, columns are colour coded to indicate when a test version has been signed-off (green) or awaiting sign-off (yellow). Each change is applied to the previous signed-off version of the model, with the individual changes added one at a time.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "caption": [
+                                        {
+                                            "text": "<b>Change Control Matrix - Sample</b>",
+                                            "type": "paragraph"
+                                        }
+                                    ],
+                                    "id": "fig6",
+                                    "image": {
+                                        "alt": "",
+                                        "uri": "%iiif_uri%/00040%2Fijm-00040-fig6.tif",
+                                        "size": {
+                                            "width": 806,
+                                            "height": 390
+                                        },
+                                        "source": {
+                                            "mediaType": "image/jpeg",
+                                            "uri": "%iiif_uri%/00040%2Fijm-00040-fig6.tif/full/full/0/default.jpg",
+                                            "filename": "ijm-00040-fig6.jpg"
+                                        }
+                                    },
+                                    "label": "Figure 6",
+                                    "title": "Sample spreadsheet used for Software Configuration Management",
+                                    "type": "image"
+                                }
+                            ],
+                            "type": "figure"
+                        }
+                    ],
+                    "id": "s4-4",
+                    "title": "Software Configuration Management",
+                    "type": "section"
+                }
+            ],
+            "id": "s4",
+            "title": "Maintenance protocols used at DWP",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "content": [
+                        {
+                            "text": "High level project planning is recommended in order to provide a clear idea of the work required for each release of the model \u2013 this also enables the project manager to identify early when the release is slipping.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "A project plan provides the teams involved in the release with an indication of when specific resources will be required during the release cycle. This is important when work is delegated to other teams, who may be needed during the usertest stage. Individuals can be allocated to tasks to aid planning where required.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "MS Project or basic Gantt charts in Excel are the easiest tools to use to produce plans (<a href=\"#fig7\">Figure 7</a> \u2013 High Level Plan). It is usually unnecessary to plan the work at a very detailed level, as detailed plans get out of date quickly and need frequent re-work. If a release starts to slip, it\u2019s that the users are notified as soon as the problem is identified. They can then choose between keeping the original delivery date and reducing the scope of the release or allowing the release to be delayed.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "caption": [
+                                        {
+                                            "text": "<b>High Level Plan - sample</b>",
+                                            "type": "paragraph"
+                                        }
+                                    ],
+                                    "id": "fig7",
+                                    "image": {
+                                        "alt": "",
+                                        "uri": "%iiif_uri%/00040%2Fijm-00040-fig7.tif",
+                                        "size": {
+                                            "width": 734,
+                                            "height": 480
+                                        },
+                                        "source": {
+                                            "mediaType": "image/jpeg",
+                                            "uri": "%iiif_uri%/00040%2Fijm-00040-fig7.tif/full/full/0/default.jpg",
+                                            "filename": "ijm-00040-fig7.jpg"
+                                        }
+                                    },
+                                    "label": "Figure 7",
+                                    "title": "Sample High Level Plan, showing anticipated involvement from user teams",
+                                    "type": "image"
+                                }
+                            ],
+                            "type": "figure"
+                        }
+                    ],
+                    "id": "s5-1",
+                    "title": "Project Planning \u2013 High Level",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "Strong project Governance structures are essential for a successful model. It can take a while to develop the most appropriate governance structures and the membership of these groups and their roles should be regularly reviewed to ensure that they meet the needs of the customers appropriately.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "For a large, high profile model, a Model Steering Group should be considered, consisting of senior stakeholders. This group will not meet often (maybe quarterly or semi-annually). Their purpose is to provide clear direction and prioritisation of the major future developments.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Each model needs an enthusiastic User Group, which should meet frequently (e.g. once every 3 weeks). The User Group should consist of a representative from each main group of the model users. The members of the User Group will propose potential changes and agree the detailed requirements and priority of every change added to the model. The members of the group are also responsible for reviewing the outputs and signing off the changes, before they are released.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The Model User Group plays a key role in ensuring that the model is enhanced in the way that will make best use of the limited resources available. A word of warning \u2013 it can be difficult to establish an enthusiastic User Group, but it is worth persevering, as they provide valuable input to your model. During the first year or so after the Pensim2 model was released we had only 1 or 2 regular members of our User Group, but over time the popularity of the group (and the model) has increased and the group now has up to 10 users who regularly attend the User Group session.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s5-2",
+                    "title": "Governance \u2013 User Groups and Steering Groups",
+                    "type": "section"
+                }
+            ],
+            "id": "s5",
+            "title": "Project management",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "content": [
+                        {
+                            "text": "The dynamic micro-simulation model code used at DWP is predominantly written using standard Excel sheets that are then used to generate the model. These sheets must follow a precise template and the cross-references must be in place.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "A Diagnostic macro was produced in VBA to check that the syntax of the code is valid and to ensure that all the components of the code are accurate and link together correctly, e.g. if a variable is used in the code, then it must previously have been defined in the Data Dictionary.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The Diagnostic macro is run before the model is simulated and it produces a list of errors, if there are any. These must be removed before the simulation takes place.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The Diagnostics macro has proved invaluable, as it saves a considerable amount of time during testing. I strongly recommend that modellers consider producing a Diagnostics macro to valid the syntax of the model code, if it is appropriate for their model.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s6-1",
+                    "title": "Diagnostics Macro Tool",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "A Summary macro has been developed in VBA, which reads through the model spreadsheets and produces a standard document showing where each variable is assigned as an output variable and also where each variable is used as an explanatory variable or within a selection filter.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "This is also a particularly useful tool, which is used to help the modellers find their way around a model and to identify the relationships between variables. This documentation is automatically generated by the macro and is produced whenever a new release of the model is implemented.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s6-2",
+                    "title": "Summary Macro Tool",
+                    "type": "section"
+                }
+            ],
+            "id": "s6",
+            "title": "Diagnostics and summary tool",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "This section of the paper contains my personal recommendations for techniques that should be considered when maintaining models. By adhering to this guidance, you will help to make your model easier to maintain and hence lengthen its life. When any system becomes overly complex, it gradually reaches the point where no-one can understand it, except its author, and hence it is no longer usable by anyone else. Well written and well maintained models can be picked up and understood by another modeller. It is recommended that this is a key aim when a model is built.",
+                    "type": "paragraph"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "Don\u2019t ever tidy up code as part of another change. Always create a separate change request, carry out the changes to tidy up the code and then compare the outputs before and after the changes have been applied \u2013 they should be identical. Remove redundant code and variables as the last step before a release is implemented. Again, carry out a comparison test on the outputs before and after the changes to ensure that the results are not affected. Leaving redundant code in a model causes confusion for future modellers. It is considerably quicker to remove redundant code when it becomes redundant rather than wait \u2013 future modellers will not know whether it is needed or not.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s7-1",
+                    "title": "Tidying Up Code",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "Write code that is easy-to-read \u2013 always consider the next person who will be attempting to understand your code, as you may not be around to explain. Considerably more time is spent reading code than writing it, so it needs to be easy to understand.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Add lots of comments, using colours for clarity where possible. If you have spent some time working out what a section of code does, then add a detailed comment with an explanation. Indent your code to help readability. Write code in small neat modules that can be more easily understood.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "If your code is too difficult to understand, it won\u2019t survive.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s7-2",
+                    "title": "Keep it Simple \u2013 Avoid Complex Code",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "Although this sounds trivial \u2013 it is an important point, as new team members need to be able to find documents easily.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "It is recommended that the top directory level is restricted to 10 sub-directories. Consider numbering them, so they are ordered as you want to see them",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Make your directory structure intuitive \u2013 this is easier said than done. The aim is for someone to be able to easily find what they are looking for.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s7-3",
+                    "title": "Keep a tidy Directory structure",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "If you are maintaining a model that does not have clear documentation, then as a minimum starting point, it is suggested that you consider the following:-",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Produce a High level presentation explaining the model, including diagrams; Write a guidance document explaining how to run the model; Add comments to the code when changing the model; Maintain an Assumptions audit log, when changing the underlying model assumptions; Set up a Change Control system; Produce a Release Checklist and issue a Release Note with each new version of the model.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "<i>Suggested Further Reading:</i>",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "<b>B<span class=\"small-caps\">usiness</span> A<span class=\"small-caps\">nalysis</span></b> by Don Yeates, Debra Paul, Tony Jenkins, and Keith Hindle",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "<b>E<span class=\"small-caps\">ssential</span> S<span class=\"small-caps\">oftware</span> A<span class=\"small-caps\">rchitecture</span></b> by Ian Gorton",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "<b>PRINCE2 E<span class=\"small-caps\">dition</span> 2009</b>: A Pocket Guide by B; Seegers, R Hedeman",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s7-4",
+                    "title": "Maintaining a Model with no existing Documentation",
+                    "type": "section"
+                }
+            ],
+            "id": "s7",
+            "title": "Personal recommendations",
+            "type": "section"
+        }
+    ],
+    "-meta": {
+        "patched": true
+    },
+    "stage": "published"
+}
