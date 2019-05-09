@@ -74,7 +74,7 @@ final class ArticlesController extends Controller
                     return null;
                 }
 
-                return ContextualData::withCitation($item->getCiteAs(), new Doi($item->getDoi()));
+                return ContextualData::withCitation(str_replace('eLife', 'IJM', $item->getCiteAs()), new Doi($item->getDoi()));
             });
 
         $context = all(['item' => $arguments['item'], 'history' => $arguments['history'], 'hasFigures' => $arguments['hasFigures']])
