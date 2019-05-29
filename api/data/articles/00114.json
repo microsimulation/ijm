@@ -1,0 +1,998 @@
+{
+    "status": "vor",
+    "id": "00114",
+    "version": 1,
+    "type": "research-article",
+    "doi": "10.34196/ijm.00114",
+    "authorLine": "Gijs Dekkers",
+    "title": "The simulation properties of microsimulation models with static and dynamic ageing \u2013 a brief guide into choosing one type of model over the other",
+    "published": "2015-04-30T00:00:00Z",
+    "versionDate": "2015-04-30T00:00:00Z",
+    "statusDate": "2015-04-30T00:00:00Z",
+    "volume": 8,
+    "issue": 1,
+    "elocationId": "n/a",
+    "pdf": "http://web:8082/00114/ijm-00114.pdf",
+    "subjects": [
+        {
+            "id": "methodology",
+            "name": "Methodology"
+        },
+        {
+            "id": "dynamic-microsimulation",
+            "name": "Dynamic microsimulation"
+        }
+    ],
+    "abstract": {
+        "content": [
+            {
+                "text": "To assess possible distribution effects of alternative scenarios, including hypothetical future states, one can use either static ageing techniques, which age the population by reweighing and uprating, or dynamic ageing, which alter the relevant population by applying deterministic probabilities that a certain event may or may not occur. This paper makes the argument that, even though the two methods are technically completely different, they are not unlike in terms of their simulation properties. Starting from the thesis that under theoretical circumstances, both approaches are equivalent in terms of their simulation properties, the choice between the two archetypes of models comes down to assessing how far the actual and theoretical circumstances differ from each other. By highlighting the differences and resemblances between static and dynamic microsimulations in terms of their simulation properties, this short note will contribute to the debate in choosing between these two types of models, and can thus serve as an advice piece for someone contemplating the development of a microsimulation model.",
+                "type": "paragraph"
+            }
+        ]
+    },
+    "copyright": {
+        "license": "CC-BY-4.0",
+        "holder": "Dekkers",
+        "statement": "This article is distributed under the terms of the <a href=\"http://creativecommons.org/licenses/by/4.0/\">Creative Commons Attribution License</a>, which permits unrestricted use and redistribution provided that the original author and source are credited."
+    },
+    "authors": [
+        {
+            "affiliations": [
+                {
+                    "address": {
+                        "components": {
+                            "country": "Belgium"
+                        },
+                        "formatted": [
+                            "Belgium"
+                        ]
+                    },
+                    "name": [
+                        "Federal Planning Bureau"
+                    ]
+                },
+                {
+                    "address": {
+                        "components": {
+                            "country": "Belgium"
+                        },
+                        "formatted": [
+                            "Belgium"
+                        ]
+                    },
+                    "name": [
+                        "CEPS/INSTEAD, Luxembourg and CESO",
+                        "KU Leuven"
+                    ]
+                }
+            ],
+            "emailAddresses": [
+                "gd@plan.be"
+            ],
+            "name": {
+                "index": "Dekkers, Gijs",
+                "preferred": "Gijs Dekkers"
+            },
+            "type": "person"
+        }
+    ],
+    "keywords": [
+        "dynamic ageing",
+        "static ageing",
+        "microsimulation"
+    ],
+    "body": [
+        {
+            "content": [
+                {
+                    "text": "To make a projection of distribution effects of alternative realities, for example representing a future state of the starting dataset, or alternative fiscal or social measures, one needs models that can capture the impact of changes in policy parameters and/or changes in the behaviour of individual economic agents (individuals, households). This capturing can be done by either changing the characteristics of individual agents, or reweigh the contribution of unchanged agents to the aggregate result.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Thus, one can distinguish ageing techniques within the set of micro simulation models. To decide what kind of technique is best brought in action in a model, one should understand their simulation properties, properties that might be more alike than the technical properties of the two approaches suggest<sup><a href=\"#fn1\">1</a></sup>.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "This note compares the two archetypes of discrete-step ageing techniques and investigates some of their simulation properties. It argues that, even though the two archetypes are technically very different, under theoretical circumstances, both approaches are equivalent in terms of their simulation properties. This implies that anyone having to decide whether to develop a model with static or dynamic ageing should take the first option, as it is the cheaper alternative. However, real and theoretical circumstances may differ. This paper argues that the choice between developing a model with dynamic or static ageing requires the assessment of how far the actual and theoretical circumstances differ from each other.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "This conclusion, though stated differently, is by itself not new (e.g., <a href=\"#bib19\">O\u2019Donoghue 2001</a>, p. 9). This paper adds to the literature by raising a number of questions that should be addressed before taking the investment decision on the type of microsimulation model to be constructed. It may thus serve as an advice piece for someone contemplating the development of a dynamic microsimulation model.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "In what follows, the discussion will be on using the two ageing techniques to mimic time, i.e. to have the microsimulation model arrive at a \u2018future\u2019 state. This, however, is merely for purposes of discussion because all the issues to be discussed could also be presented in relation to the difference between an \u2018actual\u2019 state (reflected by the starting dataset) and a \u2018desired\u2019 state.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s1",
+            "title": "1. Introduction",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "Whether a microsimulation model applies dynamic or static ageing is a technical characteristic. These technical characteristics obviously are very different. However, the question is to what extent they affect the \u2018simulation properties\u2019 of a model: the actual or potential research problems that a model can cover, as well as the implicit or explicit assumptions that a model makes when handling a specific research problem (<a href=\"#bib10\">Dekkers &amp; Legros, 2006</a>).",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The question therefore is under what circumstances the different technical characteristics of the two archetypes may result in different simulation properties. This paper considers a number of possible or perceived problems which might cause one to choose a model with dynamic ageing over static ageing.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s2",
+            "title": "2. Simulation properties",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "The conceptually simplest ageing technique is \u201cstatic-ageing\u201d. A model that uses static ageing simulates time indirectly through \u201cuprating\u201d and \u201creweighting\u201d. Uprating is the process through which monetary values are inflated or deflated to meet exogenous projected developments.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Suppose that individuals are described by <i>n</i> variables. At any point in time <i>t</i>, an individual is a combination of characteristics of the <i>n</i> variables. By changing the weights of the individuals in the dataset, models with static ageing change the combination of characteristics, not the characteristics themselves. So the individuals in the dataset ideally are weighted by a joint <i>n</i> \u00d7 <i>n</i> reweighting matrix to transform the base dataset to the future year <i>y</i>. However, one often does not have a <i>n</i> \u00d7 <i>n</i> reweighting matrix, especially as <i>n</i> gets large. In most cases, one only has a set of marginal distributions. The problem therefore is to empirically derive a new vector of sample weights that are as close as possible to the design weights while bringing the dataset as close as possible to the marginal target distributions (for a formal definition of the problem, and a solution for various distance measures, see <a href=\"#bib5\">Cai <i>et al</i>. (2005</a>; <a href=\"#s2\">Section 2</a>) and <a href=\"#bib7\">Creedy and Kalb (2006)</a>).",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "A number of packages are available to solve this problem in practice. The German model MIKMOD-Est (<a href=\"#bib13\">Flory &amp; St\u00f6whase, 2012</a>) uses a package developed by Quinke, which the authors report to be quite similar to Merz\u2019s \u201cAdjust\u201d reweighting algorithm (<a href=\"#bib17\">Merz, 1994</a>). The GREGWT algorithm, developed by the Australian Bureau of Statistics (ABS) for spatial microsimulation, is used to reweight surveys to Australia wide and capital city benchmarks. NATSEM uses it for its SpatialMSM model (See <a href=\"#bib23\">Tanton &amp; Vidyattama, 2011</a>). Alternatives are CALMAR, developed by INSEE in France (<a href=\"#bib14\">INSEE, 2011</a>), and Clan97 (Anderson &amp; Nordberg, 1998, in <a href=\"#bib15\">Immervoll <i>et al</i>., 2005</a>: 6). All three algorithms are developed in SAS. Algorithms developed in Stata include CALIBRATE (<a href=\"#bib12\">D\u2019Souza, 2011</a>), Reweight (Pacifico, 2011, in: <a href=\"#bib8\">De Blander <i>et al</i>., 2013</a>: 8; revised as\u00a0<a href=\"#bib20\">SReweight, Pacifico, 2014</a>) and Gomulka (1992, in: <a href=\"#bib1\">Brewer <i>et al</i>., 2011</a>). <a href=\"#bib3\">Buddelmeyer <i>et al</i>. (2012</a>: 43)use the approach by Cai (op. cit.) in a two-step reweighting process to adapt to demographic totals and employment and unemployment levels as provided by a CGE model. Finally, combinatorial optimisation (CO; <a href=\"#bib25\">Williamson <i>et al</i>., 1998</a>) is an alternative approach that to our knowledge has not yet been used to \u2018dynamize\u2019 a static model or dataset. It involves selecting an appropriate combination of households from survey data to attain the known benchmark constraints. See <a href=\"#bib23\">Tanton and Vidyattama (2011)</a> for a discussion and comparison with GREGWT.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "In contrast to models with static ageing, models with dynamic ageing alter the contents of the dataset itself. So, \u201cIndividuals are aged and stochastically undergo transitions, as well as being subject to modified policy regimes\u201d (<a href=\"#bib2\">Brown and Harding (2002)</a> Section 2.2). The data load of these models is considerably heavier than the one for models with static ageing. Since the states over time are interconnected in models with dynamic ageing, the data generating process is also more complicated than in the case of static ageing. In the latter case one lays down a predefined final distribution where the data are aligned with<sup><a href=\"#fn2\">2</a></sup>. In dynamic ageing one also models some processes that generate the final distribution, like who marries whom or who gives birth to how many children. At the same time, the complication of modelling these intermediate processes implies the richness of models with dynamic ageing over those with static ageing.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Furthermore, since discrete-time<sup><a href=\"#fn3\">3</a></sup> models with dynamic ageing require the generation of intermediate results for each time state, the modeller can choose to sum past and current values of monetary variables into \u201clife-time variables\u201d. This way, it is possible to simulate the impact of fiscal or social policy on lifetime income of subsequent generations (see <a href=\"#bib6\">Creedy, 1999</a>, and <a href=\"#bib18\">Nelissen, 1994</a>, for applications). Though it is technically possible, this simulation of lifetime income is problematic in models with static ageing. First of all, and contrary to dynamic ageing models, it is conceptually meaningless to add up the incomes of the same individual in two years. This is because the observed individual represents two different individuals in two subsequent years. An individual observed with age 50 in the starting dataset of the year 2000 can be brought to, say, 2020 using static ageing techniques. But then the same individual represents an individual who is 50 in 2020, and who therefore was only 30 years of age in 2000. Hence the individual with the same identification number in two years conceptually is a completely different individual.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "An obvious solution by which one could construct lifetime income in models with static ageing is by not following individuals but cohorts over time. Thus, we would add up the income of individuals aged 30 in 2000 with those aged 40 in 2010, with those aged 50 in 2020, and so on. This would conceptually be possible but technically meaningless as one wants to simulate lifetime incomes to get rid of cross-sectional variation in earnings. However, by this approach one in fact introduces cross-sectional variation in the construction of lifetime income, since the incomes of subsequent observed cohorts \u2013 albeit reweighed and uprated- are added up. So the resulting lifetime incomes will not be better than the cross-sectional incomes. They both will suffer from cross-sectional variation so that their added value is limited. As static ageing models cannot produce credible estimates of lifetime income, the comparison will thus necessarily be limited to cross-sectional results for single years.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "So far we have limited ourselves to identify some technical characteristics and basic simulation properties of microsimulation models with static and dynamic ageing. Which of these models is best brought in action to compute distributional indicators, depends on the question one wants to address.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s3",
+            "title": "3. A bird\u2019s eye view on ageing techniques",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "In making abstraction from macroeconomic developments, models with static ageing mimic exogenous future demographic and labour market circumstances by reweighting the dataset. Models with dynamic ageing change the characteristics of the individuals in the dataset and do not consider the weights. In ideal circumstances, both models may be equivalent in the output they produce and in the range of policy assessments they can handle. This potential equivalence can be shown by a simple experiment of thought. Suppose a model with dynamic ageing that simulates all <i>n</i> individuals from a base-dataset in the year <i>x</i> to the future year y, and suppose that individuals are described by a limited number of <i>v</i> variables. Then one can always find a joint <i>n</i> \u00d7 <i>v</i> reweighting matrix by confronting the simulated dataset at <i>y</i> with the base-data at <i>x</i><sup><a href=\"#fn4\">4</a></sup>. So, under these ideal circumstances, a model with static ageing can replicate the dataset <i>y</i> created by the model with dynamic ageing, by reweighting <i>x</i>. Restated in the terminology of this paper: under ideal circumstances, the simulation properties of both models are the same, even though their technical characteristics are very different. Then the obvious choice would be to develop a model with static ageing and not a model with dynamic ageing, since the former is considerably cheaper in terms of data requirements, development and maintenance time, and effort.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "However, circumstances often are not ideal. In this case, results from models with static and dynamic ageing may differ in such a way that one might want to prefer a model with dynamic ageing over static ageing. In the next paragraphs, possible problems with models with static ageing will be discussed. The conclusion will be that these problems are limited or absent \u2013 so that one may indeed choose to develop a model with static ageing- as long as the world at the future moment in time <i>y</i> resembles starting dataset by close enough. Or, the problems with models with static ageing remain limited as long as one does not simulate too far into the future.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "This conclusion is by itself not new (see e.g. <a href=\"#bib19\">O\u2019Donoghue, 2001</a>, p. 9). This paper adds to the literature by conceptually comparing the simulation properties of both archetypes of models. There are various reasons why one might be tempted to choose to develop a model with dynamic ageing over one with static ageing, notwithstanding the fact that the former is considerably more complex and expensive in terms of development and updating. We deal with these arguments in more detail in the remainder of this section. Each argument starts by describing a possible or perceived problem that models with static ageing may have; next, we check whether this is actually a problem, and \u2013 if so- whether it is possible to circumvent it.",
+                    "type": "paragraph"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "An obvious problem with models with static ageing is that they require that individuals with all possible combinations of variables that will be present in the future, should already be present in the base-dataset. In other words, if a model is to reweigh an individual to represent future individual(s), the individual should exist in the starting dataset in the first place. If this is not the case, then the reweighting procedure will fail. A first and most obvious reason for specific individuals not being present in the starting dataset is that they should be there, but, due to sampling error, are not. Another reason might be that they should not even be present in the base dataset. Indeed, it seems imaginable that behaviour has changed in such a way that those combinations of variables that may arise in the future do not exist today. This becomes clear with an obvious retrospective sample. Today, plenty of people of all age-categories cohabit without being married. This is something which has arisen during the last decades. If one would have used a dataset of \u2013 say- 1950, one might not have found cohabiting individuals. Immigration may also bring individuals with unprecedented characteristics into a country. The problem of not having relevant individuals in the base dataset increases as simulation is done further in the future.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Fortunately, this problem could be overcome by using Monte-Carlo techniques to create fictitious individuals who have the yet unobserved combination of variables, or else to select actual individuals from another data source, and include them in the starting dataset. The weight of these individuals in the starting dataset obviously would be zero, and would only become positive when exogenous constraints or hypothesis make these individuals emerge. I did not find applications of this in the literature, so the practical consequences and problems with this approach are yet unknown.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s4-1",
+                    "title": "4.1 New individuals",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "Static ageing models ignore the processes that generated individual observations in the prospective sample (<a href=\"#bib26\">Zaidi &amp; Rake, 2001</a>: 2). This section and the next discuss the consequences of this technical property. Many countries have a Bismarckian social-security system, with benefits being a direct or indirect function of the previous career. Past information may affect future benefits in two ways:",
+                            "type": "paragraph"
+                        },
+                        {
+                            "items": [
+                                [
+                                    {
+                                        "text": "The relation between career characteristics (earnings and employment \u2018track record\u2019) may change. We call this \u201cBismarckian changes\u201d. For example, the career length required for a full pension may increase over time.",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "One shot events (cohort-specific effects such as political or demographical events) may affect career characteristics.",
+                                        "type": "paragraph"
+                                    }
+                                ]
+                            ],
+                            "prefix": "bullet",
+                            "type": "list"
+                        },
+                        {
+                            "text": "Discrete-time models with dynamic ageing simulate all intermediate steps between the starting dataset and the target future year y. Thus, current earnings in any year <i>t</i> &lt; <i>y</i> become retrospective earnings in <i>t</i> + 1 \u2264 <i>y</i> and pension benefits are calculated for those entering retirement. Assuming that the relation between the fundamental variables (such as age and gender) and career variables (earnings, employment) remains unchanged, this makes models with dynamic ageing less vulnerable for one-shot events<sup><a href=\"#fn5\">5</a></sup>. Moreover, these models by definition allow for the inclusion of Bismarckian changes.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "In its simplest form, static-ageing models like the Belgian model STATION (<a href=\"#bib9\">Dekkers, 2000</a>) do not include retrospective information. These models therefore do not allow for the simulation of Bismarckian changes, and ignore the impact of past one shot events<sup><a href=\"#fn6\">6</a></sup>. But there is a straightforward solution for the first source of bias: if the starting dataset does include retrospective information tied to these observed benefits, one can use a static microsimulation model to change the way in which past earnings affect current pensions, and use static ageing techniques to bring the current simulation results into the future. A combination of a static model and static ageing techniques therefore does the trick. First, one uses uprating to bring individual earnings as well as the parameters of the pension system to the future year. Next, one uses the static model (including uprated parameters and the necessary technical changes) to replace the currently observed pension benefits by uprated-simulated pension benefits. Finally, the sample is reweighted to take into account demographic and/or labour market trends between today and the future year. Note that the uprating-reweighting order is important here, because if uprating is not applied before the static model, then the combination cannot take into account the impact of differences between the development of earnings and the parameters of the pension system; a key element in the development of pension inequality (<a href=\"#bib11\">Dekkers, 2014</a>)<sup><a href=\"#fn7\">7</a></sup>.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Finally, none of this however solves for the vulnerability of models with static ageing to the possible impact of past one-shot events.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s4-2",
+                    "title": "4.2 The simulation of \u2018future retrospective information\u2019",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "How do both archetypes of models handle a situation where a policy measure in itself is dynamic? The example discussed here is the gradual adjustment of the age of mandatory pension, a policy measure taken in various European countries and that may affect whether employees older than the mandatory retirement age can be observed to be working in a future year.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Formally, suppose the mandatory retirement age at time <i>x</i>, <i>a<sub>x</sub></i>, and suppose a dummy <i>ret</i> = [0,1] denoting whether the individual is mandatory retired or not. The condition then is p(<i>ret</i>|<i>age</i> \u2265 <i>a<sub>x</sub></i>) = 1. Now make this mandatory retirement age dynamic in that it can either increase or decrease by <i>z</i> years between <i>x</i> and <i>x</i> + 1. In other words, <i>a<sub>x</sub></i> \u2264 <i>a<sub>x</sub></i> + 1 or <i>a<sub>x</sub></i> + 1 \u2264 <i>a<sub>x</sub></i>. In the case of models with dynamic ageing, the implementation is straightforward. Indeed, p(<i>ret</i>|<i>age</i> \u2265 <i>a<sub>x</sub></i> + 1) = 0 and p(<i>ret</i>|<i>age+z</i> \u2265 <i>a<sub>x</sub></i> + 1) = 1, with <i>z</i> any positive or negative discrete number. In the case of an increasing mandatory retirement age, this can be interpreted as that somebody of age <i>a</i> was eligible for retirement at <i>x</i>, but no longer at <i>x</i> + 1.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "In the case of a model with static ageing, the situation is analogous in that the above <i>p</i>(.) must be multiplied by a (current or future) weight <i>w<sub>x</sub></i> of the individual in the dataset. As a result, the weight of individuals of age <i>ax</i> who meet the requirement in the base year <i>x</i> but no longer at <i>x</i> + 1 becomes zero. So, in the case of an increasing mandatory retirement age, retired individuals of age <i>a<sub>x</sub></i> with weight <i>w<sub>x</sub></i>(<i>p</i>(.) = 1) = <i>w</i> in the base year <i>x</i>, in the year <i>x</i>+1 receive weight <i>w<sub>x</sub></i>(<i>p</i>(.) = 0) = 0. The weight of those working at age <i>a<sub>x</sub></i> is obviously adjusted upwards accordingly. In the opposite case of a decreasing mandatory retirement age, the weight of those working at a in the base year is multiplied by [1\u2212( p(<i>ret</i>|<i>age+z</i> \u2265 <i>a<sub>x</sub></i> + 1) = 1)]= [1 \u2212 1] = 0 in the year <i>x</i> + 1. The weight of those already retired before the mandatory retirement age is adjusted upwards accordingly. This immediately reveals when the model with static ageing will fail. If there are no observed individuals retired before the mandatory retirement age in the base dataset, the only way to compensate for the zero weights of the working individuals is by creating them beforehand (see <a href=\"#s4-1\">Section 4.1</a>) in the \u2018observed\u2019 dataset. Furthermore, this is an often trivial condition, certainly in the European context.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The conclusion therefore is that \u2013 save for one trivial condition for which an easy solution exists-the two archetypes of models seem equivalent in their simulation properties. There seems to be no a priori reason why one should choose one over the other.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s4-3",
+                    "title": "4.3 The simulation of a time-dependent policy measure",
+                    "type": "section"
+                }
+            ],
+            "id": "s4",
+            "title": "4. Simulation properties of models with static and dynamic ageing",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "The central thesis of this paper is that models with dynamic and static ageing might be more equivalent in terms of simulation properties than their technical differences suggest. The simulation properties of the two \u201carchetypes of models\u201d may under ideal circumstances be the same, but this may not be the case in practice. Next, we present and discuss several possible instances in which differences occur, and argue for some that a solution is available and may even be easy to implement.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Overall, we conclude that if the number of dimensions that have to be modified to capture \u2018the future\u2019 is limited, if future types of individuals and/or households are present in today\u2019s dataset or can be simulated \u2013in short, if the current population is an approximation of the future population, then the simulation properties of a model with static ageing are close to those of a model with dynamic ageing. Developing a model with static ageing then seems the better alternative.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "If this assumption cannot be made, due to \u2018one-shot events\u2019 in the past or important societal or economic changes, then models with dynamic ageing might be preferable. This is certainly the case if one wishes to assess the impact of social policy on lifetime income of subsequent generations.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Another more practical argument that is relevant in choosing between one of the two archetypes is whether or not one has a arithmetic microsimulation model from the outset. If so, then this may be an argument in favour of choosing a model with static ageing, since the former may be used to overcome a possible handicap that the latter have in the simulation of time-dependent policy measures<sup><a href=\"#fn8\">8</a></sup>.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The ultimate choice rests with the developer, who should take into account actual and potential research problems and/or questions by policy makers. But the fundamental choice described in this paper deserves attention, not in the least because developing a dynamic microsimulation model is a very expensive project that will take several years. The cost of taking a poor decision is therefore important. This paper hopes to contribute to a deliberate choice, preferably before one starts developing.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s5",
+            "title": "5. Conclusion",
+            "type": "section"
+        }
+    ],
+    "references": [
+        {
+            "accessed": "2015-02-20",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Brewer, Mike",
+                        "preferred": "Mike Brewer"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Browne, James",
+                        "preferred": "James Browne"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Joyce, Robert",
+                        "preferred": "Robert Joyce"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2011",
+            "id": "bib1",
+            "publisher": {
+                "name": [
+                    "The Institute of Fiscal Studies"
+                ]
+            },
+            "title": "http://www.ifs.org.uk/comms/comm121.pdf",
+            "type": "web",
+            "uri": "http://www.ifs.org.uk/comms/comm121.pdf",
+            "website": "Child and Working-Age Poverty from 2010 to 2020"
+        },
+        {
+            "articleTitle": "Social modelling and public policy: application of microsimulation modelling in Australia",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Brown, Laurie",
+                        "preferred": "Laurie Brown"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Harding, Ann",
+                        "preferred": "Ann Harding"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2002",
+            "id": "bib2",
+            "journal": "Journal of Artificial Societies and Social Simulation",
+            "pages": "4",
+            "type": "journal",
+            "uri": "http://jasss.soc.surrey.ac.uk/5/4/6.html",
+            "volume": "5"
+        },
+        {
+            "articleTitle": "Linking a Microsimulation Model to a Dynamic CGE Model: Climate Change Mitigation Policies and Income Distribution in Australia",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Buddelmeyer, Hielke",
+                        "preferred": "Hielke Buddelmeyer"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "H\u00e9rault, Nicolas",
+                        "preferred": "Nicolas H\u00e9rault"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Kalb, Guyonne",
+                        "preferred": "Guyonne Kalb"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Jong Mark, van Zijll de",
+                        "preferred": "van Zijll de Jong Mark"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2012",
+            "id": "bib3",
+            "journal": "International Journal of Microsimulation",
+            "pages": {
+                "first": "40",
+                "last": "58",
+                "range": "40\u201358"
+            },
+            "type": "journal",
+            "volume": "5"
+        },
+        {
+            "accessed": "2014-03-21",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Bryon, Geert",
+                        "preferred": "Geert Bryon"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Dekkers, Gijs",
+                        "preferred": "Gijs Dekkers"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Menten, Ga\u00ebtan de",
+                        "preferred": "Ga\u00ebtan de Menten"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2014",
+            "id": "bib4",
+            "title": "http://liam2.plan.be/download/LIAM2UserGuide-0.8.1.pdf",
+            "type": "web",
+            "uri": "http://liam2.plan.be/download/LIAM2UserGuide-0.8.1.pdf",
+            "website": "LIAM2 User Guide release 0.8.1"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Cai, Lixin",
+                        "preferred": "Lixin Cai"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Creedy, John",
+                        "preferred": "John Creedy"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Kalb, Guyonne",
+                        "preferred": "Guyonne Kalb"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2005",
+            "id": "bib5",
+            "publisher": {
+                "name": [
+                    "University of Melbourne Department of Economics"
+                ]
+            },
+            "source": "Accounting for Population Ageing in Tax Microsimulation Modelling by Survey Reweighting. Research Paper 935",
+            "title": "Accounting for Population Ageing in Tax Microsimulation Modelling by Survey Reweighting. Research Paper 935",
+            "type": "report"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Creedy, John",
+                        "preferred": "John Creedy"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1999",
+            "details": "Lifetime versus Annual Income Distribution, Handbook on Income Inequality Measurement, Recent Economic Thought, Kluwer Academic Publishers, Boston/Dordrecht/London",
+            "id": "bib6",
+            "title": "Handbook on Income Inequality Measurement, Recent Economic Thought",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Creedy, John",
+                        "preferred": "John Creedy"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Kalb, Guyonne",
+                        "preferred": "Guyonne Kalb"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2006",
+            "details": "89\u2013114, Labour Supply and Microsimulation, Cheltenham, Edgar Elgar, Chapter 6",
+            "id": "bib7",
+            "title": "Labour Supply and Microsimulation",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "De Blander, Rembert",
+                        "preferred": "Rembert De Blander"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Schockaert, Ingrid",
+                        "preferred": "Ingrid Schockaert"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Decoster, Andr\u00e9",
+                        "preferred": "Andr\u00e9 Decoster"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Deboosere, Patrick",
+                        "preferred": "Patrick Deboosere"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2013",
+            "details": "The impact of demographic change on policy indicators and reforms. FLEMOSI discussion paper 25, September, http://www.flemosi.be/uploads/177/FLEMOSI%20DP25%20De%20Blander%20et%20al%202013%20%20Impact%20of%20demographic%20change%20on%20policy%20indicators%20and%20reforms.pdf, [20/03/2014]",
+            "id": "bib8",
+            "title": "The impact of demographic change on policy indicators and reforms. FLEMOSI discussion paper 25",
+            "type": "unknown",
+            "uri": "http://www.flemosi.be/uploads/177/FLEMOSI%20DP25%20De%20Blander%20et%20al%202013%20%20Impact%20of%20demographic%20change%20on%20policy%20indicators%20and%20reforms.pdf"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Dekkers, Gijs",
+                        "preferred": "Gijs Dekkers"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2000",
+            "details": "L\u2019\u00e9volution du pouvoir d\u2019achat des retrait\u00e9s: Une application du mod\u00e8le de microsimulation STATION, R\u00e9flexions sur l\u2019avenir de nos retraites, Leuven/Apeldoorn, Garant, Also published in Dutch",
+            "id": "bib9",
+            "title": "R\u00e9flexions sur l\u2019avenir de nos retraites",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Dekkers, Gijs",
+                        "preferred": "Gijs Dekkers"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Legros, Florence",
+                        "preferred": "Florence Legros"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "A First Definition Of Simulation Properties. Text prepared for the colloquium \u201cSimulation Properties of Models of Pension Systems\u201d",
+            "date": "2006",
+            "id": "bib10",
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "Brussels"
+                        ]
+                    },
+                    "formatted": [
+                        "Brussels"
+                    ]
+                },
+                "name": [
+                    "Centre for European Policy Studies (CEPS)"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Dekkers, Gijs",
+                        "preferred": "Gijs Dekkers"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2014",
+            "details": "287\u2013304, What are the driving forces behind trends in inequality among pensioners? Validating MIDAS Belgium using a stylized model, New Pathways in Microsimulation, Farnham, Ashgate Publishing Limited, Chapter 19",
+            "id": "bib11",
+            "title": "New Pathways in Microsimulation",
+            "type": "unknown"
+        },
+        {
+            "accessed": "2011-06-20",
+            "authors": [
+                {
+                    "name": {
+                        "index": "D\u2019Souza, John",
+                        "preferred": "John D\u2019Souza"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2011",
+            "id": "bib12",
+            "title": "http://ideas.repec.org/c/boc/bocode/s457240.html",
+            "type": "web",
+            "uri": "http://ideas.repec.org/c/boc/bocode/s457240.html",
+            "website": "CALIBRATE: Stata module to calibrate survey datasets to population totals"
+        },
+        {
+            "articleTitle": "MIKMOD-ESt: A Static Microsimulation Model of Personal Income Taxation in Germany",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Flory, Judith",
+                        "preferred": "Judith Flory"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "St\u00f6whase, Sven",
+                        "preferred": "Sven St\u00f6whase"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2012",
+            "id": "bib13",
+            "journal": "International Journal of Microsimulation",
+            "pages": {
+                "first": "66",
+                "last": "73",
+                "range": "66\u201373"
+            },
+            "type": "journal",
+            "volume": "5"
+        },
+        {
+            "authors": [
+                {
+                    "name": "INSEE",
+                    "type": "group"
+                }
+            ],
+            "date": "2011",
+            "id": "bib14",
+            "title": "la macro SAS CALMAR",
+            "type": "web",
+            "uri": "http://www.insee.fr/fr/methodes/default.asp?page=outils/calmar/accueil_calmar.htm"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Immervoll, Herwig",
+                        "preferred": "Herwig Immervoll"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Lindstr\u00f6m, Klas",
+                        "preferred": "Klas Lindstr\u00f6m"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Mustonen, Esko",
+                        "preferred": "Esko Mustonen"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Riihel\u00e4, Marja",
+                        "preferred": "Marja Riihel\u00e4"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Viitam\u00e4ki, Heikki",
+                        "preferred": "Heikki Viitam\u00e4ki"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2005",
+            "details": "Static data \u201cageing\u201d techniques. Accounting for population changes in tax-benefit microsimulation models. EUROMOD working paper, No EM7/05",
+            "id": "bib15",
+            "title": "Static data \u201cageing\u201d techniques. Accounting for population changes in tax-benefit microsimulation models. EUROMOD working paper, No EM7/05",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Li\u00e9geois, Philippe",
+                        "preferred": "Philippe Li\u00e9geois"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Dekkers, Gijs",
+                        "preferred": "Gijs Dekkers"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2014",
+            "details": "203\u2013216, Combining EUROMOD and LIAM tools for the development of dynamic cross-sectional microsimulation models: a sneak preview, 2014, New Pathways in Microsimulation, Farnham, Ashgate Publishing Limited, Chapter 13",
+            "id": "bib16",
+            "title": "2014, New Pathways in Microsimulation",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Merz, Joachim",
+                        "preferred": "Joachim Merz"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1994",
+            "id": "bib17",
+            "publisher": {
+                "name": [
+                    "Forschungsinstitut Freie Berufe, Universit\u00e4t L\u00fcneburg"
+                ]
+            },
+            "source": "Microdata Adjustment by the Minimum Information Loss Principle. FFB Discussion paper",
+            "title": "Microdata Adjustment by the Minimum Information Loss Principle. FFB Discussion paper",
+            "type": "report"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Nelissen, Jan",
+                        "preferred": "Jan Nelissen"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "Income Redistribution and Social Security: an application of microsimulation",
+            "date": "1994",
+            "id": "bib18",
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "London"
+                        ]
+                    },
+                    "formatted": [
+                        "London"
+                    ]
+                },
+                "name": [
+                    "Chapman & Hall"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "O\u2019Donoghue, Cathal",
+                        "preferred": "Cathal O\u2019Donoghue"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2001",
+            "details": "Brazilian Electronic Journal of Economics",
+            "id": "bib19",
+            "title": "Dynamic Microsimulation: A Survey",
+            "type": "unknown"
+        },
+        {
+            "accessed": "2014-03-20",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Pacifico, Daniele",
+                        "preferred": "Daniele Pacifico"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2014",
+            "id": "bib20",
+            "title": "SREWEIGHT: Stata module for survey reweighting",
+            "type": "web",
+            "uri": "http://ideas.repec.org/c/boc/bocode/s457312.html"
+        },
+        {
+            "articleTitle": "Methodological Issues in Spatial Microsimulation Modelling for Small Area Estimation",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Rahman, Azizur",
+                        "preferred": "Azizur Rahman"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Harding, Ann",
+                        "preferred": "Ann Harding"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Tanton, Robert",
+                        "preferred": "Robert Tanton"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Liu, Shuangzhe",
+                        "preferred": "Shuangzhe Liu"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2011",
+            "id": "bib21",
+            "journal": "International Journal of Microsimulation",
+            "pages": {
+                "first": "3",
+                "last": "22",
+                "range": "3\u201322"
+            },
+            "type": "journal",
+            "volume": "3"
+        },
+        {
+            "authors": [
+                {
+                    "name": "Statistics Canada (StatCan)",
+                    "type": "group"
+                }
+            ],
+            "date": "2013",
+            "details": "The LifePaths Microsimulation Model: An Overview, http://www.statcan.gc.ca/microsimulation/lifepaths/overview-vuedensemble-eng.htm, [31/03/2014]",
+            "id": "bib22",
+            "title": "The LifePaths Microsimulation Model: An Overview",
+            "type": "unknown",
+            "uri": "http://www.statcan.gc.ca/microsimulation/lifepaths/overview-vuedensemble-eng.htm"
+        },
+        {
+            "articleTitle": "pushing it to the edge: extending generalized regression as a spatial microsimulation method",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Tanton, Robert",
+                        "preferred": "Robert Tanton"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Vidyattama, Yogi",
+                        "preferred": "Yogi Vidyattama"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2011",
+            "id": "bib23",
+            "journal": "International Journal of Microsimulation",
+            "pages": {
+                "first": "23",
+                "last": "33",
+                "range": "23\u201333"
+            },
+            "type": "journal",
+            "volume": "3"
+        },
+        {
+            "articleTitle": "Caratteristiche Generali del Modello di Microsimulazione dynamica TDYMM",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Tedeschi, Simone",
+                        "preferred": "Simone Tedeschi"
+                    },
+                    "type": "person"
+                }
+            ],
+            "conference": {
+                "name": [
+                    "Presentation during the Workshop TDYMM \u2013 Innovative Datasets and Models for Improving Welfare Policies"
+                ]
+            },
+            "date": "2011",
+            "id": "bib24",
+            "type": "conference-proceeding",
+            "uri": "http://www.tdymm.eu/"
+        },
+        {
+            "articleTitle": "The estimation of population microdata by using data from small area statistics and sample of anonymised records",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Williamson, P.",
+                        "preferred": "P. Williamson"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Birkin, M.",
+                        "preferred": "M. Birkin"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Rees, P",
+                        "preferred": "P Rees"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1998",
+            "id": "bib25",
+            "journal": "Environment and Planning Analysis",
+            "pages": {
+                "first": "785",
+                "last": "816",
+                "range": "785\u2013816"
+            },
+            "type": "journal",
+            "volume": "30"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Zaidi, Asghar",
+                        "preferred": "Asghar Zaidi"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Rake, Catherine",
+                        "preferred": "Catherine Rake"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2001",
+            "details": "Dynamic Microsimulation Models: A Review and Some Lessons for SAGE. SAGE Discussion Paper no. 2, SAGEDP/02, http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.96.1328&rep=rep1&type=pdf",
+            "id": "bib26",
+            "title": "Dynamic Microsimulation Models: A Review and Some Lessons for SAGE. SAGE Discussion Paper no. 2, SAGEDP/02",
+            "type": "unknown",
+            "uri": "http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.96.1328&rep=rep1&type=pdf"
+        }
+    ],
+    "acknowledgements": [
+        {
+            "text": "The author wish to thank Guy van Camp and Boris Majcen and two anonymous reviewers for their comments on a previous version of this paper. I also thank Cathal O\u2019Donoghue for taking up the role of journal editor for an earlier and extended version, as well as for this note version of the paper.",
+            "type": "paragraph"
+        }
+    ],
+    "-meta": {
+        "patched": true
+    },
+    "stage": "published"
+}
