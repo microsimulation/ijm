@@ -1,0 +1,722 @@
+{
+    "status": "vor",
+    "id": "00073",
+    "version": 1,
+    "type": "research-article",
+    "doi": "10.34196/ijm.00073",
+    "authorLine": "Judith Flory, Sven St\u00f6whase",
+    "title": "MIKMOD-ESt: A static microsimulation model of personal income taxation in Germany",
+    "published": "2012-12-31T00:00:00Z",
+    "versionDate": "2012-12-31T00:00:00Z",
+    "statusDate": "2012-12-31T00:00:00Z",
+    "volume": 5,
+    "issue": 2,
+    "elocationId": "n/a",
+    "pdf": "http://web:8082/00073/ijm-00073.pdf",
+    "subjects": [
+        {
+            "id": "taxes-benefits",
+            "name": "Taxes and benefits"
+        }
+    ],
+    "abstract": {
+        "content": [
+            {
+                "text": "MIKMOD-ESt is a microsimulation model of the German personal income tax. Developed and operated on behalf of the German Federal Ministry of Finance, MIKMOD-ESt is extensively used to evaluate numerous proposals for reforms of personal income taxation in Germany. The aim of this paper is to shed light on various aspects of the model. These include information on the microdata used for simulation (source and date, differences to other data sets) as well as the method for updating and uprating the data. Based on these information, advantages in comparison to other existing tax(-benefit) models as well as limitations of the current simulation model are discussed. Advantages are, e.g. the full inclusion of all taxpayers above a certain income threshold by using official tax returns or the possibility to conduct microsimulation analyses in a very detailed manner that allows for evaluation of very small and selective reforms. The main constraints are the restriction of the database to those currently obliged to file a tax return and the lack of information necessary to model the behavioural responses to tax changes.",
+                "type": "paragraph"
+            }
+        ]
+    },
+    "copyright": {
+        "license": "CC-BY-4.0",
+        "holder": "Flory and St\u00f6whase",
+        "statement": "This article is distributed under the terms of the <a href=\"http://creativecommons.org/licenses/by/4.0/\">Creative Commons Attribution License</a>, which permits unrestricted use and redistribution provided that the original author and source are credited."
+    },
+    "authors": [
+        {
+            "affiliations": [
+                {
+                    "address": {
+                        "components": {
+                            "country": "Germany"
+                        },
+                        "formatted": [
+                            "Germany"
+                        ]
+                    },
+                    "name": [
+                        "Fraunhofer FIT and Maastricht Graduate School of Governance"
+                    ]
+                }
+            ],
+            "emailAddresses": [
+                "judith.flory@fit.fraunhofer.de"
+            ],
+            "name": {
+                "index": "Flory, Judith",
+                "preferred": "Judith Flory"
+            },
+            "type": "person"
+        },
+        {
+            "affiliations": [
+                {
+                    "address": {
+                        "components": {
+                            "country": "Germany"
+                        },
+                        "formatted": [
+                            "Germany"
+                        ]
+                    },
+                    "name": [
+                        "Fraunhofer FIT"
+                    ]
+                }
+            ],
+            "emailAddresses": [
+                "sven.stoewhase@fit.fraunhofer.de"
+            ],
+            "name": {
+                "index": "St\u00f6whase, Sven",
+                "preferred": "Sven St\u00f6whase"
+            },
+            "type": "person"
+        }
+    ],
+    "keywords": [
+        "microsimulation",
+        "personal income tax",
+        "tax reform"
+    ],
+    "body": [
+        {
+            "content": [
+                {
+                    "text": "Thanks to the growing availability of microdata and increases in computing capacities, the use of microsimulation models has become very popular for informed policy making over the last decades (<a href=\"#bib8\">Gupta &amp; Kapur, 2000</a>). Particularly in the area of tax- transfer policies, a number of governments rely on microsimulation models for planning and forecasting purposes, among them the Scandinavian countries, Australia, Canada, and Hungary to name a few. This also applies to Germany where the German Federal Ministry of Finance developed a first microsimulation model for the personal income tax more than a decade ago.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Though utilisation of the first existing income tax microsimulation model used to be successful the Ministry was interested in an alternative solution. The motivation to outsource was to guarantee not only scientific accuracy but also political independence. Based on the initial model the research institute Fraunhofer FIT was commissioned a project to further improve and thereafter maintain the model on behalf of the Ministry. The respective project started in 2007 and led to the development of MIKMOD-ESt, a static microsimulation model for the evaluation of personal income taxation which is programmed in Java.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "In the first place MIKMOD-ESt is used for policy advice and not for scientific research. The outcomes of a number of different income tax policy reforms can be estimated with the model. In addition, various figures related to income taxation, which are periodically published by the German government, are calculated on basis of the model. For instance, such figures are the amount of income tax revenue generated in a certain year, the income deciles of taxpayers or the number of taxpayers who profit from child allowances.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The aim of the present paper is to shed light on various aspects of the model. These include information on the microdata used for simulation as well as the method for updating and extrapolation of the data. <a href=\"#s2\">Section 2</a> starts with a brief description of the microdata used for MIKMOD-ESt as well as the methods for updating and uprating the data. The section also gives a short overview of the advantages and disadvantages of the microdata used in comparison to other available data sources. Next, the general calculation of the income tax liability within the model is sketched in <a href=\"#s3\">Section 3</a>. The following <a href=\"#s4\">Section 4</a> turns to selected examples of applications of the model. In addition, the section contains a discussion of potentials for further development. <a href=\"#s5\">Section 5</a> concludes.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s1",
+            "title": "1. Introduction",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "MIKMOD-ESt is based on a unique microdata set of official tax returns provided by the German Statistical Office. The German Statistical Office \u2013 through its Statistical Offices in the German States \u2013 collects the tax return data for each of the approximately 30 million taxpayers. In general, taxpayers are either unmarried singles or married couples. Currently the latest data available are those for the year 2006.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "For exclusive use within the microsimulation project for the Ministry of Finance a representative, stratified 10% sample is drawn out of the population data<sup><a href=\"#fn1\">1</a></sup>. The stratifying approach ensures that all taxpayers from the top of the income distribution are contained in the sample. That is to say in contrast to taxpayers with medium or low incomes the high income cases get an individual weighting factor equal to one. These observations are of major importance for microsimulation modelling since the taxpayers from the top decile of the income distribution contribute about 55 percent of personal income taxes paid (see <a href=\"#bib4\">Bundesministerium der Finanzen, 2012</a>). The 10% sample provides information on more than one thousand different variables for each of the cases. Nearly all characteristics of each taxpayer are included that are relevant for tax determination, e.g. sources and amounts of incomes, deductions, child allowances, taxable income, and amount of income tax, of church tax and of solidarity surcharge paid. Moreover some limited information on socio-economic characteristics is included as well like gender, age, state of residence, and economic activity of entrepreneurs. Before the administrative tax data can be used within the microsimulation model, the data has to be processed in an approach that basically consists of four independent steps: reduction of the sample size, reduction of the number of variables used, imputation of missing information, and extrapolation of the data.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "For the purpose of an easier handling and to meet the sometimes tight time constraints in the policy consulting context the initial 10% sample has to be reduced. The aim is to reach a run time of the model of approximately one minute, which allows for use of the model for the Minstry\u2019s purposes and to quickly answer requests<sup><a href=\"#fn2\">2</a></sup>. Hence, both the sample size and the number of variables are downsized. In order to precisely map the aggregate tax statistics in line with the explanation given above, taxpayers from top of the income distribution are fully incorporate in the downsized subsample. Thereby, we arrive at a reduced final sample that includes all taxpayers with total revenue above a threshold of 500,000 Euros and a randomly drawn subsample of taxpayers with lower incomes. The final sample size is about 485,000 observations, from which 45,000 belong to the top of the income distribution.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Furthermore, several input variables are summarized and others are deleted which are not essential for the calculations. For instance, very detailed data on specific tax issues can be lumped together with no effect on the calculation of the tax liability. Thereby, the total number of variables used within the model is concentrated to about 180, about one fifth of the variables initially provided in the 10% sample. The upper part of <a href=\"#fig1\">Figure 1</a> illustrates the approach taken to arrive at the final subsample. The horizontal size of each rectangle illustrates the number of variables in the sample while the vertical height sketches the number of observations. The scientific use file FAST, which is also shown in <a href=\"#fig1\">Figure 1</a>, is introduced later on.",
+                    "type": "paragraph"
+                },
+                {
+                    "assets": [
+                        {
+                            "id": "fig1",
+                            "image": {
+                                "alt": "",
+                                "uri": "%iiif_uri%/00073%2Fijm-00073-fig1.tif",
+                                "size": {
+                                    "width": 1891,
+                                    "height": 1148
+                                },
+                                "source": {
+                                    "mediaType": "image/jpeg",
+                                    "uri": "%iiif_uri%/00073%2Fijm-00073-fig1.tif/full/full/0/default.jpg",
+                                    "filename": "ijm-00073-fig1.jpg"
+                                }
+                            },
+                            "label": "Figure 1",
+                            "title": "Database generation.",
+                            "type": "image"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "text": "After drawing a stratified subsample of the data and adjusting case specific weighting factors, the data are checked for inconsistencies and missing values are imputed. Even after condensing the data a substantial number of variables with detailed information on each taxpayer is available in the sample. However, due to some limitations in the original administrative data (mainly concerning child benefits and child allowances) a number of imputations have to be made.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The general approach is to take those variables as given, which are the results of the official tax assessment like taxable income or the final tax liability. Then the aim is to recalculate these official figures. In those cases where full information about all input variables is given in the data this permits the identification of inconsistencies whenever differences between our calculations and the official values are observed. In cases where specific input variables are missing, existing information on input variables of all similar cases is used. Hereby, the large size of the data base is an asset as it yields reliable information on the distribution of the majority of input variables. In this way, missing values can be imputed such that the calculations made for a particular case with lacking information finally matches the official result, i.e. tax liability<sup><a href=\"#fn3\">3</a></sup>. Further imputations concern missing values in the data for those cases where the tax law grants lump-sum deductions and taxpayers provide no information about their expenses below the lump-sum. After the modifications it is possible to precisely recalculate current tax liabilities for more than 99 percent of the cases in the sample. As regards the remaining unsolved cases the initial input values from the income tax statistics are used and inconsistent values are replaced by the results of our own tax calculation.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The administrative data of 2006 and hence the condensed subsample only include those cases for which a tax assessment took place, i.e. taxpayers who formally declared their incomes. Data for the sizeable population of persons paying source taxes on labour income only and not filing the tax returns are available only every third year, most recently 2004. Even though the data on these non-filers does basically include information only on wages and no information on other income sources, incorporation is necessary because these observations represent approximately 9 million out of the 30 million taxpayers. Income information of the labour tax cases from 2004 is extrapolated to 2006 according to the economy-wide development of wages. As depicted by <a href=\"#fig2\">Figure 2</a> in a second step the condensed sample is expanded by adding the extrapolated labour tax cases.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "In a final step, the expanded database is updated and extrapolated to the years of analysis (i.e. on basis of the 2006 database it is updated for all years up to 2016) using static ageing techniques. The approach taken is to adjust the weighting factors in order to allow for changes in global structural variables whilst different types of income sources are updated according to the observed aggregated values and extrapolated on basis of the Federal Ministry of Finance\u2019s annual tax estimate as well as on estimates of the Federal Ministry of Economics.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The method applied follows <a href=\"#bib13\">Quinke (2001)</a>, who employs an approach that compares the weighted cases of the sample data to aggregated macroeconomic statistics. He utilizes an algorithm based on the Minimum Information Loss Principle and the standard Newton-Raphson solution, which is quite similar to Merz\u2019s \u201cAdjust\u201d reweighting algorithm (<a href=\"#bib10\">Merz, 1994</a>). A comparison is made with respect to family structure (taxpayer units consisting of single taxpayers or married couples), age, state of residence (East Germany versus West Germany), number of taxpayers with gross income subject to mandatory social security contributions, number of civil servants, number of business man and self-employed, number of pensioners and the number of child allowances. Adjustments are made for all years of the analysis and the resulting weighting factors for each single year are stored as additional variables in the sample. Moreover, factors to update the data of the base year are kept in a parameter file for each category of income and for each year of the estimation period, i.e. 2007 till 2016. The MIKMOD-ESt programming code assesses these parameters during the calculations to update the original values.",
+                    "type": "paragraph"
+                },
+                {
+                    "assets": [
+                        {
+                            "id": "fig2",
+                            "image": {
+                                "alt": "",
+                                "uri": "%iiif_uri%/00073%2Fijm-00073-fig2.tif",
+                                "size": {
+                                    "width": 1393,
+                                    "height": 1167
+                                },
+                                "source": {
+                                    "mediaType": "image/jpeg",
+                                    "uri": "%iiif_uri%/00073%2Fijm-00073-fig2.tif/full/full/0/default.jpg",
+                                    "filename": "ijm-00073-fig2.jpg"
+                                }
+                            },
+                            "label": "Figure 2",
+                            "title": "Data processing.",
+                            "type": "image"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "text": "What distinguishes MIKMOD-ESt from other tax-transfer models in Germany<sup><a href=\"#fn4\">4</a></sup> is the use of the unique database as described above. Thereby fiscal and distributional impacts of a wide range of tax reforms can be evaluated in much more detail than would be feasible using other German data sets. Two major alternative data sets are the scientific-use file of the income tax data (FAST) and the German Socio-economic panel (GSOEP)<sup><a href=\"#fn5\">5</a></sup>.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "In comparison to the FAST the sample used by MIKMOD-ESt is favourable in terms of currentness of the data<sup><a href=\"#fn6\">6</a></sup> and its lower degree of anonymization. The difference in the degree of anonymization is shown in the lower part of <a href=\"#fig1\">Figure 1</a>. In particular, anonymization of the cases of the FAST increases with categories based on revenues of the taxpayer (see <a href=\"#bib11\">Merz et. al., 2006</a>, and <a href=\"#bib5\">Buschle and Schwabbacher, 2010</a>, for a more detailed description). Consequently, detailed simulations for top income households are rather difficult using the FAST. Another advantage of the official tax return data lies in its huge size. Compared to approximately 12,000 household observations for instance offered by the GSOEP, even the subsample used by MIKMOD-ESt with just below 500,000 observations allows in-depth distributional analysis as well as analysis of very specific tax issues in a way not possible with survey data<sup><a href=\"#fn7\">7</a></sup>. While the analysis of smaller subgroups such as groups differentiated by age or federal state quickly reach limitations in the number of observations in the GSOEP they are possible using MIKMOD-ESt. Another drawback of the survey data like the GSOEP is the shortfall of a number of tax relevant information, an incomplete coverage of certain types of income<sup><a href=\"#fn8\">8</a></sup>, and the lack of representative data on the top of the income distribution. A major advantage of the GSOEP data is given by the fact that it offers a large number of socio-economic variables not included in the administrative data, which for example allows adding more important dimensions when analysing distributional effects, or, in the case of information on hours worked, open the possibility to model behavioural effects. Moreover, as the GSOEP data represents the entire population, also those cases are included that do not pay income taxes. Thereby a more complete picture of the lower end of the income distribution is given that allows to model the benefit system as well. These latter two advantages of the GSOEP are clear shortcomings of the MIKMOD-ESt model\u2019s data base.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "In summary, it becomes clear that despite its strength MIKMOD-ESt is highly context specific. For the particular needs of the German Federal Ministry of Finance, where reliable estimations on the short-term effects of relatively small changes in personal income taxation must be carried out, the advantages of administrative tax data clearly dominate the disadvantages when compared to other data sources. Finally, it has to be noted that these advantages of using the exclusive access to less anonymized data come at a cost for researchers working on behalf of the Ministry: Scientific publications based on these data are highly restricted and publication of results is virtually impossible due to strict data-protection laws. This even includes publication of aggregate simulation results.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s2",
+            "title": "2. The MIKMOD-ESt model\u2019s database from official income tax statistic",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "German personal income tax legislation is very comprehensive. Hence, the steps for income tax calculation with MIKMOD-ESt are presented in a simplified manner. <a href=\"#bib12\">Peichl and Schaefer (2009)</a> can be consulted for a similar overview that in addition includes some numerical details which are left out in the general description below. <a href=\"#fig3\">Figure 3</a> summarizes the five major steps of tax calculation in the boxes on the left-hand side. For each observation in the data base these calculation steps are undertaken in the tax model.",
+                    "type": "paragraph"
+                },
+                {
+                    "assets": [
+                        {
+                            "id": "fig3",
+                            "image": {
+                                "alt": "",
+                                "uri": "%iiif_uri%/00073%2Fijm-00073-fig3.tif",
+                                "size": {
+                                    "width": 1878,
+                                    "height": 1166
+                                },
+                                "source": {
+                                    "mediaType": "image/jpeg",
+                                    "uri": "%iiif_uri%/00073%2Fijm-00073-fig3.tif/full/full/0/default.jpg",
+                                    "filename": "ijm-00073-fig3.jpg"
+                                }
+                            },
+                            "label": "Figure 3",
+                            "title": "Modelling German personal income taxation.",
+                            "type": "image"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "text": "First, the sum of incomes from seven different categories as specified by the tax code is determined. The seven categories are income from agriculture and forestry, business, self-employment, salaries and wages of those in dependent employment, capital and dividends, rental income, and other incomes like annuities from pension funds. If income is received in one of these categories certain deductibles can be subtracted like work related deductions, tax free parts of pension benefits, and other specific allowances. Note that the determination of deductions and tax-free parts of the income itself may include several calculations to make a comparison between actual values and lump-sum amounts. In line with German tax legislation the outcome selected within the model is the one preferable from the taxpayer\u2019s perspective. After subtraction of deductions total revenue is obtained.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "In a next step, social security contributions are derived, which are not subject to taxation but deductible from taxable income before hand. Again, this involves different calculations that have to be performed next to each other in order to determine the final amount of deductible contributions, i.e. the one that minimizes a certain taxpayer\u2019s taxable income<sup><a href=\"#fn9\">9</a></sup>. Further reductions are related to other expenses such as the church tax, donations for charity, school fees, expenses for child care, or expenses for education of other dependants, as well as a possible deductible fraction of expenses for special medical needs or a given degree of disability. If a taxpayer qualifies for such reductions, they are subtracted from total revenue and eventually lead to a first version of taxable income<sup><a href=\"#fn10\">10</a></sup>.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "To arrive in a fifth step at the final amount of taxable income alternative calculations have to be made again for two specific positions. Namely, these positions are private pension contributions on the one hand and child allowances versus child benefits on the other. In both cases the German legislator offers either a direct transfer payment or a tax deduction whatever is favourable form the taxpayer\u2019s perspective. Even without the legislator\u2019s specification as in the case of child allowances and private pension contributions the optimal choice from the taxpayer\u2019s perspective is always the guiding principle when modelling alternatives within the model. In such cases different possibilities of calculation have to be performed next to each other to decide afterwards which option is chosen, according to the outcomes. That is to say it has to be determined whether a direct payment receivable exceeds the difference between a tax payment based on a taxable income without reduction by a possible allowance and tax payment based on a taxable income lowered by such an allowance. Thereby, the optimal choice for the taxpayer is selected as prescribed by the tax law. where necessary, this also includes the special treatment of extraordinary incomes, <sup><a href=\"#fn11\">11</a></sup> e.g. compensations for longer-term activities, and the application of a progression reservation among others on unemployment and parental leave benefits. The latter benefits are basically tax free. However, they are included when determining the average tax rate on taxable income. Due to increasing marginal tax rates in Germany, this leads to an increased average tax rate on taxable income.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "In order to obtain the final tax liability tax payments based on the tax tariff need to be adjusted by tax reductions (e.g. payments for craftsmen or other household services, business taxes paid) and additional taxes. Eventually this final income is the tax base for personal income taxation, the solidarity surcharge and the church tax. For those cases that have just paid source taxes, the calculations are limited to the tariff income tax which is equal to the final tax liability in these cases.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "For cases with capital income, calculations have become even more complex with the introduction of a withholding tax on capital income in 2009. According to the new law, taxpayers can choose between the alternative to tax their entire income from capital within the personal income tax or isolated from other types of income instead. In the latter case, a withholding tax with a flat rate of 25 percent is applied. After the five steps of the tax calculation the whole simulation has to be run a second time in case a taxpayer has income from capital. In the second run it is tested whether the sum of tax payments from the withholding tax and personal income taxes on incomes except income from capital is lower or higher than the tax payments obtained from the first calculation (right-hand side of <a href=\"#fig3\">Figure 3</a>). Since no information can be found in the data whether a tax-unit chooses to tax its income from capital within the personal income tax or under the flat rate tax the guiding assumption again is that each tax-unit chooses the alternative which minimizes total tax payments in that year. The second loop through the five major steps of the calculation routines and the decision for or against the flat rate tax closes a complete simulation using the MIKMOD-ESt model.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s3",
+            "title": "3. Modelling german personal income taxation",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "In practice, MIKMOD-ESt is extensively used in advance of many policy reform projects as well as for the estimation of the fiscal effects of tax reductions within the currently existing law. These estimations are initiated and financed by the German Federal Ministry of Finance. The model is regularly employed for the fiscal evaluation of family policies such as the total amount of forgone tax revenue because of child allowance, the share of transfers incorporated in the child benefit, tax reliefs due to income splitting for married couples, (limited) income shifting between divorced taxpayers, or the tax allowance for lone parents. Within MIKMOD-ESt the procedure is always to compute tax payments for each observation of the data sample first under the law applicable in the year of consideration. To do so, the different tax codes for the years between 2006 and 2012 are incorporated in the model, either via tax parameters or directly in the programming code. In a second step, calculations are repeated under a changed tax law. To simplify the application of MIKMOD-ESt, modifications analysed more frequently can be done via parameter change while more complex or less frequently requested modifications of the law need changes in the programming code.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "In addition, the model is used as the basis for distributional analysis, such as group wise differentiations of contributions to total tax revenue according to the amount of the taxpayer\u2019s individual revenue or taxable income. Other evaluations are concerned with the fiscal effects of allowances for social security contributions or the taxation of pensioners. Results derived by the MIKMOD-ESt model are regularly published by the German Federal Ministry of Finance as part of reports for the OECD, the European Commission and the German public (<a href=\"#bib4\">Bundesministerium der Finanzen, 2012</a>; <a href=\"#bib1\">Adema et. al., 2011</a>, pp.60; <a href=\"#bib7\">European Commission, 2011</a>, p.419). Most recently, the model was used in collaboration with the German Statistical Office to evaluate possible changes from the implementation of a community surcharge on income taxes paid, which was intended to compensate communities for losses from a possible abolishment of the current business tax (<a href=\"#bib14\">Schwabbacher et. al., 2011</a>). The model was also used to estimate tax losses and distributional effects for different alternatives of a better deductibility of health insurance contributions (<a href=\"#bib6\">Deutscher Bundestag, 2009</a>). A corresponding and indeed quite complex reform of the tax deductibility of health insurance contributions with an estimated total tax relief of about 10 billion Euros per year actually took place in 2010 and parts of our estimates directly entered the bill.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Given the growing possibilities for working with process data on tax payments within the last years, a future intention is to incorporate available information on capital and business taxes paid on the firm level in our data set. This may facilitate simulations concerning the effects of tax changes at the corporate level on the personal income tax paid on the individual level. Moreover, this would make calculations of the total individual tax burden possible.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Until now an unsolved problem is posed by the earlier mentioned withholding tax on capital income in 2009: Starting with the micro data from 2009 this withholding tax is in place and information on large amounts of capital income will be potentially lost. This is the case especially for high income taxpayers, since when choosing between the withholding tax with its flat rate of 25 percent or taxation within the personal income tax, only for small incomes the treatment of capital gains within the usual personal income tax is preferable. All income groups that face a marginal tax rate above 25 percent will hence opt for taxation of capital gains under the source tax scheme at the favourable rate of 25 percent. As a consequence, information on capital gains will no longer be available in the tax return data for all income groups but the ones with small incomes. However, as has been previously explained the major parts of tax revenue result from higher income groups. Therefore, missing information on capital gains, which contribute a large part of total income for a number of cases of taxpayers who belong to the higher end of the income distribution, lead to a non-negligible loss in precision of modelling total tax revenue from the respective income category. As appropriate microdata on capital gains do not exist outside the tax statistics, imputation or matching procedures are not possible. In the short run, it would be possible to use information on capital income from the 2008 data for future years, but in the long run an alternative solution for this missing data problem has to be found.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s4",
+            "title": "4. Applications and further developments",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "Micro data analysis has become a key instrument for informed policy making over the last decades in numerous countries among them Germany. Accordingly, the expansion of independent and reliable scientific tools was promoted. One such project is the development of MIKMOD-ESt a personal income tax microsimulation model on behalf of the German Ministry of Finance. The use of data anonymized to the lowest possible degree which is still compatible with German law allows in-depth distributional as well as fiscal analysis of different reforms. Effects for a variety of reform options can be calculated very precisely and results of the model have a great importance for policy makers. However, due to the restrictive legislation on data protection policy in Germany the model cannot be used for purely scientific analysis. In addition, the focus on current taxpayers and on the attributes necessary for the calculation of income taxes makes the model unsuited for the analysis of major reforms of the tax system where taxation is expanded to previously unaffected persons or where significant behavioural responses can be expected.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s5",
+            "title": "5. Conclusion",
+            "type": "section"
+        }
+    ],
+    "references": [
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Adema, Willem",
+                        "preferred": "Willem Adema"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Fron, Pauline",
+                        "preferred": "Pauline Fron"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Maxime, Ladaique",
+                        "preferred": "Ladaique Maxime"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2011",
+            "id": "bib1",
+            "publisher": {
+                "name": [
+                    "OECD Publishing"
+                ]
+            },
+            "source": "Is the European Welfare State Really More Expensive?: Indicators on Social Spending, 1980\u20132012; and a Manual to the OECD Social Expenditure Database (SOCX). OECD Social, Employment and Migration. Working Papers, No. 124",
+            "title": "Is the European Welfare State Really More Expensive?: Indicators on Social Spending, 1980\u20132012; and a Manual to the OECD Social Expenditure Database (SOCX). OECD Social, Employment and Migration. Working Papers, No. 124",
+            "type": "report"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Bork, Christhart",
+                        "preferred": "Christhart Bork"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2000",
+            "details": "Steuern, Transfers und private Haushalte. Eine mikroanalytische simulationsstudie der Aufkommens-und Verteilungswirkungen, Frankfurt",
+            "id": "bib2",
+            "title": "Steuern, Transfers und private Haushalte. Eine mikroanalytische simulationsstudie der Aufkommens-und Verteilungswirkungen",
+            "type": "unknown"
+        },
+        {
+            "articleTitle": "Microsimulation as a Tool for Evaluating Redistribution Policies",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Bourguignon, Francois",
+                        "preferred": "Francois Bourguignon"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Spadaro, Amedeo",
+                        "preferred": "Amedeo Spadaro"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2006",
+            "id": "bib3",
+            "journal": "Journal of Economic Inequality",
+            "pages": {
+                "first": "77",
+                "last": "106",
+                "range": "77\u2013106"
+            },
+            "type": "journal",
+            "volume": "4"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "der Finanzen, Bundesministerium",
+                        "preferred": "Bundesministerium der Finanzen"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2012",
+            "details": "Datensammlung zur Steuerpolitik, Berlin",
+            "id": "bib4",
+            "title": "Datensammlung zur Steuerpolitik",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Buschle, Nicole",
+                        "preferred": "Nicole Buschle"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Schwabbacher, Wolfram",
+                        "preferred": "Wolfram Schwabbacher"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "Faktische Anonymisierung der Steuerstatistik (the FAST)",
+            "date": "2010",
+            "id": "bib5",
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "Wiesbaden"
+                        ]
+                    },
+                    "formatted": [
+                        "Wiesbaden"
+                    ]
+                },
+                "name": [
+                    "Lohn- und Einkommensteuer 2004"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Deutscher, Bundestag",
+                        "preferred": "Bundestag Deutscher"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2009",
+            "details": "Entwurf eines Gesetzes zur verbesserten steuerlichen Ber\u00fccksichtigung von Vorsorgeaufwendungen (B\u00fcrgerentlastungsgesetz Krankenversicherung), Drucksache 16/12254, Berlin",
+            "id": "bib6",
+            "title": "Entwurf eines Gesetzes zur verbesserten steuerlichen Ber\u00fccksichtigung von Vorsorgeaufwendungen (B\u00fcrgerentlastungsgesetz Krankenversicherung)",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": "European Commission",
+                    "type": "group"
+                }
+            ],
+            "date": "2011",
+            "details": "Taxation trends in the European Union. Data for the EU Member States, Iceland and Norway, Luxembourg",
+            "id": "bib7",
+            "title": "Taxation trends in the European Union. Data for the EU Member States, Iceland and Norway",
+            "type": "unknown"
+        },
+        {
+            "date": "2000",
+            "details": "Microsimulation in Government Policy and Forecasting, Amsterdam",
+            "id": "bib8",
+            "title": "Microsimulation in Government Policy and Forecasting",
+            "type": "unknown",
+            "authors": [
+                {
+                    "name": "n/a",
+                    "type": "group"
+                }
+            ]
+        },
+        {
+            "articleTitle": "J\u00e4hrliche Einkommensteuerstatistik auf Basis der bisherigen Gesch\u00e4ftsstatistik der Finanzverwaltung",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Lietmeyer, Volker",
+                        "preferred": "Volker Lietmeyer"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Kordsmeyer, Volker",
+                        "preferred": "Volker Kordsmeyer"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Gr\u00e4b, Chiristopher",
+                        "preferred": "Chiristopher Gr\u00e4b"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Daniel, Vorgrimler",
+                        "preferred": "Vorgrimler Daniel"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2005",
+            "id": "bib9",
+            "journal": "Wirtschaft und Statistik",
+            "pages": {
+                "first": "671",
+                "last": "681",
+                "range": "671\u2013681"
+            },
+            "type": "journal"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Merz, Joachim",
+                        "preferred": "Joachim Merz"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1994",
+            "id": "bib10",
+            "publisher": {
+                "name": [
+                    "University of Luneburg"
+                ]
+            },
+            "source": "The Adjustment of Microdata Using the Minimum Information Loss Principle. Department of Economics and Social Sciences discussion paper 8",
+            "title": "The Adjustment of Microdata Using the Minimum Information Loss Principle. Department of Economics and Social Sciences discussion paper 8",
+            "type": "report"
+        },
+        {
+            "articleTitle": "De Facto Anonymised Microdata File on Income Tax Statistics 1998",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Merz, Joachim",
+                        "preferred": "Joachim Merz"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Vorgrimler, Daniel",
+                        "preferred": "Daniel Vorgrimler"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Markus, Markus",
+                        "preferred": "Markus Markus"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2006",
+            "id": "bib11",
+            "journal": "Schmollers Jahrbuch",
+            "pages": {
+                "first": "313",
+                "last": "327",
+                "range": "313\u2013327"
+            },
+            "type": "journal",
+            "volume": "126"
+        },
+        {
+            "articleTitle": "FiFoSIM - An integrated Tax Benefit Microsimulation and CGE Model",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Peichl, Andreas",
+                        "preferred": "Andreas Peichl"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Schaefer, Thilo",
+                        "preferred": "Thilo Schaefer"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2009",
+            "id": "bib12",
+            "journal": "International Journal of Microsimulation",
+            "pages": {
+                "first": "1",
+                "last": "15",
+                "range": "1\u201315"
+            },
+            "type": "journal",
+            "volume": "2"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Quinke, Hermann",
+                        "preferred": "Hermann Quinke"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2001",
+            "details": "Erneuerung der Stichprobe des ESt-Modells des Bundesministeriums der Finanzen auf Basis der Lohn- und Einkommensteuerstatistik 1995, Sankt Augustin",
+            "id": "bib13",
+            "title": "Erneuerung der Stichprobe des ESt-Modells des Bundesministeriums der Finanzen auf Basis der Lohn- und Einkommensteuerstatistik 1995",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Schwabbacher, Wolfram",
+                        "preferred": "Wolfram Schwabbacher"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Dittrich, Stefan",
+                        "preferred": "Stefan Dittrich"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Henry, Mailahn",
+                        "preferred": "Mailahn Henry"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2011",
+            "details": "1043\u20131054, Politikberatung durch Mikrosimulationen \u2013 Berechnungen f\u00fcr die Gemeindefinanzkommission, Wirtschaft und Statistik, 11/2011",
+            "id": "bib14",
+            "title": "Politikberatung durch Mikrosimulationen \u2013 Berechnungen f\u00fcr die Gemeindefinanzkommission, Wirtschaft und Statistik",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Wagenhals, Gerhard",
+                        "preferred": "Gerhard Wagenhals"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2004",
+            "details": "55\u201374, Tax-benefit microsimulation models for Germany: A survey. IAW-Report, 32",
+            "id": "bib15",
+            "title": "Tax-benefit microsimulation models for Germany: A survey. IAW-Report",
+            "type": "unknown"
+        },
+        {
+            "articleTitle": "The German Socio-economic panel study (SOEP) \u2013 Scope, Evolution and Enhancements",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Wagner, Gert",
+                        "preferred": "Gert Wagner"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Frick, Joachim",
+                        "preferred": "Joachim Frick"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "J\u00fcrgen, Schupp",
+                        "preferred": "Schupp J\u00fcrgen"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2007",
+            "id": "bib16",
+            "journal": "Schmollers Jahrbuch",
+            "pages": {
+                "first": "139",
+                "last": "169",
+                "range": "139\u2013169"
+            },
+            "type": "journal",
+            "volume": "127"
+        }
+    ],
+    "acknowledgements": [
+        {
+            "text": "Paper presented at the Third General Conference of the International Microsimulation Association in Stockholm 2011. The authors would like to thank the seminar participants for their comments. They would also like to thank Hermann Quinke, Feras Nassaj, Martin Teuber, Gijs Dekkers and an anonymous referee for further comments and suggestions. Remaining errors are the authors\u2019 sole responsibility.",
+            "type": "paragraph"
+        }
+    ],
+    "-meta": {
+        "patched": true
+    },
+    "stage": "published"
+}

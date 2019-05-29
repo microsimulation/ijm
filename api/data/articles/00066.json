@@ -1,0 +1,2334 @@
+{
+    "status": "vor",
+    "id": "00066",
+    "version": 1,
+    "type": "research-article",
+    "doi": "10.34196/ijm.00066",
+    "authorLine": "Sabine Zinn",
+    "title": "A mate-matching algorithm for continuous-time microsimulation models",
+    "published": "2012-06-30T00:00:00Z",
+    "versionDate": "2012-06-30T00:00:00Z",
+    "statusDate": "2012-06-30T00:00:00Z",
+    "volume": 5,
+    "issue": 1,
+    "elocationId": "n/a",
+    "pdf": "http://web:8082/00066/ijm-00066.pdf",
+    "subjects": [
+        {
+            "id": "methodology",
+            "name": "Methodology"
+        }
+    ],
+    "abstract": {
+        "content": [
+            {
+                "text": "The timing of partnership formation in closed continuous-time microsimulation models poses difficulties due to the continuous time scale. in this paper the problem is resolved by the concept of a partnership market, which individuals can enter and leave at any point in time over the complete simulation time range. Each individual, who looks for a spouse, remains in the market for a specific period during which searching and matching is performed. To build up synthetic couples, the model imitates a decision making-process. The decision to enter a partnership depends on empirically estimated logit models for the probability that a given woman and a given man will get together, and also on an individual aspiration level regarding a potential partner. A couple is formed if a positive decision has been made and the timing of the partnership formation is consistent with the individual searching periods of the prospective spouses. The algorithm is illustrated by an example in which simulations are run to project a synthetic population, similar to the population of the Netherlands, by using an extended version of the microsimulation tool of the MicMac project.",
+                "type": "paragraph"
+            }
+        ]
+    },
+    "copyright": {
+        "license": "CC-BY-4.0",
+        "holder": "Zinn",
+        "statement": "This article is distributed under the terms of the <a href=\"http://creativecommons.org/licenses/by/4.0/\">Creative Commons Attribution License</a>, which permits unrestricted use and redistribution provided that the original author and source are credited."
+    },
+    "authors": [
+        {
+            "affiliations": [
+                {
+                    "address": {
+                        "components": {
+                            "country": "Germany"
+                        },
+                        "formatted": [
+                            "Germany"
+                        ]
+                    },
+                    "name": [
+                        "Max Planck Institute for Demographic Research"
+                    ]
+                }
+            ],
+            "emailAddresses": [
+                "sabine.zinn@uni-bamberg.de"
+            ],
+            "name": {
+                "index": "Zinn, Sabine",
+                "preferred": "Sabine Zinn"
+            },
+            "type": "person"
+        }
+    ],
+    "keywords": [
+        "mate-matching algorithm",
+        "closed mating model",
+        "continuous-time microsimulation",
+        "compatibility index"
+    ],
+    "body": [
+        {
+            "content": [
+                {
+                    "text": "To realistically model individual behaviour, the effect of inter-individual interaction has to be addressed. That is, a realistic description of life-course dynamics necessitates the consideration of \u201clinked lives\u201d (<a href=\"#bib11\">Elder et al., 2004</a>; <a href=\"#bib20\">Huinink and Feldhaus, 2009</a>). People cohabit or marry, have children and live in families, and this environment has an impact on their demographic behaviour. it implies that some individual demographic events require that other individuals are linked to a person, and that the relationship between linked individuals may modify their future behaviour, i.e., the behavioural model describing their life courses. For example, in the majority of cases, the decision to have children depends not only on the woman, but also on the potential father and, presumably, additionally on the social network of each (<a href=\"#bib2\">Bernardi, 2003</a>). In a microsimulation, life course events are commonly determined based on empirical distribution functions that rely on data reported for single persons. Individual interaction patterns, like partnership relations and kinship, are often neglected in this context (<a href=\"#bib32\">Ruggles, 1993</a>). This paper investigates one particular problem that arises when including linked lives into a continuous-time microsimulation model: it addresses the onset of partnership (cohabitation or marriage) and the matching of proper mates in continuous time.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "As a social science application, microsimulation can be described as an approach that models the dynamics of a system, population, society or economy by modelling the behaviour of its micro-units (typically individuals or single households). The central unit of a demographic microsimulation model is the individual life course, which is characterized by a sequence of demographic events such as birth, marriage, childbirth, divorce, retirement, and death, and the time spans between these events.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "In demographic microsimulations, life courses usually evolve along two time scales: individual age and calendar time. A possible third time scale is the time that an individual has already spent in his/her current demographic state, e.g., the time that has elapsed since the individual\u2019s wedding. All time scales can either be discrete (usually in units of years) or continuous (<a href=\"#bib40\">Wolf, 2001</a>; <a href=\"#bib14\">Galler, 1997</a>). In discrete-time models, time advances in discrete steps (commonly in years or months), i.e., the time axis is discretized. At each step, individual attributes and behaviour are updated. In contrast, a continuous-time microsimulation model features a continuous time scale along which events occur, i.e., an event can occur at any instant in time. Generally, for a precise description of population dynamics, continuous-time models are the optimal theoretical choice as a continuous approach most closely mirrors life course development (<a href=\"#bib39\">Willekens, 2009</a>). Furthermore, compared to a discrete-time microsimulation, the processing of a continuoustime microsimulation can be very efficient (<a href=\"#bib33\">Satyabudhi &amp; Onggo, 2008</a>; <a href=\"#bib37\">van Imhoff &amp; Post, 1998</a>). This is because, in a continuous-time microsimulation, individual attributes are only updated when an event occurs. However, continuous-time microsimulations pose some problems when forming relationships that discrete-time models can avoid (<a href=\"#bib37\">van Imhoff &amp; Post, 1998</a>). In discrete-time models, it is convenient to construct mating pools at equidistant time points, e.g., for every year. During simulation, individuals enter these mating pools and undergo mate-matching. In continuous-time models, events occur at exact time points and, in practice, individuals will never experience partnership events at the same time. Therefore, a pool of potential partners cannot as easily be constructed as in discrete time models.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Nevertheless, a common way to establish partnership markets in continuous-time models is to use open mating models. In this class of models, spouses are created as new individuals when needed, rather than selected from already existing members of the population. The main problem of open mating models is their interpretation: it is not realistic to pull an appropriate spouse \u201cout of the hat\u201d when needed. A more realistic way to model mating instead is to use a closed mating model. Here, appropriate spouses are identified from the current members of a population. To ensure that a closed mating model resembles observed mating patterns, it has to be applied to a large enough share of an entire population. Up to now, closed mating models have only been used in the context of discrete-time microsimulation. A reason might be that in continuous-time models the probability that two events will happen at exactly the same time point is zero and thus practically individuals will never experience partnership events at the same time. As a consequence, in a continuous-time model, a pool of potential partners is hard to identify.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "In this paper it is proposed to determine a pool of potential partners by establishing a partnership market which individuals can enter and leave at any point in time during the simulation. As soon as an individual starts to look for a spouse, he/she becomes part of the market and stays there until mate-matching is finished. To match individuals, an algorithm is needed to determine appropriate partners: Who should be linked to whom? Humans mate assortatively (<a href=\"#bib4\">Blossfeld &amp; Timm, 2003</a>; <a href=\"#bib22\">Kalmijn, 1998</a>); that is, partners are not chosen randomly but are selected according to preferences. Typically, spouses are similar with respect to certain attributes, and synthetic couples should reflect this habit. Accordingly, a two-fold approach is suggested to build up synthetic couples: First, to each individual a random value is assigned that captures his/her aspiration level regarding a partner. An empirical likelihood equation reveals the probability that a given woman and a given man form a couple. Subsequently, a decision-making process is simulated as to whether two individuals mate, applying individuals' aspiration levels and their matching probability.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The rest of the paper is structured as follows. <a href=\"#s2\">Section 2</a> is a brief review of mate-matching algorithms already proposed for microsimulations. Here special focus is put on ideas and techniques that are useful for conducting mate-matching in continuous-time models. <a href=\"#s3\">Section 3</a> describes a novel mate-matching procedure for continuous-time microsimulation and a critical evaluation of its capabilities. The approach is illustrated by running a microsimulation for a synthetic population reflecting characteristics of the Netherlands population. Results are given in <a href=\"#s4\">Section 4</a>. The paper concludes by validating the new procedure and by providing an outlook to future work.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s1",
+            "title": "1. Introduction",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "Commonly, in microsimulation models two approaches are used to match individuals for partnerships: open mating models and closed mating models. In open models, appropriate spouses are created anew, when needed, while in closed models, partners are identified among already existing individuals. As the interpretation of an open model is difficult, here a decision is made for the usage of a closed mating model.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "In a closed model, partners for marriage and consensual union have to be found among existing individuals. Besides the time when couples are formed, the following issues have to be addressed:",
+                    "type": "paragraph"
+                },
+                {
+                    "items": [
+                        [
+                            {
+                                "text": "How can one determine which individuals are in the (mating) pool or pool of eligible partners?",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "Who matches whom?",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "What are the mating rules?",
+                                "type": "paragraph"
+                            }
+                        ]
+                    ],
+                    "prefix": "bullet",
+                    "type": "list"
+                },
+                {
+                    "text": "All previous closed mating models were realized in discrete-time microsimulation models, so this review is restricted to discrete-time models. The idea is to inspect existing closed mating models to whether they can be adopted to also work in continuous time. In discrete-time models, assigning individuals to a mating pool proceeds generally as follows: In a discrete-time microsimulation model, time changes in discrete steps. After each step, all individuals of the model population are inspected as to whether they will experience an event during the next interval and, if so, which event this will be. In case an individual is scheduled to experience the onset of a partnership, he/she is marked as searching for a spouse. At each time step, after every member of the population has been inspected, all searching individuals are collected in a partnership market. That is, \u201ca partnership market\u201d is a construct used to pool all those individuals who are looking for a spouse. As a partnership market allows collecting all eligible partners, its construction in any case is deemed useful also in a continuous-time setting.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Generally, to build synthetic couples of the individuals pooled in the partnership market, two main problems have to be solved: Who mates whom? and what data are needed to construct couples that resemble actual/observed ones? Both questions concern the mating rules that are applied to match individuals. Generally, two types of mating rules can be found in microsimulation models: stable and stochastic (<a href=\"#bib30\">Perese, 2002</a>). Stable mating rules aim at producing a set of stable matings (see also the \u201cstable marriage problem\u201d in <a href=\"#bib13\">Gale and Shapley (1962)</a>). Stochastic mating rules use stochastic experiments to decide on the success of potential pairings. All mating rules make use of a compatibility measure to determine the quality of a match. The pros and cons of stable mating rules have been discussed extensively by <a href=\"#bib5\">Bouffard et al. (2001)</a> and <a href=\"#bib26\">Leblanc et al. (2009)</a>; in summary, they find that stable mating rules produce too many \u201cextreme\u201d pairings, such as couples with extreme age differences. Stochastic mating rules are an option to overcome this problem.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "This review is restricted to stochastic mating rules. First compatibility measures are discussed, and then stochastic mating rules are described.",
+                    "type": "paragraph"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "A compatibility measure transforms female and male attributes into a numeric index which quantifies how compatible a woman and a man are. Commonly, values between zero and one are used to express compatibility, with a large value indicating high compatibility. Likewise, a small value points to incompatibility.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Some notation:",
+                            "type": "paragraph"
+                        },
+                        {
+                            "items": [
+                                [
+                                    {
+                                        "text": "At some point in time the partnership market comprises <i>m</i> women and <i>n</i> men",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "The female attributes are denoted by <i>w<sub>i</sub>, i</i> = 1, \u2026, <i>m</i>, and the male attributes by <i>m<sub>j</sub>, j</i> = 1, \u2026, <i>n</i>,. Typically, such attributes can be represented by a vector, and the different components of <i>w<sub>i</sub></i> and <i>m<sub>j</sub></i>, respectively, quantify characteristics such as age, educational attainment, etc.",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "The set <i>F</i> comprises all <i>w<sub>i</sub></i> and the set <i>M</i> all <i>m<sub>j</sub></i>.",
+                                        "type": "paragraph"
+                                    }
+                                ]
+                            ],
+                            "prefix": "bullet",
+                            "type": "list"
+                        },
+                        {
+                            "text": "The compatibility measure <i>C</i> is defined as the following mapping",
+                            "type": "paragraph"
+                        },
+                        {
+                            "id": "ueqn1",
+                            "label": "(1)",
+                            "mathml": "<math><mtable columnalign=\"left\"><mtr><mtd><mi>C</mi><mo>:</mo><mi>F</mi><mo>\u00d7</mo><mi>M</mi></mtd><mtd><mo>\u2192</mo></mtd><mtd columnalign=\"left\"><mo stretchy=\"false\">[</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo stretchy=\"false\">]</mo></mtd></mtr><mtr><mtd><mo stretchy=\"false\">(</mo><msub><mi>w</mi><mi>i</mi></msub><mo>,</mo><msub><mi>m</mi><mi>j</mi></msub><mo stretchy=\"false\">)</mo></mtd><mtd><mo>\u2192</mo></mtd><mtd columnalign=\"left\"><mi>C</mi><mo stretchy=\"false\">(</mo><msub><mi>w</mi><mi>i</mi></msub><mo>,</mo><msub><mi>m</mi><mi>j</mi></msub><mo stretchy=\"false\">)</mo><mo>=</mo><msub><mi>c</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub></mtd></mtr></mtable></math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "If <i>C</i>(<i>w<sub>i</sub>, m<sub>j</sub></i>) &gt; <i>C</i>(<i>w<sub>k</sub>, m<sub>j</sub></i>) for two females <i>i</i> and <i>k</i> and the same male <i>j</i>, then the pairing of <i>i</i> and <i>j</i> shows a better agreement than the pairing of <i>k</i> and <i>j</i>. Commonly, the elements of <i>w<sub>i</sub></i> and <i>m<sub>j</sub></i> only give age and educational attainment of males and females. <a href=\"#bib1\">Bacon and Pennec (2007)</a> provide an extensive review of attributes employed in mating models.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Two different specifications of <i>C</i> are typically used: distance functions and the likelihood of a union between potential pairings. Distance functions measure the discrepancy in the attributes of spouses; for example the following exponential distance function (<a href=\"#bib30\">Perese, 2002</a>):",
+                            "type": "paragraph"
+                        },
+                        {
+                            "id": "ueqn2",
+                            "label": "(2)",
+                            "mathml": "<math><mrow><mi>C</mi><mo stretchy=\"false\">(</mo><msub><mi>w</mi><mi>i</mi></msub><mo>,</mo><msub><mi>m</mi><mi>j</mi></msub><mo stretchy=\"false\">)</mo><mtext>\u2009</mtext><mo>=</mo><mtext>\u2009</mtext><mtext>exp</mtext><mo stretchy=\"false\">(</mo><mo>\u2212</mo><mn>0.5</mn><msqrt><mrow><msup><mrow><mrow><mo>(</mo><mrow><msub><mi>a</mi><mi>j</mi></msub><mo>\u2212</mo><msub><mi>a</mi><mi>i</mi></msub></mrow><mo>)</mo></mrow></mrow><mn>2</mn></msup><mo>+</mo><msup><mrow><mrow><mo>(</mo><mrow><msub><mi>e</mi><mi>j</mi></msub><mo>\u2212</mo><msub><mi>e</mi><mi>i</mi></msub></mrow><mo>)</mo></mrow></mrow><mn>2</mn></msup></mrow></msqrt><mo stretchy=\"false\">)</mo><mo>,</mo></mrow></math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "where <i>a<sub>i</sub></i> and <i>e<sub>i</sub></i> indicate the age and the educational level of a woman <i>i</i>, and <i>a<sub>j</sub></i> and <i>e<sub>j</sub></i> the respective values of a man <i>j</i>. Using distance functions to measure compatibilities is not unproblematic. The main problem is that distance functions quantify the quality of a pairing in a very simplistic way, for example, not considering possible effects of individual attributes measured as a nominal scale, like race. A more realistic way to determine the quality of a pairing is to use the empirical likelihood of a pairing.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The likelihood of a union between potential pairs can be quantified by logit models (<a href=\"#bib30\">Perese, 2002</a>; <a href=\"#bib5\">Bouffard et al., 2001</a>). The model predicts the probability that two individuals, each with given attributes, form a partnership. Data on observed couples are used to estimate the coefficients of these models. According to the theory of assortative mating, partners tend to have similar ages and similar levels of education (<a href=\"#bib22\">Kalmijn, 1998</a>). Therefore, ideally, the estimated coefficients are in accordance with the theory of assortative mating (<a href=\"#bib5\">Bouffard et al., 2001</a>; <a href=\"#bib26\">Leblanc et al., 2009</a>). In order to account for different types of partnerships (cohabitations and marriages) and to differentiate between first and higher order partnerships, typically more than one logit model is applied.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s2-1",
+                    "title": "2.1 Compatibility measure",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "In a stochastic mating model, the compatibility measure between a woman and a man determines the probability of a respective match, and the outcome of a stochastic experiment determines whether a match between two potential spouses occurs. A stochastic matching procedure ensures that individuals with a low compatibility also have a chance to get matched. With regard to their compatibility, constructed couples are thus not necessarily optimal ones. As a result, the occurrence of \u201cextreme\u201d matchings is less likely, which is a big advantage over stable mating rules.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "In microsimulation models, basically, three variants of stochastic mating are applied, depending on whether and which sex dominates the choice of spouses (male-, female- or mixed-dominant algorithms). In male-dominant mate-matching algorithms, men choose their spouses from a list of eligible women (of fixed or random length) in accordance with their compatibility (see e.g., <a href=\"#bib30\">Perese (2002)</a>). In a female-dominant mate-matching algorithm, the roles of women and men are simply reversed: Women choose from a list of potential spouses (see e.g., <a href=\"#bib17\">Hammel et al. (1976</a>, ch. 9) and <a href=\"#bib24\">Kelly (2003)</a>). In a mixed-dominant mate-matching procedure, both sexes are treated equally. Here two variants can be distinguished: In the first variant, from the partnership market an individual is randomly selected to look for a spouse. This individual then randomly chooses his/her actual spouse from the opposite-sex candidates with the highest compatibility (<a href=\"#bib38\">Wachter, 1995</a>). In contrast, in the second variant, initially the compatibility measure between all potential pairings is determined, and then couples are constructed. The latter variant goes back to the work of Vink and Easther (<a href=\"#bib5\">Bouffard et al., 2001</a>).",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "<a href=\"#fig1\">Figure 1</a> shows the presented classification of mating models and mate-matching algorithms designed for microsimulation models.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "In conclusion, the following findings can be summarized:",
+                            "type": "paragraph"
+                        },
+                        {
+                            "items": [
+                                [
+                                    {
+                                        "text": "Closed models are easier to interpret than open models, and they enable us to study the effects of mating processes on the population composition.",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "The construction of a partnership market allows us to collect all eligible partners.",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "To measure the compatibility between two persons, computing the likelihood of a potential pairing is more appropriate than using a distance function.",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "Stochastic mate-matching procedures resemble actual data better than stable mating procedures, but the outcome of a stochastic mate-matching algorithm is not significantly affected by the chosen variant (male-, female-, or mixed-dominant).",
+                                        "type": "paragraph"
+                                    }
+                                ]
+                            ],
+                            "prefix": "bullet",
+                            "type": "list"
+                        },
+                        {
+                            "text": "Accordingly, the present mate-matching algorithm uses a closed model that embodies a mixed-dominant, stochastic, mate-matching procedure. The details of the approach are described in <a href=\"#s3\">Section 3</a>.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "fig1",
+                                    "image": {
+                                        "alt": "",
+                                        "uri": "%iiif_uri%/00066%2Fijm-00066-fig1.tif",
+                                        "size": {
+                                            "width": 1312,
+                                            "height": 875
+                                        },
+                                        "source": {
+                                            "mediaType": "image/jpeg",
+                                            "uri": "%iiif_uri%/00066%2Fijm-00066-fig1.tif/full/full/0/default.jpg",
+                                            "filename": "ijm-00066-fig1.jpg"
+                                        }
+                                    },
+                                    "label": "Figure 1",
+                                    "title": "Classification of mating models and mate-matching algorithms for microsimulation.",
+                                    "type": "image"
+                                }
+                            ],
+                            "type": "figure"
+                        }
+                    ],
+                    "id": "s2-2",
+                    "title": "2.2 Stochastic mating rules",
+                    "type": "section"
+                }
+            ],
+            "id": "s2",
+            "title": "2. Review of mating models for microsimulation",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "In continuous-time models the probability that two events will happen at exactly the same time point is zero and, in practice, individuals will never experience partnership events at the same time. Due to this design, a pool of potential partners is hard to identify. A way to approach this problem is to include in the mate-matching algorithm the scheduling of events and the construction of a partnership market that individuals can enter or leave over the complete simulation time range. The processing of the present mate-matching procedure can be summarized as follows:",
+                    "type": "paragraph"
+                },
+                {
+                    "items": [
+                        [
+                            {
+                                "text": "individuals enter the partnership market,",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "potential couples are built and tested for conformance,",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "if a potential couple is compatible concerning its partnership formation time and concerning its characteristics it is realized.",
+                                "type": "paragraph"
+                            }
+                        ]
+                    ],
+                    "prefix": "roman-lower",
+                    "type": "list"
+                },
+                {
+                    "text": "The whole approach is now described at length, considering cohabitation and marriage as two separate types of partnership.",
+                    "type": "paragraph"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "In a continuous-time microsimulation, empirical waiting times (derivable from empirical rates) determine the occurrence and timing of events. That is, life courses can be constructed as sequences of waiting times to next events (<a href=\"#bib15\">Gampe &amp; Zinn, 2007</a>). As a direct consequence, partnership formation times are already known in advance. This knowledge is used when constructing a partnership market for a continuous-time microsimulation: an individual is determined to enter the partnership market at the moment when the waiting time to a partnership formation event starts. That is, as soon as a marriage or cohabitation event has been simulated, an individual joins this market. To be able to explain this circumstance better, consider the following example: Simulation starts at time <i>t<sub>s</sub></i> when a woman is <i>a</i><sub>0</sub> years old. She has never been married and is childless at this time. Conditional on her current state, her age, and the current calendar time, a waiting time of <i>w</i> = 3.6 years to a marriage event is simulated. The woman enters the market at time <i>t<sub>s</sub></i> and her waiting time to marriage is <i>w</i> = 3.6 <i>years</i>.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s3-1",
+                    "title": "3.1 Entering the partnership market",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "A partnership (marriage or cohabitation) has to have a clearly defined formation time, i.e., a joint mating time of two spouses. However, as already mentioned, in a continuous-time model the probability of a concurrent event is zero. As a consequence, two individuals will never have identical mating times. An option to nevertheless conduct mate-matching is to slightly adjust mating times computed by the microsimulation model to obtain joint mating times. An example helps illustrating the respective procedure: A woman <i>I</i><sub>1</sub> experiences the onset of a partnership at time <i>t</i><sub>1</sub>, and a man at <i>I</i><sub>2</sub> time <i>t</i><sub>2</sub>. Without loss of generality, it is assumed <i>t</i><sub>2</sub> &lt; <i>t</i><sub>1</sub>. One way to compute a formation time <math><mover accent=\"true\"><mi>t</mi><mo>\u02dc</mo></mover></math> of a partnership between <i>I</i><sub>1</sub> and <i>I</i><sub>2</sub> is <math><mrow><mover accent=\"true\"><mi>t</mi><mo>\u02dc</mo></mover><mo>=</mo><msub><mi>t</mi><mn>2</mn></msub><mo>+</mo><mi>c</mi><mo stretchy=\"false\">(</mo><msub><mi>t</mi><mn>1</mn></msub><mo>\u2212</mo><msub><mi>t</mi><mn>2</mn></msub><mo stretchy=\"false\">)</mo></mrow></math>, <i>c</i> \u2208 [0,1]. Then, instead of <i>t</i><sub>1</sub> and <i>t</i><sub>2</sub>, for both <i>I</i><sub>1</sub> and <i>I</i><sub>2</sub> the adjusted <math><mover accent=\"true\"><mi>t</mi><mo>\u02dc</mo></mover></math> is used as starting time of a partnership. The new partnership formation time <math><mover accent=\"true\"><mi>t</mi><mo>\u02dc</mo></mover></math> is located between <i>t</i><sub>1</sub> and <i>t</i><sub>2</sub>. Whether <math><mover accent=\"true\"><mi>t</mi><mo>\u02dc</mo></mover></math> is closer to <i>t</i><sub>1</sub> or to <i>t</i><sub>2</sub> is determined by the parameter <i>c</i>. A setting of <i>c</i> = 0.5 results in the mean of <i>t</i><sub>1</sub> and <i>t</i><sub>2</sub>. Changing simulated event times this way means changing the outcome of the microsimulation model. For example, if it is assumed that for <i>I</i><sub>1</sub> a marriage event has been simulated to happen at January 10, 2014 (<i>t</i><sub>1</sub>) and for <i>I</i><sub>2</sub> a marriage event has been simulated to happen at January 1, 2012 (<i>t</i><sub>2</sub>), then with <i>c</i> = 0.5 their new joint partnership formation time (<math><mover accent=\"true\"><mi>t</mi><mo>\u02dc</mo></mover></math>) would be January 4, 2013. Using January 4, 2013, however, as wedding date means shifting the originally simulated wedding times for more than one year.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "caption": [
+                                        {
+                                            "text": "Hence, they can be considered as potential spouses. Their formation time would be <math><mrow><mover accent=\"true\"><mi>t</mi><mo>\u02dc</mo></mover><mo>=</mo><mn>0.5</mn><mtext>\u2009</mtext><mo stretchy=\"false\">(</mo><msub><mi>t</mi><mn>1</mn></msub><mo>+</mo><msub><mi>t</mi><mn>2</mn></msub><mo stretchy=\"false\">)</mo></mrow></math> if they were actually linked in the mate-matching algorithm.",
+                                            "type": "paragraph"
+                                        }
+                                    ],
+                                    "id": "fig2",
+                                    "image": {
+                                        "alt": "",
+                                        "uri": "%iiif_uri%/00066%2Fijm-00066-fig2.tif",
+                                        "size": {
+                                            "width": 1635,
+                                            "height": 1293
+                                        },
+                                        "source": {
+                                            "mediaType": "image/jpeg",
+                                            "uri": "%iiif_uri%/00066%2Fijm-00066-fig2.tif/full/full/0/default.jpg",
+                                            "filename": "ijm-00066-fig2.jpg"
+                                        }
+                                    },
+                                    "label": "Figure 2",
+                                    "title": "Woman <i>I</i><sub>1</sub> experiences a marriage event at time <i>t</i><sub>1</sub>. Man <i>I</i><sub>2</sub> experiences a marriage event at time <i>t</i><sub>2</sub>. As <i>t</i><sub>1</sub> \u2208 [<i>t</i><sub>2</sub> \u2212 0.5 <i>years</i>, <i>t</i><sub>2</sub> + 0.5 <i>years</i>] and <i>t</i><sub>2</sub> \u2208 [<i>t</i><sub>1</sub> \u2212 0.5 <i>years</i>, <i>t</i><sub>1</sub> + 0.5 <i>years</i>] both individuals have overlapping searching periods and might meet during the mating process.",
+                                    "type": "image"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "text": "Therefore, to avoid significant change and bias to the outcome of the microsimulation model, it has to be assured that <i>t</i><sub>1</sub> \u2212 <i>t</i><sub>2</sub> is small. Accordingly, <i>I</i><sub>1</sub> and <i>I</i><sub>2</sub> can only be regarded as potential spouses if their simulated times <i>t</i><sub>1</sub> and <i>t</i><sub>2</sub> are close enough. Here, <i>t</i><sub>1</sub> and <i>t</i><sub>2</sub> are defined as close enough, if <i>t</i><sub>1</sub> \u2208 \u250c<sub>2</sub> and <i>t</i><sub>2</sub> \u2208 \u250c<sub>1</sub>, where",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "\u250c<sub>1</sub> = [min(<i>t<sub>s</sub></i>,<i>u</i><sub>1</sub>,<i>t</i><sub>1</sub> \u2212 <i>B</i>), max(<i>t</i><sub>1</sub> + <i>B,t<sub>E</sub></i>)] and",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "\u250c<sub>2</sub> = [min(<i>t<sub>s</sub></i>,<i>u</i><sub>2</sub>,<i>t</i><sub>2</sub> \u2212 <i>B</i>), max(<i>t</i><sub>2</sub> + <i>B,t<sub>E</sub></i>)].",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "<i>t<sub>S</sub></i> is the simulation start time, <i>t<sub>E</sub></i> the simulation stop time, and <i>u<sub>i</sub></i> is the time of the event that <i>I<sub>i</sub></i> has experienced previous to the upcoming partnership formation event, <i>i</i> = 1,2. <i>B</i> is an arbitrary time period, but which is commonly shorter than one year. \u250c<sub><i>i</i></sub> is called the \u201csearching period\u201d of <i>I<sub>i</sub></i>.<a href=\"#fn2\"><sup>2</sup></a> \u250c<sub><i>i</i></sub> starts soonest with <i>I<sub>i</sub></i>\u2019s entry into the partnership market. For consistency, at the earliest, the searching period starts at simulation start time and, at the latest, ends at simulation end time.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "With respect to this definition, only individuals can meet if their searching periods overlap. Subsequently, it is <i>B</i> = 0.5 <i>years</i> and <i>c</i> = 0.5. The latter results in <math><mrow><mover accent=\"true\"><mi>t</mi><mo>\u02dc</mo></mover><mo>=</mo><mn>0.5</mn><mtext>\u2009</mtext><mo stretchy=\"false\">(</mo><msub><mi>t</mi><mn>1</mn></msub><mo>+</mo><msub><mi>t</mi><mn>2</mn></msub><mo stretchy=\"false\">)</mo></mrow></math>. <a href=\"#fig2\">Figure 2</a> illustrates the adjustment of event times using an example. <a href=\"#s4-2\">Section 4.2</a> deals with how shifting events in the suggested way changes the output of the stochastic microsimulation model.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s3-2",
+                    "title": "3.2 Scheduling of partnership events",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "Even if the searching periods of mating willing individuals overlap, their characteristics might not match. Therefore, besides event times, individual characteristics also have to be checked for conformance. For this purpose, a compatibility measure is used such as introduced in <a href=\"#s2-1\">Section 2.1</a>. As distance functions measure the quality of pairings very simplistically, logit models are employed to evaluate how well the characteristics of potential spouses agree. Which covariates will enter the logit models depends on the state space of the actual application. In this paper a generic microsimulation model is assumed; i.e., the state space is not fixed. Only individual age and sex are mandatory attributes. Depending on the problem to be studied, different relevant demographic states will be considered. Obviously, only those covariates can be included in the logit models that are in the state space. If, for example, educational attainment, children ever born, or ethnicity are included in the state space, these attributes are natural candidates for covariates in the logit models. For a pair of individuals, the compatibility measure gives, conditioned on the considered attributes, the probability of a union.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s3-3",
+                    "title": "3.3 Compatibility and individual characteristics",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "The partnership market is implemented using a so-called marriage queue <i>M</i>. The marriage queue consists of all unpaired individuals who are looking for a partner (because of a simulated partnership event). Each individual in the queue is equipped with a stamp that indicates the time of the upcoming partnership event.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "When determining how many potential partners an individual can meet, individuals have constraints on the social network size they can perceive. Humans are thought to be limited to social networks with approximately 150 members (<a href=\"#bib19\">Hill &amp; Dunbar, 2003</a>). Considering this fact, for each individual the maximal number of potential spouses is restricted. An upper bound is set that follows a normal distribution with expectation <i>\u03bc</i> = 120 and standard deviation <i>\u03c3</i> = 30.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Furthermore, to each individual a random value is assigned that captures his/her aspiration level regarding a partner. This aspiration level takes values between 0 and 1. If the compatibility measure between an individual and a potential spouse exceeds the aspiration level, he/she accepts the pairing. Thus mate-seekers are satisficing (<a href=\"#bib34\">Simon, 1990</a>): different candidates are inspected until one is found that \u201cmeets the expectation\". In the proposed algorithm, individuals reduce their aspiration level by <i>\u03b4<sub>A</sub></i>,<i>\u03b4<sub>A</sub></i> \u2208 [0,1], every time they are involved in an unsuccessful encounter. This way their chance to find a mate the next time is increased. The reduction of the aspiration level with each rejection corresponds to a strategy proposed by <a href=\"#bib3\">Billari (2000)</a> and <a href=\"#bib35\">Todd et al. (2005)</a>. They suggest using individual aspiration-based heuristics to model human mate-choice processes. The basic idea is that if the traits of a potential spouse meet or exceed an individual\u2019s aspiration level, a partnership is formed. Aspiration levels are adjusted according to offers and rejections received by others. Here this approach is adapted by reducing the aspiration levels of individuals who date but reject each other.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The individual aspiration levels are assumed to follow a beta distribution. Based on the theory of initial parental investment, women are assumed to be \u201cchoosier\u201d than men concerning their partners (<a href=\"#bib36\">Trivers, 1972</a>; <a href=\"#bib6\">Buss, 2006</a>). However, the degree of \u201cchoosiness\u201d of females and males varies with age. Women tend to decrease their requirements with declining fecundity. When they are in their early thirties, they are less demanding than at younger ages. For single women older than 35, the \u201cticking of the biological clock\u201d even leads to a considerably increased effort to date men (<a href=\"#bib29\">Pawlowskia &amp; Dunbar, 1999</a>). While after age 40, women tend to be more \u201cchoosy\u201d again (<a href=\"#bib12\">French &amp; Kus, 2008</a>). Although socio-economic factors play a role in this context, too, only the age trajectory is considered here. Men, however, behave differently. When they are young, men are more involved in short-term relationships, and therefore are more interested in the number of sexual partners, not so much in the quality of a relationship (<a href=\"#bib6\">Buss, 2006</a>). As a consequence, they are less selective concerning the traits of a partner. However, when men start to look for long-term relationships, willing to establish a family and to invest in offspring, their behavior changes, and their level of \u201cchoosiness\u201d increases. In this approach, 30 is selected as the age when men start to intensively look for a long-term spouse. To account for the variability in the degree of aspiration, the beta distribution is parameterized accordingly. The parameter values of the beta-distribution are gender-specific and vary with age (see <a href=\"#fig3\">Figure 3</a>).",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "table1",
+                                    "label": "Table 1",
+                                    "tables": [
+                                        "<table>\n<thead>\n<tr>\n<th>Description</th>\n<th>Parameter</th>\n<th>Value</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>Intersection of searching periods</td>\n<td align=\"center\"><i>B</i></td>\n<td align=\"center\">0.5</td>\n</tr>\n<tr>\n<td>Upper bound of number of potential spouses</td>\n<td align=\"center\"><i>N</i></td>\n<td align=\"center\">normally distributed, <i>\u03bc</i> = 120, <i>\u03c3</i> = 30</td>\n</tr>\n<tr>\n<td>Individual aspiration level</td>\n<td align=\"center\"><i>a<sub>i</sub></i></td>\n<td align=\"center\">beta distributed, gender- &amp; age-dependent (cp. <a href=\"#fig3\">Figure 3</a>)</td>\n</tr>\n<tr>\n<td>Decrement of aspiration level in case of rejection</td>\n<td align=\"center\"><i>\u03b4<sub>A</sub></i></td>\n<td align=\"center\">0.1</td>\n</tr>\n<tr>\n<td>Bound for small pool size</td>\n<td align=\"center\"><i>s<sub>p</sub></i></td>\n<td align=\"center\">10</td>\n</tr>\n<tr>\n<td>Decrement of aspiration level in case of small pool size</td>\n<td align=\"center\"><i>\u03b4<sub>B</sub></i></td>\n<td align=\"center\">0.3</td>\n</tr>\n</tbody>\n</table>"
+                                    ],
+                                    "title": "Parameters and suggested parameter values for the present stochastic mate-matching procedure.",
+                                    "type": "table"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "text": "An important aspect is the size of the pool of potential spouses. If it is small, it is not reasonable to assume a very selective seeker. To increase the chance that each individual finds a partner, it is assumed that, if a seeker faces less than <i>s<sub>p</sub></i> potential partners, he/she reduces the aspiration level by <i>\u03b4<sub>B</sub></i>,<i>\u03b4<sub>B</sub></i> \u2208 [0,1] additionally to the reduction <i>\u03b4<sub>A</sub></i> induced by having been rejected.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "All parameter values for the mate-matching procedure are given in <a href=\"#table1\">Table 1</a>. For Western Europe, the chosen parameterization is reasonable as the result of the case study in <a href=\"#s4-2\">Section 4.2</a> will illustrate. Furthermore, a small sensitivity analysis in <a href=\"#s4-2\">Section 4.2</a> supports the feasibility of the chosen parameterization.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "To actually construct synthetic couples, a modified version of the first variant of the mixed-dominant mate-matching procedure that was introduced in <a href=\"#s2-2\">Section 2.2</a> is used. If for an individual <i>I<sub>i</sub></i> an upcoming partnership event has been simulated, i.e., <i>I<sub>i</sub></i> enters the searching phase, the following steps are performed:",
+                            "type": "paragraph"
+                        },
+                        {
+                            "items": [
+                                [
+                                    {
+                                        "text": "The searching period \u250c<i><sub>i</sub></i> of <i>I<sub>i</sub></i> is determined, and his/her level of aspiration <i>a<sub>i</sub></i> is generated.",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "If the marriage queue <i>M</i> is empty (i.e., the partnership market is empty), <i>I<sub>i</sub></i> is inserted into <i>M</i>.",
+                                        "type": "paragraph"
+                                    }
+                                ]
+                            ],
+                            "prefix": "number",
+                            "type": "list"
+                        },
+                        {
+                            "text": "Otherwise",
+                            "type": "paragraph"
+                        },
+                        {
+                            "items": [
+                                [
+                                    {
+                                        "text": "a random number <i>N</i> is drawn, normally distributed with expectation <i>\u03bc</i> and standard deviation <i>\u03c3</i>, to define the size of the social network of <i>I<sub>i</sub></i>. If <i>N</i> is greater than the current number <i>N<sub>M</sub></i> of individuals in the marriage queue, <i>N</i> = <i>N<sub>M</sub></i> is assigned.",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "Randomly, out of <i>M</i>, N individuals are taken whose searching periods overlap \u250c<i><sub>i</sub></i>, and they are inserted into the so-called working marriage queue <i>W</i>.",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "Individuals of the same sex as <i>I<sub>i</sub></i> and individuals who do not meet some minimal criteria are removed from <i>W</i>.",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "If <i>W</i> turns out be empty, <i>I<sub>i</sub></i> is inserted into <i>M</i>.",
+                                        "type": "paragraph"
+                                    }
+                                ]
+                            ],
+                            "prefix": "bullet",
+                            "type": "list"
+                        },
+                        {
+                            "text": "Otherwise (if <i>W</i> is not empty) the following procedure is triggered:",
+                            "type": "paragraph"
+                        },
+                        {
+                            "items": [
+                                [
+                                    {
+                                        "text": "If <i>W</i> contains less than <i>s<sub>p</sub></i> individuals, we reduce the aspiration level of <i>I<sub>i</sub></i> to <i>a<sub>i</sub></i> = max(0, <i>a<sub>i</sub></i> \u2212 <i>\u03b4<sub>B</sub></i>), and",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "<i>j</i> = 1 is initialized.",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "The <i>j</i>th individual <i>I<sub>j</sub></i> is taken of <i>W</i>. The aspiration level of <i>I<sub>j</sub></i> is denoted by <i>a<sub>j</sub></i>. The compatibility measure <i>c<sub>ij</sub></i> = <i>C</i>(<i>w<sub>i</sub></i>, <i>m<sub>j</sub></i>), or <i>c<sub>ij</sub></i> = <i>C</i>(<i>w<sub>j</sub></i>, <i>m<sub>i</sub></i>), respectively, between <i>I<sub>i</sub></i> and <i>I<sub>j</sub></i> is computed. If <i>a<sub>i</sub></i> &lt; <i>c<sub>ij</sub></i> and <i>a<sub>j</sub></i> &lt; <i>c<sub>ij</sub></i>, the individuals <i>I<sub>i</sub></i> and <i>I<sub>j</sub></i> get paired, and <i>I<sub>j</sub></i> is removed from <i>M</i>.",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "Otherwise, the aspiration level of <i>I<sub>i</sub></i> is reduced to <i>a<sub>i</sub></i> = max(0,<i>a<sub>j</sub></i> \u2212 <i>\u03b4<sub>A</sub></i>), the aspiration level of <i>I<sub>j</sub></i> to <i>a<sub>j</sub></i> = max(0,<i>a<sub>j</sub></i> \u2212 <i>\u03b4<sub>A</sub></i>), and <i>j</i> is incremented by 1.",
+                                        "type": "paragraph"
+                                    }
+                                ]
+                            ],
+                            "prefix": "roman-lower",
+                            "type": "list"
+                        },
+                        {
+                            "text": "Steps (iii) and (iv) are repeated until either is paired or all individuals of <i>W</i> have been inspected.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "If no appropriate spouse can be found for <i>I<sub>i</sub></i>, he/she is enqueued into <i>M</i>.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "In other words, if <i>I<sub>i</sub></i> fails to find an appropriate spouse at the first try, he/she joins the marriage queue. Here <i>I<sub>i</sub></i> stays until a new individual enters the market, encounters <i>I<sub>i</sub></i>, and both agree to mate.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The terms \u201cmarriage queue\u201d and \u201cworking marriage queue\u201d as used in the description were introduced by <a href=\"#bib18\">Hammel et al. (1990)</a>. To select individuals from the working marriage queue, the following minimal criteria are used: no incest, no remarriage of previously divorced couples, and no extreme age differences between the spouses.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "fig3",
+                                    "image": {
+                                        "alt": "",
+                                        "uri": "%iiif_uri%/00066%2Fijm-00066-fig3.tif",
+                                        "size": {
+                                            "width": 1847,
+                                            "height": 1537
+                                        },
+                                        "source": {
+                                            "mediaType": "image/jpeg",
+                                            "uri": "%iiif_uri%/00066%2Fijm-00066-fig3.tif/full/full/0/default.jpg",
+                                            "filename": "ijm-00066-fig3.jpg"
+                                        }
+                                    },
+                                    "label": "Figure 3",
+                                    "title": "Densities of the beta distributions that are used to determine aspiration levels regarding partners. The densities vary with gender and age. For females, four different curves are applied: one below age 18, one for ages between 18 and 30, one between ages 30 and 35, and one after age 40. For males, two different curves are applied: one for males younger than 30 and the other after age 30.",
+                                    "type": "image"
+                                }
+                            ],
+                            "type": "figure"
+                        }
+                    ],
+                    "id": "s3-4",
+                    "title": "3.4 Mate-matching procedure",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "In a continuous-time microsimulation, events and waiting times to events are simulated based on empirical rates. Therefore, the computation of the entry of an individual into the searching and mating phase relies on observed behavior. The mate-matching procedure proposed here mimics human mating as a decision process. That is, matches that are created during simulation are the outcome of intended behavior. Consequently, not all individuals who engage a mate search phase during simulation will find a partner. Reasons for this are competition with others or simply a short supply of spouses with compatible characteristics. In other words, the presented mate-matching algorithm does not guarantee that each searching individual (i.e., each individual who is part of the partnership market and therefore an element of the marriage queue) will be paired. Mate-matching fails if an individual is not able to find within his/her searching period a spouse with compatible characteristics. In order to be successful, each seeker has to have access to a rich enough pool of potential spouses. This can only be assured if the model population maps a large proportion of an actual population.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Notwithstanding, if the searching period of a \u201cmating-minded\u201d individual (who should find a partner but did not succeed) expires, three options exist:",
+                            "type": "paragraph"
+                        },
+                        {
+                            "items": [
+                                [
+                                    {
+                                        "text": "Extend the searching period. The individual remains in the partnership market, i.e., in the marriage queue.",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "Return the individual to the model population unpaired. The individual is removed from the marriage queue. He/she is again available to experience a partnership event.",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "Let an appropriate spouse immigrate or the individual emigrate. The individual is removed from the marriage queue.",
+                                        "type": "paragraph"
+                                    }
+                                ]
+                            ],
+                            "prefix": "alpha-upper",
+                            "type": "list"
+                        },
+                        {
+                            "text": "The last idea is borrowed from open models, where an appropriate spouse may be created \u201cex nihilo\u201d.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Each of these three options entails a major difficulty. Extending the searching period (option A) means shifting the time of the partnership event (onset of marriage or cohabitation). Rejecting a seeker (option B) implies ignoring an already scheduled event. Allowing too many emigrating mate seekers or too many immigrating spouses (option C) spoils the representativeness of the model population. Consequently, in order to assure plausible outcomes, searching periods that expire without success should be an exception.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s3-5",
+                    "title": "3.5 The difficulty of getting everybody matched",
+                    "type": "section"
+                }
+            ],
+            "id": "s3",
+            "title": "3. A mutual mate-matching procedure in continuous time",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "To illustrate the developed algorithm it was included into the MicMac microsimulation tool (<a href=\"#bib41\">Zinn et al., 2009</a>; <a href=\"#bib28\">MicMac project, 2011</a>). Simulations were run to project a synthetic population which resembles the population of the Netherlands. The state space employed for this purpose consisted of the following elements (variables with corresponding values given after the colons, separated by semi-colons):",
+                    "type": "paragraph"
+                },
+                {
+                    "items": [
+                        [
+                            {
+                                "text": "gender: female; male",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "marital status and living arrangement: living at parental home and never married; married for the first time, but never lived in a union before; married for the first time and cohabiting before; remarried; living alone and never lived in a union before; living alone but cohabiting before; living alone and married before; first cohabitation; higher order cohabitation but never married before; cohabitation and married before",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "fertility: childless; one child; two children; three or more children",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "educational attainment: low (primary education only); medium (lower secondary school); high (upper secondary or tertiary education)",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "mortality: dead; alive",
+                                "type": "paragraph"
+                            }
+                        ]
+                    ],
+                    "prefix": "bullet",
+                    "type": "list"
+                },
+                {
+                    "text": "Simulations were run over 17 years, starting on January 1, 2004 up to December 31, 2020. During simulation, the focus was set on individuals aged between 0 and 63. The initial population consisted of 139,048 males and 134,910 females (which corresponded to 2% of the actual Netherlands population aged 0 to 63 on January 1, 2004). During simulation, individuals could experience the following events: giving birth (for females), leaving parental home, launching a cohabitation, marrying, getting divorced or separated, change their educational level, and death.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "To assure that each \u201cmating-minded\u201d individual was matched, option A of <a href=\"#s3-5\">Section 3.5</a> was applied: if an individual was not successful during his/her searching period, the timing of his/her partnership onset was shifted.",
+                    "type": "paragraph"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "The initial population and transition rates are the essential parameters of any microsimulation. For the example, they were estimated using different European data sources. The EUROPOP 2004 projections for the Netherlands (baseline scenario) provided by EuroStat<a href=\"#fn3\"><sup>3</sup></a> were used. This data set comprises (projected) information on mortality and fertility in the Netherlands for the years 2004 to 2050. Further the Fertility and Family Survey for the Netherlands conducted between February and May 2003 was used. This survey contains micro-information on fertility behavior and changes in marital status. Data on educational attainment were taken from <a href=\"#bib16\">Goujon (2008)</a>.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The initial population was constructed using the method of iterative proportional fitting (<a href=\"#bib25\">Kruithof, 1937</a>; <a href=\"#bib9\">Deming &amp; Stephan, 1940</a>). To estimate fertility rates and transition rates regarding marital status, a slightly modified version of MAPLE (<a href=\"#bib21\">Impicciatore &amp; Billari, 2007</a>) was employed. (The initial population and transition rates are available on request from the author.)",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The proposed mate-matching procedure requires the computation of compatibility measures between potential spouses. For this purpose, four logit models (see <a href=\"#s2-1\">Section 2.1</a>) were used. Each model describes the probability to enter a specific partnership type from the perspective of the male spouse:",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "<b>Model 1:</b> entering first cohabitation;",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "<b>Model 2:</b> entering higher order cohabitations;",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "<b>Model 3:</b> entering first marriage;",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "<b>Model 4:</b> entering higher order marriages.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "An individual who marries his/her common-law spouse already chose him/her when entering the cohabitation. Therefore, in the two latter models, only such marriage events are considered which are not preceded by cohabitations. For estimating the models, the first wave of the Netherlands Kinship Panel Study (NKPS) was used (<a href=\"#bib10\">Dykstra et al., 2005</a>). Only partnerships that started in the years from 1990 to 2002 were included. A data set was constructed that contains for each observed couple a record consisting of",
+                            "type": "paragraph"
+                        },
+                        {
+                            "items": [
+                                [
+                                    {
+                                        "text": "the age of the male spouse,",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "the age difference between the female and the male spouse (in integer years),",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "the levels of educational attainment for each spouse,",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "an indicator whether the female spouse was married before, and",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "the number of children that the spouses have with former partners.",
+                                        "type": "paragraph"
+                                    }
+                                ]
+                            ],
+                            "prefix": "bullet",
+                            "type": "list"
+                        },
+                        {
+                            "text": "This sample design is retrospective, i.e., in the data the attributes of female and male spouses were sampled conditional on being paired. To accurately estimate a retrospective regression model, case and control sampling fractions have to be consisted. However, in the present setting such data were not available because it cannot be observed who in reality did not mate. To add information about controls nonetheless, for each observed couple a synthetic couple was built by randomly assigning to each male spouse a female who was not his observed partner. The response variable was set to one in the case a couple had been observed. Otherwise, the response variable was set to zero. Unfortunately, conducting mate-matching requires a prospective design: to measure the compatibility of a pairing, the likelihood that two individuals with certain attributes mate is needed. A mandatory condition of a prospective model is that case and control fractions are made up by the source population, i.e., the sampling has to be random. In this mate-matching procedure, compatibility between two potential spouses is measured on a relative scale, depending only on the attributes of two individuals, and not on the composition of the pool of available candidates. Therefore, for present purposes the estimation of a prospective logit model is suitable (see also <a href=\"#bib31\">Prentice and Pyke (1979)</a>).",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "table2",
+                                    "label": "Table 2",
+                                    "tables": [
+                                        "<table>\n<thead>\n<tr>\n<th colspan=\"3\"><i>Model 1</i></th>\n</tr>\n<tr>\n<th>Variable</th>\n<th>Coefficient</th>\n<th>p-value</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>Age of male</td>\n<td>0.0521</td>\n<td>0.0046</td>\n</tr>\n<tr>\n<td colspan=\"3\">Age difference (age of male \u2013 age of female)</td>\n</tr>\n<tr>\n<td>\u2009\u2009\u2009\u2009\u2009\u2009\u2009\u2009\u2009<i>greater than 9</i></td>\n<td>\u22122.9876</td>\n<td>&lt;0.001</td>\n</tr>\n<tr>\n<td>\u2009\u2009\u2009\u2009\u2009\u2009\u2009\u2009\u2009<i>from 7 to 9</i></td>\n<td>\u22121.4633</td>\n<td>&lt;0.001</td>\n</tr>\n<tr>\n<td>\u2009\u2009\u2009\u2009\u2009\u2009\u2009\u2009\u2009<i>from 4 to 6</i></td>\n<td>\u22120.4862</td>\n<td>0.0108</td>\n</tr>\n<tr>\n<td>\u2009\u2009\u2009\u2009\u2009\u2009\u2009\u2009\u2009<i>from \u22123 to 3</i></td>\n<td>0</td>\n<td/>\n</tr>\n<tr>\n<td>\u2009\u2009\u2009\u2009\u2009\u2009\u2009\u2009\u2009<i>from \u22126 to \u22124</i></td>\n<td>\u22121.4360</td>\n<td>&lt;0.001</td>\n</tr>\n<tr>\n<td>\u2009\u2009\u2009\u2009\u2009\u2009\u2009\u2009\u2009<i>from \u221210 to \u22127</i></td>\n<td>\u22122.8137</td>\n<td>&lt;0.001</td>\n</tr>\n<tr>\n<td>\u2009\u2009\u2009\u2009\u2009\u2009\u2009\u2009\u2009<i>smaller than \u221210</i></td>\n<td>\u22123.0582</td>\n<td>&lt;0.001</td>\n</tr>\n<tr>\n<td>Difference in educational level</td>\n<td/>\n<td/>\n</tr>\n<tr>\n<td>\u2009\u2009\u2009\u2009\u2009\u2009\u2009\u2009\u2009<i>male is higher or equally educated</i></td>\n<td>0.6424</td>\n<td>&lt;0.001</td>\n</tr>\n<tr>\n<td>Marriage history of female</td>\n<td/>\n<td/>\n</tr>\n<tr>\n<td>\u2009\u2009\u2009\u2009\u2009\u2009\u2009\u2009\u2009<i>female was married before</i></td>\n<td>-0.2811</td>\n<td>0.1833</td>\n</tr>\n<tr>\n<td colspan=\"3\">Number of potential pairs: <b>1078</b></td>\n</tr>\n</tbody>\n</table>",
+                                        "<table>\n<thead>\n<tr>\n<th colspan=\"3\"><i>Model 2</i></th>\n</tr>\n<tr>\n<th>Variable</th>\n<th>Coefficient</th>\n<th>p-value</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>Age of male</td>\n<td>0.0550</td>\n<td>0.0013</td>\n</tr>\n<tr>\n<td colspan=\"3\">Age difference (age of male \u2013 age of female)</td>\n</tr>\n<tr>\n<td>\u2009\u2009\u2009\u2009\u2009\u2009\u2009\u2009<i>greater than 10</i></td>\n<td>\u22123.5428</td>\n<td>&lt;0.001</td>\n</tr>\n<tr>\n<td>\u2009\u2009\u2009\u2009\u2009\u2009\u2009\u2009<i>from 4 to 10</i></td>\n<td>\u22123.5428</td>\n<td>&lt;0.001</td>\n</tr>\n<tr>\n<td>\u2009\u2009\u2009\u2009\u2009\u2009\u2009\u2009<i>from \u22123 to 3</i></td>\n<td>0</td>\n<td/>\n</tr>\n<tr>\n<td>\u2009\u2009\u2009\u2009\u2009\u2009\u2009\u2009<i>from \u221210 to \u22124</i></td>\n<td>\u22121.0105</td>\n<td>0.0021</td>\n</tr>\n<tr>\n<td>\u2009\u2009\u2009\u2009\u2009\u2009\u2009\u2009<i>smaller than \u221210</i></td>\n<td>\u22123.1277</td>\n<td>0.0196</td>\n</tr>\n<tr>\n<td>Difference in educational level</td>\n<td/>\n<td/>\n</tr>\n<tr>\n<td>\u2009\u2009\u2009\u2009\u2009\u2009\u2009\u2009<i>male is higher or equally educated</i></td>\n<td>0.7825</td>\n<td>0.0148</td>\n</tr>\n<tr>\n<td>Children with former partner</td>\n<td/>\n<td/>\n</tr>\n<tr>\n<td>\u2009\u2009\u2009\u2009\u2009\u2009\u2009\u2009<i>female has children</i></td>\n<td>1.6754</td>\n<td>&lt;0.001</td>\n</tr>\n<tr>\n<td colspan=\"3\">Number of potential pairs: <b>394</b></td>\n</tr>\n</tbody>\n</table>"
+                                    ],
+                                    "title": "Regression results of Model 1 (entering first cohabitation) and 2 (entering higher order cohabitation).",
+                                    "type": "table"
+                                }
+                            ],
+                            "type": "figure"
+                        }
+                    ],
+                    "id": "s4-1",
+                    "title": "4.1 Data",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "content": [
+                                {
+                                    "text": "The coefficients of the estimated logit models are summarized in <a href=\"#table2\">Tables 2</a> and <a href=\"#table2\">3</a>. In all models, a positive effect can be observed if the male was higher/equally educated than/as the female. Generally, no significant effect of the marriage history on the mating propensity of the male can be detected. However, the results indicate that, when they married or cohabitated for the first time, men were more prone to mate women who had not been married before. Women and men who mated were more likely to be of the same age. The effect is stronger in the case of firstorder marriages and cohabitations. In all four models, the direct effect of the age of the male is very small. Modeling compatibility by partnership order might be a reason for this phenomenon. First partnerships are usually started at younger ages, while higher order partnerships follow later in life. Therefore, a man\u2019s age at partnership onset is already indirectly described by the partnership type. In the analysis, men had a higher probability to undergo a higher order cohabitation with a female who had already had children with former partners. Surprisingly, for the other partnership types, no significant effects of the presence of children with former partners on a male\u2019s mating probability could be observed.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "assets": [
+                                        {
+                                            "id": "table3",
+                                            "label": "Table 3",
+                                            "tables": [
+                                                "<table>\n<thead>\n<tr>\n<th colspan=\"3\"><i>Model 3</i></th>\n</tr>\n<tr>\n<th>Variable</th>\n<th>Coefficient</th>\n<th>p-value</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>Age of male</td>\n<td>0.0646</td>\n<td>0.0650</td>\n</tr>\n<tr>\n<td colspan=\"3\">Age difference (age of male \u2013 age of female)</td>\n</tr>\n<tr>\n<td>\u2009\u2009\u2009\u2009\u2009\u2009\u2009\u2009<i>greater than 10</i></td>\n<td>\u22123.3997</td>\n<td>&lt; 0.001</td>\n</tr>\n<tr>\n<td>\u2009\u2009\u2009\u2009\u2009\u2009\u2009\u2009<i>from 7 to 10</i></td>\n<td>\u22121.4934</td>\n<td>0.0110</td>\n</tr>\n<tr><td>\u2009\u2009\u2009\u2009\u2009\u2009\u2009\u2009<i>from 3 to 6</i></td>\n<td>\u22120.8026</td>\n<td>0.0692</td>\n</tr>\n<tr><td>\u2009\u2009\u2009\u2009\u2009\u2009\u2009\u2009<i>from \u22122 to 2</i></td>\n<td>0</td>\n<td/>\n</tr>\n<tr>\n<td>\u2009\u2009\u2009\u2009\u2009\u2009\u2009\u2009<i>from \u22125 to \u22123</i></td>\n<td>\u22121.5026</td>\n<td>0.0263</td>\n</tr>\n<tr>\n<td>\u2009\u2009\u2009\u2009\u2009\u2009\u2009\u2009<i>smaller than \u22125</i></td>\n<td>\u22124.3357</td>\n<td>&lt; 0.001</td>\n</tr>\n<tr>\n<td colspan=\"3\">Difference in educational level</td>\n<td/>\n<td/>\n</tr>\n<tr>\n<td>\u2009\u2009\u2009\u2009\u2009\u2009\u2009\u2009<i>male is higher or equally educated</i></td>\n<td>0.8493</td>\n<td>0.0525</td>\n</tr>\n<tr>\n<td>Marriage history of female</td>\n<td/>\n<td/>\n</tr>\n<tr>\n<td>\u2009\u2009\u2009\u2009\u2009\u2009\u2009\u2009<i>female was married before</i></td>\n<td>\u22120.4314</td>\n<td>0.4873</td>\n</tr>\n<tr>\n<td colspan=\"3\">Number of potential pairs: 198</td>\n</tr>\n</tbody>\n</table>",
+                                                "<table>\n<thead>\n<tr>\n<th colspan=\"3\"><i>Model 4</i></th>\n</tr>\n<tr>\n<th>Variable</th>\n<th>Coefficient</th>\n<th>p-value</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>Age of male</td>\n<td>\u22120.0120</td>\n<td>0.6618</td>\n</tr>\n<tr>\n<td colspan=\"3\">Age difference (age of male \u2013 age of female)</td>\n</tr>\n<tr>\n<td>\u2009\u2009\u2009\u2009\u2009\u2009\u2009\u2009<i>greater than 8</i></td>\n<td>\u22122.9174</td>\n<td>&lt; 0.001</td>\n</tr>\n<tr>\n<td>\u2009\u2009\u2009\u2009\u2009\u2009\u2009\u2009<i>from 4 to 8</i></td>\n<td>\u22121.6287</td>\n<td>0.0547</td>\n</tr>\n<tr>\n<td>\u2009\u2009\u2009\u2009\u2009\u2009\u2009\u2009<i>from \u22123 to 3</i></td>\n<td>0</td>\n<td/>\n</tr>\n<tr>\n<td>\u2009\u2009\u2009\u2009\u2009\u2009\u2009\u2009<i>smaller than \u22124</i></td>\n<td>\u22123.2270</td>\n<td>&lt; 0.001</td>\n</tr>\n<tr>\n<td colspan=\"3\">Difference in educational level</td></tr>\n<tr>\n<td>\u2009\u2009\u2009\u2009\u2009\u2009\u2009\u2009<i>male is higher or equally educated</i></td>\n<td>1.2949</td>\n<td>0.0743</td>\n</tr>\n<tr>\n<td colspan=\"3\">Number of potential pairs: 82</td>\n</tr>\n</tbody>\n</table>"
+                                            ],
+                                            "title": "Regression results of Model 3 (entering first marriage) and 4 (entering higher order marriage).",
+                                            "type": "table"
+                                        }
+                                    ],
+                                    "type": "figure"
+                                }
+                            ],
+                            "id": "s4-2-1",
+                            "title": "4.2.1 Evidence from the compatibility measure",
+                            "type": "section"
+                        },
+                        {
+                            "content": [
+                                {
+                                    "text": "To assess the quality of the proposed mate-matching strategy, validating the simulation output is a good and useful practice. Besides basic validation of the simulation output, important hints for model improvement can be gained from careful analysis of the results. During the mate-matching process several simplifying assumptions were made, e.g., shifting event times, and these may have an undue impact. A very basic validation step is the re-estimation of the empirical transition rates which were used as input, by occurrence-exposure rates (<a href=\"#bib23\">Keiding, 1990</a>). To smooth these rates, a two-dimensional P-splines technique was employed (<a href=\"#bib8\">Currie et al., 2006</a>) that has been implemented in an R package named MortalitySmooth (<a href=\"#bib7\">Camarda, 2009</a>). The re-estimation of rates shows that a simulation with mate-matching causes consistent output. Some results are plotted in <a href=\"#fig4\">Figures 4</a> and <a href=\"#fig5\">5</a>. Both figures are level plots<a href=\"#fn4\"><sup>4</sup></a>. Empirical rates along with reestimated rates are presented. Rates are given along calendar time and age. Their values are depicted on a \u201crainbow\u201d color scale: red areas correspond to very low rates and violet-pink areas correspond to high rates. <a href=\"#fig4\">Figure 4</a> shows transition rates of childless women with a lower secondary (medium) education who experience a transition from \u201cbeing single after leaving parental home\u201d to \u201cfirst cohabitation\u201d. <a href=\"#fig5\">Figure 5</a> depicts transition rates of highly educated males who experience a transition from \u201cbeing single after leaving parental home\u201d to \u201cfirst marriage\". During simulation both sets of transition rates varied along age but were held constant over calendar time. <a href=\"#fig4\">Figure 4</a> reveals that, for women with a lower secondary education, empirical and reestimated marriage rates are almost identical, i.e., here the proposed mate-matching procedure does not significantly change the output of the simulation model.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "<a href=\"#fig5\">Figure 5</a> shows that, for highly educated men, the proposed mate-matching procedure causes a slight postponement of partnership onsets in the first simulation period. Especially at higher ages, re-estimated marriage rates are slightly lower than the empirical ones. However, considering the precision of the used rates scale, the observed differences are very small. In summary, the results obtained mean that the re-estimation of the transition rates confirms the general suitability of the proposed mate-matching procedure.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "assets": [
+                                        {
+                                            "id": "fig4",
+                                            "image": {
+                                                "alt": "",
+                                                "uri": "%iiif_uri%/00066%2Fijm-00066-fig4.tif",
+                                                "size": {
+                                                    "width": 1631,
+                                                    "height": 1372
+                                                },
+                                                "source": {
+                                                    "mediaType": "image/jpeg",
+                                                    "uri": "%iiif_uri%/00066%2Fijm-00066-fig4.tif/full/full/0/default.jpg",
+                                                    "filename": "ijm-00066-fig4.jpg"
+                                                }
+                                            },
+                                            "label": "Figure 4",
+                                            "title": "Re-estimation of transition rates of childless females with a lower secondary (medium) education who experience a transition from \u201cbeing single after leaving parental home\u201d (nSl) to \u201cfirst cohabitation\u201d (nCO).",
+                                            "type": "image"
+                                        }
+                                    ],
+                                    "type": "figure"
+                                },
+                                {
+                                    "assets": [
+                                        {
+                                            "id": "fig5",
+                                            "image": {
+                                                "alt": "",
+                                                "uri": "%iiif_uri%/00066%2Fijm-00066-fig5.tif",
+                                                "size": {
+                                                    "width": 1411,
+                                                    "height": 1391
+                                                },
+                                                "source": {
+                                                    "mediaType": "image/jpeg",
+                                                    "uri": "%iiif_uri%/00066%2Fijm-00066-fig5.tif/full/full/0/default.jpg",
+                                                    "filename": "ijm-00066-fig5.jpg"
+                                                }
+                                            },
+                                            "label": "Figure 5",
+                                            "title": "Re-estimation of transition rates of highly educated males who experience a transition from \u201cbeing single after leaving parental home\u201d (nSI) to \u201cmarried\u201d (nMA).",
+                                            "type": "image"
+                                        }
+                                    ],
+                                    "type": "figure"
+                                },
+                                {
+                                    "assets": [
+                                        {
+                                            "id": "fig6",
+                                            "image": {
+                                                "alt": "",
+                                                "uri": "%iiif_uri%/00066%2Fijm-00066-fig6.tif",
+                                                "size": {
+                                                    "width": 2002,
+                                                    "height": 1403
+                                                },
+                                                "source": {
+                                                    "mediaType": "image/jpeg",
+                                                    "uri": "%iiif_uri%/00066%2Fijm-00066-fig6.tif/full/full/0/default.jpg",
+                                                    "filename": "ijm-00066-fig6.jpg"
+                                                }
+                                            },
+                                            "label": "Figure 6",
+                                            "title": "Age distribution of unsuccessful seekers at the time when they enter the partnership market.",
+                                            "type": "image"
+                                        }
+                                    ],
+                                    "type": "figure"
+                                }
+                            ],
+                            "id": "s4-2-2",
+                            "title": "4.2.2 Re-estimating empirical transition rates",
+                            "type": "section"
+                        },
+                        {
+                            "content": [
+                                {
+                                    "text": "Analyzing the simulated partnership market over time is a way to reveal whether its dynamics resembles human mating behavior. In particular, the composition and the development of the pool of unsuccessful seekers is of interest. During the simulation, 40,585 partnership formations were performed, 19,050 due to marriage and 21,535 due to cohabitation. Thus, 8,170 individuals successfully entered and left the partnership market. Because the algorithm could not find a proper spouse in time, the searching period of approximately ten percent of all seekers had to be extended. Over 17 years of simulation, 5,397 individuals had entered the market without finding a spouse. <a href=\"#fig6\">Figure 6</a> displays the age distribution of unsuccessful seekers according to the year when they had entered the partnership market. Individuals who initialized a partner search at older ages remained more often unpaired than their younger counterparts. This phenomenon occurred because during simulation the synthetic mating pool for individuals at older ages was not as rich as it was for younger persons. Consequently, for older individuals the chance of finding an appropriate spouse was relatively small. <a href=\"#fig6\">Figure 6</a> also shows that the age distribution of unsuccessful seekers did not significantly change over the simulation horizon. These findings were contrasted with the number of unsuccessful seekers along the year (see <a href=\"#fig7\">Figure 7</a>). A decline along calendar time is obvious. In summary, along calendar time the number of unsuccessful seekers decreased, but the age distribution of unsuccessful seekers remained stable. This phenomenon is caused by the age structure of the model population. Generally, at older ages only a small proportion of individuals enters the partnership market. As the model population ages during simulation, over time the number of mature adults who enter the market however goes up. Therefore, for them the chance of finding an assortative mate increases, and in the synthetic pool the number of aged individuals who remain unpaired shrinks. But still, compared to younger seekers, the mating pool of older adults is reduced, e.g., due to mortality or a high proportion of married persons at the same age. Decreasing the aspiration level of elderly people is an option to increase their chance to find a partner. However, this also means to allow constructing non-assortative matches, and thus building couples whose attributes do not resemble the attributes of observed couples \u2013 a property a mate-matching procedure should guarantee. That is, decreasing the aspiration level of elderly people impairs the proposed mate-matching strategy rather than to improve it.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "assets": [
+                                        {
+                                            "id": "fig7",
+                                            "image": {
+                                                "alt": "",
+                                                "uri": "%iiif_uri%/00066%2Fijm-00066-fig7.tif",
+                                                "size": {
+                                                    "width": 1153,
+                                                    "height": 1021
+                                                },
+                                                "source": {
+                                                    "mediaType": "image/jpeg",
+                                                    "uri": "%iiif_uri%/00066%2Fijm-00066-fig7.tif/full/full/0/default.jpg",
+                                                    "filename": "ijm-00066-fig7.jpg"
+                                                }
+                                            },
+                                            "label": "Figure 7",
+                                            "title": "Number of unsuccessful seekers according to the year when they initialize a partner search.",
+                                            "type": "image"
+                                        }
+                                    ],
+                                    "type": "figure"
+                                }
+                            ],
+                            "id": "s4-2-3",
+                            "title": "4.2.3 Analyzing the pool of unsuccessful seekers",
+                            "type": "section"
+                        },
+                        {
+                            "content": [
+                                {
+                                    "text": "It is essential for the usefulness of the proposed mate-matching strategy that it resembles actual characteristics of partners in couples. Therefore, as a further validation step, the distribution of joint characteristics was analyzed, with a special emphasis on differences in educational attainment and age. The differences in the educational level of synthetic couples were compared to those of couples given in the NKPS (in the range from 1990 to 2002). <a href=\"#fig8\">Figure 8</a> contrasts simulated and actual data concerning the educational level within married couples (upper graph) and cohabiting couples (lower graph). Two types of couples are differentiated: couples in which the man is higher educated than the woman and couples in which both partners are equally educated. To account for eventual age effects, couples are additionally differentiated according to the man\u2019s age at partnership onset: couples were considered where the man was younger than 30 years, couples where he was between 30 and 40 years old, and couples where he was older than 40 years. All presented numbers are given relative to the total number of couples in each age category. That is, the proportion of couples in which the woman is higher educated than the man can easily be derived by subtracting the numbers given for each age category from one. For married couples, comparing simulated and actual data shows a difference of maximal nine percentage points (in the category \u201ccouple in which the woman is higher educated than the man and the man has married younger than 30\u201d). For cohabiting couples, the maximal difference between simulated and actual couples is seven percentage points (in the category \u201ccouple in which the woman is higher educated than the man and the man has married when he was between 30 and 40 years old\u201d). overall, in the considered categorization the relative numbers of simulated and actual couples differ only slightly. This result shows that the simulation satisfactorily captures the overall pattern of differences in the educational level of spouses.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "assets": [
+                                        {
+                                            "id": "fig8",
+                                            "image": {
+                                                "alt": "",
+                                                "uri": "%iiif_uri%/00066%2Fijm-00066-fig8.tif",
+                                                "size": {
+                                                    "width": 1751,
+                                                    "height": 1421
+                                                },
+                                                "source": {
+                                                    "mediaType": "image/jpeg",
+                                                    "uri": "%iiif_uri%/00066%2Fijm-00066-fig8.tif/full/full/0/default.jpg",
+                                                    "filename": "ijm-00066-fig8.jpg"
+                                                }
+                                            },
+                                            "label": "Figure 8",
+                                            "title": "Differences in the educational level of spouses in observed and simulated couples. Each bar shows the percentage of females in the corresponding category.",
+                                            "type": "image"
+                                        }
+                                    ],
+                                    "type": "figure"
+                                },
+                                {
+                                    "assets": [
+                                        {
+                                            "id": "fig9",
+                                            "image": {
+                                                "alt": "",
+                                                "uri": "%iiif_uri%/00066%2Fijm-00066-fig9.tif",
+                                                "size": {
+                                                    "width": 1596,
+                                                    "height": 1132
+                                                },
+                                                "source": {
+                                                    "mediaType": "image/jpeg",
+                                                    "uri": "%iiif_uri%/00066%2Fijm-00066-fig9.tif/full/full/0/default.jpg",
+                                                    "filename": "ijm-00066-fig9.jpg"
+                                                }
+                                            },
+                                            "label": "Figure 9",
+                                            "title": "Age differences of spouses in observed and simulated couples.",
+                                            "type": "image"
+                                        }
+                                    ],
+                                    "type": "figure"
+                                },
+                                {
+                                    "text": "<a href=\"#fig9\">Figure 9</a> depicts the distribution of age differences of cohabiting and married spouses (age of male minus age of female). The shapes of the simulated and actual frequency distributions, respectively, are very similar. Stochastic mate-matching algorithms that have so far been employed generally produce age difference distributions that are too flat (<a href=\"#bib26\">Leblanc et al., 2009</a>). They are not capable of reproducing the observed peak at differences of [\u22121,1]. The proposed mate-matching algorithm is able to overcome this problem.",
+                                    "type": "paragraph"
+                                }
+                            ],
+                            "id": "s4-2-4",
+                            "title": "4.2.4 Comparison of attributes of actual and simulated couples",
+                            "type": "section"
+                        },
+                        {
+                            "content": [
+                                {
+                                    "text": "A fundamental feature that demographers demand from a realistic mating model is the handling of (relative) competition (<a href=\"#bib27\">McFarland, 1972</a>): an extra supply of single men of a certain age should decrease the number of paired men at all other ages (competition). The effect should be most pronounced at ages neighbouring the age group with the surplus of single men (relative competition). At the same time, the number of partnered women should increase over all ages. To check whether the present mate-matching procedure can handle such a situation, in the initial population the number of single men aged 27 was doubled. A comparison of the partnerships built under the initial and the modified setting shows that the proposed mate-matching procedures copes well when strong competition is present. In the cohort of men who turn 28 in 2004, an increased number of partnered men could be observed, but the number did not double as compared to the initial setting. Because of the surplus of younger rivals, the number of partnered men older than 28 declined. The effect is strongest in the neighbourhood of age 28 \u2013 which attests that the matching algorithm is able to handle situations of relative competition. For ages lower than 26, the number of partnered men is nearly identical to the initial setting. In this model the conditions, whether a female enters the partnership market or not, depends on her personal propensity and not on the availability of men. Therefore, even with a surplus of men in the mating pool, the number of partnered females remains stable.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "assets": [
+                                        {
+                                            "id": "fig10",
+                                            "image": {
+                                                "alt": "",
+                                                "uri": "%iiif_uri%/00066%2Fijm-00066-fig10.tif",
+                                                "size": {
+                                                    "width": 1849,
+                                                    "height": 1213
+                                                },
+                                                "source": {
+                                                    "mediaType": "image/jpeg",
+                                                    "uri": "%iiif_uri%/00066%2Fijm-00066-fig10.tif/full/full/0/default.jpg",
+                                                    "filename": "ijm-00066-fig10.jpg"
+                                                }
+                                            },
+                                            "label": "Figure 10",
+                                            "title": "Comparison of re-estimated transition rates of highly educated males who experience a transition from \u201cbeing single after leaving parental home\u201d (nSI) to \u201cmarried\u201d (nMA). The left graph shows the empirical input rates used. The graph in the middle displays re-estimated rates from a simulation run with <i>B</i> = 2 <i>years</i> (intersection of the searching periods), and the right graph shows re-estimated rates from a simulation run with <i>B</i> = 0.25 <i>years</i>.",
+                                            "type": "image"
+                                        }
+                                    ],
+                                    "type": "figure"
+                                }
+                            ],
+                            "id": "s4-2-5",
+                            "title": "4.2.5 Handling situations of (relative) competition",
+                            "type": "section"
+                        },
+                        {
+                            "content": [
+                                {
+                                    "text": "For the parameterization of the developed mate-matching algorithm specific values were proposed (cf. <a href=\"#table1\">Table 1</a> on page 10). All parameter values were chosen deliberately. By means of sensitivity analysis their suitability was substantiated. In the following, the most important findings are discussed.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "Setting the intersection of the searching periods (parameter <i>B</i>) to half a year was a compromise between finding enough potential partners in the market and not to be forced to strongly shift the event times that have been computed based on the microsimulation model. Testing different <i>B</i> values for showed that giving values bigger than half a year to <i>B</i> biased the simulation output regarding the timing of events more than setting to half a year. Choosing values smaller than half a year remarkably reduced the success probability of finding a proper spouse. As an example, for <i>B</i> = 2 <i>years</i> and for <i>B</i> = 0.25 <i>years</i> <a href=\"#fig10\">Figure 10</a> shows along empirical rates (left graph) re-estimated transition rates (graph in the middle and right graph) of highly educated males who experience a transition from \u201cbeing single after leaving parental home\u201d to \u201cmarried\u201d. <a href=\"#fig10\">Figure 10</a> is a level plot<a href=\"#fn4\"><sup>4</sup></a> that presents rates along age and calendar time on a \u201crainbow\u201d color scale. Compared to the empirical input rates, <i>B</i> = 2 <i>years</i> (graph in the middle) gave mating times significantly postponed in age and time. Especially, in the first year of simulation the proportion of mating events was significantly lower than indicated by the empirical input rates. In latter simulation years, the proportion of mate-matching events increased, partly following the pattern indicated by the empirical rates. For <i>B</i> = 0.25 <i>years</i> (right graph) the re-estimated rates were significantly lower than the empirical input rates, implying a large proportion of unsuccessful mate-seekers.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "Decreasing the decrement <i>\u03b4<sub>A</sub></i> of the aspiration level in case of rejection (in the original setting <i>\u03b4<sub>A</sub></i> = 0.1) showed results similar to setting <i>B</i> to a value smaller than half a year: the chance to find an appropriate spouse in time decreased, and the simulation output was significantly biased. A small value of <i>\u03b4<sub>A</sub></i>, like 0.01, meant that mate-seekers did not adequately adjust their aspiration according to the supply of potential spouses in the partnership market. Hence, mate-seekers were too \u201cchoosy\u201d, and during simulation a large proportion of mate-seekers stayed unpaired. In contrast, setting <i>\u03b4<sub>A</sub></i> to a relatively large value, like 0.5, caused mate-seekers who are not very discriminating regarding their conformance with potential spouses. As a consequence, simulated couple characteristics considerably differed from actual characteristics of partners in couples. For example, for <i>\u03b4<sub>A</sub></i> = 0.5 the simulated distribution of age differences of cohabiting and married spouses were considerably flatter than the one of actual partners in couples (cf. <a href=\"#s4-2-4\">Section 4.2.4</a>).",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "Considering in the case study two percent of the Netherlands population meant a large enough proportion of a real population to assure that during simulation the pool of potential partners was mostly well filled. The situation that a seeker faced less than ten potential partners was reached infrequently. If aspiration levels were decremented because of \u201csmall pool size\u201d (parameter <i>\u03b4<sub>B</sub></i>, in the original setting <i>\u03b4<sub>B</sub></i> = 0.3), then mostly in the initialization phase of simulation when the partnership market had been filled or when mature adults looked for a spouse (because they faced a reduced mating pool, cf. <a href=\"#s4-2-3\">Section 4.2.3</a>). For example, <i>\u03b4<sub>B</sub></i> = 0.1 resulted in a slightly higher proportion of elderly people who stayed unpaired than <i>\u03b4<sub>B</sub></i> = 0.3.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "Decreasing the mean size <i>\u03bc</i> of the upper bound of potential spouses that an individual can meet remarkably enlarges the pool of unsuccessful searchers. For example, for <i>\u03bc</i> = 50 (in the original setting <i>\u03bc</i> = 120) a surplus of almost ten percent individuals was found to remain unpaired in the partnership market. (The variability parameter <i>\u03c3</i> of the pool size was set to 30.) Enlarging the mean size <i>\u03bc</i> of the upper bound of potential spouses did not significantly affect the outcome of the mate-matching procedure, however, came at the expense of longer run times.",
+                                    "type": "paragraph"
+                                }
+                            ],
+                            "id": "s4-2-6",
+                            "title": "4.2.6 Sensitivity analysis of parameter values of algorithm",
+                            "type": "section"
+                        }
+                    ],
+                    "id": "s4-2",
+                    "title": "4.2 Results",
+                    "type": "section"
+                }
+            ],
+            "id": "s4",
+            "title": "4. Mate-matching in practise",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "In contrast to conventional population projection models, dynamic microsimulations are suitable to directly handle interactions between individuals, e.g., married couples (<a href=\"#bib37\">van Imhoff &amp; Post, 1998</a>). Modeling relations between spouses necessitates creating synthetic (married or cohabiting) couples, so an effective mate-matching procedure is needed. In this paper, the implementation of a technique to create synthetic couples, i.e., to match individuals, in a continuous-time microsimulation setting has been proposed and described.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "For microsimulation models, two different approaches exist to handle the matching of spouses (see <a href=\"#s2\">Section 2</a>). In open models, an appropriate partner is created when needed. By contrast, in closed models an appropriate partner has to be found among the individuals of the model population. In terms of modeling and simulation, open models are straightforward; however, their interpretation is difficult. How can the appearance of a spouse be explained that was not present before? Closed models have a more plausible interpretation as marital matches are formed between individuals that already exist. Corresponding modeling and simulation approaches have to incorporate sophisticated matching algorithms that ensure the creation of synthetic marriages that follow a realistic pattern. Several suitable matching algorithms exist, but all of them apply to discrete-time models. No matching algorithm has so far been proposed for closed microsimulation models with a continuous-time scale. In discrete-time models, annual marriage markets are applied to create couples. This is a natural choice as in discrete-time models events are determined to occur in a given year. In continuous-time models by contrast, where events can occur at any point in time, annual marriage markets do not fit (see <a href=\"#s3-2\">Section 3.2</a>).",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Therefore, in this paper it has been suggested to implement one partnership market that individuals can enter and leave over the complete simulation time range (cf. <a href=\"#s3\">Section 3</a>). In a continuous-time microsimulation, individual life courses are specified as sequences of waiting times to a next event. That is, the time point when individuals will experience the onset of a marriage or a cohabitation can be determined in advance. In the present mate-matching procedure, the waiting time until marriage or cohabitation onset is used for scanning potential partners. At the moment the simulation triggers for an individual as next event a marriage or a cohabitation event (i.e., when an individual\u2019s wait for a partnership event starts), the individual enters a partnership market. Here, each \u201cmating-minded\u201d individual remains for a specific period of mate-searching and matching. In the market, the individual meets a limited number of potential partners at random. Each simulated individual exhibits a certain level of aspiration concerning attributes of potential spouses. To build synthetic couples, a decisionmaking process is simulated as to whether two individuals date each other by applying the individuals' aspiration levels and their mating probability. (Relying on the theory of assortative mating, pairs with similar attributes, like similar ages and educational levels, have a higher probability of mating.) A couple is formed if a positive decision has been made and the timing of the couple\u2019s partnership formation events is consistent regarding their individual searching periods. Individuals that were inspected, but rejected, lower their level of aspiration accordingly. A marriage queue is used to implement the partnership market as basis for the matching procedure.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "In order to illustrate the capability of the presented algorithm the MicMac microsimulation tool has been extended (<a href=\"#bib41\">Zinn et al., 2009</a>). Using data from the Netherlands Kinship Panel Study (NKPS), logit models were estimated to quantify the likelihood of a union between potential pairings (see <a href=\"#s4-2-1\">Section 4.2.1</a>). The results were in accordance with common knowledge, e.g., among other aspects, the observation was made that people mate assortatively. Applying the estimated logit models as compatibility measure, simulations were run to project a synthetic population based on the population of the Netherlands (<a href=\"#s4\">Section 4</a>). To quantify marriage behavior micro-data from Statistics Netherlands were used. Population projections were conducted over 17 years, from 2004 to 2020.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "To assess the quality of the proposed mate-matching technique, two validation steps were employed: first the empirical transition rates used as input were re-estimated from the simulation output (see <a href=\"#s4-2-2\">Section 4.2.2</a>). Then the distribution of joint characteristics in actual and simulated couples was analyzed (see <a href=\"#s4-2-4\">Section 4.2.4</a>).",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The first strategy showed whether simplifying assumptions made during the mate-matching process caused biased simulation outcome. For example, slight changes to event times are allowed to form partnership onsets. Another, more severe problem arises in the case of unsuccessful searchers. If an individual is not able to find an appropriate partner during his/her searching period, currently his/her searching period is extended for half a year. A seeker might generally suffer from an exploited partner market, and his/her searching period is thus extended over and over again. Such shifts of event time mean ignoring already generated events and are in conflict with the stochastic model used for simulating life course events. In summary, empirical and re-estimated rates were not remarkably different. Consequently, the proposed mate-matching algorithm is suitable for successful incorporation into a continuous-time microsimulation.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "In the second validation step, it was analyzed whether the attributes of simulated couples resemble the attributes of observed couples. The results showed that the proposed algorithm produces acceptable outcomes, e.g., it is capable of closely reproducing the distribution of the educational level of synthetic couples. Furthermore, the developed mate-matching algorithm copes with the challenge to reproduce the observed peak of the frequency distribution of age differences of spouses, an objective which other stochastic mate-matching algorithms failed to achieve (<a href=\"#bib26\">Leblanc et al., 2009</a>).",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Generally, a realistic mating model should be capable of handling situations of competition among mate searchers, i.e., an extra supply of single men of a certain age should decrease the number of paired men at all other ages (<a href=\"#bib27\">McFarland, 1972</a>). Testing the developed mate-matching strategy to that effect showed that it is able to handle such situations (see <a href=\"#s4-2-5\">Section 4.2.5</a>).",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "For the developed algorithm a specific parameterization was proposed (cf. <a href=\"#table1\">Table 1</a> on page 10). It was argued that for western European societies the chosen parametrization results in reasonable simulation outcome. To circumstantiate this argument a succinct sensitivity analysis was conducted, varying parameters (see <a href=\"#s4-2-6\">Section 4.2.6</a>). In particular, the length of the searching period was varied, the upper bound of the maximal number of potential spouses, the decrement of the individual aspiration level in case of rejection, and the decrement of the individual aspiration level in case of small pool size. In summary, for the considered case study, the sensitivity analysis confirms the feasibility of the chosen parametrization.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The mate-matching strategy presented in this paper can and will be extended. At the moment, individuals are matched based on actual preference patterns. However, preferences concerning the characteristics of a partner might change over calendar time, and such changes should be considered in the mate-matching process. Currently, the quality of a match has no effect on the stability of the union. However, the inclusion of quality seems natural. Furthermore, in the current model, individuals enter the partnership market based on empirical marriage rates or based on rates indicating cohabitation propensities. To correctly determine partnership events, however, instead of marriage or cohabitation rates, rates indicating the willingness to mate would have to be used. One way to obtain those rates would be to hypothesize them based on external knowledge of the phenomenon. Pairing individuals generally raises problems concerning the modeling and simulation of linked lives. An abstract DEVS (Discrete Event Specification Language)-based model to establish and simulate linked lives in continuous-time is currently under examination.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s5",
+            "title": "5. Discussion and outlook",
+            "type": "section"
+        }
+    ],
+    "references": [
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Bacon, B",
+                        "preferred": "B Bacon"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Pennec, S",
+                        "preferred": "S Pennec"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2007",
+            "details": "APPSIM - modelling family formation and dissolution. Working Paper 4, NATSEM, National Center for Social and Economic Modelling, University of Canberra",
+            "id": "bib1",
+            "title": "APPSIM - modelling family formation and dissolution. Working Paper 4, NATSEM, National Center for Social and Economic Modelling",
+            "type": "unknown"
+        },
+        {
+            "articleTitle": "Channels of social influence on reproduction",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Bernardi, L",
+                        "preferred": "L Bernardi"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2003",
+            "id": "bib2",
+            "journal": "Population Research and Policy Review of Economics and Statistics",
+            "pages": {
+                "first": "527",
+                "last": "555",
+                "range": "527\u2013555"
+            },
+            "type": "journal",
+            "volume": "22"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Billari, F",
+                        "preferred": "F Billari"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "Applications of Simulation to Social Sciences",
+            "chapterTitle": "Searching for mates using \u2018fast and frugal heuristics: A demographic perspective",
+            "date": "2000",
+            "editors": [
+                {
+                    "name": {
+                        "index": "Ballot, G",
+                        "preferred": "G Ballot"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Weisbuch, G",
+                        "preferred": "G Weisbuch"
+                    },
+                    "type": "person"
+                }
+            ],
+            "id": "bib3",
+            "pages": {
+                "first": "53",
+                "last": "65",
+                "range": "53\u201365"
+            },
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "Oxford"
+                        ]
+                    },
+                    "formatted": [
+                        "Oxford"
+                    ]
+                },
+                "name": [
+                    "Hermes Science Publications"
+                ]
+            },
+            "type": "book-chapter"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Blossfeld, H-P",
+                        "preferred": "H-P Blossfeld"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Timm, A",
+                        "preferred": "A Timm"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2003",
+            "details": "331\u2013342, Assortative mating in cross-national comparison: A summary of results and conclusions, Who Marries Whom? Educational Systems as Marriage Markets in Modern Societies, Dordrecht, Kluwer",
+            "id": "bib4",
+            "title": "Who Marries Whom? Educational Systems as Marriage Markets in Modern Societies",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Bouffard, N",
+                        "preferred": "N Bouffard"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Easther, R",
+                        "preferred": "R Easther"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Johnson, T",
+                        "preferred": "T Johnson"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Morrison, R",
+                        "preferred": "R Morrison"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Vink, J",
+                        "preferred": "J Vink"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2001",
+            "details": "Brazilian Electronic Journal of Economics, 4, 2",
+            "id": "bib5",
+            "title": "Matchmaker, matchmaker, make me a match",
+            "type": "unknown"
+        },
+        {
+            "articleTitle": "Strategies of human mating",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Buss, D M",
+                        "preferred": "D M Buss"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2006",
+            "id": "bib6",
+            "journal": "Psychological Topics",
+            "pages": {
+                "first": "239",
+                "last": "260",
+                "range": "239\u2013260"
+            },
+            "type": "journal",
+            "volume": "15"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Camarda, C",
+                        "preferred": "C Camarda"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2009",
+            "details": "MortalitySmooth: Smoothing Poisson counts with P-splines, R package version 1.0, MPI Rostock, http://CRAN.R-project.org/package=MortalitySmooth, [accessed November 2011]",
+            "id": "bib7",
+            "title": "MortalitySmooth: Smoothing Poisson counts with P-splines",
+            "type": "unknown",
+            "uri": "http://CRAN.R-project.org/package=MortalitySmooth"
+        },
+        {
+            "articleTitle": "Generalized linear array models with applications to multidimensional smoothing",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Currie, I",
+                        "preferred": "I Currie"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Durban, M",
+                        "preferred": "M Durban"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Eilers, P",
+                        "preferred": "P Eilers"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2006",
+            "id": "bib8",
+            "journal": "Journal of the Royal Statistical Society",
+            "pages": {
+                "first": "259",
+                "last": "280",
+                "range": "259\u2013280"
+            },
+            "type": "journal",
+            "volume": "68"
+        },
+        {
+            "articleTitle": "On a least square adjustment of a sampled frequency table when the expected marginal totals are known",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Deming, W E",
+                        "preferred": "W E Deming"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Stephan, F F",
+                        "preferred": "F F Stephan"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1940",
+            "id": "bib9",
+            "journal": "Annals of Mathematical Statistics",
+            "pages": "427",
+            "type": "journal",
+            "volume": "11"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Dykstra, P",
+                        "preferred": "P Dykstra"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Kalmijn, M",
+                        "preferred": "M Kalmijn"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Knijn, T",
+                        "preferred": "T Knijn"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Komter, A",
+                        "preferred": "A Komter"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Liefbroer, A",
+                        "preferred": "A Liefbroer"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Mulder, C",
+                        "preferred": "C Mulder"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2005",
+            "details": "Codebook of the Netherlands Kinship Panel Study: A multiactor, multi-method panel study on solidarity in family relationships, wave 1. NKPS Working Paper 4, NIDI, The Hague",
+            "id": "bib10",
+            "title": "Codebook of the Netherlands Kinship Panel Study: A multiactor, multi-method panel study on solidarity in family relationships, wave 1. NKPS Working Paper 4, NIDI",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Elder, G",
+                        "preferred": "G Elder"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Kirkpatrick Johnson, M",
+                        "preferred": "M Kirkpatrick Johnson"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Crosnoe, R",
+                        "preferred": "R Crosnoe"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2004",
+            "details": "3\u201319, The emergence and development of life course theory, Handbook of the Life Course, Handbooks of sociology and social research, Springer",
+            "id": "bib11",
+            "title": "Handbook of the Life Course",
+            "type": "unknown"
+        },
+        {
+            "articleTitle": "KAMA: A temperature-driven model of mate-choice using dynamic partner representations",
+            "authors": [
+                {
+                    "name": {
+                        "index": "French, R",
+                        "preferred": "R French"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Kus, E",
+                        "preferred": "E Kus"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2008",
+            "id": "bib12",
+            "journal": "Adaptive Behaviour",
+            "pages": {
+                "first": "71",
+                "last": "95",
+                "range": "71\u201395"
+            },
+            "type": "journal",
+            "volume": "16"
+        },
+        {
+            "articleTitle": "College admissions and the stability of marriage",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Gale, D",
+                        "preferred": "D Gale"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Shapley, L",
+                        "preferred": "L Shapley"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1962",
+            "id": "bib13",
+            "journal": "The American Mathematical Monthly",
+            "pages": {
+                "first": "9",
+                "last": "9",
+                "range": "9\u20139"
+            },
+            "type": "journal",
+            "volume": "69"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Galler, H",
+                        "preferred": "H Galler"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1997",
+            "details": "Discrete-time and continuous-time approaches to dynamic microsimulation (reconsidered). Technical report, NATSEM, National Center for Social and Economic Modelling, University of Canberra, University of Canberra",
+            "id": "bib14",
+            "title": "Discrete-time and continuous-time approaches to dynamic microsimulation (reconsidered). Technical report, NATSEM, National Center for Social and Economic Modelling, University of Canberra",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Gampe, J",
+                        "preferred": "J Gampe"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Zinn, S",
+                        "preferred": "S Zinn"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2007",
+            "details": "Description of the microsimulation model. Technical report, MicMac project, MPIDR, Rostock",
+            "id": "bib15",
+            "title": "Description of the microsimulation model. Technical report, MicMac project, MPIDR",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Goujon, A",
+                        "preferred": "A Goujon"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2008",
+            "details": "Report on projections by the level of education (future human capital: Estimates and projections of education transition probabilities). Technical report, MicMac project, Vienna Institute of Demography, Austrian Academy of Sciences",
+            "id": "bib16",
+            "title": "Report on projections by the level of education (future human capital: Estimates and projections of education transition probabilities). Technical report, MicMac project, Vienna Institute of Demography, Austrian Academy of Sciences",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Hammel, E",
+                        "preferred": "E Hammel"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Hutchinson, D",
+                        "preferred": "D Hutchinson"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Wachter, K",
+                        "preferred": "K Wachter"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Lundy, R",
+                        "preferred": "R Lundy"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Deutel, R",
+                        "preferred": "R Deutel"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1976",
+            "details": "The SOCSIM demographic-sociological microsimulation program: Operating manual, Institute of International Studies, University of California, Berkeley, Research Series, No. 27",
+            "id": "bib17",
+            "title": "The SOCSIM demographic-sociological microsimulation program: Operating manual, Institute of International Studies, University of California, Berkeley, Research Series, No. 27",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Hammel, E",
+                        "preferred": "E Hammel"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Mason, C",
+                        "preferred": "C Mason"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Wachter, C",
+                        "preferred": "C Wachter"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "SOCSIM II: A sociodemographic microsimulation program rev. 1.0: Operating manual",
+            "date": "1990",
+            "id": "bib18",
+            "publisher": {
+                "name": [
+                    "Regents of the University of California"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "articleTitle": "Social network size in humans",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Hill, RA",
+                        "preferred": "RA Hill"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Dunbar, RIM",
+                        "preferred": "RIM Dunbar"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2003",
+            "id": "bib19",
+            "journal": "Human Nature",
+            "pages": {
+                "first": "53",
+                "last": "53",
+                "range": "53\u201353"
+            },
+            "type": "journal",
+            "volume": "14"
+        },
+        {
+            "articleTitle": "Family research from the life course perspective",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Huinink, J",
+                        "preferred": "J Huinink"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Feldhaus, M",
+                        "preferred": "M Feldhaus"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2009",
+            "id": "bib20",
+            "journal": "International Sociology",
+            "pages": {
+                "first": "299",
+                "last": "299",
+                "range": "299\u2013299"
+            },
+            "type": "journal",
+            "volume": "24"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Impicciatore, R",
+                        "preferred": "R Impicciatore"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Billari, F",
+                        "preferred": "F Billari"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2007",
+            "details": "In Joint Eurostat /UNECE Work Sessions on Demographic Projections",
+            "id": "bib21",
+            "title": "Age profiles estimation for family and fertility events based on micro data: The MAPLE (method for age profile longitudinal estimation)",
+            "type": "unknown"
+        },
+        {
+            "articleTitle": "Intermarriage and homogamy: Causes, patterns, trends",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Kalmijn, M",
+                        "preferred": "M Kalmijn"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1998",
+            "id": "bib22",
+            "journal": "Annual Review of Sociology",
+            "pages": {
+                "first": "395",
+                "last": "421",
+                "range": "395\u2013421"
+            },
+            "type": "journal",
+            "volume": "24"
+        },
+        {
+            "articleTitle": "Statistical inference in the Lexis diagram",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Keiding, N",
+                        "preferred": "N Keiding"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1990",
+            "id": "bib23",
+            "journal": "Philosophical Transactions of the Royal Society of London: Physical Sciences and Engineering",
+            "pages": {
+                "first": "487",
+                "last": "487",
+                "range": "487\u2013487"
+            },
+            "type": "journal",
+            "volume": "332"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Kelly, S",
+                        "preferred": "S Kelly"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2003",
+            "details": "Australia\u2019s microsimulation model - DYNAMOD. Technical report, NATSEM, National Center for Social and Economic Modelling, University of Canberra",
+            "id": "bib24",
+            "title": "Australia\u2019s microsimulation model - DYNAMOD. Technical report, NATSEM, National Center for Social and Economic Modelling, University of Canberra",
+            "type": "unknown"
+        },
+        {
+            "articleTitle": "Calculation of telephone traffic",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Kruithof, J",
+                        "preferred": "J Kruithof"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1937",
+            "id": "bib25",
+            "journal": "De Ingenieur",
+            "pages": {
+                "first": "E15",
+                "last": "25",
+                "range": "E15\u201325"
+            },
+            "type": "journal",
+            "volume": "52"
+        },
+        {
+            "articleTitle": "A match made in silicon: Marriage matching algorithms for dynamic microsimulation",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Leblanc, N",
+                        "preferred": "N Leblanc"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Morrison, R",
+                        "preferred": "R Morrison"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Redway, H",
+                        "preferred": "H Redway"
+                    },
+                    "type": "person"
+                }
+            ],
+            "conference": {
+                "name": [
+                    "paper presented at the 2nd general conference of the International Microsimulation Association, Ottawa"
+                ]
+            },
+            "date": "2009",
+            "id": "bib26",
+            "type": "conference-proceeding"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "McFarland, D",
+                        "preferred": "D McFarland"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "Population Dynamics",
+            "chapterTitle": "Comparison of alternative marriage models",
+            "date": "1972",
+            "editors": [
+                {
+                    "name": {
+                        "index": "Greville, T",
+                        "preferred": "T Greville"
+                    },
+                    "type": "person"
+                }
+            ],
+            "id": "bib27",
+            "pages": {
+                "first": "89",
+                "last": "106",
+                "range": "89\u2013106"
+            },
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "New York"
+                        ]
+                    },
+                    "formatted": [
+                        "New York"
+                    ]
+                },
+                "name": [
+                    "Academic Press"
+                ]
+            },
+            "type": "book-chapter"
+        },
+        {
+            "authors": [
+                {
+                    "name": "MicMac project",
+                    "type": "group"
+                }
+            ],
+            "date": "2011",
+            "details": "project hompage, www.micmac-projections.org>, [accessed November 2011]",
+            "id": "bib28",
+            "title": "project hompage",
+            "type": "unknown",
+            "uri": "http://www.micmac-projections.org>"
+        },
+        {
+            "articleTitle": "Withholding age as putative deception in mate search tactics",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Pawlowskia, B",
+                        "preferred": "B Pawlowskia"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Dunbar, RIM",
+                        "preferred": "RIM Dunbar"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1999",
+            "id": "bib29",
+            "journal": "Evolution and Human Behavior",
+            "pages": {
+                "first": "53",
+                "last": "53",
+                "range": "53\u201353"
+            },
+            "type": "journal",
+            "volume": "20"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Perese, K",
+                        "preferred": "K Perese"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2002",
+            "details": "Mate matching for microsimulation models. Technical Paper 3, Long-Term Modeling Group, Congressional Budget Office, Washington, DC",
+            "id": "bib30",
+            "title": "Mate matching for microsimulation models. Technical Paper 3, Long-Term Modeling Group, Congressional Budget Office",
+            "type": "unknown"
+        },
+        {
+            "articleTitle": "Logistic disease incidence models and case-control studies",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Prentice, R",
+                        "preferred": "R Prentice"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Pyke, R",
+                        "preferred": "R Pyke"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1979",
+            "id": "bib31",
+            "journal": "Biometrika",
+            "pages": {
+                "first": "403",
+                "last": "403",
+                "range": "403\u2013403"
+            },
+            "type": "journal",
+            "volume": "66"
+        },
+        {
+            "articleTitle": "Confession of a microsimulator: Problems in modeling the demographic kinship",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Ruggles, S",
+                        "preferred": "S Ruggles"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1993",
+            "id": "bib32",
+            "journal": "Historical Methods",
+            "pages": {
+                "first": "161",
+                "last": "161",
+                "range": "161\u2013161"
+            },
+            "type": "journal",
+            "volume": "26"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Satyabudhi, B",
+                        "preferred": "B Satyabudhi"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Onggo, S",
+                        "preferred": "S Onggo"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "Proceedings of the 2008 Winter Simulation Conference",
+            "chapterTitle": "Parallel discrete-event simulation of population dynamics",
+            "date": "2008",
+            "editors": [
+                {
+                    "name": {
+                        "index": "Mason, SJ",
+                        "preferred": "SJ Mason"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Hill, RR",
+                        "preferred": "RR Hill"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "M\u00f6nch, L",
+                        "preferred": "L M\u00f6nch"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Rose, O",
+                        "preferred": "O Rose"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Jefferson, T",
+                        "preferred": "T Jefferson"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Fowler, JW",
+                        "preferred": "JW Fowler"
+                    },
+                    "type": "person"
+                }
+            ],
+            "id": "bib33",
+            "pages": {
+                "first": "1047",
+                "last": "1054",
+                "range": "1047\u20131054"
+            },
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "Piscataway, New Jersey"
+                        ]
+                    },
+                    "formatted": [
+                        "Piscataway, New Jersey"
+                    ]
+                },
+                "name": [
+                    "Institute of Electrical and Electronics Engineers, Inc"
+                ]
+            },
+            "type": "book-chapter"
+        },
+        {
+            "articleTitle": "Invariants of human behavior",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Simon, H",
+                        "preferred": "H Simon"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1990",
+            "id": "bib34",
+            "journal": "Annual Review of Psychology",
+            "pages": {
+                "first": "1",
+                "last": "19",
+                "range": "1\u201319"
+            },
+            "type": "journal",
+            "volume": "41"
+        },
+        {
+            "articleTitle": "Aggregate age-at-marriage patterns from individual mate-search heuristics",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Todd, P",
+                        "preferred": "P Todd"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Billari, F",
+                        "preferred": "F Billari"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Sim\u00e3o, J",
+                        "preferred": "J Sim\u00e3o"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2005",
+            "id": "bib35",
+            "journal": "Demography",
+            "pages": {
+                "first": "559",
+                "last": "574",
+                "range": "559\u2013574"
+            },
+            "type": "journal",
+            "volume": "42"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Trivers, R",
+                        "preferred": "R Trivers"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "Parental Investment and Sexual Selection",
+            "chapterTitle": "Sexual selection and the descent of man, 1871\u20131971",
+            "date": "1972",
+            "editors": [
+                {
+                    "name": {
+                        "index": "Campbell, B",
+                        "preferred": "B Campbell"
+                    },
+                    "type": "person"
+                }
+            ],
+            "id": "bib36",
+            "pages": {
+                "first": "136",
+                "last": "179",
+                "range": "136\u2013179"
+            },
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "Chicago"
+                        ]
+                    },
+                    "formatted": [
+                        "Chicago"
+                    ]
+                },
+                "name": [
+                    "Aldine"
+                ]
+            },
+            "type": "book-chapter"
+        },
+        {
+            "articleTitle": "Microsimulation methods for population projection",
+            "authors": [
+                {
+                    "name": {
+                        "index": "van Imhoff, E",
+                        "preferred": "E van Imhoff"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Post, W",
+                        "preferred": "W Post"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1998",
+            "id": "bib37",
+            "journal": "Population: An English Selection, New Methodological Approaches in Social Sciences",
+            "pages": {
+                "first": "97",
+                "last": "138",
+                "range": "97\u2013138"
+            },
+            "type": "journal",
+            "volume": "10"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Wachter, K",
+                        "preferred": "K Wachter"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1995",
+            "details": "2030\u2019s seniors: Kin and step-kin. Technical report, University of California, Berkeley",
+            "id": "bib38",
+            "title": "2030\u2019s seniors: Kin and step-kin. Technical report, University of California",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Willekens, F",
+                        "preferred": "F Willekens"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2009",
+            "details": "353\u2013376, Continuous-time microsimulation in longitudinal analysis, Farnham (UK), Ashgate, Book released during 2nd International Microsimulation Conference, Ottawa, June 2009",
+            "id": "bib39",
+            "title": "New Frontiers in Microsimulation ModellingSurrey",
+            "type": "unknown"
+        },
+        {
+            "articleTitle": "The role of microsimulation in longitudinal data analysis",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Wolf, D",
+                        "preferred": "D Wolf"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2001",
+            "id": "bib40",
+            "journal": "Special Issue on Longitudinal Methodology, Canadian Studies in Population",
+            "pages": {
+                "first": "313",
+                "last": "313",
+                "range": "313\u2013313"
+            },
+            "type": "journal",
+            "volume": "28"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Zinn, S",
+                        "preferred": "S Zinn"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Himmelspach, J",
+                        "preferred": "J Himmelspach"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Gampe, J",
+                        "preferred": "J Gampe"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Uhrmacher, A",
+                        "preferred": "A Uhrmacher"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2009",
+            "details": "Mic-core: A tool for microsimulation, Piscataway (NJ), IEEE",
+            "id": "bib41",
+            "title": "Proceedings of the 2009 Winter Simulation Conference",
+            "type": "unknown"
+        }
+    ],
+    "acknowledgements": [
+        {
+            "text": "This work is a result of the MicMac project. The Centraal Bureau voor de Statistiek in the Netherlands provided data from the Fertility and Family Survey for the Netherlands. The Netherlands Kinship Panel Study is funded by grant 480-10-009 from the Major Investments Fund of the Netherlands Organization for Scientific Research (NWO), and by the Netherlands Interdisciplinary Demographic Institute (NIDI), Utrecht University, the University of Amsterdam, and Tilburg University. This paper would never have been written without the help of several persons: Particular thanks go to Jutta Gampe for her fruitful supervision. Adelinde Uhrmacher and Frans Willekens volunteered to read several versions of the paper, and their comments significantly improved the quality of the paper. The input data files for the microsimulation example were prepared by Ekaterina Ogurtsova. Jim Oeppen helped with general advice. Basic ideas of mate-matching in continuous time go back to discussions with Jan Himmelspach and Frans Willekens. Nico Keilman provided very helpful comments on the last draft version of this paper.",
+            "type": "paragraph"
+        }
+    ],
+    "-meta": {
+        "patched": true
+    },
+    "stage": "published"
+}

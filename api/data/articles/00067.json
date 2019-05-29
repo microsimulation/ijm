@@ -1,0 +1,2607 @@
+{
+    "status": "vor",
+    "id": "00067",
+    "version": 1,
+    "type": "research-article",
+    "doi": "10.34196/ijm.00067",
+    "authorLine": "Jinjing Li, Cathal O\u2019Donoghue",
+    "title": "Simulating histories within dynamic microsimulation models",
+    "published": "2012-06-30T00:00:00Z",
+    "versionDate": "2012-06-30T00:00:00Z",
+    "statusDate": "2012-06-30T00:00:00Z",
+    "volume": 5,
+    "issue": 1,
+    "elocationId": "n/a",
+    "pdf": "http://web:8082/00067/ijm-00067.pdf",
+    "subjects": [
+        {
+            "id": "methodology",
+            "name": "Methodology"
+        },
+        {
+            "id": "dynamic-microsimulation",
+            "name": "Dynamic microsimulation"
+        }
+    ],
+    "abstract": {
+        "content": [
+            {
+                "text": "Constructing a base dataset is one of the most important elements in the dynamic microsimulation modelling. However, the access to a long historical panel is usually restricted for many reasons. This paper aims to develop a back simulation method that has the potential to generate a consistent synthetic history panel based on a typical household survey dataset with some complementary statistics. The model uses Living in Ireland (LU) household survey as an example to reconstruct the individual labour market trajectory since 1939. The overall results of the simulated panel have been proven sensible and consistent based on several validation tests. This method opens the possibility to further investigate into several fields of application such as life-cycle income analysis and pension reform evaluation, which typically requires the historical profile of individuals and has traditionally been difficult to perform.",
+                "type": "paragraph"
+            }
+        ]
+    },
+    "copyright": {
+        "license": "CC-BY-4.0",
+        "holder": "Li & O\u2019Donoghue",
+        "statement": "This article is distributed under the terms of the <a href=\"http://creativecommons.org/licenses/by/4.0/\">Creative Commons Attribution License</a>, which permits unrestricted use and redistribution provided that the original author and source are credited."
+    },
+    "authors": [
+        {
+            "affiliations": [
+                {
+                    "address": {
+                        "components": {
+                            "country": "The Netherlands"
+                        },
+                        "formatted": [
+                            "The Netherlands"
+                        ]
+                    }
+                }
+            ],
+            "emailAddresses": [
+                "Jinjing.Li@natsem.canberra.edu.au"
+            ],
+            "name": {
+                "index": "Li, Jinjing",
+                "preferred": "Jinjing Li"
+            },
+            "type": "person"
+        },
+        {
+            "affiliations": [
+                {
+                    "address": {
+                        "components": {
+                            "country": "Ireland"
+                        },
+                        "formatted": [
+                            "Ireland"
+                        ]
+                    },
+                    "name": [
+                        "Rural Economy and Development Programme, Teagasc"
+                    ]
+                }
+            ],
+            "emailAddresses": [
+                "cathal.odonoghue@nuigalway.ie"
+            ],
+            "name": {
+                "index": "O\u2019Donoghue, Cathal",
+                "preferred": "Cathal O\u2019Donoghue"
+            },
+            "type": "person"
+        }
+    ],
+    "keywords": [
+        "microsimulation",
+        "base dataset",
+        "history simulation",
+        "back simulation"
+    ],
+    "body": [
+        {
+            "content": [
+                {
+                    "text": "Many countries today are facing the prospect of rapid demographic change in the decades ahead and numerous research papers have been devoted to the analysis of the implications of an ageing population. A number of microsimulation models have been developed to study this issue linked with social security, retirement incomes, and pension reforms. In order to generate an accurate and stable projection for elderly earnings and pensions, it is essential to include some historical information in the dataset, a luxury that many modellers do not have.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Microsimulation models are usually categorised as either \u201cstatic\u201d or \u201cdynamic\u201d. Static models, e.g. EUROMOD (<a href=\"#bib16\">Mantovani et al., 2007</a>), are mostly arithmetic models that evaluate the immediate distributional impact upon individuals/households of possible policy changes, whilst Dynamic models, e.g. DESTINIE, PENSIM, SESIM (<a href=\"#bib1\">Bardaji et al., 2003</a>; <a href=\"#bib6\">Curry, 1996</a>; <a href=\"#bib12\">Flood, 2007</a>), extend the static model by allowing individuals to change their characteristics as a result of endogenous factors within a model (<a href=\"#bib21\">O\u2019Donoghue, 2001</a>). Dynamic microsimulation models in theory, could offer more insights than static models as they usually integrate long-term projections and behaviour simulations; however, they are costly to develop and require a baseline dataset that is both rich in variables and historical information. These demanding requirements unfortunately are rarely matched by the existing data availability (<a href=\"#bib14\">Harding, 2007</a>) and therefore compromises are often made in order to make the simulation possible.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "This paper investigates longitudinal data availability issues in microsimulation and proposes a viable alternative by simulating a plausible and consistent history using a typical household survey panel from Ireland. The following section discusses the base dataset issues in dynamic microsimulation models and the potential alternatives. <a href=\"#s3\">Section 3</a> describes the dataset used in the back simulation and <a href=\"#s4\">Section 4</a> explains the modelling procedure of the back simulation, and followed by a description of the alignment technique used in <a href=\"#s5\">Section 5</a>. The three sections following report the results of the back simulation together with the validations, for employment status, pension memberships and earnings, respectively. A conclusion and discussion are provided in the final section of this paper.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s1",
+            "title": "1. Background",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "content": [
+                        {
+                            "text": "Base dataset selection is important for a microsimulation model as the quality of the input data determines the quality of the output, yet this is not an easy task, as hardly any micro datasets contain all the information required by a dynamic microsimulation model that can be used to project the whole population. The difficulties of picking a base dataset have been discussed in several papers (<a href=\"#bib3\">Cassells et al., 2006</a>; <a href=\"#bib26\">Zaidi &amp; Scott, 2001</a>). Typically, a dynamic microsimulation model starts with one or several of the following types of dataset:",
+                            "type": "paragraph"
+                        },
+                        {
+                            "items": [
+                                [
+                                    {
+                                        "text": "Cross-sectional Household Survey Data",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "Cross-sectional Administrative data",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "Census Data",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "Panel Household Survey Data",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "Panel Administrative data",
+                                        "type": "paragraph"
+                                    }
+                                ]
+                            ],
+                            "prefix": "bullet",
+                            "type": "list"
+                        },
+                        {
+                            "text": "Panel data is generally preferred over crosssectional data as it records changes over time, a useful component in statistical modelling. Household survey data, e.g. EU-SILC data in EUROMOD (<a href=\"#bib11\">Figari &amp; Sutherland, 2007</a>), is frequently used as the basis of the base dataset, because it is rich in the number of variables of interests and offers information on the dynamics of behaviours. However, the time period in these survey datasets may be insufficient to provide certain historical information required for life-cycle modelling and analysis. Administrative data, although typically consisting of a more limited range of contextual variables, often provides a longer history and contains relatively high quality information for certain variables, e.g. tax, and in most cases, a higher number of observations. Some Scandinavian country models, e.g. the MOSART model in Norway (<a href=\"#bib13\">Fredriksen, 2003</a>), are based on extensive and detailed register information. However, access to administrative records is typically fairly limited even from within a government.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "For microsimulation models analysing the dynamics of elderly earnings or pensions, it is essential to have historical social economics variables that could be used to reconstruct the career trajectories of today\u2019s elderly workers. This implies that an ideal dynamic microsimulation base dataset should contain the following information for each individual from birth:",
+                            "type": "paragraph"
+                        },
+                        {
+                            "items": [
+                                [
+                                    {
+                                        "text": "Demographic information, which contains age, education, marriage, birth of children, household (or tax unit) formation and dissolution.",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "Employment trajectory information, which contains labour force participation records, historical earnings, types of job etc.",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "Pension membership and entitlement information, which contains the record of various pension schemes participation (including state, occupational, and private pension).",
+                                        "type": "paragraph"
+                                    }
+                                ]
+                            ],
+                            "prefix": "bullet",
+                            "type": "list"
+                        },
+                        {
+                            "text": "To meet these requirements a long panel dataset containing rich demographic, employment, and pension data is required; unfortunately, a dataset that matches the above description is not readily available to most researchers. Certain models (e.g. DYNASIM, CORSIM) as a result, have experimented with alternative methods such as statistical matching and simulation.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The first method, statistical matching, involves filling in the missing information required from a different but comparable dataset compiled within a similar time frame. For example, a microsimulation model based on a household survey dataset may need some historical earning records that are only available from another income study dataset. Under such a circumstance, a matching method may be used to fill in the information gaps based on a statistical model using available social economic characteristics shared by both datasets. The DYNASIM model was one of the pioneers in this area and uses Current Population Survey (CPS) as the base dataset matched with social security earnings records from administrative data. In DYNASIM3 (<a href=\"#bib10\">Favreault, 2004</a>), the statistical matching was undertaken between two survey datasets, namely, Survey of Income and Program Participation (SIPP) and Panel Study of Income Dynamics (PSID), while PENSIM2 matches Family Resource Survey (FRS) and British Household Panel Survey (BHPS) to the Lifelong Labour Market Database (LLMDB) to incorporate household contextual data (<a href=\"#bib8\">Emmerson et al., 2004</a>). In addition, statistical matching also occurs between survey and census datasets, e.g. SAGE matches survey data to their base census sample data to obtain the additional information required (<a href=\"#bib9\">Evandrou, 2004</a>).",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The second method used is to generate a synthetic historical panel using information from the base dataset itself. Unfortunately, the methodology of simulating histories is not as widely discussed as simulating future characteristics in the microsimulation field. There are many challenges in attempting to \u201cback-cast\u201d or \u201cback simulate\u201d historical earnings (and other characteristics) earlier in life (<a href=\"#bib14\">Harding, 2007</a>). The DYNANCAN model uses a limited back simulation technique by imputing the historical earning profiles between 1966 and 1969 with limited retrospective consistency (<a href=\"#bib18\">Morrison, 1997</a>;<a href=\"#bib19\">1998</a>), whilst the CORSIM model simulates part of the historical profile based on a historical crosssectional dataset, matching the model output to historical aggregate information such as fertility and mortality rates (<a href=\"#bib2\">Caldwell, 1997</a>). Nevertheless, the existing methods only impute the history for a limited number of years and they usually suffer from the inconsistency issues. While certain variables match the historical data at cross-sectional level, the longitudinal consistencies are typically ignored and variables covered are not extensive enough to support life cycle analyses and pension simulations.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "There are advantages and disadvantages to both methods described above. Statistical matching can be used when there are sufficient matching variables in a comparable dataset and this method has the desirable feature of having a \u201creal-world\u201d value, although the quality of matching may vary substantially depending on the quality and quantity of matching variables. In some cases, certain variables, e.g. historical earning records, may not exist in any dataset or access is restricted due to legal restrictions. If these variables are needed within the model, then the only option available is simulation. Synthetic simulation has the advantage of flexibility but longitudinal consistency may be an issue due to the limited information available.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s2-1",
+                    "title": "2.1 Base dataset selection",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "LIAM is a dynamic microsimulation model designed to evaluate potential reforms of the Irish pensions system and other policies in terms of changes to life-cycle incomes, particularly on old age income replacement rates, poverty and inequality measures (<a href=\"#bib23\">O\u2019Donoghue et al., 2009</a>). Given the nature of the model, it requires a pension module which is able to simulate:",
+                            "type": "paragraph"
+                        },
+                        {
+                            "items": [
+                                [
+                                    {
+                                        "text": "Life-cycle income distribution under a given pension system",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "Public and/or private pension fund accumulation and dissipation over individuals\u2019 life-cycles, under a given pension system and alternatives",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "Effects of reforms of a given system on life-cycle income distribution, costs, and other redistributive measures",
+                                        "type": "paragraph"
+                                    }
+                                ]
+                            ],
+                            "prefix": "bullet",
+                            "type": "list"
+                        },
+                        {
+                            "text": "Since the model aims to evaluate the impact of policy change for those \u201cat risk\u201d, i.e. potential pensioners, an ideal historical panel would start in the year in which the oldest potential retiree in the dataset was born. However, one practical issue of alignment prevents generating meaningful values in the very early years when few individual exists in the dataset. As alignment is necessary to ensure the cross-sectional consistency with the historical values, it is necessary to keep a minimum number of the observations for each year that the alignment is applied. Therefore, the study sets the starting year of the historical panel in 1939, the year when the youngest retirees in 1994 (age 55) were born and the elder retirees in 1994 (age 75+) just entered the labour market for no more than a few years.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Furthermore, in order to simulate the potential pension income, it is necessary to include a set of important social economic variables, covering demography, employment, and pension information. These include:",
+                            "type": "paragraph"
+                        },
+                        {
+                            "items": [
+                                [
+                                    {
+                                        "text": "Demographic data includes gender, age, marital status, number of children and education attainment",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "Employment data covers employment status (working or not), employment type (employee or self-employed), employment sector (public or private) and job income",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "Pension data includes the pension contribution to occupational pension and private pension, the fund size of the defined-contribution (DC) pension, and the type of pension claimed after retirement",
+                                        "type": "paragraph"
+                                    }
+                                ]
+                            ],
+                            "prefix": "bullet",
+                            "type": "list"
+                        },
+                        {
+                            "text": "LIAM ideally, should select a base dataset which has a long social economic history, i.e. a panel that looks like an extended version of the US PSID or certain administrative datasets available in Sweden/UK etc. Unfortunately, long historical panels do not exist for Ireland, neither in the form of survey datasets nor as administrative records, yet this missing information is crucial to life cycle modelling and analysis, as some forward simulation components, such as pension eligibilities, are built on the individual labour trajectory. Given these constraints, simulation is therefore the best tool for obtaining histories for LIAM. Compared with earlier works on the historical recreation in microsimulation model (e.g. CORSIM and DYNACAN), the model could reconstruct a much longer time period and focuses on the consistencies at both cross-sectional and longitudinal levels.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "This paper, as part of the work developing LIAM, proposes a microsimulation algorithm which could generate a plausible, consistent and comprehensive historical panel based on a household survey dataset by extrapolating the retrospective variables concerning past employment history. Variables such as years of working and pension eligibilities are registered in the household survey and could be used to model a plausible working history for all individuals when taken together with information generated from some external statistics.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s2-2",
+                    "title": "2.2 LIAM and its base dataset",
+                    "type": "section"
+                }
+            ],
+            "id": "s2",
+            "title": "2. Base dataset issues in dynamic microsimulation",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "This back simulation module is primarily modelled based on the 1994-2001 Living in Ireland Survey (LII) dataset along with some external statistics extracted from the pension questionnaire section of the 2002 Quarterly Household National Survey (QHNS), and the Irish census reports since 1930s.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The LII survey constitutes the Irish component of the European Community Household Panel (ECHP) and is a representative household panel survey that was conducted yearly on the Irish population between 1994 and 2001 (eight waves). The data contains panel information on demographics, employment, and other social economic characteristics for around 3,500 households in each wave. In 2000, an additional 1,500 households were brought into the dataset to compensate for the attrition since 1994. <a href=\"#table1\">Table 1</a> lists some descriptive information of key demographic and employment variables in the LII dataset.",
+                    "type": "paragraph"
+                },
+                {
+                    "assets": [
+                        {
+                            "id": "table1",
+                            "label": "Table 1",
+                            "tables": [
+                                "<table>\n<thead>\n<tr>\n<th><i>Variable</i></th>\n<th><i>Mean</i></th>\n<th><i>Standard Deviation</i></th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>Age</td>\n<td>34.15</td>\n<td>21.86</td>\n</tr>\n<tr>\n<td>Gender</td>\n<td>0.50</td>\n<td>0.50</td>\n</tr>\n<tr>\n<td>Married (%)</td>\n<td>38.91%</td>\n<td>0.49</td>\n</tr>\n<tr>\n<td>Average household size</td>\n<td>4.31</td>\n<td>1.86</td>\n</tr>\n<tr>\n<td>Working population (%)</td>\n<td>38.18%</td>\n<td>0.49</td>\n</tr>\n<tr>\n<td>Public Sector worker (%)</td>\n<td>7.81%</td>\n<td>0.27</td>\n</tr>\n<tr>\n<td>Self-employed (%)</td>\n<td>7.73%</td>\n<td>0.27</td>\n</tr>\n<tr>\n<td>Retired (%)</td>\n<td>6.85%</td>\n<td>0.25</td>\n</tr>\n<tr>\n<td>Unemployed (%)</td>\n<td>5.40%</td>\n<td>0.23</td>\n</tr>\n<tr>\n<td>Percentage of the population with college education</td>\n<td>17.46%</td>\n<td>0.38</td>\n</tr>\n<tr>\n<td>Average reported years of work</td>\n<td>13.66</td>\n<td>15.20</td>\n</tr>\n<tr>\n<td>Total number of household</td>\n<td align=\"center\" colspan=\"2\">7,529</td>\n</tr>\n<tr>\n<td>Total number of individuals</td>\n<td align=\"center\" colspan=\"2\">23,955</td>\n</tr>\n<tr>\n<td>Total number of observations</td>\n<td align=\"center\" colspan=\"2\">100,639</td>\n</tr>\n</tbody>\n</table>"
+                            ],
+                            "title": "An overview of LII survey.",
+                            "type": "table"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "text": "Besides the LII survey, the back simulation module also uses the information gathered from the QHNS survey, which is a nationwide household survey designed to produce quarterly labour force estimates in Ireland since 1997. In the first quarter of 2002, a special module dedicated to pension savings was added to the survey. QHNS is used in the back simulation mostly for alignments when estimating occupational and private pensions. Census reports prior to 1994 were used in the back simulation module in order to align certain important history aggregates.",
+                    "type": "paragraph"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "Demographic data is the foundation of a population-based simulation. The back simulation module extracts demographic information from the LII survey and surmises some data, for example the time of birth of each individual is calculated from age information in the survey and marriage status is derived from the reported age of marriage. In the case where a missing value is spotted, average data is used, e.g. it is assumed that an individual would get married at 25, the average age of marriage in Ireland in the1990s. Divorce and remarriage is not simulated for in the current history panel for complexity reasons, and education level is assumed constant once an individual has left the reported schooling period.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "In the current version of the back simulation, cohorts that died before 1994 were not simulated, as the primary goal for the back simulation is to complete the career trajectory for the potential living pensioners. This simplification helps to reduce uncertainties within the history panel and lowers the modelling difficulties by avoiding potential complex interactions and consistency concerns of the synthetic population. One drawback of this simplification is that it raises the bar for alignment, as the simulated data will not be able to compare with the historical aggregate indicators. Fortunately, the Irish census data contains detailed information for each age gender subgroup. As a result, all alignments described in this paper can be performed at cohort level to ensure the consistency between simulated values and historical census data.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s3-1",
+                    "title": "3.1 Demographic base data",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "The LIIretrospective variables provide information for survey contains certain retrospective questions similar to many household survey datasets. These questions are helpful in history recreation as they can pinpoint the time when certain events happened in an individual\u2019s history, e.g. birth, marriage etc. In the LII survey, retrospective variables provide information for",
+                            "type": "paragraph"
+                        },
+                        {
+                            "items": [
+                                [
+                                    {
+                                        "text": "the year when an individual started their current job and their job\u2019s duration",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "the year when an individual first entered the labour market",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "the number of years spent in full-time education, employment (including selfemployment and farming), unemployment (seeking a job), illness or disability,",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "home caring or retirement duration since the age of 10",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "the duration of unemployment, if currently unemployed",
+                                        "type": "paragraph"
+                                    }
+                                ]
+                            ],
+                            "prefix": "bullet",
+                            "type": "list"
+                        },
+                        {
+                            "text": "While the information collected is highly relevant for back simulation, these retrospective variables may not contain high quality data. Missing values and inconsistencies are sometimes spotted across differing years of the LII survey, for example the declared number of years in school varying without engaging in education. This type of error could hamper the quality of the simulated histories severely, as there would be no reliable reference to constrain the shape of the career trajectory.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "In order to mitigate the impact of lower quality data, it is useful to correct obvious mistakes in the data collection and impute the missing values to expand the base on the dataset. Adjustments are applied to enforce the consistencies with key variables (e.g. age) and avoid basic mistakes such as assigning college degrees to children. Since most retrospective values (more than 90% of the individuals) are not updated once collected in the base year, it is necessary to recalibrate the values from second wave onwards to ensure the consistencies with the recorded labour market activity in the previous year. For example, if the individual worked full time in 1994, the accumulated years of employment should increase by one in 1995. Same principle applies to other variables like years of education etc.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "<a href=\"#table2\">Table 2</a> presents an overall summary on the outcome of the retrospective variable adjustments and highlights the difference between the original data and the adjusted data in the base year (1994) when the retrospective data was first collected. This adjustment increases the usability of these variables by improving its internal consistency. The table does not include missing values, which are imputed in the next step.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "table2",
+                                    "label": "Table 2",
+                                    "tables": [
+                                        "<table>\n<thead>\n<tr>\n<th rowspan=\"2\"><i>Sex</i></th>\n<th rowspan=\"2\"><i>Variable Description</i></th>\n<th colspan=\"2\"><i>Original</i></th>\n<th colspan=\"2\"><i>Adjusted</i></th>\n<th rowspan=\"2\"><i>Observations Adjusted (%)</i></th>\n</tr>\n<tr>\n<th><i>Mean</i></th>\n<th><i>s.d.</i></th>\n<th><i>Mean</i></th>\n<th><i>s.d.</i></th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td rowspan=\"6\">Male</td>\n<td>Years in full-time education or training</td>\n<td align=\"center\">6.83</td>\n<td align=\"center\">2.67</td>\n<td align=\"center\">6.67</td>\n<td align=\"center\">2.85</td>\n<td align=\"center\">2.28%</td>\n</tr>\n<tr>\n<td>Years in employment, self-employment or farming</td>\n<td align=\"center\">19.38</td>\n<td align=\"center\">17.88</td>\n<td align=\"center\">19.32</td>\n<td align=\"center\">17.88</td>\n<td align=\"center\">0.40%</td>\n</tr>\n<tr>\n<td>Years in unemployment</td>\n<td align=\"center\">1.11</td>\n<td align=\"center\">3.24</td>\n<td align=\"center\">1.11</td>\n<td align=\"center\">3.24</td>\n<td align=\"center\">0.14%</td>\n</tr>\n<tr>\n<td>Years of illness/disabled</td>\n<td align=\"center\">0.39</td>\n<td align=\"center\">2.88</td>\n<td align=\"center\">0.39</td>\n<td align=\"center\">2.88</td>\n<td align=\"center\">0.02%</td>\n</tr>\n<tr>\n<td>Years spent on home duties</td>\n<td align=\"center\">0.21</td>\n<td align=\"center\">3.30</td>\n<td align=\"center\">0.14</td>\n<td align=\"center\">2.63</td>\n<td align=\"center\">0.23%</td>\n</tr>\n<tr>\n<td>Years in retirement</td>\n<td align=\"center\">1.01</td>\n<td align=\"center\">3.44</td>\n<td align=\"center\">1.00</td>\n<td align=\"center\">3.42</td>\n<td align=\"center\">0.07%</td>\n</tr>\n<tr>\n<td align=\"center\" rowspan=\"6\">Female</td>\n<td>Years in full-time education or training</td>\n<td align=\"center\">6.92</td>\n<td align=\"center\">2.36</td>\n<td align=\"center\">6.77</td>\n<td align=\"center\">2.57</td>\n<td align=\"center\">2.23%</td>\n</tr>\n<tr>\n<td>Years in employment, self-employment or farming</td>\n<td align=\"center\">9.17</td>\n<td align=\"center\">10.68</td>\n<td align=\"center\">9.10</td>\n<td align=\"center\">10.64</td>\n<td align=\"center\">0.51%</td>\n</tr>\n<tr>\n<td>Years in unemployment</td>\n<td align=\"center\">0.32</td>\n<td align=\"center\">1.58</td>\n<td align=\"center\">0.32</td>\n<td align=\"center\">1.58</td>\n<td align=\"center\">0.09%</td>\n</tr>\n<tr>\n<td>Years of illness/disabled</td>\n<td align=\"center\">0.27</td>\n<td align=\"center\">2.39</td>\n<td align=\"center\">0.25</td>\n<td align=\"center\">2.26</td>\n<td align=\"center\">0.05%</td>\n</tr>\n<tr>\n<td>Years spent on home duties</td>\n<td align=\"center\">12.76</td>\n<td align=\"center\">17.21</td>\n<td align=\"center\">12.70</td>\n<td align=\"center\">17.14</td>\n<td align=\"center\">0.17%</td>\n</tr>\n<tr>\n<td>Years in retirement</td>\n<td align=\"center\">0.34</td>\n<td align=\"center\">2.43</td>\n<td align=\"center\">0.33</td>\n<td align=\"center\">2.39</td>\n<td align=\"center\">0.05%</td>\n</tr>\n<tr>\n<td rowspan=\"6\">Total</td>\n<td>Years in full-time education or training</td>\n<td align=\"center\">6.87</td>\n<td align=\"center\">2.52</td>\n<td align=\"center\">6.72</td>\n<td align=\"center\">2.71</td>\n<td align=\"center\">2.26%</td>\n</tr>\n<tr>\n<td>Years in employment, self-employment or farming</td>\n<td align=\"center\">14.29</td>\n<td align=\"center\">15.59</td>\n<td align=\"center\">14.22</td>\n<td align=\"center\">15.58</td>\n<td align=\"center\">0.45%</td>\n</tr>\n<tr>\n<td>Years in unemployment</td>\n<td align=\"center\">0.72</td>\n<td align=\"center\">2.58</td>\n<td align=\"center\">0.72</td>\n<td align=\"center\">2.58</td>\n<td align=\"center\">0.11%</td>\n</tr>\n<tr>\n<td>Years of illness/disabled</td>\n<td align=\"center\">0.33</td>\n<td align=\"center\">2.65</td>\n<td align=\"center\">0.32</td>\n<td align=\"center\">2.59</td>\n<td align=\"center\">0.03%</td>\n</tr>\n<tr>\n<td>Years spent on home duties</td>\n<td align=\"center\">6.48</td>\n<td align=\"center\">13.88</td>\n<td align=\"center\">6.41</td>\n<td align=\"center\">13.77</td>\n<td align=\"center\">0.20%</td>\n</tr>\n<tr>\n<td>Years in retirement</td>\n<td align=\"center\">0.68</td>\n<td align=\"center\">3.00</td>\n<td align=\"center\">0.67</td>\n<td align=\"center\">2.97</td>\n<td align=\"center\">0.06%</td>\n</tr>\n</tbody>\n</table>"
+                                    ],
+                                    "title": "Retrospective variables adjustment in the LII survey (base year).",
+                                    "type": "table"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "text": "Missing values are imputed via a set of ordinary least squared (OLS) equations, where the number of years spent in certain employment conditions are estimated using a vector for personal characteristics. Imputed values are checked for consistencies with other variables like age, education and adjusted in case of conflicts.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "<a href=\"#table3\">Table 3</a> describes what variables are imputed using this specification and what personal characteristics are included in the vector. Models are separately estimated for males and females. <a href=\"#A2\">Appendix 2</a> and <a href=\"#A3\">3</a> report the estimates obtained in the imputation equations.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "table3",
+                                    "label": "Table 3",
+                                    "tables": [
+                                        "<table>\n<thead>\n<tr>\n<th><i>Imputed Variables</i></th>\n<th><i>Personal Characteristics used (X)</i></th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td><p>Years in full-time education or training</p><p>Years in employment, self-employment or farming</p>\n<p>Years in unemployment</p>\n<p>Years of illness/disability</p>\n<p>Years spent on home duties</p>\n<p>Years in retirement</p>\n</td>\n<td>Education, age, current employment status, chronic illness, retirement status, number of children in different age groups</td></tr>\n</tbody>\n</table>"
+                                    ],
+                                    "title": "Imputed variables.",
+                                    "type": "table"
+                                }
+                            ],
+                            "type": "figure"
+                        }
+                    ],
+                    "id": "s3-2",
+                    "title": "3.2 Exploiting the retrospective variable",
+                    "type": "section"
+                }
+            ],
+            "id": "s3",
+            "title": "3. Data",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "This section describes the methodology used in the back simulation. While a back simulation model may use some historical information to refine the outcome, it also has a higher requirement on the output quality. Since the main purpose of this back simulation model is to recreate each individual career trajectory, it demands a high accuracy of the model prediction as the pension eligibility is highly sensitive to the past employment status. In a forward microsimulation model, one would typically use some kind of aggregated values (e.g. mean, standard deviation of the distribution) to evaluate the quality of the simulation. The predicted value does not need to be correct at the individual level as long as the distributions are reasonable. Nonetheless, in the case of backward simulation, one needs to ensure that the values are sensible at the individual level due to the longitudinal consistency requirement while maintaining the reasonable distribution shape at each crosssectional level.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Compared with a forward dynamic microsimulation model, a back simulation model could be more complex as it is designed to exploit more information both from historical values and retrospective information. In order to create a panel dataset that is as close as possible to the real history, three methodologies are used in back simulations:",
+                    "type": "paragraph"
+                },
+                {
+                    "items": [
+                        [
+                            {
+                                "text": "Deterministic simulation",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "Semi-stochastic simulation",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "Stochastic simulation",
+                                "type": "paragraph"
+                            }
+                        ]
+                    ],
+                    "prefix": "bullet",
+                    "type": "list"
+                },
+                {
+                    "text": "The deterministic simulation generates the part of the history that is directly determined by retrospective variables and ensures that the generated history is perfectly consistent with the reported values. For instance, if an individual reports starting work at age 20, it is safe to assume that this individual was in work that particular year. The variables used in deterministic simulation include the age when an individual begins to work, the year in which an individual quit their previous job, the number of years spent in their current employment status (e.g. length of current job, unemployment etc.) and the number of years spent in each employment status.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Semi-stochastic simulation recreates certain historical events from retrospective variables in conjunction with some reasonable assumptions. While the deterministic simulation pinpoints the timing of some major events in history, it gives only incomplete information regarding employment trajectory. Semi-stochastic simulation is still largely based on the reported retrospective variables but might involve some assumptions. For instance, since most women take maternity leave when giving birth, it is reasonable to simulate a career profile interrupted in the year of childbirth with a high probability. Another example would be \u201cback to work\u201d social welfare benefit, which usually implies a period of unemployment for the years preceding claiming the benefit.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Stochastic simulation is designed to fill the parts of the history that cannot be inferred from deterministic and semi-stochastic processes and it recreates the history through the predictions of estimated econometric models with random components. This method is similar to a regular dynamic microsimulation model, such as DYNAMOD2 and SAGE (<a href=\"#bib15\">King et al., 1999</a>; <a href=\"#bib25\">Zaidi, 2004</a>), with the difference being that the back simulation model ages the population in a reversed direction and is subject to a much more restricted alignment procedure for consistency reasons. An outline of the simulation steps are provided in the <a href=\"#A1\">Appendix 1</a>.",
+                    "type": "paragraph"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "Discrete variables include both binary variables, such as pension membership and categorical variables, such as job position. Since the pension, membership calculation only requires basic employment status and the technical issues in alignment, the current version of the back simulation only simulate binary variables. Binary variables such as employment status, pension membership etc. are modelled using logit models that produce a probability of an event occurring as the output. These binary variables could be modelled in the following generic form",
+                            "type": "paragraph"
+                        },
+                        {
+                            "id": "eqn1",
+                            "label": "[1]",
+                            "mathml": "<math><mtext>logistic</mtext><mrow><mo>(</mo><mrow><msub><mi>p</mi><mi>i</mi></msub></mrow><mo>)</mo></mrow><mtext>\u2009</mtext><mo>=</mo><mi>\u03b1</mi><mo>+</mo><mi>\u03b2</mi><msub><mi>X</mi><mi>i</mi></msub><mo>+</mo><msub><mi>\u03b5</mi><mi>i</mi></msub>\n</math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "<i>X<sub>i</sub></i> is the vector of personal characteristics. The error term can be decomposed into specific individual effects <i>u<sub>i</sub></i> and an i.i.d. stochastic term <i>v</i>. While there are a few methods that can be adopted for controlling individual heterogeneity, this current version of the back simulation uses a simple logistic implementation for the program compatibility and the speed reason. Assuming that the stochastic term (<i>v<sub>it</sub></i>) is i.i.d. with mean zero, the average of the error terms for each individual is an unbiased estimate for individual effects (<i>u<sub>i</sub></i>). It then becomes possible to re-estimate the model using calculated individual effects and apply them to the simulation. Therefore, the final model applies can be described as",
+                            "type": "paragraph"
+                        },
+                        {
+                            "id": "eqn2",
+                            "label": "[2]",
+                            "mathml": "<math><mtext>logistic</mtext><mrow><mo>(</mo><mrow><msub><mi>p</mi><mrow><mi>i</mi><mi>t</mi></mrow></msub></mrow><mo>)</mo></mrow><mtext>\u2009</mtext><mo>=</mo><mtext>\u2009</mtext><mtext>\u2009</mtext><mi>\u03b1</mi><mo>+</mo><mi>\u03b2</mi><msub><mi>X</mi><mrow><mi>i</mi><mi>t</mi></mrow></msub><mo>+</mo><msub><mi>u</mi><mi>i</mi></msub><mo>+</mo><msub><mi>v</mi><mrow><mi>i</mi><mi>t</mi></mrow></msub></math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "The method is essentially an adjusted \u201cfixed-effects\u201d logit model, which is a logit variation of the specification suggested by <a href=\"#bib20\">Mundlak (1978)</a>. It yields a higher predictive power as parts of the unobserved heterogeneities are modelled. <a href=\"#table4\">Table 4</a> lists the variables included for each logit model. Models are estimated separately for male and females.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "table4",
+                                    "label": "Table 4",
+                                    "tables": [
+                                        "<table>\n<thead>\n<tr>\n<th/>\n<th align=\"center\" colspan=\"5\"><i>Equations</i></th>\n</tr>\n<tr>\n<th><i>Variables Included in the Equations</i></th>\n<th align=\"center\"><i>In-Work</i></th>\n<th align=\"center\"><i>Self-employment</i></th>\n<th align=\"center\"><i>Job Sector</i></th>\n<th align=\"center\"><i>Occupational Pension Membership</i></th>\n<th align=\"center\"><i>Private Pension Membership</i></th>\n</tr>\n</thead>\n<tbody>\n<tr><td>Age or Age group</td>\n<td align=\"center\">Yes</td>\n<td align=\"center\">Yes</td>\n<td align=\"center\">Yes</td>\n<td align=\"center\">Yes</td>\n<td align=\"center\">Yes</td>\n</tr>\n<tr><td>Age Squared</td>\n<td align=\"center\">Yes</td>\n<td align=\"center\">Yes</td>\n<td align=\"center\">Yes</td>\n<td align=\"center\"/>\n<td align=\"center\"/>\n</tr>\n<tr><td>Age 65 or above</td>\n<td align=\"center\"/>\n<td align=\"center\"/>\n<td align=\"center\">Yes</td>\n<td align=\"center\"/>\n<td align=\"center\"/>\n</tr>\n<tr><td>Education</td>\n<td align=\"center\">Yes</td>\n<td align=\"center\">Yes</td>\n<td align=\"center\">Yes</td>\n<td align=\"center\">Yes</td>\n<td align=\"center\">Yes</td>\n</tr>\n<tr><td>Gender</td>\n<td align=\"center\">Yes</td>\n<td align=\"center\">Yes</td>\n<td align=\"center\">Yes</td>\n<td align=\"center\">Yes</td>\n<td align=\"center\">Yes</td>\n</tr>\n<tr><td>Work Experience</td>\n<td align=\"center\"/>\n<td align=\"center\"/>\n<td align=\"center\">Yes</td>\n<td align=\"center\"/>\n<td align=\"center\"/>\n</tr>\n<tr><td>Gave Birth to a Child in the current year</td>\n<td align=\"center\">Yes</td>\n<td align=\"center\">Yes</td>\n<td align=\"center\">Yes</td>\n<td align=\"center\"/>\n<td align=\"center\"/>\n</tr>\n<tr><td>Work in the Public Sector or Not</td>\n<td align=\"center\"/>\n<td align=\"center\"/>\n<td align=\"center\"/>\n<td align=\"center\">Yes</td>\n<td align=\"center\">Yes</td>\n</tr>\n<tr><td>Job Industry</td>\n<td align=\"center\"/>\n<td align=\"center\"/>\n<td align=\"center\"/>\n<td align=\"center\">Yes</td>\n<td align=\"center\">Yes</td>\n</tr>\n<tr><td>Job Occupation</td>\n<td align=\"center\"/>\n<td align=\"center\"/>\n<td align=\"center\"/>\n<td align=\"center\">Yes</td>\n<td align=\"center\">Yes</td>\n</tr>\n<tr><td>Lagged variables</td>\n<td align=\"center\">Yes</td>\n<td align=\"center\">Yes</td>\n<td align=\"center\">Yes</td>\n<td align=\"center\">Yes</td>\n<td align=\"center\">Yes</td>\n</tr>\n<tr><td>Mean value of residuals</td>\n<td align=\"center\">Yes</td>\n<td align=\"center\">Yes</td>\n<td align=\"center\">Yes</td>\n<td align=\"center\">Yes</td>\n<td align=\"center\">Yes</td>\n</tr>\n</tbody>\n</table>"
+                                    ],
+                                    "title": "Components of the employment status equations.",
+                                    "type": "table"
+                                }
+                            ],
+                            "type": "figure"
+                        }
+                    ],
+                    "id": "s4-1",
+                    "title": "4.1 Discrete variable simulation",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "Income <i>y<sub>it</sub></i> is modelled as an extended Mincer type earning equation (<a href=\"#bib17\">Mincer &amp; Jovanovic, 1981</a>). It consists of a deterministic component (representing the dependence of income on current state variables), a random effect <i>u<sub>i</sub></i> (to account for unobserved individual heterogeneity), and a stochastic component <i>\u03b5<sub>it</sub></i> (which represents random variation over time, in addition to variation from state changes). The statistical form looks like:",
+                            "type": "paragraph"
+                        },
+                        {
+                            "id": "eqn3",
+                            "label": "[3]",
+                            "mathml": "<math><msub><mi>y</mi><mrow><mi>i</mi><mi>t</mi></mrow></msub><mtext>\u2009</mtext><mo>=</mo><mtext>\u2009</mtext><mtext>\u2009</mtext><mi>\u03b1</mi><mo>+</mo><mi>\u03b2</mi><msub><mi>X</mi><mi>i</mi></msub><mo>+</mo><msub><mi>u</mi><mi>i</mi></msub><mo>+</mo><msub><mi>\u03b5</mi><mrow><mi>i</mi><mi>t</mi></mrow></msub></math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "Where <i>X<sub>i</sub></i> includes education attainment, labour market experience and unemployment experience in the equations. Earnings are estimated using a random effect specification and coefficients are reports in <a href=\"#A4\">Appendix 4</a>.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s4-2",
+                    "title": "4.2 Continuous variable simulation",
+                    "type": "section"
+                }
+            ],
+            "id": "s4",
+            "title": "4. Methodology I: modelling the histories",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "Alignment is a commonly used method for calibrating microsimulation models so that aggregate outputs from the model match the external projections or values. This is partially due to insufficient knowledge regarding microbehaviour to specify a fully dynamic model. Simulation models, if unbounded, may over or under predict the occurrence of a certain event, even in a well-specified discrete model (<a href=\"#bib7\">Duncan &amp; Weeks, 2000</a>). Therefore, although in theory alignment might be controversial (as a perfectly specified model with perfect data should not need any alignment), it is a de facto common practice for microsimulation models (see for example DYNACAN, CORSIM, and LIAM).",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "In the back simulation module, alignment shapes the earnings and the distribution of employment status in a way that is both consistent with historical census information and retrospective information. There are two types of alignments applied in this model; one is a cross-sectional alignment and the other a longitudinal alignment.",
+                    "type": "paragraph"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "Depending on whether the variable is continuous or discrete, the alignment technique applied is different. Continuous variables such as earnings were aligned to the same level for the first year of the survey in 1994 for each age, gender, and education group and wage growth was assumed to be equivalent to consumer price index (CPI) growth rate. The alignment is a proportional adjustment, which has been used in several models, e.g. <a href=\"#bib4\">Ch\u00e9nard (2000a</a>, <a href=\"#bib5\">2000b</a>).",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "For binary variables such as employment status variables, the alignment matches the proportion of the population which has a certain employment status (e.g. working or not), to the external census values, or estimated historical values, for each age, sex and education group in a given year. The alignment is based on the probability predicted by the logit model, i.e. individuals with the highest predicted probabilities (with the stochastic term) would be selected. The method is described in details by <a href=\"#bib24\">O\u2019Donoghue (2010)</a>.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "One issue with the alignment usage in this particular study is the incomplete population. While the dataset is population representative between year 1994-2001, the lack of the deceased population makes the dataset biased in early years. To address this problem, cross sectional alignments are only applied at the sub population level, i.e. alignment by age, gender, education status etc. rather than at the whole population level.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s5-1",
+                    "title": "5.1 Cross-sectional alignment",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "Besides the cross-sectional alignment, the back simulation also requires consistency in the retrospective variables, which is crucial to the quality of the generated historical dataset, as one of the main purposes of a long panel dynamic microsimulation is life-cycle analysis (e.g. pension). Currently there are hardly any simulation models applying a longitudinal alignment, as most have been developed for forward simulation, where there is no benchmark with which to align the results. In the backsimulation module, longitudinal alignments are implemented for the following reasons:",
+                            "type": "paragraph"
+                        },
+                        {
+                            "items": [
+                                [
+                                    {
+                                        "text": "The simulated life path should be consistent with the reported retrospective variables such as date of marriage, year when started working, education, childbirth etc.",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "The simulated number of years spent in a certain employment category (e.g. total years of work/unemployment) should be consistent with reported values in the LII dataset",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "The state, occupational and private pension eligibilities should be consistent with the simulated labour force trajectory",
+                                        "type": "paragraph"
+                                    }
+                                ]
+                            ],
+                            "prefix": "bullet",
+                            "type": "list"
+                        },
+                        {
+                            "text": "As discussed earlier, major life events are determined before the stochastic simulation to ensure consistency. The reported number of years spent within a certain employment category, as presented in the LII dataset, is taken into account during the cross-sectional alignment design process. Together with the deterministic simulation, it is possible to identify how many working years are left undetermined. Individuals without any \u201cworking years\u201d left would be assigned as out of a job during the cross-sectional alignment procedure. Some small adjustments were applied after the panel was created to eliminate small gaps experienced during public sector employment.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The alignment for the state contributory pension eligibility is a bit more complicated. Ireland introduced a state pension system in 1953 and in order to be eligible for an Irish state pension, an individual has to contribute for at least 19.52% (10/52) of the time between their first eligible job and age 65. Self-employed jobs were not deemed eligible until 1988. Given this information, it is possible to influence the pension entitlement by modifying two factors within a career profile: the years of contribution and the density of contribution. For example, if an individual is not eligible for a state pension but the simulation gives an opposite result (a type I error), it is most likely that the model over-simulated the number of years worked with a pension eligible job, or that the starting year is too late. In this case, it is possible to improve the consistency by removing the years of working experience in eligible jobs and replace them with non-eligible activities. Meanwhile, a reverse correction procedure can be applied to type II error individuals (the ones with pension eligibility but without simulated eligibility).",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "A simplified case below demonstrates this algorithm (<a href=\"#table5\">Table 5</a> and <a href=\"#table6\">Table 6</a>). Assuming there are three individuals in the dataset: A, B and C. They reported that they have worked 3, 4, 3 years in total in their lifetime respectively, and in 1994, B and C received state pensions. Based on the reported total years of work and the yearly aggregate alignment, the back simulation module may generate an output as below, where a black dot [\u2022] means that an individual is working in that year and a white dot [\u00b0] indicates that the individual is out of work. As seen below, the simulation is able to reconstruct a history with a controlled yearly aggregate and consistent total years worked.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "table5",
+                                    "label": "Table 5",
+                                    "tables": [
+                                        "<table>\n<thead>\n<tr>\n<th align=\"center\"><i>Year</i></th>\n<th align=\"center\"><i>1950</i></th>\n<th align=\"center\"><i>1951</i></th>\n<th align=\"center\"><i>1952</i></th>\n<th align=\"center\"><i>1971</i></th>\n<th align=\"center\"><i>1972</i></th>\n<th align=\"center\"><i>1973</i></th>\n<th align=\"center\"><i>Total Years of Work</i></th>\n<th align=\"center\"><i>Rate</i></th>\n<th align=\"center\"><i>Simulated Eligibility</i></th>\n<th align=\"center\"><i>Actual Eligibility</i></th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>Individual A</td>\n<td align=\"center\">\u25cf</td>\n<td align=\"center\">\u25cb</td>\n<td align=\"center\">\u25cf</td>\n<td align=\"center\">\u25cb</td>\n<td align=\"center\">\u25cb</td>\n<td align=\"center\">\u25cf</td>\n<td align=\"center\">3</td>\n<td align=\"center\">33.3%</td>\n<td align=\"center\">Yes</td>\n<td align=\"center\">No</td>\n</tr>\n<tr>\n<td>Individual B</td>\n<td align=\"center\">\u25cf</td>\n<td align=\"center\">\u25cb</td>\n<td align=\"center\">\u25cf</td>\n<td align=\"center\">\u25cf</td>\n<td align=\"center\">\u25cb</td>\n<td align=\"center\">\u25cf</td>\n<td align=\"center\">4</td>\n<td align=\"center\">66.7%</td>\n<td align=\"center\">Yes</td>\n<td align=\"center\">Yes</td>\n</tr>\n<tr>\n<td>Individual C</td>\n<td align=\"center\">\u25cf</td>\n<td align=\"center\">\u25cf</td>\n<td align=\"center\">\u25cf</td>\n<td align=\"center\">\u25cb</td>\n<td align=\"center\">\u25cb</td>\n<td align=\"center\">\u25cb</td>\n<td align=\"center\">3</td>\n<td align=\"center\">0.00%</td>\n<td align=\"center\">No</td>\n<td align=\"center\">Yes</td>\n</tr>\n<tr>\n<td>Yearly Aggregate</td>\n<td align=\"center\">3</td>\n<td align=\"center\">1</td>\n<td align=\"center\">3</td>\n<td align=\"center\">1</td>\n<td align=\"center\">0</td>\n<td align=\"center\">2</td>\n<td align=\"center\"/>\n<td align=\"center\"/>\n<td align=\"center\" colspan=\"2\">(1/3 correct)</td>\n</tr>\n</tbody>\n</table>"
+                                    ],
+                                    "title": "Simulated profile without adjustment.",
+                                    "type": "table"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "table6",
+                                    "label": "Table 6",
+                                    "tables": [
+                                        "<table>\n<thead>\n<tr>\n<th align=\"center\"><i>Year</i></th>\n<th align=\"center\"><i>1950</i></th>\n<th align=\"center\"><i>1951</i></th>\n<th align=\"center\"><i>1952</i></th>\n<th align=\"center\"><i>1971</i></th>\n<th align=\"center\"><i>1972</i></th>\n<th align=\"center\"><i>1973</i></th>\n<th align=\"center\"><i>Total Years of Work</i></th>\n<th align=\"center\"><i>Rate</i></th>\n<th align=\"center\"><i>Simulated Eligibility</i></th>\n<th align=\"center\"><i>Actual Eligibility</i></th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>Individual A</td>\n<td align=\"center\">\u25cf</td>\n<td align=\"center\">\u25cf</td>\n<td align=\"center\">\u25cf</td>\n<td align=\"center\">\u25cb</td>\n<td align=\"center\">\u25cb</td>\n<td align=\"center\">\u25cb</td>\n<td align=\"center\">3</td>\n<td align=\"center\">0.0%</td>\n<td align=\"center\">No</td>\n<td align=\"center\">No</td>\n</tr>\n<tr>\n<td>Individual B</td>\n<td align=\"center\">\u25cf</td>\n<td align=\"center\">\u25cb</td>\n<td align=\"center\">\u25cf</td>\n<td align=\"center\">\u25cf</td>\n<td align=\"center\">\u25cb</td>\n<td align=\"center\">\u25cf</td>\n<td align=\"center\">4</td>\n<td align=\"center\">66.7%</td>\n<td align=\"center\">Yes</td>\n<td align=\"center\">Yes</td>\n</tr>\n<tr>\n<td>Individual C</td>\n<td align=\"center\">\u25cf</td>\n<td align=\"center\">\u25cb</td>\n<td align=\"center\">\u25cf</td>\n<td align=\"center\">\u25cb</td>\n<td align=\"center\">\u25cb</td>\n<td align=\"center\">\u25cf</td>\n<td align=\"center\">3</td>\n<td align=\"center\">33.3%</td>\n<td align=\"center\">Yes</td>\n<td align=\"center\">Yes</td>\n</tr>\n<tr>\n<td>Yearly Aggregate</td>\n<td align=\"center\">3</td>\n<td align=\"center\">1</td>\n<td align=\"center\">3</td>\n<td align=\"center\">1</td>\n<td align=\"center\">0</td>\n<td align=\"center\">2</td>\n<td align=\"center\"/>\n<td align=\"center\"/>\n<td align=\"center\" colspan=\"2\">(3/3 correct)</td>\n</tr>\n</tbody>\n</table>"
+                                    ],
+                                    "title": "Simulated profile with adjustment.",
+                                    "type": "table"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "text": "As shown above in <a href=\"#table5\">Table 5</a>, individual A has a type I error and individual C has a type II error. In order to correct the eligibility while preserving the total years of work and yearly aggregate, one solution is to swap jobs. In this case, individual A\u2019s job in 1951 has been swapped with the 1973 job, while individual C\u2019s job in 1973 has been swapped with the 1951 job. Given the symmetric nature of the process, there is no change in the yearly aggregate and total years of work.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "This method is essentially a swapping algorithm that works when the longitudinal inconsistency is found. This procedure, however, might break the cross-sectional alignment introduced earlier in some cases when there is no individual consistency that could be improved without breaking another one. In order to avoid this undesired consequence or alleviate the impact, employment statuses are added or removed only in carefully selected year(s) based on the difference between simulated labour market statistics and the census values. For instance, if the labour force participation is lower than the census value for a specific simulated year, then the model will not be allowed to remove employment statuses from that particular year, instead, it will put a higher priority on employment creation for that particular year. Since the LII is a panel dataset, the simulated history should be consistent with not only the first year, but with all the waves. Therefore, this alignment procedure takes several iterations; the model first aligns the history with the last wave in the survey, and then gradually moves to the first wave in a loop. It should be noted that this method does not guarantee perfect consistency but it does offer a reasonable result with some important insights into the life paths of individuals.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s5-2",
+                    "title": "5.2 Longitudinal alignment",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "Apart from computational algorithm defects in alignments, there is another important factor affecting the consistencies of simulated history: the quality of the data. The retrospective information collected in the survey dataset can suffer from various recall or measurement biases and it is rare not to spot inconsistencies. An individual aged 67 in 1994 might report he/she received his/her state pension in that year, while claiming that he/she had only worked for 2 years during his/her lifetime. Sometimes, the inconsistency may not be as obvious as in this previous example, especially when dealing with cross-variable consistencies. Certain data quality issues might be difficult to spot beforehand and make longitudinal alignment difficult. Therefore, it may sometimes be necessary to allow for a small deviation from the reported values.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s5-3",
+                    "title": "5.3 Data quality and the alignment",
+                    "type": "section"
+                }
+            ],
+            "id": "s5",
+            "title": "5. Methodology II: alignment and adjustment in the simulation",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "This section evaluates the back-simulation of discrete (mainly employment status) variables. It recreates labour force participation and job nature (public or private sector, employed or selfemployed), crucial information for future pension projection. <a href=\"#fig1\">Figure 1</a> illustrates their simulation order within the module. Among the discrete variables, the module simulates:",
+                    "type": "paragraph"
+                },
+                {
+                    "items": [
+                        [
+                            {
+                                "text": "In-work, Employment Sector (Public/Private)",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "Self-employment",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "Various pension memberships",
+                                "type": "paragraph"
+                            }
+                        ]
+                    ],
+                    "prefix": "bullet",
+                    "type": "list"
+                },
+                {
+                    "assets": [
+                        {
+                            "id": "fig1",
+                            "image": {
+                                "alt": "",
+                                "uri": "%iiif_uri%/00067%2Fijm-00067-fig1.tif",
+                                "size": {
+                                    "width": 1209,
+                                    "height": 612
+                                },
+                                "source": {
+                                    "mediaType": "image/jpeg",
+                                    "uri": "%iiif_uri%/00067%2Fijm-00067-fig1.tif/full/full/0/default.jpg",
+                                    "filename": "ijm-00067-fig1.jpg"
+                                }
+                            },
+                            "label": "Figure 1",
+                            "title": "Simulation flowchart for the employment status variables.",
+                            "type": "image"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "text": "The simulations are based on the complete sample of the 1994 population in the LII survey. Since the model does not generate historical profiles for people who have died before 1994, the simulated sample is not representative of the population prior to 1994. This implies that the average age in the earlier years of the simulation is significantly lower than the average age in the sample. Therefore, outputs are presented mostly by age group or cohort group in order to avoid misunderstandings.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "As discussed in the earlier section, the main goal of the back simulation model is to recreate a sensible history for all individuals in the dataset. Therefore, it is essential that the model output can replicate what actually happened. In an ideal world, the model output should be compared with the actual data to see how well the model performs. However, the lack of real historical data is the very reason that the back simulation is required. In addition, it is not feasible to compare the model with other back simulation approaches, e.g. statistical matching method, in this particular case, as synthetic history recreation is the only option due to the data limitation. Therefore, the results of the model are mainly compared with the known benchmarks: the census reports and the pension eligibilities. A success replication of this information would suggest the simulated historical profiles are sensible at both aggregate and individual level.",
+                    "type": "paragraph"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "The evolution of the in-work ratio is reproduced in <a href=\"#fig2\">Figure 2</a> and <a href=\"#fig3\">Figure 3</a>. As the graphs show, the male employment rate alters little over time except for a gradual fall of late career employment since the introduction of the retirement pension system in the 1970s. The female employment rate is 40%~50% lower than the male employment rate throughout the simulated history. The simulation indicates that the female labour participation rate is much higher before the age of 35 than for other age groups.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "fig2",
+                                    "image": {
+                                        "alt": "",
+                                        "uri": "%iiif_uri%/00067%2Fijm-00067-fig2.tif",
+                                        "size": {
+                                            "width": 1162,
+                                            "height": 783
+                                        },
+                                        "source": {
+                                            "mediaType": "image/jpeg",
+                                            "uri": "%iiif_uri%/00067%2Fijm-00067-fig2.tif/full/full/0/default.jpg",
+                                            "filename": "ijm-00067-fig2.jpg"
+                                        }
+                                    },
+                                    "label": "Figure 2",
+                                    "title": "Simulated historical in-work ratio for male by age.",
+                                    "type": "image"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "fig3",
+                                    "image": {
+                                        "alt": "",
+                                        "uri": "%iiif_uri%/00067%2Fijm-00067-fig3.tif",
+                                        "size": {
+                                            "width": 1162,
+                                            "height": 783
+                                        },
+                                        "source": {
+                                            "mediaType": "image/jpeg",
+                                            "uri": "%iiif_uri%/00067%2Fijm-00067-fig3.tif/full/full/0/default.jpg",
+                                            "filename": "ijm-00067-fig3.jpg"
+                                        }
+                                    },
+                                    "label": "Figure 3",
+                                    "title": "Simulated historical in-work ratio for female by age.",
+                                    "type": "image"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "text": "<a href=\"#fig4\">Figure 4</a> and <a href=\"#fig5\">Figure 5</a> further examine the simulated historical in-work proportion and offer a comparison with the census values to validate the simulation. As discussed earlier, the crosssectionals in the simulated period are not population representative due to the missing values of deceased individuals. Therefore, census values were adjusted based on the sample\u2019s demographic features. In order to isolate the change of demographic composition, graphs are presented by cohorts.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "fig4",
+                                    "image": {
+                                        "alt": "",
+                                        "uri": "%iiif_uri%/00067%2Fijm-00067-fig4.tif",
+                                        "size": {
+                                            "width": 1162,
+                                            "height": 786
+                                        },
+                                        "source": {
+                                            "mediaType": "image/jpeg",
+                                            "uri": "%iiif_uri%/00067%2Fijm-00067-fig4.tif/full/full/0/default.jpg",
+                                            "filename": "ijm-00067-fig4.jpg"
+                                        }
+                                    },
+                                    "label": "Figure 4",
+                                    "title": "Simulated historical in-work ratio for male by cohorts.",
+                                    "type": "image"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "fig5",
+                                    "image": {
+                                        "alt": "",
+                                        "uri": "%iiif_uri%/00067%2Fijm-00067-fig5.tif",
+                                        "size": {
+                                            "width": 1162,
+                                            "height": 786
+                                        },
+                                        "source": {
+                                            "mediaType": "image/jpeg",
+                                            "uri": "%iiif_uri%/00067%2Fijm-00067-fig5.tif/full/full/0/default.jpg",
+                                            "filename": "ijm-00067-fig5.jpg"
+                                        }
+                                    },
+                                    "label": "Figure 5",
+                                    "title": "Simulated historical in-work ratio for female by cohorts.",
+                                    "type": "image"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "text": "The figures confirm that the simulated values roughly match the estimations from the census data with a deviation of around 5 percentage points on average. The simulation seems to work better for later cohorts than the earlier ones, however this difference may partially be caused by the longitudinal alignment procedure where the adjustments may not be perfectly balanced, and the inconsistencies in retrospective variables, where the data quality declines as age increases. Nonetheless, it is safe to say that the simulated ratios move in the same direction as the census values.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The back simulation module not only aims at providing a reasonable profile at the crosssectional level, but also a historical trajectory that is consistent with retrospective variables. <a href=\"#fig6\">Figure 6</a> illustrates the difference between the simulated number of years in work and the reported values. As shown, the longitudinal inconsistency in the simulation is well controlled; in total, over 83% of the individuals were simulated with an error no greater than 1 year, and over 89% of the observations have a difference of less than 2 years. A few extreme cases are also spotted with an error greater than 10 years. These observations typically report no working history but with old age pension entitlement. In this case, the model overrides the report of zero working year in favour of the observed pension eligibilities. On average, the absolute simulation errors for males are slightly larger than those for females. A possible reason is that males generally have longer career trajectories, which increase the computation complexity in balancing the crosssectional and longitudinal alignments. The longer career trajectory also implies that the measurement error of the retrospective values like reported years of work might be bigger for males. As a result, the quality of the simulation could be negatively affected due to the inconsistent reported values.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "fig6",
+                                    "image": {
+                                        "alt": "",
+                                        "uri": "%iiif_uri%/00067%2Fijm-00067-fig6.tif",
+                                        "size": {
+                                            "width": 1168,
+                                            "height": 781
+                                        },
+                                        "source": {
+                                            "mediaType": "image/jpeg",
+                                            "uri": "%iiif_uri%/00067%2Fijm-00067-fig6.tif/full/full/0/default.jpg",
+                                            "filename": "ijm-00067-fig6.jpg"
+                                        }
+                                    },
+                                    "label": "Figure 6",
+                                    "title": "Difference between simulated years of work and reported value.",
+                                    "type": "image"
+                                }
+                            ],
+                            "type": "figure"
+                        }
+                    ],
+                    "id": "s6-1",
+                    "title": "6.1 In-work ratio",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "<a href=\"#fig7\">Figure 7</a> and <a href=\"#fig8\">Figure 8</a> depict the historical evolution of public sector employment by age. As shown, there is a gradual growth of public sector workers for all age groups, a trend that is consistent for both males and females. However, the increase of females working in the public sector is faster compared with male workers, especially for workers in their early and midcareer stages.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "fig7",
+                                    "image": {
+                                        "alt": "",
+                                        "uri": "%iiif_uri%/00067%2Fijm-00067-fig7.tif",
+                                        "size": {
+                                            "width": 1165,
+                                            "height": 784
+                                        },
+                                        "source": {
+                                            "mediaType": "image/jpeg",
+                                            "uri": "%iiif_uri%/00067%2Fijm-00067-fig7.tif/full/full/0/default.jpg",
+                                            "filename": "ijm-00067-fig7.jpg"
+                                        }
+                                    },
+                                    "label": "Figure 7",
+                                    "title": "Public sector employment for male.",
+                                    "type": "image"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "fig8",
+                                    "image": {
+                                        "alt": "",
+                                        "uri": "%iiif_uri%/00067%2Fijm-00067-fig8.tif",
+                                        "size": {
+                                            "width": 1165,
+                                            "height": 783
+                                        },
+                                        "source": {
+                                            "mediaType": "image/jpeg",
+                                            "uri": "%iiif_uri%/00067%2Fijm-00067-fig8.tif/full/full/0/default.jpg",
+                                            "filename": "ijm-00067-fig8.jpg"
+                                        }
+                                    },
+                                    "label": "Figure 8",
+                                    "title": "Simulated public sector employment for female.",
+                                    "type": "image"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "text": "Regarding the self-employed, <a href=\"#fig9\">Figure 9</a> and <a href=\"#fig10\">Figure 10</a> reveal the different preferences amongst different age groups. From the graphs it can be seen that the self-employment rates increase dramatically for males above the age of 35 over time and this stabilises around 30%, while the self-employment rate for males under 35 is just above 12% most of the time. The raise slope of the curve in the earlier part of the history may be contributed to by the limited number of observations for the age group. For females, the self-employment ratio is more or less stable within each age group except for a moderate decline for workers over 50 years old. Despite the drop, this late-career age group has a self-employment rate of around 30%, which is more than 20 percentage points higher compared with other groups. The differences are mainly due to the dropped female labour participation at later ages. Since the average age of retirement for female employee is lower than the male counterparts, the proportion of the self-employed workers increases after age 50. The graphs demonstrate that workers under the age of 35 have the least preference towards self-employment, a preference which is observed in both the simulated histories and the original dataset.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "fig9",
+                                    "image": {
+                                        "alt": "",
+                                        "uri": "%iiif_uri%/00067%2Fijm-00067-fig9.tif",
+                                        "size": {
+                                            "width": 1165,
+                                            "height": 783
+                                        },
+                                        "source": {
+                                            "mediaType": "image/jpeg",
+                                            "uri": "%iiif_uri%/00067%2Fijm-00067-fig9.tif/full/full/0/default.jpg",
+                                            "filename": "ijm-00067-fig9.jpg"
+                                        }
+                                    },
+                                    "label": "Figure 9",
+                                    "title": "Simulated male self-employed ratio by age.",
+                                    "type": "image"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "fig10",
+                                    "image": {
+                                        "alt": "",
+                                        "uri": "%iiif_uri%/00067%2Fijm-00067-fig10.tif",
+                                        "size": {
+                                            "width": 1165,
+                                            "height": 783
+                                        },
+                                        "source": {
+                                            "mediaType": "image/jpeg",
+                                            "uri": "%iiif_uri%/00067%2Fijm-00067-fig10.tif/full/full/0/default.jpg",
+                                            "filename": "ijm-00067-fig10.jpg"
+                                        }
+                                    },
+                                    "label": "Figure 10",
+                                    "title": "Simulated female self-employed ratio by age.",
+                                    "type": "image"
+                                }
+                            ],
+                            "type": "figure"
+                        }
+                    ],
+                    "id": "s6-2",
+                    "title": "6.2 Employment sectors and self-employment",
+                    "type": "section"
+                }
+            ],
+            "id": "s6",
+            "title": "6. Results I: back simulating employment status",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "According to Irish pension regulations, individuals retiring at the age of 65 or later are entitled to a retirement or old age social welfare pension (RP and OAP, respectively), which can either be contributory or means-tested. The state pension system consists of a social insurance pension introduced for those aged 70+ in 1961 and a retirement pension for those aged 65 introduced in 1970 (<a href=\"#bib22\">O\u2019Donoghue, 2002</a>). Individuals may be entitled to additional pensions depending on their jobs and personal choices. The back simulation module replicates the pension system by simulating each individual\u2019s participation in pension schemes and calculating their eligibility for a state pension once an individual retires.",
+                    "type": "paragraph"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "State pension eligibility is calculated from the simulated contribution history, which means that an output consistent with observed pension eligibility requires the complete working trajectory (employment status/type/sector) to be within a plausible and restricted range. Therefore, the consistency of pension eligibilities could be seen as an important indicator of overall simulation quality.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "<a href=\"#table7\">Table 7</a> lists the accuracies of different simulated pension eligibilities. Overall, the back simulation module developed in this paper is able to simulate the eligibility with an error of less than 5% for any pension type. This result is obtained after the longitudinal alignment procedure, which improved the accuracy of simulated eligibility by more than 25 percentage points in the exercise<sup><a href=\"#fn1\">1</a></sup>.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "footnotes": [
+                                        {
+                                            "id": "tfn1",
+                                            "label": "*",
+                                            "text": [
+                                                {
+                                                    "text": "Only those aged 66+ are included for state pension and those aged 65+ for occupational and private pension.",
+                                                    "type": "paragraph"
+                                                }
+                                            ]
+                                        }
+                                    ],
+                                    "id": "table7",
+                                    "label": "Table 7",
+                                    "tables": [
+                                        "<table>\n<thead>\n<tr>\n<td><i>Pension Type</i></td>\n<td><i>Correctly Simulated</i></td>\n<td><i>Number of Observations</i><a href=\"#tfn1\">*</a></td>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>Contributory State Pension</td>\n<td>96.08%</td>\n<td>9,343</td>\n</tr>\n<tr>\n<td>Occupational Pension</td>\n<td>98.25%</td>\n<td>10,030</td>\n</tr>\n<tr>\n<td>Private Pension</td>\n<td>97.36%</td>\n<td>1,706 (Year 2000 onwards)</td>\n</tr>\n</tbody>\n</table>"
+                                    ],
+                                    "title": "Percentage of correctly simulated eligibility.",
+                                    "type": "table"
+                                }
+                            ],
+                            "type": "figure"
+                        }
+                    ],
+                    "id": "s7-1",
+                    "title": "7.1 State pension eligibilities",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "Occupational and private pensions are simulated through well-specified logit models and the results are aligned with the information extracted from the QNHS and LII survey<sup><a href=\"#fn2\">2</a></sup>. <a href=\"#fig11\">Figure 11</a> describes the development of occupational pension membership by cohorts. It seems that later cohorts are more willing to participate in occupational pension schemes, which might imply an increase in the occupational pension coverage in Ireland over time, which in turn is consistent with the history of Irish pension reforms.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "fig11",
+                                    "image": {
+                                        "alt": "",
+                                        "uri": "%iiif_uri%/00067%2Fijm-00067-fig11.tif",
+                                        "size": {
+                                            "width": 1165,
+                                            "height": 790
+                                        },
+                                        "source": {
+                                            "mediaType": "image/jpeg",
+                                            "uri": "%iiif_uri%/00067%2Fijm-00067-fig11.tif/full/full/0/default.jpg",
+                                            "filename": "ijm-00067-fig11.jpg"
+                                        }
+                                    },
+                                    "label": "Figure 11",
+                                    "title": "Occupational pension participation by cohort.",
+                                    "type": "image"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "text": "Analysing the trend for the cohort prospectively shows the dynamics of pension participation across time for the different cohort groups. Nonetheless, it does not reveal the dynamics of age preference, which is tightly linked with career development. <a href=\"#fig12\">Figure 12</a> discloses the shift of preference of same age groups across time. As suggested, mid-career individuals appear to be participating more actively then those in other groups. It seems that the age group closest to retirement has the lowest participation rate, which could due to the differences in career trajectories, availability of the pension options for this cohort and other reasons.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "fig12",
+                                    "image": {
+                                        "alt": "",
+                                        "uri": "%iiif_uri%/00067%2Fijm-00067-fig12.tif",
+                                        "size": {
+                                            "width": 1165,
+                                            "height": 801
+                                        },
+                                        "source": {
+                                            "mediaType": "image/jpeg",
+                                            "uri": "%iiif_uri%/00067%2Fijm-00067-fig12.tif/full/full/0/default.jpg",
+                                            "filename": "ijm-00067-fig12.jpg"
+                                        }
+                                    },
+                                    "label": "Figure 12",
+                                    "title": "Occupational pension participation by age group.",
+                                    "type": "image"
+                                }
+                            ],
+                            "type": "figure"
+                        }
+                    ],
+                    "id": "s7-2",
+                    "title": "7.2 Occupational pension membership",
+                    "type": "section"
+                }
+            ],
+            "id": "s7",
+            "title": "7. Results II: pension memberships and eligibilities",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "In addition to employment statuses, the back simulation module also provides monetary income histories for all individuals. Labour earnings are simulated using the models mentioned in <a href=\"#s4\">Section 4</a>, while other non-labour income is assumed stable over time as they do not affect pension memberships. <a href=\"#fig13\">Figure 13</a> and <a href=\"#fig14\">Figure 14</a> demonstrate the dynamics of the average labour income over lifetime in this back simulation by analysing the earnings of three different cohorts. The average earning curve, as shown by the earlier cohorts, has the distinctive shape of a quadratic function, which matches the expectation of classic human capital theory. Female earnings seem to have a more flat mid-career profile, which may be due to the career interruption caused by maternity leave.",
+                    "type": "paragraph"
+                },
+                {
+                    "assets": [
+                        {
+                            "id": "fig13",
+                            "image": {
+                                "alt": "",
+                                "uri": "%iiif_uri%/00067%2Fijm-00067-fig13.tif",
+                                "size": {
+                                    "width": 1164,
+                                    "height": 783
+                                },
+                                "source": {
+                                    "mediaType": "image/jpeg",
+                                    "uri": "%iiif_uri%/00067%2Fijm-00067-fig13.tif/full/full/0/default.jpg",
+                                    "filename": "ijm-00067-fig13.jpg"
+                                }
+                            },
+                            "label": "Figure 13",
+                            "title": "Average male earnings (\u00a3) by cohort.",
+                            "type": "image"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "assets": [
+                        {
+                            "id": "fig14",
+                            "image": {
+                                "alt": "",
+                                "uri": "%iiif_uri%/00067%2Fijm-00067-fig14.tif",
+                                "size": {
+                                    "width": 1161,
+                                    "height": 783
+                                },
+                                "source": {
+                                    "mediaType": "image/jpeg",
+                                    "uri": "%iiif_uri%/00067%2Fijm-00067-fig14.tif/full/full/0/default.jpg",
+                                    "filename": "ijm-00067-fig14.jpg"
+                                }
+                            },
+                            "label": "Figure 14",
+                            "title": "Average female earnings (\u00a3) by cohort.",
+                            "type": "image"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "text": "<a href=\"#fig15\">Figure 15</a> and <a href=\"#fig16\">Figure 16</a> give an overview of the evolution of earnings across the different age groups. As can be seen, average earnings increase steadily due to the increasing level of education. This is also confirmed by the cohort graphs shown earlier, where the younger cohorts demonstrate higher peak values. Male earnings are substantially different depending on the stage of their career. The average earnings by age 50 or above can be more than 50% higher compared to a male aged 20\u201335, but the difference is a lot smaller for female workers.",
+                    "type": "paragraph"
+                },
+                {
+                    "assets": [
+                        {
+                            "id": "fig15",
+                            "image": {
+                                "alt": "",
+                                "uri": "%iiif_uri%/00067%2Fijm-00067-fig15.tif",
+                                "size": {
+                                    "width": 1164,
+                                    "height": 783
+                                },
+                                "source": {
+                                    "mediaType": "image/jpeg",
+                                    "uri": "%iiif_uri%/00067%2Fijm-00067-fig15.tif/full/full/0/default.jpg",
+                                    "filename": "ijm-00067-fig15.jpg"
+                                }
+                            },
+                            "label": "Figure 15",
+                            "title": "Average male earnings (\u00a3) by age.",
+                            "type": "image"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "assets": [
+                        {
+                            "id": "fig16",
+                            "image": {
+                                "alt": "",
+                                "uri": "%iiif_uri%/00067%2Fijm-00067-fig16.tif",
+                                "size": {
+                                    "width": 1161,
+                                    "height": 783
+                                },
+                                "source": {
+                                    "mediaType": "image/jpeg",
+                                    "uri": "%iiif_uri%/00067%2Fijm-00067-fig16.tif/full/full/0/default.jpg",
+                                    "filename": "ijm-00067-fig16.jpg"
+                                }
+                            },
+                            "label": "Figure 16",
+                            "title": "Average female earnings (\u00a3) by age.",
+                            "type": "image"
+                        }
+                    ],
+                    "type": "figure"
+                }
+            ],
+            "id": "s8",
+            "title": "8. Results III: income variables",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "As discussed above, the preparation of the base dataset is one of the most important elements in every dynamic microsimulation model. However, finding a long historical panel dataset with all the necessary variables is often infeasible. This paper develops an algorithm to simulate a historical panel for the LII dataset to fill in the missing history.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The back simulation module extracts retrospective information from the LII survey and applies a dynamic microsimulation in a reversed direction to simulate population histories. Due to the nature of historical simulation, the longitudinal consistency requirement is high and difficult to achieve when compared with a forward dynamic microsimulation. The method proposed in this paper solves this problem by introducing extra calibrations and alignments at both the crosssectional and longitudinal levels. The overall result of the simulated panel, as described in the earlier sections, matches the labour market history to a fairly high degree based on the macro statistics calculated. The simulated values follow the observed trend quite closely, and are able to pick up the dynamics of different types of pension eligibility across time and cohorts. Nevertheless, further validation of the long-term trajectories of the employment and earnings produced by the model might be necessary, although there is little reliable data to compare the results with for the earlier half of 20th century.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The back simulation method could potentially offer many benefits for microsimulation modellers. By expanding the longitudinal information while maintaining consistencies with a panel dataset with limited waves, it offers a viable alternative to the dilemma of base dataset choice as described by <a href=\"#bib3\">Cassells et al. (2006)</a> and <a href=\"#bib26\">Zaidi and Scott (2001)</a>. The generated historical panel could consequently enhance the accuracy and stability of the forward dynamic simulation by feeding in information on career trajectory. Given the extensive retrospective information modelled, the back simulated panel has a much higher data quality than a simple synthetic panel. Since only standardized survey questions and macro statistics are used in the simulation, this proposed back simulation method could be potentially replicated in other datasets that include retrospective questions, e.g. ECHP, BHPS, German Socio-Economic Panel (GSOEP), FFS. The method could help modellers to run a life-cycle based simulation without using a scarce long panel. In addition, the historical panel provides many important insights, e.g. the dynamics of career trajectories, which would otherwise be easily overlooked in the original dataset.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The exploration of a back simulation method as described in this paper is still in its early stages and the current algorithm could be further improved. Future work is planned to improve the following aspects of the back simulation model:",
+                    "type": "paragraph"
+                },
+                {
+                    "items": [
+                        [
+                            {
+                                "text": "Simulation of the deceased cohort of the population in order to align historical statistics more accurately, as the current version does not generate a representative historical population.",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "Develop an improved algorithm for the cross-sectional/longitudinal alignment to alleviate the impact of inaccurate responses for retrospective questions.",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "Understand the robustness of the model and the standard errors of the results. Further analysing the variations in the model would enhance the credibility of the model, especially when stochastic components are used.",
+                                "type": "paragraph"
+                            }
+                        ]
+                    ],
+                    "prefix": "bullet",
+                    "type": "list"
+                },
+                {
+                    "text": "In spite of the shortcomings inherent in the current version of this model, this paper shows that reconstructing historical information is feasible based on standard household survey dataset and census information, providing there is some retrospective information in the dataset that can be used for modelling. From a practical point of view, the simulated panel is the only available historical panel dataset for Ireland, which offers the possibilities of investigating life-cycle income profiles together with a dynamic microsimulation model.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s9",
+            "title": "9. Conclusions",
+            "type": "section"
+        }
+    ],
+    "references": [
+        {
+            "articleTitle": "Un outil de prospective des retraites: le mod\u00e8le de microsimulation Destinie",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Bardaji, J",
+                        "preferred": "J Bardaji"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "S\u00e9dillot, B",
+                        "preferred": "B S\u00e9dillot"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Walraet, E",
+                        "preferred": "E Walraet"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2003",
+            "id": "bib1",
+            "journal": "\u00c9conomie et pr\u00e9vision",
+            "pages": {
+                "first": "193",
+                "last": "214",
+                "range": "193\u2013214"
+            },
+            "type": "journal"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Caldwell, Stephen B.",
+                        "preferred": "Stephen B. Caldwell"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "CORSIM 3.0 User and Technical Documentation",
+            "date": "1997",
+            "id": "bib2",
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "Ithaca, NY"
+                        ]
+                    },
+                    "formatted": [
+                        "Ithaca, NY"
+                    ]
+                },
+                "name": [
+                    "Cornell University"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Cassells, R",
+                        "preferred": "R Cassells"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Harding, A",
+                        "preferred": "A Harding"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Kelly, S",
+                        "preferred": "S Kelly"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2006",
+            "details": "Problems and Prospects for Dynamic Microsimulation: A Review and lessons for APPSIM. NATSEM Discussion Paper",
+            "id": "bib3",
+            "title": "Problems and Prospects for Dynamic Microsimulation: A Review and lessons for APPSIM. NATSEM Discussion Paper",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Ch\u00e9nard, D",
+                        "preferred": "D Ch\u00e9nard"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2000",
+            "details": "DYNACAN Project Document",
+            "id": "bib4",
+            "title": "Earnings in DYNACAN: distribution alignment methodology",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Ch\u00e9nard, D",
+                        "preferred": "D Ch\u00e9nard"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2000",
+            "details": "238\u2013250, Individual alignment and group processing: an application to migration processes in DYNACAN, occasional papers-university of Cambridge department of applied economics",
+            "id": "bib5",
+            "title": "Individual alignment and group processing: an application to migration processes in DYNACAN, occasional papers-university of Cambridge department of applied economics",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Curry, C",
+                        "preferred": "C Curry"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1996",
+            "id": "bib6",
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "London"
+                        ]
+                    },
+                    "formatted": [
+                        "London"
+                    ]
+                },
+                "name": [
+                    "Analytical Services Division, Department of Social Security"
+                ]
+            },
+            "source": "PENSIM: A Dynamic Simulation Model of Pensioners\u2019 Income \u201d in Government Economic Service Working Paper No. 129",
+            "title": "PENSIM: A Dynamic Simulation Model of Pensioners\u2019 Income \u201d in Government Economic Service Working Paper No. 129",
+            "type": "report"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Duncan, A",
+                        "preferred": "A Duncan"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Weeks, M",
+                        "preferred": "M Weeks"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2000",
+            "details": "Simulating Transitions Using Discrete Choice Models, Microsimulation Modelling for Policy Analysis: Challenges and Innovations, Cambridge, Cambridge University Press",
+            "id": "bib7",
+            "title": "Microsimulation Modelling for Policy Analysis: Challenges and Innovations",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Emmerson, C",
+                        "preferred": "C Emmerson"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Reed, H",
+                        "preferred": "H Reed"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Shephard, A",
+                        "preferred": "A Shephard"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2004",
+            "details": "An assessment of PenSim2",
+            "id": "bib8",
+            "title": "An assessment of PenSim2",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Evandrou, M",
+                        "preferred": "M Evandrou"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2004",
+            "details": "SAGE Technical Note No 8",
+            "id": "bib9",
+            "title": "Imputing pension and caring histories to the base data in the SAGE dynamic microsimulation model",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Favreault, M",
+                        "preferred": "M Favreault"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2004",
+            "details": "A Primer on the Dynamic Simulation of Income Model (DYNASIM3)",
+            "id": "bib10",
+            "title": "A Primer on the Dynamic Simulation of Income Model (DYNASIM3)",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Figari, F",
+                        "preferred": "F Figari"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Levy, H",
+                        "preferred": "H Levy"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Sutherland, H",
+                        "preferred": "H Sutherland"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2007",
+            "details": "Using The Eu Silc For Policy Simulation: Prospects. Some Limitations And Suggestions, EUROMOD Working Papers",
+            "id": "bib11",
+            "title": "Using The Eu Silc For Policy Simulation: Prospects. Some Limitations And Suggestions, EUROMOD Working Papers",
+            "type": "unknown"
+        },
+        {
+            "articleTitle": "Can we Afford the Future? An evaluation of the new Swedish pension system, Modelling our future: population ageing",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Flood, L",
+                        "preferred": "L Flood"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2007",
+            "id": "bib12",
+            "journal": "social security and taxation",
+            "pages": "33",
+            "type": "journal"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Fredriksen, D",
+                        "preferred": "D Fredriksen"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2003",
+            "details": "The MOSART model-a short technical documentation",
+            "id": "bib13",
+            "title": "The MOSART model-a short technical documentation",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Harding, A",
+                        "preferred": "A Harding"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2007",
+            "details": "Challenges and Opportunities of Dynamic Microsimulation Modelling",
+            "id": "bib14",
+            "title": "Challenges and Opportunities of Dynamic Microsimulation Modelling",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "King, A",
+                        "preferred": "A King"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "B\u00e6kgaard, H",
+                        "preferred": "H B\u00e6kgaard"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Robinson, M",
+                        "preferred": "M Robinson"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1999",
+            "details": "DYNAMOD-2: An overview. Technical Paper, 19",
+            "id": "bib15",
+            "title": "DYNAMOD-2: An overview. Technical Paper",
+            "type": "unknown"
+        },
+        {
+            "articleTitle": "Pension incomes in the European Union: policy reform strategies in comparative perspective",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Mantovani, D",
+                        "preferred": "D Mantovani"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Papadopoulos, F",
+                        "preferred": "F Papadopoulos"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Sutherland, H",
+                        "preferred": "H Sutherland"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Tsakloglou, P",
+                        "preferred": "P Tsakloglou"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2007",
+            "id": "bib16",
+            "journal": "Micro-simulation in action: policy analysis in Europe using EUROMOD",
+            "pages": "27",
+            "type": "journal"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Mincer, J",
+                        "preferred": "J Mincer"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Jovanovic, B",
+                        "preferred": "B Jovanovic"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1981",
+            "details": "2164, Labor mobility and wages, Studies in Labor Markets",
+            "id": "bib17",
+            "title": "Labor mobility and wages, Studies in Labor Markets",
+            "type": "unknown"
+        },
+        {
+            "articleTitle": "DYNACAN, the Canadian pension plan policy model: demographic and earnings components",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Morrison, R",
+                        "preferred": "R Morrison"
+                    },
+                    "type": "person"
+                }
+            ],
+            "conference": {
+                "name": [
+                    "Proceedings of the Microsimulation Section at the International Conference on Information Theory, Combinatorics, and Statistics"
+                ]
+            },
+            "date": "1997",
+            "id": "bib18",
+            "type": "conference-proceeding"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Morrison, R",
+                        "preferred": "R Morrison"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1998",
+            "details": "Overview of DYNACAN, a full-fledged Canadian actuarial stochastic model designed for the fiscal and policy analysis of social security schemes",
+            "id": "bib19",
+            "title": "Overview of DYNACAN, a full-fledged Canadian actuarial stochastic model designed for the fiscal and policy analysis of social security schemes",
+            "type": "unknown"
+        },
+        {
+            "articleTitle": "On the pooling of time series and cross section data",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Mundlak, Y",
+                        "preferred": "Y Mundlak"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1978",
+            "id": "bib20",
+            "journal": "Econometrica",
+            "pages": {
+                "first": "69",
+                "last": "85",
+                "range": "69\u201385"
+            },
+            "type": "journal",
+            "volume": "46"
+        },
+        {
+            "articleTitle": "Dynamic microsimulation: a methodological survey",
+            "authors": [
+                {
+                    "name": {
+                        "index": "O\u2019Donoghue, C",
+                        "preferred": "C O\u2019Donoghue"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2001",
+            "id": "bib21",
+            "journal": "Brazilian Electronic Journal of Economics",
+            "pages": "77",
+            "type": "journal",
+            "volume": "4"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "O\u2019Donoghue, C",
+                        "preferred": "C O\u2019Donoghue"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "Redistribution in the Irish tax benefit system",
+            "date": "2002",
+            "id": "bib22",
+            "publisher": {
+                "name": [
+                    "University of London"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "O\u2019Donoghue, C",
+                        "preferred": "C O\u2019Donoghue"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Lennon, J",
+                        "preferred": "J Lennon"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Hynes, S",
+                        "preferred": "S Hynes"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2009",
+            "details": "International Journal of Microsimulation, 2, 1",
+            "id": "bib23",
+            "title": "The Life-Cycle Income Analysis Model (LIAM): A Study of a Flexible Dynamic Microsimulation Modelling Computing Framework",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "O\u2019Donoghue, C",
+                        "preferred": "C O\u2019Donoghue"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "Life-Cycle Income Analysis Modelling",
+            "date": "2010",
+            "id": "bib24",
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "AG & CO.KG"
+                        ]
+                    },
+                    "formatted": [
+                        "AG & CO.KG"
+                    ]
+                },
+                "name": [
+                    "2010 Lambert Academic Publishing"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Zaidi, A",
+                        "preferred": "A Zaidi"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2004",
+            "details": "Estimation of earnings in the SAGE dynamic microsimulation model: London. ESRC-Sage Technical Note",
+            "id": "bib25",
+            "title": "Estimation of earnings in the SAGE dynamic microsimulation model: London. ESRC-Sage Technical Note",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Zaidi, A",
+                        "preferred": "A Zaidi"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Scott, A",
+                        "preferred": "A Scott"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2001",
+            "details": "Base dataset for the SAGE model. Sage Technical Note",
+            "id": "bib26",
+            "title": "Base dataset for the SAGE model. Sage Technical Note",
+            "type": "unknown"
+        }
+    ],
+    "appendices": [
+        {
+            "content": [
+                {
+                    "items": [
+                        [
+                            {
+                                "text": "Estimate models",
+                                "type": "paragraph"
+                            },
+                            {
+                                "items": [
+                                    [
+                                        {
+                                            "text": "Employment (in-work/out-of-work) model",
+                                            "type": "paragraph"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "text": "Self-employed model",
+                                            "type": "paragraph"
+                                        }
+                                    ]
+                                ],
+                                "prefix": "alpha-lower",
+                                "type": "list"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "Impute social economic status variables for each year in the original dataset (1994-2001)",
+                                "type": "paragraph"
+                            },
+                            {
+                                "items": [
+                                    [
+                                        {
+                                            "text": "Impute the number of years in education, employment, sickness, home care duties and retirement using regression in 1994 by sex group",
+                                            "type": "paragraph"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "text": "Update these variables to 1995\u20132001",
+                                            "type": "paragraph"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "text": "Consistency check for major social economic variables during the years 1994\u20132001",
+                                            "type": "paragraph"
+                                        }
+                                    ]
+                                ],
+                                "prefix": "alpha-lower",
+                                "type": "list"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "Generate historical data using known information",
+                                "type": "paragraph"
+                            },
+                            {
+                                "items": [
+                                    [
+                                        {
+                                            "text": "Demographic information (e.g. year of birth)",
+                                            "type": "paragraph"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "text": "Maternity information (based on child age)",
+                                            "type": "paragraph"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "text": "Job information (e.g. year of starting first job, last job, total number of years worked etc.)",
+                                            "type": "paragraph"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "text": "Pension information (e.g. total pension contribution, pension entitlements)",
+                                            "type": "paragraph"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "text": "Others (e.g. school, geographic information)",
+                                            "type": "paragraph"
+                                        }
+                                    ]
+                                ],
+                                "prefix": "alpha-lower",
+                                "type": "list"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "Deterministic back simulation (in/out work)",
+                                "type": "paragraph"
+                            },
+                            {
+                                "items": [
+                                    [
+                                        {
+                                            "text": "Create age information",
+                                            "type": "paragraph"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "text": "b. Infer working status from retrospective variables",
+                                            "type": "paragraph"
+                                        },
+                                        {
+                                            "items": [
+                                                [
+                                                    {
+                                                        "text": "Must be out of work before year of starting work",
+                                                        "type": "paragraph"
+                                                    }
+                                                ],
+                                                [
+                                                    {
+                                                        "text": "Must be in work in the year of starting work",
+                                                        "type": "paragraph"
+                                                    }
+                                                ],
+                                                [
+                                                    {
+                                                        "text": "Must be in work since the current job started",
+                                                        "type": "paragraph"
+                                                    }
+                                                ],
+                                                [
+                                                    {
+                                                        "text": "Must be in work in the year of quitting previous job",
+                                                        "type": "paragraph"
+                                                    }
+                                                ],
+                                                [
+                                                    {
+                                                        "text": "Must be unemployed since current unemployment started",
+                                                        "type": "paragraph"
+                                                    }
+                                                ]
+                                            ],
+                                            "prefix": "roman-lower",
+                                            "type": "list"
+                                        }
+                                    ]
+                                ],
+                                "prefix": "alpha-lower",
+                                "type": "list"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "Semi-stochastic back simulation",
+                                "type": "paragraph"
+                            },
+                            {
+                                "items": [
+                                    [
+                                        {
+                                            "text": "Assuming a 75% chance that a woman will be \u201cout of work\u201d in the year of giving birth to a child",
+                                            "type": "paragraph"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "text": "State pensioners must start work before the age of 56",
+                                            "type": "paragraph"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "text": "\u201cBack to work\u201d beneficiaries must have been unemployed for 2 years",
+                                            "type": "paragraph"
+                                        }
+                                    ]
+                                ],
+                                "prefix": "alpha-lower",
+                                "type": "list"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "Fill the gap of unallocated working status for history using stochastic simulation",
+                                "type": "paragraph"
+                            },
+                            {
+                                "items": [
+                                    [
+                                        {
+                                            "text": "Replace the unknown working status to \u201cin work\u201d if the number of known working years is lower than the total work years",
+                                            "type": "paragraph"
+                                        },
+                                        {
+                                            "items": [
+                                                [
+                                                    {
+                                                        "text": "Error term is stochastic. The ranking is based on the sum of the error terms and the personal effect in the model",
+                                                        "type": "paragraph"
+                                                    }
+                                                ],
+                                                [
+                                                    {
+                                                        "text": "The status is aligned with census data by interacting with the ranking",
+                                                        "type": "paragraph"
+                                                    }
+                                                ]
+                                            ],
+                                            "prefix": "roman-lower",
+                                            "type": "list"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "text": "Impute the working status if there is still a gap between the reported number of years in work and the simulated years of in work",
+                                            "type": "paragraph"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "text": "Set the rest of the employment statuses to \u201cnot in work\u201d if the simulated number of years in work is consistent with the reported values",
+                                            "type": "paragraph"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "text": "Adjust any differences",
+                                            "type": "paragraph"
+                                        }
+                                    ]
+                                ],
+                                "prefix": "alpha-lower",
+                                "type": "list"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "Simulate/Generate the variables that LIAM will use",
+                                "type": "paragraph"
+                            },
+                            {
+                                "items": [
+                                    [
+                                        {
+                                            "text": "Demographic information (age, alive, maternity)",
+                                            "type": "paragraph"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "text": "Education information (based on the age of leaving full time education)",
+                                            "type": "paragraph"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "text": "Marriage information",
+                                            "type": "paragraph"
+                                        },
+                                        {
+                                            "items": [
+                                                [
+                                                    {
+                                                        "text": "Calculate the year in which an individual married",
+                                                        "type": "paragraph"
+                                                    }
+                                                ],
+                                                [
+                                                    {
+                                                        "text": "Assume that an individual married at age 25 if the current marital status is separated, divorced or widowed.",
+                                                        "type": "paragraph"
+                                                    }
+                                                ]
+                                            ],
+                                            "prefix": "roman-lower",
+                                            "type": "list"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "text": "d. Prepare employment information",
+                                            "type": "paragraph"
+                                        },
+                                        {
+                                            "items": [
+                                                [
+                                                    {
+                                                        "text": "Self-employment",
+                                                        "type": "paragraph"
+                                                    },
+                                                    {
+                                                        "items": [
+                                                            [
+                                                                {
+                                                                    "text": "Estimate the probability of being self-employed (1994\u20132001)",
+                                                                    "type": "paragraph"
+                                                                }
+                                                            ],
+                                                            [
+                                                                {
+                                                                    "text": "Read the historical values of self-employment and smooth the curve using moving average method",
+                                                                    "type": "paragraph"
+                                                                }
+                                                            ],
+                                                            [
+                                                                {
+                                                                    "text": "Use the stochastic term and personal effect to predict the probability of selfemployment, align data with estimates.",
+                                                                    "type": "paragraph"
+                                                                }
+                                                            ]
+                                                        ],
+                                                        "prefix": "number",
+                                                        "type": "list"
+                                                    }
+                                                ],
+                                                [
+                                                    {
+                                                        "text": "Public sector",
+                                                        "type": "paragraph"
+                                                    },
+                                                    {
+                                                        "items": [
+                                                            [
+                                                                {
+                                                                    "text": "Assume that people stick with the same sector as reported in 1994",
+                                                                    "type": "paragraph"
+                                                                }
+                                                            ],
+                                                            [
+                                                                {
+                                                                    "text": "Do not allow for small gaps in public sector employment",
+                                                                    "type": "paragraph"
+                                                                }
+                                                            ],
+                                                            [
+                                                                {
+                                                                    "text": "Store alignment data by sex education and cohort",
+                                                                    "type": "paragraph"
+                                                                }
+                                                            ],
+                                                            [
+                                                                {
+                                                                    "text": "Use stochastic term and personal effect to predict the probability of staying within the public sector, and align the data using saved values",
+                                                                    "type": "paragraph"
+                                                                }
+                                                            ]
+                                                        ],
+                                                        "prefix": "number",
+                                                        "type": "list"
+                                                    }
+                                                ],
+                                                [
+                                                    {
+                                                        "text": "Final adjustments to smooth labour participation history",
+                                                        "type": "paragraph"
+                                                    }
+                                                ]
+                                            ],
+                                            "prefix": "roman-lower",
+                                            "type": "list"
+                                        }
+                                    ]
+                                ],
+                                "prefix": "alpha-lower",
+                                "type": "list"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "Calculation for pay related social insurance (PRSI) pension entitlement",
+                                "type": "paragraph"
+                            },
+                            {
+                                "items": [
+                                    [
+                                        {
+                                            "text": "Create a variable for the contributory class in the PRSI system for state pensions",
+                                            "type": "paragraph"
+                                        },
+                                        {
+                                            "items": [
+                                                [
+                                                    {
+                                                        "text": "Public servants are treated as employees if they joined the job after 1995",
+                                                        "type": "paragraph"
+                                                    }
+                                                ],
+                                                [
+                                                    {
+                                                        "text": "Public servant pensions are eligible for those who joined the work before 1995",
+                                                        "type": "paragraph"
+                                                    }
+                                                ]
+                                            ],
+                                            "prefix": "roman-lower",
+                                            "type": "list"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "text": "Calculate the eligibility for a PRSI pension for the rest",
+                                            "type": "paragraph"
+                                        },
+                                        {
+                                            "items": [
+                                                [
+                                                    {
+                                                        "text": "Self-employed are assumed to only be insured after 1988",
+                                                        "type": "paragraph"
+                                                    }
+                                                ],
+                                                [
+                                                    {
+                                                        "text": "Public sector are assumed to only be insured after 1995",
+                                                        "type": "paragraph"
+                                                    }
+                                                ],
+                                                [
+                                                    {
+                                                        "text": "Calculate the pension credit",
+                                                        "type": "paragraph"
+                                                    }
+                                                ]
+                                            ],
+                                            "prefix": "roman-lower",
+                                            "type": "list"
+                                        }
+                                    ]
+                                ],
+                                "prefix": "alpha-lower",
+                                "type": "list"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "Longitudinal Alignment",
+                                "type": "paragraph"
+                            },
+                            {
+                                "items": [
+                                    [
+                                        {
+                                            "text": "Compare simulated PRSI pension entitlement with the actual entitlement",
+                                            "type": "paragraph"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "text": "Modify the history while keeping the cross-sectional alignment of the labour market participation, self-employed and pension coverage ratio stable",
+                                            "type": "paragraph"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "text": "Repeat the above procedure several times until the consistency is satisfactory",
+                                            "type": "paragraph"
+                                        }
+                                    ]
+                                ],
+                                "prefix": "alpha-lower",
+                                "type": "list"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "Simulate earnings (for employees and self-employed)",
+                                "type": "paragraph"
+                            },
+                            {
+                                "items": [
+                                    [
+                                        {
+                                            "text": "Estimate the wage model (random effect model)",
+                                            "type": "paragraph"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "text": "Record the standard deviation of random effects and the error term",
+                                            "type": "paragraph"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "text": "Simulate the wage for each group with a stochastic term that shares the standard deviation of estimated random effects",
+                                            "type": "paragraph"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "text": "Align the average earnings by sex, education level and age group to the year 2000 values",
+                                            "type": "paragraph"
+                                        }
+                                    ]
+                                ],
+                                "prefix": "alpha-lower",
+                                "type": "list"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "Simulate occupational pension membership using the equation estimated using the 1994-2001 data and calibrated using the QNHS samples.",
+                                "type": "paragraph"
+                            },
+                            {
+                                "items": [
+                                    [
+                                        {
+                                            "text": "Calculate the probability of receiving an occupational pension, employee personal pension and self-employed personal pension for each age and sex group",
+                                            "type": "paragraph"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "text": "Estimate the occupational/self-employed/personal pension model using existing data",
+                                            "type": "paragraph"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "text": "Align it with the probability breakdown calculated from the QHNS sample for both the existing dataset (LII) values and the simulated historical values",
+                                            "type": "paragraph"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "text": "Correction for the unlikely event of an inconsistency between the occupational pension status and the employment status",
+                                            "type": "paragraph"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "text": "Final adjustment and alignment",
+                                            "type": "paragraph"
+                                        }
+                                    ]
+                                ],
+                                "prefix": "alpha-lower",
+                                "type": "list"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "Calculate the value of the DC Occupational pension fund",
+                                "type": "paragraph"
+                            },
+                            {
+                                "items": [
+                                    [
+                                        {
+                                            "text": "Model contribution in a similar manner as wages and align with observed contribution rate (split into two rates, pre-1995 and post-1995)",
+                                            "type": "paragraph"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "text": "Calculate the pension fund value from the 1930s using assumed interest rates",
+                                            "type": "paragraph"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "text": "Calculate the contributions for each pension type",
+                                            "type": "paragraph"
+                                        }
+                                    ]
+                                ],
+                                "prefix": "alpha-lower",
+                                "type": "list"
+                            }
+                        ]
+                    ],
+                    "prefix": "number",
+                    "type": "list"
+                }
+            ],
+            "id": "A1",
+            "title": "Appendix 1 Steps of Back Simulation"
+        },
+        {
+            "content": [
+                {
+                    "assets": [
+                        {
+                            "id": "tableA1",
+                            "label": "Table 1",
+                            "tables": [
+                                "<table>\n<thead>\n<tr>\n<th rowspan=\"3\"><i>Variables</i></th>\n<th align=\"center\" colspan=\"4\"><i>Equations</i></th>\n</tr>\n<tr>\n<th colspan=\"2\"><i>Years in full-time education or training</i></th>\n<th align=\"center\" colspan=\"2\"><i>Years in employment, self-employment or farming</i></th>\n</tr>\n<tr>\n<th align=\"center\"><i>coefficient</i></th>\n<th align=\"center\"><i>s.e.</i></th>\n<th align=\"center\"><i>coefficient</i></th>\n<th align=\"center\"><i>s.e.</i></th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>College Education</td>\n<td align=\"center\">4.22</td>\n<td align=\"center\">0.07</td>\n<td align=\"center\">\u22123.43</td>\n<td align=\"center\">0.21</td>\n</tr>\n<tr>\n<td>Secondary Education</td>\n<td align=\"center\">2.17</td>\n<td align=\"center\">0.07</td>\n<td align=\"center\">\u22121.66</td>\n<td align=\"center\">0.21</td>\n</tr>\n<tr>\n<td>Age</td>\n<td align=\"center\">0.00</td>\n<td align=\"center\">0.02</td>\n<td align=\"center\">0.36</td>\n<td align=\"center\">0.05</td>\n</tr>\n<tr>\n<td>Is Working</td>\n<td align=\"center\">\u22121.02</td>\n<td align=\"center\">0.13</td>\n<td align=\"center\">7.37</td>\n<td align=\"center\">0.37</td>\n</tr>\n<tr>\n<td>Illness</td>\n<td align=\"center\">0.16</td>\n<td align=\"center\">0.14</td>\n<td align=\"center\">\u22121.99</td>\n<td align=\"center\">0.42</td>\n</tr>\n<tr>\n<td>In education</td>\n<td align=\"center\">\u22120.89</td>\n<td align=\"center\">0.14</td>\n<td align=\"center\">2.85</td>\n<td align=\"center\">0.41</td>\n</tr>\n<tr>\n<td>Unemployed</td>\n<td align=\"center\">\u22121.28</td>\n<td align=\"center\">0.14</td>\n<td align=\"center\">1.03</td>\n<td align=\"center\">0.40</td>\n</tr>\n<tr>\n<td>Retired</td>\n<td align=\"center\">\u22121.05</td>\n<td align=\"center\">0.17</td>\n<td align=\"center\">4.30</td>\n<td align=\"center\">0.51</td>\n</tr>\n<tr>\n<td>Number of Children under Age 3</td>\n<td align=\"center\">\u22120.06</td>\n<td align=\"center\">0.06</td>\n<td align=\"center\">0.16</td>\n<td align=\"center\">0.19</td>\n</tr>\n<tr>\n<td>Number of Children between Age 4 and 11</td>\n<td align=\"center\">\u22120.10</td>\n<td align=\"center\">0.03</td>\n<td align=\"center\">0.09</td>\n<td align=\"center\">0.10</td>\n</tr>\n<tr>\n<td>Number of Children between Age 12 and 15</td>\n<td align=\"center\">\u22120.09</td>\n<td align=\"center\">0.04</td>\n<td align=\"center\">0.06</td>\n<td align=\"center\">0.12</td>\n</tr>\n<tr>\n<td>Cohort Dummies</td>\n<td align=\"center\">Yes</td>\n<td align=\"center\">Yes</td>\n<td align=\"center\">Yes</td>\n<td align=\"center\">Yes</td>\n</tr>\n<tr>\n<td>Number of Observations</td>\n<td align=\"center\" colspan=\"2\">5,738</td>\n<td align=\"center\" colspan=\"2\">5,738</td>\n</tr>\n<tr>\n<td>Adjusted R-square</td>\n<td align=\"center\" colspan=\"2\">0.48</td>\n<td align=\"center\" colspan=\"2\">0.90</td>\n</tr>\n</tbody>\n</table>"
+                            ],
+                            "type": "table"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "assets": [
+                        {
+                            "id": "tableA2",
+                            "label": "Table 2",
+                            "tables": [
+                                "<table>\n<thead>\n<tr>\n<th rowspan=\"3\"><i>Variables</i></th>\n<th align=\"center\" colspan=\"4\"><i>Equations</i></th>\n</tr>\n<tr>\n<th align=\"center\" colspan=\"2\"><i>Years in unemployment</i></th>\n<th align=\"center\" colspan=\"2\"><i>Years of illness/disabled</i></th>\n</tr>\n<tr>\n<th align=\"center\"><i>coefficient</i></th>\n<th align=\"center\"><i>s.e.</i></th>\n<th align=\"center\"><i>coefficient</i></th>\n<th align=\"center\"><i>s.e.</i></th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>College Education</td>\n<td align=\"center\">\u22121.05</td>\n<td align=\"center\">0.11</td>\n<td align=\"center\">\u22120.02</td>\n<td align=\"center\">0.10</td>\n</tr>\n<tr>\n<td>Secondary Education</td>\n<td align=\"center\">\u22120.79</td>\n<td align=\"center\">0.11</td>\n<td align=\"center\">\u22120.03</td>\n<td align=\"center\">0.10</td>\n</tr>\n<tr>\n<td>Age</td>\n<td align=\"center\">\u22120.01</td>\n<td align=\"center\">0.02</td>\n<td align=\"center\">0.05</td>\n<td align=\"center\">0.02</td>\n</tr>\n<tr>\n<td>Is Working</td>\n<td align=\"center\">\u22120.04</td>\n<td align=\"center\">0.19</td>\n<td align=\"center\">\u22120.80</td>\n<td align=\"center\">0.18</td>\n</tr>\n<tr>\n<td>Illness</td>\n<td align=\"center\">\u22121.33</td>\n<td align=\"center\">0.21</td>\n<td align=\"center\">3.78</td>\n<td align=\"center\">0.20</td>\n</tr>\n<tr>\n<td>In education</td>\n<td align=\"center\">0.61</td>\n<td align=\"center\">0.21</td>\n<td align=\"center\">\u22120.23</td>\n<td align=\"center\">0.20</td>\n</tr>\n<tr>\n<td>Unemployed</td>\n<td align=\"center\">3.91</td>\n<td align=\"center\">0.21</td>\n<td align=\"center\">1.17</td>\n<td align=\"center\">0.19</td>\n</tr>\n<tr>\n<td>Retired</td>\n<td align=\"center\">1.01</td>\n<td align=\"center\">0.26</td>\n<td align=\"center\">\u22121.46</td>\n<td align=\"center\">0.24</td>\n</tr>\n<tr>\n<td>Number of Children under Age 3</td>\n<td align=\"center\">\u22120.03</td>\n<td align=\"center\">0.10</td>\n<td align=\"center\">0.07</td>\n<td align=\"center\">0.09</td>\n</tr>\n<tr>\n<td>Number of Children between Age 4 and 11</td>\n<td align=\"center\">0.06</td>\n<td align=\"center\">0.05</td>\n<td align=\"center\">\u22120.04</td>\n<td align=\"center\">0.05</td>\n</tr>\n<tr>\n<td>Number of Children between Age 12 and 15</td>\n<td align=\"center\">0.10</td>\n<td align=\"center\">0.06</td>\n<td align=\"center\">\u22120.13</td>\n<td align=\"center\">0.06</td>\n</tr>\n<tr>\n<td>Cohort Dummies</td>\n<td align=\"center\">Yes</td>\n<td align=\"center\">Yes</td>\n<td align=\"center\">Yes</td>\n<td align=\"center\">Yes</td>\n</tr>\n<tr>\n<td>Number of Observations</td>\n<td align=\"center\" colspan=\"2\">5,738</td>\n<td align=\"center\" colspan=\"2\">5,738</td>\n</tr>\n<tr>\n<td>Adjusted R-square</td>\n<td align=\"center\" colspan=\"2\">0.23</td>\n<td align=\"center\" colspan=\"2\">0.15</td>\n</tr>\n</tbody>\n</table>"
+                            ],
+                            "type": "table"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "assets": [
+                        {
+                            "id": "tableA3",
+                            "label": "Table 3",
+                            "tables": [
+                                "<table>\n<thead>\n<tr>\n<th rowspan=\"3\"><i>Variables</i></th>\n<th align=\"center\" colspan=\"4\"><i>Equations</i></th>\n</tr>\n<tr>\n<th align=\"center\" colspan=\"2\"><i>Years spent on home duties</i></th>\n<th align=\"center\" colspan=\"2\"><i>Years in retirement</i></th>\n</tr>\n<tr>\n<th align=\"center\"><i>coefficient</i></th>\n<th align=\"center\"><i>s.e.</i></th>\n<th align=\"center\"><i>coefficient</i></th>\n<th align=\"center\"><i>s.e.</i></th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>College Education</td>\n<td align=\"center\">0.43</td>\n<td align=\"center\">0.12</td>\n<td align=\"center\">0.00</td>\n<td align=\"center\">0.07</td>\n</tr>\n<tr>\n<td>Secondary Education</td>\n<td align=\"center\">0.40</td>\n<td align=\"center\">0.12</td>\n<td align=\"center\">\u22120.01</td>\n<td align=\"center\">0.07</td>\n</tr>\n<tr>\n<td>Age</td>\n<td align=\"center\">\u22120.12</td>\n<td align=\"center\">0.03</td>\n<td align=\"center\">0.03</td>\n<td align=\"center\">0.02</td>\n</tr>\n<tr>\n<td>Is Working</td>\n<td align=\"center\">\u22122.35</td>\n<td align=\"center\">0.21</td>\n<td align=\"center\">\u22120.25</td>\n<td align=\"center\">0.12</td>\n</tr>\n<tr>\n<td>Illness</td>\n<td align=\"center\">0.62</td>\n<td align=\"center\">0.24</td>\n<td align=\"center\">\u22120.05</td>\n<td align=\"center\">0.13</td>\n</tr>\n<tr>\n<td>In education</td>\n<td align=\"center\">\u22122.20</td>\n<td align=\"center\">0.24</td>\n<td align=\"center\">\u22120.22</td>\n<td align=\"center\">0.13</td>\n</tr>\n<tr>\n<td>Unemployed</td>\n<td align=\"center\">\u22122.28</td>\n<td align=\"center\">0.23</td>\n<td align=\"center\">\u22120.20</td>\n<td align=\"center\">0.13</td>\n</tr>\n<tr>\n<td>Retired</td>\n<td align=\"center\">\u22122.42</td>\n<td align=\"center\">0.29</td>\n<td align=\"center\">5.65</td>\n<td align=\"center\">0.16</td>\n</tr>\n<tr>\n<td>Number of Children under Age 3</td>\n<td align=\"center\">0.20</td>\n<td align=\"center\">0.11</td>\n<td align=\"center\">\u22120.01</td>\n<td align=\"center\">0.06</td>\n</tr>\n<tr>\n<td>Number of Children between Age 4 and 11</td>\n<td align=\"center\">\u22120.06</td>\n<td align=\"center\">0.06</td>\n<td align=\"center\">\u22120.03</td>\n<td align=\"center\">0.03</td>\n</tr>\n<tr>\n<td>Number of Children between Age 12 and 15</td>\n<td align=\"center\">0.04</td>\n<td align=\"center\">0.07</td>\n<td align=\"center\">\u22120.02</td>\n<td align=\"center\">0.04</td>\n</tr>\n<tr>\n<td>Cohort Dummies</td>\n<td align=\"center\">Yes</td>\n<td align=\"center\">Yes</td>\n<td align=\"center\">Yes</td>\n<td align=\"center\">Yes</td>\n</tr>\n<tr>\n<td>Number of Observations</td>\n<td align=\"center\" colspan=\"2\">5,738</td>\n<td align=\"center\" colspan=\"2\">5,738</td>\n</tr>\n<tr>\n<td>Adjusted R-square</td>\n<td align=\"center\" colspan=\"2\">0.03</td>\n<td align=\"center\" colspan=\"2\">0.74</td>\n</tr>\n</tbody>\n</table>"
+                            ],
+                            "type": "table"
+                        }
+                    ],
+                    "type": "figure"
+                }
+            ],
+            "id": "A2",
+            "title": "Appendix 2 Estimates for Certain Retrospective Variables (Male)"
+        },
+        {
+            "content": [
+                {
+                    "assets": [
+                        {
+                            "id": "tableA4",
+                            "label": "Table 4",
+                            "tables": [
+                                "<table>\n<thead>\n<tr>\n<th rowspan=\"3\"><i>Variables</i></th>\n<th align=\"center\" colspan=\"4\"><i>Equations</i></th>\n</tr>\n<tr>\n<th align=\"center\" colspan=\"2\"><i>Years in full-time education or training</i></th>\n<th align=\"center\" colspan=\"2\"><i>Years in employment, self-employment or farming</i></th>\n</tr>\n<tr>\n<th align=\"center\"><i>coefficient</i></th>\n<th align=\"center\"><i>s.e.</i></th>\n<th align=\"center\"><i>coefficient</i></th>\n<th align=\"center\"><i>s.e.</i></th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>College Education</td>\n<td align=\"center\">3.47</td>\n<td align=\"center\">0.07</td>\n<td align=\"center\">\u22120.54</td>\n<td align=\"center\">0.29</td>\n</tr>\n<tr>\n<td>Secondary Education</td>\n<td align=\"center\">2.01</td>\n<td align=\"center\">0.06</td>\n<td align=\"center\">\u22120.06</td>\n<td align=\"center\">0.26</td>\n</tr>\n<tr>\n<td>Age</td>\n<td align=\"center\">0.02</td>\n<td align=\"center\">0.01</td>\n<td align=\"center\">0.05</td>\n<td align=\"center\">0.06</td>\n</tr>\n<tr>\n<td>Is Working</td>\n<td align=\"center\">0.34</td>\n<td align=\"center\">0.06</td>\n<td align=\"center\">8.34</td>\n<td align=\"center\">0.28</td>\n</tr>\n<tr>\n<td>Illness</td>\n<td align=\"center\">\u22120.32</td>\n<td align=\"center\">0.12</td>\n<td align=\"center\">0.06</td>\n<td align=\"center\">0.53</td>\n</tr>\n<tr>\n<td>In education</td>\n<td align=\"center\">0.21</td>\n<td align=\"center\">0.11</td>\n<td align=\"center\">2.79</td>\n<td align=\"center\">0.48</td>\n</tr>\n<tr>\n<td>Unemployed</td>\n<td align=\"center\">0.96</td>\n<td align=\"center\">0.13</td>\n<td align=\"center\">4.00</td>\n<td align=\"center\">0.55</td>\n</tr>\n<tr>\n<td>Retired</td>\n<td align=\"center\">0.53</td>\n<td align=\"center\">0.13</td>\n<td align=\"center\">26.78</td>\n<td align=\"center\">0.59</td>\n</tr>\n<tr>\n<td>Number of Children under Age 3</td>\n<td align=\"center\">\u22120.07</td>\n<td align=\"center\">0.05</td>\n<td align=\"center\">1.26</td>\n<td align=\"center\">0.23</td>\n</tr>\n<tr>\n<td>Number of Children between Age 4 and 11</td>\n<td align=\"center\">\u22120.03</td>\n<td align=\"center\">0.03</td>\n<td align=\"center\">0.27</td>\n<td align=\"center\">0.13</td>\n</tr>\n<tr>\n<td>Number of Children between Age 12 and 15</td>\n<td align=\"center\">\u22120.06</td>\n<td align=\"center\">0.04</td>\n<td align=\"center\">\u22120.75</td>\n<td align=\"center\">0.16</td>\n</tr>\n<tr>\n<td>Cohort Dummies</td>\n<td align=\"center\">Yes</td>\n<td align=\"center\">Yes</td>\n<td align=\"center\">Yes</td>\n<td align=\"center\">Yes</td>\n</tr>\n<tr>\n<td>Number of Observations</td>\n<td align=\"center\" colspan=\"2\">5,725</td>\n<td align=\"center\" colspan=\"2\">5,725</td>\n</tr>\n<tr>\n<td>Adjusted R-square</td>\n<td align=\"center\" colspan=\"2\">0.50</td>\n<td align=\"center\" colspan=\"2\">0.54</td>\n</tr>\n</tbody>\n</table>"
+                            ],
+                            "type": "table"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "assets": [
+                        {
+                            "id": "tableA5",
+                            "label": "Table 5",
+                            "tables": [
+                                "<table>\n<thead>\n<tr>\n<th rowspan=\"3\"><i>Variables</i></th>\n<th align=\"center\" colspan=\"4\"><i>Equations</i></th>\n</tr>\n<tr>\n<th align=\"center\" colspan=\"2\"><i>Years in unemployment</i></th>\n<th align=\"center\" colspan=\"2\"><i>Years of illness/disabled</i></th>\n</tr>\n<tr>\n<th align=\"center\"><i>coefficient</i></th>\n<th align=\"center\"><i>s.e.</i></th>\n<th align=\"center\"><i>coefficient</i></th>\n<th align=\"center\"><i>s.e.</i></th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>College Education</td>\n<td align=\"center\">\u22120.37</td>\n<td align=\"center\">0.06</td>\n<td align=\"center\">\u22120.25</td>\n<td align=\"center\">0.09</td>\n</tr>\n<tr>\n<td>Secondary Education</td>\n<td align=\"center\">\u22120.30</td>\n<td align=\"center\">0.05</td>\n<td align=\"center\">\u22120.26</td>\n<td align=\"center\">0.08</td>\n</tr>\n<tr>\n<td>Age</td>\n<td align=\"center\">0.01</td>\n<td align=\"center\">0.01</td>\n<td align=\"center\">\u22120.03</td>\n<td align=\"center\">0.02</td>\n</tr>\n<tr>\n<td>Is Working</td>\n<td align=\"center\">0.18</td>\n<td align=\"center\">0.06</td>\n<td align=\"center\">\u22120.26</td>\n<td align=\"center\">0.09</td>\n</tr>\n<tr>\n<td>Illness</td>\n<td align=\"center\">\u22120.20</td>\n<td align=\"center\">0.11</td>\n<td align=\"center\">2.55</td>\n<td align=\"center\">0.17</td>\n</tr>\n<tr>\n<td>In education</td>\n<td align=\"center\">0.16</td>\n<td align=\"center\">0.10</td>\n<td align=\"center\">\u22120.10</td>\n<td align=\"center\">0.15</td>\n</tr>\n<tr>\n<td>Unemployed</td>\n<td align=\"center\">1.74</td>\n<td align=\"center\">0.12</td>\n<td align=\"center\">0.30</td>\n<td align=\"center\">0.17</td>\n</tr>\n<tr>\n<td>Retired</td>\n<td align=\"center\">0.65</td>\n<td align=\"center\">0.12</td>\n<td align=\"center\">0.27</td>\n<td align=\"center\">0.19</td>\n</tr>\n<tr>\n<td>Number of Children under Age 3</td>\n<td align=\"center\">0.03</td>\n<td align=\"center\">0.05</td>\n<td align=\"center\">\u22120.02</td>\n<td align=\"center\">0.07</td>\n</tr>\n<tr>\n<td>Number of Children between Age 4 and 11</td>\n<td align=\"center\">\u22120.03</td>\n<td align=\"center\">0.03</td>\n<td align=\"center\">\u22120.11</td>\n<td align=\"center\">0.04</td>\n</tr>\n<tr>\n<td>Number of Children between Age 12 and 15</td>\n<td align=\"center\">0.00</td>\n<td align=\"center\">0.03</td>\n<td align=\"center\">\u22120.24</td>\n<td align=\"center\">0.05</td>\n</tr>\n<tr>\n<td>Cohort Dummies</td>\n<td align=\"center\">Yes</td>\n<td align=\"center\">Yes</td>\n<td align=\"center\">Yes</td>\n<td align=\"center\">Yes</td>\n</tr>\n<tr>\n<td>Number of Observations</td>\n<td align=\"center\" colspan=\"2\">5,725</td>\n<td align=\"center\" colspan=\"2\">5,725</td>\n</tr>\n<tr>\n<td>Adjusted R-square</td>\n<td align=\"center\" colspan=\"2\">0.06</td>\n<td align=\"center\" colspan=\"2\">0.05</td>\n</tr>\n</tbody>\n</table>"
+                            ],
+                            "type": "table"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "assets": [
+                        {
+                            "id": "tableA6",
+                            "label": "Table 6",
+                            "tables": [
+                                "<table>\n<thead>\n<tr>\n<th rowspan=\"3\"><i>Variables</i></th>\n<th align=\"center\" colspan=\"4\"><i>Equations</i></th>\n</tr>\n<tr>\n<th align=\"center\" colspan=\"2\"><i>Years spent on home duties</i></th>\n<th align=\"center\" colspan=\"2\"><i>Years in retirement</i></th>\n</tr>\n<tr>\n<th align=\"center\"><i>coefficient</i></th>\n<th align=\"center\"><i>s.e.</i></th>\n<th align=\"center\"><i>coefficient</i></th>\n<th align=\"center\"><i>s.e.</i></th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>College Education</td>\n<td align=\"center\">\u22121.87</td>\n<td align=\"center\">0.34</td>\n<td align=\"center\">\u22120.10</td>\n<td align=\"center\">0.07</td>\n</tr>\n<tr>\n<td>Secondary Education</td>\n<td align=\"center\">\u22121.03</td>\n<td align=\"center\">0.30</td>\n<td align=\"center\">\u22120.04</td>\n<td align=\"center\">0.06</td>\n</tr>\n<tr>\n<td>Age</td>\n<td align=\"center\">0.22</td>\n<td align=\"center\">0.07</td>\n<td align=\"center\">0.03</td>\n<td align=\"center\">0.02</td>\n</tr>\n<tr>\n<td>Is Working</td>\n<td align=\"center\">\u22128.58</td>\n<td align=\"center\">0.32</td>\n<td align=\"center\">0.01</td>\n<td align=\"center\">0.07</td>\n</tr>\n<tr>\n<td>Illness</td>\n<td align=\"center\">\u22121.65</td>\n<td align=\"center\">0.62</td>\n<td align=\"center\">0.05</td>\n<td align=\"center\">0.13</td>\n</tr>\n<tr>\n<td>In education</td>\n<td align=\"center\">\u22125.04</td>\n<td align=\"center\">0.56</td>\n<td align=\"center\">\u22120.01</td>\n<td align=\"center\">0.12</td>\n</tr>\n<tr>\n<td>Unemployed</td>\n<td align=\"center\">\u22127.31</td>\n<td align=\"center\">0.64</td>\n<td align=\"center\">\u22120.02</td>\n<td align=\"center\">0.13</td>\n</tr>\n<tr>\n<td>Retired</td>\n<td align=\"center\">\u221234.35</td>\n<td align=\"center\">0.69</td>\n<td align=\"center\">8.96</td>\n<td align=\"center\">0.14</td>\n</tr>\n<tr>\n<td>Number of Children under Age 3</td>\n<td align=\"center\">\u22120.66</td>\n<td align=\"center\">0.27</td>\n<td align=\"center\">\u22120.03</td>\n<td align=\"center\">0.06</td>\n</tr>\n<tr>\n<td>Number of Children between Age 4 and 11</td>\n<td align=\"center\">\u22120.03</td>\n<td align=\"center\">0.15</td>\n<td align=\"center\">0.03</td>\n<td align=\"center\">0.03</td>\n</tr>\n<tr>\n<td>Number of Children between Age 12 and 15</td>\n<td align=\"center\">0.42</td>\n<td align=\"center\">0.18</td>\n<td align=\"center\">\u22120.05</td>\n<td align=\"center\">0.04</td>\n</tr>\n<tr>\n<td>Cohort Dummies</td>\n<td align=\"center\">Yes</td>\n<td align=\"center\">Yes</td>\n<td align=\"center\">Yes</td>\n<td align=\"center\">Yes</td>\n</tr>\n<tr>\n<td>Number of Observations</td>\n<td align=\"center\" colspan=\"2\">5,725</td>\n<td align=\"center\" colspan=\"2\">5,725</td>\n</tr>\n<tr>\n<td>Adjusted R-square</td>\n<td align=\"center\" colspan=\"2\">0.75</td>\n<td align=\"center\" colspan=\"2\">0.46</td>\n</tr>\n</tbody>\n</table>"
+                            ],
+                            "type": "table"
+                        }
+                    ],
+                    "type": "figure"
+                }
+            ],
+            "id": "A3",
+            "title": "Appendix 3 Estimates for Certain Retrospective Variables (Female)"
+        },
+        {
+            "content": [
+                {
+                    "assets": [
+                        {
+                            "footnotes": [
+                                {
+                                    "text": [
+                                        {
+                                            "text": "(standard errors are reported in the parenthesis).",
+                                            "type": "paragraph"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "id": "tableA7",
+                            "label": "Table 7",
+                            "tables": [
+                                "<table>\n<thead>\n<tr>\n<th/>\n<th><i>Male Employee Earnings</i></th>\n<th><i>Female Employee Earnings</i></th>\n<th><i>Self-employment Earnings</i></th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>College Education</td>\n<td align=\"center\">0.56</td>\n<td align=\"center\">0.81</td>\n<td align=\"center\">0.72</td>\n</tr>\n<tr>\n<td/>\n<td align=\"center\">(0.03)</td>\n<td align=\"center\">(0.03)</td>\n<td align=\"center\">(0.06)</td>\n</tr>\n<tr>\n<td>Secondary Education</td>\n<td align=\"center\">0.31</td>\n<td align=\"center\">0.49</td>\n<td align=\"center\">0.31</td>\n</tr>\n<tr>\n<td/>\n<td align=\"center\">(0.03)</td>\n<td align=\"center\">(0.03)</td>\n<td align=\"center\">(0.06)</td>\n</tr>\n<tr>\n<td>Work Experience (Years)</td>\n<td align=\"center\">0.09</td>\n<td align=\"center\">0.05</td>\n<td align=\"center\">0.03</td>\n</tr>\n<tr>\n<td/>\n<td align=\"center\">(0.00)</td>\n<td align=\"center\">(0.00)</td>\n<td align=\"center\">(0.00)</td>\n</tr>\n<tr>\n<td>Work Experience (Squared)</td>\n<td align=\"center\">0.00</td>\n<td align=\"center\">0.00</td>\n<td align=\"center\">0.00</td>\n</tr>\n<tr>\n<td/>\n<td align=\"center\">(0.00)</td>\n<td align=\"center\">(0.00)</td>\n<td align=\"center\">(0.00)</td>\n</tr>\n<tr>\n<td>Years of Unemployment)</td>\n<td align=\"center\">0.04</td>\n<td align=\"center\">0.01</td>\n<td align=\"center\">0.01</td>\n</tr>\n<tr>\n<td/>\n<td align=\"center\">(0.00)</td>\n<td align=\"center\">(0.00)</td>\n<td align=\"center\">(0.00)</td>\n</tr>\n<tr>\n<td>Gender (Male=1)</td>\n<td align=\"center\"/>\n<td align=\"center\"/>\n<td align=\"center\">0.44</td>\n</tr>\n<tr>\n<td/>\n<td align=\"center\"/>\n<td align=\"center\"/>\n<td align=\"center\">(0.06)</td>\n</tr>\n<tr>\n<td>Total Number of Observation</td>\n<td align=\"center\">13678</td>\n<td align=\"center\">10231</td>\n<td align=\"center\">5092</td>\n</tr>\n</tbody>\n</table>"
+                            ],
+                            "type": "table"
+                        }
+                    ],
+                    "type": "figure"
+                }
+            ],
+            "id": "A4",
+            "title": "Appendix 4 Estimates for Earnings"
+        }
+    ],
+    "acknowledgements": [
+        {
+            "text": "The authors are grateful to the National Research Fund, Luxembourg for the financial support. For their helpful discussions and comments, the authors wish to thank Elisa Baroni, Gijs Dekkers, two anonymous referees, and the participants of the 2010 European workshop on dynamic microsimulation modelling in Brussels.Text of acknowledgement",
+            "type": "paragraph"
+        }
+    ],
+    "-meta": {
+        "patched": true
+    },
+    "stage": "published"
+}

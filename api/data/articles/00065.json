@@ -1,0 +1,1053 @@
+{
+    "status": "vor",
+    "id": "00065",
+    "version": 1,
+    "type": "research-article",
+    "doi": "10.34196/ijm.00065",
+    "authorLine": "J Richard Cumpston",
+    "title": "A more efficient sampling procedure, using loaded probabilities",
+    "published": "2012-06-30T00:00:00Z",
+    "versionDate": "2012-06-30T00:00:00Z",
+    "statusDate": "2012-06-30T00:00:00Z",
+    "volume": 5,
+    "issue": 1,
+    "elocationId": "n/a",
+    "pdf": "http://web:8082/00065/ijm-00065.pdf",
+    "subjects": [
+        {
+            "id": "methodology",
+            "name": "Methodology"
+        }
+    ],
+    "abstract": {
+        "content": [
+            {
+                "text": "All-case simulation, where demographic outcomes are simulated for each person each simulation cycle, has been used in almost every national household microsimulation model. This paper suggests the use of simulation by stratified sampling with loaded probabilities. This suggestion is intended to provide faster simulations, particularly when using simulation cycle times much shorter than a year. The paper derives optimal formulas for draw numbers and loaded probabilities, and uses stochastic simulations to show that sampling with loaded probabilities gives similar results to all-case simulation. Tests with a microsimulation model of 175,000 Australians show that sampling with loaded probabilities can reduce run times with yearly cycles by about 43%, and run times with weekly cycles by about 98%. A 50-year demographic projection took 34 seconds with a yearly cycle, and 54 seconds with a weekly cycle. Event numbers and standard deviations are comparable with those expected from risk profiles. The paper concludes that sampling with loaded probabilities is theoretically valid, can be much quicker than all-case simulation, and does give similar estimates. Potential applications are for large models, or those with short simulation cycles.",
+                "type": "paragraph"
+            }
+        ]
+    },
+    "copyright": {
+        "license": "CC-BY-4.0",
+        "holder": "Cumpston",
+        "statement": "This article is distributed under the terms of the <a href=\"http://creativecommons.org/licenses/by/4.0/\">Creative Commons Attribution License</a>, which permits unrestricted use and redistribution provided that the original author and source are credited."
+    },
+    "authors": [
+        {
+            "affiliations": [
+                {
+                    "address": {
+                        "components": {
+                            "country": "Australia"
+                        },
+                        "formatted": [
+                            "Australia"
+                        ]
+                    }
+                }
+            ],
+            "emailAddresses": [
+                "richard.cumpston@gmail.com"
+            ],
+            "name": {
+                "index": "Cumpston, J Richard",
+                "preferred": "J Richard Cumpston"
+            },
+            "type": "person"
+        }
+    ],
+    "keywords": [
+        "all-case simulation",
+        "stratified sampling",
+        "loaded probabilities",
+        "faster simulations"
+    ],
+    "body": [
+        {
+            "content": [
+                {
+                    "content": [
+                        {
+                            "text": "The first household microsimulation model developed in response to <a href=\"#bib5\">Orcutt\u2019s 1957</a> proposals simulated demographic outcomes for each person in turn, working in the order in which the persons were stored (<a href=\"#bib6\">Orcutt, Greenberger, Korbel &amp; Rivlin 1961</a>). Unfortunately, processing persons in the same fixed order each cycle has the potential to introduce bias in some applications. <a href=\"#bib4\">Morrison (2006</a>, p13) described the \u201csidewalk shuffle\u201d alignment method, where persons in an alignment pool were sorted into random order before event simulation. Demographic outcomes were then simulated for the persons in the sorted pool, until the desired event total was reached. As the event probabilities were unchanged, the number of persons tested for the event was approximately equal to the number of persons in the pool.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s1-1",
+                    "title": "1.1 All-case simulations",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "Testing every person for the occurrence of a demographic event seems inefficient, particularly for low-probability events. This paper proposes an alternative. Can we divide persons into pools, and only test a small proportion of persons in those pools with low probabilities? To ensure the correct expected number of events is still simulated, this partial sampling would be offset by loading the assumed probabilities of the event occurring. Such a process might be particularly efficient in short simulation cycles, where the probabilities of events occurring in the cycle are very low.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s1-2",
+                    "title": "1.2 Simulation by sampling with loaded probabilities",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "The structure of the remainder of this paper is as follows. First, the theory under-pinning sampling with loaded probabilities is derived (<a href=\"#s2\">Section 2</a>). Tests on some simple cases with only two risk groups support the theory (<a href=\"#s3\">Section 3</a>). The large reductions in sample numbers feasible when simulating deaths are illustrated in <a href=\"#s4\">Section 4</a>, and <a href=\"#s5\">Section 5</a> examines the actual run time reductions obtained in a realistic model. <a href=\"#s6\">Section 6</a> compares expected and observed event numbers, for different simulation methods, cycle times and event orders. <a href=\"#s7\">Section 7</a> similarly compares expected and observed event number standard deviations. <a href=\"#s8\">Section 8</a> discusses computational aspects associated with implementation of this approach. Finally, <a href=\"#s9\">Section 9</a> summarises the key findings from the paper, and considers in which situations use of simulation with loaded probabilities might be most appropriate.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s1-3",
+                    "title": "1.3 Structure of paper",
+                    "type": "section"
+                }
+            ],
+            "id": "s1",
+            "title": "1. Introduction",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "content": [
+                        {
+                            "text": "Suppose we have 100 persons in a pool, each with 20% chance of death. To simulate the expected 20 deaths, we can randomly select any 20 persons from the pool, and declare them to have died. This simple procedure will rarely be applicable, as the expected number of events from a pool is unlikely to be an integer. For example, if there are 101 persons in the pool, each with a 20% chance of dying, then 20.2 deaths are expected. To obtain simulations with the correct expected number of deaths, we can randomly draw 21 persons from the pool, select a random number between 0 and 1 for each of them, and declare them to be dead if the random number is less than 20.2/21 (ie 0.9619). The number of draws needed in this case is reduced by 79%, increasing computational efficiency.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "More formally, if there are n persons in a pool, each with probability pi of an event occurring, then the number of draws d needed from the pool is",
+                            "type": "paragraph"
+                        },
+                        {
+                            "id": "eqn1",
+                            "label": "(1)",
+                            "mathml": "<math><mtable><mtr><mtd><mrow><mtext>d</mtext><mtext>\u2009</mtext><mo>=</mo><mtext>\u2009</mtext><msub><mtext>p</mtext><mtext>i</mtext></msub><mtext>n</mtext></mrow></mtd><mtd><mrow><mtext>to\u00a0the\u00a0higher\u00a0integer</mtext></mrow></mtd></mtr></mtable></math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "Let q<sub>i</sub> be the loaded probability of the event occurring for each of the drawn persons.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Then",
+                            "type": "paragraph"
+                        },
+                        {
+                            "id": "eqn2",
+                            "label": "(2)",
+                            "mathml": "<math><msub><mtext>q</mtext><mtext>i</mtext></msub><mtext>\u2009</mtext><mo>=</mo><mtext>\u2009</mtext><mo>(</mo><msub><mtext>p</mtext><mtext>i</mtext></msub><mtext>\u2009</mtext><mtext>n)/d</mtext></math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "Substituting p<sub>i</sub> = 0.2, n = 101 and d = 21 gives q<sub>i</sub> = 0.9619, as above.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "As each person has the same probability of the event occurring, this procedure works for events such as death where a person is lost from the pool, or events such as moves where the person remains within the pool.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s2-1",
+                    "title": "2.1 A trivial case: uniform event probabilities",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "The previous section assumed uniform probabilities. If persons in the pool have varying probabilities of the event occurring, a more complex loaded sampling procedure is needed. Suppose that the highest probability is pmax. From <a href=\"#eqn2\">equation 2</a>, restricting the maximum loaded probability to not exceed 1 requires that",
+                            "type": "paragraph"
+                        },
+                        {
+                            "id": "eqn3",
+                            "label": "(3)",
+                            "mathml": "<math><mtext>(pmax</mtext><mtext>\u2009</mtext><mtext>n)</mtext><mtext>\u2009</mtext><mtext>/</mtext><mtext>\u2009</mtext><mtext>d</mtext><mtext>\u2009</mtext><mtext>\u2009</mtext><mtext>&lt;</mtext><mo>=</mo><mtext>\u2009</mtext><mtext>1</mtext></math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "so that the number of draws needed from the pool is",
+                            "type": "paragraph"
+                        },
+                        {
+                            "id": "eqn4",
+                            "label": "(4)",
+                            "mathml": "<math><mtable><mtr><mtd><mrow><mtext>d</mtext><mtext>\u2009</mtext><mo>=</mo><mtext>\u2009</mtext><mtext>pmax</mtext><mtext>\u2009</mtext><mtext>n</mtext></mrow></mtd><mtd><mrow><mtext>to\u00a0the\u00a0higher\u00a0integer</mtext></mrow></mtd></mtr></mtable></math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "As before, the loaded probability of the event occurring for person i is given by <a href=\"#eqn2\">equation 2</a>. This analysis is appropriate for events not causing losses from a pool \u2013 for example, movements within a geographic pool.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s2-2",
+                    "title": "2.2 Non-uniform event probabilities, with no losses from pool",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "The previous section assumed no losses form the pool, but some events, such as deaths and emigration, will cause losses. As sampling proceeds from the pool, the cases most at risk are likely to be selected, and the risk profile within the pool will change. This requires some modifications to the formulas for loaded probabilities and draw numbers.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Let nt be the number of persons in the pool immediately before the tth draw (so that n1 = n). Also let qit be the loaded probability for person i during the tth draw. The probability of any person being picked in the tth draw is 1 / nt, so the probability of person i being simulated to have the event in draw t is qit / nt. The probability of person i not being simulated to have the event in any of d draws is",
+                            "type": "paragraph"
+                        },
+                        {
+                            "id": "eqn5",
+                            "label": "(5)",
+                            "mathml": "<math><mrow><mtext>(1\u00a0</mtext><mo>\u2212</mo><mtext>\u2009</mtext><mtext>qi1</mtext><mtext>\u2009</mtext><mtext>/</mtext><mtext>\u2009</mtext><mtext>n1)</mtext><mtext>\u2009</mtext><mtext>(1</mtext><mtext>\u2009</mtext><mo>\u2212</mo><mtext>\u2009</mtext><mtext>qi2</mtext><mtext>\u2009</mtext><mtext>/</mtext><mtext>\u2009</mtext><mtext>n2)</mtext><mtext>\u2009</mtext><mtext>\u2026</mtext><mtext>\u2009</mtext><mtext>(1</mtext><mtext>\u2009</mtext><mtext>\u2009</mtext><mo>\u2212</mo><mtext>\u2009</mtext><mtext>\u2009</mtext><mtext>qid</mtext><mtext>\u2009</mtext><mtext>/</mtext><mtext>\u2009</mtext><mtext>nd)</mtext></mrow></math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "We do not know n2, n3 ... nd in advance, because they will depend on whether the preceding draws have removed any persons from the pool. But we can make the probability of person i being selected to have the event equal in each draw, by calculating loaded probabilities for each draw after the first with the formula",
+                            "type": "paragraph"
+                        },
+                        {
+                            "id": "eqn6",
+                            "label": "(6)",
+                            "mathml": "<math><mrow><mtext>qit</mtext><mtext>\u2009</mtext><mo>=</mo><mtext>\u2009</mtext><mtext>qi1</mtext><mtext>\u2009</mtext><mtext>(nt</mtext><mtext>\u2009</mtext><mtext>/</mtext><mtext>\u2009</mtext><mtext>n1)</mtext></mrow></math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "Substituting <a href=\"#eqn6\">equation (6)</a> in <a href=\"#eqn5\">(5)</a>, and setting the result equal to the desired probability of person i not having the event, gives",
+                            "type": "paragraph"
+                        },
+                        {
+                            "id": "eqn7",
+                            "label": "(7)",
+                            "mathml": "<math><mrow><mo stretchy=\"false\">(</mo><mn>1</mn><mtext>\u2009</mtext><mo>\u2212</mo><mtext>\u2009</mtext><mtext>qi</mtext><mn>1</mn><mtext>\u2009</mtext><mo>/</mo><mtext>\u2009</mtext><mtext>n</mtext><mo stretchy=\"false\">)</mo><mtext>d</mtext><mtext>\u2009</mtext><mo>=</mo><mtext>\u2009</mtext><mn>1</mn><mo>\u2212</mo><mtext>pi</mtext></mrow></math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "Taking the 1/dth power of both sides and rearranging gives",
+                            "type": "paragraph"
+                        },
+                        {
+                            "id": "eqn8",
+                            "label": "(8)",
+                            "mathml": "<math><mrow><mtext>qi</mtext><mn>1</mn><mtext>\u2009</mtext><mo>=</mo><mtext>\u2009</mtext><mtext>n</mtext><mtext>\u2009</mtext><mo stretchy=\"false\">[</mo><mn>1</mn><mtext>\u2009</mtext><mo>\u2212</mo><mtext>\u2009</mtext><mo stretchy=\"false\">(</mo><mn>1</mn><mo>\u2212</mo><mtext>pi</mtext><mo stretchy=\"false\">)</mo><mn>1</mn><mo>/</mo><mtext>d</mtext><mtext>\u2009</mtext><mo stretchy=\"false\">]</mo></mrow></math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "Now qi1 is the loaded probability of person i being selected for the event in draw 1, and we do not want this to exceed unity. Thus we require, for all the persons in the pool, that",
+                            "type": "paragraph"
+                        },
+                        {
+                            "id": "eqn9",
+                            "label": "(9)",
+                            "mathml": "<math><mrow><mtext>n</mtext><mtext>\u2009</mtext><mo stretchy=\"false\">[</mo><mn>1</mn><mtext>\u2009</mtext><mo>\u2212</mo><mtext>\u2009</mtext><mo stretchy=\"false\">(</mo><mn>1</mn><mo>\u2212</mo><mtext>\u2009</mtext><mtext>pi</mtext><mo stretchy=\"false\">)</mo><mn>1</mn><mo>/</mo><mtext>d</mtext><mo stretchy=\"false\">]</mo><mtext>\u2009</mtext><mo>&lt;</mo><mo>=</mo><mtext>\u2009</mtext><mn>1</mn></mrow></math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "id": "eqn10",
+                            "label": "(10)",
+                            "mathml": "<math><mrow><mtext>ie</mtext><mtext>\u2009</mtext><mo stretchy=\"false\">(</mo><mn>1</mn><mo>\u2212</mo><mtext>\u2009</mtext><mtext>pi</mtext><mo stretchy=\"false\">)</mo><mn>1</mn><mo>/</mo><mtext>d</mtext><mtext>\u2009</mtext><mo>&gt;</mo><mo>=</mo><mtext>\u2009</mtext><mn>1</mn><mtext>\u2009</mtext><mo>\u2212</mo><mtext>\u2009</mtext><mn>1</mn><mo>/</mo><mi>n</mi></mrow></math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "Taking logs of both sides and rearranging gives the requirement that",
+                            "type": "paragraph"
+                        },
+                        {
+                            "id": "eqn11",
+                            "label": "(11)",
+                            "mathml": "<math><mrow><mtable><mtr><mtd><mrow><mtext>d</mtext><mtext>\u2009</mtext><mtext>&gt;</mtext><mtext>\u2009</mtext><mo>=</mo><mtext>\u2009</mtext><mtext>In(1</mtext><mtext>\u2009</mtext><mo>\u2212</mo><mtext>\u2009</mtext><mtext>pi)</mtext><mtext>\u2009</mtext><mtext>/</mtext><mtext>\u2009</mtext><mtext>In(1</mtext><mtext>\u2009</mtext><mo>\u2212</mo><mtext>\u2009</mtext><mtext>1/n)</mtext></mrow></mtd><mtd><mrow><mtext>for\u00a0all\u00a0i</mtext></mrow></mtd></mtr></mtable></mrow></math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "This can be achieved by taking d as",
+                            "type": "paragraph"
+                        },
+                        {
+                            "id": "eqn12",
+                            "label": "(12)",
+                            "mathml": "<math><mrow><mtable><mtr><mtd><mrow><mtext>d</mtext><mtext>\u2009</mtext><mo>=</mo><mtext>\u2009</mtext><mtext>In(</mtext><mn>1</mn><mtext>\u2009</mtext><mo>\u2212</mo><mtext>\u2009</mtext><mtext>p</mtext><mtext>max</mtext><mo stretchy=\"false\">)</mo><mtext>\u2009</mtext><mo>/</mo><mtext>\u2009</mtext><mtext>In</mtext><mo stretchy=\"false\">(</mo><mn>1</mn><mtext>\u2009</mtext><mo>\u2212</mo><mtext>\u2009</mtext><mn>1</mn><mo>/</mo><mtext>n</mtext><mo stretchy=\"false\">)</mo></mrow></mtd><mtd><mrow><mtext>to\u00a0the\u00a0higher\u00a0integer</mtext></mrow></mtd></mtr></mtable></mrow></math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "where pmax is the highest probability of the event occurring for any member of the pool. Note that if pmax is small and n large, this formula for d approximates to that in <a href=\"#eqn4\">equation 4</a>. Once d has been chosen using <a href=\"#eqn12\">equation 12</a>, it remains unchanged till all the d draws are completed. For the person selected for testing in the tth draw, the loaded probability qit can be calculated by combining <a href=\"#eqn6\">equations 6</a> and <a href=\"#eqn8\">8</a> to get",
+                            "type": "paragraph"
+                        },
+                        {
+                            "id": "eqn13",
+                            "label": "(13)",
+                            "mathml": "<math><mrow><mtext>qit</mtext><mtext>\u2009</mtext><mo>=</mo><mtext>\u2009</mtext><mtext>nt</mtext><mtext>\u2009</mtext><mo stretchy=\"false\">[</mo><mn>1</mn><mtext>\u2009</mtext><mo>\u2212</mo><mtext>\u2009</mtext><mo stretchy=\"false\">(</mo><mn>1</mn><mo>\u2212</mo><mtext>\u2009</mtext><mtext>pi</mtext><mo stretchy=\"false\">)</mo><mn>1</mn><mo>/</mo><mtext>d</mtext><mtext>\u2009</mtext><mo stretchy=\"false\">]</mo></mrow></math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "As the number nt in the pool cannot increase above its initial value, the loaded probabilities cannot exceed their values for the first draw, and thus cannot exceed 1.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "<a href=\"#table1\">Table 1</a> shows the numbers of draws needed for pools of varying size, calculated using <a href=\"#eqn12\">equation 12</a>. The minimum number of draws from any pool is 1, so that sampling from very small pools becomes inefficient. If the maximum event probability for a pool is about 0.63 or higher, the number of draws will exceed the number of persons in the pool. In practice this is likely to occur for relatively few pools, a point illustrated in <a href=\"#s4\">Section 4</a>.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "table1",
+                                    "label": "Table 1",
+                                    "tables": [
+                                        "<table>\n<thead>\n<tr>\n<th rowspan=\"2\">Number in pool</th>\n<th/>\n<th/>\n<th>maximum</th>\n<th>unloaded</th>\n<th>probability</th>\n<th/>\n</tr>\n<tr><td>0.01</td>\n<td>0.02</td>\n<td>0.05</td>\n<td>0.1</td>\n<td>0.2</td>\n<td>0.5</td>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>10</td>\n<td>1</td>\n<td>1</td>\n<td>1</td>\n<td>2</td>\n<td>3</td>\n<td>7</td>\n</tr>\n<tr>\n<td>100</td>\n<td>2</td>\n<td>3</td>\n<td>6</td>\n<td>11</td>\n<td>23</td>\n<td>69</td>\n</tr>\n<tr>\n<td>1,000</td>\n<td>11</td>\n<td>21</td>\n<td>52</td>\n<td>106</td>\n<td>224</td>\n<td>693</td>\n</tr>\n<tr>\n<td>10,000</td>\n<td>101</td>\n<td>203</td>\n<td>513</td>\n<td>1,054</td>\n<td>2,232</td>\n<td>6,932</td>\n</tr>\n<tr>\n<td>100,000</td>\n<td>1,006</td>\n<td>2,021</td>\n<td>5,130</td>\n<td>10,536</td>\n<td>22,315</td>\n<td>69,315</td></tr></tbody>\n</table>"
+                                    ],
+                                    "title": "Number of draws to give maximum loaded probability of 1.",
+                                    "type": "table"
+                                }
+                            ],
+                            "type": "figure"
+                        }
+                    ],
+                    "id": "s2-3",
+                    "title": "2.3 Non-uniform event probabilities, with losses from pool",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "None of the above formulas depend on the length of the simulation cycle. The assumed probabilities of event occurrence are likely to have been based on annual simulation cycles, and will have to be appropriately recalculated for use with shorter simulation cycles.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s2-4",
+                    "title": "2.4 Sampling with loaded probabilities with short simulation cycles",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "Sampling with loaded probabilities can be adapted to give event numbers conforming with external alignment totals",
+                            "type": "paragraph"
+                        },
+                        {
+                            "items": [
+                                [
+                                    {
+                                        "text": "The highest probability of the event occurring in the alignment pool, or some upper limit to that probability, is assumed to be known",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "An individual is randomly selected from the pool, their probability divided by the highest probability, and a random number drawn to see if the event occurs",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "The process is repeated until the desired alignment total is reached.",
+                                        "type": "paragraph"
+                                    }
+                                ]
+                            ],
+                            "prefix": "bullet",
+                            "type": "list"
+                        },
+                        {
+                            "text": "This process is similar to the sidewalk shuffle described by <a href=\"#bib4\">Morrison (2006)</a>, except that random shuffling of the persons in the pool is replaced by repeated random selection.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s2-5",
+                    "title": "2.5 Sampling with loaded probabilities with alignment",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "Given its generality, it is likely that similar processes are being used for applications in other fields. Sampling with loaded probabilities uses stratified sampling (<a href=\"#bib7\">Ross 2006</a>: 66\u2013184), one of a wide range of variance reduction techniques used in simulation.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s2-6",
+                    "title": "2.6 Uses of simulation by sampling with loaded probabilities in other fields",
+                    "type": "section"
+                }
+            ],
+            "id": "s2",
+            "title": "2. Theory",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "There was some concern that the formulas in <a href=\"#s2-3\">Section 2.3</a> might not give completely correct results in practice. To test this, 10,000 repeated trials were made with risk pools containing varying numbers of low risk cases, and 500 high risk cases. In the first set of trials, 2,500 low-risk cases were assumed, each with probability of 0.1, so that 250 events were expected from the low-risk cases. In the second to fifth set of trials, the assumed probability for the low-risk cases was progressively increased, and their number reduced, so as to maintain the expected number of low-risk events at 250. In each set of trials, the 500 high-risk cases were assumed to have probability 0.5, so that 250 events were expected from them. In each set of trials, 500 events were thus expected.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "<a href=\"#table2\">Table 2</a> shows that the mean numbers of simulated events were all very close to the expected 500. The worst deviation from the expected 500 events was 0.12, for the second and third set or trials. In no case was the deviation from the expected 500 events greater than the standard deviations in the last column of <a href=\"#table2\">Table 2</a>. These standard deviations are the standard deviations in the observed event numbers from 10,000 trials, divided by 100 (the square root of the number of trials). These results suggest that sampling by loaded probabilities, for the case with non-uniform event probabilities and losses from the pool, can work correctly.",
+                    "type": "paragraph"
+                },
+                {
+                    "assets": [
+                        {
+                            "id": "table2",
+                            "label": "Table 2",
+                            "tables": [
+                                "<table>\n<thead>\n<tr>\n<th>Number low risk persons</th>\n<th>Low risk rate</th>\n<th>Number high risk persons</th>\n<th>High risk rate</th>\n<th>Expected number of events</th>\n<th>Mean number from 10,000 trials</th>\n<th>Standard deviation from 10,000 trials</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>2,500</td>\n<td>0.1</td>\n<td>500</td>\n<td>0.5</td>\n<td>500</td>\n<td>499.92</td>\n<td>.16</td>\n</tr>\n<tr>\n<td>1,250</td>\n<td>0.2</td>\n<td>500</td>\n<td>0.5</td>\n<td>500</td>\n<td>500.12</td>\n<td>.14</td>\n</tr>\n<tr>\n<td>833</td>\n<td>0.3</td>\n<td>500</td>\n<td>0.5</td>\n<td>500</td>\n<td>499.88</td>\n<td>.12</td>\n</tr>\n<tr>\n<td>625</td>\n<td>0.4</td>\n<td>500</td>\n<td>0.5</td>\n<td>500</td>\n<td>500.03</td>\n<td>.10</td>\n</tr>\n<tr>\n<td>500</td>\n<td>0.5</td>\n<td>500</td>\n<td>0.5</td>\n<td>500</td>\n<td>500.00</td>\n<td>.09</td>\n</tr></tbody>\n</table>"
+                            ],
+                            "title": "Simulated event numbers with pools chosen to produce 500 events.",
+                            "type": "table"
+                        }
+                    ],
+                    "type": "figure"
+                }
+            ],
+            "id": "s3",
+            "title": "3. Tests on accuracy",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "In practice, there can be considerable heterogeneity in risk rates, so that segregation into a small number of risk groups can greatly reduce the numbers of draws needed to simulate the expected numbers of events. This is illustrated in <a href=\"#table3\">Table 3</a>, using Australian data on ages and mortality rates.",
+                    "type": "paragraph"
+                },
+                {
+                    "assets": [
+                        {
+                            "id": "table3",
+                            "label": "Table 3",
+                            "tables": [
+                                "<table>\n<thead>\n<tr>\n<th>Age group</th>\n<th>Persons in group</th>\n<th>Average mortality rate</th>\n<th>Expected deaths</th>\n<th>Maximum mortality rate</th>\n<th>Draws</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>0-</td>\n<td>36,441</td>\n<td>0.00040</td>\n<td>14.5</td>\n<td>0.00453</td>\n<td>166</td>\n</tr>\n<tr>\n<td>15-</td>\n<td>23,593</td>\n<td>0.00060</td>\n<td>14.1</td>\n<td>0.00113</td>\n<td>27</td>\n</tr>\n<tr>\n<td>25-</td>\n<td>25,575</td>\n<td>0.00087</td>\n<td>22.1</td>\n<td>0.00138</td>\n<td>36</td>\n</tr>\n<tr>\n<td>35-</td>\n<td>26,810</td>\n<td>0.00123</td>\n<td>33.0</td>\n<td>0.00192</td>\n<td>52</td>\n</tr>\n<tr>\n<td>45-</td>\n<td>24,156</td>\n<td>0.00237</td>\n<td>57.2</td>\n<td>0.00415</td>\n<td>101</td>\n</tr>\n<tr>\n<td>55-</td>\n<td>16,348</td>\n<td>0.00642</td>\n<td>104.9</td>\n<td>0.01315</td>\n<td>217</td>\n</tr>\n<tr>\n<td>65-</td>\n<td>11,852</td>\n<td>0.01826</td>\n<td>216.4</td>\n<td>0.03697</td>\n<td>447</td>\n</tr>\n<tr>\n<td>75-</td>\n<td>7,706</td>\n<td>0.05051</td>\n<td>389.3</td>\n<td>0.10627</td>\n<td>866</td>\n</tr>\n<tr>\n<td>85-</td>\n<td>2,563</td>\n<td>0.18238</td>\n<td>467.4</td>\n<td>0.48496</td>\n<td>1701</td>\n</tr>\n<tr>\n<td>Total</td>\n<td>175,044</td>\n<td>0.00754</td>\n<td>1,319.0</td>\n<td/>\n<td>3,613</td>\n</tr>\n</tbody>\n</table>"
+                            ],
+                            "title": "Table Draws needed to simulate the deaths in a year 175,000 Australians.",
+                            "type": "table"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "text": "The numbers of expected deaths in <a href=\"#table3\">Table 3</a> were estimated by applying 2001-02 mortality rates to a sample of 175,044 persons derived from the 1% 2001 census sample file. The maximum mortality rates are the highest applying to any age in each of the groups. For example, the highest mortality rate for the 0\u201314 group is for males aged 0, while the highest rate for persons 85+ is for females aged 110. The numbers of draws needed with loaded sampling were calculated from <a href=\"#eqn12\">equation 12</a>. For example, the number of draws needed from the pool for persons 55-64 was calculated as",
+                    "type": "paragraph"
+                },
+                {
+                    "id": "ueqn1",
+                    "label": "(14)",
+                    "mathml": "<math><mtable><mtr><mtd><mrow><mtext>In</mtext><mo stretchy=\"false\">(</mo><mn>1</mn><mo>\u2212</mo><mn>.01315</mn><mo stretchy=\"false\">)</mo><mo>/</mo><mtext>In</mtext><mo stretchy=\"false\">(</mo><mn>1</mn><mo>\u2212</mo><mn>1</mn><mo>/</mo><mn>16348</mn><mo stretchy=\"false\">)</mo></mrow></mtd><mtd><mrow><mtext>ie\u00a0217\u00a0to\u00a0the\u00a0higher\u00a0integer</mtext></mrow></mtd></mtr></mtable></math>",
+                    "type": "mathml"
+                },
+                {
+                    "text": "These estimates suggest that good simulations of the deaths in a year can be made by 3,613 draws with loaded probabilities, rather than 175,044 draws with true mortality rates. Note that, for this empirical example, the identified pmax of 0.485 for the highest-risk group is less than 0.63 \u2013 the tipping point at which the number of draws starts to exceed the number of persons in the pool.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s4",
+            "title": "4. Example of the use of pools in simulating deaths",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "content": [
+                        {
+                            "text": "In order to explore the achievable efficiency gains offered by sampling with loaded probabilities, the technique was applied to a dynamic microsimulation model of Australia. The pools in this model used here are each combination of 8 areas, 8 person types and 9 age groups (see <a href=\"#table4\">Table 4</a>), making 576 pools in all.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "table4",
+                                    "label": "Table 4",
+                                    "tables": [
+                                        "<table>\n<thead>\n<tr>\n<th align=\"center\">Area code</th>\n<th align=\"center\">Area name</th>\n<th align=\"center\">Person type code</th>\n<th align=\"center\">Person type</th>\n<th align=\"center\">Age code</th>\n<th align=\"center\">Age group</th></tr>\n</thead>\n<tbody>\n<tr>\n<td>1</td>\n<td>NSW</td>\n<td>1</td>\n<td>Partner</td>\n<td>1</td>\n<td>0\u201314</td>\n</tr>\n<tr>\n<td>2</td>\n<td>Victoria</td>\n<td>2</td>\n<td>Lone parent</td>\n<td>2</td>\n<td>15\u201324</td></tr>\n<tr>\n<td>3</td>\n<td>Queensland</td>\n<td>3</td>\n<td>Child</td>\n<td>3</td>\n<td>25\u201334</td></tr>\n<tr>\n<td>4</td>\n<td>SA</td>\n<td>4</td>\n<td>Related person</td>\n<td>4</td>\n<td>35\u201344</td></tr>\n<tr>\n<td>5</td>\n<td>WA</td>\n<td>5</td>\n<td>Unrelated person</td>\n<td>5</td>\n<td>45\u201354</td></tr>\n<tr>\n<td>6</td>\n<td>Tasmania</td>\n<td>6</td>\n<td>Lone person</td>\n<td>6</td>\n<td>55\u201354</td></tr>\n<tr>\n<td>7</td>\n<td>NT</td>\n<td>7</td>\n<td>Group member</td>\n<td>7</td>\n<td>65\u201374</td></tr>\n<tr>\n<td>8</td>\n<td>ACT</td>\n<td>8</td>\n<td>Non-private resident</td>\n<td>8</td>\n<td>75\u201384</td></tr>\n<tr>\n<td/>\n<td/>\n<td/>\n<td/>\n<td>9</td>\n<td>85-</td></tr>\n</tbody></table>"
+                                    ],
+                                    "title": "Areas, person types and age groups used to form pools.",
+                                    "type": "table"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "text": "These pools were available for alignment purposes, and not specifically chosen for sampling with loaded probabilities. With hindsight, these pools were too fine for sampling with loaded probabilities, and resulted in simulated numbers of exits and moves being a little different from expected. These errors, and ways to minimize them, are discussed in <a href=\"#s6-1\">Section 6.1</a>.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s5-1",
+                    "title": "5.1 Pools used to test sampling with loaded probabilities",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "The run times in <a href=\"#table5\">Table 5</a> exclude the input of data and assumptions before a run, and the time needed to output results. Maximum probabilities for each risk group are included in the assumptions file, which takes about 0.3 seconds to read. There were some unexpectedly large random variations in run times for the first cycle, so all the run times with yearly cycles are the average of 50 runs. All the multi-cycle all-case run times are from single runs, and all the multi-cycle loaded run times are the averages of at least 3 runs.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "table5",
+                                    "label": "Table 5",
+                                    "tables": [
+                                        "<table>\n<thead>\n<tr>\n<th>Cycles per year</th>\n<th>All-case trials seconds</th>\n<th>All-case fitted seconds</th>\n<th>Loaded trials seconds</th>\n<th>Loaded fitted seconds</th>\n<th>Loaded trials as % of all-case</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>1</td>\n<td>1.13</td>\n<td>1.58</td>\n<td>0.64</td>\n<td>0.66</td>\n<td>57%</td>\n</tr>\n<tr>\n<td>4</td>\n<td>4.10</td>\n<td>4.14</td>\n<td>0.67</td>\n<td>0.68</td>\n<td>16%</td></tr>\n<tr>\n<td>12</td>\n<td>11.37</td>\n<td>10.98</td>\n<td>0.75</td>\n<td>0.73</td>\n<td>7%</td>\n</tr>\n<tr>\n<td>26</td>\n<td>23.29</td>\n<td>22.94</td>\n<td>0.83</td>\n<td>0.82</td>\n<td>4%</td>\n</tr>\n<tr>\n<td>52</td>\n<td>44.90</td>\n<td>45.15</td>\n<td>0.98</td>\n<td>0.97</td>\n<td>2%</td>\n</tr>\n<tr>\n<td>365</td>\n<td/>\n<td/>\n<td>2.88</td>\n<td>2.88</td>\n<td/>\n</tr></tbody></table>"
+                                    ],
+                                    "title": "Mean run times in seconds to simulate 175,000 Australians for a year.",
+                                    "type": "table"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "text": "The run times in <a href=\"#table5\">Table 5</a> exclude the input of data and assumptions before a run, and the time needed to output results. Maximum probabilities for each risk group are included in the assumptions file, which takes about 0.3 seconds to read. There were some unexpectedly large random variations in run times for the first cycle, so all the run times with yearly cycles are the average of 50 runs. All the multi-cycle all-case run times are from single runs, and all the multi-cycle loaded run times are the averages of at least 3 runs.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "<a href=\"#table5\">Table 5</a> shows that the times required with all-case simulations increase broadly in line with the number of cycles a year. The slope and constant obtained by fitting a linear trend line by least squares minimization suggest that sampling each case takes about 0.85 seconds a cycle, and adjusting data in response to simulated events takes about 0.72 seconds a year, with a poor fit for yearly cycles (see <a href=\"#table5\">Table 5</a>). The slope and constant from the trend-line fit with loaded probabilities suggest that sampling takes about 0.006 seconds a cycle, and adjusting data in response to simulated events takes about 0.66 seconds a year. The fit with loaded probabilities is good up to 365 cycles a year. The numbers of simulated events, and the time taken to process them, should be very similar with both methods. As expected, the time savings are in sampling.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "fig1",
+                                    "image": {
+                                        "alt": "",
+                                        "uri": "%iiif_uri%/00065%2Fijm-00065-fig1.tif",
+                                        "size": {
+                                            "width": 1548,
+                                            "height": 930
+                                        },
+                                        "source": {
+                                            "mediaType": "image/jpeg",
+                                            "uri": "%iiif_uri%/00065%2Fijm-00065-fig1.tif/full/full/0/default.jpg",
+                                            "filename": "ijm-00065-fig1.jpg"
+                                        }
+                                    },
+                                    "label": "Figure 1",
+                                    "title": "Run times with varying simulation cycles.",
+                                    "type": "image"
+                                }
+                            ],
+                            "type": "figure"
+                        }
+                    ],
+                    "id": "s5-2",
+                    "title": "5.2 Run times to simulate 175,000 Australian for a year",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "The yearly values in the first line of <a href=\"#table6\">Table 6</a> are those in the first line of <a href=\"#table5\">Table 5</a>. They show sampling with loading probability has a one-year run-time about 57% of all-case sampling, which is out of line with the 53% or 52% in the multi-year lines of <a href=\"#table6\">Table 6</a>. Comparing the calculation steps involved in all-case and loaded sampling suggests that the savings from loaded sampling should be a constant proportion, regardless of the number of projection years. The one-year result is an anomaly.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "table6",
+                                    "label": "Table 6",
+                                    "tables": [
+                                        "<table>\n<thead>\n<tr>\n<th>Projection years</th>\n<th>All-case Yearly</th>\n<th>Loaded Yearly</th>\n<th>Loaded Weekly</th>\n<th>Loaded as% of all case Yearly</th>\n</tr>\n</thead>\n<tbody>\n<tr><td>1</td>\n<td>1.13</td>\n<td>0.64</td>\n<td>0.98</td>\n<td>57%</td></tr>\n<tr><td>10</td>\n<td>11.59</td>\n<td>6.18</td>\n<td>9.81</td>\n<td>53%</td></tr>\n<tr><td>20</td>\n<td>24.28</td>\n<td>12.82</td>\n<td>20.28</td>\n<td>53%</td></tr>\n<tr><td>30</td>\n<td>37.35</td>\n<td>19.72</td>\n<td>31.2</td>\n<td>53%</td></tr>\n<tr><td>40</td>\n<td>51.93</td>\n<td>27.25</td>\n<td>42.51</td>\n<td>52%</td></tr>\n<tr><td>50</td>\n<td>66.32</td>\n<td>34.16</td>\n<td>53.87</td>\n<td>52%</td></tr></tbody>\n</table>"
+                                    ],
+                                    "title": "Run times in seconds for projections up to 50 years.",
+                                    "type": "table"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "text": "<a href=\"#fig2\">Figure 2</a> shows that both all-case and loaded sampling methods have a slight increase in run time per year for higher projection times. This is because of the population growth of about 30% projected over the 50 years.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "fig2",
+                                    "image": {
+                                        "alt": "",
+                                        "uri": "%iiif_uri%/00065%2Fijm-00065-fig2.tif",
+                                        "size": {
+                                            "width": 1601,
+                                            "height": 961
+                                        },
+                                        "source": {
+                                            "mediaType": "image/jpeg",
+                                            "uri": "%iiif_uri%/00065%2Fijm-00065-fig2.tif/full/full/0/default.jpg",
+                                            "filename": "ijm-00065-fig2.jpg"
+                                        }
+                                    },
+                                    "label": "Figure 2",
+                                    "title": "Run times with one cycle per year.",
+                                    "type": "image"
+                                }
+                            ],
+                            "type": "figure"
+                        }
+                    ],
+                    "id": "s5-3",
+                    "title": "5.3 Run times for projections for up to 50 years",
+                    "type": "section"
+                }
+            ],
+            "id": "s5",
+            "title": "5. Run times with an australian microsimulation model",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "This section compares the expected numbers of each type of movement, with the average numbers observed with different cycle time, sampling methods and event orders. The types of event examined are births, deaths, emigrants, exits and moves. Immigrants were not compared, because the microsimulation model pregenerates immigrant families to match exogenous immigrant assumptions. An \u201cexit\u201d is a departure from a household of a person, possibly followed by one or more of the other household members. By contrast, a \u201cmove\u201d is where the whole household moves to another dwelling. For various reasons, the observed numbers differ from expected by more than can be explained by random variation. Nevertheless, the comparisons show that broadly reasonable results are being obtained.",
+                    "type": "paragraph"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "<a href=\"#table7\">Table 7</a> shows the average numbers of projected events from 50 one-year runs, using either all-scase simulation or sampling with loaded probabilities. To avoid event interactions confusing the results, only one type of event was simulated in each run. Also shown are the expected numbers of events, obtained by summing the probabilities of each person having that event.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "table7",
+                                    "label": "Table 7",
+                                    "tables": [
+                                        "<table>\n<thead>\n<tr>\n<th>Event</th>\n<th>Expected</th>\n<th>Observed all-case yearly</th>\n<th>Observed loaded yearly</th>\n<th>Observed loaded weekly</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>Births</td>\n<td>2,170</td>\n<td>2,179</td>\n<td>2,183</td>\n<td>2,208</td>\n</tr>\n<tr>\n<td>Deaths</td>\n<td>1,372</td>\n<td>1,379</td>\n<td>1,330</td>\n<td>1,370</td>\n</tr>\n<tr><td>Emigrants</td>\n<td>2,284</td>\n<td>2,280</td>\n<td>2,251</td>\n<td>2,275</td>\n</tr>\n<tr>\n<td>Exits</td>\n<td>6,254</td>\n<td>6,441</td>\n<td>6,203</td>\n<td>6,592</td>\n</tr>\n<tr>\n<td>Moves</td>\n<td>12,468</td>\n<td>12,411</td>\n<td>12,330</td>\n<td>12,364</td>\n</tr>\n</tbody>\n</table>"
+                                    ],
+                                    "title": "Event totals from one-year projections, each event simulated separately (50 run averages).",
+                                    "type": "table"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "text": "Some of the possible reasons for the differences in <a href=\"#table7\">Table 7</a> are:",
+                            "type": "paragraph"
+                        },
+                        {
+                            "items": [
+                                [
+                                    {
+                                        "text": "<i>Random variations in the numbers of simulated events</i>. For example, if the expected 2,208 deaths were Poisson distributed, they would have a standard deviation of 47, and averaging over 50 runs would reduce this to about 7. The observed death numbers from all-case yearly and loaded weekly are thus within one standard deviation, while those from loaded yearly runs are well outside.",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "<i>Derivation of the expected numbers in a manner inconsistent with the simulations</i>. Event probabilities, particularly for births, exits and moves, depend on a number of person and household characteristics. While the expected probabilities for each person were based as closely as possible on the data at the start of the first projection year, some approximations may have occurred. One error in expected numbers was found during checking.",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "<i>Movements between sampling pools resulting from births, deaths or emigrants</i>. For example, if a partnered male is simulated to die, then his partner will be removed from a partner pool, and put into a pool of lone persons or lone parents. As deaths from these pools are simulated after deaths from partner pools, then the former partner may be double exposed to the risk of death. As birth, death and emigration are low-probability events, and some offsetting may occur, the resulting errors are likely to be small. A solution is to use pools based only on age.",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "<i>Changes in type or area for exits</i>. In the simulations with loaded probabilities, it was assumed that exits do not cause any losses from the pool. Trials show that about 86% of exits involve a type change, and about 10% involve an area change. With the area/type/age pool structure being used, changes of either type or area result in removal from the pool being simulated. This is not a problem with all-case simulations, but can cause insufficient persons to be sampled when using loaded probabilities. This seems likely to be a major reason why exits with a yearly cycle and loaded probabilities were 3.7% below the all-case number. A solution is to use pools based only on age, so that no pool losses occur.",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "<i>Changes in area for moves</i>. About 14% of moves involve an area change, and moves with a yearly cycle and loaded probabilities were 0.7% below the all-case number. Again, a solution is to use pools based only on age.",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "<i>Changes in person types during the year</i>. If type change assumptions are inappropriate, then there can be rapid changes in the numbers of particular types of persons in the first projection year. This may be a major reason for the 6% increase in exit estimates with loaded probabilities when changing from annual to weekly cycles.",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "<i>Programming errors</i>. The household microsimulation model used here was primarily constructed as a test-bed for different simulation techniques. It has been substantially validated and debugged, but there is potential for errors of the order of 10% in exit and move numbers to be still undetected, and for smaller errors in births, deaths and emigrants.",
+                                        "type": "paragraph"
+                                    }
+                                ]
+                            ],
+                            "prefix": "bullet",
+                            "type": "list"
+                        }
+                    ],
+                    "id": "s6-1",
+                    "title": "6.1 One-year projection results with each event simulated separately",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "<a href=\"#table8\">Table 8</a> shows the same expected numbers as <a href=\"#table7\">Table 7</a>, but with observed numbers obtained by simulating all events together. Within each simulation cycle, events have been simulated in the order births, deaths, emigrants, immigrants, exits and moves. Apart from moves, simulated event numbers are similar for both tables. Move numbers increased by about 8% for all-case simulation, 7% for loaded probabilities with a yearly cycle, and 4% for loaded probabilities with a weekly cycle. Move probabilities depend strongly on person types, so that poorly chosen exit assumptions can cause significant changes to moves in a year.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "table8",
+                                    "label": "Table 8",
+                                    "tables": [
+                                        "<table>\n<thead>\n<tr>\n<th>Event</th>\n<th>Expected</th>\n<th>Observed all-case yearly</th>\n<th>Observed loaded yearly</th>\n<th>Observed loaded weekly</th>\n</tr></thead>\n<tbody>\n<tr>\n<td>Births</td>\n<td>2,170</td>\n<td>2,175</td>\n<td>2,182</td>\n<td>2,232</td>\n</tr>\n<tr>\n<td>Deaths</td>\n<td>1,372</td>\n<td>1,375</td>\n<td>1,335</td>\n<td>1,375</td>\n</tr>\n<tr>\n<td>Emigrants</td>\n<td>2,284</td>\n<td>2,282</td>\n<td>2,263</td>\n<td>2,304</td>\n</tr>\n<tr>\n<td>Exits</td>\n<td>6,254</td>\n<td>6,333</td>\n<td>6,075</td>\n<td>6,611</td>\n</tr>\n<tr>\n<td>Moves</td>\n<td>12,468</td>\n<td>13,418</td>\n<td>13,210</td>\n<td>12,826</td>\n</tr>\n</tbody>\n</table>"
+                                    ],
+                                    "title": "Event totals from one-year projections, all events simulated together.",
+                                    "type": "table"
+                                }
+                            ],
+                            "type": "figure"
+                        }
+                    ],
+                    "id": "s6-2",
+                    "title": "6.2 One-year projection results with all events simulated together",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "<a href=\"#bib2\">Galler (1997)</a> recommended short simulation cycles. To test their usefulness, simulations were made in normal and reverse order with yearly cycles, and then in normal and reverse order with weekly cycles.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "<a href=\"#table9\">Table 9</a> shows the changes from simulating events in reverse order are much smaller with weekly simulation cycles, particularly for exits and moves.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "table9",
+                                    "label": "Table 9",
+                                    "tables": [
+                                        "<table>\n<thead>\n<tr>\n<th rowspan=\"2\">Event</th>\n<th colspan=\"3\">Yearly</th>\n<th colspan=\"3\">Weekly</th>\n</tr>\n<tr>\n<th>normal order</th>\n<th>reverse order</th>\n<th>change in year</th>\n<th>normal order</th>\n<th>reverse order</th>\n<th>change in year</th>\n</tr>\n</thead>\n<tbody>\n<tr><td>Births</td>\n<td>2,182</td>\n<td>2,243</td>\n<td>61</td>\n<td>2,232</td>\n<td>2,224</td>\n<td>-8</td></tr>\n<tr><td>Deaths</td>\n<td>1,335</td>\n<td>1,331</td>\n<td>-4</td>\n<td>1,375</td>\n<td>1,378</td>\n<td>3</td></tr>\n<tr><td>Emigrants</td>\n<td>2,263</td>\n<td>2,308</td>\n<td>45</td>\n<td>2,304</td>\n<td>2,311</td>\n<td>7</td></tr>\n<tr><td>Exits</td>\n<td>6,075</td>\n<td>6,540</td>\n<td>465</td>\n<td>6,611</td>\n<td>6,615</td>\n<td>4</td></tr>\n<tr><td>Moves</td>\n<td>13,210</td>\n<td>12,323</td>\n<td>-887</td>\n<td>12,826</td>\n<td>12,819</td>\n<td>-7</td></tr>\n</tbody>\n</table>"
+                                    ],
+                                    "title": "Table one-year projections, with events in normal & reverse order (50 run averages).",
+                                    "type": "table"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "text": "These results strongly confirm the desirability of short simulation cycles.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s6-3",
+                    "title": "6.3 Comparisons between normal and reverse order simulations",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "<a href=\"#table10\">Table 10</a> compares the averages of 10 50-year runs using all-case simulation with the averages of 10 runs using loaded probabilities. The expected numbers of births, deaths and emigrants are reasonably similar for both simulation methods. The 2.3% reduction in exits is less than the 4.1% for the one-year projections in <a href=\"#table7\">Table 7</a>, and may similarly reflect the assumption of no losses when most exits did in fact result in losses from the sampling pools. The 2.4% reduction in moves is more than the 0.7% in <a href=\"#table7\">Table 7</a>, and may reflect the 50-year accumulation of type errors when using loaded probabilities. Exits and moves do not affect person numbers, and the projected numbers of persons are very close.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "table10",
+                                    "label": "Table 10",
+                                    "tables": [
+                                        "<table>\n<thead>\n<tr>\n<th>Event/persons at end</th>\n<th>All-case yearly mean</th>\n<th>All-case yearly SD</th>\n<th>Loaded yearly mean</th>\n<th>Loaded yearly SD</th>\n<th>Loaded as % of all-case</th>\n</tr></thead>\n<tbody>\n<tr>\n<td>Births</td>\n<td>102,831</td>\n<td>541</td>\n<td>101,611</td>\n<td>516</td>\n<td>98.8%</td>\n</tr>\n<tr>\n<td>Deaths</td>\n<td>92,205</td>\n<td>127</td>\n<td>91,924</td>\n<td>130</td>\n<td>99.7%</td>\n</tr>\n<tr>\n<td>Emigrants</td>\n<td>123,775</td>\n<td>186</td>\n<td>123,024</td>\n<td>232</td>\n<td>99.4%</td>\n</tr>\n<tr>\n<td>Exits</td>\n<td>355,304</td>\n<td>891</td>\n<td>347,052</td>\n<td>746</td>\n<td>97.7%</td>\n</tr>\n<tr>\n<td>Moves</td>\n<td>797,511</td>\n<td>1,716</td>\n<td>778,254</td>\n<td>937</td>\n<td>97.6%</td>\n</tr>\n<tr>\n<td>Persons at end</td>\n<td>226,755</td>\n<td>488</td>\n<td>226,566</td>\n<td>504</td>\n<td>99.9%</td>\n</tr>\n</tbody>\n</table>"
+                                    ],
+                                    "title": "50-year projections with yearly cycles (10 run averages).",
+                                    "type": "table"
+                                }
+                            ],
+                            "type": "figure"
+                        }
+                    ],
+                    "id": "s6-4",
+                    "title": "6.4 Comparisons between all-case and loaded 50-year projections",
+                    "type": "section"
+                }
+            ],
+            "id": "s6",
+            "title": "6. Checks on projected event numbers",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "From initial trials, it was noted that simulations with loaded probabilities sometimes gave much lower standard deviations in event numbers than all-case simulations. This was unexpected, but investigation showed that low standard deviations were likely when sampling from pools with limited probability ranges. Some approximate theoretical estimates of expected standard deviations were thus made, and compared with the observed standard deviations with the two methods with a yearly cycle, and with loaded probabilities with a weekly cycle.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "<a href=\"#table11\">Table 11</a> compares approximate expected standard deviations for each event type with those observed from 50 runs, simulating all events together. For each sampling pool, the average loaded probability was calculated as",
+                    "type": "paragraph"
+                },
+                {
+                    "assets": [
+                        {
+                            "id": "table11",
+                            "label": "Table 11",
+                            "tables": [
+                                "<table>\n<thead>\n<tr>\n<th rowspan=\"2\">Event</th>\n<th>All-case Yearly</th>\n<th>All-case Yearly</th>\n<th>Loaded Yearly</th>\n<th>Loaded Yearly</th>\n<th>Loaded weekly</th>\n<th>Loaded weekly</th>\n</tr>\n<tr>\n<th>Expected</th>\n<th>Observed</th>\n<th>Expected</th>\n<th>Observed</th>\n<th>Expected</th>\n<th>Observed</th>\n</tr></thead>\n<tbody>\n<tr>\n<td>Births</td>\n<td>43.8</td>\n<td>38.6</td>\n<td>43.6</td>\n<td>38.7</td>\n<td>43.5</td>\n<td>52.8</td>\n</tr>\n<tr>\n<td>Deaths</td>\n<td>35.4</td>\n<td>32.7</td>\n<td>28.0</td>\n<td>29.9</td>\n<td>31.7</td>\n<td>32.2</td>\n</tr>\n<tr>\n<td>Emigrants</td>\n<td>47.3</td>\n<td>38.6</td>\n<td>26.2</td>\n<td>35.6</td>\n<td>36.5</td>\n<td>42.8</td>\n</tr>\n<tr>\n<td>Exits</td>\n<td>73.7</td>\n<td>67.6</td>\n<td>33.2</td>\n<td>39.8</td>\n<td>54.7</td>\n<td>59.6</td>\n</tr>\n<tr>\n<td>Moves</td>\n<td>98.3</td>\n<td>99.7</td>\n<td>10.3</td>\n<td>18.9</td>\n<td>50.0</td>\n<td>55.1</td>\n</tr></tbody></table>"
+                            ],
+                            "title": "Standard deviations for one-year projections (based on 50 runs).",
+                            "type": "table"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "id": "ueqn2",
+                    "label": "(15)",
+                    "mathml": "<math><mtext>expected\u00a0number\u00a0of\u00a0events\u00a0/\u00a0number\u00a0of\u00a0draws\u00a0from\u00a0pool</mtext></math>",
+                    "type": "mathml"
+                },
+                {
+                    "text": "where the number of draws was calculated using <a href=\"#eqn4\">equation 4</a> or <a href=\"#eqn12\">12</a>.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The expected variance of the number of events from that pool was then approximately estimated assuming the variance formula for a binomial distribution",
+                    "type": "paragraph"
+                },
+                {
+                    "id": "ueqn3",
+                    "label": "(16)",
+                    "mathml": "<math><mtext>number\u00a0of\u00a0draws\u00a0*\u00a0average\u00a0loaded\u00a0probability</mtext><mo>*</mo><mtext>(1</mtext><mo>\u2212</mo><mtext>\u00a0average\u00a0loaded\u00a0probability)</mtext></math>",
+                    "type": "mathml"
+                },
+                {
+                    "text": "Variances were summed across all pools, and the square root taken to give an approximate estimate of the standard deviation. Given the approximate nature of the expected standard deviations, and the broad confidence limits generally associated with standard deviation observations, the expected and observed standard deviations are reasonably comparable.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "As shown in <a href=\"#table2\">Table 2</a>, sampling with loaded probabilities can give low standard deviations, particularly for risk combinations with a narrow range of risks. This is because the loaded probabilities can all be close to 1, and there will be little variability in the simulated numbers of events. For moves, most of the persons in each sampling pool had similar probabilities, so that loaded probabilities with a one-year simulation cycle gave standard deviations that were much lower than with all-case sampling.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "As the number of simulation cycles in a year increases, more pools have very low numbers of expected events, with loaded probabilities well below 1, and higher variability in simulated numbers of events. Comparing the values for loaded simulations with yearly and weekly cycles, all the observed standard deviations increased, and particularly so for moves.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The coefficients of variation in <a href=\"#table12\">Table 12</a> were obtained by dividing the observed standard deviations in <a href=\"#table11\">Table 11</a> by the observed numbers in <a href=\"#table8\">Table 8</a>. Regardless of simulation method or cycle length, the coefficients of variation for the tested model are small, and may not be important in most practical applications.",
+                    "type": "paragraph"
+                },
+                {
+                    "assets": [
+                        {
+                            "id": "table12",
+                            "label": "Table 12",
+                            "tables": [
+                                "<table>\n<thead>\n<tr>\n<th>Event</th>\n<th>All-case Yearly</th>\n<th>Loaded yearly</th>\n<th>Loaded weekly</th>\n</tr></thead>\n<tbody>\n<tr><td>Births</td>\n<td>0.018</td>\n<td>0.018</td>\n<td>0.024</td></tr>\n<tr><td>Deaths</td>\n<td>0.024</td>\n<td>0.022</td>\n<td>0.023</td></tr>\n<tr><td>Emigrants</td>\n<td>0.017</td>\n<td>*0.016</td>\n<td>0.019</td></tr>\n<tr><td>Exits</td>\n<td>0.011</td>\n<td>0.007</td>\n<td>0.009</td></tr>\n<tr><td>Moves</td>\n<td>0.007</td>\n<td>0.001</td>\n<td>0.004</td></tr>\n</tbody>\n</table>"
+                            ],
+                            "title": "Observed coefficients of variation for one-year projections (based on 50 runs).",
+                            "type": "table"
+                        }
+                    ],
+                    "type": "figure"
+                }
+            ],
+            "id": "s7",
+            "title": "7. Checks on event number standard deviations",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "Computational details for loaded sampling will depend strongly on the database structure and programming language. Test results here are from a model using a list structure rather than a relational database. A separate list is maintained of member addresses for each of 576 pools (each combination of 8 areas, 8 person types and 9 age groups). These pools are maintained for alignment purposes, but they also proved useful for loaded sampling. All data for a person are stored as a single line in an array, and their address in the array is recorded in the relevant pool list. The address of each new person in a pool is added to the end of the list. The address of any exiting person is replaced in the list by the address currently at the end of the list, with the length of the list being reduced by one. A random number is drawn, and multiplied by the length of the list, to randomly select a person from a pool",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "A similar list structure has been used by INHASIM for many years (<a href=\"#bib3\">Inagaki 2009</a>). INHASIM uses a template class of sequence containers, based on Microsoft\u2019s Visual C++ STL list class, that maintains its elements in a linear arrangement and allows efficient insertions and deletions at any location within a sequence.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s8",
+            "title": "8. Computational aspects",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "In practice, where is sampling with loaded probabilities likely to be useful? Models with fine geographic subdivisions will generally require at least 1,000 persons to realistically represent each subdivision, and may thus become very large. Models with many different types of physical disability will also need to be large, so as to adequately represent uncommon disabilities. Models including processes with short time spans are also likely to get useful time savings from sampling with loaded probabilities. For example, a microsimulation model of dwelling sales and rentals is likely to need both a detailed geographic structure, and a simulation cycle of a week or less.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Existing models of moderate size but unusually slow run times are unlikely to benefit from sampling with loaded probabilities. Their slowness may reflect programming and data storage issues, or excessive use of alignment, and more efficient sampling will have little effect. Adding sampling with loaded probabilities to any existing model may require changes to data indexing procedures, and will require additional model validation.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "<a href=\"#bib1\">Fredriksen, Knudsen &amp; Stolen (2011)</a> describe the use of multithreading to greatly reduce runtimes in the MOSART model of the whole Norwegian population. They comment that simulation steps involved in household formation are cumbersome to multi-thread, due to often subtle interactions between individuals, with little or no effect on runtime. Sampling with loaded probabilities seems particularl yrelevant to births, deaths, immigration, emigration and household changes, all of which are likely to be hard to multithread.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Sampling with loaded probabilities thus seems appropriate for new ambitious models, with many persons or short simulation cycles. Ideally, the sampling processes should be designed at the same time as data storage and alignment.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s9",
+            "title": "9. Likely applications",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "<a href=\"#s2\">Section 2</a> shows that sampling with loaded probabilities is feasible, and gives formulas for the numbers of persons drawn from each pool, and for the loaded probabilities. The run times in <a href=\"#s5\">Section 5</a> confirm that sampling with loading probabilities can be much quicker, and the comparisons in <a href=\"#s6\">Sections 6</a> and <a href=\"#s7\">7</a> show that it can give similar results to all-case simulation.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s10",
+            "title": "10. Conclusions",
+            "type": "section"
+        }
+    ],
+    "references": [
+        {
+            "articleTitle": "The dynamic cross-sectional microsimulation model MOSART",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Fredricksen, D",
+                        "preferred": "D Fredricksen"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Knudsen, P",
+                        "preferred": "P Knudsen"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Stolen, N",
+                        "preferred": "N Stolen"
+                    },
+                    "type": "person"
+                }
+            ],
+            "conference": {
+                "name": [
+                    "paper presented to the third general conference of the International Microsimulation Association"
+                ]
+            },
+            "date": "2011",
+            "id": "bib1",
+            "type": "conference-proceeding",
+            "uri": "http://www.scb.se/Grupp/Produkter_Tjanster/Kurser/_Dokument/IMA/Stoelen_MOSART_IMA%202011.pdf"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Galler, HP",
+                        "preferred": "HP Galler"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1997",
+            "details": "Discrete time and continuoustime approaches to dynamic microsimulation reconsidered. National Centre for Social & Economic Modelling. Technical Paper No 13, Canberra, October, v + 35",
+            "id": "bib2",
+            "title": "Discrete time and continuoustime approaches to dynamic microsimulation reconsidered. National Centre for Social & Economic Modelling. Technical Paper No 13",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Inagaki, S",
+                        "preferred": "S Inagaki"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2009",
+            "details": "15, INAHSIM: A Japanese microsimulation model, paper presented to the second general conference of the International Microsimulation Association, Ottawa, June, 8-10",
+            "id": "bib3",
+            "title": "INAHSIM: A Japanese microsimulation model",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Morrison, R",
+                        "preferred": "R Morrison"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2006",
+            "id": "bib4",
+            "pages": "21",
+            "title": "http://www.ssb.no/misi/papers/morrison-rick_makeitso-oslo-2.doc",
+            "type": "web",
+            "uri": "http://www.ssb.no/misi/papers/morrison-rick_makeitso-oslo-2.doc",
+            "website": "Make it so: event alignment in dynamic microsimulation"
+        },
+        {
+            "articleTitle": "A new type of socio-economic system",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Orcutt, GH",
+                        "preferred": "GH Orcutt"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1957",
+            "id": "bib5",
+            "journal": "Review of Economics and Statistics",
+            "pages": {
+                "first": "773",
+                "last": "797",
+                "range": "773\u2013797"
+            },
+            "type": "journal",
+            "volume": "58"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Orcutt, GH",
+                        "preferred": "GH Orcutt"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Greenberger, M",
+                        "preferred": "M Greenberger"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Korbel, J",
+                        "preferred": "J Korbel"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Rivlin, A",
+                        "preferred": "A Rivlin"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1961",
+            "details": "Microanalysis of socioeconomic systems - a simulation study, New York, Harper & Brothers, vxiii + 425",
+            "id": "bib6",
+            "title": "Microanalysis of socioeconomic systems - a simulation study",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Ross, SM",
+                        "preferred": "SM Ross"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2004",
+            "details": "Simulation 4th edition, Elsevier Academic Press, Burlington, xiii + 298",
+            "id": "bib7",
+            "title": "Simulation 4th edition",
+            "type": "unknown"
+        }
+    ],
+    "acknowledgements": [
+        {
+            "text": "I am grateful for the many suggestions made by the three reviewers of this paper. Almost all were adopted, and greatly improved the paper.",
+            "type": "paragraph"
+        }
+    ],
+    "-meta": {
+        "patched": true
+    },
+    "stage": "published"
+}
