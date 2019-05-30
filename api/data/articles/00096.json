@@ -1,0 +1,2547 @@
+{
+    "status": "vor",
+    "id": "00096",
+    "version": 1,
+    "type": "research-article",
+    "doi": "10.34196/ijm.00096",
+    "authorLine": "M. Esteban Mu\u00f1oz H., Irene Peters",
+    "title": "Constructing an urban microsimulation model to assess the influence of demographics on heat consumption",
+    "published": "2014-04-30T00:00:00Z",
+    "versionDate": "2014-04-30T00:00:00Z",
+    "statusDate": "2014-04-30T00:00:00Z",
+    "volume": 7,
+    "issue": 1,
+    "elocationId": "n/a",
+    "pdf": "http://web:8082/00096/ijm-00096.pdf",
+    "subjects": [
+        {
+            "id": "spatial-microsimulation",
+            "name": "Spatial microsimulation"
+        }
+    ],
+    "abstract": {
+        "content": [
+            {
+                "text": "We present ongoing work on the construction of a spatial microsimulation model to assess the influence of demographics on residential heat consumption for Hamburg, Germany. Demographics are important for urban energy planning as: (1) Buildings are becoming more energy-efficient and building occupant behaviour accounts for a growing share in the variation of consumption; (2) building occupant needs are changing along with demographic change; and (3) the share of small decentralized district heating grids, in which fewer customers mean less averaging out of heterogeneous occupant profiles, is set to play a bigger role in the country\u2019s heat supply. We construct a spatial microdata set for the city of Hamburg (of roughly 1.8 million inhabitants and 370 000 buildings), with households populating geo-referenced buildings, in three steps: (a) Synthesizing the population of small scale \u201cstatistical areas\u201d, comprising up to around 2000 people (we do this by selecting households recorded in the German microcensus and fitting them into the statistical areas); (b) assigning energy relevant properties to the geo-referenced buildings from the Hamburg digital cadaster (we do this by making use of a well-established building typology developed for energy assessment) and constructing dwelling units in these buildings; and (c) matching households to the dwelling units in these buildings (which we do again by using household data from the microcensus). This last step \u2013 allocating households to buildings \u2013 may be the most interesting and challenging task. As of to date, we use a combinatorial optimization algorithm to achieve this. Once we have a microsimulation model of buildings and households living in them, including their demographic composition, the range of questions that can be explored is immense. The illustration presented here is a simple heat balance computation of individual buildings, using the constructed socio-demographic data and the digital cadaster data as input parameters.",
+                "type": "paragraph"
+            }
+        ]
+    },
+    "copyright": {
+        "license": "CC-BY-4.0",
+        "holder": "Mu\u00f1oz H. and Peters",
+        "statement": "This article is distributed under the terms of the <a href=\"http://creativecommons.org/licenses/by/4.0/\">Creative Commons Attribution License</a>, which permits unrestricted use and redistribution provided that the original author and source are credited."
+    },
+    "authors": [
+        {
+            "affiliations": [
+                {
+                    "address": {
+                        "components": {
+                            "country": "Germany"
+                        },
+                        "formatted": [
+                            "Germany"
+                        ]
+                    },
+                    "name": [
+                        "Technical Urban Infrastructure Systems Group",
+                        "HafenCity University"
+                    ]
+                }
+            ],
+            "emailAddresses": [
+                "marcelo.hidalgo@hcu-hamburg.de"
+            ],
+            "name": {
+                "index": "Mu\u00f1oz H., M. Esteban",
+                "preferred": "M. Esteban Mu\u00f1oz H."
+            },
+            "type": "person"
+        },
+        {
+            "affiliations": [
+                {
+                    "address": {
+                        "components": {
+                            "country": "Germany"
+                        },
+                        "formatted": [
+                            "Germany"
+                        ]
+                    },
+                    "name": [
+                        "Technical Urban Infrastructure Systems Group",
+                        "HafenCity University"
+                    ]
+                }
+            ],
+            "emailAddresses": [
+                "irene.peters@hcu-hamburg.de"
+            ],
+            "name": {
+                "index": "Peters, Irene",
+                "preferred": "Irene Peters"
+            },
+            "type": "person"
+        }
+    ],
+    "keywords": [
+        "heat consumption",
+        "digital cadaster",
+        "building stock",
+        "spatial microsimulation",
+        "combinatorial optimization"
+    ],
+    "body": [
+        {
+            "content": [
+                {
+                    "text": "The immediate purpose of the microsimulation model presented here is to simulate the presence of occupants in buildings and the resulting building heat consumption. The impact of occupants and their behaviour on building heat consumption is increasingly drawing interest from the urban energy planning community. In the past, the influence of occupants on building heat consumption was considered negligible. Building heat consumption was dominated by the nature of the building shell and the heat transmission losses it allowed. The last couple of decades, however, has seen a tightening of energy efficiency standards in building construction, greatly reducing transmission losses through the shell, thus increasing the impact that occupant behavior has on heat consumption. This also applies to the building stock in the course of retrofitting.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Germany has implemented stringent energy efficiency requirements for new construction, pushed by European Union requirements, the <a href=\"#bib42\">European Parliament and the Council of the European Union (2002a</a>, <a href=\"#bib43\">2002b</a>). More ambitious efficiency requirements are on the horizon. The building stock, too, has shifted into the policy focus of the German energy transition, as German buildings are largely already built, and the rate of new construction is only about one percent of the total building stock <a href=\"#bib20\">Kleemann and Hansen (2005)</a>. This means that the challenge lies in reducing energy use and CO2 emissions of existing buildings. This is done with: (1) energy-efficiency retrofitting of the building shell (reducing heat transmission losses through heat insulation); (2) increasing the efficiency in the heat supply, and (3) replacing fossil fuels with renewable energy sources or heat from co- generation.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "There is a trend towards small, decentralized heating systems fed by co-generation and renewables <a href=\"#bib20\">Kleemann and Hansen (2005)</a>, <a href=\"#bib19\">KEMA (2012)</a>. These are formed through dividing large centralized district heating networks into smaller islands (Germany has some amount of district heating, especially in the large cities) and through the construction of new small heat networks that are fed by biomass or co-generation heat <a href=\"#bib18\">Jentsch, Bohn, Pohlig, D\u00f6tsch, Richter and Manderfeld (2008)</a>.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The trend towards more efficient buildings (in terms of reduced heat losses through the building shell) on the one hand and more decentralized heating networks on the other imply that it becomes more important to understand the influence of building occupant demographics and behaviour on heat consumption: In inefficient homes, the level of heat consumption is determined mainly by the properties of the building shell \u2013 because so much heat leaves a heated house as transmission losses through the shell. Little does it matter what people do in such a home. In well-insulated homes, this is no longer so (see <a href=\"#fig3\">Figure 3</a>). The behaviour of the building occupants \u2013 the temperature at which they feel comfortable <a href=\"#bib23\">Liao and Chang (2002)</a>, <a href=\"#bib34\">Peffer, Pritoni, Meier, Aragon and Perry (2011)</a>, the amount of time and time of day they spend at home <a href=\"#bib37\">Robinson and Haldi (2011)</a>, Wilke, <a href=\"#bib13\">Haldi and Robinson (2011)</a>, their warm water usage patterns Guerra Santin, Itard and Visscher (2009) \u2013 has a much greater influence on heat consumption. Together with the trend towards smaller heating grids, this occupant influence becomes more important to understand; as such heating grids have to take into account peak and minimum loads. Fewer customers on a grid mean less averaging out of heterogeneous consumption patterns.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "In German heat supply planning, and in the legal provisions for building energy efficiency, the heating requirements of buildings are typically computed by a standardised procedure that employs a static energy balance model. It uses specific building characteristics (in essence): the geometry and the materials of the building shell, combined with some normal parameters about the occupants and the indoor climate associated with the occupants (normal temperature, air exchange rate, and so on), to arrive at building heat demand .This heat demand is a hypothetical figure, not indicating any spread of the buildings\u2019 heat energy use. Heat consumption, by contrast, denotes the heat that a building actually consumes. The term is used for measured consumption values in the past, or for anticipated (predicted, simulated, estimated) heat uses taking into account the occupant and other abnormal conditions (in contrast to the hypothetical \u201cplanned\u201d figure that is based on a normal occupant and normal conditions). (See also <a href=\"#s4\">section 4</a>.)",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The use of a \u201cnormal\u201d or \u201caverage\u201d occupant works fine in current heating grids because: (a) in large, centralized systems, social differences cancel each other out; (b) the transmission losses in the building stock are much higher than the losses caused by human behaviour, making them negligible; (c) supply urban areas have homogeneous social diversity, making the \u201caverage\u201d occupant similar for all supply areas. As argued above, the energy supply of the future is likely to be far more decentralized <a href=\"#bib19\">KEMA (2012)</a> and energy-efficient. We also know that at a low aggregation level there are substantial differences in the social characteristics within urban areas; probably the best know example is the student neighborhood found in many city centers of the world.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "On big centralized heat supply systems which supply a large group of individuals the estimated heat demand curve lies close to the real consumption curve as the \u201caverage occupant\u201d is a representative occupant of the group. In such a big group large deviations from the \u201caverage\u201d occupant will cancel each other out, meaning an averaging out of the temporal distribution of consumption patterns rather than the absolute consumption intensities.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The task at hand then is to understand the influence of occupant characteristics on the variability of heat consumption. There are different methods by which this task can be and has been approached, developed for different purposes and by different academic disciplines.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s1",
+            "title": "1. The application and the need for new modeling approaches",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "In order to provide the reader with some guidance to the remainder of the document, we offer an overview of the modelling steps and depict the model structure and data sources in <a href=\"#fig1\">Figure 1</a>. We also comment briefly on our modelling philosophy. In constructing our simple model, we perform the following steps:",
+                    "type": "paragraph"
+                },
+                {
+                    "items": [
+                        [
+                            {
+                                "text": "<b>Step 1</b>. We synthesize the population of \u201cstatistical areas\u201d in Hamburg by selecting households from the German Microcensus, fitting them into statistical areas and trying to achieve a good fit of the populations thus synthesized with the aggregate populations recorded for these areas, using a hill climbing algorithm <a href=\"#bib48\">Williamson, Birkin and Rees (1998)</a>. \u201cStatistical areas\u201d for Hamburg are areas of up to around 2000 people (in some cases far less) for which fairly detailed sociodemographic data is available (e.g. number of inhabitants per age class). For now we use the Microcensus of 2002; in a later step we plan to use the 2010 data-set. The 2002 Microcensus of Germany contains over 25000 records of individuals in their household contexts and lists around 340 variables, including demographic household composition, employment status, and type of building the household is living in. Step 1 is described in <a href=\"#s5\">Section 5</a> of this paper.",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "<b>Step 2</b>. We equip buildings that are geo-referenced in the official digital Hamburg cadaster with energy-relevant properties. We do this by using the IWU building typology (IWU is the Institute for Housing and Environment in Darmstadt), the leading German building typology developed and continually updated for the purpose of energy assessment of buildings <a href=\"#bib25\">Loga, Diefenbach, Stein and Born (2012)</a>. We assign buildings in the digital Hamburg cadaster to types in this typology, using an automated method containing stochastic elements, described in <a href=\"#bib29\">Munoz Hidalgo and Peters (2013)</a>. This is the subject of <a href=\"#s6\">Section 6</a> in this paper.",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "<b>Step 3</b>. For the statistical areas, we obtain the number of dwelling units per multi-family building as follows: We add the number of single-family residences (indicated in the cadaster) and an imputed number of dwelling units in multi-family houses, where we impute the latter by dividing the entire floor space of multifamily-buildings (available from the cadaster) through the number of households minus the number of single family residences. This step is described in <a href=\"#s6\">Section 6</a> of this paper.",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "<b>Step 4</b>. For the statistical areas, we assign households (from Step 1) to dwelling units (from Step 3) by using variables from the Microcensus pertaining to the type of building that the house- holds taken from the Microcensus live in. Step 4 is described in <a href=\"#s7\">Section 7</a> of this paper.",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "<b>Step 5</b>. We simulate heat consumption of buildings by using a static heat balance computation tool and varying the parameters pertaining to the occupants (e.g. air exchange, indoor temperature etc.). Usually, in these static tools (as they are used and normal in German legislation for building energy efficiency) the computation is carried out for a normal occupant with normal behaviour, and only the physical building characteristics vary according to the building being assessed. This is to ensure equal assumptions for all building computations. We vary these \u201coccupant variables\u201d based on data from the Microcensus pertaining to work hours which are computed based on employment status, job type, etc. Step 5 is described in <a href=\"#s8\">Section 8</a> of this paper.",
+                                "type": "paragraph"
+                            }
+                        ]
+                    ],
+                    "prefix": "none",
+                    "type": "list"
+                },
+                {
+                    "assets": [
+                        {
+                            "caption": [
+                                {
+                                    "text": "The diagram shows the three main databases (a-c) and the additional building typology used for the classification of the building stock (d). In step 4 the synthetic families (e) are merged with the constructed dwelling units (f). The simulation of heat consumption is performed in step number 5.",
+                                    "type": "paragraph"
+                                }
+                            ],
+                            "id": "fig1",
+                            "image": {
+                                "alt": "",
+                                "uri": "%iiif_uri%/00096%2Fijm-00096-fig1.tif",
+                                "size": {
+                                    "width": 509,
+                                    "height": 803
+                                },
+                                "source": {
+                                    "mediaType": "image/jpeg",
+                                    "uri": "%iiif_uri%/00096%2Fijm-00096-fig1.tif/full/full/0/default.jpg",
+                                    "filename": "ijm-00096-fig1.jpg"
+                                }
+                            },
+                            "label": "Figure 1",
+                            "title": "Model data structure and simulation steps.",
+                            "type": "image"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "text": "The model architecture is object-oriented (implemented in Python), representing each individual unit as an object of a \u201cclass\u201d. Many authors developing microsimulation models argue in favor of a truly object-oriented model <a href=\"#bib1\">Ballas, Clarke and Turton (1999)</a>, <a href=\"#bib28\">Miller, Douglas Hunt, Abraham and Salvini (2004)</a>, <a href=\"#bib36\">Rahman, Harding, Tanton and Liu (2010)</a>. Having an object-oriented architecture provides the ideal platform for developing an agent-based model, a model type capable of generating emergent phenomena arising out of the interaction of individuals <a href=\"#bib2\">Birkin and Wu (2012)</a>. There are not only advantages for the simulation itself, but also for the code, as it becomes more \u201crealistic\u201d and hence less error-prone and easier to share. We see the combination of this (and similar approaches e.g. Cellular Automata) as the most effective method and we therefore prepared our model for our future work as a hybrid agent-based spatial microsimulation model (as did <a href=\"#bib35\">Peters, Brassel and Sp\u00f6rri (2002)</a> for a waste water application).",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s2",
+            "title": "2. Overview of modelling steps, and modeling approach",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "In this section we present the main data sources used for our model so far. The different data sources displayed in <a href=\"#fig1\">Figure 1</a> are: (a) The German Microcensus from 2002; (b) cross tabulation data aggregated to statistical areas for the city of Hamburg; (c) the digital cadaster of the city of Hamburg and d) a building typology developed by the IWU institute for the classification of the German building stock.",
+                    "type": "paragraph"
+                },
+                {
+                    "items": [
+                        [
+                            {
+                                "text": "The census data comes from the official German Microcensus for scientific research Amtliche Mikrodaten f\u00fcr die wissenschaftliche Forschung <a href=\"#bib31\">NRW, Statistisches Landesamt Gesch\u00e4ftsstelle, F.D.Z. (05.12.2002)</a>, developed and maintained by the German Statistical Office of the German Federal Level and the Federal States, Research Data Center Statistische \u00c4mter des Bundes und der Landers, Forschungsdatenzentren. The data set from 2002 contains 25,137 records of individuals in their household contexts and lists around 340 variables for each of these individuals, including the demographic household composition in which they live, their employment status, and type of building the household is living in.",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "The cross tabulations of statistical areas. Statistical areas (in German: \u201cStatistische Gebiete\u201d) are areas of up to around 2,000 inhabitants for which fairly detailed data on sociodemography are available. This data is developed and maintained by the Statistical Office of the combined Federal States of Hamburg and Schleswig-Holstein. Statistisches Amt f\u00fcr Hamburg und Schleswig- Holstein (StaNord)<a href=\"#fn1\"><sup>1</sup></a> See <a href=\"#fig2\">Figure 2a</a> for the partitioning of Hamburg in statistical areas.",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "The digital cadaster of Hamburg, the ALKIS<a href=\"#fn2\"><sup>2</sup></a> contains a lot of information on the building stock of the city. Each building is geo-referenced and contains a set of attributes. From these attributes we use both the geo-reference (to estimate living space and building orientation) and the attributes to estimate energy relevant properties of the individual buildings, through the use of a building typology (see d below). See <a href=\"#fig2\">Figure 2b</a> for the buildings recorded in the digital cadaster of Hamburg.",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "We make use of the building typology developed by <a href=\"#bib25\">Loga <i>et al</i>. (2012)</a> for the German building stock. This typology is well documented and allows the extraction of relevant data. We classify the entire building stock of the digital cadaster into building types of this typology, thereby assigning (1) U-values for the building components (roof, walls and windows) and (2) glazing area, for the estimation of heat loses and solar gains.",
+                                "type": "paragraph"
+                            }
+                        ]
+                    ],
+                    "prefix": "alpha-lower",
+                    "type": "list"
+                },
+                {
+                    "assets": [
+                        {
+                            "caption": [
+                                {
+                                    "text": "(a) Statistical areas `Statistische Gebiete\u2019\u2019 containing aggregated sociodemographic information. Statistisches Amt f\u00fcr Hamburg und Schleswig-Holstein (StaNord); and (b) Digital cadaster ALKIS `Amtliches Liegenschaftskatasterinformationssystem\u2019\u2019. <a href=\"#bib22\">Landesbetrieb Geoinformation und Vermessung \u2013 Stadt Hamburg (2010)</a>.",
+                                    "type": "paragraph"
+                                }
+                            ],
+                            "id": "fig2",
+                            "image": {
+                                "alt": "",
+                                "uri": "%iiif_uri%/00096%2Fijm-00096-fig2.tif",
+                                "size": {
+                                    "width": 1051,
+                                    "height": 770
+                                },
+                                "source": {
+                                    "mediaType": "image/jpeg",
+                                    "uri": "%iiif_uri%/00096%2Fijm-00096-fig2.tif/full/full/0/default.jpg",
+                                    "filename": "ijm-00096-fig2.jpg"
+                                }
+                            },
+                            "label": "Figure 2",
+                            "title": "Spatial data used in our model.",
+                            "type": "image"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "assets": [
+                        {
+                            "id": "fig3",
+                            "image": {
+                                "alt": "",
+                                "uri": "%iiif_uri%/00096%2Fijm-00096-fig3.tif",
+                                "size": {
+                                    "width": 1050,
+                                    "height": 544
+                                },
+                                "source": {
+                                    "mediaType": "image/jpeg",
+                                    "uri": "%iiif_uri%/00096%2Fijm-00096-fig3.tif/full/full/0/default.jpg",
+                                    "filename": "ijm-00096-fig3.jpg"
+                                }
+                            },
+                            "label": "Figure 3",
+                            "title": "Occupant influence on different building typologies arrange by construction year.",
+                            "type": "image"
+                        }
+                    ],
+                    "type": "figure"
+                }
+            ],
+            "id": "s3",
+            "title": "3. The digital cadaster and the microcensus",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "Assessing the heat use of buildings can essentially be achieved by two methods, which exist in different variations. Simply speaking, heat demand is computed by constructing a static heat flow balance (or heat accounting balance). German regulations for building energy efficiency employ this approach and define a legally binding procedure, along with parameter values on the occupant, to implement the regulation. See DIN V 18599 <a href=\"#bib9\">Deutsches Institut f\u00fcr Normung e. V (2011)</a>. By contrast, there is also dynamic thermal simulation, taking account of spatial-temporal heat flows in the building and detailed circumstances, including occupant characteristics. The latter is the most common method used in the building simulation community <a href=\"#bib15\">Hensen and Lamberts (2011)</a> which is dominated by physicists and engineers.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Thus, <i>demand</i> usually means a hypothetical figure computed in a static energy balance from energy-relevant properties of the building, assuming a normal occupant. <i>Consumption</i>, on the other hand, is what a building actually consumes \u2013 a real or a simulated figure that reflects real world deviations from the norm, caused by, for example, occupant attributes and behaviour that deviates from the norm. One could distinguish a third specimen of model used by economists and social scientists, a statistical approach, relating energy consumption to building occupants (or building characteristics) based on observed consumption data, without explicitly accounting for heat flows.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Our ultimate objective is to simulate heat consumption. For this model, therefore, we take a simple approach, using a static heat accounting tool which traditionally is used to assess heat demand, in which we vary the assumptions based on the occupants of the building, such as interior heat gains, air flow, and desired indoor temperature.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Other attempts to perform a simulation of energy consumption at an urban scale using micro units have been performed by <a href=\"#bib13\">Haldi and Robinson (2011)</a>, <a href=\"#bib7\">Chingcuanco and Miller (2012)</a> and <a href=\"#bib10\">Druckman and Jackson (2008)</a>. <a href=\"#bib13\">Haldi and Robinson (2011)</a> develop their own urban energy demand model (CitySim), which implements a simple thermal simulation, accounting for varying occupants (for more detail see <a href=\"#bib37\">Robinson and Haldi (2011)</a>, <a href=\"#bib32\">Page, Robinson, Morel and Scartezzini (2008)</a>, <a href=\"#bib33\">Page, Robinson and Scartezzini (2007)</a>), describing the occupants\u2019 presence model which is central to our own approach. The model can be extended to simulate entire urban areas. The authors make use of a Markov-Chain model for generating occupancy rates, thus representing a possible spread of heat demand patterns at an urban scale. It is our aim to expand these approaches, applying the concept of spatial microsimulation to connect demographic characteristics of an urban area, allowing us to observe specific spread patterns of heat demand of the corresponding urban areas. <a href=\"#bib7\">Chingcuanco and Miller (2012)</a> attempt to combine a simulation model (ILUTE)<a href=\"#fn3\"><sup>3</sup></a> working at a micro level with an energy balance model developed specifically for the region under analysis. The first simulation model delivers much of the required data for the heat accounting model.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The study of the influence of occupant characteristics and occupant behaviour on energy demand has a long tradition in economics <a href=\"#bib38\">Scott (1980)</a>, <a href=\"#bib44\">Van Raaij and Verhallen (1983a</a>,<a href=\"#bib45\">b</a>), <a href=\"#bib4\">Bohi and Zimmerman (1984)</a>. A general problem of these studies is the level of aggregation in the data which records energy consumption across a group of consumers with different characteristics, often not in panel-data format, and often fails to control for the quality of the building (because that data has not been available).",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The integration of the occupant influence on various types of dynamic thermal building simulation models has also been studied by others. Almost all the scientific work in this field has been performed at a building level. The area of building simulation addresses this topic in a marginal fashion <a href=\"#bib27\">Mahdavi (2011)</a>. It is essential for the further development of heat supply infrastructure in urban environments that a clear understanding of heat consumption patterns at a low level of aggregation is achieved.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "A clear difficulty with empirical observations of occupant behaviour influencing energy demand is the need to control for all relevant factors <a href=\"#bib49\">Yu, Haghighat, Fung and Zhou (2011)</a>. An important factor for the simulation of energy demand seems to be occupant presence Guerra <a href=\"#bib12\">Santin <i>et al</i>. (2009)</a>, the latter authors observing this effect in their work, <a href=\"#bib32\">Page <i>et al</i>. (2008)</a> developed an interesting method for the integration of this parameter into simulation models. The authors simulate a time series of occupants\u2019 presence using a stochastic model. <a href=\"#bib46\">Wid\u00e9n, Molin and Elleg\u00e5rd (2011)</a> make an interesting contribution on the use of time-use data for the modeling of occupant influence in the residential sector. Further methods to integrate occupant behaviour into energy simulation models have been developed <a href=\"#bib5\">Borgeson and Brager (2008)</a>, <a href=\"#bib16\">Hoes, Hensen, Loomans, de Vries and Bourgeois (2009)</a>, <a href=\"#bib15\">Hensen and Lamberts (2011)</a>, <a href=\"#bib26\">L\u00fcdemann (2001)</a>, <a href=\"#bib30\">Nouidui, Wetter and Zuo (2012)</a>. <a href=\"#table1\">Table 1</a> is a rough cut at the literature, classifying modelling approaches reported there and illustrating where our approach is placed.",
+                    "type": "paragraph"
+                },
+                {
+                    "assets": [
+                        {
+                            "id": "table1",
+                            "label": "Table 1",
+                            "tables": [
+                                "<table>\n<thead>\n<tr>\n<th>Model Type\\Occupant Type</th>\n<th>Static heat balance model (at individual building level)</th>\n<th>Dynamic thermal simulation model (at individual building level)</th>\n<th>Statistic model relating heat consumption to occupants, at various levels of aggregation, no heat balance imposed</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>\u201cAverage Occupant\u201d (household comprised of identical norm persons; only their number counts)</td>\n<td><a href=\"#bib3\">Blesl, Kempe, Ohl and Fahl (2007)</a>, <a href=\"#bib9\">Deutsches Institut f\u00fcr Normung e. V (2011)</a>, <a href=\"#bib8\">Dascalaki, Droutsa, Balaras and Kontoyiannidis (2011)</a>, <a href=\"#bib24\">Loga, Diefenbach and Born (2011)</a></td>\n<td><a href=\"#bib11\">EnergyPlus Development Team (2012)</a>, <a href=\"#bib15\">Henden and Lamberts (2011)</a></td>\n<td/>\n</tr>\n<tr>\n<td>Household with individualized demographics and behaviour</td>\n<td>Chingcuanco and Miller (2012) Munoz &amp; Peters (2014)</td>\n<td><a href=\"#bib26\">L\u00fcdemann (2001)</a>, <a href=\"#bib5\">Borgeson and Brager (2008)</a>, Page et al. (2008), <a href=\"#bib27\">Mahdavi (2011)</a>, <a href=\"#bib46\">Wid\u00e9n et al. (2011)</a>.</td>\n<td><a href=\"#bib38\">Scott (1980)</a>, <a href=\"#bib4\">Bohi and Zimmerman (1984)</a>, <a href=\"#bib12\">Guerra Santin et al. (2009)</a>.</td>\n</tr>\n</tbody>\n</table>"
+                            ],
+                            "title": "Different types of models for energy simulation of buildings.",
+                            "type": "table"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "text": "Returning to our approach which uses a static balancing tool to compute heat demand, but varying parameters that may be influenced by the occupants: <a href=\"#fig3\">Figure 3</a> shows occupant influence on 36 buildings. We calculated the heat demand for each of these buildings varying \u201coccupant parameters\u201d. The variation representing occupant behaviour is performed by the combination of three key input variables: (1) q<sub>i</sub>[W /m2] = Internal heat emissions; (2) T<sub>i</sub>[C\u25e6] = Internal temperature; and (3) n[h<sup>\u22121</sup>] = Air exchange rate. In the plot the buildings are arranged by construction period (from oldest to newest). We vary the quality of the building shell along with the construction period. Newer buildings have a better insulated shell. It is clear that the influence of occupant behaviour (measured as relative heat variation \u0394Qh in percent) is highest on newer buildings.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "This literature shows that the integration of occupant behaviour into building simulation models can be achieved. Difficulties arise with the validation of such simulations, as empirical data at the needed temporal and disaggregation resolution is still very hard to get.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s4",
+            "title": "4. Computing heat demand vs. simulating heat consumption: State of the art in urban heat modelling, and our contribution",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "The selected households for the specific \u201cstatistical areas\u201d come from the official German Microcensus (see <a href=\"#s3\">Section 3</a>).",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "We select entire households from the Microcensus data base set and fit them (with an algorithm described below) into a statistical area such that the aggregated sociodemographic data of this area are matched. We are interested in households rather than individuals, as in the next step we will allocate these households into dwelling units.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "<a href=\"#table2\">Table 2</a> shows the six variables that we use to fit the households into the statistical areas. Of these six variables, two are taken directly from the Microcensus, and four we computed based upon other variables of the census. We use a combinatorial optimization, Hill Climbing (HC), algorithm to fit households from the micro census into statistical areas, following the method presented by <a href=\"#bib48\">Williamson <i>et al</i>. (1998)</a>, <a href=\"#bib14\">Harland, Heppenstall, Smith and Birkin (2012)</a>.",
+                    "type": "paragraph"
+                },
+                {
+                    "assets": [
+                        {
+                            "footnotes": [
+                                {
+                                    "text": [
+                                        {
+                                            "text": "<i>Source</i>: MIKROZENSUS 2002 <a href=\"#bib40\">Statistisches Bundesamt (2002)</a>. Variable names: translation by the authors.",
+                                            "type": "paragraph"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "id": "table2",
+                            "label": "Table 2",
+                            "tables": [
+                                "<table>\n<thead>\n<tr>\n<th>Constructed variables</th>\n<th/>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td rowspan=\"5\"><b>Variable ID</b></td>\n<td><b>Variable Name</b></td>\n</tr>\n<tr>\n<td>Average household size (No. of individuals per dwelling unit)</td>\n</tr>\n<tr>\n<td>Number of single households</td>\n</tr>\n<tr>\n<td>Number of households with children</td>\n</tr>\n<tr>\n<td>Number of single parent households</td>\n</tr>\n<tr>\n<td><b>Variables directly taken from the micro-census</b></td>\n<td><b>Variable Name</b></td>\n</tr>\n<tr>\n<td>ef455</td>\n<td>In what year was your home built?</td>\n</tr>\n<tr>\n<td>ef451</td>\n<td>How many dwelling units has the building in which you are living?</td></tr>\n</tbody>\n</table>"
+                            ],
+                            "title": "Variables used to fit households from the Microcensus into statistical areas.",
+                            "type": "table"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "text": "The TAE is calculated, for each statistical area, by forming a weighted sum of the absolute errors of the household variables of <a href=\"#table2\">Table 2</a>. See <a href=\"#equ1\">Equation 1</a> for the computation of the TAE and <a href=\"#equ2\">Equation 2</a> for the computation of the weights. Referring to <a href=\"#table2\">Table 2</a>, the variable ef455 has nine possible values (corresponding to 9 construction periods), and Variable ef451 has four possible values (corresponding to 4 classes of numbers of dwelling units in the building the individual lives in).",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The errors for all variables (except \u201caverage household size\u201d) are computed based on the number of families in the specific value class of that variable. This would not make sense for the variable \u201caverage household size\u201d. The error for the latter is computed differently, based on the total number of families in the specific area.",
+                    "type": "paragraph"
+                },
+                {
+                    "id": "equ1",
+                    "label": "(1)",
+                    "mathml": "<math><mrow><mi>T</mi><mi>A</mi><msub><mi>E</mi><mi>i</mi></msub><mo>=</mo><mstyle displaystyle=\"true\"><msub><mo>\u2211</mo><mi>i</mi></msub><mrow><mo>|</mo><msubsup><mi>T</mi><mi>i</mi><mi>k</mi></msubsup><mo>+</mo><msubsup><mi>T</mi><mi>i</mi><mi>k</mi></msubsup><mo stretchy=\"false\">(</mo><mi>o</mi><mi>b</mi><mi>s</mi><mo stretchy=\"false\">)</mo><mo>|</mo><mo>\u00d7</mo><msubsup><mi>W</mi><mi>i</mi><mi>k</mi></msubsup>\n</mrow></mstyle></mrow></math>",
+                    "type": "mathml"
+                },
+                {
+                    "id": "equ2",
+                    "label": "(2)",
+                    "mathml": "<math><mrow><msubsup><mi>W</mi><mi>i</mi><mi>k</mi></msubsup><mo>=</mo><mrow><mo>{</mo> <mrow><mtable><mtr><mtd><mrow><mi>N</mi><msub><mi>I</mi><mi>i</mi></msub><mo>\u00f7</mo><mi>H</mi><mi>H</mi><msub><mi>s</mi><mi>i</mi></msub><mo>\u00f7</mo><mn>2</mn><mtext>\u00a0if\u00a0k</mtext><mo>=</mo><mtext>average\u00a0size\u00a0of\u00a0household</mtext></mrow></mtd></mtr><mtr><mtd><mrow><mn>1</mn><mtext>else</mtext></mrow></mtd></mtr>\n</mtable></mrow> <mo>}</mo></mrow></mrow></math>",
+                    "type": "mathml"
+                },
+                {
+                    "text": "Where:",
+                    "type": "paragraph"
+                },
+                {
+                    "items": [
+                        [
+                            {
+                                "text": "<i>TAE<sub>i</sub></i> Total Absolute Error of statistical area i",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "<math id=\"inf1\"><mrow><msubsup><mi>T</mi><mi>i</mi><mi>k</mi></msubsup></mrow></math> Estimated variable k for statistical area i, where k = 1,\u2026, 6",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "<math id=\"inf2\"><mrow><msubsup><mi>T</mi><mi>i</mi><mi>k</mi></msubsup><mo stretchy=\"false\">(</mo><mi>o</mi><mi>b</mi><mi>s</mi><mo stretchy=\"false\">)</mo></mrow></math> Observed variable k for statistical area i",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "<math id=\"inf3\"><mrow><msubsup><mi>W</mi><mi>k</mi><mi>i</mi></msubsup></mrow></math> Weight factor of variable k for statistical area i",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "<i>NI<sub>i</sub></i> Observed number of individuals for statistical area i",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "<i>HHS<sub>i</sub></i> Observed average household size for statistical area i",
+                                "type": "paragraph"
+                            }
+                        ]
+                    ],
+                    "prefix": "none",
+                    "type": "list"
+                },
+                {
+                    "text": "The variable \u201caverage household size\u201d receives a smaller weight than the other variables because otherwise it would exert an inappropriate influence on the fitting process. The division by 2 is an ad hoc choice that seems to smoothe the computation process well.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "In each simulation step, we randomly exchange one household fitted into the statistical area from a previous random step. If this lowers the TAE, we leave the household in the statistical area; otherwise this exchange is rejected and the simulation continues with another exchange of households. A clear disadvantage of this algorithm is the required computational time. <a href=\"#fig4\">Figure 4</a> shows the reduction of TAE over time. We can clearly see that the simulation does not achieve an idle state even after 10e+6 iterations steps and more than 3 days of computational time. There are many options to reduce computational time, including the addition of restrictive parameters for the fitting of households in the statistical areas, or the use of a different algorithm to fit the families into the statistical areas.",
+                    "type": "paragraph"
+                },
+                {
+                    "assets": [
+                        {
+                            "id": "fig4",
+                            "image": {
+                                "alt": "",
+                                "uri": "%iiif_uri%/00096%2Fijm-00096-fig4.tif",
+                                "size": {
+                                    "width": 542,
+                                    "height": 567
+                                },
+                                "source": {
+                                    "mediaType": "image/jpeg",
+                                    "uri": "%iiif_uri%/00096%2Fijm-00096-fig4.tif/full/full/0/default.jpg",
+                                    "filename": "ijm-00096-fig4.jpg"
+                                }
+                            },
+                            "label": "Figure 4",
+                            "title": "Performance of the algorithm used for selecting households to fit aggregate values of statistical area 16004.",
+                            "type": "image"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "assets": [
+                        {
+                            "caption": [
+                                {
+                                    "text": "(left) original geometry; and (right) simplified geometry used as input for the estimation of heat demand",
+                                    "type": "paragraph"
+                                }
+                            ],
+                            "id": "fig5",
+                            "image": {
+                                "alt": "",
+                                "uri": "%iiif_uri%/00096%2Fijm-00096-fig5.tif",
+                                "size": {
+                                    "width": 1048,
+                                    "height": 466
+                                },
+                                "source": {
+                                    "mediaType": "image/jpeg",
+                                    "uri": "%iiif_uri%/00096%2Fijm-00096-fig5.tif/full/full/0/default.jpg",
+                                    "filename": "ijm-00096-fig5.jpg"
+                                }
+                            },
+                            "label": "Figure 5",
+                            "title": "Geometrical simplification of selected buildings (left) original geometry; and (right) simplified geometry used as input for the estimation of heat demand.",
+                            "type": "image"
+                        }
+                    ],
+                    "type": "figure"
+                }
+            ],
+            "id": "s5",
+            "title": "5. Constructing synthetic populations for statistical areas",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "For a heat accounting model of individual buildings, certain building data has to be available, foremost building geometry and quality of the building shell. Although the digital cadaster of Hamburg (see <a href=\"#s3\">Section 3</a>), contains many useful data, it is lacking some heat-relevant data \u2013 most importantly, U-values (that is: heat transmission coefficients) of the building shell elements.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The use of building typologies to fill this information gap is an interesting option. National building typologies are constructed with the aim of developing bottom-up models for the evaluation of retrofitting options for the national building stock TABULA <a href=\"#bib41\">Project Team (2012)</a>, thus promoting energy-efficiency measures in the building stock at a national level <a href=\"#bib21\">Kragh and Wittchen (2013)</a>, <a href=\"#bib39\">Singh, Mahapatra and Teller (2013)</a>, <a href=\"#bib8\">Dascalaki <i>et al</i>. (2011)</a>. In this paper we make use of the IWU building typology developed by <a href=\"#bib25\">Loga <i>et al</i>. (2012)</a> for the German building stock (see <a href=\"#s3\">Section 3</a>). We classify the residential buildings recorded in the digital Hamburg cadaster into the types of this specific typology.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The main difference between an analysis of the national building stock, for which the building typologies are developed, and a computation of heat consumption of small areas for the planning of decentralized energy supply systems, which is the scope of our research, pertains to scale. While the former focuses on the aggregate effect of energy-efficiency measures in the building stock, abstracted from its location in space, the planning of decentralized energy supply needs to:",
+                    "type": "paragraph"
+                },
+                {
+                    "items": [
+                        [
+                            {
+                                "text": "allocate the heat demand on small urban areas, suitable for small decentralized energy supply systems; and",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "identify areas with a high heat demand density in urban areas in order to allow the prioritizing of retrofits. For the proper dimension of heat supply systems the estimation of heat demand is a key issue, especially at a low aggregation level. The results of using building typologies for the simulation of heat demand improves as the number of buildings are summed together <a href=\"#bib3\">Blesl <i>et al</i>. (2007)</a>. This is because many key variables like internal heat gains, internal temperature, ventilation rates, thermal bridges, etc., cannot be identified for every single building. In order to perform the heat demand computation, authors have to use average values defined in national guidelines. For the construction of the typology, authors classify the buildings by a number of variables, such as construction period and construction type (single family house, terrace house, etc.) <a href=\"#bib21\">Kragh and Wittchen (2013)</a>, <a href=\"#bib39\">Singh <i>et al</i>. (2013)</a>, <a href=\"#bib17\">Hrabovszky-Horv\u00e1th, P\u00e1lv\u00f6lgyi, Csoknyai and Talamon (2013)</a>, <a href=\"#bib6\">Caputo, Costa and Ferrari (2013)</a>.",
+                                "type": "paragraph"
+                            }
+                        ]
+                    ],
+                    "prefix": "number",
+                    "type": "list"
+                },
+                {
+                    "text": "The data from the digital Hamburg cadaster that we are using is a snapshot of the year 2010. With the available information of the digital cadaster we classify the buildings into types of the IWU building typology (see below). From this typology we extract specific data of the building that is not available in the digital cadaster. From the digital cadaster we extract the following variables:",
+                    "type": "paragraph"
+                },
+                {
+                    "items": [
+                        [
+                            {
+                                "text": "Building use (i.e., residential and various types of commercial);",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "Land use;",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "Construction type (i.e., single family house, small multifamily house, row house, etc.);",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "Construction year;",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "Building footprint area;",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "Number of floors; and",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "Roof type",
+                                "type": "paragraph"
+                            }
+                        ]
+                    ],
+                    "prefix": "number",
+                    "type": "list"
+                },
+                {
+                    "text": "(1 and 2) \u2013 The first two variables, building use and land use, are important in order to filter nonresidential buildings from the database.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "(3) \u2013 Construction type, is used to filter constructions that have a residential use but are not necessarily heated, at least not with the same intensity as normal living space. So, for example we filter all the garage floor area from our analysis with this variable.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "(4) \u2013 Construction year, is the most commonly used, especially for the German building stock. This is because in Germany the quality of the building shell has been regulated since the first \u201cW\u00e4rmeschutzverordnung\u201d (WSVO) Heat conservation ordinance in 1977. Since its first introduction, the German government has systematically introduced new regulations over the past decades. This has resulted in substantial differences in the quality of the building shell over the years. This variable is also used for the allocation of families into the constructed dwelling units of the building (see <a href=\"#s7\">Section 7</a>).",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "(5 and 6) \u2013 The floor space plays a key role in the calculation of heat demand, as the floor space can be regarded as heated space. From the digital cadaster we cannot directly recover the floor space. We estimate floor space the same way for all the buildings in the digital cadaster, as follows:",
+                    "type": "paragraph"
+                },
+                {
+                    "id": "equ3",
+                    "label": "(3)",
+                    "mathml": "<math><mrow><mi>s</mi><mi>q</mi><msub><mi>m</mi><mi>i</mi></msub><mo>=</mo><mi>g</mi><mi>r</mi><mi>o</mi><mi>u</mi><mi>n</mi><mi>d</mi><mi>a</mi><mi>r</mi><mi>e</mi><msub><mi>a</mi><mi>i</mi></msub><mo>\u00d7</mo><mi>s</mi><mi>t</mi><mi>o</mi><mi>r</mi><mi>i</mi><mi>e</mi><msub><mi>s</mi><mi>i</mi></msub><mo>\u00d7</mo><mi>\u03ba</mi></mrow></math>",
+                    "type": "mathml"
+                },
+                {
+                    "text": "where; <b>sqm<sub>i</sub></b> is the living space in m2 of building i; <b>groundarea<sub>i</sub></b> is the polygon area of building i in the digital cadaster or building footprint; stories is the number of stories of building i; and \u03ba is a constant 0.6, differentiating construction space (exterior end internal walls) from living space or floor space. The number of floors and the roof type are directly retrieved from the digital cadaster. Both parameters are used to define the building geometry.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "(7) \u2013 Some of the attributes available in the digital cadaster are not available for the entire building stock in the AKIS database, for example, the construction year. This poses a particular challenge, as the construction period is one of the key variables to classify a building. To address this, we have developed an algorithm that filters buildings based on their attributes (including the attributes described above as well as roof type) and calculate the most probable building type that a building belongs to. In extreme cases where just few attributes of the building are available, a type is attributed to the building at random. This process is described in <a href=\"#bib29\">Munoz Hidalgo and Peters (2013)</a>.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s6",
+            "title": "6. Assigning heat-relevant properties to geo-referenced buildings",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "For each statistical area we have:",
+                    "type": "paragraph"
+                },
+                {
+                    "items": [
+                        [
+                            {
+                                "text": "a set of buildings from the digital Hamburg cadaster; and",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "a set of households fitted to this statistical area.",
+                                "type": "paragraph"
+                            }
+                        ]
+                    ],
+                    "prefix": "alpha-lower",
+                    "type": "list"
+                },
+                {
+                    "text": "Now we have to allocate the households into the buildings. We do this via dwelling units, that is, populating dwelling units (located in buildings) with our households. The ALKIS does not give us dwelling units, but we know the total number of dwelling units from the demographic data at statistical area level, and so we estimate dwelling units per building, as follows:",
+                    "type": "paragraph"
+                },
+                {
+                    "id": "equ4",
+                    "label": "(4)",
+                    "mathml": "<math><mrow><msub><mi>S</mi><mi>i</mi></msub><mo>=</mo><mfrac><mrow><mstyle displaystyle=\"true\"><msub><mo>\u2211</mo><mi>j</mi></msub><mrow><mi>B</mi><mi>s</mi><mi>q</mi><msub><mi>m</mi><mrow><mi>i</mi><mo>,</mo><mi>j</mi><mo>,</mo><mi>m</mi><mi>u</mi><mi>l</mi><mi>t</mi><mi>i</mi></mrow></msub>\n</mrow></mstyle></mrow><mrow><msub><mi>H</mi><mi>i</mi></msub><mo>\u00d7</mo><msub><mi>B</mi><mrow><mi>i</mi><mo>,</mo><mi>s</mi><mi>i</mi><mi>n</mi><mi>g</mi><mi>l</mi><mi>e</mi></mrow></msub>\n</mrow></mfrac><mo>\u00d7</mo><msub><mi>q</mi><mi>i</mi></msub>\n</mrow></math>",
+                    "type": "mathml"
+                },
+                {
+                    "text": "Where:",
+                    "type": "paragraph"
+                },
+                {
+                    "items": [
+                        [
+                            {
+                                "text": "<i>S<sub>i</sub></i> Average Dwelling unit size of multi family buildings in statistical area i",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "<i>Bsqm<sub>i,j,multi</sub></i> Floor space of multi family building j in statistical area i",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "<i>H<sub>i</sub></i> Number of households in statistical area i",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "<i>B<sub>i,single</sub></i> Number of single family buildings in statistical area i",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "<i>q<sub>i</sub></i> Calibration factor for statistical area i",
+                                "type": "paragraph"
+                            }
+                        ]
+                    ],
+                    "prefix": "none",
+                    "type": "list"
+                },
+                {
+                    "text": "We compute the average dwelling unit size of multi-family buildings for the specific statistical area. Then, for each multi-family building, we divide the entire building floor space by the average dwelling unit size mentioned above, round up the result, and we arrive at the estimated number of dwelling units in each building. Because we only allow integers for the number of dwelling units, the total number of dwelling units may differ from the total number of households. This may be seen as realistic, as there may be some vacant dwelling units in the statistical area. The other possibility, that there are not enough dwelling units for the households in the area, may also arise during the simulation. To solve this problem, we implement a factor in the computation of the average dwelling unit size specific for each statistical area. For now this factor only aims to reduce the number of vacant dwelling units. The possibility that there is more than one household in a dwelling unit is ruled out by definition, as the people living together in a dwelling unit count as one household.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "After we compute the number of dwelling units in the statistical area, we populate them with the selected households (see <a href=\"#s5\">Section 5</a>). For this allocation we again use a hill climbing algorithm. First we randomly populate the dwelling units (one household per dwelling unit), then we compute a specific total error for each dwelling unit. The sum of errors is the total absolute error (TAE2) for the statistical area. In an iterative process we start changing households from one dwelling unit to another (always in pairs, household A is allocated in dwelling unit B and household B in dwelling unit A). If the change results in a decrease of the total absolute error, the change is accepted, otherwise the change is rejected and the algorithm draws two new households at random. The variables used to compute the total absolute error are listed in <a href=\"#table3\">Table 3</a>.",
+                    "type": "paragraph"
+                },
+                {
+                    "assets": [
+                        {
+                            "footnotes": [
+                                {
+                                    "text": [
+                                        {
+                                            "text": "<i>Source</i>: MIKROZENSUS 2002 <a href=\"#bib40\">Statistisches Bundesamt (2002)</a>. Variable names: translation by the authors.",
+                                            "type": "paragraph"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "id": "table3",
+                            "label": "Table 3",
+                            "tables": [
+                                "<table>\n<thead>\n<tr>\n<th>Living standard of the household</th>\n<th/>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td><b>Variable ID</b></td>\n<td><b>Variable Name</b></td>\n</tr>\n<tr>\n<td>ef451</td>\n<td>How many dwelling units has the building in which you are living?</td>\n</tr>\n<tr>\n<td>ef453</td>\n<td>What is the floor area of the dwelling unit?</td>\n</tr>\n<tr>\n<td>ef455</td>\n<td>In what year was your home built?</td>\n</tr>\n</tbody>\n</table>"
+                            ],
+                            "title": "Variables used for the allocation of the synthetic households into the semi-synthetic dwelling units.",
+                            "type": "table"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "text": "Because we have fit the synthetic households to characteristics of the building stock (see <a href=\"#table2\">Table 2</a> and <a href=\"#s5\">Section 5</a>), the allocation of households into the building stock should work relatively smoothly. Because in this step we don\u2019t introduce any new families (as in the previous application of the algorithm), the number of possible combinations is limited, although still large enough to allow the implementation of a combinatorial optimization method. The algorithm performs 10e+10 iterations. Its performance is depicted in <a href=\"#fig6\">Figure 6</a>. Because the variables used to merge the households with the dwelling units refer to the building rather than to the dwelling unit within the buildings, changing households are always selected from different buildings and not only just from different dwelling units. The total absolute error (TAE2) is computed as in <a href=\"#equ5\">Equation 5</a>; the corresponding weight for each variable is computed individually for each statistical area as in <a href=\"#equ6\">Equation 6</a>.",
+                    "type": "paragraph"
+                },
+                {
+                    "assets": [
+                        {
+                            "caption": [
+                                {
+                                    "text": "These Parameters are used as restrictions to merge the households to the dwelling units in statistical area 16,004. Result after 10e+6 (Selection of households from the micro census) + 10e+6 (merge of households with dwelling units) iterations.",
+                                    "type": "paragraph"
+                                }
+                            ],
+                            "id": "fig6",
+                            "image": {
+                                "alt": "",
+                                "uri": "%iiif_uri%/00096%2Fijm-00096-fig6.tif",
+                                "size": {
+                                    "width": 1050,
+                                    "height": 744
+                                },
+                                "source": {
+                                    "mediaType": "image/jpeg",
+                                    "uri": "%iiif_uri%/00096%2Fijm-00096-fig6.tif/full/full/0/default.jpg",
+                                    "filename": "ijm-00096-fig6.jpg"
+                                }
+                            },
+                            "label": "Figure 6",
+                            "title": "Comparison between simulated and observed parameters.",
+                            "type": "image"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "id": "equ5",
+                    "label": "(5)",
+                    "mathml": "<math><mrow><mi>T</mi><mi>A</mi><mi>E</mi><msub><mn>2</mn><mi>i</mi></msub><mo>=</mo><mstyle displaystyle=\"true\"><msub><mo>\u2211</mo><mi>i</mi></msub><mrow><mo>|</mo><msubsup><mi>U</mi><mi>i</mi><mi>l</mi></msubsup><mo>+</mo><msubsup><mi>U</mi><mi>i</mi><mi>l</mi></msubsup><mo stretchy=\"false\">(</mo><mi>o</mi><mi>b</mi><mi>s</mi><mo stretchy=\"false\">)</mo><mo>|</mo><mo>\u00d7</mo><msubsup><mi>P</mi><mi>i</mi><mi>l</mi></msubsup>\n</mrow></mstyle></mrow></math>",
+                    "type": "mathml"
+                },
+                {
+                    "id": "equ6",
+                    "label": "(6)",
+                    "mathml": "<math><mrow><msubsup><mi>P</mi><mi>i</mi><mi>l</mi></msubsup><mo>=</mo><munder><mrow><mi>max</mi></mrow><mi>l</mi></munder><msub><mover accent=\"true\"><mi>M</mi><mo>\u00af</mo></mover>\n<mi>l</mi></msub><mo>\u00f7</mo><msubsup><mover accent=\"true\"><mi>M</mi><mo>\u00af</mo></mover>\n<mi>l</mi><mi>l</mi></msubsup>\n</mrow></math>",
+                    "type": "mathml"
+                },
+                {
+                    "text": "Where:",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "<i>TAE</i>2<sub><i>i</i></sub> Total Absolute Error (Application 2) of statistical area i",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "<math id=\"inf4\"><mrow><msubsup><mi>U</mi><mi>i</mi><mi>l</mi></msubsup></mrow></math> Estimated variable l for statistical area i where l = 1 \u2026 3",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "<math id=\"inf5\"><mrow><msubsup><mi>U</mi><mi>i</mi><mi>l</mi></msubsup><mo stretchy=\"false\">(</mo><mi>o</mi><mi>b</mi><mi>s</mi><mo stretchy=\"false\">)</mo></mrow></math> Observed variable l for statistical area i",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "<math id=\"inf6\"><mrow><msubsup><mi>P</mi><mi>i</mi><mi>l</mi></msubsup></mrow></math> Weight factor of variable l for statistical area i",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "<math id=\"inf7\"><mrow><msubsup><mover accent=\"true\"><mi>M</mi><mo>\u00af</mo></mover><mi>i</mi><mi>l</mi></msubsup></mrow></math> Average variable l for statistical area i",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The difference between the simulated households, allocated in the dwelling units, and the \u201cobserved\u201d values retrieved from the ALKIS database, is depicted in <a href=\"#fig6\">Figure 6</a>. Because the \u201cobserved\u201d values have been partly estimated, we may describe them as semi-synthetic, as the ALKIS database does not have a construction year for all the buildings, the size of the dwelling units has been estimated (except for the single family houses), as has been the number of dwelling units per building.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s7",
+            "title": "7. Allocating households to dwelling units in the building stock",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "For the simulation of heat consumption we need two sets of input parameters, the first corresponding to the building characteristics and the second corresponding to the individuals living in this building. (For a computation of heat demand, we would need only the first set of input data.) For the buildings and their energy-relevant properties, we use the Hamburg cadaster whose residential buildings we classify into types from the IWU typology (as described in <a href=\"#s6\">Section 6</a>). From the building typologies of the digital cadaster we compute the following parameters that are used as input to the heat accounting method: (1) Building dimensions, as absolute northing and easting displacement difference, thus implying an orientation of the building; (2) Building height, as number of stories times 3 meters, needed for the computation of the envelope area; (3) Roof slope, estimated based on the roof type, needed for the computation of the envelope area; (4) Percentage of glazed area, for the computation of transmission losses and solar gains, taken from the attributed building type; (5) U-value for the roof, for the computation of transmission losses, taken from the attributed building type; (6) U- value for the walls, for the computation of transmission losses, taken from the attributed building type; and (7) U-value for the windows, for the computation of transmission losses, taken from the attributed building type.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The input parameters derived from the households\u2019 attributes are: (1) Internal heat emissions <i>qi</i>; (2) Internal temperature <i>Ti</i>; and (3) Air exchange rate <i>n</i>. In order to find values for these parameters, we first estimate the average working hours of the individuals living in the building. Here we make use of the micro census again. In order to estimate the average working hours of the single individuals we use the parameters describe in <a href=\"#table4\">Table 4</a>. With these parameters, we estimate the working hours of every single individual. Because we use the parameter of working hours as an indicator of presence in the dwelling unit, we take the minimum number of working hours out of the set of all household members, thus aiming to describe the presence hours of the one household member that is at home the most. So, for example, for a family with one parent working full-time and the other parent working part-time, the working hours of the household will correspond to the working hours of the parent working part-time. Another important variable is variable ef163, which describes if one of the individuals belonging to the household works at home. If so, the \u201cworking hours\u201d of that individual are set to zero. This parameter can take two different values:",
+                    "type": "paragraph"
+                },
+                {
+                    "items": [
+                        [
+                            {
+                                "text": "always, which we translate to 0; and",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "sometimes, which we translate to 0.5, reducing the working hours to half.",
+                                "type": "paragraph"
+                            }
+                        ]
+                    ],
+                    "prefix": "number",
+                    "type": "list"
+                },
+                {
+                    "assets": [
+                        {
+                            "footnotes": [
+                                {
+                                    "text": [
+                                        {
+                                            "text": "<i>Source</i>: MIKROZENSUS 2002 <a href=\"#bib40\">Statistisches Bundesamt (2002)</a>. Variable names: translation by the authors.",
+                                            "type": "paragraph"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "id": "table4",
+                            "label": "Table 4",
+                            "tables": [
+                                "<table>\n<thead>\n<tr>\n<th>Labor participation</th>\n<th/>\n</tr>\n<tr>\n<th>Variable ID</th>\n<th>Variable Name</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>ef95</td>\n<td>Employment status in the reference week</td>\n</tr>\n<tr>\n<td>ef138</td>\n<td>Full-time / part-time job</td>\n</tr>\n<tr>\n<td>ef141</td>\n<td>Full-time / part-time job</td>\n</tr>\n<tr>\n<td>ef147</td>\n<td>Work on Saturday (February until April)</td>\n</tr>\n<tr>\n<td>ef148</td>\n<td>Work on Sundays and public holidays (February until April)</td>\n</tr>\n<tr>\n<td>ef149</td>\n<td>Evening work (between 6 p.m and 11 p.m) (February until April)</td>\n</tr>\n<tr>\n<td>ef150</td>\n<td>Night work (between 11 p.m and 6 a.m) (February until April)</td>\n</tr>\n<tr>\n<td>ef151</td>\n<td>Night work hours (between 11 p.m and 6 a.m) (February until April)</td>\n</tr>\n<tr>\n<td>ef163</td>\n<td>Home office (February until April)</td>\n</tr>\n</tbody>\n</table>"
+                            ],
+                            "title": "Variables used to estimate the time at home for the single individuals.",
+                            "type": "table"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "text": "<a href=\"#table4\">Table 4</a> shows a list of parameters used to estimate the working hours and the hours at home of the household. In the next step an average is calculated for the building (that is, if the building is a multi-family house).",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "With the estimated working hours of the individual households and the average working hours of the building residents, we create a simple rule to define a set of input parameters for the heat accounting model. This rule distinguishes five different types of households (see <a href=\"#table5\">Table 5</a>), ranging from: a low temperature, low ventilation rate and low internal gains to the other extreme: with a high temperature demand, a high ventilation rate and high internal gains. The household type in the middle represents the \u201caverage\u201d household, its parameter values follow those of the national norms. To these parameters we attach the average working hours (8), and subsequently, short working hours correspond to high ventilation, high temperature rates and high internal gains. In the other extreme, long working hours correspond to low temperature, low ventilation rates and low internal gains.",
+                    "type": "paragraph"
+                },
+                {
+                    "assets": [
+                        {
+                            "footnotes": [
+                                {
+                                    "text": [
+                                        {
+                                            "text": "<i>qi</i>[<i>W /m2</i>] = Internal heat emissions; <i>Ti</i>[<i>C</i>\u00b0] = Internal temperature; and <i>n</i>[<i>h</i>\u22121] = Air exchange rate.",
+                                            "type": "paragraph"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "id": "table5",
+                            "label": "Table 5",
+                            "tables": [
+                                "<table>\n<thead>\n<tr>\n<th align=\"center\" colspan=\"2\">Computed work time (wk)</th>\n<th align=\"center\"/>\n<th align=\"center\"><i>qi</i>[<i>W</i>/<i>m</i>2]</th>\n<th align=\"center\"><i>Ti</i>[<i>C</i>\u00b0]</th>\n<th align=\"center\"><i>n</i>[<i>h</i>\u22121]</th>\n<th>Possible occupant type</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>wt =</td>\n<td align=\"center\"/>\n<td align=\"center\">&gt; 10</td>\n<td align=\"center\">3</td>\n<td align=\"center\">18</td>\n<td align=\"center\">0.3</td>\n<td>single household, employed</td>\n</tr>\n<tr>\n<td>wt = \u2264 9</td>\n<td align=\"center\">\u2227</td>\n<td align=\"center\">&gt; 8</td>\n<td align=\"center\">6</td>\n<td align=\"center\">19</td>\n<td align=\"center\">0.4</td>\n<td align=\"center\">both parents employed</td>\n</tr>\n<tr>\n<td>wt = \u2264 8</td>\n<td align=\"center\">\u2227</td>\n<td align=\"center\">&gt; 4</td>\n<td align=\"center\">5</td>\n<td align=\"center\">20</td>\n<td align=\"center\">0.5</td>\n<td>\u201caverage\u201d occupant</td>\n</tr>\n<tr>\n<td>wt = \u2264 4</td>\n<td align=\"center\">\u2227</td>\n<td align=\"center\">&gt; 1</td>\n<td align=\"center\">6</td>\n<td align=\"center\">21</td>\n<td align=\"center\">0.6</td>\n<td>part time</td>\n</tr>\n<tr>\n<td>wt = \u2264 1</td>\n<td align=\"center\"/>\n<td align=\"center\"/>\n<td align=\"center\">7</td>\n<td align=\"center\">22</td>\n<td align=\"center\">0.7</td>\n<td>unemployed</td>\n</tr>\n</tbody>\n</table>"
+                            ],
+                            "title": "Rules to select input variables to the heat balance model based on the average working hours in the building.",
+                            "type": "table"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "text": "We present the result for the selected statistical area (16004) by comparing: (1) the estimated heat demand with help of the \u201cstandard\u201d heat balance model, this model assumes an \u201caverage\u201d household and so makes uses of the standard internal gains, internal temperature and ventilation rates, corresponding to row 3 of <a href=\"#table5\">Table 5</a> and (2) the implementation of the heat balance method, varying input parameters (<i>qi</i>, <i>Ti</i> and <i>n</i>) as a function of the computed average working hours of the building, thus simulating heat consumption. The result of this comparison in presented in <a href=\"#fig7\">Figure 7</a>. One can clearly see in the plot that the simulated heat consumption shows a bigger spread. This is plausible, as it considers a richer spectrum of occupant types. The analyzed statistical area still has a high proportion of \u201cold\u201d buildings, that is buildings predating the first (WSVO) Heat conservation ordinance in 1977 (see <a href=\"#fig8\">Figure 8</a>). We can expect a much higher relative spread in urban areas that have been recently developed or re-developed (\u201crelative\u201d meaning: relative in terms of the overall amount of heat consumption).",
+                    "type": "paragraph"
+                },
+                {
+                    "assets": [
+                        {
+                            "caption": [
+                                {
+                                    "text": "Comparison between heat demand estimated with a heat balance method, using the ``average\u2019\u2019 occupant (vertical axis) and with help of: (a) building typologies; and (b) a heat balance, taking into account occupant influence, induce thought the synthetic simulated demographic characteristics via a spatial microsimulation (horizontal axis). This comparison shows the results of buildings in statistical area 16004.",
+                                    "type": "paragraph"
+                                }
+                            ],
+                            "id": "fig7",
+                            "image": {
+                                "alt": "",
+                                "uri": "%iiif_uri%/00096%2Fijm-00096-fig7.tif",
+                                "size": {
+                                    "width": 1048,
+                                    "height": 729
+                                },
+                                "source": {
+                                    "mediaType": "image/jpeg",
+                                    "uri": "%iiif_uri%/00096%2Fijm-00096-fig7.tif/full/full/0/default.jpg",
+                                    "filename": "ijm-00096-fig7.jpg"
+                                }
+                            },
+                            "label": "Figure 7",
+                            "title": "Comparison between estimated heat demand and simulated heat consumption.",
+                            "type": "image"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "assets": [
+                        {
+                            "caption": [
+                                {
+                                    "text": "To generate this distribution only known construction years are used.",
+                                    "type": "paragraph"
+                                }
+                            ],
+                            "id": "fig8",
+                            "image": {
+                                "alt": "",
+                                "uri": "%iiif_uri%/00096%2Fijm-00096-fig8.tif",
+                                "size": {
+                                    "width": 638,
+                                    "height": 433
+                                },
+                                "source": {
+                                    "mediaType": "image/jpeg",
+                                    "uri": "%iiif_uri%/00096%2Fijm-00096-fig8.tif/full/full/0/default.jpg",
+                                    "filename": "ijm-00096-fig8.jpg"
+                                }
+                            },
+                            "label": "Figure 8",
+                            "title": "Histogram showing the frequency of construction year in statistical area 16004.",
+                            "type": "image"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "assets": [
+                        {
+                            "footnotes": [
+                                {
+                                    "text": [
+                                        {
+                                            "text": "*Residents between the ages of 15 and 65.",
+                                            "type": "paragraph"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "id": "table6",
+                            "label": "Table 6",
+                            "tables": [
+                                "<table>\n<thead>\n<tr>\n<th/>\n<th align=\"center\">Statistical area 16004</th>\n<th align=\"center\">Hamburg</th>\n<th align=\"center\">\u0394</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>Size of household [# individuals per household]</td>\n<td align=\"center\">2.0</td>\n<td align=\"center\">1.8</td>\n<td align=\"center\">0.2</td>\n</tr>\n<tr>\n<td>Share of foreign nationals [%]</td>\n<td align=\"center\">45.1</td>\n<td align=\"center\">13.6</td>\n<td align=\"center\">31.5</td>\n</tr>\n<tr>\n<td>Share of household with kids [%]</td>\n<td align=\"center\">26.7</td>\n<td align=\"center\">16.9</td>\n<td align=\"center\">9.8</td>\n</tr>\n<tr>\n<td>Share of unemployed residents*[%]</td>\n<td align=\"center\">12.2</td>\n<td align=\"center\">4.8</td>\n<td align=\"center\">7.4</td>\n</tr>\n<tr>\n<td>Share of single person households [%]</td>\n<td align=\"center\">49.8</td>\n<td align=\"center\">51.2</td>\n<td align=\"center\">1.4</td>\n</tr>\n<tr>\n<td>Number of private cars per 1000 residents [cars]</td>\n<td align=\"center\">180</td>\n<td align=\"center\">353</td>\n<td align=\"center\">172</td>\n</tr>\n</tbody>\n</table>"
+                            ],
+                            "title": "Description of some parameters of statistical area 16004 in comparison of the average value for the city of Hamburg.",
+                            "type": "table"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "text": "On average the simulated heat consumption is much higher than the estimated heat demand. The selected urban area does not represent the average household in Hamburg. <a href=\"#table6\">Table 6</a> compares some attributes with the average value for the entire city. The selected area has: (1) a high level of unemployment, which in our model means less or 0 working hours; (2) a lower share of single person households, which raises the probability of having a resident with zero working hours; and (3) a high share of households with children, leading also to low working hours of the household.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s8",
+            "title": "8. Simulating heat consumption with synthetic microdata",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "In a further step we aim to integrate a thermal simulation model. This will allow us to: (1) simulate at a much higher temporal resolution, needed for the efficient dimensioning of decentralized energy supply systems; and (2) feed the model with more detailed input data. The second reason is essential for achieving our goal. Most of the defined energy balance norms or models take a limited number of parameters as input; in particular there are few parameters that are related to occupant behaviour. This is because the aim of the standard method is the estimation of heat demand for the \u201caverage\u201d occupant. Because we want to represent the full spectrum of occupants and their corresponding influence on the system we have to make use of a more flexible method for the estimation of residential heat demand.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Because of the nature of the heat accounting model, and the underlying national standard, we have to define a range of occupant-related parameters for each dwelling unit, rather than a time schedule reflecting occupants\u2019 presence. In our model we chose to estimate the average working hours as we plan to extend the model to incorporate a thermal simulation which is able to use a detailed occupants\u2019 presence schedule as input. This means that from variable ef147 onward (see <a href=\"#table4\">Table 4</a>) we need to generate a detailed schedule for the simulation of heat consumption via a thermal simulation <a href=\"#bib46\">Wid\u00e9n <i>et al</i>. (2011)</a>, <a href=\"#bib47\">Wilke <i>et al</i>. (2011)</a>.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Another problem with the use of a static heat balancing method is the inability of such a model to integrate individual characteristics of dwelling units. The major problem by attempting a dwelling-unit specific computation of heat consumption is the required input variables regarding the building envelope. In order to perform a dwelling unit based heat computation, we will have to define the geometry not only of the building but of the dwelling unit itself, orientation, size of facade, etc. This problem is no longer present for a proper thermal simulation model as the generated schedule can define various levels of occupancy.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s9",
+            "title": "9. Next step: Including a thermal simulation model",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "The presented results mark our first attempt to simulate heat consumption at an urban scale, using microdata. Our model combines well established implementations from: (a) the microsimulation community and (b) the building simulation community. In this paper we have shown that a combination of both methods is possible and can generate interesting insights into the planning of cities and their technical infrastructures. We use a method from the microsimulation community (the Hill Climbing algorithm) to select families from the census database and allocate them into small statistical areas within the city. From the digital cadaster we attribute the corresponding buildings with energy relevant characteristics. In a third step we allocate the selected families into individual buildings. The buildings with it inhabitants serve as input data to a simplified heat balance model following the German DIN V 18599 standard.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "We can show that the integration of socio-demographic characteristics of the families living in a specific area can be used as input for the simulation of heat consumption. This is an important contribution to both scientific communities as: (a) it shows an interesting application of microsimulation in the energy sector and (b) it presents an interesting approach for the building simulation community to integrate the occupants of the buildings into the simulation models not only within a sensitivity analysis but placing the occupant central to the simulation.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Current models for projecting heat demand employ an \u201caverage\u201d occupant, both at a building scale and at an urban scale. The trend towards decentralized, as well as more efficient technical systems leads to greater sensitivity of technical systems. An integration of the occupant into infrastructure models will play an important role in the future of urban planning.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "With our simplified model we have shown that we are able to indicate a direction in the spread of estimated consumption that is plausible and commensurate with what we know about the analyzed area to which it was applied. As described in <a href=\"#s9\">Section 9</a>, we expect from future work \u2013 integrating a thermal simulation model and constructing a more accurate micro data set \u2013 promising results for the energy planning sector. Although this paper focuses exclusively on heat energy, the range of questions that can be analyzed once a population is allocated to buildings is manifold.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s10",
+            "title": "10. Conclusions",
+            "type": "section"
+        }
+    ],
+    "references": [
+        {
+            "articleTitle": "Exploring Microsimulation Methodologies for the Estimation of Household Attributes",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Ballas, D",
+                        "preferred": "D Ballas"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Clarke, G",
+                        "preferred": "G Clarke"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Turton, I",
+                        "preferred": "I Turton"
+                    },
+                    "type": "person"
+                }
+            ],
+            "conference": {
+                "name": [
+                    "4th International conference on GeoComputation"
+                ]
+            },
+            "date": "1999",
+            "id": "bib1",
+            "type": "conference-proceeding"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Birkin, M",
+                        "preferred": "M Birkin"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Wu, B",
+                        "preferred": "B Wu"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2012",
+            "details": "A Review of Microsimulation and Hybrid Agent-Based Approaches, Agent-Based Models of Geographical Systems, Springer Netherlands, Dordrecht",
+            "id": "bib2",
+            "title": "Agent-Based Models of Geographical Systems",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Blesl, M",
+                        "preferred": "M Blesl"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Kempe, S",
+                        "preferred": "S Kempe"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Ohl, M",
+                        "preferred": "M Ohl"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Fahl, U",
+                        "preferred": "U Fahl"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2007",
+            "id": "bib3",
+            "publisher": {
+                "name": [
+                    "Universit\u00e4t Stuttgart"
+                ]
+            },
+            "title": "W\u00e4rmeatlas Baden-W\u00fcttemberg: Erstellung eines Leitfadens und Umsetzung f\u00fcr Modellregionen: Institut f\u00fcr Energiewirtschaft und Rationelle Energieanwendung",
+            "type": "web",
+            "uri": "http://elib.uni-stuttgart.de/opus/volltexte/2009/4840/"
+        },
+        {
+            "articleTitle": "An update on econometric studies of energy demand behavior",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Bohi, D",
+                        "preferred": "D Bohi"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Zimmerman, M",
+                        "preferred": "M Zimmerman"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1984",
+            "id": "bib4",
+            "journal": "Annual Review of Energy",
+            "pages": {
+                "first": "105",
+                "last": "154",
+                "range": "105\u2013154"
+            },
+            "type": "journal",
+            "volume": "9"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Borgeson, S",
+                        "preferred": "S Borgeson"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Brager, G",
+                        "preferred": "G Brager"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2008",
+            "id": "bib5",
+            "title": "Occupant control of windows: Accounting for human behavior in building simulation",
+            "type": "web",
+            "uri": "http://www.cbe.berkeley.edu/research/pdf_files/Borgeson2008-OperableWindowSimulation.pdf"
+        },
+        {
+            "articleTitle": "A supporting method for defining energy strategies in the building sector at urban scale",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Caputo, P",
+                        "preferred": "P Caputo"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Costa, G",
+                        "preferred": "G Costa"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Ferrari, S",
+                        "preferred": "S Ferrari"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2013",
+            "doi": "10.1016/j.enpol.2012.12.006",
+            "id": "bib6",
+            "journal": "Energy Policy",
+            "pages": {
+                "first": "261",
+                "last": "270",
+                "range": "261\u2013270"
+            },
+            "type": "journal",
+            "volume": "55"
+        },
+        {
+            "articleTitle": "A microsimulation model of urban energy use: Modelling residential space heating demand in ILUTE",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Chingcuanco, F",
+                        "preferred": "F Chingcuanco"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Miller, EJ",
+                        "preferred": "EJ Miller"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2012",
+            "doi": "10.1016/j.compenvurbsys.2011.11.005",
+            "id": "bib7",
+            "journal": "Computers, Environment and Urban Systems",
+            "pages": {
+                "first": "186",
+                "last": "194",
+                "range": "186\u2013194"
+            },
+            "type": "journal",
+            "volume": "36"
+        },
+        {
+            "articleTitle": "Building typologies as a tool for assessing the energy performance of residential buildings \u2013 A case study for the Hellenic building stock",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Dascalaki, EG",
+                        "preferred": "EG Dascalaki"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Droutsa, KG",
+                        "preferred": "KG Droutsa"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Balaras, CA",
+                        "preferred": "CA Balaras"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Kontoyiannidis, S",
+                        "preferred": "S Kontoyiannidis"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2011",
+            "doi": "10.1016/j.enbuild.2011.09.002",
+            "id": "bib8",
+            "journal": "Energy and Buildings",
+            "pages": {
+                "first": "3400",
+                "last": "3409",
+                "range": "3400\u20133409"
+            },
+            "type": "journal",
+            "volume": "43"
+        },
+        {
+            "authors": [
+                {
+                    "name": "Deutsches Institut f\u00fcr Normung e. V",
+                    "type": "group"
+                }
+            ],
+            "date": "2011",
+            "id": "bib9",
+            "title": "DIN V 18599: Energetische Bewertung von Geb\u00e4uden \u2013 Berechnung des Nutz-, End- und Prim\u00e4renergiebedarfs f\u00fcr Heizung, K\u00fchlung, L\u00fcftung, Trinkwarmwasser und Beleuchtung: Berechnung des Nutz-, End- und Prim\u00e4renergiebedarfs f\u00fcr Heizung, K\u00fchlung, L\u00fcftung, Trinkwarmwasser und Beleuchtung Sonderdruck 2012",
+            "type": "unknown"
+        },
+        {
+            "articleTitle": "Household energy consumption in the UK: A highly geographically and socio-economically disaggregated model",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Druckman, A",
+                        "preferred": "A Druckman"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Jackson, T",
+                        "preferred": "T Jackson"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2008",
+            "doi": "10.1016/j.enpol.2008.03.021",
+            "id": "bib10",
+            "journal": "Energy Policy",
+            "pages": {
+                "first": "3177",
+                "last": "3192",
+                "range": "3177\u20133192"
+            },
+            "type": "journal",
+            "volume": "36"
+        },
+        {
+            "authors": [
+                {
+                    "name": "EnergyPlus Development Team",
+                    "type": "group"
+                }
+            ],
+            "date": "2012",
+            "id": "bib11",
+            "title": "EnergyPlus Input Output Reference: The Encyclopedic Reference to EnergyPlus Input and Output",
+            "type": "unknown"
+        },
+        {
+            "articleTitle": "The effect of occupancy and building characteristics on energy use for space and water heating in Dutch residential stock",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Guerra Santin, O",
+                        "preferred": "O Guerra Santin"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Itard, L",
+                        "preferred": "L Itard"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Visscher, H",
+                        "preferred": "H Visscher"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2009",
+            "doi": "10.1016/j.enbuild.2009.07.002",
+            "id": "bib12",
+            "journal": "Energy and Buildings",
+            "pages": {
+                "first": "1223",
+                "last": "1232",
+                "range": "1223\u20131232"
+            },
+            "type": "journal",
+            "volume": "41"
+        },
+        {
+            "articleTitle": "The impact of occupants\u2019 behaviour on building energy demand",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Haldi, F",
+                        "preferred": "F Haldi"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Robinson, D",
+                        "preferred": "D Robinson"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2011",
+            "doi": "10.1080/19401493.2011.558213",
+            "id": "bib13",
+            "journal": "Journal of Building Performance Simulation",
+            "pages": {
+                "first": "323",
+                "last": "338",
+                "range": "323\u2013338"
+            },
+            "type": "journal",
+            "volume": "4"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Harland, K",
+                        "preferred": "K Harland"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Heppenstall, A",
+                        "preferred": "A Heppenstall"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Smith, D",
+                        "preferred": "D Smith"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Birkin, M",
+                        "preferred": "M Birkin"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2012",
+            "details": "Journal of Artificial Societies and Social Simulation, 15, 1, http://jasss.soc.surrey.ac.uk/15/1/1.html",
+            "id": "bib14",
+            "title": "Creating Realistic Synthetic Populations at Varying Spatial Scales: A Comparative Critique of Population Synthesis Techniques",
+            "type": "unknown",
+            "uri": "http://jasss.soc.surrey.ac.uk/15/1/1.html"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Hensen, J",
+                        "preferred": "J Hensen"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Lamberts, R",
+                        "preferred": "R Lamberts"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "Building performance simulation for design and operation",
+            "date": "2011",
+            "id": "bib15",
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "Abingdon and Oxon and and New York and NY"
+                        ]
+                    },
+                    "formatted": [
+                        "Abingdon and Oxon and and New York and NY"
+                    ]
+                },
+                "name": [
+                    "SponPress"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "articleTitle": "User behavior in whole building simulation",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Hoes, P",
+                        "preferred": "P Hoes"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Hensen, J",
+                        "preferred": "J Hensen"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Loomans, M",
+                        "preferred": "M Loomans"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "de Vries, B",
+                        "preferred": "B de Vries"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Bourgeois, D",
+                        "preferred": "D Bourgeois"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2009",
+            "doi": "10.1016/j.enbuild.2008.09.008",
+            "id": "bib16",
+            "journal": "Energy and Buildings",
+            "pages": {
+                "first": "295",
+                "last": "302",
+                "range": "295\u2013302"
+            },
+            "type": "journal",
+            "volume": "41"
+        },
+        {
+            "articleTitle": "Generalized residential building typology for urban climate change mitigation and adaptation strategies: The case of Hungary",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Hrabovszky-Horv\u00e1th, S",
+                        "preferred": "S Hrabovszky-Horv\u00e1th"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "P\u00e1lv\u00f6lgyi, T",
+                        "preferred": "T P\u00e1lv\u00f6lgyi"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Csoknyai, T",
+                        "preferred": "T Csoknyai"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Talamon, A",
+                        "preferred": "A Talamon"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2013",
+            "doi": "10.1016/j.enbuild.2013.03.011",
+            "id": "bib17",
+            "journal": "Energy and Buildings",
+            "pages": {
+                "first": "475",
+                "last": "485",
+                "range": "475\u2013485"
+            },
+            "type": "journal",
+            "volume": "62"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Jentsch, A",
+                        "preferred": "A Jentsch"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Bohn, K",
+                        "preferred": "K Bohn"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Pohlig, A",
+                        "preferred": "A Pohlig"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "D\u00f6tsch, C",
+                        "preferred": "C D\u00f6tsch"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Richter, S",
+                        "preferred": "S Richter"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Manderfeld, M",
+                        "preferred": "M Manderfeld"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2008",
+            "details": "Leitungsgebundene W\u00e4rmeversorgung im l\u00e4ndlichen Raum: Handbuch zur Entscheidungsunterst\u00fctzung Fernw\u00e4rme in der Fl\u00e4che, http://publica.fraunhofer.de/eprints/urn:nbn:de:0011-n-1136251.pdf",
+            "id": "bib18",
+            "title": "Leitungsgebundene W\u00e4rmeversorgung im l\u00e4ndlichen Raum: Handbuch zur Entscheidungsunterst\u00fctzung Fernw\u00e4rme in der Fl\u00e4che",
+            "type": "unknown",
+            "uri": "http://publica.fraunhofer.de/eprints/urn:nbn:de:0011-n-1136251.pdf"
+        },
+        {
+            "authors": [
+                {
+                    "name": "KEMA",
+                    "type": "group"
+                }
+            ],
+            "date": "2012",
+            "id": "bib19",
+            "title": "Anpassungs-und Investitionserfordernisse der Informations- und Kommunikationstechnologie zur Entwicklung eines dezentralen Energiesystems (Smart Grid): Endbericht \u2013 Kurzfassung: Proprietary 9011-664",
+            "type": "web",
+            "uri": "http://www.e-energy.de/images/2012.05_VKU_Kurzstudie_V1.0__final.pdf"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Kleemann, M",
+                        "preferred": "M Kleemann"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Hansen, P",
+                        "preferred": "P Hansen"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2005",
+            "id": "bib20",
+            "title": "Evaluierung der CO2-Minderungsma\u00dfnahmen im Geb\u00e4udebereich. Schriften des Forschungszentrums J\u00fclich: Reihe Umwelt/Environment, 60",
+            "type": "web",
+            "uri": "http://juwel.fz-juelich.de:8080/dspace/bitstream/2128/441/1/Umwelt_60.pdf"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Kragh, J",
+                        "preferred": "J Kragh"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Wittchen, K",
+                        "preferred": "K Wittchen"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2013",
+            "details": "Energy and Buildings, 10.1016/j.enbuild.2013.04.028",
+            "id": "bib21",
+            "title": "Development of two Danish building typologies for residential buildings",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": "Landesbetrieb Geoinformation und Vermessung - Stadt Hamburg",
+                    "type": "group"
+                }
+            ],
+            "date": "2010",
+            "id": "bib22",
+            "title": "Amtliches Liegenschaftskatasterinformationssystem",
+            "type": "unknown"
+        },
+        {
+            "articleTitle": "Space-heating and water-heating energy demands of the aged in the 5US6",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Liao, HC",
+                        "preferred": "HC Liao"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Chang, TF",
+                        "preferred": "TF Chang"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2002",
+            "doi": "10.1016/S0140-9883(02)00014-2",
+            "id": "bib23",
+            "journal": "Energy Economics",
+            "pages": {
+                "first": "267",
+                "last": "284",
+                "range": "267\u2013284"
+            },
+            "type": "journal",
+            "volume": "24"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Loga, T",
+                        "preferred": "T Loga"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Diefenbach, N",
+                        "preferred": "N Diefenbach"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Born, R",
+                        "preferred": "R Born"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2011",
+            "id": "bib24",
+            "title": "Deutsche Geb\u00e4udetypologie: Beispielhafte Ma\u00dfnahmen zur Verbesserung der Energieeffizienz von typischen Wohngeb\u00e4uden",
+            "type": "web",
+            "uri": "http://www.building-typology.eu/downloads/public/docs/brochure/DE_TABULA_TypologyBrochure_IWU.pdf"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Loga, T",
+                        "preferred": "T Loga"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Diefenbach, N",
+                        "preferred": "N Diefenbach"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Stein, B",
+                        "preferred": "B Stein"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Born, R",
+                        "preferred": "R Born"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2012",
+            "id": "bib25",
+            "title": "TABULA \u2013 Scientific Report Germany \u2013: Further Development of the German Residential Building Typology",
+            "type": "web",
+            "uri": "http://www.building-typology.eu/downloads/public/docs/scientific/DE_TABULA_ScientificReport_IWU.pdf"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "L\u00fcdemann, B",
+                        "preferred": "B L\u00fcdemann"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2001",
+            "details": "Auslegung, Energiebedarf und Komfort von Anlagen zur Heizung und Warmwasserbereitung im Niedrigenergiehaus bei Ber\u00fccksichtigung des Nutzerverhaltens. B. L\u00fcdemann, [Bahrenhof and Dorfstr. 13]",
+            "id": "bib26",
+            "title": "Auslegung, Energiebedarf und Komfort von Anlagen zur Heizung und Warmwasserbereitung im Niedrigenergiehaus bei Ber\u00fccksichtigung des Nutzerverhaltens. B. L\u00fcdemann, [Bahrenhof and Dorfstr. 13]",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Mahdavi, A",
+                        "preferred": "A Mahdavi"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2011",
+            "id": "bib27",
+            "pages": {
+                "first": "K16",
+                "last": "K33",
+                "range": "K16\u2013K33"
+            },
+            "title": "The human dimension of building performance simulation, in: 12th Conference of International Building Performance Simulation Association",
+            "type": "web",
+            "uri": "http://www.ibpsa.org/proceedings/BS2011/K3.pdf"
+        },
+        {
+            "articleTitle": "Microsimulating urban systems",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Miller, EJ",
+                        "preferred": "EJ Miller"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Douglas Hunt, J",
+                        "preferred": "J Douglas Hunt"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Abraham, JE",
+                        "preferred": "JE Abraham"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Salvini, PA",
+                        "preferred": "PA Salvini"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2004",
+            "doi": "10.1016/s0198-9715(02)00044-3",
+            "id": "bib28",
+            "journal": "Computers, Environment and Urban Systems",
+            "pages": {
+                "first": "9",
+                "last": "44",
+                "range": "9\u201344"
+            },
+            "type": "journal",
+            "volume": "28"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Mu\u00f1oz, H",
+                        "preferred": "H Mu\u00f1oz"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Peters, I",
+                        "preferred": "I Peters"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2013",
+            "id": "bib29",
+            "publisher": {
+                "name": [
+                    "HafenCity University (HCU)"
+                ]
+            },
+            "source": "Allocating heat consumption of residential buildings in space with help of a filter array to determinate the building type in a digital cadaster: Working Paper. Technical Urban Infrastructure Systems Group",
+            "title": "Allocating heat consumption of residential buildings in space with help of a filter array to determinate the building type in a digital cadaster: Working Paper. Technical Urban Infrastructure Systems Group",
+            "type": "report"
+        },
+        {
+            "articleTitle": "Validation of the window model of the Modelica Buildings library",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Nouidui, TS",
+                        "preferred": "TS Nouidui"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Wetter, M",
+                        "preferred": "M Wetter"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Zuo, W",
+                        "preferred": "W Zuo"
+                    },
+                    "type": "person"
+                }
+            ],
+            "conference": {
+                "name": [
+                    "Proc. of the 5th SimBuild Conference"
+                ]
+            },
+            "date": "2012",
+            "id": "bib30",
+            "type": "conference-proceeding",
+            "uri": "http://simulationresearch.lbl.gov/wetter/download/2012-simBuild-windowValidation.pdf"
+        },
+        {
+            "authors": [
+                {
+                    "name": "NRW",
+                    "type": "group"
+                }
+            ],
+            "id": "bib31",
+            "title": "Statistisches Landesamt Gesch\u00e4ftsstelle, F. D.Z., 05.12.2002. Forschungsdatenzentren der Statistischen\u00e4mter des Bundes und der L\u00e4nder",
+            "type": "web",
+            "uri": "http://www.forschungsdatenzentrum.de/bestand/mikrozensus/",
+            "date": "1000"
+        },
+        {
+            "articleTitle": "A generalised stochastic model for the simulation of occupant presence",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Page, J",
+                        "preferred": "J Page"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Robinson, D",
+                        "preferred": "D Robinson"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Morel, N",
+                        "preferred": "N Morel"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Scartezzini, JL",
+                        "preferred": "JL Scartezzini"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2008",
+            "doi": "10.1016/j.enbuild.2007.01.018",
+            "id": "bib32",
+            "journal": "Energy and Buildings",
+            "pages": {
+                "first": "83",
+                "last": "98",
+                "range": "83\u201398"
+            },
+            "type": "journal",
+            "volume": "40"
+        },
+        {
+            "articleTitle": "Stochastic simulation of occupant presence and behaviour in buildings",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Page, J",
+                        "preferred": "J Page"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Robinson, D",
+                        "preferred": "D Robinson"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Scartezzini, JL",
+                        "preferred": "JL Scartezzini"
+                    },
+                    "type": "person"
+                }
+            ],
+            "conference": {
+                "name": [
+                    "10th Conference of International Building Performance Simulation Association"
+                ]
+            },
+            "date": "2007",
+            "id": "bib33",
+            "pages": {
+                "first": "757",
+                "last": "764",
+                "range": "757\u2013764"
+            },
+            "type": "conference-proceeding",
+            "uri": "http://www.ibpsa.org/proceedings/BS2007/p385_final.pdf"
+        },
+        {
+            "articleTitle": "How people use thermostats in homes: A review",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Peffer, T",
+                        "preferred": "T Peffer"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Pritoni, M",
+                        "preferred": "M Pritoni"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Meier, A",
+                        "preferred": "A Meier"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Aragon, C",
+                        "preferred": "C Aragon"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Perry, D",
+                        "preferred": "D Perry"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2011",
+            "doi": "10.1016/j.buildenv.2011.06.002",
+            "id": "bib34",
+            "journal": "Building and Environment",
+            "pages": {
+                "first": "2529",
+                "last": "2541",
+                "range": "2529\u20132541"
+            },
+            "type": "journal",
+            "volume": "46"
+        },
+        {
+            "articleTitle": "A Microsimulation Model for Assessing Urine Flows in Urban Wastewater Management: Integrated Assessment and Decision Support",
+            "conference": {
+                "name": [
+                    "Proceedings of the First Biennial Meeting of the International Environmental Modelling and Software Society"
+                ]
+            },
+            "date": "2002",
+            "id": "bib35",
+            "type": "conference-proceeding",
+            "authors": [
+                {
+                    "name": "n/a",
+                    "type": "group"
+                }
+            ]
+        },
+        {
+            "articleTitle": "Methodological Issues in Spatial Microsimulation Modelling for Small Area Estimation",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Rahman, A",
+                        "preferred": "A Rahman"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Harding, A",
+                        "preferred": "A Harding"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Tanton, R",
+                        "preferred": "R Tanton"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Liu, S",
+                        "preferred": "S Liu"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2010",
+            "id": "bib36",
+            "journal": "International Journal of Microsimulation",
+            "pages": {
+                "first": "3",
+                "last": "22",
+                "range": "3\u201322"
+            },
+            "type": "journal",
+            "volume": "3"
+        },
+        {
+            "articleTitle": "Modelling Occupants\u2019 Presence and Behaviour \u2013 Part II: Journal of Building Performance Simulation",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Robinson, D",
+                        "preferred": "D Robinson"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Haldi, F",
+                        "preferred": "F Haldi"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2011",
+            "doi": "10.1080/19401493.2011.599158",
+            "id": "bib37",
+            "journal": "Journal of Building Performance Simulation",
+            "pages": {
+                "first": "1",
+                "last": "3",
+                "range": "1\u20133"
+            },
+            "type": "journal",
+            "volume": "5"
+        },
+        {
+            "articleTitle": "The economics of house heating",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Scott, A",
+                        "preferred": "A Scott"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1980",
+            "doi": "10.1016/0140-9883(80)90024-9",
+            "id": "bib38",
+            "journal": "Energy Economics",
+            "pages": {
+                "first": "130",
+                "last": "141",
+                "range": "130\u2013141"
+            },
+            "type": "journal",
+            "volume": "2"
+        },
+        {
+            "articleTitle": "An analysis on energy efficiency initiatives in the building stock of Liege, Belgium",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Singh, MK",
+                        "preferred": "MK Singh"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Mahapatra, S",
+                        "preferred": "S Mahapatra"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Teller, J",
+                        "preferred": "J Teller"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2013",
+            "doi": "10.1016/j.enpol.2013.07.138",
+            "id": "bib39",
+            "journal": "Energy Policy",
+            "pages": {
+                "first": "729",
+                "last": "741",
+                "range": "729\u2013741"
+            },
+            "type": "journal",
+            "volume": "62"
+        },
+        {
+            "authors": [
+                {
+                    "name": "Statistisches Bundesamt",
+                    "type": "group"
+                }
+            ],
+            "date": "2002",
+            "id": "bib40",
+            "title": "Datensatzbeschreibung: MIKROZENSUS 2002",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Project Team, TABULA",
+                        "preferred": "TABULA Project Team"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2012",
+            "id": "bib41",
+            "title": "Typology Approach for Building Stock Energy Assessment: Main Results of the TABULA project: - Final Project Report",
+            "type": "web",
+            "uri": "http://www.building-typology.eu/downloads/public/docs/report/TABULA_FinalReport.pdf"
+        },
+        {
+            "authors": [
+                {
+                    "name": "The European Parliament and the Council of the European Union",
+                    "type": "group"
+                }
+            ],
+            "date": "2002",
+            "details": "Directive 2002/91/EC on the energy performance of buildings: Directive 2002/91/EC",
+            "id": "bib42",
+            "title": "Directive 2002/91/EC on the energy performance of buildings: Directive 2002/91/EC",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": "The European Parliament and the Council of the European Union",
+                    "type": "group"
+                }
+            ],
+            "date": "2002",
+            "details": "Directive 2010/31/EU on the energy performance of buildings: Directive 2010/31/EU",
+            "id": "bib43",
+            "title": "Directive 2010/31/EU on the energy performance of buildings: Directive 2010/31/EU",
+            "type": "unknown"
+        },
+        {
+            "articleTitle": "A behavioral model of residential energy use",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Van Raaij, W",
+                        "preferred": "W Van Raaij"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Verhallen, TM",
+                        "preferred": "TM Verhallen"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1983",
+            "discriminator": "a",
+            "doi": "10.1016/0167-4870(83)90057-0",
+            "id": "bib44",
+            "journal": "Journal of Economic Psychology",
+            "pages": {
+                "first": "39",
+                "last": "63",
+                "range": "39\u201363"
+            },
+            "type": "journal",
+            "volume": "3"
+        },
+        {
+            "articleTitle": "Patterns of residential energy behavior",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Van Raaij, W",
+                        "preferred": "W Van Raaij"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Verhallen, TM",
+                        "preferred": "TM Verhallen"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1983",
+            "discriminator": "b",
+            "doi": "10.1016/0167-4870(83)90047-8",
+            "id": "bib45",
+            "journal": "Journal of Economic Psychology",
+            "pages": {
+                "first": "85",
+                "last": "106",
+                "range": "85\u2013106"
+            },
+            "type": "journal",
+            "volume": "4"
+        },
+        {
+            "articleTitle": "Models of domestic occupancy, activities and energy use based on time-use data: deterministic and stochastic approaches with application to various building-related simulations",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Wid\u00e9n, J",
+                        "preferred": "J Wid\u00e9n"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Molin, A",
+                        "preferred": "A Molin"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Elleg\u00e5rd, K",
+                        "preferred": "K Elleg\u00e5rd"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2011",
+            "doi": "10.1080/19401493.2010.532569",
+            "id": "bib46",
+            "journal": "Journal of Building Performance Simulation",
+            "pages": {
+                "first": "27",
+                "last": "44",
+                "range": "27\u201344"
+            },
+            "type": "journal",
+            "volume": "5"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Wilke, U",
+                        "preferred": "U Wilke"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Haldi, F",
+                        "preferred": "F Haldi"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Robinson, D",
+                        "preferred": "D Robinson"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2011",
+            "details": "2125\u20132132, 12th Conference of International Building Performance Simulation Association, Sydney, http://www.ibpsa.org/proceedings/BS2011/P_1676.pdf",
+            "id": "bib47",
+            "title": "A model of occupants\u2019 activities based on time use survey data",
+            "type": "unknown",
+            "uri": "http://www.ibpsa.org/proceedings/BS2011/P_1676.pdf"
+        },
+        {
+            "articleTitle": "The estimation of population microdata by using data from small area statistics and samples of anonymised records",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Williamson, P",
+                        "preferred": "P Williamson"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Birkin, M",
+                        "preferred": "M Birkin"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Rees, PH",
+                        "preferred": "PH Rees"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1998",
+            "doi": "10.1068/a300785",
+            "id": "bib48",
+            "journal": "Environment and Planning A",
+            "pages": {
+                "first": "785",
+                "last": "816",
+                "range": "785\u2013816"
+            },
+            "type": "journal",
+            "volume": "30"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Yu, Z",
+                        "preferred": "Z Yu"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Haghighat, F",
+                        "preferred": "F Haghighat"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Fung, BCM",
+                        "preferred": "BCM Fung"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Zhou, L",
+                        "preferred": "L Zhou"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2011",
+            "details": "Energy and Buildings, 10.1016/j.enbuild.2011.12.018",
+            "id": "bib49",
+            "title": "A novel methodology for knowledge discovery through mining associations between building operational data",
+            "type": "unknown"
+        }
+    ],
+    "-meta": {
+        "patched": true
+    },
+    "stage": "published"
+}

@@ -1,0 +1,2412 @@
+{
+    "status": "vor",
+    "id": "00094",
+    "version": 1,
+    "type": "research-article",
+    "doi": "10.34196/ijm.00094",
+    "authorLine": "Robert Tanton et al.",
+    "title": "Comparing two methods of reweighting a survey file to small area data",
+    "published": "2014-04-30T00:00:00Z",
+    "versionDate": "2014-04-30T00:00:00Z",
+    "statusDate": "2014-04-30T00:00:00Z",
+    "volume": 7,
+    "issue": 1,
+    "elocationId": "n/a",
+    "pdf": "http://web:8082/00094/ijm-00094.pdf",
+    "subjects": [
+        {
+            "id": "methodology",
+            "name": "Methodology"
+        },
+        {
+            "id": "spatial-microsimulation",
+            "name": "Spatial microsimulation"
+        }
+    ],
+    "abstract": {
+        "content": [
+            {
+                "text": "One method of calculating small area estimates using survey data involves deriving new weights for each respondent in the survey. These new weights are derived so that the survey data sums to some known totals for a small area (from either a Census or administrative data). There are different methods for calculating these weights, and this paper analyses the results from two different methods \u2013 a generalised regression method and combinatorial optimisation. The weights derived from each method are compared, and advantages and disadvantages of each method are assessed. Estimates of housing stress at a Statistical Local Area in Australia from each method are then calculated, and these estimates are then validated against a third reliable source, Australian Census data from 2001.",
+                "type": "paragraph"
+            }
+        ]
+    },
+    "copyright": {
+        "license": "CC-BY-4.0",
+        "holder": "Tanton et al.",
+        "statement": "This article is distributed under the terms of the <a href=\"http://creativecommons.org/licenses/by/4.0/\">Creative Commons Attribution License</a>, which permits unrestricted use and redistribution provided that the original author and source are credited."
+    },
+    "authors": [
+        {
+            "affiliations": [
+                {
+                    "address": {
+                        "components": {
+                            "country": "Australia"
+                        },
+                        "formatted": [
+                            "Australia"
+                        ]
+                    },
+                    "name": [
+                        "National Centre for Social and Economic Modelling (NATSEM)",
+                        "Institute for Governance and Policy Analysis, University of Canberra"
+                    ]
+                }
+            ],
+            "emailAddresses": [
+                "robert.tanton@canberra.edu.au"
+            ],
+            "name": {
+                "index": "Tanton, Robert",
+                "preferred": "Robert Tanton"
+            },
+            "type": "person"
+        },
+        {
+            "affiliations": [
+                {
+                    "address": {
+                        "components": {
+                            "country": "United Kingdom"
+                        },
+                        "formatted": [
+                            "United Kingdom"
+                        ]
+                    },
+                    "name": [
+                        "Department of Geography and Planning",
+                        "University of Liverpool"
+                    ]
+                }
+            ],
+            "emailAddresses": [
+                "P.Williamson@liv.ac.uk"
+            ],
+            "name": {
+                "index": "Williamson, Paul",
+                "preferred": "Paul Williamson"
+            },
+            "type": "person"
+        },
+        {
+            "affiliations": [
+                {
+                    "address": {
+                        "components": {
+                            "country": "Australia"
+                        },
+                        "formatted": [
+                            "Australia"
+                        ]
+                    },
+                    "name": [
+                        "National Centre for Social and Economic Modelling (NATSEM)",
+                        "Institute for Governance and Policy Analysis, University of Canberra"
+                    ]
+                }
+            ],
+            "emailAddresses": [
+                "ann.harding@canberra.edu.au"
+            ],
+            "name": {
+                "index": "Harding, Ann",
+                "preferred": "Ann Harding"
+            },
+            "type": "person"
+        }
+    ],
+    "keywords": [
+        "spatial microsimulationxs",
+        "combinatorial optimisation",
+        "generalised regression"
+    ],
+    "body": [
+        {
+            "content": [
+                {
+                    "text": "Spatial microsimulation is a microsimulation method that can be used for small area estimation (<a href=\"#bib3\">Anderson, 2007</a>; <a href=\"#bib11\">Clarke <i>et al</i>., 1997</a>), projections (<a href=\"#bib43\">Williamson <i>et al</i>., 2002</a>; <a href=\"#bib16\">Harding <i>et al</i>., 2011</a>) and analysing small area policy change (<a href=\"#bib20\">Hynes <i>et al</i>., 2009</a>; <a href=\"#bib34\">Tanton <i>et al</i>., 2009</a>). Recent reviews of the field include <a href=\"#bib19\">Hermes and Poulsen (2012)</a> and <a href=\"#bib31\">Tanton and Edwards (2013a)</a>. There are a number of methods that can be used for spatial microsimulation, and they have developed over a number of years. A brief review and history of the methods is described in a paper in this special issue (<a href=\"#bib30\">Tanton, 2014</a>). There are also many applications of spatial microsimulation, and these are outlined in another paper in this special issue (<a href=\"#bib24\">O\u2019Donoghue <i>et al</i>., 2014</a>).",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "As far as the authors are aware, there have been two recent papers that have compared different spatial microsimulation methods (<a href=\"#bib41\">Williamson, 2013</a>; <a href=\"#bib17\">Harland <i>et al</i>., 2012</a>). This paper adds to this literature by comparing the generalised regression technique and the combinatorial optimisation technique. Both methods are described in <a href=\"#bib32\">Tanton and Edwards (2013b)</a>. The first uses a Generalised Regression (GREG) approach. GREG is a well-established approach to reweighting survey data (<a href=\"#bib22\">Lehtonen &amp; Veijanen, 2009</a>). The particular algorithm used in this paper iteratively attempts to minimise a truncated exponential distance function using a SAS program called GREGWT, developed by the Australian Bureau of Statistics from INSEE\u2019s reweighting macro CALMAR (<a href=\"#bib6\">Bell, 2000</a>). GREGWT is used by the ABS to benchmark their survey data to known State totals. The NATSEM adaptation of this approach to small-area estimation is documented in <a href=\"#bib36\">Tanton <i>et al</i>. (2011</a>; <a href=\"#bib33\">2013</a>) and elaborated below in <a href=\"#s2\">Sections 2</a> and <a href=\"#s3\">3</a> of this paper. The code for GREGWT is available on request from the ABS.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The second method of survey reweighting considered in this paper uses an iterative \u2018combinatorial optimisation\u2019 algorithm. An initial set (combination) of households are drawn from a survey at random (with replacement), following which a succession of random changes in the households selected are made, with a view to optimising the fit of the household combination to the specified small area benchmarks. To reduce the risk of getting trapped in a sub-optimal solution a simulated annealing approach to the acceptance of household changes is adopted. This algorithm is implemented using the program CO, developed by Dr Paul Williamson at the University of Liverpool (<a href=\"#bib40\">Williamson, 2007</a>, <a href=\"#bib41\">2013</a>; <a href=\"#bib42\">Williamson, <i>et al</i>., 1998</a>) and now available as part of an R library (<a href=\"#bib21\">Kavroudakis, 2013</a>).",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Unless earlier exit criteria are met (convergence measures for GREGWT; estimate fit thresholds for CO), both algorithms continue until a maximum number of user-specified iterations has been exceeded.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "This paper compares the two algorithms in terms of their advantages and disadvantages for small-area estimation, including the number of areas which fail to satisfy minimum fit criteria, and the resulting weights from each method.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Section two of this paper outlines the data and benchmarks used for both methods. The data and benchmarks used for each method are exactly the same. Section three summarises the differences between the two methods, in terms of the methods and assumptions. Section four compares the results from each method, looking at the total difference and differences for each benchmark. <a href=\"#s5\">Section 5</a> provides further analysis of the weights \u2013 including looking at the distribution of the weights from each procedure \u2013 while <a href=\"#s6\">Section 6</a> provides conclusions and directions for further work.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s1",
+            "title": "1. Introduction",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "There has been considerable work in Australia and Britain on generating small area estimates using survey data. The attraction of small area models is that they allow a survey designed for generating reliable estimates for a large area to be used to derive reliable estimates for a small area, without increasing the sample size, which is an expensive process.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "In 2006, the Australian Bureau of Statistics (ABS) produced a small area estimation practice manual (<a href=\"#bib1a\">ABS, 2006</a>), which outlines some of the available techniques, and includes a section on diagnostics and quality measurement. The manual covers simple small area methods, like broad Area Ratio Estimator and Calibration estimators; and then covers regression methods, including random effects regression models. While this manual is theoretical, the ABS has also produced a number of small area estimates using a variety of techniques. Similar reviews have been compiled by, amongst others, <a href=\"#bib25\">Pfeffermann (2002)</a>, a consortium of European Statistical Agencies (<a href=\"#bib14\">EURAREA, 2005</a>) and <a href=\"#bib23\">Marshall (2010)</a>.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "In 2005, the ABS produced small area estimates of disability (<a href=\"#bib1\">ABS, 2005</a>), which looked at three different methods of estimating disability for small areas; a Poisson regression model; a Bernoulli model; and ratio estimation. The report found that the Bernoulli model and the ratio estimator gave the best results, with the Poisson model performing poorly, possibly due to overdispersion.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The ABS also used a number of methods to generate small area estimates of crime. While some of this was unpublished, a method using a regression estimator was published (Tanton, <i>et al</i>., 2001). The results for small area estimates of crime from a number of other methods, including a ratio method based on an article by Purcell and Lincare (<a href=\"#bib27\">Purcell &amp; Linacre, 1976</a>) and a Structure Preserving Regression Estimator (SPREE) used for estimating labour force by the ABS, were unpublished, due to the fact that the results were difficult to validate.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "This has been the biggest difficulty with the modelled small area estimates derived by the ABS \u2013 there is no estimate of the reliability of the results, for example, standard errors or confidence intervals. Recent work by the ABS has focussed on modelling labour force status, and assessing the quality of the estimates using relative root mean squared errors (RRMSEs) (<a href=\"#bib2\">ABS, 2011</a>).",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Outside of the ABS, the Australian Commonwealth Department of Employment and Workplace Relations uses a SPREE approach to estimate small area labour force statistics (<a href=\"#bib12\">Commonwealth Department of Employment and Workplace Relations, 2007</a>). The ABS is now re-examining the estimation of the labour force using small area estimation techniques (<a href=\"#bib1b\">ABS, 2012</a>).",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The National Centre for Social and Economic Modelling has also produced small area estimates of poverty and housing stress, using the methods outlined in this paper (see <a href=\"#bib15\">Harding, <i>et al</i>., 2006</a>; <a href=\"#bib35\">Tanton <i>et al</i>., 2009</a>; <a href=\"#bib29\">Tanton, 2011</a>; <a href=\"#bib26\">Phillips, <i>et al</i>., 2006</a>).",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "In the UK the Office for National Statistics has conducted a review of alternative methods for updating small area population estimates between censuses, in lieu of a population register, concluding by favouring a ratio change approach (<a href=\"#bib5\">Bates, 2006</a>). An allied initiative has seen the development of small area estimates using a multilevel regression-based synthetic estimator fitted using area-level covariates. The result has been the release of a series of \u2018experimental\u2019 small-area statistics covering topics such as household overcrowding and social capital (<a href=\"#bib18\">Heady, <i>et al</i>., 2003</a>), leading to the development of a regular series of official small area income estimates (<a href=\"#bib7\">Bond &amp; Campos, 2010</a>).",
+                    "type": "paragraph"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "Both the methods of spatial microsimulation being compared here require two sets of data. One set is the survey which is being reweighted; and the second is the set of benchmarks that the survey is being reweighted to. The benchmarks must be reliable for the small area being estimated.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "In this case, we have used data from the 1998\u201399 Household Expenditure Survey from the Australian Bureau of Statistics (ABS). This survey is a survey conducted by the ABS collecting data on income and expenditure from a sample of households in Australia. The file used for this work is a Confidentialised Unit Record File (CURF), which is a file of every person in the sample with all the information collected from them, but with no identifying information. We then manipulate this file by adding a record for each child (the CURF only has the total number of children in the household) and for each person living in a non-private dwelling (which are not on the CURF but are on the data being benchmarked to). A description of the process to prepare a survey CURF for spatial microsimulation is described in <a href=\"#bib9\">Cassells <i>et al</i>. (2013)</a>.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The benchmarks for the reweighting process come from the 2001 Australian Census. The Census provides reliable data for Statistical Local Areas (SLAs), which range in population from 12 to 181,327 people, and the Expanded Community Profile tables provide the cross-tabulations that we require. Unfortunately the raw Census data include \u2018Not Stated\u2019 counts. These are counts of people or households that did not respond to certain questions on the Census. This can be partial non-response (eg, they said they were employed, but did not say whether this was full time or part time); or full non-response (e.g., they didn\u2019t answer the employment question). The \u2018Not Stated\u2019 values are distributed across all valid responses, using an integer pro rata method in which any unit remainder is allocated to the category with the highest value. Further information on how the survey and Census data are adjusted can be found in NATSEM\u2019s technical papers, available from the NATSEM website (<a href=\"#bib8\">Cassells <i>et al</i>., 2010</a>; <a href=\"#bib10\">Chin, <i>et al</i>., 2006</a>).",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "From the survey and Census data, we have chosen a set of benchmark variables that are available on both datasets, aggregating variable categories in one or other set of data until the categories are exactly the same. The final set of benchmarks used for this project are shown in <a href=\"#table1\">Table 1</a>.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "footnotes": [
+                                        {
+                                            "id": "tfn1_1",
+                                            "label": "a",
+                                            "text": [
+                                                {
+                                                    "text": "Multi-dimensional means cross-tabulations of variables.",
+                                                    "type": "paragraph"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "id": "tfn1_2",
+                                            "label": "b",
+                                            "text": [
+                                                {
+                                                    "text": "Not fully specified means that one or more of the cells in a benchmark tabulation were not used for weight production. For example, for the benchmark table of \u2018Household Type\u2019, the count of \u2018Private households\u2019 was extracted for use as a benchmark, whilst the count of \u2018Non-private dwellings\u2019 was excluded from the reweighting process.",
+                                                    "type": "paragraph"
+                                                }
+                                            ]
+                                        }
+                                    ],
+                                    "id": "table1",
+                                    "label": "Table 1",
+                                    "tables": [
+                                        "<table>\n<thead>\n<tr>\n<th>Census table</th>\n<th align=\"center\">Type</th>\n<th align=\"center\">Dimension<sup><a href=\"#tfn1_1\">a</a></sup></th>\n<th align=\"center\">Fully specified<sup><a href=\"#tfn1_2\">b</a></sup></th>\n<th align=\"center\">Benchmarks (no.)</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>Age by sex by labour force status</td>\n<td>Person</td>\n<td>Multi</td>\n<td>Yes</td>\n<td>32</td>\n</tr>\n<tr>\n<td>Residents in different types of non-private dwelling</td>\n<td>Person</td>\n<td>Single</td>\n<td>Yes</td>\n<td>8</td>\n</tr>\n<tr>\n<td>Household Type</td>\n<td>Household</td>\n<td>Single</td>\n<td>No</td>\n<td>1</td>\n</tr>\n<tr>\n<td>Household size \u2013 number usual residents</td>\n<td>Household</td>\n<td>Single</td>\n<td>Yes</td>\n<td>7</td>\n</tr>\n<tr>\n<td>Dwelling tenure by weekly household rent</td>\n<td>Household</td>\n<td>Multi</td>\n<td>No</td>\n<td>7</td>\n</tr>\n<tr>\n<td>Dwelling tenure by household type</td>\n<td>Household</td>\n<td>Multi</td>\n<td>Yes</td>\n<td>15</td>\n</tr>\n<tr>\n<td>Dwelling tenure by weekly household income</td>\n<td>Household</td>\n<td>Multi</td>\n<td>No</td>\n<td>16</td>\n</tr>\n<tr>\n<td>Monthly household mortgage by weekly household income</td>\n<td>Household</td>\n<td>Multi</td>\n<td>Yes</td>\n<td>12</td>\n</tr>\n<tr>\n<td>Weekly household rental by weekly household income</td>\n<td>Household</td>\n<td>Multi</td>\n<td>Yes</td>\n<td>20</td>\n</tr>\n<tr>\n<td>Dwelling structure by household family composition</td>\n<td>Household</td>\n<td>Multi</td>\n<td>No</td>\n<td>12</td>\n</tr>\n<tr>\n<td colspan=\"3\">Total number of benchmark tabulations</td>\n<td/>\n<td>10</td>\n</tr>\n<tr>\n<td colspan=\"3\">Total number of benchmarks</td>\n<td/>\n<td>130</td>\n</tr>\n</tbody>\n</table>"
+                                    ],
+                                    "title": "Benchmarks used for creating small-area weights.",
+                                    "type": "table"
+                                }
+                            ],
+                            "type": "figure"
+                        }
+                    ],
+                    "id": "s2-1",
+                    "title": "2.1 Data and benchmarks",
+                    "type": "section"
+                }
+            ],
+            "id": "s2",
+            "title": "2. Background",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "There are a number of theoretical differences between GREGWT and CO that need to be outlined.",
+                    "type": "paragraph"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "The algorithms used for each method are quite different. The GREGWT algorithm is essentially a constrained distance minimisation function. The method uses a truncated linear regression model to get an initial weight (constrained so the weights cannot be below 0 or above a preset limit set by the user). Because these weights are truncated, the boundary conditions may not be met by the initial weights, so an iterative approach is used to match the boundary conditions after a number of iterations. The iterations continue until convergence is reached (so the difference between the estimated benchmark and the actual benchmark for the area from the Census data is within a set limit), or a set number of iterations is made, at which time the iteration stops. The process needs a start weight, and this is set to the original ABS survey weight for the survey record divided by the population of the SLA. In many cases, there is no iteration as the initial regression estimate provides weights that are within the tolerance set.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The method implemented in GREGWT is from <a href=\"#bib28\">Singh and Mohl (1996)</a> and its application in spatial microsimulation is described in <a href=\"#bib36\">Tanton <i>et al</i>. (2011)</a>. Full information on the GREGWT macro can be found in the user manual for GREGWT (<a href=\"#bib6\">Bell, 2000</a>).",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "At the end of the reweighting process, every household in the survey dataset will have a weight for each Census SLA for which benchmark counts were supplied. In a small number of cases these weights will have been generated even though convergence was not achieved, due to the algorithm halting after exceeding a user-specified number of iterations (30 for the work reported in this paper). In these non-convergent cases the weights from the terminal iteration typically, but not always, include a small number of exceptionally high household weights, leading to very poor fits to one or more benchmark counts. We have chosen not to discard all non-convergent GREGWT outputs, as a few technically non-convergent estimates actually give rise to sets of weights that fit all benchmarks reasonably well. Instead, for the purposes of this paper, we identify as \u2018non-convergent\u2019 any SLA for which the sum of the absolute value of all errors across all benchmarks is greater than the number of households in the SLA; so where:",
+                            "type": "paragraph"
+                        },
+                        {
+                            "id": "equ1",
+                            "label": "(1)",
+                            "mathml": "<math><mrow><mfrac><mrow><mstyle displaystyle=\"true\"><msub><mo>\u2211</mo><mrow><mi>B</mi><mi>e</mi><mi>n</mi><mi>c</mi><mi>h</mi><mi>m</mi><mi>a</mi><mi>r</mi><mi>k</mi></mrow></msub><mrow><mi>A</mi><mi>B</mi><mi>S</mi><mo stretchy=\"false\">(</mo><mi>A</mi><mi>c</mi><mi>t</mi><mi>u</mi><mi>a</mi><mi>l</mi><mo>\u2212</mo><mi>E</mi><mi>s</mi><mi>t</mi><mi>i</mi><mi>m</mi><mi>a</mi><mi>t</mi><mi>e</mi><mi>d</mi><mo stretchy=\"false\">)</mo></mrow></mstyle></mrow><mrow><msub><mi>N</mi><mrow><mi>h</mi><mi>h</mi></mrow></msub></mrow></mfrac><mo>&gt;</mo><mn>1</mn></mrow></math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "For an account of the rates of non-convergence see <a href=\"#s5\">Section 5</a>.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The Combinatorial Optimisation algorithm, as currently implemented, may be viewed as an integer reweighting algorithm. For each household in an SLA (as recorded in the Census benchmark counts), CO randomly selects one household (with replacement) from the survey dataset. This is equivalent to setting all survey household weights to 0, then incrementing household weights at random by a count of 1 until the sum of weighted households matches the equivalent benchmark count. In each subsequent iteration the weight of one survey household is randomly increased by one, whilst the weight of another (non-zero weighted) household is randomly decreased by one. This is equivalent to randomly swapping households in and out of the set (combination) of households currently selected to represent the SLA. If the change in weights leads to improved fit, the change is retained; a few adverse changes in weights are also accepted, with a probability that diminishes in proportion to (i) size of the adverse impact and (ii) number of iterations, in order to avoid getting stuck in a local sub-optima; otherwise the change is rejected and the weights are reverted to their previous values. CO will continue to iterate until either a minimum fit threshold is achieved, or until a maximum number of user-specified iterations has been exceeded (5 million for the results reported in this paper). Full details of the algorithm and its links to simulated annealing are published in an article by Williamson <i>et al</i>. (<a href=\"#bib42\">Williamson, <i>et al</i>., 1998</a>). The user manual for the publicly available fortran-based version of the CO program has been published by Paul Williamson (<a href=\"#bib40\">Williamson, 2007</a>), whilst more recently a version of CO has been made available via the R package \u2018sms\u2019 (<a href=\"#bib21\">Kavroudakis, 2013</a>).",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "When deciding whether or not to accept a change in household weights, CO can evaluate one of two measures of fit. The first is the Overall Total Absolute Error. This is a conventional measure of fit that seeks to minimise the absolute difference between benchmark counts and their weighted survey equivalents, and is given by",
+                            "type": "paragraph"
+                        },
+                        {
+                            "id": "equ2",
+                            "label": "(2)",
+                            "mathml": "<math><mrow><mi>O</mi><mi>T</mi><mi>A</mi><mi>E</mi><mo>=</mo><mstyle displaystyle=\"true\"><munder><mo>\u2211</mo><mrow><mi>i</mi><mi>j</mi></mrow></munder><mrow><mrow><mo>|</mo> <mrow><msub><mrow><mstyle><mi>o</mi></mstyle></mrow><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>\u2212</mo><msub><mrow><mstyle><mi>e</mi></mstyle></mrow><mrow><mi>i</mi><mi>j</mi></mrow></msub></mrow><mo>|</mo></mrow></mrow></mstyle></mrow></math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "where <i>e<sub>ij</sub></i> is the expected (census) count for cell j in benchmark table <i>i</i> and <i>o<sub>ij</sub></i> is its estimated (weighted survey) equivalent",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The second measure is the Overall Relative Sum of Squared modified Z-Scores (ORSSZm2), defined as",
+                            "type": "paragraph"
+                        },
+                        {
+                            "id": "equ3",
+                            "label": "(3)",
+                            "mathml": "<math><mrow><mi>O</mi><mi>R</mi><mi>S</mi><mi>S</mi><mi>Z</mi><msup><mi>m</mi><mn>2</mn></msup><mo>=</mo><mstyle displaystyle=\"true\"><munder><mo>\u2211</mo><mi>i</mi></munder><mrow><mfrac><mn>1</mn><mrow><msub><mi>C</mi><mi>i</mi></msub></mrow></mfrac></mrow></mstyle><mrow><mo>[</mo> <mrow><mstyle displaystyle=\"true\"><munder><mo>\u2211</mo><mi>j</mi></munder><mrow><mfrac><mrow><msup><mrow><mo stretchy=\"false\">(</mo><msub><mi>o</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>\u2212</mo><msub><mi>e</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo stretchy=\"false\">)</mo></mrow><mn>2</mn></msup></mrow><mrow><msub><mi>e</mi><mrow><mi>i</mi><mi>j</mi><mrow><mo>(</mo><mrow><mn>1</mn><mo>\u2212</mo><mfrac><mrow><msub><mi>e</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub></mrow><mrow><mstyle displaystyle=\"true\"><munder><mo>\u2211</mo><mi>j</mi></munder><mrow><msub><mi>e</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub></mrow></mstyle></mrow></mfrac></mrow><mo>)</mo></mrow></mrow></msub></mrow></mfrac></mrow></mstyle></mrow> <mo>]</mo></mrow></mrow></math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "where <i>c<sub>i</sub></i> = the \u03c7<sup>2</sup> critical value for benchmark table <i>i</i>, with <i>p</i> = 0.05 and <i>d.f.</i> = number of cells in table. The derivation of this second measure is explained in full in an article by Voas and Williamson (<a href=\"#bib39\">Voas &amp; Williamson, 2001</a>). The underlying principle behind this second measure is the use of a modified Z-score for each benchmark count that takes into account not only the proportional difference between observed and expected counts (as with a normal Z-score), but also the absolute difference between estimated and observed benchmark table totals. The resulting sum of squared modified Z-scores for each benchmark table is divided by the relevant table-specific \u03c7<sup>2</sup> critical value to standardise for the number of benchmark counts in each benchmark table. These table-specific relative scores are then summed to yield the overall measure, the main focus of which is upon proportional rather than absolute fit.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Whereas the results presented in this paper (<a href=\"#s4\">Sections 4</a> and <a href=\"#s5\">5</a>) mainly exclude \u2018non-convergent\u2019 (i.e. very poorly fitting) GREGWT estimates, they include all CO estimates, whether or not these estimates satisfied the minimum fit thresholds specified for triggering early termination of a CO run on the grounds that non-convergence, <i>per se</i>, is not an issue for CO.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s3-1",
+                    "title": "3.1 Algorithms",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "Because of the methods used, GREGWT produces floating point weights \u2013 whereas CO produces integer weights. There is no real advantage to either type of weight. In fact, the CO routine could implement floating point weights by adding partial \u2018units\u2019 of individuals, rather than whole records.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s3-2",
+                    "title": "3.2 Weights",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "Both the CO and GREGWT routine are computationally intensive. In testing the different algorithms on exactly the same computer (dual processor dual core 2 Ghz processor, 2 GB Memory), the CO routine calculated weights for the 107 SLAs in the Australian Capital Territory in about \u00bd hour; where the GREGWT routine took 2 \u00bd hours. This was possibly due to the way the algorithms are coded (GREGWT is in a SAS macro; whereas CO uses compiled FORTRAN code), but may also reflect algorithmic efficiency.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s3-3",
+                    "title": "3.3 Efficiency",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "A summary of the differences in each method is shown in <a href=\"#table2\">Table 2</a>.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "footnotes": [
+                                        {
+                                            "text": [
+                                                {
+                                                    "text": "<i>Source</i>: NATSEM (GREGWT) and Williamson (CO).",
+                                                    "type": "paragraph"
+                                                }
+                                            ]
+                                        }
+                                    ],
+                                    "id": "table2",
+                                    "label": "Table 2",
+                                    "tables": [
+                                        "<table>\n<thead>\n<tr>\n<th/>\n<th align=\"center\">GREGWT</th>\n<th align=\"center\">CO</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>Approach</td>\n<td>National household weights from a national survey dataset are reweighted to household weights for SLAs by constraining to small-area census counts</td>\n<td>Selection of a combination of households from a national survey microdata set that best fit small-area census counts</td>\n</tr>\n<tr>\n<td>Weights</td>\n<td>In fractional numbers</td>\n<td>In integer numbers</td>\n</tr>\n<tr>\n<td>Preparation of census data</td>\n<td>Needs to address re-allocation of \u2018not-stated\u2019 and \u2018not applicable\u2019 counts</td>\n<td>Needs to address re-allocation of \u2018not-stated\u2019 and \u2018not applicable\u2019 counts</td>\n</tr>\n<tr>\n<td>Conflicting benchmark counts due to statistical disclosure measures</td>\n<td>Causes non-convergence because no set of weights can be found that simultaneously satisfies all benchmarks</td>\n<td>Seeks to minimise the difference between the final weights and the target benchmarks which typically results in weights that matchthe average of any discrepant benchmarks</td>\n</tr>\n<tr>\n<td>Optimisation strategy</td>\n<td>Algorithm reaches an optimised solution when residual (i.e. difference between an synthetic estimate and the benchmark count) approaches zero</td>\n<td>Minimise absolute or proportional error</td>\n</tr>\n<tr>\n<td>\u2018Convergent\u2019 &amp; \u2018non-convergent\u2019 SLAs</td>\n<td>In some cases no convergent solution may be found; Average Household Absolute Sum of Residuals is &gt;1 provides a proxy indicator for this non-convergence.</td>\n<td>No convergence issues, although final \u2018optimal\u2019 estimates may still fail to fit all user-supplied benchmarks</td>\n</tr>\n</tbody>\n</table>"
+                                    ],
+                                    "title": "Comparison of methods in summary.",
+                                    "type": "table"
+                                }
+                            ],
+                            "type": "figure"
+                        }
+                    ],
+                    "id": "s3-4",
+                    "title": "3.4 Summary of differences",
+                    "type": "section"
+                }
+            ],
+            "id": "s3",
+            "title": "3. Differences between the methods",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "This section shows summary results from the estimates produced by GREGWT and CO for the 307 SLAs in the ACT (the Australian Capital Territory) and NSW (New South Wales). NSW contains a range of urban and rural SLAs fairly representative of Australia as a whole, whilst the ACT contains some SLAs which are highly atypical in an Australian context, containing high concentrations of professionals and students. Results from GREGWT exlclude the 14% of SLAs classified, as per <a href=\"#s3-1\">Section 3.1</a>, as \u2018non-convergent\u2019. These non-convergent SLAs are predominantly less populous SLAs drawn from the industrial and remote areas of the ACT and NSW. Only 4.5% of the ACT population were in non-converging areas, and 4.6% of the NSW population.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The first set of results we consider here show how well each method has hit the benchmarks specified. The second set of results, more interestingly, show the usefulness of each method for predicting values not present in the benchmarks.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Predicting the benchmarks (constrained variables) is of limited interest, as by definition we already know their values. On the other hand, the difference between the estimated (weighted survey) and observed (census) values does at least provide some initial indicator of estimate quality. More usefully, the weighted data also yield estimates for unbenchmarked values. Two kinds of value-added estimates may be identified. The first involves the unbenchmarked interactions between benchmarked variables (margin constrained estimates). The second involves the unbenchmarked interactions between unbenchmarked variables (unconstrained estimates). The greater the degree of correlation between the benchmark constraints and the unbenchmarked estimates, the greater the quality of the estimate is likely to be. In constrast, values estimated using unbenchmarked variables that have no correlation with the benchmarked variables will necessarily be highly unreliable.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "In this paper we evaluate the efficacy of our small area estimates in predicting housing stress. Housing stress is directly correlated with three of our constrained variables: income, rent paid and mortgage paid. A household is defined here as being in housing stress when they spend more than 30 per cent of their gross income on rent or a housing loan (a definition that can be matched from the ABS Census data so it can be validated against reliable small area data).",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The average SLA-level fit to the benchmarks listed in <a href=\"#table1\">Table 1</a> is summarised in <a href=\"#table4\">Tables 4</a> and <a href=\"#table5\">5</a> for two States in Australia, New South Wales and the Australian Capital Territory, using a range of summary statistical measures described in <a href=\"#table3\">Table 3</a>. There are 107 areas estimated in the Australian Capital Territory and 199 in New South Wales. The SLAs in the ACT are atypical for Australia, both in terms of socio-demographic composition and in terms of size (ACT SLAs contain considerably fewer people than the average Australian SLA). The SLAs in NSW may be regarded as more \u2018typical\u2019 Australian SLAs.",
+                    "type": "paragraph"
+                },
+                {
+                    "assets": [
+                        {
+                            "id": "table3",
+                            "label": "Table 3",
+                            "tables": [
+                                "<table>\n<thead>\n<tr>\n<th>Measure</th>\n<th align=\"center\">Description</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>Overall Total Absolute Error (OTAE)</td>\n<td>Absolute Sum of Residuals summed across all benchmark counts</td>\n</tr>\n<tr>\n<td>Overall Total Absolute Error per household (OTAE/HH)</td>\n<td>Absolute sum of residuals per household across all benchmark counts</td>\n</tr>\n<tr>\n<td>Overall Total Absolute Proportional Error (OTAPE)</td>\n<td>Absolute difference between benchmark counts when expressed as fraction of the table total</td>\n</tr>\n<tr>\n<td>Overall relative sum of Z-square scores (ORSumZ2)</td>\n<td>For each benchmark table, the Z-score of each benchmark count squared, and summed for the table; then divide by chi-square critical value for table (--&gt; RSumZ2), then sum across all tables (--&gt; ORSumZ2). For a given table, RSumZ2 &gt; 1 shows it is not fitting.</td>\n</tr>\n</tbody>\n</table>"
+                            ],
+                            "title": "Summary measures of goodness of fit.",
+                            "type": "table"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "text": "The results are shown in <a href=\"#table4\">Table 4</a> and <a href=\"#table5\">Table 5</a>, averaged across the SLAs for which GREGWT produced \u2018convergent\u2019 estimates.",
+                    "type": "paragraph"
+                },
+                {
+                    "assets": [
+                        {
+                            "caption": [
+                                {
+                                    "text": "<i>(GREGWT \u2018convergent\u2019 SLAs only)</i>",
+                                    "type": "paragraph"
+                                }
+                            ],
+                            "footnotes": [
+                                {
+                                    "text": [
+                                        {
+                                            "text": "<i>Note</i>: Lower numbers signify greater accuracy.",
+                                            "type": "paragraph"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "id": "table4",
+                            "label": "Table 4",
+                            "tables": [
+                                "<table>\n<thead>\n<tr>\n<th>Measure</th>\n<th align=\"center\">GREGWT</th>\n<th align=\"center\">CO (Min Proportion)</th>\n<th align=\"center\">CO (Min Absolute)</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>OTAE</td>\n<td align=\"center\">139.6</td>\n<td align=\"center\">133.4</td>\n<td align=\"center\">92.2</td>\n</tr>\n<tr>\n<td>OTAE/HH</td>\n<td align=\"center\">0.1</td>\n<td align=\"center\">0.1</td>\n<td align=\"center\">0.1</td>\n</tr>\n<tr>\n<td>OTAPE</td>\n<td align=\"center\">0.4</td>\n<td align=\"center\">0.2</td>\n<td align=\"center\">0.2</td>\n</tr>\n<tr>\n<td>ORSumZ2</td>\n<td align=\"center\">48.4</td>\n<td align=\"center\">0.5</td>\n<td align=\"center\">27.8</td>\n</tr>\n</tbody>\n</table>"
+                            ],
+                            "title": "Results for constrained variables, Australian Capital Territory.",
+                            "type": "table"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "assets": [
+                        {
+                            "caption": [
+                                {
+                                    "text": "<i>(GREGWT \u2018convergent\u2019 SLAs only)</i>",
+                                    "type": "paragraph"
+                                }
+                            ],
+                            "footnotes": [
+                                {
+                                    "text": [
+                                        {
+                                            "text": "<i>Note</i>: Lower numbers signify greater accuracy.",
+                                            "type": "paragraph"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "id": "table5",
+                            "label": "Table 5",
+                            "tables": [
+                                "<table>\n<thead>\n<tr>\n<th>Measure</th>\n<th align=\"center\">GREGWT</th>\n<th align=\"center\">CO (Min Proportion)</th>\n<th align=\"center\">CO (Min Absolute)</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>OTAE</td>\n<td align=\"center\">602.9</td>\n<td align=\"center\">483.1</td>\n<td align=\"center\">979.3</td>\n</tr>\n<tr>\n<td>OTAE/HH</td>\n<td align=\"center\">0.1</td>\n<td align=\"center\">0.1</td>\n<td align=\"center\">0.1</td>\n</tr>\n<tr>\n<td>OTAPE</td>\n<td align=\"center\">0.2</td>\n<td align=\"center\">0.1</td>\n<td align=\"center\">0.2</td>\n</tr>\n<tr>\n<td>ORSumZ2</td>\n<td align=\"center\">60.5</td>\n<td align=\"center\">1.9</td>\n<td align=\"center\">29.2</td>\n</tr>\n</tbody>\n</table>"
+                            ],
+                            "title": "Results for constrained variables, New South Wales.",
+                            "type": "table"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "text": "Both variants of CO produced a better proportional fit to the estimation benchmarks than GREGWT (lower ORSumZ2 and OTAPE) but performed more variably when it came to matching GREGWT\u2019s absolute fit to the estimation benchmarks. Of the two CO variants, CO (Min Proportion) unsurprisingly produced by far the lowest proportional error for both States; more surprisingly it also produced the lowest absolute error in NSW. This may reflect the fact that the SLAs in NSW are more populous, making the link between absolute and proportional values more tenuous. Overall the evidence presented in <a href=\"#table4\">Tables 4</a> and <a href=\"#table5\">5</a> suggests a performance advantage favouring selection of CO (Min Proportion) over CO (Min Absolute), if such a choice has to be made.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "As mentioned above, the main use for these reweighting techniques is to get estimates for variables that were not on the Census. We should be able to get reasonable estimates for variables that are correlated with the benchmarked variables (margin-constrained variables). For this paper, we calculated estimates of housing stress, which are correlated with some of the benchmarked variables (Income and Housing costs). Estimates of housing stress supplied by the Australian Bureau of Statistics from Census data provide an independent source against which to compare our own estimates.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "A comparison of our various modelled estimates with those supplied by the ABS is presented in <a href=\"#table6\">Table 6</a> for the Australian Capital Territory and New South Wales. It can be seen that all the models produced reasonable estimates of proportions, with the GREGWT estimates coming closest to the actual ABS per cent figures.",
+                    "type": "paragraph"
+                },
+                {
+                    "assets": [
+                        {
+                            "caption": [
+                                {
+                                    "text": "<i>(GREGWT \u2018convergent\u2019 SLAs only)</i>",
+                                    "type": "paragraph"
+                                }
+                            ],
+                            "id": "table6",
+                            "label": "Table 6",
+                            "tables": [
+                                "<table>\n<thead>\n<tr>\n<th align=\"center\" colspan=\"5\">Number Unaffordable</th>\n</tr>\n<tr>\n<th>State</th>\n<th align=\"center\">ABS</th>\n<th align=\"center\">GREGWT</th>\n<th align=\"center\">CO (Min Proportion)</th>\n<th align=\"center\">CO (Min Absolute)</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>Australian Capital Territory</td>\n<td align=\"center\">5,526</td>\n<td align=\"center\">6,147</td>\n<td align=\"center\">5,924</td>\n<td align=\"center\">5,821</td>\n</tr>\n<tr>\n<td>New South Wales</td>\n<td align=\"center\">169,823</td>\n<td align=\"center\">194,394</td>\n<td align=\"center\">191,720</td>\n<td align=\"center\">189,269</td>\n</tr>\n<tr>\n<td>Total</td>\n<td align=\"center\">175,349</td>\n<td align=\"center\">200,541</td>\n<td align=\"center\">197,644</td>\n<td align=\"center\">195,090</td>\n</tr>\n<tr>\n<td align=\"center\" colspan=\"5\">% <b>Unaffordable</b></td>\n</tr>\n<tr>\n<td>Australian Capital Territory</td>\n<td align=\"center\">5.9</td>\n<td align=\"center\">5.9</td>\n<td align=\"center\">5.7</td>\n<td align=\"center\">5.6</td>\n</tr>\n<tr>\n<td>New South Wales</td>\n<td align=\"center\">9.1</td>\n<td align=\"center\">9.2</td>\n<td align=\"center\">9.1</td>\n<td align=\"center\">8.9</td>\n</tr>\n<tr>\n<td>Combined</td>\n<td align=\"center\">9.0</td>\n<td align=\"center\">9.0</td>\n<td align=\"center\">8.9</td>\n<td align=\"center\">8.8</td>\n</tr>\n</tbody>\n</table>"
+                            ],
+                            "title": "Results for housing stress, Australian Capital Territory and New South Wales.",
+                            "type": "table"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "text": "In terms of the number of people in housing stress, <a href=\"#table6\">Table 6</a> appears to suggest that neither GREGWT nor CO estimate absolute numbers all that well. However, in considering <a href=\"#table6\">Table 6</a> it should be borne in mind that the population base for the independent ABS housing stress estimates includes only households providing full returns on income and housing costs via their Census form. In contrast, the GREGWT and CO estimates have been weighted to fit benchmarks in which non-response households have been included via pro rating (see <a href=\"#s3\">Section 3</a>). Given that pro rating should more or less preserve the proportional distribution of households by income and housing cost, and given that the CO and GREGWT estimates closely replicate ABS estimates of the proportion of households in housing stress, it could in fact be argued that it is actually the ABS absolute estimates that are out of line. In any case, it is certainly true that GREGWT and CO outputs do need to be recognised as modelled estimates. As such, estimated proportions are more likely to be accurate than estimated levels \u2013 and so results are best presented as proportions or grouped into quantiles.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Another way of looking at these results is to look at the correlation between the different methods for each SLA in the area. In many recent papers on spatial microsimulation, this has been done using the Standard Error around Identity (SEI) (<a href=\"#bib4\">Ballas <i>et al</i>., 2007</a>; <a href=\"#bib13\">Edwards &amp; Tanton, 2013</a>). The advantage of the SEI is that it provides a precise measure of the accuracy of the modelled estimates around reliable small area estimates.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "In this work, we have used a correlation coefficient rather than the SEI. The reason for this was twofold. The first was that the SEI assumes a slope of 1. In all three of the estimate comparisons made here (<a href=\"#fig1\">Figures 1</a>\u2013<a href=\"#fig3\">3</a>), the slope is less than 1. This means that the CO and GREGWT estimates are typically higher than the ABS estimates for low levels of housing stress; and vice versa for high levels of housing stress. The second was that the SEI assumes an intercept of 0. In all three graphs, the intercept is not 0, suggesting a consistent bias in our results that the SEI would treat as error.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "This means there is some obvious bias in our estimates, and in these cases the coefficient of determination (R2) may be a better estimate of the accuracy of the estimates, because of the enforced 0 intercept and slope of 1 for the SEI. Recent work by <a href=\"#bib38\">Vidyattama <i>et al</i>. (2013)</a> used both the R2 and the SEI to show up a slight bias in their estimates due to the different datasets used in the spatial microsimulation process.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The graphs below (<a href=\"#fig1\">Figures 1</a>\u2013<a href=\"#fig3\">3</a>) show the correlations between the ABS estimate and the different estimation methods we have used for all convergent SLAs in the Australian Capital Territory and New South Wales. It can be seen that the correlations are all very high (0.86 \u2013 0.89). The highest correlation (and therefore lowest error) is from using the CO-Min Proportion model. Clearly the ranking of the three model estimates depends upon the precise measure used. But overall all three approaches appear to have done a good job of estimating the unknown three-way interaction between income and tenure-specific housing cost, from which the final estimate of housing stress is derived.",
+                    "type": "paragraph"
+                },
+                {
+                    "assets": [
+                        {
+                            "caption": [
+                                {
+                                    "text": "<i>Note</i>: GREGWT (GREGWT convergent SLAs).",
+                                    "type": "paragraph"
+                                }
+                            ],
+                            "id": "fig1",
+                            "image": {
+                                "alt": "",
+                                "uri": "%iiif_uri%/00094%2Fijm-00094-fig1.tif",
+                                "size": {
+                                    "width": 849,
+                                    "height": 573
+                                },
+                                "source": {
+                                    "mediaType": "image/jpeg",
+                                    "uri": "%iiif_uri%/00094%2Fijm-00094-fig1.tif/full/full/0/default.jpg",
+                                    "filename": "ijm-00094-fig1.jpg"
+                                }
+                            },
+                            "label": "Figure 1",
+                            "title": "SLA level housing stress estimates (%).",
+                            "type": "image"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "assets": [
+                        {
+                            "caption": [
+                                {
+                                    "text": "<i>Note</i>: CO-Min Proportion (GREGWT convergent SLAs).",
+                                    "type": "paragraph"
+                                }
+                            ],
+                            "id": "fig2",
+                            "image": {
+                                "alt": "",
+                                "uri": "%iiif_uri%/00094%2Fijm-00094-fig2.tif",
+                                "size": {
+                                    "width": 850,
+                                    "height": 575
+                                },
+                                "source": {
+                                    "mediaType": "image/jpeg",
+                                    "uri": "%iiif_uri%/00094%2Fijm-00094-fig2.tif/full/full/0/default.jpg",
+                                    "filename": "ijm-00094-fig2.jpg"
+                                }
+                            },
+                            "label": "Figure 2",
+                            "title": "SLA level housing stress estimates (%).",
+                            "type": "image"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "assets": [
+                        {
+                            "caption": [
+                                {
+                                    "text": "<i>Note</i>: (GREGWT convergent SLAs).",
+                                    "type": "paragraph"
+                                }
+                            ],
+                            "id": "fig3",
+                            "image": {
+                                "alt": "",
+                                "uri": "%iiif_uri%/00094%2Fijm-00094-fig3.tif",
+                                "size": {
+                                    "width": 849,
+                                    "height": 576
+                                },
+                                "source": {
+                                    "mediaType": "image/jpeg",
+                                    "uri": "%iiif_uri%/00094%2Fijm-00094-fig3.tif/full/full/0/default.jpg",
+                                    "filename": "ijm-00094-fig3.jpg"
+                                }
+                            },
+                            "label": "Figure 3",
+                            "title": "SLA level housing stress estimates (%): CO-Min Absolute.",
+                            "type": "image"
+                        }
+                    ],
+                    "type": "figure"
+                }
+            ],
+            "id": "s4",
+            "title": "4. Results from each method",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "While <a href=\"#s4\">Section 4</a> has shown that the results from estimating different variables using these two methods are similar, the weights derived by each method are quite different. The CO routine derives integer weights \u2013 whereas the GREGWT routine doesn\u2019t. We also expect more zero weights from the CO routine than we get using GREGWT. This section looks at the distribution of these weights.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The number of weights derived by each routine is massive. There are 6,892 households on our survey file that we derive weights for. In the Australian Capital Territory, there are 107 SLAs. So in the dataset of weights for the Australian Capital Territory, there are a total of about 740,000 weights calculated. For New South Wales, with 199 areas, there are about 1.4 million weights calculated.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "<a href=\"#table7\">Table 7</a> shows the size distribution of the weights from CO and GREGWT. The CO routine only uses integer weights, so if there are fewer households in an SLA than in a survey, there will inevitably be survey households with a weight of 0. In contrast, GREGWT shares out the weights in small fractions across a large number of households. It can be seen, therefore, that the CO routine produces many more 0 weights than GREGWT.",
+                    "type": "paragraph"
+                },
+                {
+                    "assets": [
+                        {
+                            "caption": [
+                                {
+                                    "text": "<i>(Table legend)</i>",
+                                    "type": "paragraph"
+                                }
+                            ],
+                            "footnotes": [
+                                {
+                                    "id": "tfn7_1",
+                                    "label": "a",
+                                    "text": [
+                                        {
+                                            "text": "For &gt; 0 \u2013 1, the CO value is 1.",
+                                            "type": "paragraph"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "id": "table7",
+                            "label": "Table 7",
+                            "tables": [
+                                "<table>\n<thead>\n<tr>\n<th>Method</th>\n<th align=\"center\" colspan=\"3\">Australian Capital Territory</th>\n<th align=\"center\" colspan=\"3\">New South Wales</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td/>\n<td align=\"center\">0</td>\n<td align=\"center\">&gt; 0 \u2013 1<sup><a href=\"#tfn7_1\">a</a></sup></td>\n<td align=\"center\">&gt; 1</td>\n<td align=\"center\">0</td>\n<td align=\"center\">&gt; 0 \u2013 1<sup><a href=\"#tfn7_1\">a</a></sup></td>\n<td align=\"center\">&gt; 1</td>\n</tr>\n<tr>\n<td/>\n<td align=\"center\">%</td>\n<td align=\"center\">%</td>\n<td align=\"center\">%</td>\n<td align=\"center\">%</td>\n<td align=\"center\">%</td>\n<td align=\"center\">%</td>\n</tr>\n<tr>\n<td>CO</td>\n<td align=\"center\">95</td>\n<td align=\"center\">3</td>\n<td align=\"center\">1</td>\n<td align=\"center\">79</td>\n<td align=\"center\">8</td>\n<td align=\"center\">13</td>\n</tr>\n<tr>\n<td>GREGWT</td>\n<td align=\"center\">53</td>\n<td align=\"center\">47</td>\n<td align=\"center\">1</td>\n<td align=\"center\">36</td>\n<td align=\"center\">48</td>\n<td align=\"center\">16</td>\n</tr>\n</tbody>\n</table>"
+                            ],
+                            "title": "Size of weights from CO and GREGWT.",
+                            "type": "table"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "text": "This also means that the CO routine is relying on fewer households to calculate the values of housing stress in the previous example. The GREGWT routine will use more households, with lower weights. The distribution of the weights from GREGWT for the Australian Capital Territory and New South Wales is shown in <a href=\"#fig4\">Figure 4</a> and <a href=\"#fig5\">Figure 5</a>. Both these frequency distributions have class boundaries increasing by 0.01 until the value of one is reached, and the final category is weights greater than one. It can be seen that most of the weights in the Australian Capital Territory are below one (99 per cent of them, according to <a href=\"#table7\">Table 7</a>); in New South Wales, about 15 per cent are above one, but of these, half of them are under 2.",
+                    "type": "paragraph"
+                },
+                {
+                    "assets": [
+                        {
+                            "id": "fig4",
+                            "image": {
+                                "alt": "",
+                                "uri": "%iiif_uri%/00094%2Fijm-00094-fig4.tif",
+                                "size": {
+                                    "width": 851,
+                                    "height": 634
+                                },
+                                "source": {
+                                    "mediaType": "image/jpeg",
+                                    "uri": "%iiif_uri%/00094%2Fijm-00094-fig4.tif/full/full/0/default.jpg",
+                                    "filename": "ijm-00094-fig4.jpg"
+                                }
+                            },
+                            "label": "Figure 4",
+                            "title": "Distribution of GREGWT weights for NSW.",
+                            "type": "image"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "assets": [
+                        {
+                            "id": "fig5",
+                            "image": {
+                                "alt": "",
+                                "uri": "%iiif_uri%/00094%2Fijm-00094-fig5.tif",
+                                "size": {
+                                    "width": 852,
+                                    "height": 589
+                                },
+                                "source": {
+                                    "mediaType": "image/jpeg",
+                                    "uri": "%iiif_uri%/00094%2Fijm-00094-fig5.tif/full/full/0/default.jpg",
+                                    "filename": "ijm-00094-fig5.jpg"
+                                }
+                            },
+                            "label": "Figure 5",
+                            "title": "Distribution of GREGWT weights for the Australian Capital Territory.",
+                            "type": "image"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "text": "Frequency distributions have not been shown for the CO routine, as 95 per cent of the weights are 0 for each State, so the frequency distributions are dominated by this.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The other interesting statistic to look at with the weights is the maximum and average weights. For the GREGWT routine, non-convergence can lead to weights that are ridiculously large (in the order of 100,000 or more). Those areas where non-convergence occurs are usually less populous areas in the Northern Territory and West Australia, or industrial areas in cities where few people live. This is the case in the ACT and NSW.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "One solution to the convergence issue is to reduce the number of benchmarks, or aggregate the benchmarks differently. Reducing the number of benchmarks is now standard in the SpatialMSM model to derive estimates for more areas, but this also affects the accuracy of the estimates, as with fewer benchmarks the estimates become less accurate against the benchmarked Census data. To enable consistency across all our areas estimated using SpatialMSM, we have not reduced the number of benchmarks or aggregated them differently in this analysis.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Excluding SLAs for which GREGWT produced non-convergent estimates, the maximum and average weights produced by GREGWT and CO are shown in <a href=\"#table8\">Table 8</a>. It can be seen that the CO routine produces a higher maximum for the Australian Capital Territory \u2013 but GREGWT produces a higher maximum for New South Wales.",
+                    "type": "paragraph"
+                },
+                {
+                    "assets": [
+                        {
+                            "caption": [
+                                {
+                                    "text": "<i>Note</i>: GREGWT convergent SLAs only.",
+                                    "type": "paragraph"
+                                }
+                            ],
+                            "id": "table8",
+                            "label": "Table 8",
+                            "tables": [
+                                "<table>\n<thead>\n<tr>\n<th/>\n<th align=\"center\" colspan=\"2\">Maximum</th>\n<th align=\"center\" colspan=\"2\">Average non-zero value</th>\n</tr>\n<tr>\n<th>Method</th>\n<th align=\"center\">New South Wales</th>\n<th align=\"center\">Australian Capital Territory</th>\n<th align=\"center\">New South Wales Average</th>\n<th align=\"center\">Australian Capital Territory Average</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>CO (Min Proportion)</td>\n<td align=\"center\">443</td>\n<td align=\"center\">24</td>\n<td align=\"center\">3.49</td>\n<td align=\"center\">1.45</td>\n</tr>\n<tr>\n<td>GREGWT</td>\n<td align=\"center\">647</td>\n<td align=\"center\">18</td>\n<td align=\"center\">1.11</td>\n<td align=\"center\">0.15</td>\n</tr>\n</tbody>\n</table>"
+                            ],
+                            "title": "Weights for GREGWT and CO.",
+                            "type": "table"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "text": "The average values shown in <a href=\"#table8\">Table 8</a> are calculated without zeroes, as there are so many in each procedure that they dominate an average. The values in <a href=\"#table8\">Table 8</a> show that the CO routine calculates higher weights on average than the GREGWT routine for both New South Wales and the Australian Capital Territory. This is to be expected, given the number of zero weights calculated by the CO routine. To get to the same population in an area, the positive weights must be higher in the CO routine than the GREGWT routine, which has fewer zero weights.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "This section has shown that even though the weights from the CO and GREGWT algorithm give similar results when calculating variables like housing stress, they are actually very different. The CO routine tends to include fewer households, but give them higher weights \u2014 while the GREGWT routine will select more households to represent an SLA, but will give them smaller weights.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s5",
+            "title": "5. Further analysis of the weights derived by CO and GREGWT",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "The GREGWT algorithm has been shown to be capable of producing good results, but 14% of the total number of SLAs did not converge. These areas are industrial areas and remote areas in the ACT and NSW, and are usually less populous areas. Only 4.5% of the ACT population were in non-converging areas, and 4.6% of the NSW population.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The GREGWT algorithm also takes a long time to run compared to CO, particularly when estimating a large number of areas. It is unknown whether this is due to the programming language being used for each algorithm (CO uses a compiled FORTRAN code, whereas GREGWT is a macro running in SAS) or whether this reflects the relative efficiencies of the underlying algorithms.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Head-to-head, when results are compared for those SLAs for which GREGWT converged, the fit to benchmarks and estimates of housing stress produced by GREGWT and CO (Min Proportion) are broadly comparable. On balance, however, the CO Min Proportion model is perhaps slightly to be favoured. It has a better proportional fit to benchmarks (<a href=\"#table4\">Table 4</a>), the lowest error when estimating each SLA\u2019s value (<a href=\"#fig2\">Figure 2</a>), and produces reasonable estimates when the SLA values were aggregated to State (see <a href=\"#table6\">Table 6</a>). In addition, for those SLAs for which GREGWT produces no usable estimate, CO (Min Proportion) appears to continue to produce estimates of reasonable quality. CO (Min Absolute) competes slightly less well head to head with GREGWT, and in almost all circumstances produces estimates of at least marginally lesser quality than those offered by CO (Min Proportion).",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s6",
+            "title": "6. Conclusions",
+            "type": "section"
+        }
+    ],
+    "references": [
+        {
+            "authors": [
+                {
+                    "name": "ABS",
+                    "type": "group"
+                }
+            ],
+            "bookTitle": "Small area estimates of Disability in Australia",
+            "date": "2005",
+            "doi": "1351.0.55.006",
+            "id": "bib1",
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "Canberra"
+                        ]
+                    },
+                    "formatted": [
+                        "Canberra"
+                    ]
+                },
+                "name": [
+                    "ABS"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "authors": [
+                {
+                    "name": "ABS",
+                    "type": "group"
+                }
+            ],
+            "date": "2006",
+            "details": "A guide to small area estimation - Version 1.0, http://www.nss.gov.au/nss/home.NSF/533222ebfd5ac03aca25711000044c9e/3a60738d0abd f98cca2571ab00242664/$FILE/May%2006.pdf, accessed 19 May 2014",
+            "id": "bib1a",
+            "title": "A guide to small area estimation - Version 1.0",
+            "type": "unknown",
+            "uri": "http://www.nss.gov.au/nss/home.NSF/533222ebfd5ac03aca25711000044c9e/3a60738d0abd f98cca2571ab00242664/$FILE/May%2006.pdf"
+        },
+        {
+            "authors": [
+                {
+                    "name": "ABS",
+                    "type": "group"
+                }
+            ],
+            "date": "2012",
+            "details": "2009\u201310, Time series, 5673.0.55.003, ABS, Canberra",
+            "id": "bib1b",
+            "title": "Time series",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": "ABS",
+                    "type": "group"
+                }
+            ],
+            "bookTitle": "Small Area Estimation with Simulated Samples from the Population Census. Cat # 1352.0.55.106",
+            "date": "2011",
+            "id": "bib2",
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "Canberra"
+                        ]
+                    },
+                    "formatted": [
+                        "Canberra"
+                    ]
+                },
+                "name": [
+                    "ABS"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "accessed": "2014-02-21",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Anderson, B",
+                        "preferred": "B Anderson"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2007",
+            "id": "bib3",
+            "title": "Creating Small-Area Income Estimates: Spatial Microsimulation Modelling",
+            "type": "web",
+            "uri": "http://www.communities.gov.uk/documents/communities/pdf/325286.pdf",
+            "website": "UK Department of Communities"
+        },
+        {
+            "articleTitle": "Using SimBritain to Model the Geographical Impact of National Government Policies",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Ballas, Clarke",
+                        "preferred": "Clarke Ballas"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Dorling",
+                        "preferred": "Dorling"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Rossiter",
+                        "preferred": "Rossiter"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2007",
+            "id": "bib4",
+            "journal": "Geographical Analysis",
+            "pages": {
+                "first": "44",
+                "last": "77",
+                "range": "44\u201377"
+            },
+            "type": "journal",
+            "volume": "39"
+        },
+        {
+            "articleTitle": "Methodology used for producing ONS\u2019s small area population estimates",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Bates, A",
+                        "preferred": "A Bates"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2006",
+            "id": "bib5",
+            "journal": "Population Trends",
+            "pages": {
+                "first": "30",
+                "last": "36",
+                "range": "30\u201336"
+            },
+            "type": "journal",
+            "volume": "125"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Bell, P",
+                        "preferred": "P Bell"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "GREGWT and TABLE macros - Users guide",
+            "date": "2000",
+            "id": "bib6",
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "Canberra"
+                        ]
+                    },
+                    "formatted": [
+                        "Canberra"
+                    ]
+                },
+                "name": [
+                    "ABS, Unpublished"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Bond, S",
+                        "preferred": "S Bond"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Campos, C",
+                        "preferred": "C Campos"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "\u2018Understanding income at small area level\u2019, Regional Trends 42: 2010 edition",
+            "date": "2010",
+            "id": "bib7",
+            "pages": {
+                "first": "80",
+                "last": "94",
+                "range": "80\u201394"
+            },
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "London"
+                        ]
+                    },
+                    "formatted": [
+                        "London"
+                    ]
+                },
+                "name": [
+                    "Office for National Statistics"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Cassells, R",
+                        "preferred": "R Cassells"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Harding, A",
+                        "preferred": "A Harding"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Miranti, R",
+                        "preferred": "R Miranti"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Tanton, R",
+                        "preferred": "R Tanton"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Mcnamara, J",
+                        "preferred": "J Mcnamara"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2010",
+            "details": "Spatial Microsimulation\u202f: Preparation of Sample Survey and Census Data for SpatialMSM / 08 and SpatialMSM/09. NATSEM Technical Paper 36, NATSEM",
+            "id": "bib8",
+            "title": "Spatial Microsimulation\u202f: Preparation of Sample Survey and Census Data for SpatialMSM / 08 and SpatialMSM/09. NATSEM Technical Paper 36, NATSEM",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Cassells, R",
+                        "preferred": "R Cassells"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Miranti, R",
+                        "preferred": "R Miranti"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Harding, A",
+                        "preferred": "A Harding"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "Spatial Microsimulation: A Reference Guide for Users",
+            "chapterTitle": "Building a static spatial microsimulation model: Data preparation",
+            "date": "2013",
+            "editors": [
+                {
+                    "name": {
+                        "index": "Tanton, R",
+                        "preferred": "R Tanton"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Edwards, K",
+                        "preferred": "K Edwards"
+                    },
+                    "type": "person"
+                }
+            ],
+            "id": "bib9",
+            "pages": {
+                "first": "87",
+                "last": "103",
+                "range": "87\u2013103"
+            },
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "Netherlands"
+                        ]
+                    },
+                    "formatted": [
+                        "Netherlands"
+                    ]
+                },
+                "name": [
+                    "Springer"
+                ]
+            },
+            "type": "book-chapter"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Chin, S-F",
+                        "preferred": "S-F Chin"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Harding, A",
+                        "preferred": "A Harding"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Bill, A",
+                        "preferred": "A Bill"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2006",
+            "details": "Regional dimensions: Preparation of 1998-99 HES for reweighting to small area benchmarks. Technical Paper 34, NATSEM",
+            "id": "bib10",
+            "title": "Regional dimensions: Preparation of 1998-99 HES for reweighting to small area benchmarks. Technical Paper 34, NATSEM",
+            "type": "unknown"
+        },
+        {
+            "articleTitle": "Estimating Small Area Demand for Water: A New Methodology",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Clarke, G",
+                        "preferred": "G Clarke"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Kashti, A",
+                        "preferred": "A Kashti"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "McDonald, A",
+                        "preferred": "A McDonald"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Williamson, P",
+                        "preferred": "P Williamson"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1997",
+            "id": "bib11",
+            "journal": "Water and Environment Journal",
+            "pages": {
+                "first": "186",
+                "last": "192",
+                "range": "186\u2013192"
+            },
+            "type": "journal",
+            "volume": "11"
+        },
+        {
+            "authors": [
+                {
+                    "name": "Commonwealth Department of Employment and Workplace Relations",
+                    "type": "group"
+                }
+            ],
+            "bookTitle": "Small Area Labour Markets",
+            "date": "2007",
+            "id": "bib12",
+            "publisher": {
+                "name": [
+                    "Commonwealth Government"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Edwards, and",
+                        "preferred": "and Edwards"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Tanton",
+                        "preferred": "Tanton"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "Spatial Microsimulation: A Reference Guide for Users",
+            "chapterTitle": "Validation of Spatial Microsimulation Models",
+            "date": "2013",
+            "editors": [
+                {
+                    "name": {
+                        "index": "Tanton",
+                        "preferred": "Tanton"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Edwards",
+                        "preferred": "Edwards"
+                    },
+                    "type": "person"
+                }
+            ],
+            "id": "bib13",
+            "pages": {
+                "first": "249",
+                "last": "258",
+                "range": "249\u2013258"
+            },
+            "publisher": {
+                "name": [
+                    "Springer"
+                ]
+            },
+            "type": "book-chapter"
+        },
+        {
+            "authors": [
+                {
+                    "name": "EURAREA",
+                    "type": "group"
+                }
+            ],
+            "date": "2005",
+            "details": "Project Reference Volume, The EURAREA Consortium",
+            "id": "bib14",
+            "title": "Enhancing Small Area Estimation Techniques to meet European Needs",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Harding, A",
+                        "preferred": "A Harding"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Lloyd, R",
+                        "preferred": "R Lloyd"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Bill, A",
+                        "preferred": "A Bill"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "King, A",
+                        "preferred": "A King"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "Assessing poverty and inequality at a detailed regional level: New advances in spatial microsimulation",
+            "date": "2006",
+            "id": "bib15",
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "Helsinki"
+                        ]
+                    },
+                    "formatted": [
+                        "Helsinki"
+                    ]
+                },
+                "name": [
+                    "United Nations University Press"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "articleTitle": "Demographic Change and the Needs-Based Planning of Government Services: Projecting Small Area Populations Using Spatial Microsimulation",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Harding, A",
+                        "preferred": "A Harding"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Vidyattama, Y",
+                        "preferred": "Y Vidyattama"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Tanton, R",
+                        "preferred": "R Tanton"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2011",
+            "id": "bib16",
+            "journal": "Journal of Population Research",
+            "pages": {
+                "first": "203",
+                "last": "224",
+                "range": "203\u2013224"
+            },
+            "type": "journal",
+            "volume": "28"
+        },
+        {
+            "articleTitle": "Creating Realistic Synthetic Populations at Varying Spatial Scales: A Comparative Critique of Population Synthesis Techniques",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Harland, K",
+                        "preferred": "K Harland"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Heppenstall, A",
+                        "preferred": "A Heppenstall"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Smith, D",
+                        "preferred": "D Smith"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Birkin, M",
+                        "preferred": "M Birkin"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2012",
+            "id": "bib17",
+            "journal": "Journal of Artificial Societies and Social Simulation",
+            "pages": {
+                "first": "1",
+                "last": "24",
+                "range": "1\u201324"
+            },
+            "type": "journal",
+            "volume": "15"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Heady, P",
+                        "preferred": "P Heady"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Clarke, P",
+                        "preferred": "P Clarke"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Brown, G",
+                        "preferred": "G Brown"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Ellis, K",
+                        "preferred": "K Ellis"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Heasman, D",
+                        "preferred": "D Heasman"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Hennell, S",
+                        "preferred": "S Hennell"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Longhurst, J",
+                        "preferred": "J Longhurst"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Mitchell, B",
+                        "preferred": "B Mitchell"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2003",
+            "details": "Model-Based Small Area Estimation Series No. 2 - Small Area Estimation Project Report, Office of National Statistics",
+            "id": "bib18",
+            "title": "Model-Based Small Area Estimation Series No. 2 - Small Area Estimation Project Report, Office of National Statistics",
+            "type": "unknown"
+        },
+        {
+            "articleTitle": "A Review of Current Methods to Generate Synthetic Spatial Microdata Using Reweighting and Future Directions",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Hermes, K",
+                        "preferred": "K Hermes"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Poulsen, M",
+                        "preferred": "M Poulsen"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2012",
+            "id": "bib19",
+            "journal": "Computers, Environment and Urban Systems",
+            "pages": {
+                "first": "281",
+                "last": "290",
+                "range": "281\u2013290"
+            },
+            "type": "journal",
+            "volume": "36"
+        },
+        {
+            "articleTitle": "A Spatial Micro-Simulation Analysis of Methane Emissions from Irish Agriculture",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Hynes, S",
+                        "preferred": "S Hynes"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "O\u2019Donoghue, C",
+                        "preferred": "C O\u2019Donoghue"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Morrissey, K",
+                        "preferred": "K Morrissey"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Clarke, G",
+                        "preferred": "G Clarke"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2009",
+            "id": "bib20",
+            "journal": "Ecological Complexity",
+            "pages": {
+                "first": "135",
+                "last": "146",
+                "range": "135\u2013146"
+            },
+            "type": "journal",
+            "volume": "6"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Kavroudakis, D",
+                        "preferred": "D Kavroudakis"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2013",
+            "details": "R Package, http://cran.r-project.org/web/packages/sms/index.html",
+            "id": "bib21",
+            "title": "sms: Spatial Microsimulation",
+            "type": "unknown",
+            "uri": "http://cran.r-project.org/web/packages/sms/index.html"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Lehtonen, R",
+                        "preferred": "R Lehtonen"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Veijanen, A",
+                        "preferred": "A Veijanen"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2009",
+            "details": "Design-based methods of estimation for domains and small areas, Handbook of statistics, 29, B, Sample surveys: theory, methods and inference, Elsevier",
+            "id": "bib22",
+            "title": "Design-based methods of estimation for domains and small areas",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Marshall, A",
+                        "preferred": "A Marshall"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2010",
+            "details": "ESDS Government, Economic and Social Data Service, University of Essex",
+            "id": "bib23",
+            "title": "ESDS Government, Economic and Social Data Service",
+            "type": "unknown"
+        },
+        {
+            "articleTitle": "Spatial Microsimulation Modelling: a Review of Applications and Methodological Choices",
+            "authors": [
+                {
+                    "name": {
+                        "index": "O\u2019Donoghue, C",
+                        "preferred": "C O\u2019Donoghue"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Morrissey, K",
+                        "preferred": "K Morrissey"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Lennon, J",
+                        "preferred": "J Lennon"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2014",
+            "id": "bib24",
+            "journal": "International Journal of Microsimulation",
+            "pages": {
+                "first": "26",
+                "last": "75",
+                "range": "26\u201375"
+            },
+            "type": "journal",
+            "volume": "7"
+        },
+        {
+            "articleTitle": "Small area estimation \u2013 new developments and directions",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Pfefferman, D",
+                        "preferred": "D Pfefferman"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2002",
+            "id": "bib25",
+            "journal": "International Statistical Review",
+            "pages": {
+                "first": "125",
+                "last": "143",
+                "range": "125\u2013143"
+            },
+            "type": "journal",
+            "volume": "70"
+        },
+        {
+            "articleTitle": "Housing Stress Today: Estimates for Statistical Local Areas in 2005",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Phillips, B",
+                        "preferred": "B Phillips"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Chin, SF",
+                        "preferred": "SF Chin"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Harding, A",
+                        "preferred": "A Harding"
+                    },
+                    "type": "person"
+                }
+            ],
+            "conference": {
+                "name": [
+                    "Paper given at Australian Consortium for Social and Political Research Incorporated Conference"
+                ]
+            },
+            "date": "2006",
+            "id": "bib26",
+            "pages": {
+                "first": "10",
+                "last": "13",
+                "range": "10\u201313"
+            },
+            "source": "Sydney",
+            "type": "conference-proceeding"
+        },
+        {
+            "articleTitle": "Techniques for the Estimation of Small Area Characteristics",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Purcell, N",
+                        "preferred": "N Purcell"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Linacre, S",
+                        "preferred": "S Linacre"
+                    },
+                    "type": "person"
+                }
+            ],
+            "conference": {
+                "name": [
+                    "Paper given at Third Australian Statistical Conference"
+                ]
+            },
+            "date": "1976",
+            "id": "bib27",
+            "type": "conference-proceeding"
+        },
+        {
+            "articleTitle": "Understanding calibration estimators in survey sampling",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Singh, A",
+                        "preferred": "A Singh"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Mohl, C",
+                        "preferred": "C Mohl"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1996",
+            "id": "bib28",
+            "journal": "Survey Methodology",
+            "pages": {
+                "first": "107",
+                "last": "115",
+                "range": "107\u2013115"
+            },
+            "type": "journal",
+            "volume": "22"
+        },
+        {
+            "articleTitle": "Spatial microsimulation as a method for estimating different poverty rates in Australia",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Tanton, R",
+                        "preferred": "R Tanton"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2011",
+            "id": "bib29",
+            "journal": "Population, Space and Place",
+            "pages": {
+                "first": "222",
+                "last": "235",
+                "range": "222\u2013235"
+            },
+            "type": "journal",
+            "volume": "17"
+        },
+        {
+            "articleTitle": "A Review of Spatial Microsimulation Methods",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Tanton, R",
+                        "preferred": "R Tanton"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2014",
+            "id": "bib30",
+            "journal": "International Journal of Microsimulation",
+            "pages": {
+                "first": "4",
+                "last": "25",
+                "range": "4\u201325"
+            },
+            "type": "journal",
+            "volume": "7"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Tanton, R",
+                        "preferred": "R Tanton"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Edwards, K L.",
+                        "preferred": "K L. Edwards"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "Spatial Microsimulation: A Reference Guide for Users, Understanding Population Trends and Processes",
+            "date": "2013",
+            "discriminator": "a",
+            "id": "bib31",
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "Netherlands"
+                        ]
+                    },
+                    "formatted": [
+                        "Netherlands"
+                    ]
+                },
+                "name": [
+                    "Springer"
+                ]
+            },
+            "type": "book",
+            "volume": "6"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Tanton, R",
+                        "preferred": "R Tanton"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Edwards, KL",
+                        "preferred": "KL Edwards"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "Spatial Microsimulation: A Reference Guide for Users",
+            "chapterTitle": "Introduction to Spatial Microsimulation: History, Methods and Applications",
+            "date": "2013",
+            "discriminator": "b",
+            "editors": [
+                {
+                    "name": {
+                        "index": "Tanton, R",
+                        "preferred": "R Tanton"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Edwards, K",
+                        "preferred": "K Edwards"
+                    },
+                    "type": "person"
+                }
+            ],
+            "id": "bib32",
+            "pages": {
+                "first": "3",
+                "last": "8",
+                "range": "3\u20138"
+            },
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "Netherlands"
+                        ]
+                    },
+                    "formatted": [
+                        "Netherlands"
+                    ]
+                },
+                "name": [
+                    "Springer"
+                ]
+            },
+            "type": "book-chapter"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Tanton, R",
+                        "preferred": "R Tanton"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Harding, A",
+                        "preferred": "A Harding"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "McNamara, J",
+                        "preferred": "J McNamara"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "Spatial Microsimulation: A Reference Guide for Users",
+            "chapterTitle": "Spatial Microsimulation Using a Generalised Regression Model",
+            "date": "2013",
+            "editors": [
+                {
+                    "name": {
+                        "index": "Tanton, R",
+                        "preferred": "R Tanton"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Edwards, K",
+                        "preferred": "K Edwards"
+                    },
+                    "type": "person"
+                }
+            ],
+            "id": "bib33",
+            "pages": {
+                "first": "87",
+                "last": "103",
+                "range": "87\u2013103"
+            },
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "Netherlands"
+                        ]
+                    },
+                    "formatted": [
+                        "Netherlands"
+                    ]
+                },
+                "name": [
+                    "Springer"
+                ]
+            },
+            "type": "book-chapter"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Tanton, R",
+                        "preferred": "R Tanton"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "McNamara, J",
+                        "preferred": "J McNamara"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Harding, A",
+                        "preferred": "A Harding"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Morrison, T",
+                        "preferred": "T Morrison"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "New Frontiers in Microsimulation Modelling",
+            "chapterTitle": "Small Area Poverty Estimates for Australia\u2019s Eastern Seaboard in 2006",
+            "date": "2009",
+            "editors": [
+                {
+                    "name": {
+                        "index": "Harding, A",
+                        "preferred": "A Harding"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Zaidi, A",
+                        "preferred": "A Zaidi"
+                    },
+                    "type": "person"
+                }
+            ],
+            "id": "bib34",
+            "pages": {
+                "first": "79",
+                "last": "97",
+                "range": "79\u201397"
+            },
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "Vienna, Austria"
+                        ]
+                    },
+                    "formatted": [
+                        "Vienna, Austria"
+                    ]
+                },
+                "name": [
+                    "Ashgate"
+                ]
+            },
+            "type": "book-chapter"
+        },
+        {
+            "articleTitle": "Old, Single and Poor: Using Microsimulation and Microdata to Analyse Poverty and the Impact of Policy Change among Older Australians",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Tanton, R",
+                        "preferred": "R Tanton"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Vidyattama, Y",
+                        "preferred": "Y Vidyattama"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "McNamara, J",
+                        "preferred": "J McNamara"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Vu, Q",
+                        "preferred": "Q Vu"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Harding, A",
+                        "preferred": "A Harding"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2009",
+            "id": "bib35",
+            "journal": "Economic Papers: A Journal of Applied Economics and Policy",
+            "pages": {
+                "first": "102",
+                "last": "120",
+                "range": "102\u2013120"
+            },
+            "type": "journal",
+            "volume": "28"
+        },
+        {
+            "articleTitle": "Small area estimation using a reweighting algorithm",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Tanton, R",
+                        "preferred": "R Tanton"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Vidyattama, Y",
+                        "preferred": "Y Vidyattama"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Nepal, B",
+                        "preferred": "B Nepal"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "McNamara, J",
+                        "preferred": "J McNamara"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2011",
+            "id": "bib36",
+            "journal": "Journal of the Royal Statistical Society: Series A (Statistics in Society",
+            "pages": {
+                "first": "931",
+                "last": "951",
+                "range": "931\u2013951"
+            },
+            "type": "journal",
+            "volume": "174"
+        },
+        {
+            "accessed": "2001-08-03",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Tanton, R",
+                        "preferred": "R Tanton"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Jones, R",
+                        "preferred": "R Jones"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Lubulwa, G",
+                        "preferred": "G Lubulwa"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2001",
+            "id": "bib37",
+            "title": "Analyses of the 1998 Australian National Crime and Safety Survey",
+            "type": "web",
+            "website": "Paper given at The Character, Impact and Prevention of Crime in Regional Australia, Townsville"
+        },
+        {
+            "articleTitle": "The Challenges of Combining Two Databases in Small-Area Estimation: An Example Using Spatial Microsimulation of Child Poverty",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Vidyattama, Y",
+                        "preferred": "Y Vidyattama"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "McNamara, J",
+                        "preferred": "J McNamara"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Miranti, R",
+                        "preferred": "R Miranti"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Tanton, R",
+                        "preferred": "R Tanton"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Harding, A",
+                        "preferred": "A Harding"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2013",
+            "id": "bib38",
+            "journal": "Environment and Planning A",
+            "pages": {
+                "first": "344",
+                "last": "361",
+                "range": "344\u2013361"
+            },
+            "type": "journal",
+            "volume": "45"
+        },
+        {
+            "articleTitle": "Evaluating goodness-of-fit measures for synthetic microdata",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Voas, D",
+                        "preferred": "D Voas"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Williamson, P",
+                        "preferred": "P Williamson"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2001",
+            "id": "bib39",
+            "journal": "Geographical and Environmental Modelling",
+            "pages": {
+                "first": "177",
+                "last": "200",
+                "range": "177\u2013200"
+            },
+            "type": "journal",
+            "volume": "5"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Williamson, P",
+                        "preferred": "P Williamson"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2007",
+            "id": "bib40",
+            "publisher": {
+                "name": [
+                    "Population Micordata Unit, Dept. of Geography, University of Liverpool"
+                ]
+            },
+            "source": "CO Instruction Manual, Working Paper 2007/1",
+            "title": "CO Instruction Manual, Working Paper 2007/1",
+            "type": "report"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Williamson, P",
+                        "preferred": "P Williamson"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "Spatial Microsimulation: A Reference Guide for Users",
+            "chapterTitle": "An Evaluation of Two Synthetic Small-Area Microdata Simulation Methodologies: Synthetic Reconstruction and Combinatorial Optimisation",
+            "date": "2013",
+            "editors": [
+                {
+                    "name": {
+                        "index": "Tanton, R",
+                        "preferred": "R Tanton"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Edwards, K",
+                        "preferred": "K Edwards"
+                    },
+                    "type": "person"
+                }
+            ],
+            "id": "bib41",
+            "pages": {
+                "first": "19",
+                "last": "47",
+                "range": "19\u201347"
+            },
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "Netherlands"
+                        ]
+                    },
+                    "formatted": [
+                        "Netherlands"
+                    ]
+                },
+                "name": [
+                    "Springer"
+                ]
+            },
+            "type": "book-chapter"
+        },
+        {
+            "articleTitle": "The estimation of population microdata by using data from small area statistics and samples of anonymised records",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Williamson, P",
+                        "preferred": "P Williamson"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Birkin, M",
+                        "preferred": "M Birkin"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Rees, P",
+                        "preferred": "P Rees"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1998",
+            "id": "bib42",
+            "journal": "Environment and Planning A",
+            "pages": {
+                "first": "785",
+                "last": "816",
+                "range": "785\u2013816"
+            },
+            "type": "journal",
+            "volume": "30"
+        },
+        {
+            "articleTitle": "Domestic Water Demand Forecasting: A Static Microsimulation Approach",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Williamson, P",
+                        "preferred": "P Williamson"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Mitchell, G",
+                        "preferred": "G Mitchell"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "McDonald, A",
+                        "preferred": "A McDonald"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2002",
+            "id": "bib43",
+            "journal": "Water and Environment Journal",
+            "pages": {
+                "first": "243",
+                "last": "248",
+                "range": "243\u2013248"
+            },
+            "type": "journal",
+            "volume": "16"
+        }
+    ],
+    "acknowledgements": [
+        {
+            "text": "This research was supported by the Australian Research Council\u2019s Linkage Projects funding scheme (project number LP0775396: Regional Dimensions: The Spatial Implications of Population Ageing and Needs-Based Planning of Government Services)",
+            "type": "paragraph"
+        }
+    ],
+    "-meta": {
+        "patched": true
+    },
+    "stage": "published"
+}
