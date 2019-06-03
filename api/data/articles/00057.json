@@ -1,0 +1,1673 @@
+{
+    "status": "vor",
+    "id": "00057",
+    "version": 1,
+    "type": "research-article",
+    "doi": "10.34196/ijm.00057",
+    "authorLine": "Sharyn Lymer et al.",
+    "title": "Challenges and solutions in constructing a microsimulation model of the use and costs of medical services in Australia",
+    "published": "2011-12-31T00:00:00Z",
+    "versionDate": "2011-12-31T00:00:00Z",
+    "statusDate": "2011-12-31T00:00:00Z",
+    "volume": 4,
+    "issue": 3,
+    "elocationId": "n/a",
+    "pdf": "http://web:8082/00057/ijm-00057.pdf",
+    "subjects": [
+        {
+            "id": "health",
+            "name": "Health"
+        }
+    ],
+    "abstract": {
+        "content": [
+            {
+                "text": "This paper describes the development of a microsimulation model \u2018HealthMod\u2019 which simulates the use and costs of medical and related services by Australian families. Australia has a universal social insurance scheme known as \u2018Medicare\u2019 which provides all Australians with access to free or low-cost essential medical services. These services are provided primarily by general practitioners as well as specialist doctors but also include diagnostic and imaging services. Individuals may pay a direct out-of pocket contribution if fees charged for services are higher than the reimbursement schedule set by government. HealthMod is based on the Australian 2001 National Health Survey. This survey had a number of deficiencies in terms of modelling the national medical benefits scheme. The article outlines three major methodological steps that had to be taken in the model construction: the imputation of synthetic families, the imputation of short-term health conditions, and the annualisation of doctor visits and costs. Some preliminary results on the use of doctor services subsidised through Australia\u2019s Medicare are presented.",
+                "type": "paragraph"
+            }
+        ]
+    },
+    "copyright": {
+        "license": "CC-BY-4.0",
+        "holder": "Lymer et al.",
+        "statement": "This article is distributed under the terms of the <a href=\"http://creativecommons.org/licenses/by/4.0/\">Creative Commons Attribution License</a>, which permits unrestricted use and redistribution provided that the original author and source are credited."
+    },
+    "authors": [
+        {
+            "affiliations": [
+                {
+                    "address": {
+                        "components": {
+                            "country": "Australia"
+                        },
+                        "formatted": [
+                            "Australia"
+                        ]
+                    },
+                    "name": [
+                        "NATSEM",
+                        "University of Canberra"
+                    ]
+                }
+            ],
+            "emailAddresses": [
+                "Sharyn.Lymer@natsem.canberra.edu.au"
+            ],
+            "name": {
+                "index": "Lymer, Sharyn",
+                "preferred": "Sharyn Lymer"
+            },
+            "type": "person"
+        },
+        {
+            "affiliations": [
+                {
+                    "address": {
+                        "components": {
+                            "country": "Australia"
+                        },
+                        "formatted": [
+                            "Australia"
+                        ]
+                    },
+                    "name": [
+                        "NATSEM",
+                        "University of Canberra"
+                    ]
+                }
+            ],
+            "emailAddresses": [
+                "Laurie.Brown@natsem.canberra.edu.au"
+            ],
+            "name": {
+                "index": "Brown, Laurie",
+                "preferred": "Laurie Brown"
+            },
+            "type": "person"
+        },
+        {
+            "affiliations": [
+                {
+                    "address": {
+                        "components": {
+                            "country": "Australia"
+                        },
+                        "formatted": [
+                            "Australia"
+                        ]
+                    },
+                    "name": [
+                        "NATSEM",
+                        "University of Canberra"
+                    ]
+                }
+            ],
+            "emailAddresses": [
+                "Ann.Harding@natsem.canberra.edu.au"
+            ],
+            "name": {
+                "index": "Harding, Ann",
+                "preferred": "Ann Harding"
+            },
+            "type": "person"
+        },
+        {
+            "affiliations": [
+                {
+                    "address": {
+                        "components": {
+                            "country": "Australia"
+                        },
+                        "formatted": [
+                            "Australia"
+                        ]
+                    },
+                    "name": [
+                        "Department of Treasury, Langton Crescent"
+                    ]
+                }
+            ],
+            "emailAddresses": [
+                "Alicia.Payne@treasury.gov.au"
+            ],
+            "name": {
+                "index": "Payne, Alicia",
+                "preferred": "Alicia Payne"
+            },
+            "type": "person"
+        }
+    ],
+    "keywords": [
+        "economic microsimulation modelling",
+        "medical services",
+        "use and costs",
+        "Australia"
+    ],
+    "body": [
+        {
+            "content": [
+                {
+                    "text": "Like many developed countries, the Australian Government has concluded that the projected increase in health outlays \u2013 through population ageing, real increases in per capita expenditure and health inflation \u2013 over the next few decades is unaffordable (<a href=\"#bib15\">Commonwealth Department of Treasury 2002</a>, <a href=\"#bib16\">2007</a>, <a href=\"#bib17\">2010</a>). Over the past decade, the growth rate in total health expenditure has far outstripped growth in Australia\u2019s GDP (<a href=\"#bib6\">AIHW, 2007</a>). In 2005\u201306, government funding on medical services was $Aus12.2bn, representing 22.2 per cent of total government recurrent expenditure on health. This expenditure was matched by funding from non-government sources of $3.3bn. Between 1998\u201399 and 2008\u201309, the average annual real growth in total recurrent expenditure on medical services in Australia was 3.5 percent (AIHW, 2010). By 2006, the contribution of government funding to total expenditure on medical services had fallen below 80 percent (<a href=\"#bib6\">AIHW, 2007</a>).",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Australian policy makers are facing difficult decisions about health funding, not only in terms of the level of funding but also the balance between government and consumer contributions to health costs and about taxes which fund public health outlays. They do not currently have adequate modelling tools to assist them make informed decisions. This paper describes the initial stages of developing a microsimulation model \u2018HealthMod\u2019 which simulates the use and costs of medical and related services by Australian families. Australia has a universal social insurance scheme known as \u2018Medicare\u2019 which provides all Australians with access to free or low-cost essential medical services. These services are provided primarily by general practitioners (GPs) working in primary care but also by specialist doctors and include pathology, diagnostic and imaging services. HealthMod simulates the services listed on the Medicare Benefits Schedule (MBS). HealthMod has the capacity to assess the likely distributional impact of possible policy changes and their revenue or expenditure implications for Government as well as individuals and families.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "HealthMod is based on the Australian Bureau of Statistics (ABS) 2001 National Health Survey (2001 NHS). The 2001 NHS contains information about the health of Australians, including the presence of long-term health conditions, health risk factors and health service usage, along with a range of demographic and socio-economic information. However, the 2001 survey had a number of major deficiencies in terms of modelling Australia\u2019s Medicare scheme. So, whilst the 2001 NHS was chosen as the starting point for the basefile of HealthMod due to its rich health data, it was evident that supplementation of these data was required. This paper outlines three major methodological steps that had to be taken in the model\u2019s construction: the imputation of synthetic families; the imputation of short-term health conditions; and the annualisation of doctor visits and costs. Before these technical aspects of the modelling are discussed, brief overviews of Medicare, the NHS and approaches to statistical matching are provided in the next section as background. Some preliminary results on the use of doctor services and the benefits (payments) provided through Medicare are presented as validation of the model construction undertaken to date.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s1",
+            "title": "1. Introduction",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "content": [
+                        {
+                            "text": "Medicare is Australia\u2019s compulsory universal public health insurance scheme. It provides free or subsidised health care services to all Australians while allowing individuals to choose private health services if they wish. Australians contribute to the funding of Medicare via a 1.5% levy on the taxable income of wage and salary earners. This is a minimum contribution with additional surcharges for \u2018high\u2019 income earners who do not have private health insurance coverage. Medicare currently provides medical benefit payments covering part or all of the cost to the patient of out-of-hospital medical services. Approximately 85 per cent of all medical services provided to Australians are funded by Medicare. Such services include:",
+                            "type": "paragraph"
+                        },
+                        {
+                            "items": [
+                                [
+                                    {
+                                        "text": "visiting a general practitioner (GP) or specialist;",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "tests and examinations by doctors needed to treat illnesses, including X-rays and pathology tests;",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "eye tests performed by optometrists;",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "most surgical and other therapeutic procedures performed by doctors;",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "some surgical procedures performed by approved dentists;",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "some items associated with cleft lip and palate, as specified under a special scheme; and",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "some specified allied health services (<a href=\"#bib18\">Medicare Australia, 2006</a>; Department of Health and Ageing, 2006).",
+                                        "type": "paragraph"
+                                    }
+                                ]
+                            ],
+                            "prefix": "bullet",
+                            "type": "list"
+                        },
+                        {
+                            "text": "In Australia, payment for medical and related services is based on a \u2018fee for service\u2019 funding model. The benefits individuals and families receive through Medicare are determined from a schedule of fees for service (representing a price deemed as standard for a particular medical service) set by the Australian Commonwealth Government. These are indexed each year with Medicare usually paying the full schedule fee for GP services and 85 per cent of the schedule fee for other out-of-hospital services. However, the fee charged by doctors for their services is not regulated and doctors may choose to charge patients more than the schedule fee. The difference between the total charge and the schedule fee is known as the \u2018gap\u2019 and is an out-of-pocket cost to the patient. If the service is charged at the schedule fee then it is effectively free to the patient.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "\u2018Bulkbilling\u2019 is an important aspect of the Australian Medicare scheme. If a doctor bulk-bills then the doctor directly charges Medicare for the service provided and they accept the schedule fee as full payment. Thus, a bulkbilled service incurs no out-of-pocket cost to the patient. Sometimes doctors will offer bulk-billing only to patients who are holders of government concession cards -individuals and families eligible for certain federal government pensions and allowances, senior citizens or people on low incomes. Over 75 per cent of visits to general practitioners in Australia are bulk-billed, although these rates vary greatly across regions.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Another key aspect of Australia\u2019s Medicare scheme is the \u2018safety net\u2019. This is a MBS policy setting aimed at protecting individuals and families from high medical expenses incurred within a calendar year. If the safety net threshold is exceeded in a calendar year then the individual, or members of the family unit, start to receive additional rebates on any further services used.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "There are two threshold levels; a general level which was set at $Aus1000 at 1 January 2006; and a concession level at $Aus500 for which eligibility is based on a combination of income and family size (<a href=\"http://www.medicareaustralia.gov.au\">www.medicareaustralia.gov.au</a>). These are effective for both single persons and families.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "From a modelling perspective, the MBS payment arrangements of scheduled fees, out-of-pocket gap payments and bulk-billing, and the Medicare safety-net provisions were the key policy elements that had to be captured in the construction of HealthMod. The way these aspects of Medicare operated meant that the modelling of the use and costs of medical services not only had to be at the level of the individual but also by family units.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The number of medical and related services subsidised and benefits paid under Medicare for the 2005\u201306 financial year are given in <a href=\"#table1\">Table 1</a>. As shown, the Australian Government outlaid nearly $Aus11bn on 247 million services, with Australians averaging 12 MBS doctor or medical related services each in 2005\u201306 and receiving over $Aus530 each in benefits paid.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "footnotes": [
+                                        {
+                                            "text": [
+                                                {
+                                                    "text": "<i>Source</i>: Medicare Australia website @ <a href=\"http://www.medicareaustralia.gov.au\">www.medicareaustralia.gov.au</a>",
+                                                    "type": "paragraph"
+                                                }
+                                            ]
+                                        }
+                                    ],
+                                    "id": "table1",
+                                    "label": "Table 1",
+                                    "tables": [
+                                        "<table>\n<thead>\n<tr>\n<th>MBS Category</th>\n<th align=\"center\">No. Services (\u2018000,000)</th>\n<th align=\"center\">Benefit ($m)</th>\n<th align=\"center\">No. Services per 1,000 pop.</th>\n<th align=\"center\">Benefit ($) per 1,000 pop.</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>1 Professional Attendances</td>\n<td>1,260.5</td>\n<td>5,266.0</td>\n<td>6,118.3</td>\n<td>255,602.7</td>\n</tr>\n<tr>\n<td>2 Diagnostic Procedures and Investigations</td>\n<td>43.3</td>\n<td>251.2</td>\n<td>210.3</td>\n<td>12,190.9</td>\n</tr>\n<tr>\n<td>3 Therapeutic Procedures</td>\n<td>153.4</td>\n<td>1,790.6</td>\n<td>744.7</td>\n<td>86,914.5</td>\n</tr>\n<tr>\n<td>4 Oral and Maxillofacial Services (by Approved Dental Practitioners)</td>\n<td>0.7</td>\n<td>8.5</td>\n<td>3.6</td>\n<td>414.4</td>\n</tr>\n<tr>\n<td>5 Diagnostic Imaging Services</td>\n<td>149.2</td>\n<td>1,609.4</td>\n<td>724.3</td>\n<td>78,118.7</td>\n</tr>\n<tr>\n<td>6 Pathology Services</td>\n<td>828.9</td>\n<td>1,641.8</td>\n<td>4,023.3</td>\n<td>79,693.0</td>\n</tr>\n<tr>\n<td>7 Cleft Lip and Cleft Palate</td>\n<td>0.1</td>\n<td>1.3</td>\n<td>0.3</td>\n<td>61.9</td>\n</tr>\n<tr>\n<td>8 Miscellaneous Services</td>\n<td>37.5</td>\n<td>407.4</td>\n<td>181.9</td>\n<td>19,776.4</td>\n</tr>\n<tr>\n<td>Total</td>\n<td>2,473.7</td>\n<td>10,976.3</td>\n<td>12,006.9</td>\n<td>532,772.5</td>\n</tr>\n</tbody>\n</table>"
+                                    ],
+                                    "title": "Medicare subsidised medical services and benefits paid by MBS category (processed by Medicare Australia July 2005 to June 2006).",
+                                    "type": "table"
+                                }
+                            ],
+                            "type": "figure"
+                        }
+                    ],
+                    "id": "s2-1",
+                    "title": "2.1 Medicare \u2013 Australia\u2019s public health insurance scheme",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "The 2001 NHS was the third in a series of regular population surveys run by the ABS designed to obtain national benchmark information on a range of health-related issues and to enable the monitoring of trends in health over time (<a href=\"#bib3\">ABS, 2003</a>). Information was collected on the health status of Australians, their use of health services and facilities, and health-related aspects of their lifestyle as well as on a range of demographic and socio-economic information. This included details of long-term medical conditions experienced by respondents and consultations with health professionals among other items. While the 2001 NHS covered urban and rural areas across all States and Territories of Australia, sparsely settled areas were excluded from the sample and usual residents of private dwellings only were covered (<a href=\"#bib3\">ABS, 2003</a>). Overall, 26,863 persons from 17,918 private dwellings were included in the survey.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "However, while the 2001 NHS followed earlier surveys, it represented the first of a redesigned national health survey that was to be conducted every triennium rather than five yearly. Following wide consultation with Government and other key stakeholders, several major changes were made to the NHS. The most important with respect to the construction of HealthMod were changes in the survey coverage of household members and in health topics.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "In the 1989/90 and 1995 NHSs all persons in sampled dwellings were included in the surveys and only records from fully responding households were retained on the data files. This meant that results could be compiled at household, family and income unit level in addition to person level (<a href=\"#bib5\">ABS, 2004</a>). In the 2001 NHS, the sampling design changed to a random sub-sample of persons in selected dwellings, leading to incomplete enumeration of household members. Only one adult (18 years of age and older), one child aged 7 to 17 years, and all children aged 0 to 6 years were surveyed (<a href=\"#bib3\">ABS, 2003</a>). Complete enumeration only occurred in a minority of households, and by definition, only in single adult and single adult with young children households. The ABS argued that the 2001 approach enabled a greater spreading of the sample and reduced the effects of clustering of characteristics within households on final estimates (<a href=\"#bib5\">ABS, 2004</a>).",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "In terms of health topics, information about recent (short-term) illness, defined as requiring action in the two weeks prior to interview, also was not collected except in relation to persons with long term asthma or diabetes. Rather, data collected on health conditions focussed on long-term conditions, in particular Australia\u2019s national health priority areas (NHPAs). In 2001, Australia\u2019s NHPAs were cardiovascular disease, cancer, injury, mental health, diabetes, and arthritis and musculoskeletal conditions. These contributed most to the burden of illness in Australia, and were regarded as having potential to respond to policy (<a href=\"#bib4\">ABS, 2003a</a>). To enable the prevalence of all long-term conditions to be established, supplementary information was also collected on other long-term non-NHPA conditions. A long-term condition was defined as one reported by respondents as being a condition which they currently had and which had lasted or was expected to last for six months or more (<a href=\"#bib3\">ABS, 2003</a>). The <a href=\"#bib3\">ABS (2003)</a> reports that the health topics selected for inclusion in the 2001 NHS were those identified as being of highest priority and which could be appropriately addressed in an ABS household survey of this type. Overall, the ABS regarded the changes to the 2001 NHS design from that used previously better met the needs of key users, while maximising the reliability and validity of the data within cost and operational constraints (<a href=\"#bib4\">ABS, 2003a</a>).",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s2-2",
+                    "title": "2.2 Australia\u2019s national health surveys",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "As will be described shortly, the derivation of family structure in HealthMod was achieved through statistically matching records from two national surveys. Since this involves sample surveys (rather than administrative data or a census), the aim of the matching was to find the closest statistical match. Statistical matching is a procedure used to link two or more data files where each record from a file is matched with a record from a second file that generally does not represent the same unit, but does represent a similar unit. It is a method to bring together microdata that are not available from a single data source (<a href=\"#bib20\">Radner et al 1980</a>, <a href=\"#bib22\">Rodgers, 1984</a>; <a href=\"#bib13\">Cohen, 1991</a>; <a href=\"#bib19\">Moriarty &amp; Scheuren, 2001</a>; <a href=\"#bib21\">Rassler, 2002</a>). There are a number of processes available for statistically matching datasets and generating synthetic microdata. The method adopted in HealthMod was distance-based record linkage using the Mahalanobis distance function (McLachlan, 1999; Bedrick et al, 2000; <a href=\"#bib26\">Torra et al, 2006</a>). This is distinct from two other commonly used approaches of iterative proportional fitting (<a href=\"#bib7\">Ballas &amp; Clarke, 2000</a>; Simpson and Tanner, 2004) and simulating annealing (<a href=\"#bib8\">Ballas et al, 2004</a>; <a href=\"#bib9\">Ballas et al, 2007</a>).",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "A distance function is used to assess the similarity (or divergence) of any pair of records based on either a common variable X or multiple features Xi. If there are more than one X variable to be used in the matching then these variables must assume some weight i.e. importance in the Mahalanobis distance function. These weights can be assigned subjectively, or can come from a regression or factor analysis. The Mahalanobis distance function was used as it accounts for unequal variances as well as correlations between the common variables. It takes the different scales of the common variables into consideration by dividing the individual differences by the standard deviation of each variable. Without this adjustment, some variables may be penalized purely due to the scale of the variable and not its importance in the matching process. Better performance of the distance function occurs if the linking X variables chosen are continuous or ordinal variables.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Statistical matching using a distance function approach had been trialed previously in the National Centre for Social and Economic Modelling\u2019s (NATSEM) MediSim model of the Australian Pharmaceutical Benefits Scheme (<a href=\"#bib1\">Abello et al, 2008</a>; <a href=\"#bib12\">Brown et al, 2004</a>; <a href=\"#bib25\">ABS NATSEM Technical Working Group, 2004</a>). This performed well in the construction of synthetic family units (<a href=\"#bib1\">Abello et al, 2008</a>).",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s2-3",
+                    "title": "2.3 Statistical matching approach",
+                    "type": "section"
+                }
+            ],
+            "id": "s2",
+            "title": "2. Background",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "The 2001 NHS has a number of limitations as a base dataset for a microsimulation model following changes in the survey design relative to previous surveys. Three key problems and the methods designed to overcome them are discussed below. First, as indicated above, the 2001 survey only partially enumerates households. The ABS therefore recommends that any analysis of the 2001 file be undertaken at the person level only (<a href=\"#bib3\">ABS, 2003</a>). To model the different aspects of Medicare complete information about all family members, their combined health service use and their combined income/medical expenditure is required. Second, the survey has very limited coverage of recent illness. Analysis of the 1995 NHS indicates that around 70 per cent of general practitioner visits in Australia are prompted by short-term health problems. The lack of coverage of short-term illnesses is a major limitation since these conditions need to be adequately captured in the base file. Third, doctor usage is being modelled within HealthMod with health conditions as an explanatory variable. Hence, the annual picture of the presence of health conditions is also required. The 2001 NHS uses a two-week window for reporting the use of medical and related services. To model the impact of policy, such as the MBS safety net, an annual picture of doctor visits and use of other medical services such as diagnostic procedures, diagnostic imaging and pathology services is required. To address these issues, we produced an augmented dataset by creating synthetic families through statistical matching, imputing short-term conditions and annualising medical services covered under the MBS.",
+                    "type": "paragraph"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "In HealthMod, the records that were matched were from the basefile of NATSEM\u2019s static microsimulation model of the Australian tax and transfer system STINMOD/01a and the 2001 NHS. STINMOD/01a is an uprated version of the ABS 1998\u201399 Household Expenditure Survey (HES) and includes imputed records for children (the 1998\u201399 HES contained information about family structure but an individual questionnaire was only completed for each usual resident within the household aged 15 years and over) (<a href=\"#bib2\">ABS, 2000</a>). The HES-based STINMOD/01A contains around 18,000 person records and as previously stated the 2001 NHS around 27,000 person records.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "STINMOD/01A was used as the donor file. STINMOD/01A includes family structure information as well as income and expenditure (including amount spent on medical care and health expenses) and demographic data. The statistical matching of 2001 NHS and STINMOD/01A allows the retention of the health information available on 2001 NHS, whilst borrowing the family structure from the HES and theoretically adding detailed information about family income and health expenditure.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Differences in sample size among the different surveys is not an issue as weighted duplications of records may be created so that the sample sizes in both datasets are equal (<a href=\"#bib24\">Taylor, Gomulka &amp; Sutherland, 2000</a>). The main difficulty encountered is the choice of weights in the merged file. The weights in either the NHS or STINMOD/01A could be selected \u2014 but the risk is that the statistical distribution and parameters of the variables merged from the other survey are not maintained. If constrained statistical matching is used, then the goal is to try to maintain the marginal distributions of the non-matched variables by minimising the difference in the weights of the records in the merged file to those of the two original surveys (<a href=\"#bib13\">Cohen, 1991</a>).",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Statistical matching performs \u2015better\u2016 with the use of well-selected common variables between the two datasets. This was limited by the common variables available and the strength of the correlation between the common variables and unconstrained variables. Between the 2001 NHS and STINMOD/01A, the common variables available were mainly demographic and included age, sex, concessional cardholder status, labour force status, number of usual residents in household and equivalised income decile.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "However, statistical matching has an inherent assumption of conditional independence (CIA). It assumes that Y (e.g. the health variables on the NHS) and Z (e.g. the household income and medical expenditure variables on STINMOD/01A), given X (the common demographic variables) are independent. Cohen 1991 (p74) explains: \u201cRecords from two files are matched or not matched on the basis of the values of X (in file A and file B). Therefore, there is no additional information in the matched file about the relationship between X and Y and between X and Z that is not explained by the relationships between X and Y and between X and Z.\u201d However, because all the variables are not observed together, this assumption cannot be tested (except if an auxiliary dataset containing all variables of interest was available). The confidence that can be felt about a match is highly dependent on the correlation of the common variables to the health variables on the NHS side and the income/expenditure variables on the STINMOD/01A side. Bringing across the detailed income and medical expenditure data from the STINMOD/01A file was problematic. Therefore the matching focussed on adding family structure. Using the family allocation from STINMOD/01A had less reliance on the assumption of conditional independence as it only borrowed from the common demographic variables and the analysis did not use joint distributions. Nevertheless the 2001 NHS did have income data that was available to the model although not as detailed as that contained in STINMOD/01A.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "content": [
+                                {
+                                    "text": "The statistical matching process involved two-stages:",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "items": [
+                                        [
+                                            {
+                                                "text": "Person records were subdivided into homogeneous cell groups based on the common variables; and",
+                                                "type": "paragraph"
+                                            }
+                                        ],
+                                        [
+                                            {
+                                                "text": "Persons belonging to the same group were matched together using the distance function.",
+                                                "type": "paragraph"
+                                            }
+                                        ]
+                                    ],
+                                    "prefix": "number",
+                                    "type": "list"
+                                },
+                                {
+                                    "text": "The homogeneous groups ensure a required standard of matching is maintained, whilst the distance function tries to find the closest matching individuals from the two surveys who are in the same group. By using a conservative number of cell groups (less than approximately 100 cell groups as more tends to lead to algorithm failure), the distance function can be used to determine the relative importance of the common variables. From a practical point, the cell groups must be such that there is an adequate sample from both surveys in the cell group for the second stage to work.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "The distance function to select closest matches within the homogeneous groups was:",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "id": "equ1a",
+                                    "label": "(1)",
+                                    "mathml": "<math><mrow><msub><mtext>d</mtext><mrow><mtext>i</mtext><mo>,</mo><mtext>k</mtext></mrow></msub><mo>=</mo><msqrt><munder><mo>\u2211</mo><mi>j</mi></munder><msub><mi>a</mi><mrow><mi>X</mi><mi>j</mi></mrow></msub><mtext>\u2002</mtext><msup><mrow><mo>(</mo><msub><mi>X</mi><mrow><mi>n</mi><mi>h</mi><mi>s</mi><mo>,</mo><mi>i</mi><mo>,</mo><mi>j</mi><mo>,</mo><mi>k</mi></mrow></msub><mo>\u2212</mo><msub><mi>X</mi><mrow><mi>h</mi><mi>e</mi><mi>s</mi><mo>,</mo><mi>i</mi><mo>,</mo><mi>j</mi><mo>,</mo><mi>k</mi></mrow></msub><mo>)</mo></mrow><mn>2</mn></msup><mo>/</mo><msubsup><mi>\u03c3</mi><mrow><mi>X</mi><mi>j</mi><mo>,</mo><mi>h</mi><mi>e</mi><mi>s</mi></mrow><mn>2</mn></msubsup></msqrt></mrow></math>",
+                                    "type": "mathml"
+                                },
+                                {
+                                    "text": "where",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "items": [
+                                        [
+                                            {
+                                                "text": "<i>i</i> relates to person records,",
+                                                "type": "paragraph"
+                                            }
+                                        ],
+                                        [
+                                            {
+                                                "text": "<i>j</i> relates to the matching variable, and",
+                                                "type": "paragraph"
+                                            }
+                                        ],
+                                        [
+                                            {
+                                                "text": "<i>k</i> relates to the cell group.",
+                                                "type": "paragraph"
+                                            }
+                                        ],
+                                        [
+                                            {
+                                                "text": "<math id=\"inf1\"><msubsup><mi>\u03c3</mi><mrow><msub><mi>X</mi><mi>j</mi></msub><mo>,</mo><mi>h</mi><mi>e</mi><mi>s</mi></mrow><mn>2</mn></msubsup></math> is the variance of the jth matching variable from STIN MOD/01A",
+                                                "type": "paragraph"
+                                            }
+                                        ],
+                                        [
+                                            {
+                                                "text": "<i>a<sub>x<sub>j</sub></sub></i> is the user defined relative importance, or weight given to each matching variable.",
+                                                "type": "paragraph"
+                                            }
+                                        ]
+                                    ],
+                                    "prefix": "none",
+                                    "type": "list"
+                                },
+                                {
+                                    "text": "A constrained matching process using linear programming techniques in SAS was used to match records in the two datasets. This minimized the distance function and was subject to the constraint that the weights attached to the matched file preserve the weights of the separate files. A requirement of this approach was that the sum of the STINMOD/01A weights and NHS weights were the same. Consequently, the files were weighted to match the NHS, so whilst marginal distributions for the NHS were preserved, marginal distributions were not be preserved for the STINMOD/01A HES variables.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "To align the two surveys for matching the following adjustments were required:",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "items": [
+                                        [
+                                            {
+                                                "text": "Add records representing children in the STINMOD/01A to create a person level file. This was based on household composition data.",
+                                                "type": "paragraph"
+                                            }
+                                        ],
+                                        [
+                                            {
+                                                "text": "Impute children\u2019s self-assessed health status on the 2001 NHS by assuming that their status is the same as the highest level of the other household members.",
+                                                "type": "paragraph"
+                                            }
+                                        ],
+                                        [
+                                            {
+                                                "text": "Impute concession-card holder status onto STINMOD/01A by assuming that any household with one person holding a concession card holder, also has the rest of the household having concession card holders.",
+                                                "type": "paragraph"
+                                            }
+                                        ],
+                                        [
+                                            {
+                                                "text": "Equivalent income deciles (for income units) were created on STINMOD/0 1a using the OECD method for equivalising income, i.e.",
+                                                "type": "paragraph"
+                                            },
+                                            {
+                                                "id": "equ1b",
+                                                "label": "(2)",
+                                                "mathml": "<math><mi>E</mi><mi>q</mi><mi>u</mi><mi>i</mi><mi>v</mi><mi>I</mi><mi>n</mi><mi>c</mi><mo>=</mo><mfrac><mrow><mi>T</mi><mi>o</mi><mi>t</mi><mi>a</mi><mi>l</mi><mi>F</mi><mi>a</mi><mi>m</mi><mi>i</mi><mi>l</mi><mi>y</mi><mi>I</mi><mi>n</mi><mi>c</mi></mrow><mrow><mn>1</mn><mo>+</mo><mo stretchy=\"false\">(</mo><mi>N</mi><mi>o</mi><mtext>\u2009</mtext><mi>o</mi><mi>f</mi><mtext>\u2009</mtext><mi>a</mi><mi>d</mi><mi>u</mi><mi>l</mi><mi>t</mi><mi>s</mi><mo>\u2212</mo><mn>1</mn><mo stretchy=\"false\">)</mo><mo>\u00d7</mo><mn>0.5</mn><mo>+</mo><mi>N</mi><mi>o</mi><mtext>\u2009</mtext><mi>o</mi><mi>f</mi><mtext>\u2009</mtext><mi>D</mi><mi>e</mi><mi>p</mi><mi>e</mi><mi>n</mi><mi>d</mi><mi>e</mi><mi>n</mi><mi>t</mi><mi>s</mi><mo>\u00d7</mo><mn>0.3</mn></mrow></mfrac></math>",
+                                                "type": "mathml"
+                                            }
+                                        ],
+                                        [
+                                            {
+                                                "text": "Impute equivalent income decile on 2001 NHS where income decile was in \u2015not stated\u2016 category. Missing income deciles were estimated using polytomous logistic regression with personal income, number of persons in household, age, post-school qualifications and employment status as the predictors.",
+                                                "type": "paragraph"
+                                            }
+                                        ],
+                                        [
+                                            {
+                                                "text": "Number of usual residents in household capped at six or more (since the 2001 NHS caps household size at 6 or more).",
+                                                "type": "paragraph"
+                                            }
+                                        ]
+                                    ],
+                                    "prefix": "number",
+                                    "type": "list"
+                                },
+                                {
+                                    "text": "The variables used to create homogeneous groups in the final version of the HealthMod statistical matching were: income unit type (4 categories); age group (2 categories); concessional card status (2 categories); gender (2 categories); equivalent income deciles (3 categories). The matching variables used in the distance function and the relative importance weight they were given were: age (1); number of usual residents in household (0.5); equivalised income decile (1); income unit income decile (5); number of adults in household (0.5); employment status (1); and marital status (0.3). In this matching scheme more demographic variables were added to the distance function to try and improve the alignment of income on the matched file.",
+                                    "type": "paragraph"
+                                }
+                            ],
+                            "id": "s3-1-1",
+                            "title": "3.1.1 Methods",
+                            "type": "section"
+                        },
+                        {
+                            "content": [
+                                {
+                                    "text": "<a href=\"#table2\">Tables 2</a>\u2013<a href=\"#table5\">5</a> illustrate the closeness of the match for key family variables, as measured by the STINMOD/01A-NHS cross-tabulation percentage distribution. As <a href=\"#table2\">Table 2</a> shows the results for age are very reasonable with few records in STINMOD/01A being matched to NHS records where age category was more than one cell from the diagonal. The correlation for this variable was very strong at 0.93. The matched file also performs well in terms of equivalent income deciles (<a href=\"#table3\">Table 3</a>) with a 0.94 correlation between the matched value for income quintile (in NHS records) and the actual value (from STINMOD/01A).",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "The matching does not perform as well in linking records for the number of residents in the household (<a href=\"#table4\">Table 4</a>) with a lower correlation of 0.75. However, most of the matched values are still within one category of the actual category (<a href=\"#table4\">Table 4</a>). In terms of income unit type, mismatching only occurs for lone person and \u2018other\u2019 income unit types (<a href=\"#table5\">Table 5</a>). These two categories were combined in the creation of the homogeneous groups.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "assets": [
+                                        {
+                                            "id": "table2",
+                                            "label": "Table 2",
+                                            "tables": [
+                                                "<table>\n<thead>\n<tr>\n<th rowspan=\"2\">Age Group (years) \u2013 STINMOD /01A</th>\n<th align=\"center\" colspan=\"16\">Age Group (years) \u2013 NHS</th>\n</tr>\n<tr>\n<th>0\u20134</th>\n<th>5\u20139</th>\n<th>10\u201314</th>\n<th>15\u201319</th>\n<th>20\u201324</th>\n<th>25\u201329</th>\n<th>30\u201334</th>\n<th>35\u201339</th>\n<th>40\u201344</th>\n<th>45\u201349</th>\n<th>50\u201354</th>\n<th>55\u201359</th>\n<th>60\u201364</th>\n<th>65\u201369</th>\n<th>70\u201374</th>\n<th>75+</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>0\u20134</td>\n<td><b>79.0</b></td>\n<td><b>18.6</b></td>\n<td>2.4</td>\n<td>.</td>\n<td>.</td>\n<td>.</td>\n<td>.</td>\n<td>.</td>\n<td>.</td>\n<td>.</td>\n<td>.</td>\n<td>.</td>\n<td>.</td>\n<td>.</td>\n<td>.</td>\n<td>.</td>\n</tr>\n<tr>\n<td>5\u20139</td>\n<td>14.4</td>\n<td><b>65.4</b></td>\n<td>20.1</td>\n<td>.</td>\n<td>.</td>\n<td>.</td>\n<td>.</td>\n<td>.</td>\n<td>.</td>\n<td>.</td>\n<td>.</td>\n<td>.</td>\n<td>.</td>\n<td>.</td>\n<td>.</td>\n<td>.</td>\n</tr>\n<tr>\n<td>10\u201314</td>\n<td>4.6</td>\n<td>17.7</td>\n<td><b>77.7</b></td>\n<td>.</td>\n<td>.</td>\n<td>.</td>\n<td>.</td>\n<td>.</td>\n<td>.</td>\n<td>.</td>\n<td>.</td>\n<td>.</td>\n<td>.</td>\n<td>.</td>\n<td>.</td>\n<td>.</td>\n</tr>\n<tr>\n<td>15\u201319</td>\n<td>.</td>\n<td>.</td>\n<td>.</td>\n<td><b>69.7</b></td>\n<td>13.4</td>\n<td>7.7</td>\n<td>5.2</td>\n<td>0.8</td>\n<td>0.8</td>\n<td>0.4</td>\n<td>1.1</td>\n<td>0.8</td>\n<td>0.1</td>\n<td>0.1</td>\n<td>.</td>\n<td>.</td>\n</tr>\n<tr>\n<td>20\u201324</td>\n<td>.</td>\n<td>.</td>\n<td>.</td>\n<td>26.2</td>\n<td><b>28.1</b></td>\n<td>18.0</td>\n<td>8.1</td>\n<td>5.2</td>\n<td>6.7</td>\n<td>3.3</td>\n<td>1.0</td>\n<td>1.9</td>\n<td>1.0</td>\n<td>0.3</td>\n<td>0.1</td>\n<td>.</td>\n</tr>\n<tr>\n<td>25\u201329</td>\n<td>.</td>\n<td>.</td>\n<td>.</td>\n<td>7.1</td>\n<td>15.2</td>\n<td><b>32.8</b></td>\n<td>22.0</td>\n<td>5.7</td>\n<td>3.8</td>\n<td>5.1</td>\n<td>3.3</td>\n<td>1.5</td>\n<td>2.6</td>\n<td>0.8</td>\n<td>0.2</td>\n<td>.</td>\n</tr>\n<tr>\n<td>30\u201334</td>\n<td>.</td>\n<td>.</td>\n<td>.</td>\n<td>2.1</td>\n<td>6.6</td>\n<td>9.1</td>\n<td><b>40.6</b></td>\n<td>21.2</td>\n<td>6.2</td>\n<td>6.4</td>\n<td>3.8</td>\n<td>1.2</td>\n<td>0.8</td>\n<td>0.8</td>\n<td>0.6</td>\n<td>0.6</td>\n</tr>\n<tr>\n<td>35\u201339</td>\n<td>.</td>\n<td>.</td>\n<td>.</td>\n<td>1.2</td>\n<td>2.7</td>\n<td>5.8</td>\n<td>6.7</td>\n<td><b>45.0</b></td>\n<td>19.4</td>\n<td>7.6</td>\n<td>5.0</td>\n<td>2.6</td>\n<td>1.3</td>\n<td>0.9</td>\n<td>0.6</td>\n<td>1.0</td>\n</tr>\n<tr>\n<td>40\u201344</td>\n<td>.</td>\n<td>.</td>\n<td>.</td>\n<td>0.9</td>\n<td>1.9</td>\n<td>3.5</td>\n<td>5.3</td>\n<td>10.6</td>\n<td><b>43.6</b></td>\n<td>15.3</td>\n<td>10.1</td>\n<td>3.1</td>\n<td>2.1</td>\n<td>1.5</td>\n<td>1.4</td>\n<td>0.5</td>\n</tr>\n<tr>\n<td>45\u201349</td>\n<td>.</td>\n<td>.</td>\n<td>.</td>\n<td>0.9</td>\n<td>1.2</td>\n<td>1.6</td>\n<td>1.7</td>\n<td>4.6</td>\n<td>14.2</td>\n<td><b>38.2</b></td>\n<td>20.4</td>\n<td>7.4</td>\n<td>2.6</td>\n<td>3.1</td>\n<td>2.4</td>\n<td>1.7</td>\n</tr>\n<tr>\n<td>50\u201354</td>\n<td>.</td>\n<td>.</td>\n<td>.</td>\n<td>0.1</td>\n<td>1.0</td>\n<td>0.8</td>\n<td>1.0</td>\n<td>2.8</td>\n<td>5.8</td>\n<td>11.9</td>\n<td><b>32.4</b></td>\n<td>30.4</td>\n<td>7.5</td>\n<td>2.4</td>\n<td>1.1</td>\n<td>2.9</td>\n</tr>\n<tr>\n<td>55\u201359</td>\n<td>.</td>\n<td>.</td>\n<td>.</td>\n<td>.</td>\n<td>0.4</td>\n<td>0.3</td>\n<td>1</td>\n<td>1.0</td>\n<td>2</td>\n<td>4.7</td>\n<td>8.6</td>\n<td><b>31.8</b></td>\n<td>36.1</td>\n<td>6.4</td>\n<td>2.8</td>\n<td>4.8</td>\n</tr>\n<tr>\n<td>60\u201364</td>\n<td>.</td>\n<td>.</td>\n<td>.</td>\n<td>.</td>\n<td>0</td>\n<td>.</td>\n<td>0.0</td>\n<td>0.2</td>\n<td>0.5</td>\n<td>1.5</td>\n<td>2.3</td>\n<td>5.4</td>\n<td><b>39.0</b></td>\n<td>41.8</td>\n<td>5.0</td>\n<td>4.2</td>\n</tr>\n<tr>\n<td>65\u201369</td>\n<td>.</td>\n<td>.</td>\n<td>.</td>\n<td>.</td>\n<td>.</td>\n<td>.</td>\n<td>0.1</td>\n<td>0.2</td>\n<td>0.3</td>\n<td>0.5</td>\n<td>1.0</td>\n<td>2.3</td>\n<td>6.2</td>\n<td><b>31.7</b></td>\n<td>50.3</td>\n<td>7.4</td>\n</tr>\n<tr>\n<td>70\u201374</td>\n<td>.</td>\n<td>.</td>\n<td>.</td>\n<td>.</td>\n<td>0.1</td>\n<td>0.1</td>\n<td>.</td>\n<td>0.1</td>\n<td>0.2</td>\n<td>1</td>\n<td>1.7</td>\n<td>3.6</td>\n<td>3.2</td>\n<td>3.3</td>\n<td><b>37.5</b></td>\n<td>49.3</td>\n</tr>\n<tr>\n<td>75+</td>\n<td>.</td>\n<td>.</td>\n<td>.</td>\n<td>.</td>\n<td>.</td>\n<td>.</td>\n<td>.</td>\n<td>0.0</td>\n<td>0.3</td>\n<td>0.0</td>\n<td>0.9</td>\n<td>1.4</td>\n<td>3.2</td>\n<td>1.5</td>\n<td>3.2</td>\n<td><b>89.2</b></td>\n</tr>\n<tr>\n<td>All</td>\n<td>9.1</td>\n<td>8.5</td>\n<td>6.6</td>\n<td>6.5</td>\n<td>4.7</td>\n<td>5.8</td>\n<td>7.1</td>\n<td>8.0</td>\n<td>7.9</td>\n<td>6.8</td>\n<td>6.1</td>\n<td>5.3</td>\n<td>4.8</td>\n<td>3.9</td>\n<td>3.8</td>\n<td>5.3</td>\n</tr>\n</tbody>\n</table>"
+                                            ],
+                                            "title": "Closeness of match \u2013 age group (percentage distribution).",
+                                            "type": "table"
+                                        }
+                                    ],
+                                    "type": "figure"
+                                },
+                                {
+                                    "assets": [
+                                        {
+                                            "id": "table3",
+                                            "label": "Table 3",
+                                            "tables": [
+                                                "<table>\n<thead>\n<tr>\n<th rowspan=\"2\">Equivalent income decile \u2013 STINMOD/01A</th>\n<th align=\"center\" colspan=\"10\">Equivalent Income decile \u2013 NHS</th>\n</tr>\n<tr>\n<th>1</th>\n<th>2</th>\n<th>3</th>\n<th>4</th>\n<th>5</th>\n<th>6</th>\n<th>7</th>\n<th>8</th>\n<th>9</th>\n<th>10</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>1</td>\n<td><b>69.9</b></td>\n<td>16.4</td>\n<td>13.3</td>\n<td>0</td>\n<td>0.1</td>\n<td>0.1</td>\n<td>0.2</td>\n<td>.</td>\n<td>.</td>\n<td>.</td>\n</tr>\n<tr>\n<td>2</td>\n<td>20.5</td>\n<td><b>46.3</b></td>\n<td>33</td>\n<td>.</td>\n<td>.</td>\n<td>0.1</td>\n<td>0.1</td>\n<td>.</td>\n<td>.</td>\n<td>.</td>\n</tr>\n<tr>\n<td>3</td>\n<td>7.1</td>\n<td>24.9</td>\n<td><b>67.5</b></td>\n<td>.</td>\n<td>.</td>\n<td>0.3</td>\n<td>0.3</td>\n<td>.</td>\n<td>.</td>\n<td>.</td>\n</tr>\n<tr>\n<td>4</td>\n<td>.</td>\n<td>.</td>\n<td>.</td>\n<td><b>39.4</b></td>\n<td>22.6</td>\n<td>28.4</td>\n<td>9.6</td>\n<td>.</td>\n<td>.</td>\n<td>.</td>\n</tr>\n<tr>\n<td>5</td>\n<td>.</td>\n<td>.</td>\n<td>.</td>\n<td>19.1</td>\n<td><b>29.1</b></td>\n<td>23.7</td>\n<td>28.0</td>\n<td>.</td>\n<td>.</td>\n<td>.</td>\n</tr>\n<tr>\n<td>6</td>\n<td>.</td>\n<td>.</td>\n<td>.</td>\n<td>12.3</td>\n<td>20.3</td>\n<td><b>37.4</b></td>\n<td>30.0</td>\n<td>.</td>\n<td>.</td>\n<td>.</td>\n</tr>\n<tr>\n<td>7</td>\n<td>.</td>\n<td>.</td>\n<td>.</td>\n<td>2.4</td>\n<td>9.7</td>\n<td>18.0</td>\n<td><b>69.9</b></td>\n<td>.</td>\n<td>.</td>\n<td>.</td>\n</tr>\n<tr>\n<td>8</td>\n<td>.</td>\n<td>.</td>\n<td>.</td>\n<td>.</td>\n<td>.</td>\n<td>.</td>\n<td>.</td>\n<td><b>67.7</b></td>\n<td>30.3</td>\n<td>1.9</td>\n</tr>\n<tr>\n<td>9</td>\n<td>.</td>\n<td>.</td>\n<td>.</td>\n<td>.</td>\n<td>.</td>\n<td>.</td>\n<td>.</td>\n<td>18.6</td>\n<td><b>47.3</b></td>\n<td>34.1</td>\n</tr>\n<tr>\n<td>10</td>\n<td>.</td>\n<td>.</td>\n<td>.</td>\n<td>.</td>\n<td>.</td>\n<td>.</td>\n<td>.</td>\n<td>12.3</td>\n<td>23.6</td>\n<td><b>64.1</b></td>\n</tr>\n</tbody>\n</table>"
+                                            ],
+                                            "title": "Closeness of match \u2013 equivalent income deciles (percentage distribution).",
+                                            "type": "table"
+                                        }
+                                    ],
+                                    "type": "figure"
+                                },
+                                {
+                                    "assets": [
+                                        {
+                                            "id": "table4",
+                                            "label": "Table 4",
+                                            "tables": [
+                                                "<table>\n<thead>\n<tr>\n<th rowspan=\"2\">Number of persons in household \u2013 STINMOD/01A</th>\n<th align=\"center\" colspan=\"6\">Number of persons in household \u2013 NHS</th>\n</tr>\n<tr>\n<th>1</th>\n<th>2</th>\n<th>3</th>\n<th>4</th>\n<th>5</th>\n<th>6+</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>1</td>\n<td><b>67.0</b></td>\n<td>14.9</td>\n<td>8.0</td>\n<td>4.4</td>\n<td>3.0</td>\n<td>2.6</td>\n</tr>\n<tr>\n<td>2</td>\n<td>10.0</td>\n<td><b>75.8</b></td>\n<td>9.7</td>\n<td>3.3</td>\n<td>0.9</td>\n<td>0.3</td>\n</tr>\n<tr>\n<td>3</td>\n<td>3.4</td>\n<td>16.5</td>\n<td><b>54.1</b></td>\n<td>23.2</td>\n<td>2.5</td>\n<td>0.3</td>\n</tr>\n<tr>\n<td>4</td>\n<td>1.8</td>\n<td>1.4</td>\n<td>17.1</td>\n<td><b>61.2</b></td>\n<td>14.9</td>\n<td>3.7</td>\n</tr>\n<tr>\n<td>5</td>\n<td>1.5</td>\n<td>0.9</td>\n<td>2.6</td>\n<td>35.1</td>\n<td><b>44.6</b></td>\n<td>15.4</td>\n</tr>\n<tr>\n<td>6+</td>\n<td>9.1 12.8</td>\n<td>1.3 26.6</td>\n<td>2.4 18.2</td>\n<td>7.5 25</td>\n<td>29.4 11.7</td>\n<td><b>50.2</b></td>\n</tr>\n<tr>\n<td>All</td>\n<td>12.8</td>\n<td>26.6</td>\n<td>18.2</td>\n<td>25</td>\n<td>11.7</td>\n<td>5.7</td>\n</tr>\n</tbody>\n</table>"
+                                            ],
+                                            "title": "Closeness of match \u2013 number of persons in household (percentage distribution).",
+                                            "type": "table"
+                                        }
+                                    ],
+                                    "type": "figure"
+                                },
+                                {
+                                    "assets": [
+                                        {
+                                            "id": "table5",
+                                            "label": "Table 5",
+                                            "tables": [
+                                                "<table>\n<thead>\n<tr>\n<th rowspan=\"2\">Income Unit Type -STINMOD/01A</th>\n<th align=\"center\" colspan=\"5\">Income Unit Type \u2013 NHS</th>\n</tr>\n<tr>\n<th align=\"center\">Lone person</th>\n<th align=\"center\">Couple</th>\n<th align=\"center\">Couple with kids</th>\n<th align=\"center\">Single with kids</th>\n<th align=\"center\">Other</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>Lone person</td>\n<td><b>69.7</b></td>\n<td>.</td>\n<td>.</td>\n<td>.</td>\n<td>30.3</td>\n</tr>\n<tr>\n<td>Couple</td>\n<td>.</td>\n<td><b>100</b></td>\n<td>.</td>\n<td>.</td>\n<td>.</td>\n</tr>\n<tr>\n<td>Couple with kids</td>\n<td>.</td>\n<td>.</td>\n<td><b>100</b></td>\n<td>.</td>\n<td>.</td>\n</tr>\n<tr>\n<td>Single with kids</td>\n<td>.</td>\n<td>.</td>\n<td>.</td>\n<td><b>100</b></td>\n<td>.</td>\n</tr>\n<tr>\n<td>Other</td>\n<td>55.2</td>\n<td>.</td>\n<td>.</td>\n<td>.</td>\n<td><b>44.8</b></td>\n</tr>\n<tr>\n<td>All</td>\n<td>18</td>\n<td>7.1</td>\n<td>23.1</td>\n<td>42.4</td>\n<td>9.4</td>\n</tr>\n</tbody>\n</table>"
+                                            ],
+                                            "title": "Closeness of match \u2013 income unit type (percentage distribution).",
+                                            "type": "table"
+                                        }
+                                    ],
+                                    "type": "figure"
+                                }
+                            ],
+                            "id": "s3-1-2",
+                            "title": "3.1.2 Results",
+                            "type": "section"
+                        }
+                    ],
+                    "id": "s3-1",
+                    "title": "3.1 Generation of synthetic families through statistical mathching",
+                    "type": "section"
+                }
+            ],
+            "id": "s3",
+            "title": "3. Methodological steps",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "A key building block for constructing HealthMod was linking medical service use to persons\u2019 health conditions.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The importance of short-term health conditions in the imputation of doctors\u2019 visits is illustrated in the 1995 National Health Survey (NHS) data where, of those health conditions leading to a doctor\u2019s visit, 78 per cent were of a recent (only) nature (i.e. it was not due to a long standing condition). The 2003\u201304 annual survey of activities undertaken in general practice showed that, whilst not as large a proportion, health problems of a non-chronic nature accounted for 65.3 per cent of problems treated by a GP (<a href=\"#bib11\">Britt et al, 2004</a>). Consequently, the inclusion of short-term conditions in the model was essential.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Short-term health conditions had to be imputed onto the HealthMod basefile since the last national health survey to include questions about all conditions was the 1995 NHS. Consequently, the 1995 NHS has been used as the basis for informing the imputation of short-term health conditions onto the HealthMod basefile. The ABS definition of a short-term health condition is any health condition that lasted for less than 6 months or was not likely to last for six months. Conversely, a long-term health condition is any health condition that has lasted for longer than 6 months or was likely to last for more than 6 months. The information about health conditions is self-reported and any inaccuracy caused by this must be kept in mind. In addition, in 1995 information was only collected about health conditions present in the two weeks prior to interview.",
+                    "type": "paragraph"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "Health conditions identified in the national health surveys could be classified into over 100 different categories. This number stretches the effectiveness of monte carlo simulation methods available for the imputation. A higher level condition grouping, based on 26 groups, was therefore developed.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Not all of these groups included a short-term component. If the health condition group was predominantly long-term in nature \u2013 defined as more than 95 per cent of the cases were long term in nature \u2013 then these as well as conditions that were rare (prevalence of less than 1 per cent) were excluded in the short-term health conditions imputation process. It was felt that the exclusion of these conditions from the imputation would not lead to a significant loss of information or accuracy in the model. <a href=\"#table6\">Table 6</a> shows that the condition groups of arthritis, asthma, diabetes, other eye and adnexa and disability not elsewhere classified (nec) are all predominately long-term health conditions and the prevalence of the health condition groups of visual disturbances, pregnancy complications and childbirth and congenital conditions were less than 1%. <a href=\"#table6\">Table 6</a> also shows that injury and poisoning, infectious disease, signs and symptoms, skin and subcutaneous diseases groups have significant proportions that are short-term in nature. The inclusion of these health condition groups was therefore essential in the imputation process.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "footnotes": [
+                                        {
+                                            "text": [
+                                                {
+                                                    "text": "<i>Note:</i> LTC = Long Term Condition; NEC = not elsewhere classified.",
+                                                    "type": "paragraph"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "text": [
+                                                {
+                                                    "text": "<i>Source:</i> ABS 1995 NHS.",
+                                                    "type": "paragraph"
+                                                }
+                                            ]
+                                        }
+                                    ],
+                                    "id": "table6",
+                                    "label": "Table 6",
+                                    "tables": [
+                                        "<table>\n<thead>\n<tr>\n<th align=\"center\">Health Name</th>\n<th align=\"center\">Condition</th>\n<th align=\"center\">Group</th>\n<th align=\"center\">Prevalence per 100 population</th>\n<th align=\"center\">Prevalence as a LTC per 100 population</th>\n<th align=\"center\">% LTC (either only or with acute bouts)</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>1</td>\n<td colspan=\"2\">arthritis</td>\n<td>14.72</td>\n<td>14.58</td>\n<td>99.05</td>\n</tr>\n<tr>\n<td>2</td>\n<td colspan=\"2\">asthma</td>\n<td>11.30</td>\n<td>11.09</td>\n<td>98.10</td>\n</tr>\n<tr>\n<td>3</td>\n<td colspan=\"2\">diabetes</td>\n<td>2.47</td>\n<td>2.45</td>\n<td>99.15</td>\n</tr>\n<tr>\n<td>4</td>\n<td colspan=\"2\">heart and circulatory</td>\n<td>21.42</td>\n<td>20.02</td>\n<td>93.45</td>\n</tr>\n<tr>\n<td>5</td>\n<td colspan=\"2\">mental health</td>\n<td>5.80</td>\n<td>4.00</td>\n<td>69.04</td>\n</tr>\n<tr>\n<td>6</td>\n<td colspan=\"2\">cancer</td>\n<td>2.10</td>\n<td>1.78</td>\n<td>84.58</td>\n</tr>\n<tr>\n<td>7</td>\n<td colspan=\"2\">injury and poisoning</td>\n<td>6.39</td>\n<td>0.60</td>\n<td>9.43</td>\n</tr>\n<tr>\n<td>8</td>\n<td colspan=\"2\">other muscular</td>\n<td>17.01</td>\n<td>12.48</td>\n<td>73.36</td>\n</tr>\n<tr>\n<td>9</td>\n<td colspan=\"2\">other endocrine</td>\n<td>10.47</td>\n<td>7.81</td>\n<td>74.66</td>\n</tr>\n<tr>\n<td>10</td>\n<td colspan=\"2\">respiratory</td>\n<td>32.26</td>\n<td>23.12</td>\n<td>71.66</td>\n</tr>\n<tr>\n<td>11</td>\n<td colspan=\"2\">visual disturbances</td>\n<td>0.27</td>\n<td>0.19</td>\n<td>72.43</td>\n</tr>\n<tr>\n<td>12</td>\n<td colspan=\"2\">other eye and adnexa</td>\n<td>49.71</td>\n<td>48.87</td>\n<td>98.31</td>\n</tr>\n<tr>\n<td>13</td>\n<td colspan=\"2\">ear and mastoid</td>\n<td>12.48</td>\n<td>11.36</td>\n<td>91.09</td>\n</tr>\n<tr>\n<td>14</td>\n<td colspan=\"2\">nervous system</td>\n<td>3.50</td>\n<td>2.65</td>\n<td>75.81</td>\n</tr>\n<tr>\n<td>15</td>\n<td colspan=\"2\">infectious disease</td>\n<td>3.73</td>\n<td>1.03</td>\n<td>27.66</td>\n</tr>\n<tr>\n<td>16</td>\n<td colspan=\"2\">digestive</td>\n<td>10.56</td>\n<td>7.66</td>\n<td>72.60</td>\n</tr>\n<tr>\n<td>17</td>\n<td colspan=\"2\">dental</td>\n<td>5.06</td>\n<td>0.12</td>\n<td>2.44</td>\n</tr>\n<tr>\n<td>18</td>\n<td colspan=\"2\">genito-urinary</td>\n<td>6.38</td>\n<td>3.60</td>\n<td>56.34</td>\n</tr>\n<tr>\n<td>19</td>\n<td colspan=\"2\">skin and subcutaneous</td>\n<td>9.87</td>\n<td>3.80</td>\n<td>38.45</td>\n</tr>\n<tr>\n<td>20</td>\n<td colspan=\"2\">blood diseases</td>\n<td>2.05</td>\n<td>1.67</td>\n<td>81.67</td>\n</tr>\n<tr>\n<td>21</td>\n<td colspan=\"2\">pregancy and childbirth</td>\n<td>0.88</td>\n<td>0.15</td>\n<td>17.05</td>\n</tr>\n<tr>\n<td>22</td>\n<td colspan=\"2\">sign and symptoms</td>\n<td>24.24</td>\n<td>7.30</td>\n<td>30.12</td>\n</tr>\n<tr>\n<td>23</td>\n<td colspan=\"2\">preventative</td>\n<td>31.92</td>\n<td>0.02</td>\n<td>0.06</td>\n</tr>\n<tr>\n<td>24</td>\n<td colspan=\"2\">congential</td>\n<td>0.37</td>\n<td>0.34</td>\n<td>90.04</td>\n</tr>\n<tr>\n<td>25</td>\n<td colspan=\"2\">disability nec</td>\n<td>1.16</td>\n<td>1.12</td>\n<td>96.55</td>\n</tr>\n<tr>\n<td>26</td>\n<td colspan=\"2\">unspecified symptoms</td>\n<td>4.03</td>\n<td>2.56</td>\n<td>63.52</td>\n</tr>\n</tbody>\n</table>"
+                                    ],
+                                    "title": "Prevalence and long-term characteristics of health condition groups, 1995.",
+                                    "type": "table"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "text": "There also was a need to separately include an imputation of pregnant women in the model. These women were highly likely to visit a doctor, and regularly so, during their pregnancy. Pregnancy also has significant implications with regard to the use of imaging, pathology, hospital and pharmaceutical services for women in the 18\u201345 year age group. Most pregnant women were likely to have at least one hospital visit, use imaging services and were highly unlikely to be taking most prescription medications.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The prevalence of short-term health conditions had to be uprated to give a representation of the 2001 world. The age-sex specific rates of change in the prevalence of the long-term elements of the different conditions between 1995 and 2001 were calculated, and in the absence of any other information, these rates of change were used to up-rate the prevalence of the short-term conditions.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s4-1",
+                    "title": "4.1 Health condition groups",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "Variables that would be good predictors of the likelihood of having various short-term health conditions were investigated using logistic regression modelling and the data from the 1995 NHS. The results of this analysis are presented in <a href=\"#table7\">Table 7</a>. The variables examined included age, sex, equivalent income decile, self-assessed health status, marital status, income unit type, education, labour force status, concession card holder and government benefit recipient.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "footnotes": [
+                                        {
+                                            "text": [
+                                                {
+                                                    "text": "<i>Source:</i> ABS 1995 NHS.",
+                                                    "type": "paragraph"
+                                                }
+                                            ]
+                                        }
+                                    ],
+                                    "id": "table7",
+                                    "label": "Table 7",
+                                    "tables": [
+                                        "<table>\n<thead>\n<tr>\n<th>Variable</th>\n<th>Crude Odds Ratio</th>\n<th>Comment on crude odds ratio</th>\n<th>Odds Ratio (adjusted for age and sex)</th>\n<th>Odds ratio (adjusted for age, sex and SAHS)</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>Age group (treated as a continuous variable)</td>\n<td>1.129</td>\n<td>Significant, appears to have close to linear relationship</td>\n<td/>\n<td/>\n</tr>\n<tr>\n<td>Sex 1 Male vs 2 Female</td>\n<td>0.60</td>\n<td>Significant</td>\n<td/>\n<td/>\n</tr>\n<tr>\n<td>Equivalent Income decile</td>\n<td/>\n<td rowspan=\"12\">Significant as a group but non linear</td>\n<td/>\n<td/>\n</tr>\n<tr>\n<td>\u20030 NA</td>\n<td>0.759</td>\n<td>0.753</td>\n<td>0.707</td>\n</tr>\n<tr>\n<td>\u20031 1st decile</td>\n<td>0.630</td>\n<td>0.742</td>\n<td>0.661</td>\n</tr>\n<tr>\n<td>\u20032</td>\n<td>0.881</td>\n<td>0.844</td>\n<td>0.693</td>\n</tr>\n<tr>\n<td>\u20033</td>\n<td>1.078</td>\n<td>0.948</td>\n<td>0.767</td>\n</tr>\n<tr>\n<td>\u20034</td>\n<td>0.988</td>\n<td>0.963</td>\n<td>0.837</td>\n</tr>\n<tr>\n<td>\u20035</td>\n<td>0.769</td>\n<td>0.863</td>\n<td>0.777</td>\n</tr>\n<tr>\n<td>\u20036</td>\n<td>0.675</td>\n<td>0.747</td>\n<td>0.682</td>\n</tr>\n<tr>\n<td>\u20037</td>\n<td>0.713</td>\n<td>0.810</td>\n<td>0.752</td>\n</tr>\n<tr>\n<td>\u20038</td>\n<td>0.812</td>\n<td>0.894</td>\n<td>0.846</td>\n</tr>\n<tr>\n<td>\u20039</td>\n<td>0.810</td>\n<td>0.858</td>\n<td>0.827</td>\n</tr>\n<tr>\n<td>\u200310 10th decile</td>\n<td>1</td>\n<td>1</td>\n<td>1</td>\n</tr>\n<tr>\n<td>Self Assessed Health Status</td>\n<td/>\n<td rowspan=\"7\">Significant as a group</td>\n<td/>\n<td/>\n</tr>\n<tr>\n<td>\u20030 NA</td>\n<td>0.040</td>\n<td>0.113</td>\n<td/>\n</tr>\n<tr>\n<td>\u20031Excellent</td>\n<td>0.056</td>\n<td>0.081</td>\n<td/>\n</tr>\n<tr>\n<td>\u20032</td>\n<td>0.082</td>\n<td>0.116</td>\n<td/>\n</tr>\n<tr>\n<td>\u20033</td>\n<td>0.111</td>\n<td>0.146</td>\n<td/>\n</tr>\n<tr>\n<td>\u20034</td>\n<td>0.264</td>\n<td>0.307</td>\n<td/>\n</tr>\n<tr>\n<td>\u20035 Poor</td>\n<td>1</td>\n<td>1</td>\n<td/>\n</tr>\n<tr>\n<td>Marital Status</td>\n<td/>\n<td rowspan=\"14\">Significant as a group</td>\n<td/>\n<td/>\n</tr>\n<tr>\n<td>\u20031 Married</td>\n<td>2.122</td>\n<td>0.911</td>\n<td>0.977</td>\n</tr>\n<tr>\n<td>\u20032 de facto</td>\n<td>1.759</td>\n<td>1.081</td>\n<td>1.100</td>\n</tr>\n<tr>\n<td>\u20033 separated</td>\n<td>2.186</td>\n<td>0.992</td>\n<td>0.986</td>\n</tr>\n<tr>\n<td>\u20034 divorced</td>\n<td>2.697</td>\n<td>1.040</td>\n<td>1.084</td>\n</tr>\n<tr>\n<td>\u20035 widowed</td>\n<td>6.316</td>\n<td>1.258</td>\n<td>1.259</td>\n</tr>\n<tr>\n<td>\u20036 never married</td>\n<td>1</td>\n<td>1</td>\n<td>1</td>\n</tr>\n<tr>\n<td>Income unit type</td>\n<td/>\n<td/>\n<td/>\n</tr>\n<tr>\n<td>\u20031 Married with dep kids</td>\n<td>0.467</td>\n<td>0.509</td>\n<td>0.522</td>\n</tr>\n<tr>\n<td>\u20032 Married without dep kids</td>\n<td>1.208</td>\n<td>0.677</td>\n<td>0.672</td>\n</tr>\n<tr>\n<td>\u20033 Single parent with dep kids</td>\n<td>0.447</td>\n<td>0.509</td>\n<td>0.507</td>\n</tr>\n<tr>\n<td>\u20034 Single</td>\n<td>0.749</td>\n<td>0.569</td>\n<td>0.555</td>\n</tr>\n<tr>\n<td>\u20035 Out of scope</td>\n<td>0.707</td>\n<td>0.641</td>\n<td>0.623</td>\n</tr>\n<tr>\n<td>\u20039 Incomplete unit</td>\n<td>1</td>\n<td>1</td>\n<td>1</td>\n</tr>\n<tr>\n<td>Education</td>\n<td/>\n<td rowspan=\"4\">Significant</td>\n<td/>\n<td/>\n</tr>\n<tr>\n<td>\u20030 Not have higher</td>\n<td>1</td>\n<td>1</td>\n<td>1</td>\n</tr>\n<tr>\n<td>qualification</td>\n<td>1.46</td>\n<td>0.877</td>\n<td>0.80</td>\n</tr>\n<tr>\n<td>\u20031 Has higher qualification</td>\n<td/>\n<td/>\n<td/>\n</tr>\n<tr>\n<td>Labour force status</td>\n<td/>\n<td rowspan=\"5\">Significant as a group</td>\n<td/>\n<td/>\n</tr>\n<tr>\n<td>\u20030 NA</td>\n<td>0.639</td>\n<td>0.977</td>\n<td>1.528</td>\n</tr>\n<tr>\n<td>\u20031 Unemployed</td>\n<td>0.769</td>\n<td>0.819</td>\n<td>0.955</td>\n</tr>\n<tr>\n<td>\u20032 Employed</td>\n<td>0.580</td>\n<td>0.712</td>\n<td>0.698</td>\n</tr>\n<tr>\n<td>\u20033 Not in labour force</td>\n<td>1</td>\n<td>1</td>\n<td>1</td>\n</tr>\n<tr>\n<td>Concession card holder (under 1995 rules)</td>\n<td/>\n<td rowspan=\"5\">Significant as a group</td>\n<td/>\n<td/>\n</tr>\n<tr>\n<td>\u20030 NA</td>\n<td>0.630</td>\n<td>1.245</td>\n<td>0.080</td>\n</tr>\n<tr>\n<td>\u20031 Covered</td>\n<td>2.525</td>\n<td>1.744</td>\n<td>1.494</td>\n</tr>\n<tr>\n<td>\u20032 Not covered</td>\n<td>1.241</td>\n<td>1.176</td>\n<td>1.203</td>\n</tr>\n<tr>\n<td>\u20033 Don\u2019t Know</td>\n<td>1</td>\n<td>1</td>\n<td>1</td>\n</tr>\n<tr>\n<td>Government benefit recipient 1 Yes vs 2 No</td>\n<td>2.522</td>\n<td>Significant</td>\n<td>1.406</td>\n<td>1.110</td>\n</tr>\n</tbody>\n</table>"
+                                    ],
+                                    "title": "Likelihood of having a short-term health condition.",
+                                    "type": "table"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "text": "A monte carlo process of random allocation was used in selecting the records to have short-term health conditions, The probabilities were based on the person\u2019s age, gender and self-assessed health status.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "As <a href=\"#table7\">Table 7</a> shows there was a significant, near linear relationship between whether a person had a short-term health condition and their age and a significant difference in the likelihood of having short-term health condition between the sexes (<a href=\"#table7\">Table 7</a>). After adjusting for age and sex, the next most important predictor was self-assessed health status. Equivalent income was not a significant predictor of having a short-term health condition after adjusting for age, sex and self- assessed health status. While the other variables in <a href=\"#table7\">Table 7</a> were significant predictors of having a short-term health condition, little additional explanatory power was gained by including them in the regression model.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "To annualise short-term health conditions, a fortnightly imputation of conditions was carried out 26 times to represent the full year.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s4-2",
+                    "title": "4.2 Predictors of having a short-term health condition",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "Three aspects of the imputation of short term conditions were considered in validation: the replication of the target condition prevalence in the model; the replication of the age-sex distribution of those with the various conditions and the replication of the distribution of the number of conditions experienced by a person. In general, the model slightly underestimated the prevalence of short-term health conditions. In terms of comparing the demographic profile of those who were allocated to have various conditions to the demographic profile of the 1995 NHS, only two condition groups (injury and poisoning, and preventative) did not perform reasonably well based on a mean cell absolute difference of less than 5 (to summarise these results the absolute mean error for each level in the variable was summed to give the sum of absolute difference and the average cell absolute difference across the variable levels was calculated). These two conditions appear to have undergone the most change in the five years between 1995 and 2001. The distribution of the number of short-term health conditions experienced per person in a two week period was very similar between the 1995 NHS and the HealthMod imputation (<a href=\"#fig1\">Figure 1</a>). However, the number of persons without a short-term health condition was 28.8 per cent in HealthMod compared with 21.3 per cent in 1995 NHS data.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "caption": [
+                                        {
+                                            "text": "<i>Data source:</i> HealthMod; ABS 1995 NHS.",
+                                            "type": "paragraph"
+                                        }
+                                    ],
+                                    "id": "fig1",
+                                    "image": {
+                                        "alt": "",
+                                        "uri": "%iiif_uri%/00057%2Fijm-00057-fig1.tif",
+                                        "size": {
+                                            "width": 731,
+                                            "height": 438
+                                        },
+                                        "source": {
+                                            "mediaType": "image/jpeg",
+                                            "uri": "%iiif_uri%/00057%2Fijm-00057-fig1.tif/full/full/0/default.jpg",
+                                            "filename": "ijm-00057-fig1.jpg"
+                                        }
+                                    },
+                                    "label": "Figure 1",
+                                    "title": "Distribution of number of short term health conditions per person.",
+                                    "type": "image"
+                                }
+                            ],
+                            "type": "figure"
+                        }
+                    ],
+                    "id": "s4-3",
+                    "title": "4.3 Validation",
+                    "type": "section"
+                }
+            ],
+            "id": "s4",
+            "title": "4. Imputation of short-term health conditions",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "The imputation of doctor services is a key aspect of the modelling of Medicare. These services dominate both the services used and the overall cost of the MBS. A summary of the methodology for imputing visits to doctors and their costs within a two-week window is as follows:",
+                    "type": "paragraph"
+                },
+                {
+                    "items": [
+                        [
+                            {
+                                "text": "Determine the probability of a person having a doctor\u2019s visit based on the health condition/s they had, as well as their income, age group and sex. Monte carlo simulation is used to allocate whether a record had a doctor\u2019s visit in a two week time period. Seasonality was imposed by scaling the probabilities of having a doctor\u2019s visit based on the monthly fluctuations in administrative data from Medicare Australia (averaged over 3 years 2001\u20132003).",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "Determine primary health condition leading to a doctor\u2019s visit. A cumulative probability distribution was created based on the conditions allocated to the person and the likelihood of having that health condition. A monte carlo simulation was used to allocate which condition the person had that was the primary reason for a doctor\u2019s visit in the two week window.",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "Determine the distribution of the number of doctor visits amongst those who had a doctor\u2019s visit (from 1 to 10), based on the condition that was the primary reason of a doctor\u2019s visit in the last two weeks, income group, age group and sex of the record (from 1995 NHS).",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "Allocate the doctor visits to being a GP or specialist using a logistic regression model where age, income, self-assessed health status and number of long-term health conditions were the predictor variables. This model was determined from the 2001 NHS.",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "Allocate doctor visits to a broad type of service (BTOS) category based on GP/other, age and sex. Probabilities are determined from Medicare Australia data.",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "Allocate the doctor visits to either bulk billed or not, based on GP/other, BTOS, age and sex (each year was individually constrained as there was a trend of decreasing bulk billing in some of the key BTOS categories)",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "Align number of services for each BTOS category stimulated in HealthMod against Medicare Australia administrative data.",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "Cost services, allocating an average cost based on the age and sex of the persons as well BTOS, if the service was bulk billed or not, and if the service was provided by a GP or not. The total annual cost is the sum of the costs.",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "Align costs for each BTOS category stimulated in HealthMod against Medicare Australia administrative data.",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "Repeat the steps 26 times to annualise doctor visits.",
+                                "type": "paragraph"
+                            }
+                        ]
+                    ],
+                    "prefix": "number",
+                    "type": "list"
+                },
+                {
+                    "text": "The imputation of two types of services was problematic: obstetric visits and radiotherapy and therapeutic nuclear medicine. These services can only be allocated to records with a particular condition. Consequently, more care was required in the allocation to the correct type of record and also ensuring the correct numbers of people across the year were receiving the service so that the average number of services per person was within reasonable tolerances.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The allocation of radiotherapy and nuclear medicine services was limited to those patients with cancer. All these services were deemed to have been provided by a specialist medical practitioner since 99 per cent of these services in Australia are provided by a specialist.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The allocation of obstetric visits was carried out as a separate process to the general allocation of doctor services. The first stage in the allocation of obstetric visits was to identify women who gave birth in 2001 and 2002. The two years are required as some women who were pregnant in 2001 would not have given birth until 2002. The target was to have approximately 242,000 confinements in 2001. This was based on the number of registered births (246,400) then factoring for the number of pregnancies that result in multiple births. The age of the woman was used to condition the probability of being pregnant, as was information obtained from the 2001 NHS about their reproductive history (e.g. hysterectomies, infertility etc) to determine women in reproductive age group who could not be pregnant as well as women who had responded in the 2001 NHS such that it was clear they were pregnant during 2001.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Having allocated confinements, this information was used to determine when women were pregnant. It was assumed that women were pregnant for the 8 months prior to the month of birth as well as in the month they gave birth. Premature births were not modelled (about 8 per cent of births in Australia are pre-term). Women receiving specific obstetric services through the MBS were then allocated.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The initial allocation used the assumption that women who have concessional cards are more likely to use either hospital services, midwives or visit a general practitioner. Obstetric services were then allocated based on the number of months in the year the woman was pregnant for and also the stage of her pregnancy (i.e. women in the last months of their pregnancy received more services than women in their first trimester). The number of confinements resulting in a multiple birth is around 1.5 per cent in Australia. Additional use of services related to multiple births was not modelled.",
+                    "type": "paragraph"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "Overall, the model estimated that in any two week window approximately 4.57 million (24 per cent) Australians visited a doctor. This was within 2 per cent of the number enumerated in the 2001 NHS (4.63m). Approximately 3.53 million people were estimated to have had only one visit to a doctor (approximately 77 per cent of those who had a visit to a doctor) (<a href=\"#table8\">Table 8</a>). Less than 1 per cent of those that visited a doctor were estimated to have 5 or more visits in a fortnight. The distribution of the number of doctor visits per person was very similar to that reported in the 1995 NHS which included visits for both short- and long-term illnesses. The model performed equally well when the number of doctor visits was examined by age and gender. The main reason allocated for the last visit to a doctor was preventative (1.02 million, 22.5 per cent), followed by respiratory conditions (0.66m; 14.6 per cent) and other musculoskeletal conditions (0.48m; 10.7 per cent) (<a href=\"#table9\">Table 9</a>). In total, the model estimated that 142 million doctor services were supplied in 2001, over-estimating the administrative record of MBS services by 5 per cent. Of these services 68 percent were un-referred attendances to a general practitioner and a further 15 per cent were for specialist services (<a href=\"#table10\">Table 10</a>). HealthMod performed relatively well in estimating both these broad types of services.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "table8",
+                                    "label": "Table 8",
+                                    "tables": [
+                                        "<table>\n<thead>\n<tr>\n<th>Frequency of Doctor\u2019s Visit</th>\n<th>HealthMod</th>\n<th>No.%</th>\n<th>NHS95</th>\n<th>No.%</th>\n<th>Absolute Difference</th>\n<th>% Diff.</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>1</td>\n<td>3,533,937</td>\n<td>77.35</td>\n<td>3,231,795</td>\n<td>76.83</td>\n<td>302,142</td>\n<td>9.35</td>\n</tr>\n<tr>\n<td>2</td>\n<td>828,385</td>\n<td>18.13</td>\n<td>732,739</td>\n<td>17.42</td>\n<td>95,646</td>\n<td>13.05</td>\n</tr>\n<tr>\n<td>3</td>\n<td>142,938</td>\n<td>3.13</td>\n<td>144,020</td>\n<td>3.42</td>\n<td>1,082</td>\n<td>0.75</td>\n</tr>\n<tr>\n<td>4</td>\n<td>49,542</td>\n<td>1.08</td>\n<td>60,825</td>\n<td>1.45</td>\n<td>11,283</td>\n<td>18.55</td>\n</tr>\n<tr>\n<td>5</td>\n<td>9,593</td>\n<td>0.21</td>\n<td>17,051</td>\n<td>0.41</td>\n<td>7,458</td>\n<td>43.74</td>\n</tr>\n<tr>\n<td>6</td>\n<td>748</td>\n<td>0.02</td>\n<td>7,735</td>\n<td>0.18</td>\n<td>6,987</td>\n<td>90.33</td>\n</tr>\n<tr>\n<td>7</td>\n<td>2,201</td>\n<td>0.05</td>\n<td>5,620</td>\n<td>0.13</td>\n<td>3,419</td>\n<td>60.83</td>\n</tr>\n<tr>\n<td>8</td>\n<td>0</td>\n<td>0.00</td>\n<td>281</td>\n<td>0.01</td>\n<td>281</td>\n<td>100.00</td>\n</tr>\n<tr>\n<td>9 and over</td>\n<td>1,213</td>\n<td>0.03</td>\n<td>6,507</td>\n<td>0.15</td>\n<td>5,294</td>\n<td>81.36</td>\n</tr>\n</tbody>\n</table>"
+                                    ],
+                                    "title": "Distribution of frequency of a doctor\u2019s visit, 2001.",
+                                    "type": "table"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "table9",
+                                    "label": "Table 9",
+                                    "tables": [
+                                        "<table>\n<thead>\n<tr>\n<th colspan=\"2\" rowspan=\"2\">Condition Group Name</th>\n<th colspan=\"2\">HealthMod</th>\n<th colspan=\"2\">NHS95</th>\n<th rowspan=\"2\">Absolute Difference</th>\n<th rowspan=\"2\">% Diff.</th>\n</tr>\n<tr>\n<th>No.</th>\n<th>%</th>\n<th>No.</th>\n<th>%</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>1</td>\n<td>Arthritis</td>\n<td>83,102</td>\n<td>1.8</td>\n<td>80,294</td>\n<td>1.92</td>\n<td>2,808</td>\n<td>3</td>\n</tr>\n<tr>\n<td>2</td>\n<td>Asthma</td>\n<td>92,614</td>\n<td>2.0</td>\n<td>85,203</td>\n<td>2.04</td>\n<td>7,411</td>\n<td>9</td>\n</tr>\n<tr>\n<td>3</td>\n<td>Diabetes</td>\n<td>50,058</td>\n<td>1.1</td>\n<td>36,357</td>\n<td>0.87</td>\n<td>13,701</td>\n<td>38</td>\n</tr>\n<tr>\n<td>4</td>\n<td>Heart &amp; Circulatory Dis.</td>\n<td>222,438</td>\n<td>4.9</td>\n<td>248,960</td>\n<td>5.95</td>\n<td>26,522</td>\n<td>11</td>\n</tr>\n<tr>\n<td>5</td>\n<td>Mental Health</td>\n<td>237,551</td>\n<td>5.2</td>\n<td>101,921</td>\n<td>2.44</td>\n<td>135,630</td>\n<td>133</td>\n</tr>\n<tr>\n<td>6</td>\n<td>Cancer</td>\n<td>47,680</td>\n<td>1.0</td>\n<td>67,662</td>\n<td>1.62</td>\n<td>19,982</td>\n<td>30</td>\n</tr>\n<tr>\n<td>7</td>\n<td>Injury and Poisoning</td>\n<td>404,858</td>\n<td>8.9</td>\n<td>230,795</td>\n<td>5.52</td>\n<td>174,063</td>\n<td>75</td>\n</tr>\n<tr>\n<td>8</td>\n<td>Other Musculoskeletal</td>\n<td>484,887</td>\n<td>10.6</td>\n<td>258,942</td>\n<td>6.19</td>\n<td>225,945</td>\n<td>87</td>\n</tr>\n<tr>\n<td>9</td>\n<td>Other endocrine</td>\n<td>82,916</td>\n<td>1.8</td>\n<td>68,879</td>\n<td>1.65</td>\n<td>14,037</td>\n<td>20</td>\n</tr>\n<tr>\n<td>10</td>\n<td>Respiratory</td>\n<td>661,795</td>\n<td>14.5</td>\n<td>713,950</td>\n<td>17.07</td>\n<td>52,155</td>\n<td>7</td>\n</tr>\n<tr>\n<td>12</td>\n<td>Eye and adnexa</td>\n<td>70,612</td>\n<td>1.5</td>\n<td>71,758</td>\n<td>1.72</td>\n<td>1,146</td>\n<td>2</td>\n</tr>\n<tr>\n<td>13</td>\n<td>Ear and mastoid</td>\n<td>114,307</td>\n<td>2.5</td>\n<td>128,297</td>\n<td>3.07</td>\n<td>13,990</td>\n<td>11</td>\n</tr>\n<tr>\n<td>14</td>\n<td>Nervous system</td>\n<td>99,963</td>\n<td>2.2</td>\n<td>47,965</td>\n<td>1.15</td>\n<td>51,998</td>\n<td>108</td>\n</tr>\n<tr>\n<td>15</td>\n<td>Infectious disease</td>\n<td>145,684</td>\n<td>3.2</td>\n<td>103,486</td>\n<td>2.47</td>\n<td>42,198</td>\n<td>41</td>\n</tr>\n<tr>\n<td>16</td>\n<td>Digestive</td>\n<td>125,438</td>\n<td>2.7</td>\n<td>151,064</td>\n<td>3.61</td>\n<td>25,626</td>\n<td>17</td>\n</tr>\n<tr>\n<td>18</td>\n<td>Genitor-urinary</td>\n<td>85,042</td>\n<td>1.9</td>\n<td>131,022</td>\n<td>3.13</td>\n<td>45,980</td>\n<td>35</td>\n</tr>\n<tr>\n<td>19</td>\n<td>Skin and subcutaneous</td>\n<td>200,967</td>\n<td>4.4</td>\n<td>233,831</td>\n<td>5.59</td>\n<td>32,864</td>\n<td>14</td>\n</tr>\n<tr>\n<td>20</td>\n<td>Blood disease</td>\n<td>11,717</td>\n<td>0.3</td>\n<td>14,214</td>\n<td>0.34</td>\n<td>2,497</td>\n<td>18</td>\n</tr>\n<tr>\n<td>21</td>\n<td>Pregnancy and childbirth</td>\n<td>40,170</td>\n<td>0.9</td>\n<td>76,677</td>\n<td>1.83</td>\n<td>36,507</td>\n<td>48</td>\n</tr>\n<tr>\n<td>22</td>\n<td>Signs and symptoms</td>\n<td>273,554</td>\n<td>6.0</td>\n<td>252,137</td>\n<td>6.03</td>\n<td>21,417</td>\n<td>8</td>\n</tr>\n<tr>\n<td>23</td>\n<td>Preventative</td>\n<td>1,024,505</td>\n<td>22.4</td>\n<td>1,041,530</td>\n<td>24.9</td>\n<td>17,025</td>\n<td>2</td>\n</tr>\n<tr>\n<td>24</td>\n<td>Congenital abnormality</td>\n<td>7,624</td>\n<td>0.2</td>\n<td>4,127</td>\n<td>0.1</td>\n<td>3,497</td>\n<td>85</td>\n</tr>\n<tr>\n<td>25</td>\n<td>Disability</td>\n<td>204</td>\n<td>0.0</td>\n<td>2,383</td>\n<td>0.06</td>\n<td>2,179</td>\n<td>91</td>\n</tr>\n<tr>\n<td>26</td>\n<td>Other</td>\n<td>872</td>\n<td>0.0</td>\n<td>31,047</td>\n<td>0.74</td>\n<td>30,175</td>\n<td>97</td>\n</tr>\n</tbody>\n</table>"
+                                    ],
+                                    "title": "Primary reasons for a doctor\u2019s visit, 2001.",
+                                    "type": "table"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "table10",
+                                    "label": "Table 10",
+                                    "tables": [
+                                        "<table>\n<thead>\n<tr>\n<th>BTOS</th>\n<th>Name</th>\n<th>Medicare Aust.</th>\n<th>HealthMod</th>\n<th>Absolute Difference</th>\n<th>% Difference</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>0101</td>\n<td>Un-referred attendances \u2013 GP</td>\n<td>91,952,523</td>\n<td>95,998,090</td>\n<td>4,045,567</td>\n<td>4.4</td>\n</tr>\n<tr>\n<td>0102</td>\n<td>Un-referred attendances -enhanced primary care</td>\n<td>323,056</td>\n<td>503,860</td>\n<td>180,804</td>\n<td>56.0</td>\n</tr>\n<tr>\n<td>0103</td>\n<td>Un-referred attendances \u2013 other</td>\n<td>8,059,031</td>\n<td>9,321,414</td>\n<td>1,262,383</td>\n<td>15.7</td>\n</tr>\n<tr>\n<td>0200</td>\n<td>Specialist attendances</td>\n<td>19,656,169</td>\n<td>19,164,702</td>\n<td>491,467</td>\n<td>\u22122.5</td>\n</tr>\n<tr>\n<td>0300</td>\n<td>Obstetrics</td>\n<td>1,470,160</td>\n<td>1,459,591</td>\n<td>10,569</td>\n<td>\u22120.7</td>\n</tr>\n<tr>\n<td>0400</td>\n<td>Anaesthetics</td>\n<td>2,140,921</td>\n<td>1,979,525</td>\n<td>161,396</td>\n<td>\u22127.5</td>\n</tr>\n<tr>\n<td>0700</td>\n<td>Operations</td>\n<td>6,039,494</td>\n<td>6,726,906</td>\n<td>687,412</td>\n<td>11.4</td>\n</tr>\n<tr>\n<td>0800</td>\n<td>Assistance at operations</td>\n<td>279,281</td>\n<td>309,925</td>\n<td>30,644</td>\n<td>11.0</td>\n</tr>\n<tr>\n<td>1000</td>\n<td>Radiotherapy and therapeutic nuclear medicine</td>\n<td>642,033</td>\n<td>599,165</td>\n<td>42,868</td>\n<td>\u22126.7</td>\n</tr>\n<tr>\n<td>1100</td>\n<td>Miscellaneous</td>\n<td>5,525,245</td>\n<td>5,436,272</td>\n<td>88,973</td>\n<td>\u22121.6</td>\n</tr>\n<tr>\n<td>Total</td>\n<td/>\n<td>134,617,753</td>\n<td>141,499,450</td>\n<td>6,881,697</td>\n<td>5.1</td>\n</tr>\n</tbody>\n</table>"
+                                    ],
+                                    "title": "Total doctor services, by broad type of service, 2001.",
+                                    "type": "table"
+                                }
+                            ],
+                            "type": "figure"
+                        }
+                    ],
+                    "id": "s5-1",
+                    "title": "5.1 Model results",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "The initial step towards costing of doctor services was the allocation of whether the services were bulk-billed or not. The services that are bulk-billed have the same charge and benefit. Bulk-billing was randomly allocated based on the type of service and whether the service was provided by a general practitioner. For obstetric services the bulk-billing of services was also conditioned by the age of the woman.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Costing of obstetric doctor services was trialed to see if the methodology for attaching cost of services was appropriate. Obstetrics was chosen for this initial trial as it had one of the best outcomes with regard to validation of number of services provided and the number of people receiving these services (<a href=\"#table10\">Table 10</a>). Administrative data from Medicare Australia was used in the determination of costs of services. The average rates charged for the type of service based on whether it was provided by a GP or specialist, and whether the service was bulk-billed or not, were attached to the records of women who have used the service. The total charge to a record is simply the number of services multiplied by the average cost per service.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Data on the benefit received for services as supplied by Medicare Australia was the average across those that were and were not receiving the Medicare safety net. Thus, consideration needs to be given to possible adjustments to ensure that those on safety net receive more benefit and those not on safety net receive less benefit before the final benefit received by those that used the service is attributed.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Finally, out-of-pocket cost is then simply the difference between the rate charged and the benefit received.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The results from this process look reasonable with HealthMod producing estimates for total charges for obstetric service (excluding hospital services) within 10 per cent of the Medicare Australia expenditure target.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s5-2",
+                    "title": "5.2 Costing of doctor services",
+                    "type": "section"
+                }
+            ],
+            "id": "s5",
+            "title": "5. Imputation of doctor visits",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "Microsimulation modelling of the health sector is exceptionally challenging, in part because of the complexity of the system but also because of the limitations with data availability and quality. Three main steps were taken to overcome limitations in the Australian 2001 NHS survey as the base file for HealthMod.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "For the purposes of the HealthMod project, it was important to enhance the 2001 NHS confidentialised unit record file to include family structure. This allows the modelling of key policy issues, such as safety net thresholds, which are measured at the family level not the person level. To achieve this enhancement, statistical matching was used. The quality of the matching is dependent on the variables constrained in the matching process. These variables need to reflect the aim of the matching. For HealthMod, the emphasis was on trying to get family structure in terms of income unit type and income levels as close as possible to reported distributions. The statistical matching allowed the retention of the health information available on 2001 NHS whilst borrowing the family structure from another national survey. Overall, the synthetic families created through the statistical matching are of a sufficient quality to provide confidence in the income unit level analyses.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The results from the validation of short-term health conditions indicate that recent illness is being adequately represented on HealthMod in comparison to the earlier 1995 NHS. There are no alternative data sources to allow external benchmarking. Because the pattern of visits to a doctor are based on health conditions (both longterm and short-term), as well as socio-economic factors, it was important to ensure the imputation of short-term health conditions was reliable. This appears to have been achieved.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The estimates on doctor visits produced by HealthMod also satisfactorily approximate the distributions within the 1995 NHS as well as administrative data from Medicare Australia.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "In conclusion, the application of the methods outlined above and use of complementary data sets have significantly improved the usefulness of the 2001 NHS as a basefile for HealthMod. This has enabled improved modelling of the Australian Medicare system, a key policy platform for ensuring all Australians have access to free or low cost health services.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s6",
+            "title": "6. Conclusions",
+            "type": "section"
+        }
+    ],
+    "references": [
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Abello, A",
+                        "preferred": "A Abello"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Lymer, S",
+                        "preferred": "S Lymer"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Brown, L",
+                        "preferred": "L Brown"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Harding, A",
+                        "preferred": "A Harding"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Phillips, B",
+                        "preferred": "B Phillips"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2008",
+            "id": "bib1",
+            "pages": "2",
+            "title": "Enhancing the Australian National Health Survey Data for Use in a Microsimulation Model of Pharmaceutical Drug Usage and Cost",
+            "type": "web",
+            "uri": "http://jasss.soc.surrey.ac.uk/11/3/2.html",
+            "volume": "11",
+            "website": "Journal of Artificial Societies and Social Simulation"
+        },
+        {
+            "authors": [
+                {
+                    "name": "Australian Bureau of Statistics",
+                    "type": "group"
+                }
+            ],
+            "date": "2000",
+            "details": "Household Expenditure Survey, Australia, User Guide, 1998\u20131999, Catalogue No. 6527.0, Canberra",
+            "id": "bib2",
+            "title": "Household Expenditure Survey, Australia, User Guide, 1998\u20131999",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": "Australian Bureau of Statistics",
+                    "type": "group"
+                }
+            ],
+            "date": "2003",
+            "details": "National Health Survey: User\u2019s Guide, 2001, Catalogue No. 4363.0.55.001, Canberra",
+            "id": "bib3",
+            "title": "National Health Survey: User\u2019s Guide, 2001",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": "Australian Bureau of Statistics",
+                    "type": "group"
+                }
+            ],
+            "date": "2003",
+            "details": "Occasional Paper: Long-term Health Conditions \u2013 A Guide to Time Series Comparability from the National Health Survey, Australia, Catalogue No. 4816.0.55.001, Canberra",
+            "id": "bib4",
+            "title": "Occasional Paper: Long-term Health Conditions \u2013 A Guide to Time Series Comparability from the National Health Survey, Australia",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": "Australian Bureau of Statistics",
+                    "type": "group"
+                }
+            ],
+            "date": "2004",
+            "details": "Occasional Paper: Health Risk Factors \u2013 a Guide to Time Series Comparability from the National Health Survey, Australia, Catalogue No. 4826.0.55.001, Canberra",
+            "id": "bib5",
+            "title": "Occasional Paper: Health Risk Factors \u2013 a Guide to Time Series Comparability from the National Health Survey, Australia",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": "Australian Institute of Health and Welfare",
+                    "type": "group"
+                }
+            ],
+            "date": "2007",
+            "details": "Health expenditure Australia 2005\u201306, Health and Welfare Expenditure Series no. 30. Cat. no. HWE 37. AIHW, Canberra",
+            "id": "bib6",
+            "title": "Health expenditure Australia 2005\u201306",
+            "type": "unknown"
+        },
+        {
+            "articleTitle": "GIS and microsimulation for local labour market policy analysis",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Ballas, D",
+                        "preferred": "D Ballas"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Clarke, GP",
+                        "preferred": "GP Clarke"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2000",
+            "id": "bib7",
+            "journal": "Computers, environment and Urban Systems",
+            "pages": {
+                "first": "305",
+                "last": "330",
+                "range": "305\u2013330"
+            },
+            "type": "journal",
+            "volume": "24"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Ballas, D",
+                        "preferred": "D Ballas"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Kingston, R",
+                        "preferred": "R Kingston"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Stillwell, J",
+                        "preferred": "J Stillwell"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "Recent Advances in Design and Decision Support Systems in Architecture and Urban Planning",
+            "chapterTitle": "Using a spatial microsimulation decision support system for policy scenario analysis",
+            "date": "2004",
+            "editors": [
+                {
+                    "name": {
+                        "index": "van Leeuwen, JP.",
+                        "preferred": "JP. van Leeuwen"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Timmermans, HJP",
+                        "preferred": "HJP Timmermans"
+                    },
+                    "type": "person"
+                }
+            ],
+            "id": "bib8",
+            "pages": {
+                "first": "177",
+                "last": "191",
+                "range": "177\u2013191"
+            },
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "The Netherlands"
+                        ]
+                    },
+                    "formatted": [
+                        "The Netherlands"
+                    ]
+                },
+                "name": [
+                    "Kluwer Academic Publishers"
+                ]
+            },
+            "type": "book-chapter"
+        },
+        {
+            "articleTitle": "Building a spatial microsimulation-based planning support system for local policy analysis",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Ballas, D",
+                        "preferred": "D Ballas"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Kingston, R",
+                        "preferred": "R Kingston"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Stillwell, J",
+                        "preferred": "J Stillwell"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Jin, J",
+                        "preferred": "J Jin"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2007",
+            "id": "bib9",
+            "journal": "Environment and Planning A",
+            "pages": {
+                "first": "2482",
+                "last": "2499",
+                "range": "2482\u20132499"
+            },
+            "type": "journal",
+            "volume": "39"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Biggs, A",
+                        "preferred": "A Biggs"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2004",
+            "details": "Medicare Background Brief, Australian Parliamentary Library Current Issues E-Brief @, www.aph.gov.au/library/intguide/SP/medicare.htm",
+            "id": "bib10",
+            "title": "Australian Parliamentary Library Current Issues E-Brief @",
+            "type": "unknown",
+            "uri": "http://www.aph.gov.au/library/intguide/SP/medicare.htm"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Britt, H",
+                        "preferred": "H Britt"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Miller, GC",
+                        "preferred": "GC Miller"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Know, S",
+                        "preferred": "S Know"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Charles, J",
+                        "preferred": "J Charles"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Valenti, L",
+                        "preferred": "L Valenti"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Pan, Y",
+                        "preferred": "Y Pan"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Henderson, J",
+                        "preferred": "J Henderson"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Bayram, C",
+                        "preferred": "C Bayram"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "O\u2019Halloran, J",
+                        "preferred": "J O\u2019Halloran"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Ng, A",
+                        "preferred": "A Ng"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "General Practice Activity in Australia 2003\u201304",
+            "date": "2004",
+            "id": "bib11",
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "Canberra"
+                        ]
+                    },
+                    "formatted": [
+                        "Canberra"
+                    ]
+                },
+                "name": [
+                    "Australian Institute of Health and Welfare"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "articleTitle": "Moving Towards an Improved MicroSimulation Model of the Australian Pharmaceutical Benefits Scheme",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Brown, L",
+                        "preferred": "L Brown"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Abello, A",
+                        "preferred": "A Abello"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Phillips, B",
+                        "preferred": "B Phillips"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Harding, A",
+                        "preferred": "A Harding"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2004",
+            "id": "bib12",
+            "journal": "Australian Economic Review",
+            "pages": {
+                "first": "41",
+                "last": "61",
+                "range": "41\u201361"
+            },
+            "type": "journal",
+            "volume": "37"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Cohen, M",
+                        "preferred": "M Cohen"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1991",
+            "details": "Statistical matching and microsimulation models, The Uses of Microsimulation Modelling, Review and Recommendations, 1, National Academy Press, Washington",
+            "id": "bib13",
+            "title": "The Uses of Microsimulation Modelling, Review and Recommendations",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": "Commonwealth Department of Health and Ageing (DHA)",
+                    "type": "group"
+                }
+            ],
+            "date": "2006",
+            "id": "bib14",
+            "title": "http://www9.health.gov.au/mbs/",
+            "type": "web",
+            "uri": "http://www9.health.gov.au/mbs/",
+            "website": "Medicare Benefits Schedule"
+        },
+        {
+            "authors": [
+                {
+                    "name": "Commonwealth Department of Treasury",
+                    "type": "group"
+                }
+            ],
+            "date": "2002",
+            "id": "bib15",
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "Canberra"
+                        ]
+                    },
+                    "formatted": [
+                        "Canberra"
+                    ]
+                },
+                "name": [
+                    "Treasury"
+                ]
+            },
+            "source": "Intergenerational report 2002\u201303. 2002\u201303. Budget paper No. 5.",
+            "title": "Intergenerational report 2002\u201303. 2002\u201303. Budget paper No. 5.",
+            "type": "report"
+        },
+        {
+            "authors": [
+                {
+                    "name": "Commonwealth Department of Treasury",
+                    "type": "group"
+                }
+            ],
+            "date": "2007",
+            "id": "bib16",
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "Canberra"
+                        ]
+                    },
+                    "formatted": [
+                        "Canberra"
+                    ]
+                },
+                "name": [
+                    "Treasury"
+                ]
+            },
+            "source": "Intergenerational report 2007",
+            "title": "Intergenerational report 2007",
+            "type": "report"
+        },
+        {
+            "authors": [
+                {
+                    "name": "Commonwealth Department of Treasury",
+                    "type": "group"
+                }
+            ],
+            "date": "2010",
+            "details": "Intergenerational Report 2010 Australia to 2050: future challenges Canberra, Commonwealth of Australia",
+            "id": "bib17",
+            "title": "Intergenerational Report 2010 Australia to 2050: future challenges Canberra, Commonwealth of Australia",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": "Medicare Australia",
+                    "type": "group"
+                }
+            ],
+            "date": "2006",
+            "id": "bib18",
+            "title": "http://www.medicareaustralia.gov.au",
+            "type": "web",
+            "uri": "http://www.medicareaustralia.gov.au"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Moriarty, C",
+                        "preferred": "C Moriarty"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Scheuren, F",
+                        "preferred": "F Scheuren"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2001",
+            "details": "Statistical Matching: Pitfalls of Current Procedures, in Proceedings of the, Annual Meeting of the American Statistical Association, August 5\u20139, 2001",
+            "id": "bib19",
+            "title": "Statistical Matching: Pitfalls of Current Procedures",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Radner, DB",
+                        "preferred": "DB Radner"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Allen, R",
+                        "preferred": "R Allen"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Gonzalez, ME",
+                        "preferred": "ME Gonzalez"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Jabine, TB",
+                        "preferred": "TB Jabine"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Muller, HJ",
+                        "preferred": "HJ Muller"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1980",
+            "details": "Report on Exact and Statistical Matching Techniques, Statistical Policy Working Paper 5, U.S. Government Printing Office",
+            "id": "bib20",
+            "title": "Report on Exact and Statistical Matching Techniques, Statistical Policy Working Paper 5, U.S. Government Printing Office",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Rassler, S",
+                        "preferred": "S Rassler"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "Statistical Matching: A Frequentist Theory, Practical Applications, and Alternative Bayesian Approaches",
+            "date": "2002",
+            "id": "bib21",
+            "publisher": {
+                "name": [
+                    "Springer-Verlag"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Rodgers, W",
+                        "preferred": "W Rodgers"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1984",
+            "details": "Journal of Business and Economic Statistics, 2, 1, January",
+            "id": "bib22",
+            "title": "An Evaluation of Statistical Matching",
+            "type": "unknown"
+        },
+        {
+            "articleTitle": "Combining sample and census data in small area estimates: Iterative proportional fitting with standard software",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Simpson, L",
+                        "preferred": "L Simpson"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Tanner, M",
+                        "preferred": "M Tanner"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2005",
+            "id": "bib23",
+            "journal": "The Professional Geographer",
+            "pages": {
+                "first": "222",
+                "last": "234",
+                "range": "222\u2013234"
+            },
+            "type": "journal",
+            "volume": "57"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Taylor, R",
+                        "preferred": "R Taylor"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Gomulka, J",
+                        "preferred": "J Gomulka"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Sutherland, H",
+                        "preferred": "H Sutherland"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2000",
+            "details": "Paper presented at the, 26th General Conference of the International Association for Research in Income and Wealth, Cracow, Poland, 27 August to 2 September",
+            "id": "bib24",
+            "title": "Creating Order out of Chaos? Identifying Homogeneous Groups of Households Across Multiple Datasets",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": "Technical Working Group ABS-NATSEM Collaboration on Statistical Matching",
+                    "type": "group"
+                }
+            ],
+            "date": "2004",
+            "details": "Statistical Matching of the HES and NHS: An Exploration of Issues in the Use of Unconstrained and Constrained Approaches in Creating a Basefile for a Microsimulation Model of the Pharmaceutical Benefits Scheme. ABS Methodology Advisory Committee Paper, June",
+            "id": "bib25",
+            "title": "Statistical Matching of the HES and NHS: An Exploration of Issues in the Use of Unconstrained and Constrained Approaches in Creating a Basefile for a Microsimulation Model of the Pharmaceutical Benefits Scheme. ABS Methodology Advisory Committee Paper",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Torra, V",
+                        "preferred": "V Torra"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Abowd, JM",
+                        "preferred": "JM Abowd"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Domingo-Ferrer, J",
+                        "preferred": "J Domingo-Ferrer"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2006",
+            "details": "233\u2013242, Privacy in Statistical Databases, LNCS 4302",
+            "id": "bib26",
+            "title": "Using Mahalanobis distance-based record linkage for disclosure risk assessment",
+            "type": "unknown"
+        }
+    ],
+    "acknowledgements": [
+        {
+            "text": "The construction of the current version of the HealthMod model was supported by an Australian Research Council linkage grant (no. LP0454275), a National Health and Medical Research Council Health Service Research Grant (Grant ID 334114) and by Industry Partners to the grant \u2013 Medicare Australia, the Productivity Commission, the Australian Bureau of Statistics, the Australian Institute of Health and Welfare, and the NSW Department of Health.",
+            "type": "paragraph"
+        }
+    ],
+    "-meta": {
+        "patched": true
+    },
+    "stage": "published"
+}

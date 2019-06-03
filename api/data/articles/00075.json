@@ -1,0 +1,2939 @@
+{
+    "status": "vor",
+    "id": "00075",
+    "version": 1,
+    "type": "research-article",
+    "doi": "10.34196/ijm.00075",
+    "authorLine": "Holly Sutherland, Francesco Figari",
+    "title": "EUROMOD",
+    "published": "2013-04-30T00:00:00Z",
+    "versionDate": "2013-04-30T00:00:00Z",
+    "statusDate": "2013-04-30T00:00:00Z",
+    "volume": 6,
+    "issue": 1,
+    "elocationId": "n/a",
+    "pdf": "http://web:8082/00075/ijm-00075.pdf",
+    "subjects": [
+        {
+            "id": "taxes-benefits",
+            "name": "Taxes and benefits"
+        }
+    ],
+    "abstract": {
+        "content": [
+            {
+                "text": "This paper aims to provide an introduction to the current state of the art of EUROMOD, the European Union tax-benefit microsimulation model. It explains the original motivations for building a multi-country EU-wide model and summarises its current organisation. It provides an overview of EUROMOD components, covering its policy scope, the input data, the validation process and some technical aspects such as the tax-benefit programming language and the user interface. The paper also reviews some recent applications of EUROMOD and, finally, considers future developments.",
+                "type": "paragraph"
+            }
+        ]
+    },
+    "copyright": {
+        "license": "CC-BY-4.0",
+        "holder": "Sutherland and Figari",
+        "statement": "This article is distributed under the terms of the <a href=\"http://creativecommons.org/licenses/by/4.0/\">Creative Commons Attribution License</a>, which permits unrestricted use and redistribution provided that the original author and source are credited."
+    },
+    "authors": [
+        {
+            "affiliations": [
+                {
+                    "address": {
+                        "components": {
+                            "country": "United Kingdom"
+                        },
+                        "formatted": [
+                            "United Kingdom"
+                        ]
+                    },
+                    "name": [
+                        "Institute for Social and Economic Research",
+                        "University of Essex"
+                    ]
+                }
+            ],
+            "emailAddresses": [
+                "hollys@essex.ac.uk"
+            ],
+            "name": {
+                "index": "Sutherland, Holly",
+                "preferred": "Holly Sutherland"
+            },
+            "type": "person"
+        },
+        {
+            "affiliations": [
+                {
+                    "address": {
+                        "components": {
+                            "country": "Italy"
+                        },
+                        "formatted": [
+                            "Italy"
+                        ]
+                    },
+                    "name": [
+                        "University of Insubria and ISER University of Essex"
+                    ]
+                }
+            ],
+            "emailAddresses": [
+                "francesco.figari@uninsubria.it"
+            ],
+            "name": {
+                "index": "Figari, Francesco",
+                "preferred": "Francesco Figari"
+            },
+            "type": "person"
+        }
+    ],
+    "keywords": [
+        "EUROMOD",
+        "microsimulation",
+        "europe"
+    ],
+    "body": [
+        {
+            "content": [
+                {
+                    "text": "EUROMOD is the European Union tax-benefit microsimulation model. It simulates individual and household tax liabilities and benefit entitlements according to the policy rules in place in each member state. Its main distinguishing feature is that it covers all European countries within the same framework allowing for flexibility of the analysis and comparability of the results. Generally, EUROMOD is much more flexible than a national microsimulation model and this flexibility is essential if consistency (of results across countries), transferability (of tax-benefit system components) and use by multiple users are to be achieved. The potential trade-offs between flexibility and user friendliness are dealt with through the adoption of a user interface specifically designed for a multi-country microsimulation model.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "This paper aims to provide an introduction to the current state of the art of EUROMOD development and its applications, given the further enhancements of the model and its wider use since the most recent review (<a href=\"#bib70\">Sutherland, 2007</a>).",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "EUROMOD is a static model in the sense that the arithmetic simulation of taxes and benefits abstract from potential behavioural reactions of individuals and the socio-demographic characteristics of the population are assumed to be fixed over time. EUROMOD calculates, in a comparable manner and based on individual micro-data representative of the national populations of interest, the static effects of the tax-benefit system on household incomes for the population of each country and for the EU as a whole. EUROMOD is of value both in terms of assessing the effects of consolidated tax-benefit policies and in understanding how tax-benefit policy reforms may affect income distribution, work incentives and government budgets.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "EUROMOD can be used to examine the effects of actual changes in policy over time, for example to show the extent to which changes in public policies have contributed to reducing (or increasing) income poverty or inequality. It can also be used to simulate the effects of proposed, alternative or hypothetical policy changes in each member state, as well as for exploring the implications of alternative economic or demographic scenarios at national and EU levels.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Moreover, EUROMOD calculations can run on a set of hypothetical families that the user can define based on a number of assumptions about family and labour market characteristics. This allows the users to compare the effects of different tax-benefit systems and to derive the monetary resources available to the individuals belonging to these families under different circumstances (for example, by drawing the budget constraint charts which show the disposable income at different hours of work based on the assumed hourly wage).",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "EUROMOD is unique in being a research tool that is relevant not only at national level and as an integrated tool for European comparative social science research, but also as a model of the EU as a whole.<sup><a href=\"#fn1\">1</a></sup> Thus EUROMOD is of value in understanding how different policies in different countries may contribute to country specific or common objectives through (i) cross-country comparison of specific tax-benefit instruments, (ii) policy and whole tax-benefit system swapping, and (iii) analysis of the impact of common changes across countries (<a href=\"#bib55\">Lietz &amp; Mantovani, 2007</a>).",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Static calculations performed by EUROMOD may inform other more sophisticated economic models which aim to capture, for instance, the effects of policy or socio-demographic changes on individual behaviour or macro-economic and environmental consequences. Recently, EUROMOD has been extensively used as the basis for labour supply models (see among others, <a href=\"#bib13\">Bargain <i>et al</i>., 2012c</a>).",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "EUROMOD is unusual in that it is openly accessible. It is intended for academic and noncommercial policy-relevant analysis and it is in principle available for use by any researcher subject to permission to access the micro-data that are used as input to the model. Moreover, the EUROMOD framework can be used to build fiscal microsimulation models for non-EU countries in a much more cost-effective way than starting from scratch. This has been the case for the spin-off models appeared recently for South Africa (SAMOD, see <a href=\"#bib74\">Wilkinson, 2009</a>), Serbia (SRMOD, see <a href=\"#bib75\">\u017darkovi\u0107-Raki\u0107, 2010</a>) and Russia (RUSMOD, see <a href=\"#bib65\">Popova, 2012</a>) which have confirmed the great value of knowledge transfer from the EUROMOD community to other users.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "EUROMOD is not only relevant to academics but also of potential use for national and European policy makers, as the model itself embodies a knowledge base about different and changing national policy structures and systems within a comparative framework. See the web site of the EU Social Situation Observatory (<a href=\"http://www.socialsituation.eu\">www.socialsituation.eu</a>) for recent policy applications of the model and recent publications from DG-EMPL (<a href=\"#bib27\">European Commission, 2012</a>; <a href=\"#bib28\">2013a</a>) and DG-ECFIN (<a href=\"#bib29\">European Commission, 2013b</a>) of the European Commission, which increasingly make use of EUROMOD results.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Moreover, in order to satisfy the increasing need of public availability of ex-ante policy evaluation tools, more recently EUROMOD has started to be used as the \u201cengine\u201d behind simplified national web-based microsimulation models which allow a wider audience of users to assess the distributional and budgetary effects of planned or hypothetical policy reforms (see, for example, <a href=\"http://www.flemosi.be\">www.flemosi.be</a>).",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "See the official EUROMOD web site (<a href=\"https://www.iser.essex.ac.uk/euromod\">https://www.iser.essex.ac.uk/euromod</a>) for up-to-date information and detailed instructions on how to access the model.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The paper is structured as follows. <a href=\"#s2\">Section 2</a> summarises the original motivations for building EUROMOD and its current organisation. <a href=\"#s3\">Section 3</a> gives an overview of EUROMOD components, highlighting the policy scope, input data and the validation process, followed by a brief description of the tax-benefit programming language and the user interface in <a href=\"#s4\">Section 4</a>. <a href=\"#s5\">Section 5</a> reviews some recent applications based on EUROMOD. In <a href=\"#s6\">Section 6</a> future developments and limitations are discussed.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s1",
+            "title": "1. EUROMOD: A Pan-European research infrastructure",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "The motivations which inspired the first EUROMOD prototype (<a href=\"#bib69\">Sutherland, 1997</a>) are still valid after more than 15 years of accumulated expertise.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The pioneering work by <a href=\"#bib2\">Atkinson <i>et al</i>. (1988)</a> looked at the implications of applying the British tax system based on personal deductions to the French population and replacing the existing quotient familial. Some years later, <a href=\"#bib15\">Callan and Sutherland (1997)</a> explored the impact of basic income schemes in the UK and Ireland but they could not include more European countries in a consistent way due to limitations of the national models available at that time. The natural option seemed to be the development of EUROMOD, a consistent European-wide model especially designed to maximise comparability across countries, recognising that national models tend to run with national assumptions and conventions \u201chardwired\u201d in, and that access to many models at once may be difficult to negotiate, if possible at all (<a href=\"#bib70\">Sutherland, 2007</a>).",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The development of EUROMOD has been sustained by a succession of European Commission research grants and the involvement of a large group of researchers from universities, research institutes and ministries from all European countries, collaborating in the project and providing national expertise. The management and scientific coordination has been led by Professor Holly Sutherland with a team of researchers based originally at the University of Cambridge and now at the Institute for Social and Economic Research (ISER) at the University of Essex.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "EUROMOD has provided the impetus for the construction of associated national models in countries where they did not exist before or were not generally available (among others, Austria, Greece, Latvia, Luxembourg, Malta, Portugal, Spain). Moreover, many national team members are involved in the development and use of national models<sup><a href=\"#fn2\">2</a></sup> which facilitate a fruitful interaction and mutual ongoing learning.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s2",
+            "title": "2. Recent history and current organisation",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "content": [
+                        {
+                            "text": "As with most of static microsimulation models, EUROMOD combines information on relevant policy rules with detailed and representative micro-data on individual and household circumstances drawn from national household income surveys and other data sources. The results of EUROMOD calculations are stored at the micro level and can be easily analysed with any statistical software. Moreover, EUROMOD can also be used to calculate a set of work incentive indicators (Effective Marginal Tax Rates, Replacement Rates and Participation Tax Rates) which gives a first indication of the likely impact of policy reforms on individual work behaviour.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "EUROMOD aims to simulate as much as possible of the tax and benefit components of household disposable income. Generally, the following instruments are simulated in all countries: income taxes (national and local), social contributions (paid by the employees, self-employed and employers), family benefits, housing benefits, social assistance and other income-related benefits. Instruments which are not simulated are taken directly from the data and included in the concept of disposable income. This is the case for most contributory benefits and pensions (due to the lack of information on previous employment and contribution history in the cross-sectional survey data used as input of EUROMOD) and disability benefits (because of the need to know the nature and severity of the disability, which is also not present in the data).",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The extent of these types of benefits varies across countries. For example, in some countries it is possible to simulate non-contributory elements of the pension system; while in countries without such pensions, no component of the pension system can be simulated. Moreover, EUROMOD simulates unemployment benefits based on assumptions related to individual characteristics (e.g. previous earnings) not available in the cross-sectional input data. The simulation of unemployment benefits is mainly intended for the calculation of replacement rates.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Currently (i.e. the latest EUROMOD public version F6.0 released in August 2012) EUROMOD simulates the policy systems up to 2010 for all EU 27 countries. The national policy systems have been introduced into EUROMOD through a three stage process; as a consequence, 2005 systems are modelled for nine countries; 2006 systems for eighteen; and from 2007 to 2010 system for all the 27 EU countries. It is planned that the F7.0 release in summer 2013 will cover policy systems up to 2012 for all EU 27 countries. The simulations run on several alternative input microdatasets mainly starting from 2006 up to 2008. Overall, there are more than 250 policy-data-country combinations at the disposal of the user which have been validated. The ongoing EUROMODupdate2 project aims at updating policy systems annually and data on an annual or biannual basis.<sup><a href=\"#fn3\">3</a></sup> Descriptive statistics are published regularly on the EUROMOD web pages, representing a first reference point for up-to-date baseline statistics produced by the public version of the model. In this issue, <a href=\"#bib48\">Jara and Tumino (2013)</a> provide a comprehensive overview of the redistributive and work incentive effects of the tax-benefit systems across the 27 European countries.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s3-1",
+                    "title": "3.1 Policy scope and simulation",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "Most of EUROMOD input data are derived from the European Union Statistics on Income and Living Conditions (EU-SILC) data as released by Eurostat (<a href=\"#bib30\">Eurostat, 2012</a>). In some countries (Belgium, Bulgaria, the Czech Republic, Greece, Spain, Italy, Lithuania, Luxembourg, Austria, Poland and Slovakia), the national version of SILC \u2013 provided by national statistics institutes \u2013 is used directly or to complement the EU version due to the availability of more detailed variables. In some circumstances, different or additional national surveys are used (e.g. the Family Resources Survey in the UK which will become the basis of the SILC from 2013).",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The advantages of using EU-SILC in terms of comparability across countries, efficiency in developing and maintaining a microsimulation model for many countries, complementarity with other key social indicators (e.g. material deprivation and work intensity), possibility to use EUROMOD to evaluate the progress towards the EU 2020 official targets for the promotion of social inclusion, and simplification of access arrangements counterbalances some limitations of the data. The major drawbacks are common to other survey data. In particular, the coverage of financial income is generally low with an impact on the simulation of taxes on capital income. Moreover, the lack of information about assets and the aggregation of income variables at annual level do not help in defining precisely the means-tests used in the simulation of social assistance programmes. In addition, the Eurostat version of the SILC provides information on income components in harmonised form. This involves the aggregation of benefits according to function (e.g. unemployment, old age). In preparing the input database for EUROMOD the information on the individual benefit payments must be recovered using imputation of some kind. This process inevitably reduces the precision of estimates using these data (<a href=\"#bib36\">Figari <i>et al</i>., 2007</a>).",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The EUROMOD input database contains information at the individual level on household demographic, labour market characteristics, gross market income and all other income sources (i.e. pensions, public transfers and private incomes). The grossing-up survey weights are included in the input data and used in the analysis in order to correct for non-response and sampling error and to obtain aggregate estimates at the population level.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "If gross income values are not directly recorded during the survey operations and are imputed in a non-satisfactory way, a net-to-gross procedure is applied to the net income variables in order to derive the gross values used in the policy simulation.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Moreover, a standardised approach of defining and naming the variables (both in input and output EUROMD data, see <a href=\"#bib68\">Sutherland <i>et al</i>., 2008</a>) enables the user to recognise similar tax-benefit components across countries and facilitates the possibility to adapt different data sources as EUROMOD input data (see <a href=\"#bib22\">Dal Bianco and Zantomio (2013)</a> on the development of harmonized gross and net income measures in SHARE data by using EUROMOD or <a href=\"#bib72\">Vandelannoote <i>et al</i>. (2013)</a> who adapt the Flemish Families and Care Survey for a specific analysis focusing on the responsiveness of labour supply to different childcare arrangements).",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The \u201cbaseline\u201d simulations of a policy system are run on input data referring to the same income reference period (e.g. the baseline simulation of the 2007 policy system runs on 2008 EU-SILC data which income reference period is 2007). Nevertheless, the use of updating factors for each income source (i.e. Consumer Price Index, average earnings increase, legal variations in benefit amounts, or other specific indexes as appropriate) brings the income values from the income reference period up to the level of the policy year.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s3-2",
+                    "title": "3.2 Input data",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "Baseline systems in EUROMOD have been validated and tested at micro level (i.e. case-by-case validation) and macro level. The aggregate estimates for expenditure and number of recipients of each benefit (and revenue and number of tax payers of each tax) is regularly compared with the same information from external sources (e.g. administrative statistics and national microsimulation models, if available). Moreover, the simulated income distribution (in terms of poverty rates by age, income shares and overall inequality) has been compared with the income distribution recorded in the input data, and alternative sources if available.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The results of the validation exercises are reported in the Country Reports (available on the EUROMOD web pages) which also contain background information on the tax-benefit system for each country, a detailed description of all tax-benefit components simulated in EUROMOD, a general overview of the input data (including information on sample quality, weights, data adjustment, imputations and assumptions) and an extended summary of the validation process. Moreover, annual reports document the headline indicators produced by each new release of EUROMOD and discuss explanations for discrepancies between EUROMOD estimates and external aggregate statistics (<a href=\"#bib3\">Avram, Sutherland <i>et al</i>., 2012</a>; <a href=\"#bib47\">Jara, Sutherland <i>et al</i>., 2013</a>).",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The disposable income simulated by EUROMOD corresponds to market income and public pensions after taxes and social insurance contributions are deducted and cash benefits added. Due to lack of the necessary information, EUROMOD baseline results do not comprehensively take into account non take-up of benefits or tax evasion. Therefore, the legal rules are assumed to be universally respected and the costs of compliance and claiming are assumed to be zero. This can result in the over-estimation of taxes and benefits and gives rise to differences between EUROMOD estimates of disposable income and income values recorded in the underlying datasets (<a href=\"#bib34\">Figari <i>et al</i>., 2012a</a>). At the same time, estimates based on the assumption of full tax compliance and take-up can be interpreted as showing the intended effects of the system. Moreover, the estimates of theoretical benefit entitlements and tax liabilities are the key ingredient for the estimation of the extent and incidence of benefit non-take up (<a href=\"#bib60\">Matsaganis <i>et al</i>., 2010b</a>; <a href=\"#bib71\">Tasseva, 2012</a>) and tax evasion (<a href=\"#bib59\">Matsaganis <i>et al</i>., 2010a</a>) which is one of the research areas where the microsimulation models can play an important role.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "In countries characterised by high rates of benefit non take-up (among others, Belgium, France, Greece, Ireland, Romania, and the UK), a simple correction is included in EUROMOD by considering the take-up proportions reported on a caseload basis in external statistics. We impose that only the same percentage of people entitled to a given benefit, selected randomly in the sample, does in fact take up their entitlement. The non take-up correction is applied at the household level for each benefit separately, so that people entitled to the same benefits within a household exhibit the same take-up behaviour. In general we assume that take-up behaviour is not affected by changes in the size of benefit entitlement. However, by considering differential take-up proportions according to type of claimant some of this effect is captured.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "At the same time, in countries where tax evasion is a widespread phenomenon, which affect in a substantial way the macrovalidation of EUROMOD simulations (among others, Bulgaria, Greece and Italy), a simple correction is included in order to split some income sources (generally employment and self-employment income) recorded in the survey into a first component which is assumed to be reported to the tax authority and in a residual component which is assumed to be evaded (see <a href=\"#bib19\">Ceriani <i>et al</i>. 2013</a> in this issue).",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Both the corrections for benefit non take-up and tax evasion are documented in the Country reports and applied in a transparent way which is capable of being \u201cswitched off\u201d or adapted by the users, depending on the analysis that they wish to do.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s3-3",
+                    "title": "3.3 Validation of simulations and documentation",
+                    "type": "section"
+                }
+            ],
+            "id": "s3",
+            "title": "3. EUROMOD overview",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "EUROMOD constitutes a software platform made of a programming language specific to (static) tax-benefit calculations and generic enough to accommodate many different countries. The tax-benefit rules are stored and displayed in a very flexible modular system design in a standardised way for each country and each policy year simulated. The tax-benefit rules, expressed either as monetary or non-monetary values, act as parameters of EUROMOD functions. These functions constitute the building blocks of the EUROMOD tax-benefit modelling language read directly by the code. They are fully documented in a series of user manuals.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "EUROMOD code is written in C++ and compiled, meaning that the users have access to an executable file and they do not need to access the code itself. This is possible because there are no parts of the national tax-benefit systems that are hard-wired in the code and policy changes can be implemented without reprogramming the code itself. When a user runs EUROMOD, the code reads the tax-benefit rules stored in the user interface, implements such rules on the input data and produces an individual level output data with information coming from the input data and the tax-benefit simulation. The implementation of complex policy reforms is facilitated by the flexible definition of the major functions. These include the functions used to define the units of assessment (i.e. the group of people on which the tax-benefit rules are to be performed), the income lists (i.e. the aggregations of monetary variables used as input to tax-benefit algorithms) and the policy spine (i.e. the order of policy simulations).",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The current version of EUROMOD is the result of the expertise and the technical developments achieved over many years. The interface of the current public release is built using Microsoft Excel which is convenient but not always stable. A special-purpose standalone user interface, programmed using Microsoft .net Framework is currently in its testing phase. This promised to enhance the user-friendliness of the model and makes it completely independent of any other software.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Such a flexible and transparent framework has proved to be very useful to shortcut the process of building similar microsimulation models with potentially comparable outputs for any country.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s4",
+            "title": "4. Tax-benefit programming language and user interface",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "To give a complete list of all publications based on EUROMOD is beyond the scope of this article. In the following, we want to provide some insights into research areas where EUROMOD has been recently used and where it can play a central role in future research developments.",
+                    "type": "paragraph"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "Before the full availability of the EU-SILC data including both net and gross incomes in 2009, EUROMOD offered a remarkable contribution to economic research on the redistributive effects of tax-benefit policies across Europe, being the only available source of income microdata before and after government intervention for all European countries. <a href=\"#bib46\">Immervoll <i>et al</i>. (2006)</a> is one of the first and most cited empirical analysis on the redistributive effects of taxes and benefits in European countries. More recently, <a href=\"#bib64\">Paulus <i>et al</i>. (2010)</a> offer new insights into the redistributive role of the government transfers by considering the impact of the most important in-kind benefits (education, health, public housing), while <a href=\"#bib24\">Decoster <i>et al</i>. (2010)</a> look at the post-tax income distribution by taking into account indirect taxes as well.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Nevertheless, the strength of EUROMOD in producing tailored micro-level information emerges in a number of studies focusing on the redistributive aspects of specific tax-benefit policies implemented across Europe or across time.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "For example, <a href=\"#bib35\">Figari <i>et al</i>. (2011a)</a> explore the effects of tax-benefit systems on differences in income and incentives to earn income within couples, highlighting important gender effects of taxes and benefits. <a href=\"#bib37\">Figari <i>et al</i>. (2013)</a> describe the redistributive effects of Minimum Income schemes by comparing their coverage and adequacy for persons of working age in the European Union.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Looking at the overall tax-benefit system, Bargain in a series of papers develops and extends a methodology to quantify the relative effect of tax-benefit policy changes over time, by decomposing the overall effect in the contribution of the changes in the tax-benefit structure, in the underlying population and in the distribution of market income (<a href=\"#bib8\">Bargain &amp; Callan, 2010</a>; <a href=\"#bib6\">Bargain 2012a</a>, <a href=\"#bib7\">2012b</a>).",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s5-1",
+                    "title": "5.1 Redistributive effects of tax-benefit policies",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "One of the initial motivations for building a multi-country model at the European level came from the attempts to investigate the different characteristics of the tax-benefit systems, in order to evaluate the potential impact of \u201cborrowing\u201d policies in place in other countries. Such experiments are nowadays known as \u201cpolicy swapping\u201d exercises and they may be particular useful to understand the likely impact of any policies on a given population of interest, to capture the interaction between tax-benefit systems and the characteristics of such a population and to assess the effectiveness of the national policies.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Two areas of research have been investigated recently.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The first strand focuses on child benefits highlighting the relevance of policy swapping exercises in distinguishing between the effects of level of spending, policy structure and impacts due to the characteristics of national populations (<a href=\"#bib18\">Canto <i>et al</i>., 2012</a>; <a href=\"#bib50\">Levy <i>et al</i>., 2007</a>; <a href=\"#bib53\">2009</a>; <a href=\"#bib67\">Salanauskaite &amp; Verbist, 2013</a>). In a cross-country perspective, <a href=\"#bib38\">Figari <i>et al</i>. (2011b)</a> used EUROMOD simulations to suggest a new comprehensive measure of support given through tax-benefit systems to families with children, taking into account all provisions contingent on the presence of children and not only those channelled through benefits explicitly labelled for children.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The second strand is about in-work benefits which have been proposed and implemented in a number of European countries to make the tax-benefit system more favourable for low paid earners. Analysis of in-work benefits requires that the interaction of these instruments with the rest of the tax-benefit system is taken into consideration in order to evaluate the overall work incentives embedded in the system (<a href=\"#bib12\">Bargain &amp; Orsini, 2006</a>; <a href=\"#bib32\">Figari, 2010</a>; <a href=\"#bib33\">2011</a>).",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s5-2",
+                    "title": "5.2 Policy swapping analysis",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "The detailed simulation of the personal income tax in EUROMOD offers the potential for empirical studies focussing on specific aspects of the design of personal income tax. Recently, different contributions focussed on the redistributive and work incentive effects of the implementation of a flat rate income tax which has become increasingly popular in the policy debate but is as yet limited to Eastern Europe (among others, <a href=\"#bib63\">Paulus and Peichl, 2009</a>).",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "In recent years, the financial crisis has revived interest in housing taxation across Europe. On the one hand, concerns have been raised about the role played by mortgage interest tax relief (<a href=\"#bib57\">Matsaganis &amp; Flevotomou, 2007a</a>; <a href=\"#bib58\">2007b</a>). On the other hand, housing taxation is in the spotlight as one of the few practicable ways of raising tax revenues while lowering the tax wedge on labour income (<a href=\"#bib39\">Figari <i>et al</i>., 2012b</a>). <a href=\"#bib56\">Maestri (2012)</a> extends the existing literature by evaluating the redistributive effect of a comprehensive set of housing-related policies, taking into account the housing advantage of homeowners and social tenants.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s5-3",
+                    "title": "5.3 Tax design aspects",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "The short term effects of a policy reform (often referred to as the overnight effect) give useful insights into the redistributive and budgetary effects of a policy change. Nevertheless, EUROMOD is increasingly used to analyse the strength of work incentives and the second-round effects related to the policy changes. A number of papers make use of the static indicators of work incentives produced by EUROMOD to capture the incentive effect at the intensive (hours) margin (i.e. Effective Marginal Tax Rates showing how much of a marginal increase in gross earnings \u2013 due to longer hours or extra effort \u2013 is levied in increased taxes or lower benefits; see <a href=\"#bib43\">Immervoll, 2004</a> and <a href=\"#bib48\">Jara and Tumino, 2013</a> in this issue) and at the extensive (participation) margin (i.e. Net Replacement Rates or Participation Tax Rates; see <a href=\"#bib42\">Immervoll and O\u2019Donoghue, 2004</a>)",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Moreover, the static calculations produced by EUROMOD are increasingly used to derive the budget sets used in the structural discrete choice labour supply models which are a well-established and recognised modelling set up to predict the individual behavioural adjustments to policy changes.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "<a href=\"#bib13\">Bargain <i>et al</i>. (2012c)</a> provide the first large-scale international comparison of labor supply elasticities for 17 European countries (and the US), separately by gender and marital status. By using EUROMOD, they are able to net out measurement differences affecting previous analysis due to non-harmonized empirical approaches and different data sources.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Other papers focus on methodological aspects related to the labor supply modelling (<a href=\"#bib20\">Colombino, 2012</a>; <a href=\"#bib54\">Li\u00e9geois &amp; Islam, 2012</a>) or specific policy questions (<a href=\"#bib12\">Bargain &amp; Orsini, 2006</a>; <a href=\"#bib21\">Colombino <i>et al</i>., 2010</a>; <a href=\"#bib33\">Figari, 2011</a>). Moreover, labor supply estimated preferences and elasticities are a key ingredient in a series of papers on the optimality of tax systems and welfare regimes (<a href=\"#bib11\">Bargain <i>et al</i>., 2011</a>; <a href=\"#bib9\">2012a</a>; <a href=\"#bib14\">Bourguignon &amp; Spadaro, 2012</a>; <a href=\"#bib44\">Immervoll <i>et al</i>., 2007</a>; <a href=\"#bib45\">2011</a>) and the cross-country perspective offered by EUROMOD proves to shed new light in this strand of literature.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s5-4",
+                    "title": "5.4 Work incentives and labour supply",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "More recently, at the onset of the economic downturn affecting European countries since the end of 2008, EUROMOD proved to be one of the most important tools to provide an ex-ante evaluation of the consequences of the crisis on income distribution in Europe.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "<a href=\"#bib40\">Figari <i>et al</i>. (2011c)</a>, <a href=\"#bib4\">Avram <i>et al</i>. (2011)</a> and <a href=\"#bib31\">Fernandez <i>et al</i>. (2013)</a> apply a stress test approach to tax-benefit systems in order to predict the cushioning effects of the social protection schemes for those who lose their job and to assess the overall income stabilisation \u2013 through relative and absolute welfare state resilience \u2013 after a macroeconomic shock.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "<a href=\"#bib17\">Callan <i>et al</i>. (2011b)</a> and <a href=\"#bib5\">Avram <i>et al</i>. (2012)</a> compare the distributional effects of policy changes presented as fiscal consolidation measures in different EU countries that experienced large budget deficits following the financial crisis, highlighting the distributive effects of different policy mixes implemented across Europe.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Focusing on <a href=\"#bib49\">Greece, Leventi and Matsaganis (2011)</a> distinguish between two inter-related factors. On the one hand, the austerity measures taken to reduce fiscal deficits; on the other hand, the wider recession, and quantify the distributional implications of both factors providing, in a timely fashion, the first comprehensive assessment of the distributive impact of the crisis in Greece.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "<a href=\"#bib25\">Dolls <i>et al</i>. (2012a</a>, <a href=\"#bib26\">2012b</a>) analyze the effectiveness of the tax and transfer systems in the European Union (and the US) to act as an automatic stabilizer in an economic crisis, showing the extent to which European tax-benefit systems, although heterogeneous, are more effective in absorbing a macroeconomic shock than in the US. Moreover, <a href=\"#bib10\">Bargain <i>et al</i>. (2012b)</a> show that moving towards a European fiscal union would have a stabilising effect, through either an EU-wide tax and transfer system or an EU-wide system of fiscal equalisation.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s5-5",
+                    "title": "5.5 The economic downturn",
+                    "type": "section"
+                }
+            ],
+            "id": "s5",
+            "title": "5. An overview of recent applications based on EUROMOD",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "The current version of EUROMOD represents the accumulation of technical developments and expertise over many years and involving a large team of people. Continuing to keep it up-to-date in terms of both policy and data, while improving quality and comparability across so many countries, already poses a set of ambitious aims for EUROMOD over the next few years.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Nevertheless, the academic engagement with the analytical challenges posed by new policy agendas related to Europe 2020 on the one hand, and effective recovery from economic crisis on the other, provide additional opportunities. These include extending the scope of what EUROMOD can do, and how it can be used.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "First of all, the policy scope can be further extended by i) integrating in a systematic way the simulation of indirect taxes, ii) including the value of private non-cash incomes (imputed rent for owner-occupied accommodation, consumption of own production and fringe benefits provided by the employers), and iii) the value of public services (health, education, public housing, elderly and child care services). The methodological approaches developed as part of the AIM-AP project and already tested in a number of countries are the natural starting point for these extensions.<sup><a href=\"#fn4\">4</a></sup>",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Nevertheless. the simulation of policies with an effect over the life cycle of individuals (e.g. contributory pensions) remains out of the scope of a multi-country static model like EUROMOD due to data limitations and the need of a dynamic modelling set up which, however, could use EUROMOD calculations as a starting point.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Secondly, there is scope for technical improvement. Further refinement of the policy simulations requires benefit non take-up and tax evasion to be modelled in a way which is often constrained by data requirements. Connected to this, more work is needed to impute gross income values (when these are not collected directly in the survey data) by making systematic use of net-to-gross procedures based on microsimulation models.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Thirdly, the recent volatility in economic conditions has demonstrated both the need for and challenges associated with estimating \u201ccurrent\u201d risk of poverty and income inequality, as well as the direction of recent trends. Microsimulation approaches can be used to \u201cnowcast\u201d the current situation based on a combination of somewhat out-of-date micro-data, macro indicators about near-current economic conditions, and current policy rules. The simple updating of incomes from data year to policy year and assumptions of unchanging personal characteristics described above can be elaborated to include (for example) the modelling of labour market change and re-weighting to adjust for major demographic change due to e.g migration. A start on such an agenda has been made using EUROMOD by <a href=\"#bib61\">Navicke <i>et al</i>. (2013)</a> and work will continue.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Fourthly, the availability of a model that covers the whole EU combined with new interest in EU-level fiscal policy (among other contributions, see the Focus on European Fiscal Union in the spring 2012 issue of the CESifo Forum) provides the opportunity to carry out policy-relevant analysis at the EU-level. This means exploring the implications of policy options for budgets at the EU level as well as for implicit flows of resources between as well as within countries. Some studies already did this using just part of the EU (<a href=\"#bib10\">Bargain <i>et al</i>., 2012b</a>; <a href=\"#bib51\">Levy <i>et al</i>., 2007a</a>). A recent study of the potential for an EU child benefit did this for the whole EU27 (see <a href=\"#bib52\">Levy <i>et al</i>., 2013</a> in this issue).",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Finally, the possibility of offering access to a simplified version of EUROMOD to policy-makers and civil society at large via the web is an exciting development. For a complicated analysis, it will still be necessary to access EUROMOD itself, to take advantage of its flexibility. But an interface on the web, which offered limited choice, could still be a powerful tool of a different kind if those choices are informed by, and responsive to, national debates and current policy issues. This itself requires resources, of course, but by building on the existing modelling infrastructure is extremely cost-effective.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "For the success of this vision and for the future challenges of EUROMOD, the cooperation between academic researchers, policy users and stakeholders at national and EU level will be of vital importance and it will contribute to integrate tax-benefit models into the mainstream of economic policy-making (<a href=\"#bib1\">Atkinson 2009</a>).",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s6",
+            "title": "6. Concluding remarks: a vision for the future",
+            "type": "section"
+        }
+    ],
+    "references": [
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Atkinson, AB",
+                        "preferred": "AB Atkinson"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2009",
+            "details": "An enlarged role for tax-benefit models, (Eds.), Tax and Benefit Policies in the Enlarged Europe: Assessing the Impact with Microsimulation Models, Farnham, Ashgate",
+            "id": "bib1",
+            "title": "Tax and Benefit Policies in the Enlarged Europe: Assessing the Impact with Microsimulation Models",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Atkinson, AB",
+                        "preferred": "AB Atkinson"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Bourguignon, F",
+                        "preferred": "F Bourguignon"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Chiappori, PA",
+                        "preferred": "PA Chiappori"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1988",
+            "details": "European Economic Review, 32",
+            "id": "bib2",
+            "title": "What do we learn about tax reforms from international comparisons? France and Britain",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Avram, S",
+                        "preferred": "S Avram"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Sutherland, H",
+                        "preferred": "H Sutherland"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2012",
+            "details": "et al, Baseline results from EUROMOD: 2006-2009 policies. EUROMOD Working Paper Series EM1/12",
+            "id": "bib3",
+            "title": "Baseline results from EUROMOD: 2006-2009 policies. EUROMOD Working Paper Series EM1/12",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Avram, S",
+                        "preferred": "S Avram"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Sutherland, H",
+                        "preferred": "H Sutherland"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Tasseva, I",
+                        "preferred": "I Tasseva"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Tumino, A",
+                        "preferred": "A Tumino"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2011",
+            "details": "Income protection and poverty risk for the unemployed in Europe. Social Situation Observatory Research Note 1/2011",
+            "id": "bib4",
+            "title": "Income protection and poverty risk for the unemployed in Europe. Social Situation Observatory Research Note 1/2011",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Avram, S",
+                        "preferred": "S Avram"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Figari, F",
+                        "preferred": "F Figari"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Leventi, C",
+                        "preferred": "C Leventi"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Levy, H",
+                        "preferred": "H Levy"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Navicke, J",
+                        "preferred": "J Navicke"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Matsaganis, M",
+                        "preferred": "M Matsaganis"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Militaru, E",
+                        "preferred": "E Militaru"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Paulus, A",
+                        "preferred": "A Paulus"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Rastrigina, O",
+                        "preferred": "O Rastrigina"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Sutherland, H",
+                        "preferred": "H Sutherland"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2012",
+            "details": "The distributional effects of fiscal consolidation in 9 EU countries. Social Situation Observatory Research Note 01/2012",
+            "id": "bib5",
+            "title": "The distributional effects of fiscal consolidation in 9 EU countries. Social Situation Observatory Research Note 01/2012",
+            "type": "unknown"
+        },
+        {
+            "articleTitle": "Back to the Future: Decomposition Analysis of Distributive Policies Using Behavioural Simulations",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Bargain, O",
+                        "preferred": "O Bargain"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2012",
+            "discriminator": "a",
+            "id": "bib6",
+            "journal": "International Tax and Public Finance",
+            "pages": {
+                "first": "708",
+                "last": "731",
+                "range": "708\u2013731"
+            },
+            "type": "journal",
+            "volume": "19"
+        },
+        {
+            "articleTitle": "The Distributional Effects of Tax\u2010Benefit Policies Under New Labour: A Decomposition Approach",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Bargain, O",
+                        "preferred": "O Bargain"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2012",
+            "discriminator": "b",
+            "id": "bib7",
+            "journal": "Oxford Bulletin of Economics and Statistics",
+            "pages": {
+                "first": "856",
+                "last": "874",
+                "range": "856\u2013874"
+            },
+            "type": "journal",
+            "volume": "74"
+        },
+        {
+            "articleTitle": "Analysing the Effects of Tax-Benefit Reforms on Income Distribution: A Decomposition Approach",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Bargain, O",
+                        "preferred": "O Bargain"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Callan, T",
+                        "preferred": "T Callan"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2010",
+            "id": "bib8",
+            "journal": "Journal of Economic Inequality",
+            "pages": {
+                "first": "1",
+                "last": "21",
+                "range": "1\u201321"
+            },
+            "type": "journal",
+            "volume": "8"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Bargain, O",
+                        "preferred": "O Bargain"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Decoster, A",
+                        "preferred": "A Decoster"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Dolls, M",
+                        "preferred": "M Dolls"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Neumann, D",
+                        "preferred": "D Neumann"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Peichl, A",
+                        "preferred": "A Peichl"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Siegloch, S",
+                        "preferred": "S Siegloch"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2012",
+            "details": "Social Choice and Welfare, Forthcoming",
+            "id": "bib9",
+            "title": "Welfare, Labor Supply and Heterogeneous Preferences: Evidence for Europe and the US",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Bargain, O",
+                        "preferred": "O Bargain"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Dolls, M",
+                        "preferred": "M Dolls"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Fuest, C",
+                        "preferred": "C Fuest"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Neumann, D",
+                        "preferred": "D Neumann"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Peichl, A",
+                        "preferred": "A Peichl"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Pestel, N",
+                        "preferred": "N Pestel"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Siegloch, S",
+                        "preferred": "S Siegloch"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2012",
+            "details": "Fiscal Union in Europe? Redistributive and Stabilising Effects of an EU Tax-Benefit System. IZA Discussion Paper 6585",
+            "id": "bib10",
+            "title": "Fiscal Union in Europe? Redistributive and Stabilising Effects of an EU Tax-Benefit System. IZA Discussion Paper 6585",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Bargain, O",
+                        "preferred": "O Bargain"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Dolls, M",
+                        "preferred": "M Dolls"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Neumann, D",
+                        "preferred": "D Neumann"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Peichl, A",
+                        "preferred": "A Peichl"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Siegloch, S",
+                        "preferred": "S Siegloch"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2011",
+            "details": "Tax-Benefit Systems in Europe and the US: Between Equity and Efficiency. IZA Discussion Paper 5440",
+            "id": "bib11",
+            "title": "Tax-Benefit Systems in Europe and the US: Between Equity and Efficiency. IZA Discussion Paper 5440",
+            "type": "unknown"
+        },
+        {
+            "articleTitle": "In-work policies in Europe: killing two birds with one stone",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Bargain, O",
+                        "preferred": "O Bargain"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Orsini, K",
+                        "preferred": "K Orsini"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2006",
+            "id": "bib12",
+            "journal": "Labour Economics",
+            "pages": {
+                "first": "667",
+                "last": "97",
+                "range": "667\u201397"
+            },
+            "type": "journal",
+            "volume": "13"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Bargain, O",
+                        "preferred": "O Bargain"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Orsini, K",
+                        "preferred": "K Orsini"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Peichl, A",
+                        "preferred": "A Peichl"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2012",
+            "details": "Comparing Labor Supply Elasticities in Europe and the US: New Results. IZA Discussion Paper 6735",
+            "id": "bib13",
+            "title": "Comparing Labor Supply Elasticities in Europe and the US: New Results. IZA Discussion Paper 6735",
+            "type": "unknown"
+        },
+        {
+            "articleTitle": "Tax\u2013benefit revealed social preferences",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Bourguignon, F",
+                        "preferred": "F Bourguignon"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Spadaro, A",
+                        "preferred": "A Spadaro"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2012",
+            "id": "bib14",
+            "journal": "Journal of Economic Inequality",
+            "pages": {
+                "first": "75",
+                "last": "108",
+                "range": "75\u2013108"
+            },
+            "type": "journal",
+            "volume": "10"
+        },
+        {
+            "articleTitle": "The impact of comparable policies in European countries: microsimulation approaches",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Callan, T",
+                        "preferred": "T Callan"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Sutherland, H",
+                        "preferred": "H Sutherland"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1997",
+            "id": "bib15",
+            "journal": "European Economic Review",
+            "pages": {
+                "first": "627",
+                "last": "633",
+                "range": "627\u2013633"
+            },
+            "type": "journal",
+            "volume": "41"
+        },
+        {
+            "articleTitle": "From Data to Policy Analysis: Tax-benefit Modelling Using SILC 2008",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Callan, T",
+                        "preferred": "T Callan"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Keane, C",
+                        "preferred": "C Keane"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Walsh, JR",
+                        "preferred": "JR Walsh"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Lane, M",
+                        "preferred": "M Lane"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2011",
+            "discriminator": "a",
+            "id": "bib16",
+            "journal": "Statistical and Social Inquiry Society of Ireland",
+            "pages": {
+                "first": "1",
+                "last": "10",
+                "range": "1\u201310"
+            },
+            "type": "journal",
+            "volume": "40"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Callan, T",
+                        "preferred": "T Callan"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Leventi, C",
+                        "preferred": "C Leventi"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Levy, H",
+                        "preferred": "H Levy"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Matsaganis, M",
+                        "preferred": "M Matsaganis"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Paulus, A",
+                        "preferred": "A Paulus"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Sutherland, H",
+                        "preferred": "H Sutherland"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2011",
+            "details": "The distributional effects of austerity measures: a comparison of six EU countries. EUROMOD Working Paper Series EM6/11",
+            "id": "bib17",
+            "title": "The distributional effects of austerity measures: a comparison of six EU countries. EUROMOD Working Paper Series EM6/11",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Canto, O",
+                        "preferred": "O Canto"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Adiego, M",
+                        "preferred": "M Adiego"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Ayala, L",
+                        "preferred": "L Ayala"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Levy, H",
+                        "preferred": "H Levy"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Paniagua, M",
+                        "preferred": "M Paniagua"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2012",
+            "details": "Going regional. The effectiveness of different tax-benefit policies in combating child poverty in Spain. EUROMOD Working Paper Series: EM2/12",
+            "id": "bib18",
+            "title": "Going regional. The effectiveness of different tax-benefit policies in combating child poverty in Spain. EUROMOD Working Paper Series: EM2/12",
+            "type": "unknown"
+        },
+        {
+            "articleTitle": "The importance of choosing the data set for tax-benefit analysis",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Ceriani, L",
+                        "preferred": "L Ceriani"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Fiorio, C",
+                        "preferred": "C Fiorio"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Gigliarano, C",
+                        "preferred": "C Gigliarano"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2013",
+            "id": "bib19",
+            "journal": "The International Journal of Microsimulation",
+            "pages": {
+                "first": "86",
+                "last": "121",
+                "range": "86\u2013121"
+            },
+            "type": "journal",
+            "volume": "6"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Colombino, U",
+                        "preferred": "U Colombino"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2012",
+            "details": "Equilibrium policy simulation with random utility models of labor supply. EUROMOD Working Paper Series: EM5/12",
+            "id": "bib20",
+            "title": "Equilibrium policy simulation with random utility models of labor supply. EUROMOD Working Paper Series: EM5/12",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Colombino, U",
+                        "preferred": "U Colombino"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Locatelli, M",
+                        "preferred": "M Locatelli"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Narazani, E",
+                        "preferred": "E Narazani"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "O\u2019Donoghue, C",
+                        "preferred": "C O\u2019Donoghue"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2010",
+            "details": "Basic Income Studies, 5, 1",
+            "id": "bib21",
+            "title": "Alternative Basic Income Mechanisms: An Evaluation Exercise with a Microeconometric Model",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Dal Bianco, C",
+                        "preferred": "C Dal Bianco"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Zantomio, F",
+                        "preferred": "F Zantomio"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "The development of harmonized gross and net income measures in SHARE",
+            "date": "2013",
+            "id": "bib22",
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "mimeo"
+                        ]
+                    },
+                    "formatted": [
+                        "mimeo"
+                    ]
+                },
+                "name": [
+                    "University of Padova"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Decancq, K",
+                        "preferred": "K Decancq"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Decoster, A",
+                        "preferred": "A Decoster"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Spiritus, K",
+                        "preferred": "K Spiritus"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Verbist, G",
+                        "preferred": "G Verbist"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2012",
+            "details": "MEFISTO: a new micro-simulation model for Flanders. FLEMOSI Discussion Paper 14",
+            "id": "bib23",
+            "title": "MEFISTO: a new micro-simulation model for Flanders. FLEMOSI Discussion Paper 14",
+            "type": "unknown"
+        },
+        {
+            "articleTitle": "How regressive are indirect taxes? A microsimulation analysis for five European countries",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Decoster, A",
+                        "preferred": "A Decoster"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Loughrey, J",
+                        "preferred": "J Loughrey"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "O\u2019Donoghue, C",
+                        "preferred": "C O\u2019Donoghue"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Verwerft, D",
+                        "preferred": "D Verwerft"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2010",
+            "id": "bib24",
+            "journal": "Journal of Policy Analysis and Management",
+            "pages": {
+                "first": "326",
+                "last": "350",
+                "range": "326\u2013350"
+            },
+            "type": "journal",
+            "volume": "29"
+        },
+        {
+            "articleTitle": "Automatic stabilizers and economic crisis: US vs. Europe",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Dolls, M",
+                        "preferred": "M Dolls"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Fuest, C",
+                        "preferred": "C Fuest"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Peichl, A",
+                        "preferred": "A Peichl"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2012",
+            "discriminator": "a",
+            "id": "bib25",
+            "journal": "Journal of Public Economics",
+            "pages": {
+                "first": "279",
+                "last": "294",
+                "range": "279\u2013294"
+            },
+            "type": "journal",
+            "volume": "96"
+        },
+        {
+            "articleTitle": "Automatic stabilization and discretionary fiscal policy in the financial crisis",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Dolls, M",
+                        "preferred": "M Dolls"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Fuest, C",
+                        "preferred": "C Fuest"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Peichl, A",
+                        "preferred": "A Peichl"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2012",
+            "discriminator": "b",
+            "id": "bib26",
+            "journal": "IZA Journal of Labor Policy",
+            "pages": {
+                "first": "1",
+                "last": "19",
+                "range": "1\u201319"
+            },
+            "type": "journal",
+            "volume": "1"
+        },
+        {
+            "authors": [
+                {
+                    "name": "European Commission",
+                    "type": "group"
+                }
+            ],
+            "bookTitle": "Employment and Social Developments in Europe 2012",
+            "date": "2012",
+            "id": "bib27",
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "Luxembourg"
+                        ]
+                    },
+                    "formatted": [
+                        "Luxembourg"
+                    ]
+                },
+                "name": [
+                    "Publications Office of the European Union"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "authors": [
+                {
+                    "name": "European Commission",
+                    "type": "group"
+                }
+            ],
+            "bookTitle": "EU Employment and Social Situation Quarterly Review",
+            "date": "2013",
+            "discriminator": "a",
+            "id": "bib28",
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "Brussels"
+                        ]
+                    },
+                    "formatted": [
+                        "Brussels"
+                    ]
+                },
+                "name": [
+                    "The European Commission"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "authors": [
+                {
+                    "name": "European Commission",
+                    "type": "group"
+                }
+            ],
+            "date": "2013",
+            "details": "The role of tax policy in times of fiscal consolidation, Luxembourg, Publications Office of the European Union, Forthcoming",
+            "id": "bib29",
+            "title": "The role of tax policy in times of fiscal consolidation",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": "Eurostat",
+                    "type": "group"
+                }
+            ],
+            "bookTitle": "2010 Comparative EU intermediate quality report",
+            "date": "2012",
+            "id": "bib30",
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "European Commission"
+                        ]
+                    },
+                    "formatted": [
+                        "European Commission"
+                    ]
+                },
+                "name": [
+                    "Eurostat"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Fernandez Salgado, M",
+                        "preferred": "M Fernandez Salgado"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Figari, F",
+                        "preferred": "F Figari"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Sutherland, H",
+                        "preferred": "H Sutherland"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Tumino, A",
+                        "preferred": "A Tumino"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2013",
+            "details": "Review of Income and Wealth, Forthcoming",
+            "id": "bib31",
+            "title": "Welfare compensation for unemployment in the Great Recession",
+            "type": "unknown"
+        },
+        {
+            "articleTitle": "Can In-work Benefits Improve Social Inclusion in the Southern European countries?",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Figari, F",
+                        "preferred": "F Figari"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2010",
+            "id": "bib32",
+            "journal": "Journal of European Social Policy",
+            "pages": {
+                "first": "301",
+                "last": "315",
+                "range": "301\u2013315"
+            },
+            "type": "journal",
+            "volume": "20"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Figari, F",
+                        "preferred": "F Figari"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2011",
+            "details": "From housewives to independent earners: can the tax system help Italian women to work?. ISER Working Paper 15\u20132011, University of Essex",
+            "id": "bib33",
+            "title": "From housewives to independent earners: can the tax system help Italian women to work?. ISER Working Paper 15\u20132011, University of Essex",
+            "type": "unknown"
+        },
+        {
+            "articleTitle": "Approximations to the truth: comparing survey and microsimulation approaches to measuring income for social indicators",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Figari, F",
+                        "preferred": "F Figari"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Iacovou, M",
+                        "preferred": "M Iacovou"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Sutherland, H",
+                        "preferred": "H Sutherland"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Skew, A",
+                        "preferred": "A Skew"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2012",
+            "discriminator": "a",
+            "id": "bib34",
+            "journal": "Social Indicators Research",
+            "pages": {
+                "first": "387",
+                "last": "407",
+                "range": "387\u2013407"
+            },
+            "type": "journal",
+            "volume": "105"
+        },
+        {
+            "articleTitle": "Inequalities within couples in Europe: market incomes and the role of taxes and benefits",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Figari, F",
+                        "preferred": "F Figari"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Immervoll, H",
+                        "preferred": "H Immervoll"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Levy, H",
+                        "preferred": "H Levy"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Sutherland, H",
+                        "preferred": "H Sutherland"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2011",
+            "discriminator": "a",
+            "id": "bib35",
+            "journal": "The Eastern Economic Journal",
+            "pages": {
+                "first": "344",
+                "last": "366",
+                "range": "344\u2013366"
+            },
+            "type": "journal",
+            "volume": "37"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Figari, F",
+                        "preferred": "F Figari"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Levy, H",
+                        "preferred": "H Levy"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Sutherland, H",
+                        "preferred": "H Sutherland"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2007",
+            "details": "Comparative EU statistics on Income and Living Conditions: Issues and Challenges. Eurostat Methodologies and Working Papers, European Communities",
+            "id": "bib36",
+            "title": "Comparative EU statistics on Income and Living Conditions: Issues and Challenges. Eurostat Methodologies and Working Papers, European Communities",
+            "type": "unknown"
+        },
+        {
+            "articleTitle": "Are European social safety nets tight enough? Coverage and adequacy of minimum income schemes in 14 EU countries",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Figari, F",
+                        "preferred": "F Figari"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Matsaganis, M",
+                        "preferred": "M Matsaganis"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Sutherland, H",
+                        "preferred": "H Sutherland"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2013",
+            "id": "bib37",
+            "journal": "International Journal of Social Welfare",
+            "pages": {
+                "first": "3",
+                "last": "14",
+                "range": "3\u201314"
+            },
+            "type": "journal",
+            "volume": "22"
+        },
+        {
+            "articleTitle": "Measuring the size and impact of public cash support for children in cross-national perspective",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Figari, F",
+                        "preferred": "F Figari"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Paulus, A",
+                        "preferred": "A Paulus"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Sutherland, H",
+                        "preferred": "H Sutherland"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2011",
+            "discriminator": "b",
+            "id": "bib38",
+            "journal": "Social Science Computer Review",
+            "pages": {
+                "first": "85",
+                "last": "102",
+                "range": "85\u2013102"
+            },
+            "type": "journal",
+            "volume": "29"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Figari, F",
+                        "preferred": "F Figari"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Paulus, A",
+                        "preferred": "A Paulus"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Sutherland, H",
+                        "preferred": "H Sutherland"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Tsakloglou, P",
+                        "preferred": "P Tsakloglou"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Verbist, G",
+                        "preferred": "G Verbist"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Zantomio, F",
+                        "preferred": "F Zantomio"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2012",
+            "details": "Taxing the benefit of homeownership. Distributional effects of including imputed rent in taxable income. IZA Discussion Paper No. 6493",
+            "id": "bib39",
+            "title": "Taxing the benefit of homeownership. Distributional effects of including imputed rent in taxable income. IZA Discussion Paper No. 6493",
+            "type": "unknown"
+        },
+        {
+            "articleTitle": "Economic down turn and stress testing European welfare systems",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Figari, F",
+                        "preferred": "F Figari"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Salvatori, A",
+                        "preferred": "A Salvatori"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Sutherland, H",
+                        "preferred": "H Sutherland"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2011",
+            "discriminator": "c",
+            "id": "bib40",
+            "journal": "Research in Labour Economics",
+            "pages": {
+                "first": "257",
+                "last": "286",
+                "range": "257\u2013286"
+            },
+            "type": "journal",
+            "volume": "32"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Fiorio, CV",
+                        "preferred": "CV Fiorio"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "Microsimulation and analysis of income distribution",
+            "date": "2009",
+            "id": "bib41",
+            "publisher": {
+                "name": [
+                    "VDM Verlag"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Immervoll, H",
+                        "preferred": "H Immervoll"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "O\u2019Donoghue, C",
+                        "preferred": "C O\u2019Donoghue"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "Resisting Marginalisation: Unemployment Experience and Social Policy in the European Union",
+            "chapterTitle": "What Difference does a Job Make? The Income Consequences of Joblessness in Europe",
+            "date": "2004",
+            "editors": [
+                {
+                    "name": {
+                        "index": "Gallie, D",
+                        "preferred": "D Gallie"
+                    },
+                    "type": "person"
+                }
+            ],
+            "id": "bib42",
+            "pages": {
+                "first": "105",
+                "last": "139",
+                "range": "105\u2013139"
+            },
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "Oxford"
+                        ]
+                    },
+                    "formatted": [
+                        "Oxford"
+                    ]
+                },
+                "name": [
+                    "Oxford University Press"
+                ]
+            },
+            "type": "book-chapter"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Immervoll, H",
+                        "preferred": "H Immervoll"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2004",
+            "id": "bib43",
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "Paris"
+                        ]
+                    },
+                    "formatted": [
+                        "Paris"
+                    ]
+                },
+                "name": [
+                    "OECD"
+                ]
+            },
+            "source": "Average and marginal effective tax rates facing workers in the EU. A micro-level analysis of levels, distributions and driving factors. OECD Social, Employment and Migration Working Paper No. 19",
+            "title": "Average and marginal effective tax rates facing workers in the EU. A micro-level analysis of levels, distributions and driving factors. OECD Social, Employment and Migration Working Paper No. 19",
+            "type": "report"
+        },
+        {
+            "articleTitle": "Welfare reform in European countries: a microsimulation analysis",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Immervoll, H",
+                        "preferred": "H Immervoll"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Kleven, HJ",
+                        "preferred": "HJ Kleven"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Kreiner, CT",
+                        "preferred": "CT Kreiner"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Saez, E",
+                        "preferred": "E Saez"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2007",
+            "id": "bib44",
+            "journal": "The Economic Journal",
+            "pages": {
+                "first": "1",
+                "last": "44",
+                "range": "1\u201344"
+            },
+            "type": "journal",
+            "volume": "117"
+        },
+        {
+            "articleTitle": "Optimal tax and transfer programs for couples with extensive labor supply responses",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Immervoll, H",
+                        "preferred": "H Immervoll"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Kleven, HJ",
+                        "preferred": "HJ Kleven"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Kreiner, CT",
+                        "preferred": "CT Kreiner"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Verdelin, N",
+                        "preferred": "N Verdelin"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2011",
+            "id": "bib45",
+            "journal": "Journal of Public Economics",
+            "pages": {
+                "first": "1485",
+                "last": "1500",
+                "range": "1485\u20131500"
+            },
+            "type": "journal",
+            "volume": "95"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Immervoll, H",
+                        "preferred": "H Immervoll"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Levy, H",
+                        "preferred": "H Levy"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Lietz, C",
+                        "preferred": "C Lietz"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Mantovani, D",
+                        "preferred": "D Mantovani"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "O\u2019Donoghue, C",
+                        "preferred": "C O\u2019Donoghue"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Sutherland, H",
+                        "preferred": "H Sutherland"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Verbist, G",
+                        "preferred": "G Verbist"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2006",
+            "details": "Household incomes and redistribution in the European Union: quantifying the equalizing properties of taxes and benefits, (Ed.), The Distributional Effects of Government Spending and Taxation, Palgrave Macmillan",
+            "id": "bib46",
+            "title": "The Distributional Effects of Government Spending and Taxation",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Jara, X",
+                        "preferred": "X Jara"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Sutherland, H",
+                        "preferred": "H Sutherland"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2013",
+            "details": "et al, Baseline results from the new EU27 EUROMOD (2007\u20132010). EUROMOD Working Paper Series EM3/13",
+            "id": "bib47",
+            "title": "Baseline results from the new EU27 EUROMOD (2007\u20132010). EUROMOD Working Paper Series EM3/13",
+            "type": "unknown"
+        },
+        {
+            "articleTitle": "Tax-benefit systems, income distribution and work incentives in the European Union",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Jara, X",
+                        "preferred": "X Jara"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Tumino, A",
+                        "preferred": "A Tumino"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2013",
+            "id": "bib48",
+            "journal": "The International Journal of Microsimulation",
+            "pages": {
+                "first": "27",
+                "last": "62",
+                "range": "27\u201362"
+            },
+            "type": "journal",
+            "volume": "6"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Leventi, C",
+                        "preferred": "C Leventi"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Matsaganis, M",
+                        "preferred": "M Matsaganis"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2011",
+            "details": "The distributional impact of the crisis in Greece. EUROMOD Working Paper Series EM WP 3/11",
+            "id": "bib49",
+            "title": "The distributional impact of the crisis in Greece. EUROMOD Working Paper Series EM WP 3/11",
+            "type": "unknown"
+        },
+        {
+            "articleTitle": "Swapping policies: alternative tax-benefit strategies to support children in Austria, Spain and the UK",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Levy, H",
+                        "preferred": "H Levy"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Lietz, C",
+                        "preferred": "C Lietz"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Sutherland, H",
+                        "preferred": "H Sutherland"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2007",
+            "id": "bib50",
+            "journal": "Journal of Social Policy",
+            "pages": {
+                "first": "625",
+                "last": "647",
+                "range": "625\u2013647"
+            },
+            "type": "journal",
+            "volume": "36"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Levy, H",
+                        "preferred": "H Levy"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Lietz, C",
+                        "preferred": "C Lietz"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Sutherland, H",
+                        "preferred": "H Sutherland"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2007",
+            "details": "A guaranteed income for Europe\u2019s children?, (Eds.), Inequality and Poverty Re-examined, Oxford, Oxford University Press",
+            "id": "bib51",
+            "title": "Inequality and Poverty Re-examined",
+            "type": "unknown"
+        },
+        {
+            "articleTitle": "Towards a European Union Child Basic Income? Within and between country effects",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Levy, H",
+                        "preferred": "H Levy"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Matsaganis, M",
+                        "preferred": "M Matsaganis"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Sutherland, H",
+                        "preferred": "H Sutherland"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2013",
+            "id": "bib52",
+            "journal": "The International Journal of Microsimulation",
+            "pages": {
+                "first": "63",
+                "last": "85",
+                "range": "63\u201385"
+            },
+            "type": "journal",
+            "volume": "6"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Levy, H",
+                        "preferred": "H Levy"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Morawski, L",
+                        "preferred": "L Morawski"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Myck, M",
+                        "preferred": "M Myck"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2009",
+            "details": "Alternative tax-benefit strategies to support children in Poland, (Eds.), An Enlarged Role for Tax Benefit Models: assessing policies in the enlarged European Union, Farnham, Asghate",
+            "id": "bib53",
+            "title": "An Enlarged Role for Tax Benefit Models: assessing policies in the enlarged European Union",
+            "type": "unknown"
+        },
+        {
+            "articleTitle": "Dealing with negative marginal utilities in the discrete choice modeling of labor supply",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Li\u00e9geois, P",
+                        "preferred": "P Li\u00e9geois"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Islam, N",
+                        "preferred": "N Islam"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2012",
+            "id": "bib54",
+            "journal": "Economics Letters",
+            "pages": {
+                "first": "16",
+                "last": "18",
+                "range": "16\u201318"
+            },
+            "type": "journal",
+            "volume": "118"
+        },
+        {
+            "articleTitle": "A short introduction to EUROMOD: an integrated European tax-benefit model",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Lietz, C",
+                        "preferred": "C Lietz"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Mantovani, D",
+                        "preferred": "D Mantovani"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2007",
+            "id": "bib55",
+            "journal": "Research in Labor Economics",
+            "pages": {
+                "first": "1",
+                "last": "16",
+                "range": "1\u201316"
+            },
+            "type": "journal",
+            "volume": "25"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Maestri, V",
+                        "preferred": "V Maestri"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2012",
+            "details": "Economic well-being and distributional effects of housing-related policies in 3 European countries. EUROMOD Working Paper Series: EM10/12",
+            "id": "bib56",
+            "title": "Economic well-being and distributional effects of housing-related policies in 3 European countries. EUROMOD Working Paper Series: EM10/12",
+            "type": "unknown"
+        },
+        {
+            "articleTitle": "A basic income for housing? Simulating a universal housing transfer in the Netherlands and Sweden",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Matsaganis, M",
+                        "preferred": "M Matsaganis"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Flevotomou, M",
+                        "preferred": "M Flevotomou"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2007",
+            "discriminator": "a",
+            "id": "bib57",
+            "journal": "Basic Income Studies",
+            "pages": {
+                "first": "1",
+                "last": "25",
+                "range": "1\u201325"
+            },
+            "type": "journal",
+            "volume": "2"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Matsaganis, M",
+                        "preferred": "M Matsaganis"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Flevotomou, M",
+                        "preferred": "M Flevotomou"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2007",
+            "details": "The impact of mortgage interest tax relief in the Netherlands, Sweden, Finland, Italy and Greece. EUROMOD Working Paper EM2/07",
+            "id": "bib58",
+            "title": "The impact of mortgage interest tax relief in the Netherlands, Sweden, Finland, Italy and Greece. EUROMOD Working Paper EM2/07",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Matsaganis, M",
+                        "preferred": "M Matsaganis"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Benedek, D",
+                        "preferred": "D Benedek"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Flevotomou, M",
+                        "preferred": "M Flevotomou"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Lelkes, O",
+                        "preferred": "O Lelkes"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Mantovani, D",
+                        "preferred": "D Mantovani"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Nienadowska, S",
+                        "preferred": "S Nienadowska"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2010",
+            "details": "Distributional implications of income tax evasion in Greece, Hungary and Italy. MPRA Paper No. 21465",
+            "id": "bib59",
+            "title": "Distributional implications of income tax evasion in Greece, Hungary and Italy. MPRA Paper No. 21465",
+            "type": "unknown"
+        },
+        {
+            "articleTitle": "Non take up of social benefits in Greece and Spain",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Matsaganis, M",
+                        "preferred": "M Matsaganis"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Levy, H",
+                        "preferred": "H Levy"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Flevotomou, M",
+                        "preferred": "M Flevotomou"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2010",
+            "discriminator": "b",
+            "id": "bib60",
+            "journal": "Social Policy & Administration",
+            "pages": {
+                "first": "827",
+                "last": "844",
+                "range": "827\u2013844"
+            },
+            "type": "journal",
+            "volume": "44"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Navicke, J",
+                        "preferred": "J Navicke"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Rastrigina, O",
+                        "preferred": "O Rastrigina"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Sutherland, H",
+                        "preferred": "H Sutherland"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2013",
+            "details": "Using EUROMOD to \u201cnowcast\u201d poverty risk in the European Union. Eurostat Methodologies and Working papers series. Forthcoming",
+            "id": "bib61",
+            "title": "Using EUROMOD to \u201cnowcast\u201d poverty risk in the European Union. Eurostat Methodologies and Working papers series. Forthcoming",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Odencrants, M",
+                        "preferred": "M Odencrants"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Hofsten, H von",
+                        "preferred": "H von Hofsten"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2012",
+            "details": "FASIT - a Swedish tax-benefit simulation model, Statistics Sweden",
+            "id": "bib62",
+            "title": "FASIT - a Swedish tax-benefit simulation model",
+            "type": "unknown"
+        },
+        {
+            "articleTitle": "Effects of flat tax reforms in Western Europe",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Paulus, A",
+                        "preferred": "A Paulus"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Peichl, A",
+                        "preferred": "A Peichl"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2009",
+            "id": "bib63",
+            "journal": "Journal of Policy Modeling",
+            "pages": {
+                "first": "620",
+                "last": "636",
+                "range": "620\u2013636"
+            },
+            "type": "journal",
+            "volume": "31"
+        },
+        {
+            "articleTitle": "The distributional impact of in kind public benefits in European countries",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Paulus, A",
+                        "preferred": "A Paulus"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Sutherland, H",
+                        "preferred": "H Sutherland"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Tsakloglou, P",
+                        "preferred": "P Tsakloglou"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2010",
+            "id": "bib64",
+            "journal": "Journal of Policy Analysis and Management",
+            "pages": {
+                "first": "243",
+                "last": "266",
+                "range": "243\u2013266"
+            },
+            "type": "journal",
+            "volume": "29"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Popova, D",
+                        "preferred": "D Popova"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2012",
+            "details": "Constructing The Tax-benefit Micro Simulation Model For Russia \u2013 RUSMOD. EUROMOD Working Paper Series EM7/12",
+            "id": "bib65",
+            "title": "Constructing The Tax-benefit Micro Simulation Model For Russia \u2013 RUSMOD. EUROMOD Working Paper Series EM7/12",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Redmond, G",
+                        "preferred": "G Redmond"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Sutherland, H",
+                        "preferred": "H Sutherland"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Wilson, M",
+                        "preferred": "M Wilson"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "The Arithmetic of Tax and Social Security Reform: A User\u2019s Guide to Microsimulation Methods and Analysis",
+            "date": "1998",
+            "id": "bib66",
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "Cambridge"
+                        ]
+                    },
+                    "formatted": [
+                        "Cambridge"
+                    ]
+                },
+                "name": [
+                    "Cambridge University Press"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Salanauskaite, L",
+                        "preferred": "L Salanauskaite"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Gerlinde, V",
+                        "preferred": "V Gerlinde"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2013",
+            "details": "Journal of European Social Policy, Forthcoming",
+            "id": "bib67",
+            "title": "Is the \u201cneighbour\u2019s\u201d lawn greener? Comparing family support in Lithuania and four other New Member States",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Sutherland, H",
+                        "preferred": "H Sutherland"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Figari, F",
+                        "preferred": "F Figari"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Lelkes, O",
+                        "preferred": "O Lelkes"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Levy, H",
+                        "preferred": "H Levy"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Lietz, C",
+                        "preferred": "C Lietz"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Mantovani, D",
+                        "preferred": "D Mantovani"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Paulus, A",
+                        "preferred": "A Paulus"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2008",
+            "details": "Improving the Capacity and Usability of EUROMOD: Final Report. EUROMOD Working Paper Series EM4/08",
+            "id": "bib68",
+            "title": "Improving the Capacity and Usability of EUROMOD: Final Report. EUROMOD Working Paper Series EM4/08",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Sutherland, H",
+                        "preferred": "H Sutherland"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1997",
+            "details": "The EUROMOD Preparatory Study: a Summary report. Microsimulation Unit Discussion Paper, MU9705, University of Cambridge",
+            "id": "bib69",
+            "title": "The EUROMOD Preparatory Study: a Summary report. Microsimulation Unit Discussion Paper, MU9705",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Sutherland, H",
+                        "preferred": "H Sutherland"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2007",
+            "details": "EUROMOD: the tax-benefit microsimulation model for the European Union, (Eds.), Modelling Our Future: population ageing, health and aged care, International Symposia in Economic Theory and Econometrics, 16, Elsevier",
+            "id": "bib70",
+            "title": "Modelling Our Future: population ageing, health and aged care",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Tasseva, I",
+                        "preferred": "I Tasseva"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2012",
+            "details": "Evaluating the performance of means-tested benefits in Bulgaria. EUROMOD Working Paper Series EM8/12",
+            "id": "bib71",
+            "title": "Evaluating the performance of means-tested benefits in Bulgaria. EUROMOD Working Paper Series EM8/12",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Vandelannoote, D",
+                        "preferred": "D Vandelannoote"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Vanleenhove, P",
+                        "preferred": "P Vanleenhove"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Ghysels, J",
+                        "preferred": "J Ghysels"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Verbist, G",
+                        "preferred": "G Verbist"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2013",
+            "details": "Maternal employment: the impact of triple rationing in childcare in Flanders. FLEMOSI Discussion Paper.  Forthcoming",
+            "id": "bib72",
+            "title": "Maternal employment: the impact of triple rationing in childcare in Flanders. FLEMOSI Discussion Paper.  Forthcoming",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "V\u00f5rk, A",
+                        "preferred": "A V\u00f5rk"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Paulus, A",
+                        "preferred": "A Paulus"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Poltim\u00e4e, H",
+                        "preferred": "H Poltim\u00e4e"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2008",
+            "details": "Impact of taxation policy on distribution of household\u2019s tax burden, PRAXIS Center for Policy Studies, Toimetised 42",
+            "id": "bib73",
+            "title": "Impact of taxation policy on distribution of household\u2019s tax burden",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Wilkinson, K",
+                        "preferred": "K Wilkinson"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2009",
+            "details": "Adapting EUROMOD for use in a developing country - the case of South Africa and SAMOD. EUROMOD Working Paper Series EM5/09",
+            "id": "bib74",
+            "title": "Adapting EUROMOD for use in a developing country - the case of South Africa and SAMOD. EUROMOD Working Paper Series EM5/09",
+            "type": "unknown"
+        },
+        {
+            "articleTitle": "First Serbian Tax-Benefit Microsimulation Model \u2013 SRMOD",
+            "authors": [
+                {
+                    "name": {
+                        "index": "\u017darkovi\u0107-Raki\u0107, J",
+                        "preferred": "J \u017darkovi\u0107-Raki\u0107"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2010",
+            "id": "bib75",
+            "journal": "The Quarterly Monitor of Economic Trends and Policies in Serbia",
+            "pages": "20",
+            "type": "journal"
+        }
+    ],
+    "acknowledgements": [
+        {
+            "text": "We would like to thank Paola De Agostini, Gijs Dekkers and Iva Tasseva for their helpful comments on this paper. We acknowledge the contribution of all past and current members of the EUROMOD consortium and in particular of our colleagues at ISER at the University of Essex without whom the achievement of EUROMOD for the whole EU-27 would not have been possible. The EUROMOD preparatory study was funded by the European Commission\u2019s Targeted Socio-Economic Research (TSER 1996\u20131997). EUROMOD itself was constructed for the then EU-15 countries funded by the European Commission Fourth Framework Programme (FP4 \u2013 EUROMOD: an integrated European benefit-tax model 1998\u20132000 CT97\u20133060). It was then updated as part of the FP5 project MICRESA (Micro analysis of the European Social Agenda 2001\u20132004 HPSE-CT2001-00099). The FP6 project I-CUE (Improving the Capacity and Usability of EUROMOD 2005\u20132008 RIDS 011859) provided the basis to extend the model to the whole EU-27 countries and make it easier to update, maintain and use. The FP6 project AIM-AP (Accurate Income Measurement for the Assessment of Public Policies 2006\u20132009 No. 028412) has explored ways to improve EUROMOD capacity to include non-cash incomes, indirect taxes and modelling benefit non-take up and tax evasion. More recently, the EUROMODupdate projects, supported by the European Union Programme for Employment and Social Security \u2013 PROGRESS (2007\u20132013), have sustained the EUROMOD enlargement to cover 27 Member States, updating to recent policy systems and using data from the European Union Statistics on Income and Living Conditions (EU-SILC) as the input database.",
+            "type": "paragraph"
+        }
+    ],
+    "-meta": {
+        "patched": true
+    },
+    "stage": "published"
+}

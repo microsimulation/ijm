@@ -1,0 +1,1389 @@
+{
+    "status": "vor",
+    "id": "00083",
+    "version": 1,
+    "type": "research-article",
+    "doi": "10.34196/ijm.00083",
+    "authorLine": "Tony Lawson",
+    "title": "Modelling household spending using a random assignment scheme",
+    "published": "2013-08-31T00:00:00Z",
+    "versionDate": "2013-08-31T00:00:00Z",
+    "statusDate": "2013-08-31T00:00:00Z",
+    "volume": 6,
+    "issue": 2,
+    "elocationId": "n/a",
+    "pdf": "http://web:8082/00083/ijm-00083.pdf",
+    "subjects": [
+        {
+            "id": "consumption-savings-wealth",
+            "name": "Consumption, savings and wealth"
+        }
+    ],
+    "abstract": {
+        "content": [
+            {
+                "text": "Applied demand analysis is usually done by specifying some kind of econometric equation but there are some difficulties associated with this approach. These include the problem of modelling at a highly disaggregated level and the amount of data needed to estimate the parameters for the equations.",
+                "type": "paragraph"
+            },
+            {
+                "text": "This paper examines the use of what are known as random assignment schemes as a way to model household expenditure. This approach is based on the idea of predicting the behavioural response of a microsimulation unit by finding a donor, which is in some sense similar to the receiving unit.",
+                "type": "paragraph"
+            },
+            {
+                "text": "The paper begins with a brief review of econometric modelling. It then introduces the principles of random assignment schemes. These are expanded upon in an illustrative example to model the effect of changes in the level of income on household expenditure patterns. The model is then used as a platform to show how the random assignment scheme can be used to model a large number of goods, at the level of individual households.",
+                "type": "paragraph"
+            }
+        ]
+    },
+    "copyright": {
+        "license": "CC-BY-4.0",
+        "holder": "Lawson",
+        "statement": "This article is distributed under the terms of the <a href=\"http://creativecommons.org/licenses/by/4.0/\">Creative Commons Attribution License</a>, which permits unrestricted use and redistribution provided that the original author and source are credited."
+    },
+    "authors": [
+        {
+            "affiliations": [
+                {
+                    "address": {
+                        "components": {
+                            "country": "England"
+                        },
+                        "formatted": [
+                            "England"
+                        ]
+                    },
+                    "name": [
+                        "Department of Sociology",
+                        "University of Essex"
+                    ]
+                }
+            ],
+            "emailAddresses": [
+                "tony.lawson@dunelm.org.uk"
+            ],
+            "name": {
+                "index": "Lawson, Tony",
+                "preferred": "Tony Lawson"
+            },
+            "type": "person"
+        }
+    ],
+    "keywords": [
+        "random assignment",
+        "microsimulation",
+        "income",
+        "expenditure",
+        "NetLogo"
+    ],
+    "body": [
+        {
+            "content": [
+                {
+                    "text": "Consumer spending in the UK amounted to 872 billion pounds in 2009 (<a href=\"#bib16\">ONS, 2010</a>). It is understandable therefore, that both commercial and public organisations have an interest in gaining a better understanding of this sector of the economy. In the private sector, this might be to predict the size of the market for particular goods or services. For governments, it is important to understand the effect of indirect taxes that affect households differently depending on the type and quantity of goods they consume. The problem this paper addresses is how to model the way spending on various goods and services varies in response to demographic, economic and socio-technical change.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "In microsimulation, as well as in economics generally, modelling household expenditure is usually carried out by econometric methods. However, there are some difficulties with this approach such as the amount of data needed to estimate the parameters accurately (<a href=\"#bib19\">Thomas, 1987</a>) and the difficulty of modelling at a highly disaggregated level (discussed below). This paper examines the use of what are known as random assignment schemes as a way to model household expenditure. This approach is based on the idea of predicting the behavioural response of a microsimulation unit by finding a donor, which is in some sense similar to the receiving unit. According to <a href=\"#bib12\">Klevmarken (1997)</a>, the advantages of this method are that it is not necessary to impose a functional form on the data or make any assumptions about the distribution of variables. There are no parameters to estimate and the method preserves the variation and most of the correlation present in the original dataset. The approach also allows the study of situations where people behave in fundamentally different ways; in particular where some individuals do something other than maximise their utility function.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Following a brief review of econometric modelling, the paper introduces the principles of random assignment schemes. These are explicated further in an example model to predict the effect of changes in the level of income on household expenditure patterns. The results are validated by showing that the model reproduces some stylised facts that are already known about household expenditure patterns. The model is then used as a platform to show how the random assignment scheme can be used to model a large number of goods, at the level of individual households.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s1",
+            "title": "1. Introduction",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "In economics, the standard approach to modelling household demand is by using econometric methods. It is possible to do this in a single, regression type equation of the form.",
+                    "type": "paragraph"
+                },
+                {
+                    "id": "equ1",
+                    "label": "(1)",
+                    "mathml": "<math><mrow><mi mathvariant=\"normal\">Y</mi><mo>=</mo><msub><mi mathvariant=\"normal\">b</mi><mn>0</mn></msub><mo>+</mo><mi mathvariant=\"normal\">b</mi><mn>1</mn><msub><mi mathvariant=\"normal\">X</mi><mn>1</mn></msub><mo>+</mo><msub><mi mathvariant=\"normal\">b</mi><mn>2</mn></msub><msub><mi mathvariant=\"normal\">X</mi><mn>2</mn></msub><mo>+</mo><mo>\u2026</mo><mo>+</mo><msub><mi mathvariant=\"normal\">b</mi><mi mathvariant=\"normal\">n</mi></msub><msub><mi mathvariant=\"normal\">X</mi><mi mathvariant=\"normal\">n</mi></msub></mrow></math>",
+                    "type": "mathml"
+                },
+                {
+                    "text": "Here, the dependent variable Y might represent the budget share for food. The independent variables X<sub>1</sub> to Xn could represent factors that are thought to influence spending on food such as household size, income and price. The constants b<sub>0</sub> to bn would be estimated using standard statistical software on observed data that captures the relationship between the relevant variables.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "One of the problems with this approach is that it is necessary to specify a separate equation for each good of interest. This becomes unwieldy if the number of goods is large as it would be in a typical household budget set. It is also difficult to model the interaction between spending on each good because, in principle, this will depend on what is spent on all the other goods. The list of independent variables should then include the budget shares of all these items. This is feasible for a small number of goods but as the size of the budget set increases, the number of parameters needed to estimate the model grows quickly to the point where, for most datasets, there are not enough cases to provide accurate estimates of the parameters.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "This problem is alleviated to some extent by the use of complete demand systems consisting of an integrated set of equations. One of the most sophisticated is the Almost Ideal Demand System (AIDS, <a href=\"#bib4\">Deaton and Muellbauer, 1980</a>). It uses the principles of neoclassical economic theory to impose restrictions on the possible values of the parameters and so reduce the amount of data needed to estimate them. The AIDS model is used here as a representative of the econometric approach, partly because it may be the most advanced (<a href=\"#bib1\">Alpay &amp; Koc, 1998</a>) and because it seems to be one of the most widely used.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The general model for the Almost Ideal Demand System, for a budget set of i goods is:",
+                    "type": "paragraph"
+                },
+                {
+                    "id": "equ2",
+                    "label": "(2)",
+                    "mathml": "<math><mrow><msub><mi mathvariant=\"normal\">w</mi><mi mathvariant=\"normal\">i</mi></msub><mo mathvariant=\"normal\">=</mo><msub><mi mathvariant=\"normal\">\u03b1</mi><mi mathvariant=\"normal\">i</mi></msub><mo mathvariant=\"normal\">+</mo><msup><mstyle displaystyle=\"false\" mathsize=\"140%\"><mo mathvariant=\"normal\">\u2211</mo></mstyle><mtext>\u200b</mtext></msup><msub><mi mathvariant=\"normal\">\u03b3</mi><mrow><mi mathvariant=\"normal\">i</mi><mi mathvariant=\"normal\">j</mi></mrow></msub><mi mathvariant=\"normal\">ln</mi><msub><mi mathvariant=\"normal\">P</mi><mi mathvariant=\"normal\">j</mi></msub><mo mathvariant=\"normal\">+</mo><msub><mi mathvariant=\"normal\">\u03b2</mi><mi mathvariant=\"normal\">i</mi></msub><mi mathvariant=\"normal\">ln</mi><mo stretchy=\"false\">[</mo><mi mathvariant=\"normal\">M</mi><mo mathvariant=\"normal\">/</mo><mi mathvariant=\"normal\">P</mi><mo stretchy=\"false\">]</mo><mo mathvariant=\"normal\">+</mo><msub><mi mathvariant=\"normal\">\u03b5</mi><mi mathvariant=\"normal\">i</mi></msub><msup><mrow/><mtext>\u200b</mtext></msup></mrow></math>",
+                    "type": "mathml"
+                },
+                {
+                    "text": "where",
+                    "type": "paragraph"
+                },
+                {
+                    "items": [
+                        [
+                            {
+                                "text": "w<sub>i</sub> is the budget share of the i<sup>th</sup> good",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "M is the total consumption expenditure",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "P<sub>j</sub> is the price of the j<sup>th</sup> good (j is a good other than i)",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "P is a price aggregator for the set of goods",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "\u03b5<sub>i</sub> is an error term for good i",
+                                "type": "paragraph"
+                            }
+                        ]
+                    ],
+                    "prefix": "none",
+                    "type": "list"
+                },
+                {
+                    "text": "It is possible to take the demographic characteristics of each household into account by including a vector of dummy variables Z.",
+                    "type": "paragraph"
+                },
+                {
+                    "id": "equ3",
+                    "label": "(3)",
+                    "mathml": "<math><msub><mi mathvariant=\"normal\">w</mi><mi mathvariant=\"normal\">i</mi></msub><mo>=</mo><msub><mi mathvariant=\"normal\">\u03b1</mi><mi mathvariant=\"normal\">i</mi></msub><mo>+</mo><msup><msup><mstyle displaystyle=\"false\" mathsize=\"140%\"><mo>\u2211</mo></mstyle><mtext>\u200b</mtext></msup><mtext>\u200b</mtext></msup><msub><mi mathvariant=\"normal\">\u03b3</mi><mrow><mi mathvariant=\"normal\">i</mi><mi mathvariant=\"normal\">j</mi></mrow></msub><mi mathvariant=\"normal\">ln</mi><msub><mi mathvariant=\"normal\">P</mi><mi mathvariant=\"normal\">j</mi></msub><mo>+</mo><msub><mi mathvariant=\"normal\">\u03b2</mi><mi mathvariant=\"normal\">i</mi></msub><mi mathvariant=\"normal\">ln</mi><mo stretchy=\"false\">[</mo><mi mathvariant=\"normal\">M</mi><mo>/</mo><mi mathvariant=\"normal\">P</mi><mo stretchy=\"false\">]</mo><mo>+</mo><msub><mi mathvariant=\"normal\">\u03b4</mi><mrow><mi mathvariant=\"normal\">i</mi><mi mathvariant=\"normal\">z</mi></mrow></msub><mi mathvariant=\"normal\">Z</mi><mo>+</mo><msub><mi mathvariant=\"normal\">\u03b5</mi><mi mathvariant=\"normal\">i</mi></msub><msup><mrow/><mtext>\u200b</mtext></msup></math>",
+                    "type": "mathml"
+                },
+                {
+                    "text": "The dummy variables indicate the presence or absence of the characteristic of interest. Income, for example, could be divided into a number of bands and each household would have a 1 if it is in a particular band and a 0 otherwise. In this way, there is a separate equation, with its own parameters, for each income band.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "It can be seen from the \u03b3<sub>ij</sub> and the \u03b4<sub>iz</sub> that the number of parameters to estimate increases with the square of the number of goods and as the product of the number of household categories and goods. As a result, this approach is limited to consideration of a relatively small number of goods and household types. It becomes more difficult to apply if the households are to be represented at a highly disaggregated level as they are in microsimulation modelling. Here, as the number of dummy variables increases, the number of parameters becomes prohibitive due to data limitations. Also, the number of income bands is limited by the number of equations in the system so it would not be possible to use continuous variables.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s2",
+            "title": "2. Econometric modelling",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "The difficulties associated with parametric estimation of demand systems raises the question of whether there are alternative methods that do not involve parameters. Random assignment provides the basis for one such method. The idea of random assignment is usually associated with selecting individuals for treatment groups in such a way that the effect of the treatment is the only source of difference in outcomes between the groups. However, in the context of microsimulation modelling, random assignment is a kind of matching or imputation technique where a donor is selected on the basis of its similarity or closeness to the receiving unit. <a href=\"#bib12\">Klevmarken (1997)</a> provides an example of how a random assignment scheme can be used as a method of projecting a variable over time. Data is available on a set of incomes for two consecutive years along with some related variables such as age and sex. It is desired to project the income distribution for the following year. This is done by first defining a distance metric between a donor\u2019s variables in year 1 and a receiver\u2019s variables in year 2. The essence of the procedure is that the income for each case in year 3 is obtained by finding a donor, whose characteristics in year 1, are similar to those of the current case in year 2. The receiver\u2019s income in year 3 is then assigned to be what the donor\u2019s income subsequently became in year 2.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Random assignment has been used by (<a href=\"#bib10\">Klevmarken <i>et al</i>., 1992</a>) and (<a href=\"#bib11\">Klevmarken &amp; Olovsson, 1996</a>) and more recently by (<a href=\"#bib8\">Holm, M\u00e4kil\u00e4, &amp; Lundevaller, 2009</a>) in a dynamic spatial microsimulation model of geographic mobility. They found that this approach had the potential to provide better population projections than the alternative interaction based models. However, they also noted that the representation of behaviour is limited to what has already been observed in the initial data set. This is not a problem when it is desired only to project, all other things being equal, from current data but it is a limitation when applying the method in new situations because the behaviour and correlation structure are locked in to what has been observed. However, the issue of how to extrapolate from observed data is common to all approaches. In microsimulation, this is often done by applying some kind of alignment procedure. It would also be possible to use theoretical assumptions or empirical data to extend the model.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The next part of this paper introduces a simple example application of random assignment to model the effect of changes in household income on household expenditure patterns. This shows the operation of random assignment in more detail.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s3",
+            "title": "3. Random assignment scheme",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "Economic modelling is often carried out at the individual level. This makes sense because it is the individual who makes decisions and has some agency regarding their consumption behaviour. However, it is possible for individuals to have no income of their own yet spend money on a range of items. This is explainable by intra-household allocation of resources and at the individual level, this would have to be represented in the model. Working at the household level encapsulates intra-household allocations implicitly in observed spending patterns and so simplifies the specification of the model.",
+                    "type": "paragraph"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "The relationship between household income and spending is an area that has been studied quite extensively. The model described in this section is not intended, primarily, to add to the voluminous literature on this subject. Rather, a few stylised facts are abstracted from what is known and these are used to test the validity and plausibility of the results produced by the model. The main purpose of the model itself is to provide an illustrative example of the implementation of a random assignment scheme and how it operates in practice.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "One of the most obvious features of household spending patterns is that total consumption increases with income. However, as incomes rise, not all of it goes to consumption expenditure; some is saved or invested and some is paid in income tax. This means that, as household incomes rise, total expenditure will increase at a slower rate than income. Aside from total expenditure, a significant amount of research has been done on how the share of expenditure for goods varies with income. As far back as 1857, Engel found that the budget share for food decreases as household income increases (<a href=\"#bib5\">Engel, 1857</a>, <a href=\"#bib6\">1895</a>). More recently, ONS figures (<a href=\"#bib15\">ONS, 2008</a>) indicated that households in the highest income decile spend a greater proportion of their expenditure on \u2018transport\u2019 and \u2018education\u2019 while spending a smaller proportion on \u2018housing\u2019 and \u2018food\u2019 compared to the lowest income decile.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s4-1",
+                    "title": "4.1 Stylised facts",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "In order to investigate the relationship between household income and expenditure, keeping demographic characteristics constant, it is necessary to have some information on expenditure patterns that can be linked to household parameters such as the number of people in the household, their ages etc. In the UK, the Expenditure and Food Survey (EFS) provides data on around 2000 spending categories and includes a set of demographic variables describing household characteristics. This makes it suitable for use as the base data set for the model and avoids the need to combine data from more than one source.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The EFS is an annual cross-sectional survey that collects detailed information on household spending obtained from respondents keeping a diary of all spending over a two-week period, combined with retrospective interviews to cover large, occasionally purchased items. Its sample size is around 6,000 households containing over 10,000 individuals. Household and individual level weights are provided so that the survey sample is representative of the UK population. The illustrative model described below restricts itself to the 12 high-level expenditure groups defined in the EFS, which correspond to the Classification of Individual Consumption by Purpose (COICOP) categories (<a href=\"#bib20\">UN, 2013</a>). <a href=\"#table1\">Table 1</a> provides a brief summary of each type and some notes on what is included.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "table1",
+                                    "label": "Table 1",
+                                    "tables": [
+                                        "<table>\n<thead>\n<tr>\n<th>Variable name</th>\n<th>EFS Household Expenditure Category</th>\n<th>Notes</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>P601t</td>\n<td>Food &amp; non-alcoholic drinks</td>\n<td/>\n</tr>\n<tr>\n<td>P602t</td>\n<td>Alcohol, Tobacco &amp; Narcotics</td>\n<td>Alcohol to be consumed at home</td>\n</tr>\n<tr>\n<td>P603t</td>\n<td>Clothing and Footwear</td>\n<td/>\n</tr>\n<tr>\n<td>P604t</td>\n<td>Housing Fuel &amp; Power</td>\n<td>Includes rent, maintenance of household, water and fuel bills.\n<br/>Excludes mortgage costs</td>\n</tr>\n<tr>\n<td>P605t</td>\n<td>Household Furnishings &amp; equipment</td>\n<td>Includes carpets, curtains, household appliances, utensils and tools</td>\n</tr>\n<tr>\n<td>P606t</td>\n<td>Health</td>\n<td>Prescriptions, glasses, dentist fees but not medical insurance</td>\n</tr>\n<tr>\n<td>P607t</td>\n<td>Transport</td>\n<td>Purchase of vehicles, fuel, vehicle maintenance but not insurance</td>\n</tr>\n<tr>\n<td>P608t</td>\n<td>Communications</td>\n<td>Mobile and fixed line telephone, postage but not internet subscription</td>\n</tr>\n<tr>\n<td>P609t</td>\n<td>Recreation &amp; Culture</td>\n<td>Television, computers, CDs, boats, caravans, pets, sports, holidays</td>\n</tr>\n<tr>\n<td>P610t</td>\n<td>Education</td>\n<td>Course fees, school trips</td>\n</tr>\n<tr>\n<td>P611t</td>\n<td>Restaurants &amp; Hotels</td>\n<td>Includes takeaways, alcohol consumed outside the home and school meals</td>\n</tr>\n<tr>\n<td>P612t</td>\n<td>Miscellaneous</td>\n<td>Includes insurance, jewellery, child care, fees, moving expenses</td>\n</tr>\n</tbody>\n</table>"
+                                    ],
+                                    "title": "Primary EFS expenditure categories.",
+                                    "type": "table"
+                                }
+                            ],
+                            "type": "figure"
+                        }
+                    ],
+                    "id": "s4-2",
+                    "title": "4.2 Data source",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "content": [
+                                {
+                                    "text": "Modelling the effect of income and demographics on household expenditure patterns presents a number of requirements. The first is to load in a cross-sectional population. Next, the random assignment element is run for one or more cycles. Finally, aggregate measures are output.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "The decision to use an agent-based modelling (ABM) platform to create the model was motivated by the presence of a number of features that reduce the workload of developing the software. Prominent among these is that they provide a convenient way to handle the microsimulation units such as creating, deleting, selecting particular units and changing their internal variables. Following a review of freely available ABM platforms, NetLogo (<a href=\"#bib21\">Wilensky, 1999</a>) was chosen, largely on the basis of its simple yet powerful scripting language. In addition, it has straightforward file input/output facilities and an efficient graphical user interface. This made it easy to use while still offering all the functionality needed to develop the model.",
+                                    "type": "paragraph"
+                                }
+                            ],
+                            "id": "s4-3-1",
+                            "title": "4.3.1 Software platform",
+                            "type": "section"
+                        },
+                        {
+                            "content": [
+                                {
+                                    "text": "An overview of the program algorithm is shown below depicting the main stages of the simulation.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "items": [
+                                        [
+                                            {
+                                                "text": "load cross-sectional household data file from the EFS",
+                                                "type": "paragraph"
+                                            }
+                                        ],
+                                        [
+                                            {
+                                                "text": "for each simulated year",
+                                                "type": "paragraph"
+                                            },
+                                            {
+                                                "items": [
+                                                    [
+                                                        {
+                                                            "text": "for each household",
+                                                            "type": "paragraph"
+                                                        },
+                                                        {
+                                                            "items": [
+                                                                [
+                                                                    {
+                                                                        "text": "increase income by chosen percentage",
+                                                                        "type": "paragraph"
+                                                                    }
+                                                                ]
+                                                            ],
+                                                            "prefix": "none",
+                                                            "type": "list"
+                                                        }
+                                                    ],
+                                                    [
+                                                        {
+                                                            "text": "for each household",
+                                                            "type": "paragraph"
+                                                        },
+                                                        {
+                                                            "items": [
+                                                                [
+                                                                    {
+                                                                        "text": "locate a donor household that has a similar composition",
+                                                                        "type": "paragraph"
+                                                                    },
+                                                                    {
+                                                                        "items": [
+                                                                            [
+                                                                                {
+                                                                                    "text": "and previous income, similar to the current household\u2019s new income",
+                                                                                    "type": "paragraph"
+                                                                                }
+                                                                            ]
+                                                                        ],
+                                                                        "prefix": "none",
+                                                                        "type": "list"
+                                                                    }
+                                                                ],
+                                                                [
+                                                                    {
+                                                                        "text": "copy expenditure pattern from donor",
+                                                                        "type": "paragraph"
+                                                                    }
+                                                                ]
+                                                            ],
+                                                            "prefix": "none",
+                                                            "type": "list"
+                                                        }
+                                                    ]
+                                                ],
+                                                "prefix": "none",
+                                                "type": "list"
+                                            }
+                                        ],
+                                        [
+                                            {
+                                                "text": "calculate new aggregated expenditures for categories of interest",
+                                                "type": "paragraph"
+                                            }
+                                        ]
+                                    ],
+                                    "prefix": "none",
+                                    "type": "list"
+                                }
+                            ],
+                            "id": "s4-3-2",
+                            "title": "4.3.2 Implementation",
+                            "type": "section"
+                        },
+                        {
+                            "content": [
+                                {
+                                    "text": "One of the essential features of this algorithm is to locate a similar household. There are many ways this can be done and the selection of which particular method to use will depend on the application and available data. <a href=\"#bib14\">O\u2019Hare (2000)</a> describes several approaches for matching similar cases. These include minimum distance matching, where the donor case is chosen due to its closeness on one or more parameters. A common distance function is the normalised Euclidian distance \u221a\u2211(x<sub>i</sub> - y<sub>i)</sub><sup>2</sup> where x<sub>i</sub> and y<sub>i</sub> are the parameters for case i. This can be extended for as many parameters as required. One of the advantages of minimum distance matching is that it can be used on continuous data. If the data are categorical, matching can take place by random selection of a donor case within the same class. These methods can be combined in matching by minimum distance within classes. A further option that could be explored is to use cluster analysis to define equivalence classes and select the donor case from within the appropriate cluster. In the simulation described here, matching takes place using household income, the number of people in the household and a derived variable known as household type. In O\u2019Hare\u2019s classification, this is minimum distance within classes.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "The essential feature of this model is that whenever a household experiences a change in income, the expenditure pattern is copied from a similar household that has already had the new income and has had time to adapt. As a result, income, by definition, will be one of the matching criteria. It is represented as if it were a continuous variable so there are no income bands. In many cases, there is not an exact match for a particular income so it is necessary to find the closest alternative. In this implementation, for half of the cases (selected by a random draw), the household with the next higher income is selected as the donor. In the other half, the next lower income household is used. If more than one household satisfies the matching criteria, one of them is selected at random.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "Since incomes become more widely separated towards the top of the income distribution, there is a possibility that in some cases, a small intended increase in income can lead to a large jump in that copied from the next higher donor. To reduce this effect, a limit was put in place so that donor incomes cannot be more than twice the intended percentage change in household income. If there are no appropriate donors, all expenditures are changed in proportion to the desired income change and no copying is done for that household in the current cycle.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "Households have many characteristics apart from their income and expenditure pattern. One of these is the number of people in the household and it is known that this is correlated with household income (<a href=\"#bib13\">OECD, 2012</a>). If the only matching criterion were income, then selected donor households would be more likely to come from those that have a greater number of occupants. Since households are unlikely to adapt to increasing incomes by taking in new members, this effect was removed by including the number of occupants in the matching criteria.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "Household income may also be correlated with the age and sex of occupants. This was controlled for by classifying households by their composition. The following household types were defined and each household was assigned to one of them.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "tables": [
+                                        "<table>\n<thead>\n<tr>\n<th>Type</th>\n<th>Description</th>\n<th>Definition</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>1</td>\n<td>One person non-pensioner</td>\n<td>one person below pensionable age</td>\n</tr>\n<tr>\n<td>2</td>\n<td>One person pensioner</td>\n<td>one person of pensionable age</td>\n</tr>\n<tr>\n<td>3</td>\n<td>Couple with no children</td>\n<td>two adults</td>\n</tr>\n<tr>\n<td>4</td>\n<td>Family with children</td>\n<td>two adults + 1 or more children</td>\n</tr>\n<tr>\n<td>5</td>\n<td>Single parent</td>\n<td>one adult + 1 or more children</td>\n</tr>\n<tr>\n<td>6</td>\n<td>Other</td>\n<td>all other households</td>\n</tr>\n</tbody>\n</table>"
+                                    ],
+                                    "type": "table"
+                                },
+                                {
+                                    "text": "(<i>For the purposes of this model, an individual is considered to be an adult if they are aged 16 or over and a child if under 16. Males aged 65 and over are considered pensionable as are females aged 60 or over.</i>)",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "In order to simulate the effect of changing household incomes, a scenario is run where all households receive a fixed percentage change in income. Processing continues until all households have had their income changed or when the mean income of the population has been changed by the target amount, whichever comes first. Details of the random assignment procedure are shown below, beginning from the point where all households have been set a desired or target percentage increase in income.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "for each household",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "items": [
+                                        [
+                                            {
+                                                "text": "while mean population income &lt;= target population income",
+                                                "type": "paragraph"
+                                            },
+                                            {
+                                                "items": [
+                                                    [
+                                                        {
+                                                            "text": "select uniformly distributed random number from 0 to 1",
+                                                            "type": "paragraph"
+                                                        }
+                                                    ],
+                                                    [
+                                                        {
+                                                            "text": "if number &lt;= 0.5 (copy from next higher income household)",
+                                                            "type": "paragraph"
+                                                        },
+                                                        {
+                                                            "items": [
+                                                                [
+                                                                    {
+                                                                        "text": "if any other households with (income &gt;= target) and (increase &lt;= limit) and same type and number in household",
+                                                                        "type": "paragraph"
+                                                                    }
+                                                                ],
+                                                                [
+                                                                    {
+                                                                        "text": "store donor expenditure pattern",
+                                                                        "type": "paragraph"
+                                                                    }
+                                                                ],
+                                                                [
+                                                                    {
+                                                                        "text": "else",
+                                                                        "type": "paragraph"
+                                                                    }
+                                                                ],
+                                                                [
+                                                                    {
+                                                                        "text": "change all spending categories in proportion to income change",
+                                                                        "type": "paragraph"
+                                                                    }
+                                                                ]
+                                                            ],
+                                                            "prefix": "none",
+                                                            "type": "list"
+                                                        }
+                                                    ],
+                                                    [
+                                                        {
+                                                            "text": "if number &gt; 0.5 (copy from next lower income household)",
+                                                            "type": "paragraph"
+                                                        },
+                                                        {
+                                                            "items": [
+                                                                [
+                                                                    {
+                                                                        "text": "if any other households with (income &lt;= target) and (increase &lt;= limit) and same type and number in household",
+                                                                        "type": "paragraph"
+                                                                    }
+                                                                ],
+                                                                [
+                                                                    {
+                                                                        "text": "store donor expenditure pattern",
+                                                                        "type": "paragraph"
+                                                                    }
+                                                                ],
+                                                                [
+                                                                    {
+                                                                        "text": "else",
+                                                                        "type": "paragraph"
+                                                                    }
+                                                                ],
+                                                                [
+                                                                    {
+                                                                        "text": "change all spending in proportion to income change",
+                                                                        "type": "paragraph"
+                                                                    }
+                                                                ]
+                                                            ],
+                                                            "prefix": "none",
+                                                            "type": "list"
+                                                        }
+                                                    ]
+                                                ],
+                                                "prefix": "none",
+                                                "type": "list"
+                                            }
+                                        ],
+                                        [
+                                            {
+                                                "text": "for each household",
+                                                "type": "paragraph"
+                                            },
+                                            {
+                                                "items": [
+                                                    [
+                                                        {
+                                                            "text": "update expenditure patterns from stored donor",
+                                                            "type": "paragraph"
+                                                        }
+                                                    ]
+                                                ],
+                                                "prefix": "none",
+                                                "type": "list"
+                                            }
+                                        ]
+                                    ],
+                                    "prefix": "none",
+                                    "type": "list"
+                                },
+                                {
+                                    "text": "The source code and further details of the model can be found in the OpenABM model library <a href=\"http://www.openabm.org/\">http://www.openabm.org/</a>",
+                                    "type": "paragraph"
+                                }
+                            ],
+                            "id": "s4-3-3",
+                            "title": "4.3.3 Matching criteria",
+                            "type": "section"
+                        },
+                        {
+                            "content": [
+                                {
+                                    "text": "In order to run a simulation, it is first necessary so set up some user defined parameters. These are the number of cases to read from the input file, the number of cycles of random assignment to run and the percentage change in real household income per cycle. It is possible to vary the rate of income change to represent a particular scenario either via a slider on the user interface or in the program code. The output appears in graphical form on the screen or optionally can be written to a file for later analysis.",
+                                    "type": "paragraph"
+                                }
+                            ],
+                            "id": "s4-3-4",
+                            "title": "4.3.4 Running the model",
+                            "type": "section"
+                        }
+                    ],
+                    "id": "s4-3",
+                    "title": "4.3 Model description",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "content": [
+                                {
+                                    "text": "When the initial data file, taken from the 2006 EFS, was read in, mean household income (before tax and including any benefits) was \u00a3656. This was increased in a series of 10 steps (10 cycles of random assignment) until it reached \u00a31057, which represents a 61% increase. During this time, mean total consumption expenditure rose from \u00a3478 to \u00a3654, which is an increase of 37%. This is in agreement with the first two stylised facts, identified above, that expenditures rise with rising income but at a slower rate. As mentioned earlier, the additional income goes partly on income tax, some is saved or invested and some is spent on non-consumption items. This includes mortgage interest payments, which appear in the EFS category \u2018other expenditure\u2019. In addition, capital repayment of mortgage is not counted as consumption expenditure.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "The output from the simulation takes the form of a cross-sectional population of households and individuals within them. This is the same format as the original input file and enables a high level of flexibility in the analysis of the results. The output can be written to a micro level data-file and examined using a statistics package or represented graphically to highlight trends. The output could also be used as input for further transformations of the population. For example, an employment module could be added and expenditures copied from similar households that have the same number of working and unemployed members. A demographic module could be set up to represent the effect of population change with expenditure patterns copied from households with a similar composition.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "It would not be appropriate to write out the disaggregated output dataset here. The following aggregated summary shows how the population reacts to increases in household income. This can be compared against the stylised facts mentioned above to verify that the model produces the expected results.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "<a href=\"#table2\">Table 2</a> shows expenditure changes for the average household. The \u2018Initial Share\u2019 is the proportion of total consumption expenditure that the average household spent on each category at the start of the simulation. The \u2018Final Share\u2019 is the budget share for the item after incomes were inflated as described above. \u2018Shift in Budget Share\u2019 is the difference between the initial and final share. Due to the stochastic nature of the simulation, there is some variation from one run to the next. As a result, it is not possible to know whether the results from a single instance are typical or unusual. Running the simulation a few times will provide information on how much random variation takes place between runs. This can be quantified in a number of ways such as calculating the difference between maximum and minimum values of the output for a particular parameter, obtained from a number of runs or from their standard deviation. It is also possible to calculate confidence intervals for the results and the next column of <a href=\"#table2\">Table 2</a> gives the 95% confidence interval of the final budget share for each expenditure category. The last two columns of <a href=\"#table2\">Table 2</a> show the upper and lower bounds of the confidence intervals. The results are the mean of three simulations. The variation is assumed to be normally distributed because the process generating the deviations is the random assignment scheme itself. While this gives some indication of the variability of the model, it gives no indication of the accuracy of the model specification.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "assets": [
+                                        {
+                                            "footnotes": [
+                                                {
+                                                    "text": [
+                                                        {
+                                                            "text": "The expenditure shares to not add up to 100% because some spending goes to other items not included in these categories.",
+                                                            "type": "paragraph"
+                                                        }
+                                                    ]
+                                                }
+                                            ],
+                                            "id": "table2",
+                                            "label": "Table 2",
+                                            "tables": [
+                                                "<table>\n<thead>\n<tr>\n<th>Expenditure Category</th>\n<th>Initial Share (%)</th>\n<th>Final Share (%)</th>\n<th>Shift in Budget Share (%)</th>\n<th>95% Confidence Interval (+ \u2212) \u03b1 = 0.05, n = 3</th>\n<th>Lower CI</th>\n<th>Upper CI</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>Transport</td>\n<td>13.00</td>\n<td>13.94</td>\n<td>0.95</td>\n<td>0.288</td>\n<td>13.65</td>\n<td>14.23</td>\n</tr>\n<tr>\n<td>Education</td>\n<td>1.48</td>\n<td>2.31</td>\n<td>0.82</td>\n<td>0.242</td>\n<td>2.07</td>\n<td>2.55</td>\n</tr>\n<tr>\n<td>Furniture</td>\n<td>6.32</td>\n<td>6.58</td>\n<td>0.26</td>\n<td>0.200</td>\n<td>6.38</td>\n<td>6.78</td>\n</tr>\n<tr>\n<td>Miscellaneous</td>\n<td>7.54</td>\n<td>7.63</td>\n<td>0.09</td>\n<td>0.152</td>\n<td>7.48</td>\n<td>7.78</td>\n</tr>\n<tr>\n<td>Health</td>\n<td>1.24</td>\n<td>1.31</td>\n<td>0.07</td>\n<td>0.033</td>\n<td>1.28</td>\n<td>1.34</td>\n</tr>\n<tr>\n<td>Clothing</td>\n<td>4.86</td>\n<td>4.79</td>\n<td>\u22120.08</td>\n<td>0.095</td>\n<td>4.70</td>\n<td>4.89</td>\n</tr>\n<tr>\n<td>Hotels</td>\n<td>7.92</td>\n<td>7.79</td>\n<td>\u22120.13</td>\n<td>0.007</td>\n<td>7.78</td>\n<td>7.80</td>\n</tr>\n<tr>\n<td>Communication</td>\n<td>2.46</td>\n<td>2.1</td>\n<td>\u22120.36</td>\n<td>0.017</td>\n<td>2.08</td>\n<td>2.12</td>\n</tr>\n<tr>\n<td>Recreation</td>\n<td>12.26</td>\n<td>11.89</td>\n<td>\u22120.37</td>\n<td>0.325</td>\n<td>11.57</td>\n<td>12.22</td>\n</tr>\n<tr>\n<td>Alcohol</td>\n<td>2.33</td>\n<td>1.94</td>\n<td>\u22120.39</td>\n<td>0.039</td>\n<td>1.90</td>\n<td>1.98</td>\n</tr>\n<tr>\n<td>Housing</td>\n<td>9.94</td>\n<td>8.92</td>\n<td>\u22121.02</td>\n<td>0.167</td>\n<td>8.75</td>\n<td>9.09</td>\n</tr>\n<tr>\n<td>Food</td>\n<td>9.81</td>\n<td>8.14</td>\n<td>\u22121.67</td>\n<td>0.059</td>\n<td>8.08</td>\n<td>8.20</td>\n</tr>\n</tbody>\n</table>"
+                                            ],
+                                            "title": "Share of expenditure with increasing income (all households).",
+                                            "type": "table"
+                                        }
+                                    ],
+                                    "type": "figure"
+                                },
+                                {
+                                    "text": "<a href=\"#table2\">Table 2</a> is sorted into descending order of percentage change so that as incomes rise, households devote a greater proportion of their consumption expenditure to the goods near top of the list. These categories can be said to have a greater discretionary element than those lower down.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "<a href=\"#table2\">Table 2</a> indicates that the categories of \u2018education\u2019 and \u2018transport\u2019 receive a greater share of the increased expenditure than the other items. This is consistent with the ONS results mentioned above, which showed that households in the highest income decile spend more of their income in these categories than those in the lowest income decile.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "At the bottom end, \u2018food\u2019 and \u2018housing\u2019, receive a diminishing share of the rising income, which is consistent with what was reported by the ONS. Finally, the budget share for \u2018food\u2019 falls as incomes rise and this is in agreement with Engel\u2019s Law.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "These results are not surprising. They are merely intended to verify that the model produces the expected results. However, the micro-level cross-sectional output can be analysed in a variety of ways and the next section shows trends in more detail and later compares the results among subsections of the population.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "<a href=\"#fig1\">Figure 1</a> shows the results at regular points during the simulation. The share of consumption expenditure is given as a percentage, on the y-axis. Only the top two and bottom two items from <a href=\"#table2\">Table 2</a> are plotted. This makes them easier to see and these are the items that exhibited the most variation. The 95% confidence intervals are shown for each data point and indicate that random variation is relatively small in this simulation.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "assets": [
+                                        {
+                                            "id": "fig1",
+                                            "image": {
+                                                "alt": "",
+                                                "uri": "%iiif_uri%/00083%2Fijm-00083-fig1.tif",
+                                                "size": {
+                                                    "width": 746,
+                                                    "height": 381
+                                                },
+                                                "source": {
+                                                    "mediaType": "image/jpeg",
+                                                    "uri": "%iiif_uri%/00083%2Fijm-00083-fig1.tif/full/full/0/default.jpg",
+                                                    "filename": "ijm-00083-fig1.jpg"
+                                                }
+                                            },
+                                            "label": "Figure 1",
+                                            "title": "Share of expenditure (all households).",
+                                            "type": "image"
+                                        }
+                                    ],
+                                    "type": "figure"
+                                },
+                                {
+                                    "text": "It can be seen that the lines are not monotonic and there is variation in the magnitude and direction of change from cycle to cycle. This is due to the stochastic nature of the model where the results are influenced by the characteristics of which particular donors happen to be selected in the course of each cycle. The random variations tend to cancel out over time and this is why it is preferable to complete the income change in a number of small steps rather than in one jump.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "The next two sections provide further results for selected sections of the population that can be expected to have differing expenditure patterns. The first of these compares \u2018older households\u2019 and \u2018families with young children\u2019 with the average household in <a href=\"#s4-4-2\">Section 4.4.2</a>. After this, <a href=\"#s4-4-3\">Section 4.4.3</a> gives results disaggregated by income quintile.",
+                                    "type": "paragraph"
+                                }
+                            ],
+                            "id": "s4-4-1",
+                            "title": "4.4.1 The average household",
+                            "type": "section"
+                        },
+                        {
+                            "content": [
+                                {
+                                    "text": "<a href=\"#fig2\">Figure 2</a> shows changes in spending patterns for two types of household:",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "items": [
+                                        [
+                                            {
+                                                "text": "those with at least one person aged over 65 (older households);",
+                                                "type": "paragraph"
+                                            }
+                                        ],
+                                        [
+                                            {
+                                                "text": "households with one or more children under 5 (families with young children).",
+                                                "type": "paragraph"
+                                            }
+                                        ]
+                                    ],
+                                    "prefix": "number",
+                                    "type": "list"
+                                },
+                                {
+                                    "assets": [
+                                        {
+                                            "id": "fig2",
+                                            "image": {
+                                                "alt": "",
+                                                "uri": "%iiif_uri%/00083%2Fijm-00083-fig2.tif",
+                                                "size": {
+                                                    "width": 738,
+                                                    "height": 473
+                                                },
+                                                "source": {
+                                                    "mediaType": "image/jpeg",
+                                                    "uri": "%iiif_uri%/00083%2Fijm-00083-fig2.tif/full/full/0/default.jpg",
+                                                    "filename": "ijm-00083-fig2.jpg"
+                                                }
+                                            },
+                                            "label": "Figure 2",
+                                            "title": "Share of expenditure (older households and families with young children).",
+                                            "type": "image"
+                                        }
+                                    ],
+                                    "type": "figure"
+                                },
+                                {
+                                    "text": "In each case, incomes were inflated in the same way as in the previous simulation, then spending in pounds per week, for each good, was divided by the square root of the number of people in the household to compensate for household size (<a href=\"#bib3\">Buhmann <i>et al</i>., 1988</a>). Next, the amount spent on each expenditure item was divided by the amount spent on that good by the average household so that the results are shown as a percentage of what the typical household spends.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "The expenditure categories are shown on the x-axis: first for the older households (65+) and then for the family with young children (F). Each individual bar represents spending at each step of the simulation as incomes were increased.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "These results were obtained from one simulation so there are no confidence intervals. However, the amount of variation between each cycle of random assignment can be seen in the level of irregularity between the columns within each expenditure category.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "For the \u2018food\u2019 category, it is apparent that households in which at least one member is aged over 65, spend about 80% of what the average household spends. As incomes rise, this figure is largely unchanged which indicates that this group increase spending on food at about the same rate as the average household. The family with children under 5, spend more than this initially and increase spending more rapidly as incomes rise, almost reaching the same level as the average household by the end of the simulation.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "The older households spend slightly over 60% of the average on \u2018recreation\u2019 at the start of the simulation. The rate of increase is much faster than the average household and reaches over 120% of average spending after incomes were inflated. By contrast, the family with young children allocate less spending than the average household to this category as incomes rise. This leads to a decline in budget share for \u2018recreation\u2019 compared with the average household. In this way, the graph gives an indication of the relative priority of allocating the extra spending due to rising incomes.",
+                                    "type": "paragraph"
+                                }
+                            ],
+                            "id": "s4-4-2",
+                            "title": "4.4.2 Comparison of the average household with older households and families with young children",
+                            "type": "section"
+                        },
+                        {
+                            "content": [
+                                {
+                                    "text": "<a href=\"#fig3\">Figure 3</a> shows changes in spending patterns by quintile as incomes rise, with quintile 1 being the lowest income group and quintile 5 being the highest. This is equivalised as before by dividing income and spending by the square root of household size. Results are presented for all 12 of the EFS high-level categories, as a percentage of the total spending among these categories.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "assets": [
+                                        {
+                                            "id": "fig3",
+                                            "image": {
+                                                "alt": "",
+                                                "uri": "%iiif_uri%/00083%2Fijm-00083-fig3.tif",
+                                                "size": {
+                                                    "width": 746,
+                                                    "height": 379
+                                                },
+                                                "source": {
+                                                    "mediaType": "image/jpeg",
+                                                    "uri": "%iiif_uri%/00083%2Fijm-00083-fig3.tif/full/full/0/default.jpg",
+                                                    "filename": "ijm-00083-fig3.jpg"
+                                                }
+                                            },
+                                            "label": "Figure 3",
+                                            "title": "Share of expenditure by quintile.",
+                                            "type": "image"
+                                        }
+                                    ],
+                                    "type": "figure"
+                                },
+                                {
+                                    "text": "In <a href=\"#table2\">Table 2</a> above (<a href=\"#s4-4-1\">Section 4.4.1</a>), \u2018education\u2019 was identified as experiencing one of the largest increases in budget share. <a href=\"#fig3\">Figure 3</a> shows that the increase is moderate in the lower three quintiles. Much of the change appears in quintile 4 and for quintile 5, \u2018education\u2019 forms a significant budget item. Spending on \u2018transport\u2019 increases throughout to almost double its share between quintile 1 and 5.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "The budget share for \u2018housing\u2019 declines as incomes rise, with much of this taking place in the lowest three quintiles. The proportion spent on \u2018food\u2019 declines as would be expected from Engel\u2019s Law.",
+                                    "type": "paragraph"
+                                }
+                            ],
+                            "id": "s4-4-3",
+                            "title": "4.4.3 Analysis by household income quintile",
+                            "type": "section"
+                        }
+                    ],
+                    "id": "s4-4",
+                    "title": "4.4 Results",
+                    "type": "section"
+                }
+            ],
+            "id": "s4",
+            "title": "4. The effect of changes in household income on expenditure patterns",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "This example shows how a random assignment scheme can be applied to model a set of several goods at a disaggregated level. The matching scheme used here selects a donor case and from there, any variables from the donor can be copied to the receiver. As a result, there is no restriction on the number of goods that can be modelled. In principle, every item in the EFS could be represented and the complexity of the model would rise linearly with the number of goods. Also, since the individual households are retained, the distribution of variables is preserved and output can be produced at the micro-level.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "This does not mean the method is without pitfalls. As was mentioned above, selecting cases on a parameter such as increasing income means that all the variables from the case will be available for copying and some of these will be correlated with income. If the change in income really causes the change in another variable, this can be used to determine the effect of the former on the latter. However, if the change in income does not cause the change, such as when income does not cause household size to increase, this will lead to an inaccurate estimation of the effect because the simulated households change in a way that real households do not. This can be minimised by including more variables in the matching criteria to limit the household\u2019s response to changing conditions. A sensitivity analysis can be done by adding matching criteria, one by one, until the change in output reduces to an acceptable level. A regression of the matching variables on the output variables will indicate how much of the variation is explained by the model and so give an indication of its reliability. The problem of model specification is not unique to random assignment and all modelling methods can be done well or badly whatever approach is taken.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Although random assignment preserves the individual cases, the model described above does not model trajectories. It is based on a cross-sectional dataset and assumes that households will respond to a change in circumstances by adjusting their spending patterns to become more like those that have already experienced the new conditions. This may have some plausibility but it is also reasonable to suppose that households would try to retain as much of their original behaviour as possible. It would be feasible to model this by using a longitudinal dataset and copying from donors that have experienced a similar change over time. Unfortunately, the EFS is a repeated cross-sectional survey and there are currently no large-scale longitudinal panel surveys, in the UK at least, that monitor detailed household spending categories over time.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Random assignment is related to statistical matching, which is used in microsimulation to combine data from a number of different sources or files. Here, individual cases are matched on the basis of the similarity between one or more variables which are common to both sources (<a href=\"#bib9\">Ingram <i>et al</i>., 2001</a>). However, the random assignment scheme applied in this paper is essentially different from statistical matching because records are matched from within the same dataset. This makes it more akin to hot deck imputation where missing variables are obtained from a similar case that has a complete set of variables (<a href=\"#bib2\">Andridge &amp; Little, 2010</a>). Hot deck imputation is often used in surveys, where respondents may decline to answer some or all of the questions. This is particularly problematic because different respondents may have different propensities for omitting data so leading to biased results. A range of methods has been developed to ameliorate this problem such as propensity score matching (<a href=\"#bib17\">Rosenbaum &amp; Rubin, 1983</a>) and multiple imputation (<a href=\"#bib18\">Rubin, 1987</a>). Here, the imputation process is repeated a number of times account for the variability or uncertainty in the results, which is lost in a single imputation. This allows an accurate statistical description of the resulting micro-level data file to be made. The model described above also made use of multiple runs to average out the random element of the imputation. This invites the possibility of combining the two approaches and further work in this area may prove fruitful.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s5",
+            "title": "5. Discussion",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "Modelling household expenditure is usually done by econometric methods but there are some difficulties with this approach. These include the problem of modelling at a highly disaggregated level and limits on the number of goods that can be represented. The example model described in this paper shows that a random assignment scheme provides one way to avoid these limitations. The paper set out to illustrate the practical advantages of random assignment and the results point to areas for further research such as the possibility of matching using longitudinal data and applying multiple imputation.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s6",
+            "title": "6. Conclusion",
+            "type": "section"
+        }
+    ],
+    "references": [
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Alpay, S",
+                        "preferred": "S Alpay"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Koc, A",
+                        "preferred": "A Koc"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1998",
+            "id": "bib1",
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "Cairo"
+                        ]
+                    },
+                    "formatted": [
+                        "Cairo"
+                    ]
+                },
+                "name": [
+                    "Economic Research Forum"
+                ]
+            },
+            "source": "Household Demand in Turkey: An Application of Almost Ideal Demand System with Spatial Cost Index. Working Paper 0226, ERF Working Paper Series",
+            "title": "Household Demand in Turkey: An Application of Almost Ideal Demand System with Spatial Cost Index. Working Paper 0226, ERF Working Paper Series",
+            "type": "report"
+        },
+        {
+            "articleTitle": "A Review of Hot Deck Imputation for Survey Non-response",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Andridge, R",
+                        "preferred": "R Andridge"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Little, R",
+                        "preferred": "R Little"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2010",
+            "doi": "10.1111/j.1751-5823.2010.00103.x",
+            "id": "bib2",
+            "journal": "International Statistical Review",
+            "pages": {
+                "first": "40",
+                "last": "64",
+                "range": "40\u201364"
+            },
+            "type": "journal",
+            "volume": "78"
+        },
+        {
+            "articleTitle": "Equivalence Scales, Well-Being, Inequality, and Poverty \u2013 Sensitivity estimates across 10 countries using the Luxembourg Income Study (LIS), database",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Buhmann, B",
+                        "preferred": "B Buhmann"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Rainwater, L",
+                        "preferred": "L Rainwater"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Schmaus, G",
+                        "preferred": "G Schmaus"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Smeeding, T",
+                        "preferred": "T Smeeding"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1988",
+            "id": "bib3",
+            "journal": "Review of Income and Wealth",
+            "pages": {
+                "first": "115",
+                "last": "142",
+                "range": "115\u2013142"
+            },
+            "type": "journal"
+        },
+        {
+            "articleTitle": "An Almost Ideal Demand System",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Deaton, A",
+                        "preferred": "A Deaton"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Muellbauer, J",
+                        "preferred": "J Muellbauer"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1980",
+            "id": "bib4",
+            "journal": "The American Economic Review",
+            "pages": {
+                "first": "312",
+                "last": "336",
+                "range": "312\u2013336"
+            },
+            "type": "journal",
+            "volume": "70"
+        },
+        {
+            "articleTitle": "Die Produktions und Consumtionsverhaltnisse des Kaonigreichs Sachsen",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Engel, E",
+                        "preferred": "E Engel"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1857",
+            "id": "bib5",
+            "journal": "Anlage",
+            "pages": {
+                "first": "1",
+                "last": "54",
+                "range": "1\u201354"
+            },
+            "type": "journal",
+            "volume": "1"
+        },
+        {
+            "articleTitle": "Das Lebenskosten belgischer Arbeiterfamilien fr\u00c4uher und jetzt",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Engel, E",
+                        "preferred": "E Engel"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1895",
+            "id": "bib6",
+            "journal": "Bulletin de Institut International de Statistique",
+            "pages": {
+                "first": "1",
+                "last": "124",
+                "range": "1\u2013124"
+            },
+            "type": "journal",
+            "volume": "9"
+        },
+        {
+            "authors": [
+                {
+                    "name": "Expenditure and Food Survey",
+                    "type": "group"
+                }
+            ],
+            "date": "2006",
+            "id": "bib7",
+            "title": "Economic and Social Data Service",
+            "type": "web",
+            "uri": "http://www.esds.ac.uk/findingData/snDescription.asp?sn=5986#doc"
+        },
+        {
+            "articleTitle": "Imitation or Interaction in Spatial Micro Simulation",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Holm, E",
+                        "preferred": "E Holm"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "M\u00e4kil\u00e4, K",
+                        "preferred": "K M\u00e4kil\u00e4"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Lundevaller, E",
+                        "preferred": "E Lundevaller"
+                    },
+                    "type": "person"
+                }
+            ],
+            "conference": {
+                "name": [
+                    "2nd General Conference of the International Microsimulation Association"
+                ]
+            },
+            "date": "2009",
+            "id": "bib8",
+            "type": "conference-proceeding",
+            "uri": "http://www.statcan.gc.ca/conferences/ima-aim2009/session3i-eng.htm#a44"
+        },
+        {
+            "articleTitle": "Statistical Matching: a new validation case study",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Ingram, D",
+                        "preferred": "D Ingram"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "O\u2019Hare, J",
+                        "preferred": "J O\u2019Hare"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Scheuren, F",
+                        "preferred": "F Scheuren"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Turek, J",
+                        "preferred": "J Turek"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2001",
+            "id": "bib9",
+            "journal": "Proceedings of the Section on Survey Research Methods, American Statistical Association",
+            "pages": {
+                "first": "746",
+                "last": "751",
+                "range": "746\u2013751"
+            },
+            "type": "journal"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Klevmarken, A",
+                        "preferred": "A Klevmarken"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Andersson, I",
+                        "preferred": "I Andersson"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Brose, P",
+                        "preferred": "P Brose"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Flood, L",
+                        "preferred": "L Flood"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Olovsson, P",
+                        "preferred": "P Olovsson"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Tasiran, A",
+                        "preferred": "A Tasiran"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1992",
+            "details": "Paper presented at the, International Symposium on Economic Modelling, August 18\u201320, Gothenburg, Sweden",
+            "id": "bib10",
+            "title": "MICROHUS. A Micro-simulation Model for the Swedish Household Sector. A Progress Report",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Klevmarken, A",
+                        "preferred": "A Klevmarken"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Olovsson, P",
+                        "preferred": "P Olovsson"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1996",
+            "details": "Direct and behavioural effects of income tax changes -simulations with the Swedish model MICROHUS, (ed.), Micro-simulation and Public Policy, Elsevier Science Publishers, Amsterdam",
+            "id": "bib11",
+            "title": "Micro-simulation and Public Policy",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Klevmarken, A",
+                        "preferred": "A Klevmarken"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1997",
+            "details": "A Survey, Papers 1997-31. Uppsala \u2013 Working Paper Series",
+            "id": "bib12",
+            "title": "A Survey, Papers 1997-31. Uppsala \u2013 Working Paper Series",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": "OECD",
+                    "type": "group"
+                }
+            ],
+            "date": "2012",
+            "id": "bib13",
+            "title": "What are Equivalence Classes",
+            "type": "web",
+            "uri": "http://www.oecd.org/els/soc/OECD-Note-EquivalenceScales.pdf",
+            "website": "OECD Project on Income Distribution and Poverty"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "O\u2019Hare, J",
+                        "preferred": "J O\u2019Hare"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2000",
+            "details": "Impute or Match? Strategies for Microsimulation Modelling, (eds.), 2000 Microsimulation in Government Policy and Forecasting, Elsevier, London",
+            "id": "bib14",
+            "title": "2000 Microsimulation in Government Policy and Forecasting",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": "ONS",
+                    "type": "group"
+                }
+            ],
+            "date": "2008",
+            "details": "Family Spending: 2007 Edition, Ed, http://www.ons.gov.uk/ons/rel/family-spending/family-spending/2007-edition/index.html",
+            "id": "bib15",
+            "title": "Family Spending: 2007 Edition, Ed, http://www.ons.gov.uk/ons/rel/family-spending/family-spending/2007-edition/index.html",
+            "type": "unknown",
+            "uri": "http://www.ons.gov.uk/ons/rel/family-spending/family-spending/2007-edition/index.html"
+        },
+        {
+            "authors": [
+                {
+                    "name": "ONS",
+                    "type": "group"
+                }
+            ],
+            "date": "2010",
+            "id": "bib16",
+            "publisher": {
+                "name": [
+                    "Office for National Statistics"
+                ]
+            },
+            "title": "http://www.ons.gov.uk/ons/rel/consumer-trends/consumer-trends/q2-2010/index.html",
+            "type": "web",
+            "uri": "http://www.ons.gov.uk/ons/rel/consumer-trends/consumer-trends/q2-2010/index.html",
+            "website": "Household Final Consumption Expenditure Summary\u2019 0.CN, Consumer Trends \u2013 Q2 2010"
+        },
+        {
+            "articleTitle": "The Central Role of the Propensity Score in Observational Studies for Causal Effects",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Rosenbaum, P",
+                        "preferred": "P Rosenbaum"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Rubin, D",
+                        "preferred": "D Rubin"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1983",
+            "id": "bib17",
+            "journal": "Biometrika",
+            "pages": {
+                "first": "41",
+                "last": "50",
+                "range": "41\u201350"
+            },
+            "type": "journal",
+            "volume": "70"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Rubin, D",
+                        "preferred": "D Rubin"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "Multiple Imputation for Nonresponse in Surveys",
+            "date": "1987",
+            "id": "bib18",
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "New York"
+                        ]
+                    },
+                    "formatted": [
+                        "New York"
+                    ]
+                },
+                "name": [
+                    "John Wiley & Sons, Inc"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Thomas, R",
+                        "preferred": "R Thomas"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "Applied Demand Analysis",
+            "date": "1987",
+            "id": "bib19",
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "London"
+                        ]
+                    },
+                    "formatted": [
+                        "London"
+                    ]
+                },
+                "name": [
+                    "Longman"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "authors": [
+                {
+                    "name": "UN",
+                    "type": "group"
+                }
+            ],
+            "date": "2013",
+            "id": "bib20",
+            "title": "United Nations Statistics Division, COICOP Detailed Structure and Explanatory Notes",
+            "type": "web",
+            "uri": "http://unstats.un.org/unsd/cr/registry/regcst.asp?Cl=5"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Wilensky, U",
+                        "preferred": "U Wilensky"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1999",
+            "id": "bib21",
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "Evanston, IL"
+                        ]
+                    },
+                    "formatted": [
+                        "Evanston, IL"
+                    ]
+                },
+                "name": [
+                    "Center for Connected Learning and Computer-Based Modelling, Northwestern University"
+                ]
+            },
+            "title": "http://ccl.northwestern.edu/netlogo/",
+            "type": "web",
+            "uri": "http://ccl.northwestern.edu/netlogo/",
+            "website": "NetLogo"
+        }
+    ],
+    "acknowledgements": [
+        {
+            "text": "This research was supported financially by the UK Economic and Social Research Council (ESRC) and BT plc. The work was supervised by Dr. Ben Anderson and I should like to thank the anonymous reviewers for their insightful and constructive comments.",
+            "type": "paragraph"
+        }
+    ],
+    "-meta": {
+        "patched": true
+    },
+    "stage": "published"
+}
