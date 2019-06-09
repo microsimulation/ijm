@@ -1,0 +1,1817 @@
+{
+    "status": "vor",
+    "id": "00169",
+    "version": 1,
+    "type": "research-article",
+    "doi": "10.34196/ijm.00169",
+    "authorLine": "Luzius Meisser",
+    "title": "The code is the model",
+    "published": "2017-12-31T00:00:00Z",
+    "versionDate": "2017-12-31T00:00:00Z",
+    "statusDate": "2017-12-31T00:00:00Z",
+    "volume": 10,
+    "issue": 3,
+    "elocationId": "n/a",
+    "pdf": "http://web:8082/00169/ijm-00169.pdf",
+    "subjects": [
+        {
+            "id": "methodology",
+            "name": "Methodology"
+        }
+    ],
+    "abstract": {
+        "content": [
+            {
+                "text": "Conventionally, agent-based models are specified in a combination of natural language and mathematical terms, and their implementation seen as an afterthought. I challenge this view and argue that it is the source code that represents the model best, with natural language and mathematical descriptions serving as documentation. This modeling paradigm is inspired by agile software development and adopting it leads to various \u2013 mostly beneficial \u2013 consequences. First, discrepancies between the specification documents and what the model actually does are eliminated by definition as the code becomes the specification. Second, replicability is greatly improved. Third, object-oriented programming is recognized as an integral part of a modeler\u2019s skill set. Forth, tools and methods from software engineering can support the modeling process, making it more agile. Fifth, increased modularity allows to better manage complexity and enables the collaborative construction of large models. Sixth, the way models are published needs to be reconsidered, with source code ideally being part of the peer review. Seventh, the quality of source code in science is improved as it enjoys more importance, attention and scrutiny.",
+                "type": "paragraph"
+            }
+        ]
+    },
+    "copyright": {
+        "license": "CC-BY-4.0",
+        "holder": "Meisser",
+        "statement": "This article is distributed under the terms of the <a href=\"http://creativecommons.org/licenses/by/4.0/\">Creative Commons Attribution License</a>, which permits unrestricted use and redistribution provided that the original author and source are credited."
+    },
+    "authors": [
+        {
+            "affiliations": [
+                {
+                    "address": {
+                        "components": {
+                            "country": "Switzerland"
+                        },
+                        "formatted": [
+                            "Switzerland"
+                        ]
+                    },
+                    "name": [
+                        "University of Zurich"
+                    ]
+                }
+            ],
+            "emailAddresses": [
+                "luzius@meissereconomics.com"
+            ],
+            "name": {
+                "index": "Meisser, Luzius",
+                "preferred": "Luzius Meisser"
+            },
+            "type": "person"
+        }
+    ],
+    "keywords": [
+        "agent-based modeling",
+        "agile software engineering",
+        "modeling methodology"
+    ],
+    "body": [
+        {
+            "content": [
+                {
+                    "text": "The specification and the implementation of computer programs were traditionally seen as distinct, sequential activities. Similarly, the specification and the implementation of agent-based models are usually seen as distinct, sequential activities. However, while software engineering moved on, agent-based modeling is still mostly done the traditional way. In modern software engineering, specification and implementation are closely integrated. Instead of completing the design upfront, the design is seen as emerging from incremental improvements of the program embodied by its code. There is no separate design document any more. Instead, the code is the design \u2013 an insight first described by <a href=\"#bib24a\">Reeves (1992)</a>. I apply this insight to the process of agent-based modeling, leading me to question the conventional separation of specification and implementation and to boldly claim \u201cthe code is the model\u201d.<sup><a href=\"#fn1\">1</a></sup>",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Seeing the code as the model allows to build and refine agent-based models iteratively while programming, as opposed to writing down their specifications on paper first. It further implies that editing and adapting the model is done by editing and adapting its source code. The model as specified by the code becomes the primary deliverable, with accompanying papers focusing on the documentation of specific insights. This is in accordance with the principles of the <i>Agile Manifesto</i> by <a href=\"#bib3\">Beck <i>et al</i>. (2001)</a>, which had a profound impact on modern software engineering. Agile software development is a fundamentally pragmatist methodology that prioritizes people over processes, working software over documentation, collaboration over negotiation, and responding to change over plans.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Agile as a methodology is not undisputed. To a certain degree, it has become the victim of its own success. In a presentation titled \u201cAgile is Dead\u201d, <a href=\"#bib31\">Thomas (2015)</a>, who is one of the authors of the agile manifesto, laments that some of the originally good ideas have been turned into rituals that are blindly followed without deeper understanding, thereby perverting the spirit of the manifesto. This paper sticks to the original insights of agile, with a focus on tight feedback loops and the cost of change. This focus is inspired by <a href=\"#bib9\">Fowler (2001)</a>, another author of the manifesto.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "After diving deeper into the driving forces behind modern software engineering in <a href=\"#s2\">Section 2</a>, each of the consequences listed in the abstract is described in its own section, concluding with the impact on software quality. They can be read in any order as the core insights are shortly repeated where necessary. The ideas and methods found in this paper are not intended to be followed blindly, but to serve as an inspiration on how to successfully build non-trivial agent-based models.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s1",
+            "title": "1. Introduction",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": [
+                        {
+                            "text": "\u201cProbieren geht \u00fcber Studieren\u201d (Trying beats pondering).",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "type": "quote"
+                },
+                {
+                    "text": "While classic engineering focuses on ensuring high quality upfront, agile software development focuses on fast iterations and testing ideas quickly. At first sight, that looks like chaotic trial-and-error. It feels more comfortable to do traditional, sequential design with a clear separation between the specification and implementation stage. So what went wrong with software engineering? In order to understand agile development, one needs to consider the driving forces behind it, most notably the diminishing returns of upfront design.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The main driving force that makes it worthwhile to spend time on upfront design is the cost of corecting errors later (<a href=\"#bib9\">Fowler, 2001</a>). An error in the design of a bridge can be extremely costly. Thus, it pays off to spend a lot of time upfront on planning before actually building the bridge. The question is: how does that change when the cost of building decreases? In the most extreme case of having robots that can automatically tear down and build bridges over night for free, one would certainly make use of that capability and rebuild the bridge a few times until it looks and functions as desired. Adding automatic testing of the bridge\u2019s properties brings this analogy quite close to the state of modern soft ware engineering. When ideas can be tried out quickly with minimal effort, the returns of upfront planning diminish.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "A second driving force behind modern software engineering is the dynamic environment in which it takes place. Evolving requirements and a continuous inflow of ideas further diminish the value of upfront planning. In the nineties, computer programs were supposed to last for years without updates and were built within the scope of software projects. A project is an organized endeavor with a start and an end. But web services like Google or Netflix are never finished, and thus do not fit the most basic premise of a project. Instead, they are continuously improved. Facebook\u2019s continuous delivery system pushes out an update every eight hours, as <a href=\"#bib27\">Rossi (2017)</a> describes. This stands in stark contrast to the multi-year release cycle of traditional software. The ability to seamlessly deliver frequent and automatic updates decreases the cost of change further and allows to dynamically respond to evolving circumstances. In such an environment, \u201cplans are nothing, planning is everything\u201d. This core insight of the agile manifesto was already formulated by Dwight Eisenhower, although in a different context.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "A third important difference to classic engineering is that no one is constructing anything physical. Instead, both the architects and the programmers are engaging in a design activity, just at different levels of abstraction. This blurs the distinction between design and implementation, begging the question whether it makes sense for them to use different languages, different tools, and different processes. Since the language and tools for the implementation stage are given, the only option to get the high-level design and the low-level design closer is to increase the use of low-level tools in high-level design, for example by directly specifying a class hierarchy in source code instead of using UML diagrams. Attempts to do the opposite, namely to use high-level tools to do low-level design, tend to fail. The simple and effective high-level tools are not powerful enough to completely specify a software, and the high-level tools that are powerful enough tend to get more complex than the source code they were intended to replace. The cleanest way to formulate an algorithmic model is and stays plain source code.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "These three forces have contributed to the rise of <i>extreme programming</i> (<a href=\"#bib2\">Beck, 2000</a>) and the creation of the agile manifesto (<a href=\"#bib3\">Beck <i>et al</i>., 2001</a>). It acknowledges good design as something that emerges over time, and not something that can be fully specified upfront. The specification and the implementation phase are combined, thereby accelerating the development process and allowing for fast, agile iterations of collecting feedback and improving the software. It does not mean that there shouldn\u2019t be any design or other high-level planning, it just means that design and implementation should be closely integrated. Under agile software development, the source code is the only complete specification of the software. Other documents, such as protocol specifications, class diagrams or natural language descriptions, are still useful and often necessary to convey the high-level intent behind a program, but they are mere means to an end. The code is the primary deliverable and working software is the primary measure of progress.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s2",
+            "title": "2. Agile software development",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": [
+                        {
+                            "text": "\u201cAn idea is nothing, its implementation everything.\u201d",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "type": "quote"
+                },
+                {
+                    "text": "The insight that the source code of an agent-based model can serve as its specification is not new. <a href=\"#bib21\">Miller and Page (2007)</a> state on page 76: \u201cThe actual computer code itself is a complete specification of the model, but there is a big difference between a complete specification and an accessible one.\u201d Furthermore, code is not academically publishable. This has lead researchers to seek for alternate ways of specifying agent-based models in their publications.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The most common approach is to specify the model in natural language, supported by mathematical equations where appropriate. One example of this approach is the financial leverage model by <a href=\"#bib32\">Thurner, Farmer, and Geanakoplos (2012)</a>. I mention this specific model because I reimplemented it and successfully reproduced its results. In that case, the exact sequence of events is not perfectly clear from the paper, exemplifying that it is very hard to write a complete specification without using programming languages. Still, the description is good enough to reproduce the results qualitatively with adequate effort. I successfully did the same for other simple agent-based models, indicating that this type of specification works reasonably well in simple cases. Accordingly, <a href=\"#bib21\">Miller and Page (2007)</a> recommend to strive for simplicity in order to increase accessibility and to make sure the model can be fully specified within the scope of a paper. However, not all models of interest are simple.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "<a href=\"#bib13\">Grimm <i>et al</i>. (2006)</a> observe that the above approach often leads to unsatisfactory model descriptions, for example \u201cnot including enough detail of the model\u2019s schedule to allow the model to be re-implemented\u201d. As a remedy, they propose the ODD protocol and later refine it in <a href=\"#bib14\">Grimm <i>et al</i>. (2010)</a>. The ODD protocol specifies a program by creating two tables, one with all the variables and one with all the functions. They believe that: \u201cOnce readers know the full set of (low-level) state variables, they have a clear idea of the model\u2019s structure and resolution.\u201d By doing so, Grimm <i>et al</i>. tear apart the object-oriented design, as they note themselves. The design of software often is hierarchical, with multiple encapsulated layers at different levels of abstraction, allowing the reader to focus on the functionality of interest. By pushing its components into a flat list, the essence of the program can get lost and its accessibility is reduced. Also, the ODD requirement of including every detail can make the specification overly lengthy. For example, <a href=\"#bib35\">Wolf <i>et al</i>. (2013)</a> note that \u201ca description of a Lagom model that strictly follows ODD would easily fill 50 to 80 pages.\u201d Like the other attempts before it, the ODD protocol suffers from the typical symptoms of trying to specify algorithmic models in something else than a programming language.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Accepting the futility of providing a complete specification of non-trivial models using the previously mentioned methods, about one in ten authors resort to pseudo-code (<a href=\"#bib17\">Janssen <i>et al</i>., 2017</a>). Pseudocode is well-suited to specify short algorithms of up to 25 lines of code within a paper. It is often used in computer science, for example by <a href=\"#bib8\">Flajolet, Fusy, Gandouet, and Meunier (2007)</a>, where the focus is on the mathematical analysis of algorithms as opposed to building software. However, pseudo-code is impractical for larger models and I advise against creating pseudo-code attachments. There is no guarantee that it matches the actually executed code. For example, <a href=\"#bib15\">Gualdi, Tarzia, Zamponi, and Bouchaud (2015)</a> follow this practice, but the parameter \u03b4 = 0.2 in the pseudo-code does not match the actual value from the source code, where it is 0.02.<sup><a href=\"#fn2\">2</a></sup> Furthermore, it is questionable whether pseudo-code is more accessible than well-written code in a real programming language. In the end, the original code is the ultimate reference. That is also why many journals encourage providing source code as supplementary download, a practice followed by another 10% of authors according to <a href=\"#bib17\">Janssen <i>et al</i>. (2017)</a>. Ideally, the code resides in a browsable web repository, so it can be inspected without downloading or installing anything.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Agent-based models are fundamentally algorithmic and often of non-trivial size. Furthermore, they can be very sensitive to small changes, so providing incomplete specifications is not an option. Therefore, the cleanest way to specify agent-based models is to use source code. All other artifacts, such as flow charts, UML diagrams, natural language descriptions, ODD tables, and mathematical equations can be suitable means to describe the model at a higher level, but not to fully specify it. If an interested reader wants to know about the complete model in all its details, she should consult the source code, with the paper serving as a guide. \u201cIn software development, the design document is a source code listing\u201d (<a href=\"#bib25\">Reeves, 2005</a>).",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s3",
+            "title": "3. Model specification",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "Replicability is the foundation of empirical science. It enables the independent verification of experiments and to reliably build new theories on top of existing knowledge. Despite its importance, the replication of results often is harder than it should be. <a href=\"#bib5\">Chang and Phillip (2015)</a> try to reproduce the results of 67 economics papers published in a selection of 13 reputable journals. They could only replicate 33% of them on their own, and an additional 10% with the authors\u2019 assistance. The primary reason for a failure to replicate results was missing software or data \u2013 even for journals that in theory have a policy of requiring source code and data. This section discusses how seeing the code as the model improves replicability and provides a replicability checklist.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "By seeing the code as the model, the code becomes the specification. Thereby, replicating an agent-based experiment becomes trivial in theory. All that needs to be done is compiling and running the code. The tedious and error-prone step of translating a natural language specification found in a paper into source code can be skipped.<sup><a href=\"#fn3\">3</a></sup> However, the devil is in the detail. The author needs to properly prepare and document the software and its configurations in order for this to work smoothly. When running the simulation, the exact results reported in the paper should be deterministically reproduced. <a href=\"#bib1\">Axtell, Axelrod, Epstein, and Cohen (1996)</a> call this level of replication <i>numerically identical</i>.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "To go beyond numerically identical replication, one could even make sure that not only the raw numerical results are automatically reproduced, but also the charts and statistics shown in the paper. While this is a nice feature for readers and reviewers when playing with the simulation, its main benefit is for the author herself. In practice, she is often the one who is most likely to later reproduce the results. For example, when refining a paper or preparing a presentation, the ability to regenerate the charts of interest or slight deviations thereof with a few clicks can save a lot of time. Good replicability is not only desirable as a final outcome, but also accelerates the modeling process itself as it reduces the cost of trying out model variants and comparing them with each other.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The key tool for replicability is a good version control system. My system of choice is Git, which <a href=\"#bib3\">Bruno (2015)</a> reviews in the context of computational economics. A version control system keeps a history of all changes made to the source code. Each time the programmer commits a change to the repository, a snapshot is made and the history grows by one entry. The space needed for a single snapshot usually is negligible, as only the difference to the previous snapshot is stored. Ideally, the programmer comments each commit, thereby implicitly creating a lab journal. Keeping a lab journal is also recommended by <a href=\"#bib21\">Miller and Page (2007)</a>. <a href=\"#fig1\">Figure 1</a> shows a screenshot of browsing the commit history of JABM written by Steve Phelps, one of the authors that publish their source code in a public Git repository. Today, commit comments are mostly technical, but they would also be an excellent way to shortly document scientific considerations.",
+                    "type": "paragraph"
+                },
+                {
+                    "assets": [
+                        {
+                            "caption": [
+                                {
+                                    "text": "This screenshot shows how the Git client SourceTree lists changes Steve Phelps made to the Java Agent-Based Modeling library (<a href=\"http://github.com/phelps-sg/jabm\">github.com/phelps-sg/jabm</a>), which was used to produce the results presented in <a href=\"#bib4\">Caiani <i>et al</i>. (2014)</a> and <a href=\"#bib4a\">Caiani <i>et al</i>. (2015)</a>. The selected commit to the yellow branch with fingerprint c282914 apparently fixed the size counter of a list of agents named AgentList. When not only commenting on technical decisions, but also modeling considerations, Git can serve as electronic lab journal that is tightly linked to the relevant source code.",
+                                    "type": "paragraph"
+                                }
+                            ],
+                            "id": "fig1",
+                            "image": {
+                                "alt": "",
+                                "uri": "%iiif_uri%/00169%2Fijm-00169-fig1.tif",
+                                "size": {
+                                    "width": 1040,
+                                    "height": 618
+                                },
+                                "source": {
+                                    "mediaType": "image/jpeg",
+                                    "uri": "%iiif_uri%/00169%2Fijm-00169-fig1.tif/full/full/0/default.jpg",
+                                    "filename": "ijm-00169-fig1.jpg"
+                                }
+                            },
+                            "label": "Figure 1",
+                            "title": "A Git client.",
+                            "type": "image"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "text": "By default, each step in the change history is identified with a unique fingerprint. To make them more accessible, significant milestones of a program are usually labeled with a human-readable tag. Tags can also be used to switch between different versions of a software or to compare them. When working with an agent-based model, each time the model is used to generate significant results, that particular version of the model including its inputs and outputs should be tagged. That way, the latest version of the model can be changed and improved without the risk of breaking the replicability of older results.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "They are preserved as their own, tagged snapshots.<sup><a href=\"#fn4\">4</a></sup>",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Authors should adhere to the following checklist to ensure replicability and to increase accessibility:",
+                    "type": "paragraph"
+                },
+                {
+                    "items": [
+                        [
+                            {
+                                "text": "Your paper must contain a high-level description of the model.",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "Your paper must link to the model\u2019s source code. Preferably, the code is hosted in a browsable web repository such as <a href=\"http://github.com\">github.com</a>.",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "Along with the link to the code, the fingerprints (hash) of the discussed versions should be provided. This proves that the code was not changed after the submission of the paper.",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "Your code must include a readme file with instructions on how to compile and run the simulation. This should include the program inputs and the expected outputs for each discussed result.",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "Your simulation should be deterministic. Running the same configuration twice should yield the exact same result.",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "You should specify under which conditions the code can be reused, for example under the MIT license (<a href=\"#bib22\">MIT, 1988</a>). Academic use under the condition of proper attribution must be permitted.",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "You should encourage others to clone your model into their own repositories in order to improve long-term availability. Prominently add the title of your paper to the readme file so the repository can be found with a web search even when the original links are broken.",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "The tools and libraries required to compile and run the software should be freely available for academic use. For example, Jupyter notebooks should be preferred over Mathematica note-books.",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "You are encouraged to cross-reference the paper from the code and vice versa. In particular, you should make clear how the variable names from the paper (usually single-lettered) map to the ones in the code (should be long and descriptive).",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "Keep your model simple and accessible by following the hints given in <a href=\"#s5\">Section 5</a>.",
+                                "type": "paragraph"
+                            }
+                        ]
+                    ],
+                    "prefix": "number",
+                    "type": "list"
+                }
+            ],
+            "id": "s4",
+            "title": "4. Replicability",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": [
+                        {
+                            "text": "\u201cProgramming frees us to adapt the tool to the problem rather than the problem to the tool.\u201d",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "type": "quote"
+                },
+                {
+                    "text": "While models can be specified in any sufficiently powerful language, its choice visibly impacts the end result, even when the model\u2019s motif stays the same. Generally, the cleanest way to specify equation-based models is to use mathematical terms, and the cleanest way to specify algorithmic models is to use a programming language. This section discusses how object-oriented design and good programming can make a model\u2019s specification more accessible.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The family of object-oriented languages seems a particularly good fit to formulate agent-based models. <a href=\"#bib6\">Dahl and Nygaard (1966)</a> invented the first object-oriented programming language <i>Simula</i> to provide humans with an intuitive abstraction to write simulations. Incidentally, objects also are an excellent abstraction to manage complexity by encapsulating separate concerns, making object-orientation the most popular programming style by far today. As <a href=\"#bib30\">Tesfatsion (2006)</a> points out, object-orientation resembles agent-based modeling. Individual agents act in accordance with private beliefs, which they update by observing local information. Both agents and objects are about encapsulating the state of individual entities, putting data and the functions that operate on that data together. Object-orientation fits very well with agent-based modeling and provides proven abstractions for managing complexity.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Besides supporting object-oriented design, today\u2019s programming languages also operate at a higher level of abstraction than older languages. Memory management and pointer arithmetics are not necessary any more, increasing accessibility. Also, object-orientation helps with the hierarchical organization of the software. Nonetheless, the programming skills of a modeler can make an enormous difference in accessibility. While it often takes programmers many years of experience to fully develop their skills, there are some basic rules that help writing simple and accessible code:",
+                    "type": "paragraph"
+                },
+                {
+                    "items": [
+                        [
+                            {
+                                "text": "Keep your code clean and simple. Its purpose is not to show how smart you are, but to provide an accessible formulation of your model to others and your future self. Given two options, choose the one that astonishes your readers the least.",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "Split code into small units with descriptive names. For example, one should split large functions into multiple small ones even if they are only called from one place. The purpose of a function is not to enable the reuse of its code, but to structure the program nicely. The same applies to classes.",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "Choose the simplest tool that does the job. You won\u2019t need gimmicks like dependency-injection frameworks or aspect-oriented programming. They are often poorly supported by the development environment and tend to make relevant information less accessible.",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "Avoid premature generalization: do not write a function to draw polygons if all you need for now is rectangles.",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "Avoid premature optimization: Your first priority is to get things right. You can still optimize later if necessary. Most of the time, it is not. \u201cPremature optimization is the root of all evil\u201d (<a href=\"#bib18\">Knuth, 1974</a>).",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "\u201cFavor object composition over class inheritance\u201d (<a href=\"#bib10\">Gamma, Helm, Johnson, &amp; Vlissides, 1994</a>). Beginners tend to overuse inheritance in object-oriented programming. Prefer composition instead.",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "Choosing a popular programming language increases accessibility. As a social scientist, you do not need to be at the bleeding edge of computer science, you can relax and build on proven technology that is broadly understood.",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "Avoid low-level languages such as C or Fortran. Java and C# are similarly fast and have fewer pitfalls. Python and other dynamically typed languages can be an excellent choice for small projects below 1000 lines of code, but are usually an order of magnitude slower \u2014 a personal observation that is confirmed by benchmarks such as <a href=\"#bib12\">Gouy (2017)</a>.",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "For larger projects, prefer a statically typed language, allowing you to painlessly refactor (restructure, rename, move, etc) your code as the model evolves (<a href=\"#bib9a\">Fowler &amp; Beck, 1999</a>).",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "Avoid cargo cult programming: do not blindly follow conventions without understanding them. This includes everything you read in this paper.",
+                                "type": "paragraph"
+                            }
+                        ]
+                    ],
+                    "prefix": "number",
+                    "type": "list"
+                },
+                {
+                    "text": "Agent-based modelers with moderate experience should be able to formulate their models in code such that it is accessible to other researchers with a similar skill-level. Source code cannot replace highlevel descriptions, but it should be the preferred way to provide the full model specification. Keeping code clean and concise requires some effort from the author, but pays off quickly thanks to lower costs of change and increased agility.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s5",
+            "title": "5. Object-oriented programming",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": [
+                        {
+                            "text": "\u201cThe only way we validate a software design is by building it and testing it. There is no silver bullet, and no \u2019right way\u2019 to do design. Sometimes an hour, a day, or even a week spent thinking about a problem can make a big difference when the coding actually starts. Other times, 5 minutes of testing will reveal something you never would have thought about no matter how long you tried. We do the best we can under the circumstances, and then refine it.\u201d",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "type": "quote"
+                },
+                {
+                    "text": "Seeing the code as the model allows to fully leverage all the tools and methods of agile software engineering in the modeling process, a selection of which is described in this section. The key is again to decrease the cost of change, thereby improving agility. This is mostly done by creating tight feedback loops to accelerate the detection of errors at all levels of abstraction, thereby enabling the modeler to identify and refine her best ideas faster.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The traditional modeling process is illustrated in <a href=\"#fig2\">Figure 2</a>. The underlying assumption is that the design and the implementation are separate. Specification documents are created upfront and translated into source code at a later stage. The advantage of this separation is a higher degree of specialization. The designers of the model do not need to be fluent programmers. However, the price of this separation is a slower modeling and refinement process. Also, it comes with a higher risk of ideas getting lost in translation, as <a href=\"#bib34\">Wilensky and Rand (2007)</a> already pointed out. The cycle from idea to specification, to implementation, to validation, and then back to the idea stage of the next version of the software takes a lot of time and resources. Accordingly, <a href=\"#bib21\">Miller and Page (2007)</a> state on page 252: \u201cAn error in the design stage costs ten times more to correct in the coding stage and a hundred times more to fix after the program is in use.\u201d Consequently, traditional engineering tries to avoid having to return to the specification stage and aims at getting things right on the first attempt. In practice, this is rarely the case.",
+                    "type": "paragraph"
+                },
+                {
+                    "assets": [
+                        {
+                            "caption": [
+                                {
+                                    "text": "<i>Notes</i>: This diagram depicts the <i>waterfall</i> view of the modeling process of a computer simulation and its accompanying paper. It is highly idealized and hard to follow in practice. There is no indication on how to handle errors or how to otherwise refine the initial idea. Yet, this is often how the development process is implicitly assumed to work.",
+                                    "type": "paragraph"
+                                }
+                            ],
+                            "id": "fig2",
+                            "image": {
+                                "alt": "",
+                                "uri": "%iiif_uri%/00169%2Fijm-00169-fig2.tif",
+                                "size": {
+                                    "width": 423,
+                                    "height": 589
+                                },
+                                "source": {
+                                    "mediaType": "image/jpeg",
+                                    "uri": "%iiif_uri%/00169%2Fijm-00169-fig2.tif/full/full/0/default.jpg",
+                                    "filename": "ijm-00169-fig2.jpg"
+                                }
+                            },
+                            "label": "Figure 2",
+                            "title": "Waterfall modeling.",
+                            "type": "image"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "text": "In contrast to that, agile software engineering embraces the aforementioned cycle and minimizes the cost of going through it. If done right, the above quote from Page and Miller no longer holds. <a href=\"#fig3\">Figure 3</a> depicts a more realistic modeling process that incorporates these insights. It allows to test and refine ideas much faster than before. Key is the creation of tight feedback loops around the various classes of errors and to automate them as much as possible. The modeler is still encouraged to refine ideas upfront, maybe with the help of diagrams, calculations, notes, charts, and other temporary documents that aid the thought process. But she is also free to try out ideas by adjusting the code directly. The feedback loop from idea to code, to validation and back to refining the idea is much tighter. However, this must not be understood as an invitation to do quick and dirty coding. Instead, code must be tidier and better structured than under the traditional process. Otherwise, the gained agility is quickly lost again as the complexity of the codebase grows out of hand.",
+                    "type": "paragraph"
+                },
+                {
+                    "assets": [
+                        {
+                            "caption": [
+                                {
+                                    "text": "<i>Notes</i>: This diagram presents a more realistic view of the modeling process, incorporating tight feedback loops to decrease the costs of testing ideas. Formal specifications got replaced with a set of temporary documents that help communicating and refining ideas. Unlike before, ideas can also be formulated directly in a programming language. From there, three feedback loops around different classes of errors help to decrease the time it takes to ensure the code works as intended. Once it does, the simulation outcome is used to refine the initial idea, closing the outer, bold feedback loop. Each time it is completed, the modeler learns something about her model and assumptions.",
+                                    "type": "paragraph"
+                                }
+                            ],
+                            "id": "fig3",
+                            "image": {
+                                "alt": "",
+                                "uri": "%iiif_uri%/00169%2Fijm-00169-fig3.tif",
+                                "size": {
+                                    "width": 1040,
+                                    "height": 725
+                                },
+                                "source": {
+                                    "mediaType": "image/jpeg",
+                                    "uri": "%iiif_uri%/00169%2Fijm-00169-fig3.tif/full/full/0/default.jpg",
+                                    "filename": "ijm-00169-fig3.jpg"
+                                }
+                            },
+                            "label": "Figure 3",
+                            "title": "Agile modeling.",
+                            "type": "image"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "text": "First, time must be invested into regularly refactoring the code, keeping the code clean, accessible, and modular (<a href=\"#bib9a\">Fowler &amp; Beck, 1999</a>). Fortunately, IDEs such as Eclipse allow to seamlessly rename variables, move classes, extract interfaces, and perform many other refactorings without much manual labor. One should also not hesitate to remove unused parts of the model. If needed again later, they can be restored from the versioning system. Refactoring aims at improving the design of the code, thereby allowing to perform changes (including further refactoring) at a lower cost.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Second, one should automate the feedback loops around all three classes of errors shown in <a href=\"#fig3\">Figure 3</a> as much as possible. This is trivial for syntax errors that are detected on the fly and thus can be corrected within seconds. At the next level, the modeler should create a suite of unit tests to verify the behavior of individual classes. They should be triggered automatically whenever a change is made, such that the programmer is notified within seconds after introducing an error. However, it also takes some effort to write and maintain good units tests, so there is a trade-off.<sup><a href=\"#fn5\">5</a></sup> At the very least, one should create a test that simply runs the simulation after every change. This works especially well when making extensive use of assertions as described next.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Third, one should follow the fail fast principle discussed in <a href=\"#bib29\">Shore (2004)</a>. Errors are much easier to detect in programs that fail hard and visibly upon encountering something unexpected than in programs that silently ignore the unexpected. For example, when implementing a function that operates on a list under the implicit assumption that this list is ordered, one should check the ordering in the beginning of the function and let the program crash in case of a violation. The alternative of letting the function ignore such a problem might lead to subtle and hard to detect errors. Another example would be a test for stock-flow consistency in an economic model after every simulation step. Assertions combine very well with automated tests, enabling the detection of errors within seconds after having unwittingly introduced them.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "While automated testing allows the code to quickly converge towards its intended behavior, frequent and automated tests of scientific models can introduce the risk of overfitting. Non-trivial model are especially susceptible to this problem as they often have countless adjustable parameters. Sometimes, this can be addressed by testing the outcome against abstract theories, based on which one can create an unlimited number of test cases. For example, one could test whether prices in an economic simulation converge towards what classic theory predicts. Another good idea is to test the behavior of each agent on its own for certain reasonable criteria. That way, one can decrease the degrees of freedom significantly before testing the whole model against empirical data or the expectations of the researcher.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "For larger software projects with many stakeholders, the process outlined in <a href=\"#fig3\">Figure 3</a> is too simplistic. I intentionally skipped practices like Scrum that are primarily concerned with the organization of teams and the rhythm of iterations. For individual researchers, they are less relevant. Researchers are usually their own managers and customers, diminishing the need for formalizing their communication. I refer interested readers to <i>The Cathedral and the Bazaar</i> by <a href=\"#bib24\">Raymond (1999)</a>, which introduced the principle \u201crelease early, release often\u201d, <a href=\"#bib28\">Schwaber and Beedle (2002)</a> for an introduction to <a href=\"#bib20\">Scrum, and Meyer (2014)</a> for a more broad and critical review of agile methods.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s6",
+            "title": "6. Modeling process",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "The hierarchical structure of source code is better suited for describing large, modular systems than the linear structure of a paper or the monolithic structure of equation systems. And good modularity is the key to manage complex systems. Well-modularized systems are more accessible, more robust and easier to change than monolithic systems. Like object-orientation, modularity is about encapsulation, but at a higher level of abstraction. At this higher level, the rules of good design can be different, and the object-oriented principle of keeping data and functions together is less important.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "In economics, the difference between the structure of agent-based models and the structure of equation-based models resembles the difference between decentralized and centralized planning in <i>The Use of Knowledge in Society</i> by Hayek (1945). With equation-based approaches, a model consists of a monolithic equation system that is solved by a central planner. However, just like Hayek\u2019s central planner in the real world, such models struggle at incorporating diverse knowledge and are usually based on radically simplified assumptions. <a href=\"#bib7\">Farmer and Foley (2009)</a> criticize conventional economic models as follows: \u201cEven if rational expectations are a reasonable model of human behavior, the mathematical machinery is cumbersome and requires drastic simplifications to get tractable results.\u201d The design of large-scale systems that are easy to change is futile without good modularity.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "In contrast to mathematical models, algorithmic models are much more versatile and better at embracing complexity. A clean separation of concerns allows to implement and test modules independently, without having to care much about the rest of the program, thereby significantly reducing the mental load of the programmer. In a well-modularized system, the consequences of a local change should be locally contained and not render the whole model unusable. Proper encapsulation ensures that a change at one end of the model does not adversely impact something seemingly unrelated at the other end. With monolithic mathematical models, often the opposite is the case.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Anthropologists would probably say that mathematics is a high-context culture, while software engineering is a low-context culture. A typical mathematical equation with its single-letter variables and functions requires a high level of context for correct interpretation, whereas software engineering encourages the use of long descriptive names and the creation of small digestible units of thought that can be processed on their own. Generally, low-context systems are more accessible to outsiders as everything is explicitly stated, thereby reducing the amount of prior knowledge required for understanding and adjusting them.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Besides helping both the human brain as well as the computer at handling complexity, modularization also enables the collaborative creation of large-scale models. With monolithic models, every contributor needs to understand everything. With modularized models, contributors just need to understand how to interact with the rest of the model and can otherwise treat it as a black box. Modularization also facilitates the reuse of components by others, which usually is impractical at the scale of objects. But similar to object-orientation, the primary goal of modularity is not to enable reuse, but to structure the software well.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s7",
+            "title": "7. Modularity",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "What are the implications of seeing the code as the model for publishing? While journals can continue their established format and focus on the publication of insightful papers, they should make sure that the underlying source code is openly available. Good journals should also ensure that papers based on agent-based models follow the replicability checklist from <a href=\"#s4\">Section 4</a>. Furthermore, replicability should be verified as part of the peer-review process, and ideally also the code reviewed. In the following, these recommendations are discussed in more detail.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "As reasoned in <a href=\"#s3\">Section 3</a>, the specification of an agent-based model is its code. As such, it must be provided to the readers. <a href=\"#bib5\">Chang and Phillip (2015)</a> recommend making the provision of source code and data a strict condition for publication in all journals. However, code does not fit the format of journals and should thus be provided externally in a suitable web-based repository. Publishers do not have the infrastructure to properly host source code and some have a questionable track record when it comes to keeping links alive.<sup><a href=\"#fn6\">6</a></sup> Thus, source code should be hosted with a purpose-built service like Github, which also allows to comfortably browse the code online. The easier it is to gain insights by inspecting source code, the more researchers will do so.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Unlike blogs and other native web-formats that are first published and ranked later by services such as Google, academic papers are first reviewed and then published. During the review process, experts decide in advance which papers are noteworthy and which are not. Academic journals provide a curated selection of papers that adhere to a high standard, with replicability being an important part of that standard. Consequently, reviewers should try to replicate the simulation results and journals should refuse the publication of papers whose results cannot be replicated with reasonable effort. Sometimes, a reviewer might not be able to run the simulation due to hardware or other practical constraints, but such cases should be the exception.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Services such as <a href=\"http://zenodo.org\">zenodo.org</a> allow authors to create DOIs (digital object identifiers) for their source code and data. So in theory, it would be possible to refer to code directly. This can make sense when discussing an implementation detail that can only be found in the code. But generally, one should cite articles and not source code. This is also often preferred by the authors. For example, the authors of JAS-mine ask their users to cite <a href=\"#bib26\">Richardson and Richiardi (2016)</a> when using their software, and not Overall, seeing the code as the model is largely compatible with today\u2019s established publishing processes and in line with the trend of requiring the provision of source code when publishing an article based on an algorithmic model.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s8",
+            "title": "8. Publishing",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "In agent-based modeling, high code quality is particularly important because agent-based models often react sensitively to small changes. As complex systems, they are susceptible to subtle errors. That makes it difficult to be confident whether an observed phenomenon represents a fundamental insight into the simulated matter or whether it is just an artifact of a low-level design decision. The best way to increase confidence in the model is to strive for high-quality code that yields replicable results and that is easy to change. The lower the costs of change, they easier it is to test the robustness of the results. If agent-based modeling wants to move beyond generating vague, stylized facts, there is no way around high-quality code.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "As an economist, I am trained to consider the incentives. Today, there are barely any incentives to write well-structured code beyond what is necessary to get the job done. The traditional solution to this problem is to detach the specification from the code and to provide it in a separate, more visible document, so that the structure of the model is scrutinized as part of the traditional review process. As discussed in <a href=\"#s3\">Section 3</a>, such specification are rarely complete and accurate in practice. The better solution is to direct more attention to source code, thereby creating a strong additional incentive for the author to structure it well and in an accessible way.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The measures discussed in the previous <a href=\"#s8\">Section 8</a> already are a good first step for drawing more attention to a model\u2019s code. When authors know that their chances of publication are increased by providing source code of high quality, they will try to do so. Ensuring replicability and accessibility starts to pay off beyond satisfying the intrinsic motivation of the author. Besides that, I expect models to increase in quality when their code is reviewed. Code reviews are widespread in software engineering and have been shown to decrease the defect rate significantly (<a href=\"#bib18\">Kemerer &amp; Paulk, 2009</a>).",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Once researchers start to pay attention to each other\u2019s source code, a set of best practices and design patterns will emerge as they learn and copy from each other, further increasing accessibility and quality in general. Common design patterns help in reviewing code faster, just as reviewer today can skip wellknown mathematical proofs that they have seen many times before. This creates a positive feedback loop of more attention leading to better code, and better code allowing the attention of reviewers to be used more effectively. Hopefully, seeing the code as the prime way to formulate a model contributes to the advent of a new generation of high-quality agent-based simulations that yield more useful and better verifiable results.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s9",
+            "title": "9. Quality",
+            "type": "section"
+        }
+    ],
+    "references": [
+        {
+            "articleTitle": "Aligning simulation models: A case study and results",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Axtell, R",
+                        "preferred": "R Axtell"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Axelrod, R",
+                        "preferred": "R Axelrod"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Epstein, JM",
+                        "preferred": "JM Epstein"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Cohen, MD",
+                        "preferred": "MD Cohen"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1996",
+            "id": "bib1",
+            "journal": "Computational & mathematical organization theory",
+            "pages": {
+                "first": "123",
+                "last": "141",
+                "range": "123\u2013141"
+            },
+            "type": "journal",
+            "volume": "1"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Beck, K",
+                        "preferred": "K Beck"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "Extreme programming explained: Embrace change",
+            "date": "2000",
+            "id": "bib2",
+            "publisher": {
+                "name": [
+                    "Addison-Wesley"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Beck, K",
+                        "preferred": "K Beck"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Beedle, M",
+                        "preferred": "M Beedle"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Bennekum, A",
+                        "preferred": "A Bennekum"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Cockburn, A",
+                        "preferred": "A Cockburn"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Cunningham, W",
+                        "preferred": "W Cunningham"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Fowler, M",
+                        "preferred": "M Fowler"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2001",
+            "id": "bib3",
+            "title": "http://agilemanifesto.org",
+            "type": "web",
+            "uri": "http://agilemanifesto.org",
+            "website": "The Agile manifesto"
+        },
+        {
+            "articleTitle": "Version control systems to facilitate research collaboration in economics",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Bruno, R",
+                        "preferred": "R Bruno"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2015",
+            "id": "bib3a",
+            "journal": "Computational Economics",
+            "pages": {
+                "first": "1",
+                "last": "7",
+                "range": "1\u20137"
+            },
+            "type": "journal"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Caiani, A",
+                        "preferred": "A Caiani"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Godin, A",
+                        "preferred": "A Godin"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Caverzasi, E",
+                        "preferred": "E Caverzasi"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Gallegati, M",
+                        "preferred": "M Gallegati"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Kinsella, S",
+                        "preferred": "S Kinsella"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Stiglitz, JE",
+                        "preferred": "JE Stiglitz"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2015",
+            "details": "Available at SSRN",
+            "id": "bib4",
+            "title": "Agent based-stock flow consistent macroeconomics: Towards a benchmark model",
+            "type": "unknown"
+        },
+        {
+            "articleTitle": "Innovation, demand, and finance in an agent based-stock flow consistent model",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Caiani, A",
+                        "preferred": "A Caiani"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Godin, A",
+                        "preferred": "A Godin"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Kinsella, S",
+                        "preferred": "S Kinsella"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Caverzas, E",
+                        "preferred": "E Caverzas"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Russo, A",
+                        "preferred": "A Russo"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Riccetti, L",
+                        "preferred": "L Riccetti"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Gallegati, M",
+                        "preferred": "M Gallegati"
+                    },
+                    "type": "person"
+                }
+            ],
+            "conference": {
+                "name": [
+                    "Social simulation conference"
+                ]
+            },
+            "date": "2014",
+            "id": "bib4a",
+            "type": "conference-proceeding"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Chang, AC",
+                        "preferred": "AC Chang"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Phillip, L",
+                        "preferred": "L Phillip"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2015",
+            "details": "Is economics research replicable? Sixty published papers from thirteen journals say \u2019usually not\u2019. Finance and Economics Discussion Series. 083",
+            "id": "bib5",
+            "title": "Is economics research replicable? Sixty published papers from thirteen journals say \u2019usually not\u2019. Finance and Economics Discussion Series. 083",
+            "type": "unknown"
+        },
+        {
+            "articleTitle": "Simula: An ALGOL-based simulation language",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Dahl, O-J",
+                        "preferred": "O-J Dahl"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Nygaard, K",
+                        "preferred": "K Nygaard"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1966",
+            "id": "bib6",
+            "journal": "Communications of the ACM",
+            "pages": {
+                "first": "671",
+                "last": "678",
+                "range": "671\u2013678"
+            },
+            "type": "journal",
+            "volume": "9"
+        },
+        {
+            "articleTitle": "The economy needs agent-based modelling",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Farmer, JD",
+                        "preferred": "JD Farmer"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Foley, D",
+                        "preferred": "D Foley"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2009",
+            "id": "bib7",
+            "journal": "Nature",
+            "pages": {
+                "first": "685",
+                "last": "686",
+                "range": "685\u2013686"
+            },
+            "type": "journal",
+            "volume": "460"
+        },
+        {
+            "articleTitle": "Hyperloglog: The analysis of a near-optimal cardinality estimation algorithm",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Flajolet, P",
+                        "preferred": "P Flajolet"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Fusy, \u00c9",
+                        "preferred": "\u00c9 Fusy"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Gandouet, O",
+                        "preferred": "O Gandouet"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Meunier, F",
+                        "preferred": "F Meunier"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2007",
+            "id": "bib8",
+            "journal": "Analysis of algorithms 2007 (aofa07)",
+            "pages": {
+                "first": "127",
+                "last": "146",
+                "range": "127\u2013146"
+            },
+            "type": "journal"
+        },
+        {
+            "articleTitle": "The new methodology",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Fowler, M",
+                        "preferred": "M Fowler"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2001",
+            "id": "bib9",
+            "journal": "Wuhan University Journal of Natural Sciences",
+            "pages": {
+                "first": "12",
+                "last": "24",
+                "range": "12\u201324"
+            },
+            "type": "journal",
+            "volume": "6"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Fowler, M",
+                        "preferred": "M Fowler"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Beck, K",
+                        "preferred": "K Beck"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "Refactoring: Improving the design of existing code",
+            "date": "1999",
+            "id": "bib9a",
+            "publisher": {
+                "name": [
+                    "Addison-Wesley Professional"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Gamma, E",
+                        "preferred": "E Gamma"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Helm, R",
+                        "preferred": "R Helm"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Johnson, R",
+                        "preferred": "R Johnson"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Vlissides, J",
+                        "preferred": "J Vlissides"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "Design patterns: elements of reusable object-oriented software",
+            "date": "1994",
+            "id": "bib10",
+            "publisher": {
+                "name": [
+                    "Addison-Wesley"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Gatti, DD",
+                        "preferred": "DD Gatti"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Desiderio, S",
+                        "preferred": "S Desiderio"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Ga\u02ddfeo, E",
+                        "preferred": "E Ga\u02ddfeo"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Cirillo, P",
+                        "preferred": "P Cirillo"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Gallegati, M",
+                        "preferred": "M Gallegati"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "Macroeconomics from the bottom-up",
+            "date": "2011",
+            "id": "bib11",
+            "publisher": {
+                "name": [
+                    "Springer Science & Business Media"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Gouy, I",
+                        "preferred": "I Gouy"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2017",
+            "id": "bib12",
+            "title": "https://benchmarksgame.alioth.debian.org",
+            "type": "web",
+            "uri": "https://benchmarksgame.alioth.debian.org",
+            "website": "The computer language benchmarks game"
+        },
+        {
+            "articleTitle": "A standard protocol for describing individual-based and agent-based models",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Grimm, V",
+                        "preferred": "V Grimm"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Berger, U",
+                        "preferred": "U Berger"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Bastiansen, F",
+                        "preferred": "F Bastiansen"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Eliassen, S",
+                        "preferred": "S Eliassen"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Ginot, V",
+                        "preferred": "V Ginot"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Giske, J",
+                        "preferred": "J Giske"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2006",
+            "id": "bib13",
+            "journal": "Ecological modelling",
+            "pages": {
+                "first": "115",
+                "last": "126",
+                "range": "115\u2013126"
+            },
+            "type": "journal",
+            "volume": "198"
+        },
+        {
+            "articleTitle": "The ODD protocol: A review and first update",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Grimm, V",
+                        "preferred": "V Grimm"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Berger, U",
+                        "preferred": "U Berger"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "DeAngelis, DL",
+                        "preferred": "DL DeAngelis"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Polhill, JG",
+                        "preferred": "JG Polhill"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Giske, J",
+                        "preferred": "J Giske"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Railsback, SF",
+                        "preferred": "SF Railsback"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2010",
+            "id": "bib14",
+            "journal": "Ecological modelling",
+            "pages": {
+                "first": "2760",
+                "last": "2768",
+                "range": "2760\u20132768"
+            },
+            "type": "journal",
+            "volume": "221"
+        },
+        {
+            "articleTitle": "Tipping points in macroeconomic agent-based models",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Gualdi, S",
+                        "preferred": "S Gualdi"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Tarzia, M",
+                        "preferred": "M Tarzia"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Zamponi, F",
+                        "preferred": "F Zamponi"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Bouchaud, J-P",
+                        "preferred": "J-P Bouchaud"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2015",
+            "id": "bib15",
+            "journal": "Journal of Economic Dynamics and Control",
+            "pages": {
+                "first": "29",
+                "last": "61",
+                "range": "29\u201361"
+            },
+            "type": "journal",
+            "volume": "50"
+        },
+        {
+            "articleTitle": "The practice of archiving model code of agent-based models",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Janssen, MA.",
+                        "preferred": "MA. Janssen"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2017",
+            "id": "bib17",
+            "journal": "Journal of Arti\u02ddcial Societies and Social Simulation",
+            "pages": {
+                "first": "1",
+                "last": "2",
+                "range": "1\u20132"
+            },
+            "type": "journal",
+            "volume": "20"
+        },
+        {
+            "articleTitle": "The impact of design and code reviews on software quality: An empirical study based on psp data",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Kemerer, CF",
+                        "preferred": "CF Kemerer"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Paulk, MC",
+                        "preferred": "MC Paulk"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2009",
+            "id": "bib18",
+            "journal": "IEEE transactions on software engineering",
+            "pages": {
+                "first": "534",
+                "last": "550",
+                "range": "534\u2013550"
+            },
+            "type": "journal",
+            "volume": "35"
+        },
+        {
+            "articleTitle": "Structured programming with go to statements",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Knuth, DE",
+                        "preferred": "DE Knuth"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1974",
+            "id": "bib18a",
+            "journal": "ACM Computing Surveys (CSUR)",
+            "pages": {
+                "first": "261",
+                "last": "301",
+                "range": "261\u2013301"
+            },
+            "type": "journal",
+            "volume": "6"
+        },
+        {
+            "articleTitle": "Remembering A.S. Kronrod",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Landis, EM",
+                        "preferred": "EM Landis"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Yaglom, IM",
+                        "preferred": "IM Yaglom"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Brudno, V",
+                        "preferred": "V Brudno"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Gautschi, W",
+                        "preferred": "W Gautschi"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Senechal, M",
+                        "preferred": "M Senechal"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2002",
+            "id": "bib19",
+            "journal": "The Mathematical Intelligencer",
+            "pages": {
+                "first": "22",
+                "last": "30",
+                "range": "22\u201330"
+            },
+            "type": "journal",
+            "volume": "24"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Meyer, B",
+                        "preferred": "B Meyer"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "Agile! The good, the hype and the ugly",
+            "date": "2014",
+            "id": "bib20",
+            "publisher": {
+                "name": [
+                    "Springer"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Miller, JH",
+                        "preferred": "JH Miller"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Page, SE",
+                        "preferred": "SE Page"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "Complex adaptive systems: An introduction to computational models of social life",
+            "date": "2007",
+            "id": "bib21",
+            "publisher": {
+                "name": [
+                    "Princeton university press"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "authors": [
+                {
+                    "name": "MIT",
+                    "type": "group"
+                }
+            ],
+            "date": "1988",
+            "details": "MIT license, https://choosealicense.com/licenses/mit/, Online, accessed 12-May-2017",
+            "id": "bib22",
+            "title": "Online",
+            "type": "unknown",
+            "uri": "https://choosealicense.com/licenses/mit/"
+        },
+        {
+            "articleTitle": "Standardised and transparent model descriptions for agent-based models: Current status and prospects",
+            "authors": [
+                {
+                    "name": {
+                        "index": "M\u00fcller, B",
+                        "preferred": "B M\u00fcller"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Balbi, S",
+                        "preferred": "S Balbi"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Buchmann, CM",
+                        "preferred": "CM Buchmann"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "De Sousa, L",
+                        "preferred": "L De Sousa"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Dressler, G",
+                        "preferred": "G Dressler"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Groeneveld, J",
+                        "preferred": "J Groeneveld"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2014",
+            "id": "bib23",
+            "journal": "Environmental Modelling & Software",
+            "pages": {
+                "first": "156",
+                "last": "163",
+                "range": "156\u2013163"
+            },
+            "type": "journal",
+            "volume": "55"
+        },
+        {
+            "articleTitle": "The cathedral and the bazaar",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Raymond, E",
+                        "preferred": "E Raymond"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1999",
+            "id": "bib24",
+            "journal": "Knowledge, Technology & Policy",
+            "pages": {
+                "first": "23",
+                "last": "49",
+                "range": "23\u201349"
+            },
+            "type": "journal",
+            "volume": "12"
+        },
+        {
+            "articleTitle": "What is software design",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Reeves, JW",
+                        "preferred": "JW Reeves"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1992",
+            "id": "bib24a",
+            "journal": "C++ Journal",
+            "pages": {
+                "first": "14",
+                "last": "12",
+                "range": "14\u201312"
+            },
+            "type": "journal",
+            "volume": "2"
+        },
+        {
+            "articleTitle": "Code as design: Three essays",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Reeves, JW",
+                        "preferred": "JW Reeves"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2005",
+            "id": "bib25",
+            "journal": "Developer. The Independent Magazine for Software Professionals",
+            "pages": {
+                "first": "1",
+                "last": "24",
+                "range": "1\u201324"
+            },
+            "type": "journal"
+        },
+        {
+            "articleTitle": "JAS-mine: A new platform for microsimulation and agent-based modelling",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Richardson, R",
+                        "preferred": "R Richardson"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Richiardi, M",
+                        "preferred": "M Richiardi"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2016",
+            "id": "bib26",
+            "journal": "International Journal of Microsimulation",
+            "pages": {
+                "first": "106",
+                "last": "134",
+                "range": "106\u2013134"
+            },
+            "type": "journal"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Rossi, C",
+                        "preferred": "C Rossi"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2017",
+            "id": "bib27",
+            "title": "https://code.facebook.com/posts/270314900139291/rapid-release-at-massive-scale/",
+            "type": "web",
+            "uri": "https://code.facebook.com/posts/270314900139291/rapid-release-at-massive-scale/",
+            "website": "Rapid release at massive scale"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Schwaber, K",
+                        "preferred": "K Schwaber"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Beedle, M",
+                        "preferred": "M Beedle"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2002",
+            "details": "Prentice Hall Upper Saddle River",
+            "id": "bib28",
+            "title": "Agile software development with Scrum",
+            "type": "unknown"
+        },
+        {
+            "articleTitle": "Fail fast",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Shore, J",
+                        "preferred": "J Shore"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2004",
+            "id": "bib29",
+            "journal": "Software, IEEE",
+            "pages": {
+                "first": "21",
+                "last": "25",
+                "range": "21\u201325"
+            },
+            "type": "journal",
+            "volume": "21"
+        },
+        {
+            "articleTitle": "Agent-based computational economics: A constructive approach to economic theory",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Tesfatsion, L",
+                        "preferred": "L Tesfatsion"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2006",
+            "id": "bib30",
+            "journal": "Handbook of computational economics",
+            "pages": {
+                "first": "831",
+                "last": "880",
+                "range": "831\u2013880"
+            },
+            "type": "journal",
+            "volume": "2"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Thomas, D",
+                        "preferred": "D Thomas"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2015",
+            "id": "bib31",
+            "title": "https://pragdave.me/speak#agile-is-dead",
+            "type": "web",
+            "uri": "https://pragdave.me/speak#agile-is-dead",
+            "website": "Agile is dead."
+        },
+        {
+            "articleTitle": "Leverage causes fat tails and clustered volatility",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Thurner, S",
+                        "preferred": "S Thurner"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Farmer, JD",
+                        "preferred": "JD Farmer"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Geanakoplos, J",
+                        "preferred": "J Geanakoplos"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2012",
+            "id": "bib32",
+            "journal": "Quantitative Finance",
+            "pages": {
+                "first": "695",
+                "last": "707",
+                "range": "695\u2013707"
+            },
+            "type": "journal",
+            "volume": "12"
+        },
+        {
+            "articleTitle": "Making models match: Replicating an agent-based model",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Wilensky, U",
+                        "preferred": "U Wilensky"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Rand, W",
+                        "preferred": "W Rand"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2007",
+            "id": "bib34",
+            "journal": "Journal of Arti\u02ddcial Societies and Social Simulation",
+            "pages": "2",
+            "type": "journal",
+            "volume": "10"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Wolf, S",
+                        "preferred": "S Wolf"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Bouchaud, J-P",
+                        "preferred": "J-P Bouchaud"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Cecconi, F",
+                        "preferred": "F Cecconi"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Cincotti, S",
+                        "preferred": "S Cincotti"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Dawid, H",
+                        "preferred": "H Dawid"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Gintis, H",
+                        "preferred": "H Gintis"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2013",
+            "details": "Complexity Economics, 2, 1",
+            "id": "bib35",
+            "title": "Describing economic agent-based models: Dahlem ABM documentation guidelines",
+            "type": "unknown"
+        }
+    ],
+    "acknowledgements": [
+        {
+            "text": "I would like to thank the participants of the 6th World Congress of Microsimulation as well as the participants of the Colloquium for Doctoral Students at the Institute for Banking & Finance of University of Zurich for their constructive critique and interesting discussions. Also, I would like to thank Paul Sevin\u00e7 for reviewing this paper from a software engineering perspective.",
+            "type": "paragraph"
+        }
+    ],
+    "-meta": {
+        "patched": true
+    },
+    "stage": "published"
+}

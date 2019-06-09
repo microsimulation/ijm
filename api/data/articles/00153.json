@@ -1,0 +1,3380 @@
+{
+    "status": "vor",
+    "id": "00153",
+    "version": 1,
+    "type": "research-article",
+    "doi": "10.34196/ijm.00153",
+    "authorLine": "Ian Philips et al.",
+    "title": "A fine grained hybrid spatial microsimulation technique for generating detailed synthetic individuals from multiple data sources",
+    "published": "2017-04-30T00:00:00Z",
+    "versionDate": "2017-04-30T00:00:00Z",
+    "statusDate": "2017-04-30T00:00:00Z",
+    "volume": 10,
+    "issue": 1,
+    "elocationId": "n/a",
+    "pdf": "http://web:8082/00153/ijm-00153.pdf",
+    "subjects": [
+        {
+            "id": "spatial-microsimulation",
+            "name": "Spatial microsimulation"
+        }
+    ],
+    "abstract": {
+        "content": [
+            {
+                "text": "We propose a hybrid static spatial microsimulation technique that combines simulated annealing and synthetic reconstruction (Monte-Carlo sampling), in order to generate a synthetic population of individuals as part of a model-based policy indicator. We focus on the following case: (i) the model must produce outputs at a fine spatial resolution; (ii) the individuals have many attributes the majority of which are found in an available micro-data survey, though some attributes are missing and need to be added from other sources. The hybrid method proposed uses simulated annealing to simulate the majority of the required attributes, and Monte-Carlo sampling to add the missing attributes. our paper expands the range of techniques which could produce this type of model. We test the hybrid technique on a UK example estimating the capability of individuals to make journeys by walking and cycling, in order to produce a novel indicator of resilience to the disruption of fuel availability. Additionally, the staged approach means that the intermediate steps in the spatial microsimulation modelling process generate data on bicycle availability and the need to escort children during commuting that are useful in their own right.",
+                "type": "paragraph"
+            }
+        ]
+    },
+    "copyright": {
+        "license": "CC-BY-4.0",
+        "holder": "Philips",
+        "statement": "This article is distributed under the terms of the <a href=\"http://creativecommons.org/licenses/by/4.0/\">Creative Commons Attribution License</a>, which permits unrestricted use and redistribution provided that the original author and source are credited."
+    },
+    "authors": [
+        {
+            "affiliations": [
+                {
+                    "address": {
+                        "components": {
+                            "country": "United Kingdom"
+                        },
+                        "formatted": [
+                            "United Kingdom"
+                        ]
+                    },
+                    "name": [
+                        "Institute for Transport Studies University of Leeds"
+                    ]
+                }
+            ],
+            "emailAddresses": [
+                "i.philips@leeds.ac.uk"
+            ],
+            "name": {
+                "index": "Philips, Ian",
+                "preferred": "Ian Philips"
+            },
+            "type": "person"
+        },
+        {
+            "affiliations": [
+                {
+                    "address": {
+                        "components": {
+                            "country": "United Kingdom"
+                        },
+                        "formatted": [
+                            "United Kingdom"
+                        ]
+                    },
+                    "name": [
+                        "School of Geography University of Leeds"
+                    ]
+                }
+            ],
+            "emailAddresses": [
+                "g.p.Clarke@leeds.ac.uk"
+            ],
+            "name": {
+                "index": "Clarke, Graham",
+                "preferred": "Graham Clarke"
+            },
+            "type": "person"
+        },
+        {
+            "affiliations": [
+                {
+                    "address": {
+                        "components": {
+                            "country": "United Kingdom"
+                        },
+                        "formatted": [
+                            "United Kingdom"
+                        ]
+                    },
+                    "name": [
+                        "Institute for Transport Studies University of Leeds"
+                    ]
+                }
+            ],
+            "emailAddresses": [
+                "d.p.watling@its.leeds.ac.uk"
+            ],
+            "name": {
+                "index": "Watling, David",
+                "preferred": "David Watling"
+            },
+            "type": "person"
+        }
+    ],
+    "keywords": [
+        "spatial microsimulation",
+        "walking",
+        "cycling",
+        "transport resilience"
+    ],
+    "body": [
+        {
+            "content": [
+                {
+                    "text": "Spatial microsimulation is a well-established method for estimating attributes of individuals when such information is not known or not available. It links data on the distribution of individual characteristics with fine level spatial data to generate synthetic populations. Its history is well documented (<a href=\"#bib12\">Birkin &amp; Clarke, 2011</a>; <a href=\"#bib18\">Clarke, 1996</a>; <a href=\"#bib64\">Tanton, 2014</a>; <a href=\"#bib65\">Tanton &amp; Edwards, 2013</a>). Spatial microsimulation can be dynamic estimating change in each location over time, or static, examining only a single point in time. This paper is concerned with static spatial microsimulation only. A range of spatial microsimulation techniques have been developed for building static models (<a href=\"#bib64\">Tanton, 2014</a>). Spatial microsimulation is also known as synthetic population generation and forms the first part of a larger spatial microsimulation modelling process (<a href=\"#fig1\">Figure 1</a>).",
+                    "type": "paragraph"
+                },
+                {
+                    "assets": [
+                        {
+                            "id": "fig1",
+                            "image": {
+                                "alt": "",
+                                "uri": "%iiif_uri%/00153%2Fijm-00153-fig1.tif",
+                                "size": {
+                                    "width": 1755,
+                                    "height": 1277
+                                },
+                                "source": {
+                                    "mediaType": "image/jpeg",
+                                    "uri": "%iiif_uri%/00153%2Fijm-00153-fig1.tif/full/full/0/default.jpg",
+                                    "filename": "ijm-00153-fig1.jpg"
+                                }
+                            },
+                            "label": "Figure 1",
+                            "title": "The phases of the spatial microsimulation modelling process. In this paper we are concerned with proposing a hybrid technique for synthetic population generation.",
+                            "type": "image"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "text": "Most spatial microsimulation applications in geography are based on the spatial representation of an attribute of interest found in a single micro-data sample. Examples include the estimation of the geography of smoking or obesity using a health survey (which gives these characteristics for individuals by age, sex, social class, etc.), linked to small-area census of population (which links the individuals with those attributes to small-area geographies). More examples will be given in <a href=\"#s2-1\">Sections 2.1</a> and <a href=\"#s3-1\">3.1</a>. The application area that we are concerned with falls into the broad field of interest of urban sustainability. We will compute a novel measure of the capability of individuals to make journeys by walking and cycling which is an \u2018indicator\u2019 of a population\u2019s resilience to transport disruption.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The indicator, which we define fully in <a href=\"#s2-2\">Section 2.2</a>, falls into a particular group of policy analysis models which require a synthetic population of individuals as an input and have the following characteristics: (i) results should be available for small zones (e.g. UK Census Output Areas (OAs)<sup><a href=\"#fn1\">1</a></sup>), (ii) the majority of attributes are found in an available micro-data survey, though some attributes are missing and these are available from other sources. The resulting simulated individuals will therefore have many attributes. We refer to this particular group of policy analysis models later in the paper as \u2018models of interest\u2019.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Although there are examples of studies which describe techniques that can generate synthetic populations where data about individuals come from multiple sources (e.g. sample free synthetic reconstruction and imputation discussed <a href=\"#s3\">Section 3</a>), this type of technique is rarer in quantitative geography. In order to address these particular features, we propose a hybrid spatial microsimulation approach. The hybrid approach combines a first stage, in which the majority of the required attributes are simulated (those available from a micro-data-survey), with a second stage in which the missing attributes are added by Monte-Carlo sampling using data from other sources. The first contribution of the paper is therefore methodological, in terms of setting out the details of the hybrid approach, which we believe has wider applications. The second contribution is in terms of the novelty of the application, and in particular the indicator of the resilience of urban areas to fuel unavailability. Additionally, the staged approach means that the intermediate steps in the spatial microsimulation modelling process generate data that are useful in their own right. We have to generate individual and OA level estimates of bicycle availability and the need to escort children to school as part of commuting. To the authors\u2019 knowledge these data have not been synthesised previously at this spatial resolution.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Before explaining the hybrid technique used here, we first introduce the application area and case study data in <a href=\"#s2\">Section 2</a>, explaining what we are trying to simulate and illustrate how it fits into the class of models of interest. In <a href=\"#s3\">Section 3</a> we then discuss existing techniques and offer a rationale for our proposed technique. <a href=\"#s4\">Section 4</a> describes the construction of the hybrid technique. <a href=\"#s5\">Section 5</a> covers model assessment using established validation methods. Section 6 presents case study results, and <a href=\"#s7\">Section 7</a> a summary and areas for further work.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s1",
+            "title": "1. Introduction",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "content": [
+                        {
+                            "text": "Useful groupings of spatial microsimulation applications include \u2018social science focused, spatial microsimulation\u2019 (which include applications within geography as a discipline) and \u2018transport microsimulation\u2019 (<a href=\"#bib45\">O\u2019Donoghue, Morrissey, &amp; Lennon, 2014</a>). Applications in the former group include investigations of health inequality (<a href=\"#bib15\">Campbell, 2011</a>; <a href=\"#bib21\">Edwards &amp; Clarke, 2012</a>; <a href=\"#bib61\">Smith, Clarke, &amp; Harland, 2007</a>), estimations of small area income deprivation (<a href=\"#bib2\">Anderson, 2012</a>; <a href=\"#bib42\">Miranti, Cassells, Vidyattama, &amp; McNamara, 2015</a>) and investigation of the local effects of major changes in employment (<a href=\"#bib6\">Ballas &amp; Clarke, 2001</a>). Spatial microsimulation is particularly suited to assessing variation in the populations of particular areas and assessing the extent to which they are likely to be affected by policies. This makes it an effective spatial policy modelling tool, and there remains much potential to take greater advantage of this method to simulate the impact of policy change (<a href=\"#bib7\">Ballas, Dorling, Rossiter, Thomas, &amp; Clarke, 2005</a>; <a href=\"#bib45\">O\u2019Donoghue <i>et al</i>., 2014</a>).",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Transport microsimulation is widely used to generate a population of individuals for use in activity based models. Such models take behavioural data to forecast travel patterns and demand over a city or region (<a href=\"#bib8\">Barthelemy &amp; Toint, 2015</a>; <a href=\"#bib10\">Barton, Thompson, Burgess, &amp; Grant, 2015</a>; <a href=\"#bib11\">Beckman, Baggerly, &amp; McKay, 1996</a>; <a href=\"#bib24\">Guo &amp; Bhat, 2007</a>; <a href=\"#bib32\">Huynh, Perez, Berryman, &amp; Barthelemy, 2015</a>; <a href=\"#bib40\">Ma, Heppenstall, Harland, &amp; Mitchell, 2014</a>; <a href=\"#bib43\">M\u00fcller, Axhausen, Axhausen, &amp; Axhausen, 2010</a>). As a typical example, the ILUTE model integrates the simulation of the land-use and transport environment and their development over time (<a href=\"#bib58\">Salvini &amp; Miller, 2005</a>), given input data (census data, activity survey data, travel survey data and land-use data).",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The sustainable transport literature suggests a continuing need to develop more and better indicators of the benefits of walking and cycling in order to encourage transport and planning policies which fully exploit the use of walking and cycling to contribute to more sustainable cities (<a href=\"#bib25\">Handy, van Wee, &amp; Kroesen, 2014</a>; <a href=\"#bib36\">Larsen, Patterson, &amp; El-Geneidy, 2013</a>). There exists considerable evidence of the benefits of increasing the level of walking and cycling especially in urban areas. These include the promotion of more sustainable modes of transport (<a href=\"#bib54\">Pooley <i>et al</i>., 2011</a>; <a href=\"#bib35\">Jones, 2012</a>), the reduction of car dependence (<a href=\"#bib13\">Buehler &amp; Pucher, 2011</a>), reducing CO2 emissions (<a href=\"#bib53\">Pooley <i>et al</i>., 2012</a>), improvements in health (<a href=\"#bib20\">de Hartog, Boogaard, Nijland, &amp; Hoek, 2010</a>; <a href=\"#bib46\">Ogilvie <i>et al</i>., 2007</a>; <a href=\"#bib69\">Woodcock <i>et al</i>., 2009</a>), increasing the liveability of cities (<a href=\"#bib14\">Burden, 1999</a>; <a href=\"#bib52\">Pikora, Giles-Corti, Bull, Jamrozik, &amp; Donovan, 2003</a>) and reducing congestion (<a href=\"#bib17\">Cervero, Sarmiento, Jacoby, Gomez, &amp; Neiman, 2009</a>; <a href=\"#bib28\">Heinen, van Wee, &amp; Maat, 2010</a>).",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Current models which include some consideration of capability to walk or cycle are predominantly based on observations of existing cyclists (<a href=\"#bib49\">Philips, 2014</a>). A model of a population\u2019s capability to make journeys would, on the other hand, allow a greater consideration of those who do not currently make walking or cycling journeys. This could contribute to a more in depth understanding of walking and cycling (<a href=\"#bib55\">Pooley <i>et al</i>., 2011</a>) and would help to ascertain which policy interventions may have a positive impact.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s2-1",
+                    "title": "2.1 Application area",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "We wish to estimate the following indicator: <i>The proportion of working individuals aged 16\u201374 in an Output Area who have the physical capability to commute to their current place of work by walking or cycling given bike availability, their need to escort children to school and assuming no motorised tranport is present on the network</i>.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "This is a \u2018base-case\u2019 indicator of the population\u2019s resilience to disruptions of the transport system (<a href=\"#bib50\">Philips, Watling, &amp; Timms, 2013</a>) without any policy intervention which henceforth we refer to as \u2018the indicator\u2019. In principle the indicator might be directly estimated from survey data; however, we believe such an approach to be unsuitable for several reasons. Firstly the data is highly personal and sensitive and it is not placed in the public domain for reasons of confidentiality (<a href=\"#bib29\">Hermes &amp; Poulsen, 2012</a>). Secondly, fine-grained, small area reporting is especially important for a walking and cycling indicator, as journey distances are generally short (<a href=\"#bib33\">Iacono, Krizek, &amp; El-Geneidy, 2010</a>). This is a finer spatial resolution than direct use of survey data can conventionally provide. For example, large surveys such as the Health Survey for England (HSE) typically have respondents from all regions, but not for all smaller zones within each region (<a href=\"#bib19\">Craig, Mindell, &amp; Hirani, 2009</a>). In these cases the sample size for sub-district level analyses would typically be so small to be subject to large margins of error. For example, when the Active People Survey data was analysed to produce estimates using the UK census geography \u2013 Middle Layer Super Output Areas (MSOA) , the researchers themselves expressed concern over the high margins of error in some areas (<a href=\"#bib34\">IPSOS MORI, 2007</a>).",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Instead, we propose to estimate the indicator using spatial microsimulation. We believe this, rather than a more aggregate level model, is especially justified in our application for several reasons. Firstly, excessive aggregation in policy analysis can be problematic, with a \u2018one size fits all\u2019 approach to policy leading to dilution of investment, untargeted interventions and poor outcomes (<a href=\"#bib5\">Ballas <i>et al</i>., 2013</a>; <a href=\"#bib48\">Openshaw, 1995</a>). Individual level modelling allows small unit reporting, which, also goes some way to alleviating the modifiable area unit problem (<a href=\"#bib47\">Openshaw, 1984</a>), and by making analysts mindful of the heterogeneity of areas helps to avoid the ecological fallacy. Secondly there is individual variation across multiple attributes, which interact to influence the indicator and aggregate data based on; for example the mean attribute value would fail to adequately consider this variation. Locating concentrations of individuals at the extremes of the distribution of capability is likely to be of particular interest to policy makers. Taking the national mean of individual attributes would be an inadequate measure, as it would not help identify those key people at the extremes of the distribution of capability. For this reason, even disaggregation by age and gender (for example, taking the average fitness level for population segments such as men over 50) may be too coarse.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s2-2",
+                    "title": "2.2 The indicator being estimated",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "This case study falls into our class of models of interest. Firstly, the synthetic population has to represent many attributes. <a href=\"#table1\">Table 1</a> defines the wide range of data sources required to produce the indicator. Not all the required attributes are available in a single micro-data sample, most are available in the HSE anonymised micro-data, the other attributes are found in other data sets. Secondly, the case study includes all the phases of spatial microsimulation modelling (<a href=\"#fig1\">Figure 1</a>). In the first phase (synthetic population generation) attributes are simulated directly from the data. Phase 2 takes the synthesised attributes produced in phase 1, from which further attributes can be derived such as VO<sub>2</sub>max<sup><a href=\"#fn2\">2</a></sup> (ml/litre of blood/kg body mass) and pedalling power. Local environmental variables representing features such as topography and wind are then also introduced. The individual model then estimates an individual\u2019s capability to make walking and cycling journeys. The second modelling phase (Shown in <a href=\"#fig1\">Figure 1</a>) is discussed in <a href=\"#s3\">Section 3</a> below and in detail in <a href=\"#bib49\">Philips, (2014)</a> and <a href=\"#bib51\">Philips, Watling, Timms, (2015)</a>. The case study also illustrates the third phase shown in <a href=\"#fig1\">Figure 1</a> by demonstrating the ability to visualise and analyse the spatial distribution of specific attributes as well as the spatial distribution of the indicator.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "footnotes": [
+                                        {
+                                            "text": [
+                                                {
+                                                    "text": "<i>Source</i>: Health Survey for England, 2008 (HSE), National Travel Survey (NTS), UK Census, 2001, Limiting Long Term Illness (LLTI), National Statistics Socio-Economic Classification (NSSEC).",
+                                                    "type": "paragraph"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "text": [
+                                                {
+                                                    "text": "<i>Notes</i>: * The column \u2018Stage\u2019 refers to the simulated annealing Stage 1 or Monte-Carlo sampling Stage 2 of the synthetic population generation phase described in <a href=\"#s4\">Section 4</a>.",
+                                                    "type": "paragraph"
+                                                }
+                                            ]
+                                        }
+                                    ],
+                                    "id": "table1",
+                                    "label": "Table 1",
+                                    "tables": [
+                                        "<table>\n<thead>\n<tr>\n<th align=\"center\">Variable</th>\n<th align=\"center\">Data source</th>\n<th align=\"center\">Possible values</th>\n<th align=\"center\">Constraint</th>\n<th align=\"center\">Stage <a href=\"#tfn1\">*</a></th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>Physical activity (days in last 4 weeks with 30+mins vigorous activity)</td>\n<td>HSE</td>\n<td>0\u201328</td>\n<td align=\"center\">N</td>\n<td align=\"center\">1</td>\n</tr>\n<tr>\n<td>Body Mass Index (kg/m<sup>2</sup>)</td>\n<td>HSE</td>\n<td>15\u201348</td>\n<td align=\"center\">N</td>\n<td align=\"center\">1</td>\n</tr>\n<tr>\n<td>Age group</td>\n<td>Census: Table CS028 Sex and Age (16\u201374) by Economic Activity &amp; HSE</td>\n<td>16\u201324, 25\u201334, 35\u201354, 55\u201364, 65\u201374.</td>\n<td align=\"center\">Y</td>\n<td align=\"center\">1</td>\n</tr>\n<tr>\n<td>Gender</td>\n<td>Census table CS028 &amp; HSE</td>\n<td>M/F</td>\n<td align=\"center\">Y</td>\n<td align=\"center\">1</td>\n</tr>\n<tr>\n<td>Weight (kg)</td>\n<td>HSE</td>\n<td>32\u2013130kg</td>\n<td align=\"center\">N</td>\n<td align=\"center\">1</td>\n</tr>\n<tr>\n<td>Bicycle availability</td>\n<td>NTS /(<a href=\"#bib1\">Anable, 2010</a>)</td>\n<td>Probability given age, gender and NSSEC</td>\n<td align=\"center\">N</td>\n<td align=\"center\">2</td>\n</tr>\n<tr>\n<td>The need to escort children on commute</td>\n<td>NTS / Children &amp; Early Years Survey, 2010</td>\n<td>Probability given age and gender</td>\n<td align=\"center\">N</td>\n<td align=\"center\">2</td>\n</tr>\n<tr>\n<td>Current commute distance</td>\n<td>Census table CAS120</td>\n<td>Bins, 0, 0\u20132, 2\u20135, 5\u201310, 10\u201320, 20\u201340, 40\u201360, &lt; 60, not fixed.</td>\n<td align=\"center\">Y</td>\n<td align=\"center\">2</td>\n</tr>\n<tr>\n<td>Economic activity</td>\n<td>Census table CS028 &amp; HSE</td>\n<td>Working, unemployed, student, economically inactive.</td>\n<td align=\"center\">Y</td>\n<td align=\"center\">1</td>\n</tr>\n<tr>\n<td>LLTI</td>\n<td>Census table CS021 and HSE</td>\n<td>Y/N</td>\n<td align=\"center\">Y</td>\n<td align=\"center\">1</td>\n</tr>\n<tr>\n<td>Highest educational qualification</td>\n<td>Census table KS013 and HSE</td>\n<td>6 categories</td>\n<td align=\"center\">Y</td>\n<td align=\"center\">1</td>\n</tr>\n<tr>\n<td>NSSEC by sex</td>\n<td>Census tables KS014 b and c. &amp; HSE</td>\n<td>10 NSSEC categories by gender</td>\n<td align=\"center\">Y</td>\n<td align=\"center\">1</td>\n</tr>\n</tbody>\n</table>"
+                                    ],
+                                    "title": "Attributes and data sources used in Phase 1 (synthetic population generation) of the spatial-microsimulation modelling process.",
+                                    "type": "table"
+                                }
+                            ],
+                            "type": "figure"
+                        }
+                    ],
+                    "id": "s2-3",
+                    "title": "2.3 Case study data",
+                    "type": "section"
+                }
+            ],
+            "id": "s2",
+            "title": "2. Application area, indicator definition and case study data",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "content": [
+                        {
+                            "text": "The most common techniques of spatial microsimulation may be grouped as several broad categories. The first category comprises synthetic reconstruction which generates populations based on joint conditional probabilities of attributes (e.g. <a href=\"#bib18\">Clarke, 1996</a>). Synthetic reconstruction requires as a minimum the probability of each attribute category occurring. Probabilities can be derived from a sample of individual records or using a sample free approach. To be of practical use there should be conditional probability distributions for the occurrence of each attribute combination. Secondly one or more constraint tables are needed. A constraint table is a table of data from the census. It contains counts of the number of people with a particular attribute resident in a particular area; for example a table listing age group by gender. This allows synthetic reconstruction by estimating gender given the age of an individual and the conditional probability distribution.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The most common way of implementing synthetic reconstruction is using iterative proportional fitting and Monte-Carlo sampling (<a href=\"#bib11\">Beckman <i>et al</i>., 1996</a>). Alternative implementations in this category include models simulating at two micro-levels (e.g. household and individual, see <a href=\"#bib3\">Arentze <i>et al</i>., 2007</a>; <a href=\"#bib24\">Guo &amp; Bhat, 2007</a>; <a href=\"#bib70\">Ye <i>et al</i>., 2009</a>) and secondly models which take a sample free approach (<a href=\"#bib9\">Barthelemy &amp; Toint, 2013</a>; <a href=\"#bib23\">Gargiulo, Ternes, Huet, &amp; Deffuant, 2010</a>). <a href=\"#bib37\">Lenormand and Deffuant, (2013)</a> compared the models of <a href=\"#bib70\">Ye <i>et al</i>., (2009)</a> and <a href=\"#bib23\">Gargiulo <i>et al</i>., (2010)</a>. They found the sample free approach performed better, it was also less data demanding though it did require more pre-processing than sample based synthetic reconstruction. <a href=\"#bib9\">Barthelemy &amp; Toint, (2013)</a> found the sample free approach performed better than the sample-based method of <a href=\"#bib24\">Guo and Bhat, (2007)</a>.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "A second major category of techniques is, combinatorial optimisation. Such methods select all the attributes of an individual from anonymised individual survey records (such as the HSE micro-data described in <a href=\"#s2-3\">Section 2.3</a>) and \u2018clones\u2019 combinations of these individuals to match the aggregate counts of attributes for each zone given in the census. The main algorithms for combinatorial optimisation are deterministic reweighting (<a href=\"#bib4\">Ballas, Dorling, <i>et al</i>., 2005</a>) and simulated annealing (<a href=\"#bib27\">Harland, Heppenstall, Smith, &amp; Birkin, 2012</a>; <a href=\"#bib56\">Rahman, Harding, Tanton, &amp; Liu, 2010</a>).",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The data requirements for combinatorial optimisation are firstly a micro-data survey (also called a sample population): a table containing data about individuals taken from a survey such as the HSE. Combinatorial optimisation also requires constraint tables. Constraint attributes (called constraints) are those which are common to both the census constraint table and the sample population. For example both the uK census and the HSE contain data on age and gender.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The class of spatial microsimulation application we are interested in also requires unconstrained attributes (we are interested in models requiring a large number of attributes). For example, there are no tables in the UK census which describe the amount of vigorous exercise people do. This data is only found in the HSE micro-data survey. However, age and gender are correlates of frequency of vigorous exercise (<a href=\"#bib41\">McArdle, 2010</a>) so they are suitable to be used as constraints.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "<a href=\"#bib67\">Williamson, (2012)</a> compared simulated annealing and synthetic reconstruction using 1991 census data. The overall assessment by <a href=\"#bib67\">Williamson, (2012)</a> was that simulated annealing was the best performing method. <a href=\"#bib27\">Harland, <i>et al</i>., (2012)</a> compared simulated annealing, deterministic reweighting and synthetic reconstruction techniques when given the same input data and constraints using uK data and found simulated annealing performed best at the finest spatial resolution. These comparisons however are anterior to the most recent developments in sample free synthetic reconstruction so it is possible that the best performing method may change over time.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "There are other practical benefits to using combinatorial optimisation techniques. Firstly, the synthetic population only needs to be constructed once, whereas synthetic reconstruction populations need to have multiple iterations (i.e. generate multiple populations) because of the greater variation. This gives combinatorial optimisation methods both a computing time and a data storage benefit (<a href=\"#bib67\">Williamson, 2012</a>). Additionally combinatorial optimisation more easily allows the inclusion of unconstrained attributes (<a href=\"#bib29\">Hermes &amp; Poulsen, 2012</a>). Populations generated using a sample population have a further advantage when used for policy analysis. A sample population such as the HSE records a great many attributes for each individual, in some circumstances<sup><a href=\"#fn3\">3</a></sup> the spatial distribution of these extra attributes can be analysed to widen the range of policy questions that can be addressed without having to rebuild the synthetic population. There is a further issue raised by synthetic reconstruction and deterministic reweighting methods namely, the order in which constraints are added has an effect on the outcome thus introducing further complications (<a href=\"#bib18\">Clarke, 1996</a>; <a href=\"#bib30\">Huang &amp; Williamson, 2001</a>).",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Even if we were to assume that simulated annealing is the currently best performing technique, there are reasons to use other techniques in some circumstances. Deterministic reweighting is computationally less intensive than the other techniques (<a href=\"#bib29\">Hermes &amp; Poulsen, 2012</a>). Synthetic reconstruction is useful in the absence of a sample population (<a href=\"#bib31\">Huynh, Barthelemy, &amp; Perez, 2016</a>). Combinatorial optimisation methods require that the constraint tables be available at the same scale; that is all constraints have to be available at OA resolution if the model is to be built at that scale (<a href=\"#bib9\">Barthelemy &amp; Toint, 2013</a>; <a href=\"#bib4\">Ballas <i>et al</i>., 2005a</a>). Extra processing of constraint tables is required to overcome the deliberate errors introduced to preserve anonymity at fine resolutions (<a href=\"#bib62\">Stillwell &amp; Duke-Williams, 2003</a>).",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "A third and final category is that of imputation methods (<a href=\"#bib39\">Lymer, Brown, &amp; Yap, 2009</a>; <a href=\"#bib59\">Schofield <i>et al</i>., 2015</a>). Such methods, while less common, are particularly relevant to the current study, as there exist examples in which imputation is used to generate a synthetic population when not all the data is in a single micro-dataset. In the case of two micro-data sets, the general approach would be to separately generate two synthetic populations for each small area (based on the two sets of micro-data), and then \u2018impute\u2019 attributes from one population onto the other. <a href=\"#bib59\">Schofield <i>et al</i>., (2015)</a>, for example, generate two synthetic populations for the same year: (i) Health&amp;WealthM0D2030, generated using GREGWT, to reweight to the 2010 population; and (ii) APPSIM, a dynamic spatial microsimulation based on reweighting using a synthetic population for 2010. They then impute values using synthetic matching from APPSIM (the \u2018donor\u2019 synthetic population) into Health&amp;WealthM0D2030 (the \u2018recipient\u2019 synthetic population), with the resulting synthetic population being then used for policy analysis. <a href=\"#bib39\">Lymer, Brown, &amp; Yap, (2009)</a> use regression-based imputation to address a slightly different problem. They have a micro-data sample containing all the attributes of interest, but the population sub-group they wish to analyse is underrepresented in the data.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s3-1",
+                    "title": "3.1 Existing techniques for generating synthetic populations",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "Our proposed hybrid technique for the synthetic population generation phase has two stages. Stage 1 uses simulated annealing based combinatorial optimisation to simulate the majority of the required attributes. Stage 2 uses Monte-Carlo sampling to add individual attributes which were not available in the sample population. The main steps in the algorithm are shown in <a href=\"#fig2\">Figure 2</a>:",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "fig2",
+                                    "image": {
+                                        "alt": "",
+                                        "uri": "%iiif_uri%/00153%2Fijm-00153-fig2.tif",
+                                        "size": {
+                                            "width": 1606,
+                                            "height": 1167
+                                        },
+                                        "source": {
+                                            "mediaType": "image/jpeg",
+                                            "uri": "%iiif_uri%/00153%2Fijm-00153-fig2.tif/full/full/0/default.jpg",
+                                            "filename": "ijm-00153-fig2.jpg"
+                                        }
+                                    },
+                                    "label": "Figure 2",
+                                    "title": "The main steps in the algorithm.",
+                                    "type": "image"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "text": "Our rationale for this hybrid technique is as follows: the hybrid technique allows the full range of desired attributes to be modelled rather than having a model restricted by limited data sources which would be the case if we only used combinatorial optimisation. We use simulated annealing as it has been proposed as the best performing technique when applied to small areas, though we acknowledge that continuing developments mean that this may not remain so indefinitely.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Simulated annealing however requires that all attributes to be simulated are found in the same micro-data sample. In our application, it is not possible to find all the attributes in the same micro-data sample. Additionally, commute distance cannot be assigned to an individual until that individual has been allocated a location. Commute distance is strongly associated with location as well as individual socio-demographic attributes. Commute distance is collected in some micro-data surveys, but, it would not be appropriate to allocate this value out of its original spatial context as individual survey data has geographical detail removed, meaning that we would not be able to ensure that we connect a simulated individual to an appropriate commute distance based on the area to which they are assigned.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Synthetic reconstruction can be applied where a micro-data sample is not available. However using it alone would forgo the reported performance advantages of simulated annealing at the smallest geographies as well as neglecting the practical benefits of not having to consider the order of constraints or the potential for adding additional attributes to individuals. The imputation approach appears to be a practical solution where existing appropriate synthetic populations are available, but this may not always be the case. In some cases a population may already exist containing most attributes required, and the hybrid technique may take what is in effect a partially constructed population and add to it. Another option is that there may be a number of micro-data sources. In some cases it might be quicker to use a hybrid technique rather than generate a synthetic population for each micro-data source then undergo multiple iterations of imputation. In these cases sample- free synthetic reconstruction may be better suited for some applications, but there remain some applications where the user wishes to use combinatorial optimisation. Introducing Monte-Carlo sampling in the second stage of our technique creates a source of stochastic variation. This is not a problem if a suitable number of iterations are made; the standard error of the mean should not be excessive.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The technique we propose is a distinct means by which our \u2018models of interest\u2019 could be produced combining these candidate best performing techniques, this is explained more fully in <a href=\"#s4\">Section 4</a>. We must stress that the purpose of this paper is not to compare the performance of our technique to imputation or sample free synthetic reconstruction techniques (though that is an area for further research) but to describe the technique and demonstrate its implementation to a \u2018model of interest\u2019. <a href=\"#table2\">Table 2</a> summarises the ways in which our proposed hybrid technique is distinct from other techniques discussed above.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "table2",
+                                    "label": "Table 2",
+                                    "tables": [
+                                        "<table>\n<thead>\n<tr>\n<th align=\"center\">Technique</th>\n<th align=\"center\">Comment on suitability for use on model of interest</th>\n<th align=\"center\">How our proposed hybrid technique differs</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>Single-stage simulated annealing Deterministic reweighting Sample-based synthetic reconstruction</td>\n<td>Not suitable because not all data in the model of interest is in one micro-data sample</td>\n<td>Can deal with individual attribute data from multiple sources</td>\n</tr>\n<tr>\n<td>Sample-free synthetic reconstruction</td>\n<td>This may be suitable as it can handle data from multiple data sources and current developments mean it may be effective at simulating populations at the finest resolution</td>\n<td>Specifically seeks to incorporate simulated annealing (rationale in text of <a href=\"#s3-2\">Section 3.2</a>)</td>\n</tr>\n<tr>\n<td>Imputation using multiple existing synthetic populations</td>\n<td>This may be suitable if it is accurate at simulating populations at the finest zones, and may be useful where there are existing synthetic populations</td>\n<td>May be useful where suitable populations are not available</td>\n</tr>\n<tr>\n<td>Imputation to better simulate under-represented individuals in a single micro-data sample</td>\n<td>Not suitable on its own because not all data in model of interest is in one micro-data sample</td>\n<td>Hybrid technique can deal with individual attribute data from multiple sources. We model stochastic variation in pedal power through cloning. <a href=\"#bib39\">Lymer, <i>et al</i>., 2009</a> also use a cloning approach which may inform future developments of our technique</td>\n</tr>\n</tbody>\n</table>"
+                                    ],
+                                    "title": "Summary of how proposed technique is distinct from other techniques.",
+                                    "type": "table"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "text": "our proposed technique is one of a set of approaches that produce synthetic populations where not all data are available in a single micro-data sample. our technique is distinct from the imputation work of <a href=\"#bib59\">Schofield <i>et al</i>., (2015)</a> and <a href=\"#bib39\">Lymer <i>et al</i>., (2009)</a> described above. We use Monte-Carlo sampling to represent heterogeneity in the micro-data sample whereas <a href=\"#bib39\">Lymer <i>et al</i>., (2009)</a> use regression based imputation. We use Monte-Carlo sampling in Stage 2 of our synthetic population generation to synthetically construct missing variables using conditional probabilities e. g. the probability of an individual having a bike given age, gender and social class. In our technique however we do not use complete conditional probabilities using all attributes generated in Stage 1 (see <a href=\"#s4-3\">Section 4.3</a> for details). We note the proposed technique is also distinct from methods that seek to generate synthetic populations constrained on both individual and household level attributes simultaneously.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s3-2",
+                    "title": "3.2 The proposed hybrid spatial microsimulation technique",
+                    "type": "section"
+                }
+            ],
+            "id": "s3",
+            "title": "3. Existing techniques and rationale for hybrid spatial microsimulation technique",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "content": [
+                        {
+                            "text": "The data used for our study are shown in <a href=\"#table1\">Table 1</a>.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "A sample population of micro-data is based on the 2008 HSE. It contains the attributes BMI (Body Mass Index), level of vigorous exercise, weight, age and gender. The latter two are needed to calculate the indicator, as well as being constraint attributes. Cyclist pedalling power was estimated for each individual in the sample population, using the method described in <a href=\"#bib51\">Philips, Watling, and Timms (2015)</a>. Cycling pedalling power is assumed to be a function of maximum exertion, as measured by VO<sub>2</sub>max, which was derived by a regression model using empirical data based on: age, gender, BMI and level of vigorous exercise (<a href=\"#bib66\">Wier, Jackson, Ayers, &amp; Arenare, 2006</a>), as well as the maximum level of exertion which can be sustained for the duration of a commute. In the pre-processing of the sample population, each individual in the micro-data sample was cloned 10 times, and VO<sub>2</sub> max estimated for each clone from a distribution based on the Standard Error of the Estimate in Wier <i>et al</i>\u2019s model. The output at this point is a sample population based on the HSE which accounts for the conditional nature of Vo<sub>2</sub>max and pedalling power.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The choice of constraints for Stage 1 was made firstly by examining correlations with unconstrained attributes of interest (BMI and physical activity), as is standard practice (<a href=\"#bib16\">Cassells, Miranti, &amp; Harding, 2012</a>). Age and gender are associated with BMI and physical activity (<a href=\"#bib41\">McArdle, 2010</a>). Obesity is found to be related to Limiting Long term Illness (LLTI) and National Statistics SocioEconomic Classification (NSSEC) (<a href=\"#bib44\">NOO, 2010</a>). NSSEC and education are also associated with physical activity (<a href=\"#bib34\">IPSOS MORI, 2007</a>). The constraints used in full are: Age, Gender, Economic Activity, LLTI, Education, NSSEC. The OA tables used as constraints required extra processing to overcome the deliberate errors that had been introduced into the source data in order to preserve anonymity at fine resolutions (<a href=\"#bib62\">Stillwell &amp; Duke-Williams, 2003</a>). The population totals in each OA were not consistent across all constraint tables, and so a balancing and integerisation procedure was developed, as shown in the first block of pseudo code below (<a href=\"#alg1\">Algorithm 1</a>), whereas the second block accounts for rounding losses:",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "alg1",
+                                    "label": "Algorithm 1",
+                                    "tables": [
+                                        "<table>\n<tbody>\n<tr><td>\n<p>1:  Select reference population table</p>\n<p>2:  Calculate cell value based on frequencies:</p>\n<p>3:       Raw cell value / raw row total) * reference population total</p>\n<p>4:  Intergerise the decimal value from the previous step: Round the value up or down</p>\n<p>6:  If rounded value \u2260 reference population total then</p>\n<p>7:       If reference population total &lt; integerised row total then</p>\n<p>8:       subtract 1 from a random cell in the row</p>\n<p>9:  If reference population total &gt; integerised row total then</p>\n<p>10:    add 1 to a random cell in the row.</p>\n<p>11: Repeat until rounded value = reference population total</p></td>\n</tr>\n</tbody></table>"
+                                    ],
+                                    "title": "Pseudocode.",
+                                    "type": "table"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "text": "Census tables and HSE data were pre-processed using SPSS scripts, Excel and VBA (Visual Basic for Applications) into a format that could be used by the Flexible Modelling Framework (FMF) simulated annealing software built by <a href=\"#bib26\">Harland (2013)</a>. The output at this point is a set of constraint tables which all have consistent population totals, and with categories which are consistent with categories in the HSE sample population.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s4-1",
+                    "title": "4.1 Pre-processing of the micro-data sample and constraint tables",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "Stage 1 uses simulated annealing based combinatorial optimisation. The inputs are the sample population based on the HSE and the constraint tables based on the census which were described in <a href=\"#s4-1\">Section 4.1</a>. For a detailed description of the simulated annealing algorithm and the Java program FMF see <a href=\"#bib26\">Harland, (2013)</a>. The output at this point is simulated values of all attributes listed as \u2018Stage 1\u2019 in <a href=\"#table1\">Table 1</a>. The FMF represents this by producing the FMFRESULT table. Each row represents an individual, the first field contains a reference to an OA and the second field contains the identifying reference to the row in the sample population that specifies all the attributes for the cloned individual.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s4-2",
+                    "title": "4.2 The hybrid technique Stage 1 (simulated annealing based combinatorial optimisation)",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "Stage 2 is outlined in <a href=\"#fig3\">Figure 3</a>. Stage 2 uses Monte-Carlo sampling to add two individual attributes which were not available in the sample population; bicycle availability and the need to escort children on the way to work. It also adds commute distance which is a geographically dependent attribute; it is only allocated once it is known where an individual lives.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "fig3",
+                                    "image": {
+                                        "alt": "",
+                                        "uri": "%iiif_uri%/00153%2Fijm-00153-fig3.tif",
+                                        "size": {
+                                            "width": 1817,
+                                            "height": 2273
+                                        },
+                                        "source": {
+                                            "mediaType": "image/jpeg",
+                                            "uri": "%iiif_uri%/00153%2Fijm-00153-fig3.tif/full/full/0/default.jpg",
+                                            "filename": "ijm-00153-fig3.jpg"
+                                        }
+                                    },
+                                    "label": "Figure 3",
+                                    "title": "Stage 2 of the hybrid microsimulation technique using Monte-Carlo sampling.",
+                                    "type": "image"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "text": "The output from Stage 1, the FMFRESULT table was read into a MySQL database along with the SAMPLEPOPULATION and GEOGRAPHIC_FACTORS tables. The COMMUTE_CDF table containing the cumulative distribution function (cdf) was read in having been generated as follows from the 2001 census table CAS120:",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": [
+                                {
+                                    "text": "<i>Read in CAS120 commute distance by gender by age group fields: zone, 0\u20132 km,\u2026 &gt; 60km]</i>",
+                                    "type": "paragraph"
+                                }
+                            ],
+                            "type": "quote"
+                        },
+                        {
+                            "text": "<i>Convert to cumulative distribution table for each gender by age group [e.g. male aged 16\u201324, male aged 25\u201334 \u2026 female 70\u201374 ]</i>.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "A subset of the population, namely those who were in employment and aged 16\u201374, formed the table EMPLOYEES, whereas the table COMMUTE_CDF_EMPLOYED contained the corresponding cumulative probability distribution table of commute distances for this population subset (the distances discretised into \u2018bins\u2019). The table MAXDISTOPTIONS contained one row per individual from the table EMPLOYEES, specifying the maximum distance that an individual could travel (i) with a bicycle and without needing to make an escort trip, (ii) with a bicycle and having to make an escort trip, (iii) by walking without needing to make an escort trip and (iv) by walking and having to make an escort trip.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The function used to estimate the maximum travel distance for each individual was based on <a href=\"#bib68\">Wilson, (2004)</a>, and is described in detail in <a href=\"#bib49\">Philips, (2014)</a>. For each Monte-Carlo sampling iteration (up to a total of <i>N<sub>total</sub></i> iterations), the tables COMMUTE_DISTANCE_DRAW_N and MAXIMUM_DISTANCE_DRAW_N were calculated, as shown in the first and second blocks respectively of the pseudocode below (<a href=\"#alg2\">Algorithm 2</a>):",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "alg2",
+                                    "label": "Algorithm 2",
+                                    "tables": [
+                                        "<table>\n<tbody>\n<tr><td>\n<p>1: For N<sub>total</sub> iterations</p>\n<p>2:               CREATE TABLE COMMUTE_DISTANCE_DRAW_N</p>\n<p>3:               For each gender by age group</p>\n<p>4:               For all individuals in EMPLOYEE table who are in this gender by age group</p>\n<p>5:               Set commute distance bin by drawing a random number between 0 and 1 and comparing it to the cumulative proportion in the cumulative distribution table</p>\n<p>6:               Set the commute distance =</p>\n<p>7:               minimum distance in bin + (random number [0\u20131] * maximum distance in bin).</p>\n<p>8: For N<sub>total</sub> iterations calculate the maximum distance the population can travel</p>\n<p>9:              CREATE TABLE MAXIMUM_DISTANCE_DRAW_N for iteration N</p>\n<p>10:             SELECT data from SAMPLEPOPULATION &amp; EMPLOYEE (this table contains probability of bike availability given Stage 1 attributes and probability of escort trip given Stage 1 attributes)</p>\n<p>11:             WHERE the probability of having a bike &gt; [random number between 0 and 1] set individual has bike = 1</p>\n<p>12:             WHERE the probability of having to escort children to school &gt; [random number between 0 and 1] set individual has to escort children = 1</p>\n<p>13:             UPDATE MAXIMUM_DISTANCE_DRAW_N [Calculate maximum distance each individual is capable of travelling]</p>\n</td></tr>\n</tbody></table>"
+                                    ],
+                                    "title": "Pseudocode.",
+                                    "type": "table"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "text": "Once the maximum distance and commute distance for an iteration was calculated, each individual\u2019s capability to travel was calculated as shown in the first pseudocode block below (<a href=\"#alg3\">Algorithm 3</a>). In the second block the capability of all individuals in each OA was then summarised for iteration N:",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "alg3",
+                                    "label": "Algorithm 3",
+                                    "tables": [
+                                        "<table>\n<tbody>\n<tr><td>\n<p>1: For N<sub>total</sub> iterations</p>\n<p>2:         CREATE TABLE INDIVIDUAL_RESULT_DRAW_N</p>\n<p>3:             JOIN commute distance draw N and maximum distance draw N</p>\n<p>4:             For each individual</p>\n<p>5:             Capability to commute = 1 where maximum distance \u2013 commute distance &gt;= 0</p>\n<p>6:             Capability to commute = 0 otherwise.</p>\n<p>7: CREATE TABLE INDICATOR_result_draw_N (fields: Output Area ID, sum of people with capability to commute, % of employed population with capability to commute).</p>\n</td></tr>\n</tbody></table>"
+                                    ],
+                                    "title": "Pseudocode.",
+                                    "type": "table"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "text": "We have generated multiple populations and they are stored as follows: The attributes generated by the FMF software in Stage 1 are common to all populations. They are stored in the EMPLOYEE table. The attributes generated in Stage 2 which differ from one population to the next are stored in the INDIVIDUAL_RESULT_DRAW tables. Each population has a number between 1 and N<sub>total</sub>. The number of individuals in each OA in population N with the capability to commute is recorded in INDICATOR_RESULT_DRAW table N. When all iterations are complete, the results of all iterations are summarised by calculating the mean estimate of the percentage of the population in each OA with the capability to commute by walking or cycling (all individual results were also retained in the database). The database allows easy storage of the resulting tables; it was possible to simulate the attributes of all 21 million working individuals in all of the ~165000 OAs in England. The database was used to calculate the results of the individual model and output the results aggregated to OA zones as CSV files, a format easy to use in GIS (Geographical Information Systems) and statistics packages to map and graph the results. The multiple output populations reflect the conditional nature of the data and are shown in <a href=\"#table3\">Table 3</a>.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "table3",
+                                    "label": "Table 3",
+                                    "tables": [
+                                        "<table>\n<thead>\n<tr>\n<th align=\"center\">Output</th>\n<th align=\"center\">Table</th>\n<th align=\"center\">Attributes</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td><i>N<sub>total</sub></i> synthetic populations of individuals</td>\n<td>INDIVIDUAL _RESULT_DRAW_N</td>\n<td>Physical activity, BMI, age, gender, weight, bicycle availability, need to escort children on commute, pedalling power, maximum travel distance, commute distance, capability to commute by walking or cycling.</td>\n</tr>\n<tr>\n<td><i>N<sub>total</sub></i> summaries of the % of the working population  in an Output Area capable of commuting by walking or cycling</td>\n<td>INDICATOR_RESULT_DRAW_N</td>\n<td>Zone code, % of population capable of commuting by walking or cycling</td>\n</tr>\n<tr>\n<td>Summary of capability of all populations at Output Area resolution</td>\n<td>INDICATOR_RESULT_DRAW_SUMMARY</td>\n<td>Zone code, % of population capable of commuting by walking or cycling for each iteration, mean capability for all populations, standard deviation of capability for all populations</td>\n</tr>\n</tbody>\n</table>"
+                                    ],
+                                    "title": "Synthetic population outputs.",
+                                    "type": "table"
+                                }
+                            ],
+                            "type": "figure"
+                        }
+                    ],
+                    "id": "s4-3",
+                    "title": "4.3 The hybrid technique Stage 2 (Monte-Carlo sampling)",
+                    "type": "section"
+                }
+            ],
+            "id": "s4",
+            "title": "4. Development of the technique",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "To assess the error in generating a synthetic population, we carried out internal and external validation tests (<a href=\"#bib22\">Edwards &amp; Tanton, 2012</a>), and also estimated the extent to which each stage of the spatial microsimulation contributed to uncertainty in the estimate of the indicator. To prepare the synthetic population for validation, we aggregated it to the same resolution as the constraint tables, which in this case was OAs.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Firstly we performed internal validation tests of attributes that were common to both the constraint tables and the sample population. The internal validation process indicates the extent to which the synthetic population\u2019s attributes match the aggregate counts of the real population\u2019s constrained attributes. The results are summarised in <a href=\"#table4\">Table 4</a>. These showed the poorest fitting constraint to be NSSEC by gender, a 20-class, cross-tabulated constraint (percent cell error value of 9.2). We reconstructed this constraint as a uni-variate constraint with only 3 NSSEC categories, and this greatly reduced the percent cell error. The percent cell error of the simulated annealing stage constrained attributes was an average of 0.065% per attribute using the 3 category NSSEC constraint. This compares favourably to that achieved by <a href=\"#bib27\">Harland <i>et al</i>., (2012)</a>, who achieved zero error for constrained attributes at OA resolution, whereas the synthetic reconstruction and deterministic reweighting average error per constraint was 0.96% and 14.15% respectively (source <a href=\"#bib27\">Harland <i>et al</i>., 2012</a> in their <a href=\"#table3\">Table 3</a>). In Stage 2 the commute distance attribute is available in the census, so can be internally validated. The mean percent cell error was 0.76% per attribute, performing well when compared to <a href=\"#bib27\">Harland <i>et al</i>., (2012)</a>. We calculated the indicator using both constructions of the NSSEC constraint. This is an approach to estimating error arising from the specification of spatial microsimulation models (<a href=\"#bib45\">O\u2019Donoghue <i>et al</i>., 2014</a>; <a href=\"#bib60\">Smith <i>et al</i>., 2009</a>). The difference in indicator value was used as an estimate of the level of uncertainty arising from the configuration and specification of constraints. In 95% of OAs the uncertainty in the indicator arising from stage 1 was &gt;= 4.8%.",
+                    "type": "paragraph"
+                },
+                {
+                    "assets": [
+                        {
+                            "id": "table4",
+                            "label": "Table 4",
+                            "tables": [
+                                "<table>\n<thead>\n<tr>\n<th align=\"center\">Variable name</th>\n<th align=\"center\">Percent cell error</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>Sex by age by economic activity</td>\n<td>0.065</td>\n</tr>\n<tr>\n<td>Education</td>\n<td>0.065</td>\n</tr>\n<tr>\n<td>LLTI</td>\n<td>0.065</td>\n</tr>\n<tr>\n<td>NSSEC with 3 categories</td>\n<td>0.065</td>\n</tr>\n<tr>\n<td>Commute distance by age by sex</td>\n<td>0.76</td>\n</tr>\n</tbody>\n</table>"
+                            ],
+                            "title": "Summary of internal validation tests.",
+                            "type": "table"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "text": "External validation of unconstrained attributes in spatial microsimulation models is typically very difficult, since the reason for using spatial microsimulation in the first place is a lack of data covering all the attributes of interest at the spatial resolution and extent required, leaving little or no data available to validate against (<a href=\"#bib22\">Edwards &amp; Tanton, 2012</a>). We carried out tests on three unconstrained variables; obesity (an element of BMI), bike availability, and those not engaging in any sport or vigorous exercise (an element of physical activity). The results are shown in <a href=\"#table5\">Table 5</a>.",
+                    "type": "paragraph"
+                },
+                {
+                    "assets": [
+                        {
+                            "id": "table5",
+                            "label": "Table 5",
+                            "tables": [
+                                "<table>\n<thead>\n<tr>\n<th align=\"center\">Unconstrained attribute</th>\n<th align=\"center\">Results compared</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>BMI (Obesity used as a proxy)</td>\n<td>% of adult population classified as obese</td>\n</tr>\n<tr>\n<td>Public Health England (PHE) national estimate (HSE data, 2006 \u2014 2008)</td>\n<td>24.2</td>\n</tr>\n<tr>\n<td>Synthetic population using hybrid technique</td>\n<td>23.9</td>\n</tr>\n<tr>\n<td>Bike availability</td>\n<td>% of adult population with use of a bike</td>\n</tr>\n<tr>\n<td>NTS, 2010 national estimate of bike availability amongst adults.</td>\n<td>37.2</td>\n</tr>\n<tr>\n<td>Synthetic population using hybrid technique</td>\n<td>38.3</td>\n</tr>\n<tr>\n<td>Physical activity</td>\n<td>% of adult population with no participation in sport</td>\n</tr>\n<tr>\n<td>Active People Survey (APS), people not doing 1x30 minutes sport per week</td>\n<td>57.0</td>\n</tr>\n<tr>\n<td>Synthetic population using hybrid technique</td>\n<td>58.7</td>\n</tr>\n</tbody>\n</table>"
+                            ],
+                            "title": "Results of external validation tests.",
+                            "type": "table"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "text": "These figures show that the unconstrained variables have small errors in their estimation at a national level. However further validation at a finer resolution would be beneficial.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "To test the stochastic uncertainty introduced by Stage 2 (the Monte-Carlo sampling) for each OA we calculated the standard error of the mean indicator value. A small standard error (<i>SE<sub>j</sub></i> indicates a low level of stochastic variation in zone <i>j</i> and therefore greater certainty about the indicator value. <i>SE<sub>j</sub></i> is calculated by dividing the standard deviation between iterations, <i><b>\u03c3</b><sub>j</sub></i> of the indicator value for each zone by the square root of the number of iterations N<sub>total</sub>:",
+                    "type": "paragraph"
+                },
+                {
+                    "id": "eqn1",
+                    "label": "(1)",
+                    "mathml": "<math><mrow><mi>S</mi><msub><mi>E</mi><mi>j</mi></msub><mtext>\u2009</mtext><mo>=</mo><mtext>\u2009</mtext><mtext>\u2009</mtext><mfrac><mrow><msub><mi>\u03c3</mi><mi>j</mi></msub></mrow><mrow><msqrt><mrow><msub><mi>N</mi><mrow><mi>t</mi><mi>o</mi><mi>t</mi><mi>a</mi><mi>l</mi></mrow></msub></mrow></msqrt></mrow></mfrac></mrow></math>",
+                    "type": "mathml"
+                },
+                {
+                    "text": "In 95% of OAs <i>SE<sub>j</sub></i> was less than 1.8%. This gives an estimate of the error in the indicator arising from both stages of the spatial microsimulation in the hybrid synthetic population generation of \u00b17.6%. The estimate of uncertainty for every OA was mapped and is shown in <a href=\"#fig4\">Figure 4</a>. A small number of OAs (117 of 2439) had an error of over 7.6%.",
+                    "type": "paragraph"
+                },
+                {
+                    "assets": [
+                        {
+                            "id": "fig4",
+                            "image": {
+                                "alt": "",
+                                "uri": "%iiif_uri%/00153%2Fijm-00153-fig4.tif",
+                                "size": {
+                                    "width": 1275,
+                                    "height": 677
+                                },
+                                "source": {
+                                    "mediaType": "image/jpeg",
+                                    "uri": "%iiif_uri%/00153%2Fijm-00153-fig4.tif/full/full/0/default.jpg",
+                                    "filename": "ijm-00153-fig4.jpg"
+                                }
+                            },
+                            "label": "Figure 4",
+                            "title": "An estimate of the percentage indicator error resulting from the hybrid spatial micro simulation technique, showing Leeds and surrounds.",
+                            "type": "image"
+                        }
+                    ],
+                    "type": "figure"
+                }
+            ],
+            "id": "s5",
+            "title": "5. Model assessment: assessing the performance of the hybrid technique",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "The results of applying our method, in terms of the calculated indicator, are shown in <a href=\"#fig5\">Figure 5</a>. The indicator is highest closer to the centre of the city, which may be expected as it is the largest employment centre (so there will be many short commute distances). There are also some OAs with very high indicator values around the satellite towns of Otley (in the north-west) and Wetherby (in the north-east) This may be due to short commute distances to these sub-centres. However other individual demographic factors may also play a part.",
+                    "type": "paragraph"
+                },
+                {
+                    "assets": [
+                        {
+                            "id": "fig5",
+                            "image": {
+                                "alt": "",
+                                "uri": "%iiif_uri%/00153%2Fijm-00153-fig5.tif",
+                                "size": {
+                                    "width": 1342,
+                                    "height": 806
+                                },
+                                "source": {
+                                    "mediaType": "image/jpeg",
+                                    "uri": "%iiif_uri%/00153%2Fijm-00153-fig5.tif/full/full/0/default.jpg",
+                                    "filename": "ijm-00153-fig5.jpg"
+                                }
+                            },
+                            "label": "Figure 5",
+                            "title": "The indicator for Leeds Output Areas. The percentage of working individuals aged 16\u201374 in an Output Area capable of commuting to their current place of work by walking or cycling.",
+                            "type": "image"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "text": "Because we have used a microsimulation approach, we can finally map the distribution of individual simulated attributes. To illustrate this, bike availability is generally higher towards the northern edge of the city and yet the highest levels of bike availability are associated with the lowest indicator values. This may be partially explained by the fact that the north of the district is bounded by the steep valley side of the River Wharfe (and so cycling may require relatively high levels of physical exertion), and that the north of the district has high levels of workers with long commutes. In addition to contributing to estimation of the indicator, estimation of the percentage of bicycle availability at OA resolution (<a href=\"#fig6\">Figure 6</a>) is a potentially useful variable for planning cycle interventions.",
+                    "type": "paragraph"
+                },
+                {
+                    "assets": [
+                        {
+                            "id": "fig6",
+                            "image": {
+                                "alt": "",
+                                "uri": "%iiif_uri%/00153%2Fijm-00153-fig6.tif",
+                                "size": {
+                                    "width": 1377,
+                                    "height": 783
+                                },
+                                "source": {
+                                    "mediaType": "image/jpeg",
+                                    "uri": "%iiif_uri%/00153%2Fijm-00153-fig6.tif/full/full/0/default.jpg",
+                                    "filename": "ijm-00153-fig6.jpg"
+                                }
+                            },
+                            "label": "Figure 6",
+                            "title": "Percentage of working population in Leeds OAs with access to a bike.",
+                            "type": "image"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "text": "A second new variable created in this application is the proportion of working individuals who have to escort children as part of their commute at OA resolution (<a href=\"#fig7\">Figure 7</a>). The pattern of this variable varies between different neighbourhoods in the city. For example, the city centre and the north-west inner suburbs have high proportions of students and young professionals so may explain the many OAs with low levels of escort trips. As well as contributing to indicator estimation, understanding constraints on travel imposed on those with caring responsibilities could contribute to understanding the social constraints often based on gender and social group that influence the ability to use transport to access activities (<a href=\"#bib38\">Lucas &amp; Jones, 2012</a>).",
+                    "type": "paragraph"
+                },
+                {
+                    "assets": [
+                        {
+                            "id": "fig7",
+                            "image": {
+                                "alt": "",
+                                "uri": "%iiif_uri%/00153%2Fijm-00153-fig7.tif",
+                                "size": {
+                                    "width": 1417,
+                                    "height": 813
+                                },
+                                "source": {
+                                    "mediaType": "image/jpeg",
+                                    "uri": "%iiif_uri%/00153%2Fijm-00153-fig7.tif/full/full/0/default.jpg",
+                                    "filename": "ijm-00153-fig7.jpg"
+                                }
+                            },
+                            "label": "Figure 7",
+                            "title": "Percentage of working population in Leeds OAs needing to escort children during the commute to work.",
+                            "type": "image"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "text": "Because we have used a microsimulation approach, we can examine how the individual variables contribute to the indicator in different locations. Providing quantitative data which illustrates variation in processes influencing the indicator could, when used in the context of local geographical knowledge, be useful to planning practitioners. The correlations between individual attributes at city level and the indicator value are shown in <a href=\"#table6\">Table 6</a>. Within Leeds, gender, age and bicycle availability have the greatest association with the indicator. These correlations would vary if examined at a sub-city resolution.",
+                    "type": "paragraph"
+                },
+                {
+                    "assets": [
+                        {
+                            "id": "table6",
+                            "label": "Table 6",
+                            "tables": [
+                                "<table>\n<thead>\n<tr>\n<th align=\"center\">Attribute</th>\n<th align=\"center\">Correlation with indicator value</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>Age</td>\n<td align=\"right\">\u22120.33</td>\n</tr>\n<tr>\n<td>% female</td>\n<td align=\"right\">\u22120.58</td>\n</tr>\n<tr>\n<td>BMI</td>\n<td align=\"right\">\u22120.156</td>\n</tr>\n<tr>\n<td>% obese</td>\n<td align=\"right\">\u22120.132</td>\n</tr>\n<tr>\n<td>Pedal power</td>\n<td align=\"right\">0.247</td>\n</tr>\n<tr>\n<td>% bike</td>\n<td align=\"right\">\u22120.305</td>\n</tr>\n<tr>\n<td>% escort</td>\n<td align=\"right\">\u22120.082</td>\n</tr>\n<tr>\n<td>Slope</td>\n<td align=\"right\">\u22120.122</td>\n</tr>\n<tr>\n<td>Commute distance</td>\n<td align=\"right\">\u22120.267</td>\n</tr>\n<tr>\n<td>Maximum travel distance</td>\n<td align=\"right\">0.077</td>\n</tr>\n</tbody>\n</table>"
+                            ],
+                            "title": "Correlations of individual attributes with the indicator.",
+                            "type": "table"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "text": "Finally, we examined the spatial pattern of individual attributes in order to explain the spatial pattern of error in the hybrid model. The spatial distribution of uncertainty informs policy makers where indicator results should be treated with greater caution, and may also be used as a basis to target future resources for refining the model (i.e. to reduce error). From the analysis leading to <a href=\"#fig4\">Figure 4</a>, it was seen that many of the OAs with error over 7.6% are in the suburban areas, between 5km and 8km from the city centre. Many individuals in these OAs have a mean maximum travel distance in the range 5\u20138km and a commute distance in the same range. In OAs where commute distance and maximum travel distance are similar, small errors in the estimation of individual attributes (from which the maximum travel distance is derived) have a larger effect on the error. one attribute from which maximum travel distance is derived is bicycle availability. Comparing <a href=\"#fig4\">Figures 4</a> and <a href=\"#fig6\">6</a> shows, bike availability is high in many of the oAs with high error. Small errors in estimating bicycle availability (as simulated in each iteration of the second stage of the hybrid model) will therefore have a relatively large effect on the estimate of capability of individuals to make journeys in the 5\u20138km range.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s6",
+            "title": "6. Results",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "In order to summarise the contribution of the work presented, we will refer to the criteria suggested by <a href=\"#bib45\">O\u2019Donoghue <i>et al</i>., (2014)</a> for assessing the quality of spatial microsimulation models: (1) The model links constraint and individual data, either through sampling or simulation. (2) It has the capability to handle units of analysis of interest: either individual, household, or a combination of the two. (3) It should be computationally efficient. (4) It should be transparent. (5) It should minimise validation error.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Our hybrid model makes progress towards (1) by linking spatial data to all the attributes required, for the class of models of interest defined in the introduction. The case study presented handles individuals as units of analysis, thus satisfying criterion (2). The case study describes the distribution of novel policy relevant variables such as bicycle availability and the need to escort children during commuting, in addition to the overall indicator.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Regarding criterion (3), while the reported case-study focused on a particular urban area, the model has in fact been run for the whole 2001 working population of England at, OA resolution (approx. 21 million individuals in approx. 165000 zones) on a Windows laptop with a dual core processor (Intel Core 2 Duo T6500/2.1 GHz) and 4GB RAM. The simulated annealing stage was run using a parallelised Java application (<a href=\"#bib26\">Harland, 2013</a>) taking 4 hours when the simpler 3 way construction of the NSSEC constraint was used and 30 hours with the cross-tabulated NSSEC by gender constraint. The second stage and storage of data used a MySQL database and ran in 48 hours. When simulating only Leeds (the case study reported in the paper), rather than the whole of England, the run time was approximately 30 minutes for Stage 2. Run-times could potentially be reduced through improvements in the coding of the SQL database, though the time required for synthetic population generation is not a major concern as it is typically done only once, and then used as an input to phases 2 and 3 of the microsimulation modelling process shown in <a href=\"#fig1\">Figure 1</a>.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Consolidating all code into a single form so that it is more easily shared and replicable may be a useful piece of further work. Harland\u2019s software is free and open access. We have also explained above the process involved in the two stage generation of the attributes of synthetic individuals, making progress on criterion (4). The internal validation tests reported in <a href=\"#s5\">Section 5</a> show that through the choice and construction of constraints, we have sought to minimise the validation error of this application, and so we have also made progress towards criterion (5).",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "A future development to explore could be to incorporate <a href=\"#bib39\">Lymer <i>et al</i>\u2019s, (2009)</a> approach to modifying the micro-data sample, in order to improve our model in oAs where we observe high standard errors, and to make a comparison of Lymer <i>et al</i>\u2019s approach with that of <a href=\"#bib60\">Smith, Clarke, and Harland (2009)</a>. The approach of <a href=\"#bib59\">Schofield <i>et al</i>., (2015)</a> may be useful if we wished to estimate capability to make journeys by walking and cycling in other countries where existing synthetic databases exist, and which (if combined with our approach) could provide the attributes needed to analyse capability to make journeys by walking and cycling. It would be useful to test our model more formally against the best performing sample-free synthetic reconstruction methods and imputation approaches, to gain further understanding of the construction of attribute-rich, synthetic populations in small zones.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "A further application/development of our methods could be in accounting for a greater range of household constraints on travel, for which we might generate a synthetic population of individuals linked within households. Surveys such as the HSE contain data which would allow linking of individuals in households. The ability to incorporate innovations in linking household and individual populations (e.g. <a href=\"#bib3\">Arentze <i>et al</i>., 2007</a>; <a href=\"#bib24\">Guo &amp; Bhat, 2007</a>; <a href=\"#bib70\">Ye <i>et al</i>., 2009</a>) may also be worthwhile to consider in any extension of Stage 2 of our hybrid approach to deal with household-level constraints.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "In this paper we have explained how to estimate our indicator. It is a \u2018base-case\u2019 indicator constructed from existing data rather than a counter-factual scenario. It would also be possible to estimate a counter-factual \u2018policy case\u2019 indicator based on \u2018what-if scenarios, in which the attributes of individuals affected by the policy would be altered. This would require the indicator value to be recalculated, for each iteration of the synthetic population. As all populations generated for the base case indicator are retained in the database, along with random number seeds, we need not introduce any additional stochastic noise (by using \u2018common random numbers\u2019). This would mean that the base case synthetic population would not be stochastically different to the policy case synthetic population (<a href=\"#bib57\">Rathi, 1992</a>; <a href=\"#bib63\">Stout &amp; Goldie, 2008</a>), thus aiding comparison between the base case and policy case indicators.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s7",
+            "title": "7. Summary and conclusions",
+            "type": "section"
+        }
+    ],
+    "references": [
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Anable, J",
+                        "preferred": "J Anable"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2010",
+            "id": "bib1",
+            "publisher": {
+                "name": [
+                    "Scottish Government"
+                ]
+            },
+            "source": "Monitoring and Evaluation of the Smarter Choices Smarter Places Programme. Working paper 2010/01. Analysis of walking and cycling activity and its relationship to social-economic status (Working paper)",
+            "title": "Monitoring and Evaluation of the Smarter Choices Smarter Places Programme. Working paper 2010/01. Analysis of walking and cycling activity and its relationship to social-economic status (Working paper)",
+            "type": "report"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Anderson, B",
+                        "preferred": "B Anderson"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "Spatial Microsimulation: A Reference Guide for Users",
+            "chapterTitle": "Estimating Small-Area Income Deprivation: An Iterative Proportional Fitting Approach",
+            "date": "2012",
+            "editors": [
+                {
+                    "name": {
+                        "index": "Tanton, R",
+                        "preferred": "R Tanton"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Edwards, K",
+                        "preferred": "K Edwards"
+                    },
+                    "type": "person"
+                }
+            ],
+            "id": "bib2",
+            "pages": {
+                "first": "49",
+                "last": "67",
+                "range": "49\u201367"
+            },
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "Springer Netherlands"
+                        ]
+                    },
+                    "formatted": [
+                        "Springer Netherlands"
+                    ]
+                },
+                "name": [
+                    "Dordrecht"
+                ]
+            },
+            "type": "book-chapter",
+            "uri": "http://www.springerlink.com/index/10.1007/978-94-007-4623-7_4"
+        },
+        {
+            "articleTitle": "Creating Synthetic Household Populations: Problems and Approach",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Arentze, T",
+                        "preferred": "T Arentze"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Timmermans, H",
+                        "preferred": "H Timmermans"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Hofman, F",
+                        "preferred": "F Hofman"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2007",
+            "id": "bib3",
+            "journal": "Transportation Research Record: Journal of the Transportation Research Board, 2014",
+            "pages": {
+                "first": "85",
+                "last": "91",
+                "range": "85\u201391"
+            },
+            "type": "journal",
+            "uri": "https://doi.org/10.3141/2014-11"
+        },
+        {
+            "articleTitle": "SimBritain: a spatial microsimulation approach to population dynamics",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Ballas, D",
+                        "preferred": "D Ballas"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Clarke, G",
+                        "preferred": "G Clarke"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Dorling, D",
+                        "preferred": "D Dorling"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Eyre, H",
+                        "preferred": "H Eyre"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Thomas, B",
+                        "preferred": "B Thomas"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Rossiter, D",
+                        "preferred": "D Rossiter"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2005",
+            "id": "bib4",
+            "journal": "Population, Space and Place",
+            "pages": {
+                "first": "13",
+                "last": "34",
+                "range": "13\u201334"
+            },
+            "type": "journal",
+            "uri": "https://doi.org/10.1002/psp.351",
+            "volume": "11"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Ballas, D",
+                        "preferred": "D Ballas"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Clarke, G",
+                        "preferred": "G Clarke"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Hynes, S",
+                        "preferred": "S Hynes"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Lennon, J",
+                        "preferred": "J Lennon"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Morrissey, K",
+                        "preferred": "K Morrissey"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "O\u2019Donoghue, C",
+                        "preferred": "C O\u2019Donoghue"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2013",
+            "details": "35\u201354, A Review of Microsimulation for Policy Analysis, Spatial Microsimulation for Rural Policy Analysis, Springer Berlin Heidelberg, http://link.springer.com/chapter/10.1007/978-3-642-30026-4_3",
+            "id": "bib5",
+            "title": "Spatial Microsimulation for Rural Policy Analysis",
+            "type": "unknown",
+            "uri": "http://link.springer.com/chapter/10.1007/978-3-642-30026-4_3"
+        },
+        {
+            "articleTitle": "The Local Implications of Major Job Transformations in the City: A Spatial Microsimulation Approach",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Ballas, D",
+                        "preferred": "D Ballas"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Clarke, GP",
+                        "preferred": "GP Clarke"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2001",
+            "id": "bib6",
+            "journal": "Geographical Analysis",
+            "pages": {
+                "first": "291",
+                "last": "311",
+                "range": "291\u2013311"
+            },
+            "type": "journal",
+            "uri": "https://doi.org/10.1111/j.1538-4632.2001.tb00449.x",
+            "volume": "33"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Ballas, D",
+                        "preferred": "D Ballas"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Dorling, D",
+                        "preferred": "D Dorling"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Rossiter, D",
+                        "preferred": "D Rossiter"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Thomas, B",
+                        "preferred": "B Thomas"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Clarke, G",
+                        "preferred": "G Clarke"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2005",
+            "details": "Geography matters: simulating the local impacts of national social policies, York, Joseph Rowntree Foundation, https://www.jrf.org.uk/file/36059/download?token=NkTWwksy",
+            "id": "bib7",
+            "title": "Geography matters: simulating the local impacts of national social policies, York, Joseph Rowntree Foundation, https://www.jrf.org.uk/file/36059/download?token=NkTWwksy",
+            "type": "unknown",
+            "uri": "https://www.jrf.org.uk/file/36059/download?token=NkTWwksy"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Barthelemy, J",
+                        "preferred": "J Barthelemy"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Toint, P",
+                        "preferred": "P Toint"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2015",
+            "details": "Application to Belgium, JASSS, 18, 3",
+            "id": "bib8",
+            "title": "A stochastic and flexible activity based model for large population",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Barthelemy, J",
+                        "preferred": "J Barthelemy"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Toint, PL",
+                        "preferred": "PL Toint"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2013",
+            "details": "Transportation Science, https://doi.org/10.1287/trsc.1120.0408",
+            "id": "bib9",
+            "title": "Synthetic Population Generation Without a Sample",
+            "type": "unknown",
+            "uri": "https://doi.org/10.1287/trsc.1120.0408"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Barton, H",
+                        "preferred": "H Barton"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Thompson, S",
+                        "preferred": "S Thompson"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Burgess, S",
+                        "preferred": "S Burgess"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Grant, M",
+                        "preferred": "M Grant"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2015",
+            "details": "The Routledge Handbook of Planning for Health and Well-Being: Shaping a sustainable and healthy future, Routledge",
+            "id": "bib10",
+            "title": "The Routledge Handbook of Planning for Health and Well-Being: Shaping a sustainable and healthy future, Routledge",
+            "type": "unknown"
+        },
+        {
+            "articleTitle": "Creating synthetic baseline populations",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Beckman, RJ",
+                        "preferred": "RJ Beckman"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Baggerly, KA",
+                        "preferred": "KA Baggerly"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "McKay, MD",
+                        "preferred": "MD McKay"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1996",
+            "id": "bib11",
+            "journal": "Transportation Research Part A: Policy and Practice",
+            "pages": {
+                "first": "415",
+                "last": "429",
+                "range": "415\u2013429"
+            },
+            "type": "journal",
+            "uri": "https://doi.org/10.1016/0965-8564(96)00004-3",
+            "volume": "30"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Birkin, M",
+                        "preferred": "M Birkin"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Clarke, M",
+                        "preferred": "M Clarke"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2011",
+            "details": "193\u2013208, Spatial Microsimulation Models: a review and glimpse of the future, In population dynamics and projection methods, Springer",
+            "id": "bib12",
+            "title": "In population dynamics and projection methods",
+            "type": "unknown"
+        },
+        {
+            "articleTitle": "Sustainable Transport in Freiburg: Lessons from Germany\u2019s Environmental Capital",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Buehler, R",
+                        "preferred": "R Buehler"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Pucher, J",
+                        "preferred": "J Pucher"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2011",
+            "id": "bib13",
+            "journal": "International Journal of Sustainable Transportation",
+            "pages": {
+                "first": "43",
+                "last": "70",
+                "range": "43\u201370"
+            },
+            "type": "journal",
+            "uri": "https://doi.org/10.1080/15568311003650531",
+            "volume": "5"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Burden, D",
+                        "preferred": "D Burden"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1999",
+            "details": "In TRB Circular E-C019: urban Street Symposium, http://contextsensitivesolutions.org/content/reading/street-design/resources/3918-270-street-design-guidelines-for-healthy-neighborhoods/",
+            "id": "bib14",
+            "title": "Street Design Guidelines for Healthy Neighborhoods",
+            "type": "unknown",
+            "uri": "http://contextsensitivesolutions.org/content/reading/street-design/resources/3918-270-street-design-guidelines-for-healthy-neighborhoods/"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Campbell, M",
+                        "preferred": "M Campbell"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2011",
+            "details": "Exploring the social and spatial inequalities of ill-health in Scotland: A spatial microsimulation approach, University of Sheffield, Sheffield, http://etheses.whiterose.ac.uk/1942/",
+            "id": "bib15",
+            "title": "Exploring the social and spatial inequalities of ill-health in Scotland: A spatial microsimulation approach, University of Sheffield, Sheffield, http://etheses.whiterose.ac.uk/1942/",
+            "type": "unknown",
+            "uri": "http://etheses.whiterose.ac.uk/1942/"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Cassells, R",
+                        "preferred": "R Cassells"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Miranti, R",
+                        "preferred": "R Miranti"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Harding, A",
+                        "preferred": "A Harding"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "Spatial Microsimulation: A Reference Guide for Users",
+            "chapterTitle": "Building a Static Spatial Microsimulation Model: Data Preparation",
+            "date": "2012",
+            "editors": [
+                {
+                    "name": {
+                        "index": "Tanton, R",
+                        "preferred": "R Tanton"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Edwards, K",
+                        "preferred": "K Edwards"
+                    },
+                    "type": "person"
+                }
+            ],
+            "id": "bib16",
+            "pages": {
+                "first": "9",
+                "last": "16",
+                "range": "9\u201316"
+            },
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "Springer Netherlands"
+                        ]
+                    },
+                    "formatted": [
+                        "Springer Netherlands"
+                    ]
+                },
+                "name": [
+                    "Dordrecht"
+                ]
+            },
+            "type": "book-chapter",
+            "uri": "http://www.springerlink.com/index/10.1007/978-94-007-4623-7_2"
+        },
+        {
+            "articleTitle": "Influences of Built Environments on Walking and Cycling: Lessons from Bogota",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Cervero, R",
+                        "preferred": "R Cervero"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Sarmiento, OL",
+                        "preferred": "OL Sarmiento"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Jacoby, E",
+                        "preferred": "E Jacoby"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Gomez, LF",
+                        "preferred": "LF Gomez"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Neiman, A",
+                        "preferred": "A Neiman"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2009",
+            "id": "bib17",
+            "journal": "International Journal of Sustainable Transportation",
+            "pages": {
+                "first": "203",
+                "last": "226",
+                "range": "203\u2013226"
+            },
+            "type": "journal",
+            "volume": "3"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Clarke, GP",
+                        "preferred": "GP Clarke"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1996",
+            "details": "Microsimulation for urban and regional policy analysis, London, Pion",
+            "id": "bib18",
+            "title": "Microsimulation for urban and regional policy analysis, London, Pion",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Craig, R",
+                        "preferred": "R Craig"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Mindell, J",
+                        "preferred": "J Mindell"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Hirani, V",
+                        "preferred": "V Hirani"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2009",
+            "details": "Health Survey for England 2008 : Physical activity and fitness, London, National Centre for Social Research with permission of The NHS Information Centre",
+            "id": "bib19",
+            "title": "Health Survey for England 2008 : Physical activity and fitness, London, National Centre for Social Research with permission of The NHS Information Centre",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "de Hartog, JJ",
+                        "preferred": "JJ de Hartog"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Boogaard, H",
+                        "preferred": "H Boogaard"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Nijland, H",
+                        "preferred": "H Nijland"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Hoek, G",
+                        "preferred": "G Hoek"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2010",
+            "details": "1109\u20131116, Do the Health Benefits of Cycling Outweigh the Risks? Environmental Health Perspectives, 118, 8, https://doi.org/10.1289/ehp.0901747",
+            "id": "bib20",
+            "title": "Do the Health Benefits of Cycling Outweigh the Risks? Environmental Health Perspectives",
+            "type": "unknown",
+            "uri": "https://doi.org/10.1289/ehp.0901747"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Edwards, KL",
+                        "preferred": "KL Edwards"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Clarke, G",
+                        "preferred": "G Clarke"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "Spatial Microsimulation: A Reference Guide for Users",
+            "chapterTitle": "SimObesity: Combinatorial Optimisation (Deterministic) Model",
+            "date": "2012",
+            "editors": [
+                {
+                    "name": {
+                        "index": "Tanton, R",
+                        "preferred": "R Tanton"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Edwards, K",
+                        "preferred": "K Edwards"
+                    },
+                    "type": "person"
+                }
+            ],
+            "id": "bib21",
+            "pages": {
+                "first": "69",
+                "last": "85",
+                "range": "69\u201385"
+            },
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "Springer Netherlands"
+                        ]
+                    },
+                    "formatted": [
+                        "Springer Netherlands"
+                    ]
+                },
+                "name": [
+                    "Dordrecht"
+                ]
+            },
+            "type": "book-chapter",
+            "uri": "http://www.springerlink.com/index/10.1007/978-94-007-4623-7_5"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Edwards, KL",
+                        "preferred": "KL Edwards"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Tanton, R",
+                        "preferred": "R Tanton"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "Spatial Microsimulation: A Reference Guide for Users",
+            "chapterTitle": "Validation of Spatial Microsimulation Models",
+            "date": "2012",
+            "editors": [
+                {
+                    "name": {
+                        "index": "Tanton, R",
+                        "preferred": "R Tanton"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Edwards, K",
+                        "preferred": "K Edwards"
+                    },
+                    "type": "person"
+                }
+            ],
+            "id": "bib22",
+            "pages": {
+                "first": "249",
+                "last": "258",
+                "range": "249\u2013258"
+            },
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "Springer Netherlands"
+                        ]
+                    },
+                    "formatted": [
+                        "Springer Netherlands"
+                    ]
+                },
+                "name": [
+                    "Dordrecht"
+                ]
+            },
+            "type": "book-chapter",
+            "uri": "http://www.springerlink.com/index/10.1007/978-94-007-4623-7_15"
+        },
+        {
+            "articleTitle": "An Iterative Approach for Generating Statistically Realistic Populations of Households",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Gargiulo, F",
+                        "preferred": "F Gargiulo"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Ternes, S",
+                        "preferred": "S Ternes"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Huet, S",
+                        "preferred": "S Huet"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Deffuant, G",
+                        "preferred": "G Deffuant"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2010",
+            "id": "bib23",
+            "journal": "PLoS ONE",
+            "pages": "e8828",
+            "type": "journal",
+            "uri": "https://doi.org/10.1371/journal.pone.0008828",
+            "volume": "5"
+        },
+        {
+            "articleTitle": "Population Synthesis for Microsimulating Travel Behavior",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Guo, JY",
+                        "preferred": "JY Guo"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Bhat, CR",
+                        "preferred": "CR Bhat"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2007",
+            "id": "bib24",
+            "journal": "Transportation Research Record",
+            "pages": {
+                "first": "92",
+                "last": "101",
+                "range": "92\u2013101"
+            },
+            "type": "journal",
+            "uri": "https://doi.org/10.3141/2014-12",
+            "volume": "2014"
+        },
+        {
+            "articleTitle": "Promoting Cycling for Transport: Research Needs and Challenges",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Handy, S",
+                        "preferred": "S Handy"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Wee, B",
+                        "preferred": "B Wee"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Kroesen, M",
+                        "preferred": "M Kroesen"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2014",
+            "id": "bib25",
+            "journal": "Transport Reviews",
+            "pages": {
+                "first": "4",
+                "last": "24",
+                "range": "4\u201324"
+            },
+            "type": "journal",
+            "uri": "https://doi.org/10.1080/01441647.2013.860204",
+            "volume": "34"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Harland, K",
+                        "preferred": "K Harland"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "Flexible Modelling Framework",
+            "date": "2013",
+            "id": "bib26",
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "University of Leeds"
+                        ]
+                    },
+                    "formatted": [
+                        "University of Leeds"
+                    ]
+                },
+                "name": [
+                    "MASS research group University of Leeds"
+                ]
+            },
+            "type": "book",
+            "uri": "https://github.com/MassAtLeeds/FMF/commit/ec64df5ccd6be12dfd85c28596995806294ef85e"
+        },
+        {
+            "articleTitle": "Creating Realistic Synthetic Populations at Varying Spatial Scales: A Comparative Critique of Population Synthesis Techniques",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Harland, K",
+                        "preferred": "K Harland"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Heppenstall, A",
+                        "preferred": "A Heppenstall"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Smith, D",
+                        "preferred": "D Smith"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Birkin, M",
+                        "preferred": "M Birkin"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2012",
+            "id": "bib27",
+            "journal": "Journal of Artificial Societies and Social Simulation",
+            "pages": "1",
+            "type": "journal",
+            "volume": "15"
+        },
+        {
+            "articleTitle": "Commuting by Bicycle: An Overview of the Literature",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Heinen, E",
+                        "preferred": "E Heinen"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Wee, B",
+                        "preferred": "B Wee"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Maat, K",
+                        "preferred": "K Maat"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2010",
+            "id": "bib28",
+            "journal": "Transport Reviews",
+            "pages": {
+                "first": "59",
+                "last": "96",
+                "range": "59\u201396"
+            },
+            "type": "journal",
+            "uri": "https://doi.org/10.1080/01441640903187001",
+            "volume": "30"
+        },
+        {
+            "articleTitle": "A review of current methods to generate synthetic spatial microdata using reweighting and future directions",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Hermes, K",
+                        "preferred": "K Hermes"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Poulsen, M",
+                        "preferred": "M Poulsen"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2012",
+            "id": "bib29",
+            "journal": "Computers, Environment and Urban Systems",
+            "pages": {
+                "first": "281",
+                "last": "290",
+                "range": "281\u2013290"
+            },
+            "type": "journal",
+            "uri": "https://doi.org/10.1016/j.compenvurbsys.2012.03.005",
+            "volume": "36"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Huang, Z",
+                        "preferred": "Z Huang"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Williamson, P",
+                        "preferred": "P Williamson"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2001",
+            "id": "bib30",
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "Liverpool"
+                        ]
+                    },
+                    "formatted": [
+                        "Liverpool"
+                    ]
+                },
+                "name": [
+                    "Department of Geography University of Liverpool"
+                ]
+            },
+            "source": "A comparison of Synthetic Reconstruction and Combinatorial Optimisation approaches to the creation of small-area microdata (Working paper)",
+            "title": "A comparison of Synthetic Reconstruction and Combinatorial Optimisation approaches to the creation of small-area microdata (Working paper)",
+            "type": "report",
+            "uri": "http://pcwww.liv.ac.uk/~william/microdata/workingpapers/hw_wp_2001_2.pdf"
+        },
+        {
+            "articleTitle": "A Heuristic Combinatorial Optimisation Approach to Synthesising a Population for Agent Based Modelling Purposes",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Huynh, N",
+                        "preferred": "N Huynh"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Barthelemy, J",
+                        "preferred": "J Barthelemy"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Perez, P",
+                        "preferred": "P Perez"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2016",
+            "id": "bib31",
+            "journal": "Journal of Artificial Societies and Social Simulation",
+            "pages": "11",
+            "type": "journal",
+            "volume": "19"
+        },
+        {
+            "articleTitle": "Simulating Transport and Land Use Interdependencies for Strategic Urban Planning\u2014An Agent Based Modelling Approach",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Huynh, N",
+                        "preferred": "N Huynh"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Perez, P",
+                        "preferred": "P Perez"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Berryman, M",
+                        "preferred": "M Berryman"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Barth\u00e9lemy, J",
+                        "preferred": "J Barth\u00e9lemy"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2015",
+            "id": "bib32",
+            "journal": "Systems",
+            "pages": {
+                "first": "177",
+                "last": "210",
+                "range": "177\u2013210"
+            },
+            "type": "journal",
+            "uri": "https://doi.org/10.3390/systems3040177",
+            "volume": "3"
+        },
+        {
+            "articleTitle": "Measuring non-motorized accessibility: issues, alternatives, and execution",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Iacono, M",
+                        "preferred": "M Iacono"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Krizek, KJ",
+                        "preferred": "KJ Krizek"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "El-Geneidy, A",
+                        "preferred": "A El-Geneidy"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2010",
+            "id": "bib33",
+            "journal": "Journal of Transport Geography",
+            "pages": {
+                "first": "133",
+                "last": "140",
+                "range": "133\u2013140"
+            },
+            "type": "journal",
+            "uri": "https://doi.org/10.1016Zj.jtrangeo.2009.02.002",
+            "volume": "18"
+        },
+        {
+            "authors": [
+                {
+                    "name": "IPSOS MORI",
+                    "type": "group"
+                }
+            ],
+            "date": "2007",
+            "id": "bib34",
+            "pages": "29",
+            "title": "http://www.google.co.uk/url?sa=t&rct=j&q=&esrc=s&source=web&cd=4&cad=rja&ve d=0CEcQFjAD&url=http%3A%2F%2Fwww.sportengland.org%2Fresearch%2Factive_pe ople_survey%2Factive_people_survey_1%2Fidoc.ashx%3Fdocid%3D0b1b5493-4711-49b1-bf41-7c6528d9617f%26version%3D1&ei=6mYKUbnKAuib0QXdyYHYCQ&usg=AFQjCNHkoJkHr4H7ma_colo8AWm7sdngKA",
+            "type": "web",
+            "uri": "http://www.google.co.uk/url?sa=t&rct=j&q=&esrc=s&source=web&cd=4&cad=rja&ve d=0CEcQFjAD&url=http%3A%2F%2Fwww.sportengland.org%2Fresearch%2Factive_pe ople_survey%2Factive_people_survey_1%2Fidoc.ashx%3Fdocid%3D0b1b5493-4711-49b1-bf41-7c6528d9617f%26version%3D1&ei=6mYKUbnKAuib0QXdyYHYCQ&usg=AFQjCNHkoJkHr4H7ma_colo8AWm7sdngKA",
+            "website": "Active People Survey Small Area Estimates"
+        },
+        {
+            "articleTitle": "Getting the British back on bicycles\u2014The effects of urban traffic-free paths on everyday cycling",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Jones, T",
+                        "preferred": "T Jones"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2012",
+            "id": "bib35",
+            "journal": "Transport Policy",
+            "pages": {
+                "first": "138",
+                "last": "149",
+                "range": "138\u2013149"
+            },
+            "type": "journal",
+            "uri": "https://doi.org/10.1016/j.tranpol.2012.01.014",
+            "volume": "20"
+        },
+        {
+            "articleTitle": "The Use of Geographic Information Systems in Identifying Locations for New Cycling Infrastructure",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Larsen, J",
+                        "preferred": "J Larsen"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Patterson, Z",
+                        "preferred": "Z Patterson"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "El-Geneidy, A",
+                        "preferred": "A El-Geneidy"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2013",
+            "id": "bib36",
+            "journal": "International Journal of Sustainable Transportation",
+            "pages": {
+                "first": "299",
+                "last": "317",
+                "range": "299\u2013317"
+            },
+            "type": "journal",
+            "uri": "https://doi.org/10.1080/15568318.2011.631098",
+            "volume": "7"
+        },
+        {
+            "articleTitle": "Generating a Synthetic Population of Individuals in Households: Sample-Free Vs Sample-Based Methods",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Lenormand, M",
+                        "preferred": "M Lenormand"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Deffuant, G",
+                        "preferred": "G Deffuant"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2013",
+            "id": "bib37",
+            "journal": "Journal of Artificial Societies and Social Simulation",
+            "pages": "12",
+            "type": "journal",
+            "volume": "16"
+        },
+        {
+            "articleTitle": "Social impacts and equity issues in transport: an introduction",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Lucas, K",
+                        "preferred": "K Lucas"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Jones, P",
+                        "preferred": "P Jones"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2012",
+            "id": "bib38",
+            "journal": "Journal of Transport Geography",
+            "pages": "1",
+            "type": "journal",
+            "uri": "https://doi.org/10.10167j.jtrangeo.2012.01.032",
+            "volume": "21"
+        },
+        {
+            "articleTitle": "Predicting The Need For Aged Care Services At The Small Area Level: The CAREMOD Spatial Microsimulation Model",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Lymer, S",
+                        "preferred": "S Lymer"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Brown, L",
+                        "preferred": "L Brown"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Yap, M",
+                        "preferred": "M Yap"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2009",
+            "id": "bib39",
+            "journal": "International Journal of Microsimulation",
+            "pages": {
+                "first": "27",
+                "last": "42",
+                "range": "27\u201342"
+            },
+            "type": "journal",
+            "volume": "2"
+        },
+        {
+            "articleTitle": "Synthesising carbon emission for megacities: A static spatial microsimulation of transport CO2 from urban travel in Beijing",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Ma, J",
+                        "preferred": "J Ma"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Heppenstall, A",
+                        "preferred": "A Heppenstall"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Harland, K",
+                        "preferred": "K Harland"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Mitchell, G",
+                        "preferred": "G Mitchell"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2014",
+            "id": "bib40",
+            "journal": "Computers, Environment and Urban Systems",
+            "pages": {
+                "first": "78",
+                "last": "88",
+                "range": "78\u201388"
+            },
+            "type": "journal",
+            "uri": "https://doi.org/10.10167j.compenvurbsys.2014.02.006",
+            "volume": "45"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "McArdle, WD",
+                        "preferred": "WD McArdle"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "Exercise physiology: nutrition, energy and human performance",
+            "date": "2010",
+            "id": "bib41",
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "London: Lippincott Williams & Wilkins"
+                        ]
+                    },
+                    "formatted": [
+                        "London: Lippincott Williams & Wilkins"
+                    ]
+                },
+                "name": [
+                    "Philadelphia, Pa."
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Miranti, R",
+                        "preferred": "R Miranti"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Cassells, R",
+                        "preferred": "R Cassells"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Vidyattama, Y",
+                        "preferred": "Y Vidyattama"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "McNamara, J",
+                        "preferred": "J McNamara"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2015",
+            "details": "8, 2",
+            "id": "bib42",
+            "title": "Measuring Small Area Inequality Using Spatial Microsimulation: Lessons Learned from Australia",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "M\u00fcller, K",
+                        "preferred": "K M\u00fcller"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Axhausen, KW",
+                        "preferred": "KW Axhausen"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Axhausen, KW",
+                        "preferred": "KW Axhausen"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Axhausen, KW",
+                        "preferred": "KW Axhausen"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2010",
+            "details": "ETH Z\u00fcrich, Institut f\u00fcr Verkehrsplanung, Transporttechnik, Strassen-und Eisenbahnbau (IVT), http://www.researchgate.net/profile/Kay_Axhausen/publication/228973867_Population _synthesis_for_microsimulation_State_of_the_art/links/0deec517bbebb9606c000000.pdf",
+            "id": "bib43",
+            "title": "Population synthesis for microsimulation: State of the art",
+            "type": "unknown",
+            "uri": "http://www.researchgate.net/profile/Kay_Axhausen/publication/228973867_Population _synthesis_for_microsimulation_State_of_the_art/links/0deec517bbebb9606c000000.pdf"
+        },
+        {
+            "articleTitle": "Adult Obesity and Socioeconomic Status",
+            "authors": [
+                {
+                    "name": "NOO",
+                    "type": "group"
+                }
+            ],
+            "date": "2010",
+            "id": "bib44",
+            "journal": "National Obesity Observatory",
+            "pages": "9",
+            "type": "journal",
+            "uri": "http://www.noo.org.uk/uploads/doc/vid_7929_Adult%20Socioeco%20Data%20Briefing %200ctober%202010.pdf"
+        },
+        {
+            "articleTitle": "Spatial Microsimulation Modelling: a Review of Applications and Methodological Choices",
+            "authors": [
+                {
+                    "name": {
+                        "index": "O\u2019Donoghue, C",
+                        "preferred": "C O\u2019Donoghue"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Morrissey, K",
+                        "preferred": "K Morrissey"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Lennon, J",
+                        "preferred": "J Lennon"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2014",
+            "id": "bib45",
+            "journal": "International Journal of Microsimulation",
+            "pages": {
+                "first": "26",
+                "last": "75",
+                "range": "26\u201375"
+            },
+            "type": "journal",
+            "volume": "7"
+        },
+        {
+            "articleTitle": "Interventions to promote walking: systematic review",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Ogilvie, D",
+                        "preferred": "D Ogilvie"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Foster, CE",
+                        "preferred": "CE Foster"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Rothnie, H",
+                        "preferred": "H Rothnie"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Cavill, N",
+                        "preferred": "N Cavill"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Hamilton, V",
+                        "preferred": "V Hamilton"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Fitzsimons, CF",
+                        "preferred": "CF Fitzsimons"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Mutrie, N",
+                        "preferred": "N Mutrie"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2007",
+            "id": "bib46",
+            "journal": "British Medical Journal",
+            "pages": {
+                "first": "1204",
+                "last": "1207",
+                "range": "1204\u20131207"
+            },
+            "type": "journal",
+            "uri": "https://doi.org/10.1136/bmj.39198.722720.BE",
+            "volume": "334"
+        },
+        {
+            "articleTitle": "Ecological fallacies and the analysis of areal census data",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Openshaw, S",
+                        "preferred": "S Openshaw"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1984",
+            "id": "bib47",
+            "journal": "Environment andPlanning A",
+            "pages": "17",
+            "type": "journal",
+            "volume": "16"
+        },
+        {
+            "articleTitle": "Human systems modelling as a new grand challenge area in science",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Openshaw, S",
+                        "preferred": "S Openshaw"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1995",
+            "id": "bib48",
+            "journal": "Environment and Planning A",
+            "pages": "159",
+            "type": "journal",
+            "uri": "https://doi.org/10.1068/a270159",
+            "volume": "27"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Philips, I",
+                        "preferred": "I Philips"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2014",
+            "details": "July, The potential role of walking and cycling to increase resilience of transport systems to future external shocks, (Creating an indicator of who could get to work by walking and cycling if there was no fuel for motorised transport) (phd), University of Leeds, http://etheses.whiterose.ac.uk/7349/",
+            "id": "bib49",
+            "title": "(Creating an indicator of who could get to work by walking and cycling if there was no fuel for motorised transport) (phd)",
+            "type": "unknown",
+            "uri": "http://etheses.whiterose.ac.uk/7349/"
+        },
+        {
+            "articleTitle": "A conceptual approach for estimating resilience to fuel shocks. In Selected Proceedings",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Philips, I",
+                        "preferred": "I Philips"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Watling, D",
+                        "preferred": "D Watling"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Timms, P",
+                        "preferred": "P Timms"
+                    },
+                    "type": "person"
+                }
+            ],
+            "conference": {
+                "name": [
+                    "World Conference on Transport Research"
+                ]
+            },
+            "date": "2013",
+            "id": "bib50",
+            "type": "conference-proceeding",
+            "uri": "http://www2.wctr2013rio.com/proceedings"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Philips, I",
+                        "preferred": "I Philips"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Watling, D",
+                        "preferred": "D Watling"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Timms, P",
+                        "preferred": "P Timms"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "Improving estimates of capacity of populations to make journeys by walking and cycling: An individual modelling process applied to whole populations using spatial microsimulation",
+            "date": "2015",
+            "id": "bib51",
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "City University London"
+                        ]
+                    },
+                    "formatted": [
+                        "City University London"
+                    ]
+                },
+                "name": [
+                    "Presented at the university Transport Studies Group"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "articleTitle": "Developing a framework for assessment of the environmental determinants of walking and cycling",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Pikora, T",
+                        "preferred": "T Pikora"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Corti, B",
+                        "preferred": "B Corti"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Bull, F",
+                        "preferred": "F Bull"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Jamrozik, K",
+                        "preferred": "K Jamrozik"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Donovan, R",
+                        "preferred": "R Donovan"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2003",
+            "id": "bib52",
+            "journal": "Social Science & Medicine",
+            "pages": {
+                "first": "1693",
+                "last": "1703",
+                "range": "1693\u20131703"
+            },
+            "type": "journal",
+            "uri": "https://doi.org/10.1016/S0277-9536(02)00163-6",
+            "volume": "56"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Pooley, CG",
+                        "preferred": "CG Pooley"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Horton, D",
+                        "preferred": "D Horton"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Scheldeman, G",
+                        "preferred": "G Scheldeman"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Tight, M",
+                        "preferred": "M Tight"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Harwatt, H",
+                        "preferred": "H Harwatt"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Jopson, A",
+                        "preferred": "A Jopson"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Mullen, C",
+                        "preferred": "C Mullen"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2012",
+            "details": "Can increased walking and cycling really contribute to the reduction of transport-related carbon emissions?, Transport and Climate Change, Bingley, Emerald, http://eprints.whiterose.ac.uk/43557/",
+            "id": "bib53",
+            "title": "Transport and Climate Change",
+            "type": "unknown",
+            "uri": "http://eprints.whiterose.ac.uk/43557/"
+        },
+        {
+            "articleTitle": "Household decision-making for everyday travel: a case study of walking and cycling in Lancaster (UK)",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Pooley, CG",
+                        "preferred": "CG Pooley"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Horton, D",
+                        "preferred": "D Horton"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Scheldeman, G",
+                        "preferred": "G Scheldeman"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Tight, M",
+                        "preferred": "M Tight"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Jones, T",
+                        "preferred": "T Jones"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Chisholm, A",
+                        "preferred": "A Chisholm"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Jopson, A",
+                        "preferred": "A Jopson"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2011",
+            "id": "bib54",
+            "journal": "Journal of Transport Geography",
+            "pages": {
+                "first": "1601",
+                "last": "1607",
+                "range": "1601\u20131607"
+            },
+            "type": "journal",
+            "uri": "https://doi.org/10.1016/j.jtrangeo.2011.03.010",
+            "volume": "19"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Pooley, C",
+                        "preferred": "C Pooley"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Tight, M",
+                        "preferred": "M Tight"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Jones, T",
+                        "preferred": "T Jones"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Horton, D",
+                        "preferred": "D Horton"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Scheldeman, G",
+                        "preferred": "G Scheldeman"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Mullen, C",
+                        "preferred": "C Mullen"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Constantine, S",
+                        "preferred": "S Constantine"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "Understanding Walking and Cycling Summary of Key Findings and Recommendations",
+            "date": "2011",
+            "id": "bib55",
+            "publisher": {
+                "name": [
+                    "Universities of Lancaster, Leeds & Oxford Brookes"
+                ]
+            },
+            "type": "book",
+            "uri": "http://web:8082/00153/http:\\\\www.lec.lancs.ac.uk/research/society_and_environment/walking_and_cycling"
+        },
+        {
+            "articleTitle": "Methodological Issues in Spatial Microsimulation Modelling for Small Area Estimation",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Rahman, A",
+                        "preferred": "A Rahman"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Harding, AM",
+                        "preferred": "AM Harding"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Tanton, R",
+                        "preferred": "R Tanton"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Liu, S",
+                        "preferred": "S Liu"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2010",
+            "id": "bib56",
+            "journal": "International Journal of Microsimulation",
+            "pages": {
+                "first": "3",
+                "last": "22",
+                "range": "3\u201322"
+            },
+            "type": "journal",
+            "volume": "3"
+        },
+        {
+            "articleTitle": "The use of common random numbers to reduce the variance in network simulation of traffic",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Rathi, AK",
+                        "preferred": "AK Rathi"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1992",
+            "id": "bib57",
+            "journal": "Transportation Research Part B: Methodological",
+            "pages": {
+                "first": "357",
+                "last": "363",
+                "range": "357\u2013363"
+            },
+            "type": "journal",
+            "uri": "https://doi.org/10.1016/0191-2615(92)90031-Q",
+            "volume": "26"
+        },
+        {
+            "articleTitle": "ILUTE: An Operational Prototype of a Comprehensive Microsimulation Model of Urban Systems",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Salvini, P",
+                        "preferred": "P Salvini"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Miller, EJ",
+                        "preferred": "EJ Miller"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2005",
+            "id": "bib58",
+            "journal": "Networks and Spatial Economics",
+            "pages": {
+                "first": "217",
+                "last": "234",
+                "range": "217\u2013234"
+            },
+            "type": "journal",
+            "uri": "https://doi.org/10.1007/s11067-005-2630-5",
+            "volume": "5"
+        },
+        {
+            "articleTitle": "The Impact of Diabetes on the Labour Force Participation, Savings and Retirement Income of Workers Aged 45-64 Years in Australia",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Schofield, D",
+                        "preferred": "D Schofield"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Cunich, M",
+                        "preferred": "M Cunich"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Kelly, S",
+                        "preferred": "S Kelly"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Passey, ME",
+                        "preferred": "ME Passey"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Shrestha, R",
+                        "preferred": "R Shrestha"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Callander, E",
+                        "preferred": "E Callander"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Veerman, L",
+                        "preferred": "L Veerman"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2015",
+            "id": "bib59",
+            "journal": "PLOS ONE",
+            "pages": "e0116860",
+            "type": "journal",
+            "uri": "https://doi.org/10.1371/journal.pone.0116860",
+            "volume": "10"
+        },
+        {
+            "articleTitle": "Improving the synthetic data generation process in spatial microsimulation models",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Smith, DM",
+                        "preferred": "DM Smith"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Clarke, GP",
+                        "preferred": "GP Clarke"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Harland, K",
+                        "preferred": "K Harland"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2009",
+            "id": "bib60",
+            "journal": "Environment and Planning A",
+            "pages": {
+                "first": "1251",
+                "last": "1268",
+                "range": "1251\u20131268"
+            },
+            "type": "journal",
+            "uri": "https://doi.org/10.1068/a4147",
+            "volume": "41"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Smith, DS",
+                        "preferred": "DS Smith"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Clarke, GP",
+                        "preferred": "GP Clarke"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Harland, KH",
+                        "preferred": "KH Harland"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2007",
+            "details": "July, [Monograph], http://www.geog.leeds.ac.uk/wpapers/Smith07.pdf",
+            "id": "bib61",
+            "title": "SimHealth: Estimating Small Area Populations Using Deterministic Spatial Microsimulation in Leeds and Bradford",
+            "type": "unknown",
+            "uri": "http://www.geog.leeds.ac.uk/wpapers/Smith07.pdf"
+        },
+        {
+            "articleTitle": "A new web-based interface to British census of population origin - destination statistics",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Stillwell, J",
+                        "preferred": "J Stillwell"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Williams, O",
+                        "preferred": "O Williams"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2003",
+            "id": "bib62",
+            "journal": "Environment and Planning A",
+            "pages": {
+                "first": "113",
+                "last": "132",
+                "range": "113\u2013132"
+            },
+            "type": "journal",
+            "uri": "https://doi.org/10.1068/a35155",
+            "volume": "35"
+        },
+        {
+            "articleTitle": "Keeping the Noise Down: Common Random Numbers for Disease Simulation Modeling",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Stout, NK",
+                        "preferred": "NK Stout"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Goldie, SJ",
+                        "preferred": "SJ Goldie"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2008",
+            "id": "bib63",
+            "journal": "Health Care Management Science",
+            "pages": {
+                "first": "399",
+                "last": "406",
+                "range": "399\u2013406"
+            },
+            "type": "journal",
+            "volume": "11"
+        },
+        {
+            "articleTitle": "A Review of Spatial Microsimulation Methods",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Tanton, R",
+                        "preferred": "R Tanton"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2014",
+            "id": "bib64",
+            "journal": "International Journal of Microsimulation",
+            "pages": {
+                "first": "4",
+                "last": "25",
+                "range": "4\u201325"
+            },
+            "type": "journal",
+            "volume": "7"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Tanton, R",
+                        "preferred": "R Tanton"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Edwards, K",
+                        "preferred": "K Edwards"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2013",
+            "details": "Introduction to Spatial Microsimulation: History, Methods and Applications, In Spatial Microsimulation: A Reference Guide for Users, Vol. 6, Dordrecht, Springer",
+            "id": "bib65",
+            "title": "In Spatial Microsimulation: A Reference Guide for Users",
+            "type": "unknown"
+        },
+        {
+            "articleTitle": "Nonexercise Models for Estimating VO<sub>2</sub>max with Waist Girth, Percent Fat, or BMI",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Wier, LT",
+                        "preferred": "LT Wier"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Jackson, AS",
+                        "preferred": "AS Jackson"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Ayers, GW",
+                        "preferred": "GW Ayers"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Arenare, B",
+                        "preferred": "B Arenare"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2006",
+            "id": "bib66",
+            "journal": "Medicine & Science in Sports & Exercise",
+            "pages": {
+                "first": "555",
+                "last": "561",
+                "range": "555\u2013561"
+            },
+            "type": "journal",
+            "uri": "https://doi.org/10.1249/01.mss.0000193561.64152",
+            "volume": "38"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Williamson, P",
+                        "preferred": "P Williamson"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "Spatial Microsimulation: A Reference Guide for Users",
+            "chapterTitle": "An Evaluation of Two Synthetic Small-Area Microdata Simulation Methodologies: Synthetic Reconstruction and Combinatorial Optimisation",
+            "date": "2012",
+            "editors": [
+                {
+                    "name": {
+                        "index": "Tanton, R",
+                        "preferred": "R Tanton"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Edwards, K",
+                        "preferred": "K Edwards"
+                    },
+                    "type": "person"
+                }
+            ],
+            "id": "bib67",
+            "pages": {
+                "first": "19",
+                "last": "47",
+                "range": "19\u201347"
+            },
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "Springer Netherlands"
+                        ]
+                    },
+                    "formatted": [
+                        "Springer Netherlands"
+                    ]
+                },
+                "name": [
+                    "Dordrecht"
+                ]
+            },
+            "type": "book-chapter",
+            "uri": "http://www.springerlink.com/index/10.1007/978-94-007-4623-7_3"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Wilson, DG",
+                        "preferred": "DG Wilson"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "Bicycling science",
+            "date": "2004",
+            "id": "bib68",
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "Cambridge, Mass"
+                        ]
+                    },
+                    "formatted": [
+                        "Cambridge, Mass"
+                    ]
+                },
+                "name": [
+                    "MIT Press"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "articleTitle": "Public health benefits of strategies to reduce greenhouse-gas emissions: urban land transport",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Woodcock, J",
+                        "preferred": "J Woodcock"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Edwards, P",
+                        "preferred": "P Edwards"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Tonne, C",
+                        "preferred": "C Tonne"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Armstrong, BG",
+                        "preferred": "BG Armstrong"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Ashiru, O",
+                        "preferred": "O Ashiru"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Banister, D",
+                        "preferred": "D Banister"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Roberts, I",
+                        "preferred": "I Roberts"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2009",
+            "id": "bib69",
+            "journal": "Lancet",
+            "pages": {
+                "first": "1930",
+                "last": "1943",
+                "range": "1930\u20131943"
+            },
+            "type": "journal",
+            "uri": "https://doi.org/10.1016/S0140-6736(09)61714-1",
+            "volume": "374"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Ye, X",
+                        "preferred": "X Ye"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Konduri, KC",
+                        "preferred": "KC Konduri"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Pendyala, RM",
+                        "preferred": "RM Pendyala"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Sana, B",
+                        "preferred": "B Sana"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Waddell, P",
+                        "preferred": "P Waddell"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2009",
+            "details": "Presented at the Transportation Research Board 88th Annual Meeting, https://trid.trb.org/view.aspx?id=881554",
+            "id": "bib70",
+            "title": "Methodology to Match Distributions of Both Household and Person Attributes in Generation of Synthetic Populations",
+            "type": "unknown",
+            "uri": "https://trid.trb.org/view.aspx?id=881554"
+        }
+    ],
+    "acknowledgements": [
+        {
+            "text": "We thank Paul Timms at I.T.S and Andy Cope at Sustrans for their comments on early versions of this work. We would like to thank the referees for their constructive comments, which helped in improving an earlier version of the paper. The research was funded by EPSRC and Sustrans through CASE PhD studentship EP/H501355/1.",
+            "type": "paragraph"
+        }
+    ],
+    "-meta": {
+        "patched": true
+    },
+    "stage": "published"
+}

@@ -1,0 +1,2389 @@
+{
+    "status": "vor",
+    "id": "00164",
+    "version": 1,
+    "type": "research-article",
+    "doi": "10.34196/ijm.00164",
+    "authorLine": "Stavroula A Chrysanthopoulou",
+    "title": "MILC",
+    "published": "2017-12-31T00:00:00Z",
+    "versionDate": "2017-12-31T00:00:00Z",
+    "statusDate": "2017-12-31T00:00:00Z",
+    "volume": 10,
+    "issue": 3,
+    "elocationId": "n/a",
+    "pdf": "http://web:8082/00164/ijm-00164.pdf",
+    "subjects": [
+        {
+            "id": "health",
+            "name": "Health"
+        }
+    ],
+    "abstract": {
+        "content": [
+            {
+                "text": "The Microsimulation Lung Cancer (MILC) model was developed to simulate individual trajectories and predict outcomes of lung cancer for populations. The model describes the natural history of lung cancer from a disease-free state to death. Predictions of individual trajectories depend on a set of covariates including age, sex, and smoking behaviors. The module presented here is designed as part of a comprehensive decision-making toolkit for evaluating lung cancer prevention, screening and treatment policies. The MILC package implements the model in the open-source statistical software R. This paper introduces the main components, simulation algorithm, and specifics of the MILC model, validates it by reproducing observed lung cancer incidence trends in the US population, and uses it to make plausible predictions for 50-year-old men and women with a range of smoking histories.",
+                "type": "paragraph"
+            }
+        ]
+    },
+    "copyright": {
+        "license": "CC-BY-4.0",
+        "holder": "Chrysanthopoulou",
+        "statement": "This article is distributed under the terms of the <a href=\"http://creativecommons.org/licenses/by/4.0/\">Creative Commons Attribution License</a>, which permits unrestricted use and redistribution provided that the original author and source are credited."
+    },
+    "authors": [
+        {
+            "affiliations": [
+                {
+                    "address": {
+                        "components": {
+                            "country": "United States"
+                        },
+                        "formatted": [
+                            "United States"
+                        ]
+                    },
+                    "name": [
+                        "Brown University School of Public Health"
+                    ]
+                }
+            ],
+            "emailAddresses": [
+                "stavroula_chrysanthopoulou@brown.edu"
+            ],
+            "name": {
+                "index": "Chrysanthopoulou, Stavroula A",
+                "preferred": "Stavroula A Chrysanthopoulou"
+            },
+            "type": "person"
+        }
+    ],
+    "keywords": [
+        "microsimulation",
+        "comparative effectiveness research",
+        "natural history model",
+        "lung cancer",
+        "software"
+    ],
+    "body": [
+        {
+            "content": [
+                {
+                    "text": "Micro-Simulation Models (MSMs) are predictive models designed to describe complex processes and simulate unit level data (<a href=\"#bib36\">Orcutt, 1957</a>). Predicted trends about the quantities of interest, resulting from aggregation of a large number of microsimulations, are intended to guide policy decisions. In medical decision making MSMs usually describe the natural history of a disease, often in conjunction with the effect of some intervention, such as screening, treatment, etc. (<a href=\"#bib23\">Kopec, Edwards, Manuel, &amp; Rutter, 2012</a>). To this end they employ mathematical equations with stochastic assumptions to describe both observed and latent characteristics of the underlying process (<a href=\"#bib40\">Rutter, Zaslavsky, &amp; Feuer, 2011</a>).",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "MSMs are useful because they provide a handy way to simulate intricate phenomena involving dynamic systems for which observed data are either hard or even unethical to collect (for instance, exposing the subjects to unnecessary risks) or not available (for example, latent characteristics). They also constitute a practical tool for combining information from various sources, including observational studies, clinical trials, expert opinions, etc., and simulating large pseudo-samples. Due to the great flexibility they provide to researchers, MSMs have proven so far one of the best ways to model the progression of chronic diseases (<a href=\"#bib35\">Oderkirk, Sassi, &amp; Cecchini, 2012</a>). The focus on the individual rather than the average patient can also prove them a very useful tool for assisting improvement of individualized patient care. Therefore microsimulation has risen to prominence as a promising tool for making projections about the impact of interventions (such as screening) when applied to population cohorts, and thus informing health policies and improving medical decision making (<a href=\"#bib23\">Kopec <i>et al</i>., 2012</a>). For example MSMs are often used in Comparative Effectiveness Research (CER) studies, aimed at evaluating public health policies and their effect on health status of target populations <a href=\"#bib50\">Zucchelli, Jones, &amp; N., 2012</a>.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The development of an MSM is a challenging undertaking. Due to their complexity (combination of several stochastic and deterministic models, a usually large number of parameters, description of latent characteristics, etc.), model calibration requires advanced statistical techniques, and a huge number, usually of an order of magnitude of 12 or more, of microsimulations. The same holds for an extensive validation of the model, let alone a sensitivity analysis, hence it is self evident that the development of an MSM is a computationally highly intensive problem that necessitates special resources for implementing high performance computing techniques. Furthermore, the complexity of an MSM along with the fact that it often tries to describe latent phenomena lead to identifiability problems. The degree of accuracy and the validity of an MSM highly depend on the available information and data for building and calibrating the model. In addition, MSMs are subject to several sources of uncertainty, the combination and expression of which on the final outcomes is a problem not satisfactorily addressed yet (<a href=\"#bib30\">Li &amp; O\u2019Donoghue, 2013</a>; <a href=\"#bib40\">Rutter <i>et al</i>., 2011</a>).",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Several MSMs have been developed in order to predict lung cancer related outcomes. Some of the most comprehensive ones are part of the research conducted by the Cancer Intervention and Surveillance Modeling Network (CISNET) of the National Cancer Institute (NCI).<sup><a href=\"#fn1\">1</a></sup> Examples of other MSMs for lung cancer can also be found in the literature (<a href=\"#bib1\">Bongers <i>et al</i>., 2016</a>, <a href=\"#bib2\">2013</a>; <a href=\"#bib9\">Flanagan <i>et al</i>., 2015</a>; <a href=\"#bib14\">Goldwasser, 2009</a>). All these models, as part of interdisciplinary work, have been proven extremely useful, especially for evaluating intervention strategies and informing public health decisions, with numerous applications. Depending on the specific purpose to fulfill, each of these MSMs focuses on particular aspects of the natural history of lung cancer, exhibiting large variation from the structure (methods used to describe each component, etc.) and required input data, to the predicted outcomes.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Despite the evident usefulness, and unquestionable value and contribution in the field of lung cancer research, MSMs for lung cancer suffer from some limitations. Until today, at least to our knowledge, there is no publicly available source code for running these models. In addition, the high level of complexity, and the lack, in many cases, of sufficient details about their structure, render these models \u201cblack boxes\u2019\u2019, hard to understand and evaluate, and impossible to reproduce (<a href=\"#bib24\">Kopec <i>et al</i>., 2010</a>; <a href=\"#bib40\">Rutter <i>et al</i>., 2011</a>). The implementation, and reporting practices for MSMs require a lot of discussion, and some standardization, in order to facilitate evaluation and enhance comprehensiveness.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The Microsimulation Lung Cancer (MILC) model (<a href=\"#bib3\">Chrysanthopoulou, 2013</a>), is a new, dynamic, continuous time microsimulation model that simulates individual trajectories focusing on lung-cancer related outcomes. In its current version, the model comprises a module describing the natural history of lung cancer in the absence of any screening or treatment components, and incorporates several best current practices for modeling lung cancer states. The model simulates the course of lung cancer from the disease-free state to the local, regional, and distant disease states and eventually to death either from lung cancer or some other cause. Prediction of individual trajectories involves incorporation of unit-level baseline information about three important factors, namely age, sex, and smoking, including current smoking status, start and quit smoking ages, and average number of cigarettes smoked per day when relevant.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "One of the main objectives of creating MILC was to use the model as a tool for studying the statistical properties of, and suggesting appropriate statistical methods for the development of MSMs with analogous characteristics. Furthermore we wanted to create a streamlined, yet valid MSM for lung cancer, and make it publicly available to potential end users in the field of lung cancer research. The MILC package (<a href=\"#bib4\">Chrysanthopoulou, 2014</a>) includes the required source code and data for implementing this model in the open-source statistical software R, and is available on the Comprehensive R Archive Network (CRAN) repository.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "This article introduces the MILC model and describes its main components, simulation algorithm, and specifications. We also present two examples of how the MILC model can be used in practice. In the first example we validate the model against observed lung cancer incidence rates in the US population, while in the second we use the MILC model to predict individual risks for smokers based on sex and smoking intensity. Finally we discuss the main differences between our model and other MSMs used in lung cancer research, and outline future work to develop the MILC model into a comprehensive tool for assisting decision making for lung cancer.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s1",
+            "title": "1. Introduction",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "content": [
+                        {
+                            "text": "The MILC model defines five distinct states in the natural history of lung cancer. Starting from the disease-free state (S0) it is possible for an individual to have transition to the local (S1), regional (S2), and distant (S3) disease state, and eventually to the <i>absorbing</i> state of death (S4) either from lung cancer or from some other cause. States S1-S3 are sometimes called <i>tunnel</i> states because of their special arrangement, namely they can only be visited in this particular fixed order (<a href=\"#bib41\">Sonnenberg &amp; Beck, 1993</a>). The Markov state diagram in <a href=\"#fig1\">Figure 1</a> depicts the five distinct MILC model states, and the underlying transition rules.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "fig1",
+                                    "image": {
+                                        "alt": "",
+                                        "uri": "%iiif_uri%/00164%2Fijm-00164-fig1.tif",
+                                        "size": {
+                                            "width": 535,
+                                            "height": 362
+                                        },
+                                        "source": {
+                                            "mediaType": "image/jpeg",
+                                            "uri": "%iiif_uri%/00164%2Fijm-00164-fig1.tif/full/full/0/default.jpg",
+                                            "filename": "ijm-00164-fig1.jpg"
+                                        }
+                                    },
+                                    "label": "Figure 1",
+                                    "title": "Markov state diagram of the MILC model.",
+                                    "type": "image"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "text": "The onset of the first malignant cell signifies the beginning of the local disease state (S1). The tumor in that state is limited to the place where it started, with no sign of spread elsewhere in the body. The first malignant cell can proliferate up to the point of nearby lymph nodes, tissues, or organs involvement thus transitioning to the regional disease state (S2). The tumor may further progress to the distant state (S3), namely metastasize to distant parts of the body, and eventually cause death (S4), unless death from some other cause precedes. Within the three <i>tunnel</i> states tumor can range from Stage 0 to Stage IV, depending on the size and spread (<a href=\"#bib46\">National Cancer Institute, 2017a</a>).",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The MILC model makes some important assumptions. First of all it assumes that the transition to subsequent states depends only on the present state (<i>Markov property</i>). Furthermore the disease progression is irreversible, namely once the first malignant cell occurs lung cancer will either remain to the local or transition to subsequent states, depending on the total time of the follow-up period and a number of risk factors. Finally a death can be attributed to lung cancer if and only if it occurs after transition to the distant state.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "content": [
+                                {
+                                    "text": "We model the onset of the first malignant cell using the exact solutions for the expression of the hazard rates and the survival probabilities of the biological two-stage clonal expansion (TSCE) model suggested by <a href=\"#bib34\">Moolgavkar and Luebeck (1990)</a>. According to this model the hazard function for the development of the first malignant cell (<a href=\"#bib19\">Heidenreich, Luebeck, &amp; Moolgavkar, 1997</a>) can be expressed as:",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "id": "equ1",
+                                    "label": "(1)",
+                                    "mathml": "<math><mi>h</mi><mo stretchy=\"false\">(</mo><mi>t</mi><mo stretchy=\"false\">)</mo><mo>=</mo><mfrac><mrow><mi>v</mi><mi>\u03bc</mi><mi>X</mi><mrow><mo>(</mo><mrow><msup><mi>e</mi><mrow><msup><mrow><mrow><mo>(</mo><mrow><mi>\u03b3</mi><mo>+</mo><mn>2</mn><mi>B</mi></mrow><mo>)</mo></mrow></mrow><mi>t</mi></msup></mrow></msup><mo>\u2212</mo><mn>1</mn></mrow><mo>)</mo></mrow></mrow><mrow><mi>\u03b3</mi><mo>+</mo><mi>B</mi><mrow><mo>(</mo><mrow><msup><mi>e</mi><mrow><msup><mrow/><mrow><msup><mrow><mrow><mo>(</mo><mrow><mi>\u03b3</mi><mo>+</mo><mn>2</mn><mi>B</mi></mrow><mo>)</mo></mrow></mrow><mi>t</mi></msup></mrow></msup></mrow></msup><mo>+</mo><mn>1</mn></mrow><mo>)</mo></mrow></mrow></mfrac></math>",
+                                    "type": "mathml"
+                                },
+                                {
+                                    "text": "with \u03b3 = <i>\u03b1 \u2212 \u03b2 \u2212 \u00b5,</i> and <inline-formula id=\"inline1\"><math display=\"inline\" id=\"i1\"><mi>B</mi><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mrow><mo>(</mo><mrow><mo>\u2212</mo><mtext>\u03b3+</mtext><msqrt><mrow><msup><mtext>\u03b3</mtext><mn>2</mn></msup><mo>+</mo><mn>4</mn><mi>\u03b1</mi><mi>\u03bc</mi></mrow></msqrt></mrow><mo>)</mo></mrow></math>. In <a href=\"#equ1\">Equation 1</a> <i>X</i> is the total number of normal cells, <i>\u03bd</i> is the normal cell initiation rate, and <i>\u03b1, \u03b2, \u00b5</i> are the division, apoptosis (death or differentiation), and malignant conversion rates of initiated cells respectively.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "Studies (<a href=\"#bib16\">Hazelton, Clements, &amp; Moolgavkar, 2005</a>; <a href=\"#bib18\">Hazelton, Luebeck, Heidenreich, &amp; Moolgavkar, 2001</a>) have shown that power laws are good approximations to the effect of smoking on the onset of the first malignant cell. If <i>q(t)</i> denotes the smoking intensity at age <i>t,</i> expressed as average number of cigarettes smoked per day, then:",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "id": "equ2",
+                                    "label": "(2)",
+                                    "mathml": "<math><msub><mi>\u03b1</mi><mi>s</mi></msub><mo>=</mo><msub><mi>\u03b1</mi><mrow><mi>n</mi><mi>s</mi></mrow></msub><mo>\u22c5</mo><mrow><mo>[</mo> <mrow><mn>1</mn><mo>+</mo><msub><mi>\u03b1</mi><mn>1</mn></msub><mo>\u22c5</mo><mi>q</mi><msup><mrow><mo stretchy=\"false\">(</mo><mi>t</mi><mo stretchy=\"false\">)</mo></mrow><mrow><mi>\u03b1</mi><mn>2</mn></mrow></msup></mrow> <mo>]</mo></mrow></math>",
+                                    "type": "mathml"
+                                },
+                                {
+                                    "text": "and",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "id": "equ3",
+                                    "label": "(3)",
+                                    "mathml": "<math><msub><mi>\u03b3</mi><mi>s</mi></msub><mo>=</mo><msub><mi>\u03b3</mi><mrow><mi>n</mi><mi>s</mi></mrow></msub><mo>\u22c5</mo><mrow><mo>[</mo> <mrow><mn>1</mn><mo>+</mo><msub><mi>\u03b1</mi><mn>1</mn></msub><mo>\u22c5</mo><mi>q</mi><msup><mrow><mo stretchy=\"false\">(</mo><mi>t</mi><mo stretchy=\"false\">)</mo></mrow><mrow><mi>\u03b1</mi><mn>2</mn></mrow></msup></mrow> <mo>]</mo></mrow></math>",
+                                    "type": "mathml"
+                                },
+                                {
+                                    "text": "where <i>\u03b1<sub>ns</sub></i> and \u03b3<sub>ns</sub> are the respective coefficients for non-smokers. To account for sex and smoking history differences, we assume different hazards (as functions of age <i>t</i>) for each combination of sex (male/female), and smoking status (never/former/current smoker) categories.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "For each individual the time period from birth (<i>t</i> = 0) to the onset of the first malignant cell can be split into intervals within which the hazard rate is constant and depends on the person\u2019s smoking status. The hazard for never smokers is constant throughout their entire life and of course independent of smoking. Smokers have two different hazards, one before (the same with non-smokers), and one after (depending on the smoking intensity) they start smoking. In its current version MILC also assumes that former smokers had only two changes in their smoking behavior, namely one when they started and one when they quit smoking. However the model is flexible and can accommodate multiple changes of smoking behavior in a person\u2019s lifetime.<sup><a href=\"#fn2\">2</a></sup>",
+                                    "type": "paragraph"
+                                }
+                            ],
+                            "id": "s2-1-1",
+                            "title": "2.1.1 Onset of the first malignant cell",
+                            "type": "section"
+                        },
+                        {
+                            "content": [
+                                {
+                                    "text": "The Gompertz distribution is more flexible than the exponential, and therefore provides a better approximation of tumor growth for most cancer types (<a href=\"#bib7\">Detterbeck &amp; Gibson, 2008</a>). The Gompertz distribution models proliferation of tumor cells as a modified exponential process in which successive doubling times occur at increasingly longer time intervals (<a href=\"#bib27\">Laird, 1964</a>). This enables us to capture the reality of shorter pre-clinical periods with longer survival after diagnosis.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "We define <i>V(t)</i> to be the tumor volume when a person reaches age <i>t</i> (in years). The MILC model assumes a Gompertzian tumor growth (<a href=\"#bib27\">Laird, 1964</a>), according which:",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "id": "equ4",
+                                    "label": "(4)",
+                                    "mathml": "<math><mfrac><mrow><mi>V</mi><mo>(</mo><mi>t</mi><mo>)</mo></mrow><msub><mi>V</mi><mn>0</mn></msub></mfrac><mo>\u00a0</mo><mo>=</mo><mo>\u00a0</mo><msup><mi>e</mi><mrow><mfrac><mi>s</mi><mi>m</mi></mfrac><mo>(</mo><mn>1</mn><mo>\u2212</mo><msup><mi>e</mi><mrow><mo>\u2212</mo><mi>m</mi><mi>t</mi></mrow></msup><mo>)</mo></mrow></msup></math>",
+                                    "type": "mathml"
+                                },
+                                {
+                                    "text": "where <i>V</i><sub>0</sub> represents the initial tumor volume (namely the volume of the first malignant cell), while <i>m</i> is the scale, and <i>s</i> is the shape parameter of the Gompertz probability density function.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "We further assume a spherical tumor growth (<a href=\"#bib11\">Gallaher, Babu, Plevritis, &amp; Anderson, 2014</a>), thus making the tumor size a function of its diameter <i>d(t)</i> at age <i>t,</i> namely:",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "id": "equ5",
+                                    "label": "(5)",
+                                    "mathml": "<math><mi>V</mi><mo stretchy=\"false\">(</mo><mi>t</mi><mo stretchy=\"false\">)</mo><mo>=</mo><mfrac><mtext>\u03c0</mtext><mn>6</mn></mfrac><msup><mrow><mo>[</mo> <mrow><mi>d</mi><mo stretchy=\"false\">(</mo><mi>t</mi><mo stretchy=\"false\">)</mo></mrow> <mo>]</mo></mrow><mn>3</mn></msup></math>",
+                                    "type": "mathml"
+                                },
+                                {
+                                    "text": "In the literature (<a href=\"#bib7\">Detterbeck &amp; Gibson, 2008</a>; <a href=\"#bib13\">Geddes, 1979</a>; <a href=\"#bib31\">McMahon, 2005</a>) we find that the minimum tumor diameter (one cancerous cell) is <i>d<sub>0</sub></i> = 0.01<i>\u00b5m</i>, and the maximum possible diameter (tumor that causes death) is <i>d<sub>max</sub></i> = 13<i>cm</i>. To simplify model parameterization we assume the same Gompertz distribution for all tumors irrespective of their histological type and stage.",
+                                    "type": "paragraph"
+                                }
+                            ],
+                            "id": "s2-1-2",
+                            "title": "2.1.2 Tumor growth",
+                            "type": "section"
+                        },
+                        {
+                            "content": [
+                                {
+                                    "text": "Disease progression of an existing lung cancer can occur via nodal involvement and distant metastases (<a href=\"#bib31\">McMahon, 2005</a>). Current MSMs for lung cancer (<a href=\"#bib14\">Goldwasser, 2009</a>; <a href=\"#bib31\">McMahon, 2005</a>) in their disease progression parts adopt methods developed to describe the progress of breast cancer (<a href=\"#bib12\">Garg, Rao, &amp; Redmond, 1970</a>; <a href=\"#bib26\">Koscielny, Tubiana, &amp; Valleron, 1985</a>; <a href=\"#bib37\">Plevritis, Salzman, Sigal, &amp; Glynn, 2007</a>; <a href=\"#bib48\">Thames, Buchholz, &amp; Smith, 1999</a>). Given a Gompertzian tumor growth, the log-normal distribution can adequately describe the distribution of tumor volumes at specific time points, starting from the local state, that is the onset of the first malignant cell (<a href=\"#bib25\">Koscielny <i>et al</i>., 1984</a>, <a href=\"#bib26\">1985</a>; <a href=\"#bib42\">Spratt &amp; Spratt, 1964</a>; <a href=\"#bib43\">Steel, 1977</a>).",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "We define three different log-normal distributions to simulate the tumor volume at the transition to regional (<i>V<sub>reg</sub></i>), and distant (<i>V<sub>dist</sub></i>) disease states, as well as the tumor at diagnosis (<i>V<sub>diag</sub></i>). Given the simulated tumor volume, and growth rate, and assuming a spherical growth, the model calculates the age at which the tumor has reached a specific size, and hence the age at the transition to each of the respective three MILC states.",
+                                    "type": "paragraph"
+                                }
+                            ],
+                            "id": "s2-1-3",
+                            "title": "2.1.3 Disease progression",
+                            "type": "section"
+                        },
+                        {
+                            "content": [
+                                {
+                                    "text": "Because smoking is an important risk factor for dying not only from lung cancer (<a href=\"#bib47\">National Cancer Institute, 2017b</a>), we follow a competing risks approach to simulate mortality, distinguishing between death from lung cancer or other causes. We estimate the probability of death from lung cancer in the presence of other causes of death, using the Cumulative Incidence Function (CIF) non-parametric technique (<a href=\"#bib22\">Klein &amp; Moeschberger, 2003</a>). We derive estimates using information from both the National Health Interview Survey (NHIS, 2006) and Surveillance, Epidemiology and End Results (SEER, 2006) data.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "We employ the inverse transform approach to simulate both age and cause of death (lung cancer or other) based on CIF estimates. The MILC simulations depend on the strong assumption that the observed death patterns and smoking behaviors do not change dramatically over time, hence they are also relevant to the prediction period we are interested in. Furthermore, given the data used, the model currently represents survival patterns observed in the US population. Depending on the available information, the MILC model can be also calibrated and used to simulate other (sub-)populations.",
+                                    "type": "paragraph"
+                                }
+                            ],
+                            "id": "s2-1-4",
+                            "title": "2.1.4 Survival",
+                            "type": "section"
+                        }
+                    ],
+                    "id": "s2-1",
+                    "title": "2.1 Model components",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "content": [
+                                {
+                                    "text": "<a href=\"#table1\">Table 1</a> summarizes the parameterization of the MILC model. <a href=\"#fig2\">Figure 2</a> depicts how the model functions, namely the required input and the anticipated output for each simulated individual trajectory. In particular, to predict one trajectory, we \u201cfeed\u201d the model with three sets of input: (i) Baseline characteristics <b>X</b> (age, sex, smoking habits) of the individual. Smoking includes status (never, former, or current smoker), as well as start and quit smoking ages, and smoking intensity (average number of cigarettes smoked per day), where relevant. (ii) Values for the model parameters <i><b>\u03b8</b></i>. These values can be either ad-hoc estimates or the result of some calibration procedure. (iii) Cumulative incidence function estimates S for lung cancer and other cause survival.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "Possible MILC outputs (<i>predictions</i>) can be classified into three broad categories, namely those regarding the <i>disease progression</i> (\u00d5<i><sub>prog</sub></i>), diagnosis (\u00d5<i><sub>diagn</sub></i>), and <i>death</i> (\u00d5<sub><i>death</i></sub>). <i>Disease progression</i> output (\u00d5<i><sub>prog</sub></i> = {<i>T<sub>mal</sub>, T<sub>reg</sub>, T<sub>dist</sub></i>}), comprises prediction of the ages at the beginning of the local, regional, and distant tumor states respectively. In the MILC model <i>diagnosis</i> signifies the time when lung cancer is confirmed and assessed for its size and stage. <i>Diagnosis</i> output (\u00d5<sub><i>diagn</i></sub> = <i>{T<sub>diagn</sub></i>, <i>d<sub>diagn</sub></i>, <i>stage}</i>) includes predicted age, tumor size, and tumor stage at <i>diagnosis</i>. Finally, <i>death</i> output (\u00d5<i><sub>death</sub></i> = {<i>T<sub>death</sub>, cause</i>}) has information about the age and cause of death, if the model predicts that the individual dies before the end of the follow-up period. Otherwise it provides the age at the end of the prediction period, if the person is still alive by then.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "assets": [
+                                        {
+                                            "id": "table1",
+                                            "label": "Table 1",
+                                            "tables": [
+                                                "<table>\n<thead>\n<tr>\n<th>Model components</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>Initiation of the local stage: Two-Stage Clonal Expansion (TSCE) carcinogenesis model</td>\n</tr>\n<tr>\n<td>Risk for the onset of the first malignant cell: <inline-formula id=\"inline2\"><math display=\"inline\" id=\"i2\"><mi>h</mi><mo stretchy=\"false\">(</mo><mi>t</mi><mo stretchy=\"false\">)</mo><mo>=</mo><mfrac><mrow><mi>\u03bd</mi><mi>\u03bc</mi><mi>X</mi><mrow><mo>[</mo> <mrow><mi>exp</mi><mo stretchy=\"false\">(</mo><mi>\u03b3</mi><mo>+</mo><mn>2</mn><mi>B</mi><mo stretchy=\"false\">)</mo><mo>\u22c5</mo><mi>t</mi><mo>\u2212</mo><mn>1</mn></mrow> <mo>]</mo></mrow></mrow><mrow><mi>\u03b3</mi><mo>+</mo><mi>B</mi><mrow><mo>[</mo> <mrow><mi>exp</mi><mo stretchy=\"false\">(</mo><mi>\u03b3</mi><mo>+</mo><mn>2</mn><mi>B</mi><mo stretchy=\"false\">)</mo><mo>\u22c5</mo><mi>t</mi><mo>+</mo><mn>1</mn></mrow> <mo>]</mo></mrow></mrow></mfrac></math></td>\n</tr>\n<tr>\n<td>where\n&lt;list list-type=\"simple\"&gt;\n&lt;list-item&gt;<p><i>\u03b3 = \u03b1 \u2212 \u03b2 \u2212 \u00b5</i> and <inline-formula id=\"inline3\"><math display=\"inline\" id=\"i3\"><mi>B</mi><mo>=</mo><mstyle scriptlevel=\"+1\"><mfrac><mn>1</mn><mn>2</mn></mfrac></mstyle><mrow><mo>(</mo><mrow><mo>\u2212</mo><mi>\u03b3</mi><mo>+</mo><msqrt><mrow><msup><mi>\u03b3</mi><mn>2</mn></msup><mo>+</mo><mn>4</mn><mi>\u03b1</mi><mi>\u03bc</mi></mrow></msqrt></mrow><mo>)</mo></mrow></math></p>&lt;/list-item&gt;\n&lt;list-item&gt;<p>X: total number of normal stem cells</p>&lt;/list-item&gt;\n&lt;list-item&gt;<p><i>\u03bd</i>: normal cell initiation rate</p>&lt;/list-item&gt;\n&lt;list-item&gt;<p><i>\u03b1:</i> division rate of initiated cells</p>&lt;/list-item&gt;\n&lt;list-item&gt;<p><i>\u03b2:</i> apoptosis rate of initiated cells</p>&lt;/list-item&gt;\n&lt;list-item&gt;<p><i>\u00b5:</i> malignant conversion rate of initiated cells</p>&lt;/list-item&gt;\n&lt;/list&gt;</td>\n</tr>\n<tr>\n<td>Effect of smoking on <i>\u03b1</i> and \u03b3 parameters:\n&lt;disp-formula id=\"equu1\"&gt;\n<math id=\"mu1\"><msub><mi>\u03b1</mi><mi>s</mi></msub><mo>=</mo><msub><mi>\u03b1</mi><mrow><mi>n</mi><mi>s</mi></mrow></msub><mo>\u22c5</mo><mrow><mo>[</mo> <mrow><mn>1</mn><mo>+</mo><msub><mi>\u03b1</mi><mn>1</mn></msub><mo>\u22c5</mo><mi>q</mi><msup><mrow><mo stretchy=\"false\">(</mo><mi>t</mi><mo stretchy=\"false\">)</mo></mrow><mrow><mi>\u03b1</mi><mn>2</mn></mrow></msup></mrow> <mo>]</mo></mrow><mtext>\u2009</mtext><mtext>\u2009</mtext><mtext>and</mtext><mtext>\u2009</mtext><mtext>\u2009</mtext><msub><mi>\u03b3</mi><mi>s</mi></msub><mo>\u22c5</mo><mrow><mo>[</mo> <mrow><mn>1</mn><mo>+</mo><msub><mi>\u03b1</mi><mn>1</mn></msub><mo>\u22c5</mo><mi>q</mi><msup><mrow><mo stretchy=\"false\">(</mo><mi>t</mi><mo stretchy=\"false\">)</mo></mrow><mrow><mi>\u03b1</mi><mn>2</mn></mrow></msup></mrow> <mo>]</mo></mrow></math>&lt;/disp-formula&gt;</td>\n</tr>\n<tr>\n<td>where\n&lt;list list-type=\"simple\"&gt;\n&lt;list-item&gt;<p><i>q(t):</i> average number of cigarettes smoked per day at age <i>t</i></p>&lt;/list-item&gt;\n&lt;list-item&gt;<p>(<i>\u03b1<sub>s</sub>,</i> \u03b3<i>s</i>) and (<i>\u03b1<sub>ns</sub>,</i> \u03b3<sub><i>ns</i></sub>): parameters for smokers and non-smokers respectively.</p>&lt;/list-item&gt;\n&lt;/list&gt;</td>\n</tr>\n<tr>\n<td><b>Tumor growth: Gompertz function</b>\n&lt;disp-formula id=\"equu2\"&gt;\n<math id=\"mu2\"><mfrac><mrow><mi>V</mi><mo stretchy=\"false\">(</mo><mi>t</mi><mo stretchy=\"false\">)</mo></mrow><mrow><msub><mi>V</mi><mn>0</mn></msub></mrow></mfrac><mo>=</mo><mi>exp</mi><mrow><mo>[</mo> <mrow><mstyle scriptlevel=\"+1\"><mfrac><mi>s</mi><mi>m</mi></mfrac></mstyle><mrow><mo>(</mo><mrow><mn>1</mn><mo>\u2212</mo><mi>exp</mi><mo stretchy=\"false\">(</mo><mi>m</mi><mi>t</mi><mo stretchy=\"false\">)</mo></mrow><mo>)</mo></mrow></mrow> <mo>]</mo></mrow></math>\n&lt;/disp-formula&gt;</td>\n</tr>\n<tr>\n<td>where\n&lt;list list-type=\"simple\"&gt;\n&lt;list-item&gt;<p>V(t): tumor volume at age t</p>&lt;/list-item&gt;\n&lt;list-item&gt;<p>V<sub>0</sub>: minimum tumor volume (one malignant cell)</p>&lt;/list-item&gt;\n&lt;/list&gt;</td>\n</tr>\n<tr>\n<td>Assuming spherical tumor growth:\n&lt;disp-formula id=\"equu3\"&gt;\n<math id=\"mu3\"><mrow><mtext>V(t)</mtext><mo>=</mo><mstyle scriptlevel=\"+1\"><mfrac><mtext>\u03c0</mtext><mn>6</mn></mfrac></mstyle><mi>d</mi><msup><mrow><mo stretchy=\"false\">(</mo><mi>t</mi><mo stretchy=\"false\">)</mo></mrow><mn>3</mn></msup></mrow></math>\n&lt;/disp-formula&gt;\n&lt;list list-type=\"simple\"&gt;\n&lt;list-item&gt;<p>d(t): diameter at age t</p>&lt;/list-item&gt;\n&lt;list-item&gt;<p>d<sub>0</sub> = 0.01mm, diameter of one malignant cell</p>&lt;/list-item&gt;\n&lt;list-item&gt;<p><i>d<sub>max</sub> = </i>13<i>cm</i>, maximum tumor diameter</p>&lt;/list-item&gt;\n&lt;/list&gt;</td>\n</tr>\n<tr>\n<td>Disease progression: Transition to regional and distant stages and tumor diagnosis</td>\n</tr>\n<tr>\n<td>Tumor volume at:\n&lt;list list-type=\"simple\"&gt;\n&lt;list-item&gt;<p>\u2014 the beginning of the regional stage: V<sub><i>reg</i></sub> ~ log-normal (<i>\u00b5<sub>reg</sub></i>, <i>sd<sub>reg</sub></i>)</p>&lt;/list-item&gt;\n&lt;list-item&gt;<p>\u2014 the beginning of the distant stage: V<sub><i>dist</i></sub> ~ log-normal (<i>\u00b5<sub>dist</sub>, sd<sub>dist</sub></i>)</p>&lt;/list-item&gt;\n&lt;list-item&gt;<p>\u2014 diagnosis: V<sub><i>diagn</i></sub> ~ log-normal(\u00b5<i>diagn, sd<sub>diagn</sub></i>)</p>&lt;/list-item&gt;\n&lt;/list&gt;</td>\n</tr>\n<tr>\n<td>where\n&lt;disp-formula id=\"equu4\"&gt;\n<math id=\"mu4\"><mtable columnalign=\"left\"><mtr><mtd><msub><mtext>V</mtext><mn>0</mn></msub><mo>&lt;</mo><msub><mi>V</mi><mrow><mi>r</mi><mi>e</mi><mi>g</mi></mrow></msub><mo>&lt;</mo><msub><mi>V</mi><mrow><mi>d</mi><mi>i</mi><mi>s</mi><mi>t</mi></mrow></msub><mo>&lt;</mo><msub><mi>V</mi><mrow><mi>max</mi></mrow></msub></mtd></mtr><mtr><mtd><msub><mtext>V</mtext><mn>0</mn></msub><mo>&lt;</mo><msub><mi>V</mi><mrow><mi>d</mi><mi>i</mi><mi>a</mi><mi>g</mi><mi>n</mi></mrow></msub><mo>&lt;</mo><msub><mi>V</mi><mrow><mi>max</mi></mrow></msub></mtd></mtr></mtable></math>\n&lt;/disp-formula&gt;</td>\n</tr>\n</tbody>\n</table>"
+                                            ],
+                                            "title": "MILC model parameterization.",
+                                            "type": "table"
+                                        }
+                                    ],
+                                    "type": "figure"
+                                },
+                                {
+                                    "assets": [
+                                        {
+                                            "id": "fig2",
+                                            "image": {
+                                                "alt": "",
+                                                "uri": "%iiif_uri%/00164%2Fijm-00164-fig2.tif",
+                                                "size": {
+                                                    "width": 734,
+                                                    "height": 462
+                                                },
+                                                "source": {
+                                                    "mediaType": "image/jpeg",
+                                                    "uri": "%iiif_uri%/00164%2Fijm-00164-fig2.tif/full/full/0/default.jpg",
+                                                    "filename": "ijm-00164-fig2.jpg"
+                                                }
+                                            },
+                                            "label": "Figure 2",
+                                            "title": "Structure of the MILC model.",
+                                            "type": "image"
+                                        }
+                                    ],
+                                    "type": "figure"
+                                }
+                            ],
+                            "id": "s2-2-1",
+                            "title": "2.2.1 Structure and parameterization",
+                            "type": "section"
+                        },
+                        {
+                            "content": [
+                                {
+                                    "text": "Specifying the parameter values of an MSM requires extensive calibration with results heavily depending on the quality of the available data. The <i>microdata</i> used and the <i>calibration targets</i> set are key components of the calibration procedure. <i>Microdata</i> is essentially individual-level information for a sample of subjects representative of the target population in the study and is used as input to the model for simulating individual trajectories. <i>Calibration targets</i> are quantities of interest (usually summary statistics from the target population) that the MSM should accurately predict.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "The high level of complexity usually renders impossible the determination of closed-form expressions of the outcomes as functions of the model parameters. This along with the fact that an MSM usually involves description of latent characteristics, as is the case with the MILC model, dictates the use of calibration procedures for the specification of sets of plausible values for the model parameters. Detailed calibration of an MSM is a computationally intensive and time consuming process. For the examples presented in this paper we have used the MILC model after calibrating four parameters, and setting ad-hoc estimates or fixed values from the literature for the others as indicated in <a href=\"#table2\">Table 2</a>.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "The <i>microdata</i> used for this calibration, included individual-level information randomly extracted from the 1980 US population. The four parameters that we chose to calibrate represent several aspects in the natural history of lung cancer; one is related to the tumor growth (<i>m</i>), and the others to the disease progression component of the model (<i>\u03bc<sub>regj</sub></i>, <i>\u03bc<sub>dist</sub></i>, and <i>\u03bc<sub>diagn</sub></i>). We used fixed values for all the other MILC parameters, based on literature review about the natural history of lung cancer (<a href=\"#table2\">Table 2</a>). For parameters related to the onset of the first malignant cell we retrieved values from <a href=\"#bib16\">Hazelton <i>et al</i>. (2005)</a>, while values for the tumor growth component were found in <a href=\"#bib26\">Koscielny <i>et al</i>. (1985)</a>.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "We implemented the Bayesian calibration method, suggested by Rutter, <a href=\"#bib38\">Miglioretti, and Savarino (2009)</a>, to calibrate the MILC model on lung-cancer incidence trends observed in the 2006 US population of males. The method involves a large number of Gibbs sampler iterations with embedded approximate Metropolis-Hastings steps for drawing values from the joint posterior distribution, assuming that lung cancer incidence rates approximately follow a Poisson distribution. The result from this calibration method is a set of random draws from the approximate joint posterior h(<i>\u03b8</i> | Y ) of the parameter vector <i>\u03b8.</i> <a href=\"#table2\">Table 2</a> presents medians and interquartile ranges for the four calibrated MILC parameters (<i>m, \u00b5<sub>reg</sub>,\u00b5<sub>dist</sub>,</i> and <i>\u00b5<sub>diagn</sub></i>).",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "Details on the Bayesian calibration procedure are provided in another paper in preparation (<a href=\"#bib5\">Chrysan-thopoulou, 2017</a>). This paper discusses results from a comprehensive comparative analysis of two of the most broadly used calibration methods for MSMs, the aforementioned Bayesian method, and another Empirical technique which employs the Latin Hypercube Sampling design for an efficient search of the multidimensional parameter space.",
+                                    "type": "paragraph"
+                                }
+                            ],
+                            "id": "s2-2-2",
+                            "title": "2.2.2 Calibration",
+                            "type": "section"
+                        },
+                        {
+                            "content": [
+                                {
+                                    "text": "We validated the model predictions against lung cancer incidence trends observed in the US population. For this purpose we simulated individual-level characteristics (age, sex and smoking) for a pseudo-sample of size N=10,000 people, representative of the 1980 US population, combining information from the 1980 US census, and the 1980 Statistical Abstract of the US. We used the calibrated MILC model to simulate individual trajectories for people in the pseudo-sample, and predicted lung cancer incidence rates 26 years ahead. We compared the predicted rates (aggregated results) with age-group specific ones reported in the SEER 2002\u20132006 database (<a href=\"#fig3\">Figure 3</a>). The MILC model can also be calibrated to other data, so as to simulate various (sub-)populations, and/or even reproduce other lung cancer related outcomes, such as mortality, age and tumor stage at diagnosis.",
+                                    "type": "paragraph"
+                                }
+                            ],
+                            "id": "s2-2-3",
+                            "title": "2.2.3 Validation",
+                            "type": "section"
+                        },
+                        {
+                            "content": [
+                                {
+                                    "text": "The most typical use, and essentially the primary reason which has driven the development and implementation of MSMs in medical decision making, is the application of this model to a cohort of people for which individual-level information at baseline is available. Given this information, the model tries to accurately predict individual disease trajectories, and estimate outcomes of interest by aggregating relevant quantities from the predicted trajectories (<a href=\"#bib33\">Meza <i>et al</i>., 2014</a>; <a href=\"#bib39\">Rutter &amp; Savarino, 2010</a>; <a href=\"#bib49\">Wolf-son, 2011</a>). Those estimates can result in after a single or multiple runs of the model on the same cohort. Multiple repetitions are preferable because they can provide a better sense of the inherent uncertainty, and reveal interesting correlation structures of the underlying system components.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "assets": [
+                                        {
+                                            "footnotes": [
+                                                {
+                                                    "text": [
+                                                        {
+                                                            "text": "<i>Notes</i>: Values for the calibrated MILC parameters are presented as Q<sub>2</sub> [Q<sub>1</sub>, Q<sub>3</sub>], where Q<sub>2</sub> is the median, and Q<sub>1</sub>, Q<sub>3</sub> are the 1st and 3rd quartiles respectively. The values and distributions of MILC parameters are the same for males and females, unless otherwise indicated.",
+                                                            "type": "paragraph"
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "text": [
+                                                        {
+                                                            "text": "<i>Sources</i>:",
+                                                            "type": "paragraph"
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "id": "tfn2-1",
+                                                    "label": "a",
+                                                    "text": [
+                                                        {
+                                                            "text": "Ad hoc values from <a href=\"#bib16\">Hazelton <i>et al</i>. (2005)</a>.",
+                                                            "type": "paragraph"
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "id": "tfn2-2",
+                                                    "label": "b",
+                                                    "text": [
+                                                        {
+                                                            "text": "Ad hoc values from <a href=\"#bib26\">Koscielny <i>et al</i>. (1985)</a>.",
+                                                            "type": "paragraph"
+                                                        }
+                                                    ]
+                                                }
+                                            ],
+                                            "id": "table2",
+                                            "label": "Table 2",
+                                            "tables": [
+                                                "<table>\n<thead>\n<tr>\n<th>Parameter</th>\n<th colspan=\"2\">Sex</th>\n<th>Description</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td/>\n<td>Male</td>\n<td>Female</td>\n<td/>\n</tr>\n<tr>\n<td colspan=\"4\">Onset of the first malignant cell<a href=\"#tfn2-1\"><sup>a</sup></a></td>\n</tr>\n<tr>\n<td colspan=\"4\"><i>All</i></td>\n</tr>\n<tr>\n<td>X</td>\n<td colspan=\"2\">IOe+7</td>\n<td>Total number of normal stem cells</td>\n</tr>\n<tr>\n<td colspan=\"4\"><i>Non-Smokers</i></td>\n</tr>\n<tr>\n<td>v<sub><i>ns</i></sub></td>\n<td>7.16e-8</td>\n<td>1.07e-7</td>\n<td>Normal cell initiation rate</td>\n</tr>\n<tr>\n<td><i>\u03b1<sub>ns</sub></i></td>\n<td>7.7</td>\n<td>15.82</td>\n<td>Division rate of initiated cells</td>\n</tr>\n<tr>\n<td><i>\u03b3<sub>ns</sub></i></td>\n<td>0.09</td>\n<td>0.071</td>\n<td/>\n</tr>\n<tr>\n<td><i>\u00b5<sub>ns</sub></i></td>\n<td colspan=\"2\">v<sub><i>ns</i></sub></td>\n<td>Malignant conversion rate of initiated cells</td>\n</tr>\n<tr>\n<td><i>\u03b2<sub>ns</sub></i></td>\n<td colspan=\"2\"><i>\u03b1<sub>ns</sub> \u2212 \u00b5<sub>ns</sub> \u03b3<sub>ns</sub></i></td>\n<td>Apoptosis rate of initiated cells</td>\n</tr>\n<tr>\n<td colspan=\"4\"><i>Smokers</i></td>\n</tr>\n<tr>\n<td><i>\u03bd<sub>s</sub></i></td>\n<td><i>\u03bd<sub>ns</sub></i></td>\n<td><i>0.98x\u03bd<sub>ns</sub></i></td>\n<td>Normal cell initiation rate</td>\n</tr>\n<tr>\n<td><i>\u03b1<sub>1</sub></i></td>\n<td>0.6</td>\n<td>0.5</td>\n<td/>\n</tr>\n<tr>\n<td><i>\u03b1<sub>2</sub></i></td>\n<td>0.22</td>\n<td>0.32</td>\n<td/>\n</tr>\n<tr>\n<td><i>\u03b1<sub>s</sub></i></td>\n<td colspan=\"2\"><i>\u03b1<sub>ns</sub>\u00d7(I+\u03b1<sub>1</sub></i> \u00d7 <i>[q(t)]<sup>\u03b12</sup>)</i></td>\n<td>Power law relationships between <i>\u03b3, \u03b1</i> and</td>\n</tr>\n<tr>\n<td><i>\u03b3<sub>s</sub></i></td>\n<td colspan=\"2\"><i>\u03b3<sub>ns</sub>\u00d7(I+\u03b1<sub>1</sub></i> \u00d7 <i>[q(t)]<sup>\u03b12</sup>)</i></td>\n<td>smoking intensity q(t) at age t</td>\n</tr>\n<tr>\n<td><i>\u00b5<sub>s</sub></i></td>\n<td colspan=\"2\"><i>\u00b5<sub>ns</sub></i></td>\n<td>Malignant conversion rate of initiated cells</td>\n</tr>\n<tr>\n<td><i>\u03b2<sub>s</sub></i></td>\n<td colspan=\"2\"><i>\u03b1<sub>s</sub> \u2212 \u00b5<sub>s</sub> \u2212 \u03b3<sub>s</sub></i></td>\n<td>Apoptosis rate of initiated cells</td>\n</tr>\n<tr>\n<td colspan=\"4\">Tumor growth<a href=\"#tfn2-2\"><sup>b</sup></a></td>\n</tr>\n<tr>\n<td>d<sub>0</sub></td>\n<td colspan=\"2\">0.01mm</td>\n<td>Minimum tumor diameter (one tumor cell)</td>\n</tr>\n<tr>\n<td>d<sub><i>max</i></sub></td>\n<td colspan=\"2\">130mm</td>\n<td>Maximum tumor diameter</td>\n</tr>\n<tr>\n<td>m</td>\n<td colspan=\"2\">3.4e-4</td>\n<td>Scale parameter of the Gompertz distribution</td>\n</tr>\n<tr>\n<td/>\n<td colspan=\"2\">[3.2e-4, 3.6e-4]</td>\n<td/>\n</tr>\n<tr>\n<td>s</td>\n<td colspan=\"2\">31\u00d7 m</td>\n<td>Shape parameter of the Gompertz distribution</td>\n</tr>\n<tr>\n<td colspan=\"4\">Disease progression</td>\n</tr>\n<tr>\n<td><i>\u00b5<sub>reg</sub> = sd<sub>reg</sub></i></td>\n<td colspan=\"2\">2.16 [1.37, 3.06]</td>\n<td>Mean and sd of the logNormal distribution for</td>\n</tr>\n<tr>\n<td>\u00b5<i><sub>dist</sub> = sd<sub>dist</sub></i></td>\n<td colspan=\"2\">5.62 [3.59, 8.02]</td>\n<td>the tumor volume at the beginning of the regional,</td>\n</tr>\n<tr>\n<td>\u00b5<i><sub>diagn</sub> = sd<sub>diagn</sub></i></td>\n<td colspan=\"2\">2.65 [1.52, 3.94]</td>\n<td>distant stage, and diagnosis</td>\n</tr>\n</tbody>\n</table>"
+                                            ],
+                                            "title": "Values and calculations for the fixed and calibrated parameters of the MILC model.",
+                                            "type": "table"
+                                        }
+                                    ],
+                                    "type": "figure"
+                                },
+                                {
+                                    "text": "In this paper we also suggest another potential use of a well calibrated MSM. Given certain baseline characteristics, the model can be run multiple times on the same individual so as to produce a set of possible patient-specific trajectories. Summarizing information from these simulated trajectories can result in useful estimates about disease-related outcomes, and inform clinical decisions for the particular person. In another paper in preparation (<a href=\"#bib6\">Chrysanthopoulou, 2018</a>) we emphasize the need for MSMs that can accurately predict individual-level outcomes, and help with improving individualized-patient care. In that paper we also discuss statistical methods for assessing the predictive accuracy of continuous time, dynamic MSMs, using MILC as a tool for the implementation and comprehensive comparison of those techniques.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "We exemplify the functionality of our model by presenting results from two applications. The first example is related to model validation, namely MILC is used to predict lung cancer incidence rates for the US population, as described in <a href=\"#s2-2-3\">Section 2.2.3</a>. Comparison of these predictions with observed lung cancer incidence rates from the SEER database constitutes an external validation of the MILC model in the sense that the microdata for this procedure were different from the sample used for calibrating the model.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "Furthermore we used MILC to estimate individual risk of developing lung cancer under different scenarios. To accomplish this we ran the model multiple times (n = 1000) on the same individual (fixed baseline characteristics), and simulated lifetime trajectories. We considered scenarios for smokers (males and females), who were 50 years old at baseline, and started smoking around the age of 20 years. We varied smoking intensity to an average of 10,30, or 50 cigarettes per day, in order to assess the effect of this important risk factor on the predicted lung cancer incidence. We summarized predicted event (lung cancer diagnosis) or censoring (if the person is not diagnosed with lung cancer before death) times with Kaplan-Meier curves.",
+                                    "type": "paragraph"
+                                }
+                            ],
+                            "id": "s2-2-4",
+                            "title": "2.2.4 Functionality",
+                            "type": "section"
+                        },
+                        {
+                            "content": [
+                                {
+                                    "text": "One of the main objectives of this research was to create an MSM for lung cancer fully developed in open source software, thus enhancing the transparency of the model. To this end <a href=\"#bib4\">Chrysanthopoulou (2014)</a> built MILC, a new R-package that implements the MILC model in R, and is available on the CRAN repository. This package can be used to simulate individual trajectories, and predict lung-cancer related outcomes following the structure and assumptions of the MILC model.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "<a href=\"#tableA1\">Table A.1</a> outlines the algorithm for simulating one individual trajectory (one microsimulation). The computational cost for running in parallel 1,000,000 independent microsimulations (individual trajectories) was approximately 7.5 CPU-hours; with simulations distributed across 16 nodes (8-core Intel Xeon E5540 at 2.53 GHz with 24GB of memory) the total required time is 3.5 minutes.",
+                                    "type": "paragraph"
+                                }
+                            ],
+                            "id": "s2-2-5",
+                            "title": "2.2.5 Implementation in R",
+                            "type": "section"
+                        }
+                    ],
+                    "id": "s2-2",
+                    "title": "2.2 Model specifics",
+                    "type": "section"
+                }
+            ],
+            "id": "s2",
+            "title": "2. Methods",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "<a href=\"#fig3\">Figure 3</a> shows the results from the validation of the MILC model. The box plots summarize the distributions of the predicted lung cancer incidence rates by age-group for male and female current smokers. All observed rates fall within the resulting range of model-predicted values, thus suggesting an overall good performance of the Bayesian calibrated MILC model with respect to predicting lung cancer incidence trends in the particular US sub-population.",
+                    "type": "paragraph"
+                },
+                {
+                    "assets": [
+                        {
+                            "id": "fig3",
+                            "image": {
+                                "alt": "",
+                                "uri": "%iiif_uri%/00164%2Fijm-00164-fig3.tif",
+                                "size": {
+                                    "width": 667,
+                                    "height": 801
+                                },
+                                "source": {
+                                    "mediaType": "image/jpeg",
+                                    "uri": "%iiif_uri%/00164%2Fijm-00164-fig3.tif/full/full/0/default.jpg",
+                                    "filename": "ijm-00164-fig3.jpg"
+                                }
+                            },
+                            "label": "Figure 3",
+                            "title": "Predicted versus observed lung cancer incidence rates by age-group and sex.",
+                            "type": "image"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "text": "We also used the calibrated MILC model to simulate lifetime trajectories for individuals given certain baseline characteristics (<a href=\"#s2-2-4\">Section 2.2.4</a>). We summarized predictions about the development of lung cancer with Kaplan-Meier curves. <a href=\"#fig4\">Figure 4</a>, <a href=\"#fig5\">Figure 5</a>, and <a href=\"#fig6\">Figure 6</a> compare predicted survival curves by sex and smoking intensity. According to model\u2019s predictions, males have a greater risk of lung cancer than females. In addition, as expected, the risk of developing lung cancer increases with the average number of cigarettes smoked per day. Both these findings are consistent with current lung cancer research (<a href=\"#bib8\">Doll, 1998</a>; <a href=\"#bib44\">American Cancer Society, 2017</a>; <a href=\"#bib45\">IARC, 1986</a>), thus indicating that the MILC model can provide plausible predictions.",
+                    "type": "paragraph"
+                },
+                {
+                    "assets": [
+                        {
+                            "id": "fig4",
+                            "image": {
+                                "alt": "",
+                                "uri": "%iiif_uri%/00164%2Fijm-00164-fig4.tif",
+                                "size": {
+                                    "width": 516,
+                                    "height": 455
+                                },
+                                "source": {
+                                    "mediaType": "image/jpeg",
+                                    "uri": "%iiif_uri%/00164%2Fijm-00164-fig4.tif/full/full/0/default.jpg",
+                                    "filename": "ijm-00164-fig4.jpg"
+                                }
+                            },
+                            "label": "Figure 4",
+                            "title": "Predicted individual risk of lung cancer for people, 50 years old, smoking on average 10 cigarettes per day, by sex.",
+                            "type": "image"
+                        }
+                    ],
+                    "type": "figure"
+                }
+            ],
+            "id": "s3",
+            "title": "3. Results",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "This paper introduces the MILC microsimulation model that describes the natural history of lung cancer, and predicts lung cancer related outcomes. The model simulates individual trajectories given age, sex and smoking, including smoking status (never, former, or current smoker), intensity (average number of cigarettes smoked per day), as well as start and quit smoking ages when relevant. Each simulated trajectory includes information regarding the age of transition to any of four distinct states in the course of lung cancer (that is, local, regional, distant, death), the age, tumor size and stage at diagnosis, and the cause of death (lung cancer, or other) where relevant. The MILC package (<a href=\"#bib4\">Chrysanthopoulou, 2014</a>) implements the MILC model in R, and is available on the CRAN repository.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "We outlined the model structure and parameterization, and described the simulation algorithm for predicting individual trajectories. We calibrated and validated the model against lung-cancer incidence rates observed in the US population. We further used the calibrated MILC model to predict lung cancer incidence risk for different subpopulations of smokers classified by sex and smoking intensity. The results showed an overall good fit of the MILC model to observed data, as well as plausible predictions with respect to the effects of sex and smoking on lung cancer incidence.",
+                    "type": "paragraph"
+                },
+                {
+                    "assets": [
+                        {
+                            "id": "fig5",
+                            "image": {
+                                "alt": "",
+                                "uri": "%iiif_uri%/00164%2Fijm-00164-fig5.tif",
+                                "size": {
+                                    "width": 515,
+                                    "height": 453
+                                },
+                                "source": {
+                                    "mediaType": "image/jpeg",
+                                    "uri": "%iiif_uri%/00164%2Fijm-00164-fig5.tif/full/full/0/default.jpg",
+                                    "filename": "ijm-00164-fig5.jpg"
+                                }
+                            },
+                            "label": "Figure 5",
+                            "title": "Predicted individual risk of lung cancer for people, 50 years old, smoking on average 30 cigarettes per day, by sex.",
+                            "type": "image"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "assets": [
+                        {
+                            "id": "fig6",
+                            "image": {
+                                "alt": "",
+                                "uri": "%iiif_uri%/00164%2Fijm-00164-fig6.tif",
+                                "size": {
+                                    "width": 517,
+                                    "height": 447
+                                },
+                                "source": {
+                                    "mediaType": "image/jpeg",
+                                    "uri": "%iiif_uri%/00164%2Fijm-00164-fig6.tif/full/full/0/default.jpg",
+                                    "filename": "ijm-00164-fig6.jpg"
+                                }
+                            },
+                            "label": "Figure 6",
+                            "title": "Predicted individual risk of lung cancer for people, 50 years old, smoking on average 50 cigarettes per day, by sex.",
+                            "type": "image"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "text": "The CISNET lung cancer group has developed some of the most comprehensive, and broadly used microsimulation models, among the several predictive models for lung cancer in the literature. This group has currently six predictive models for lung cancer, among which four are microsimulation models. The SimSmoke model (Levy, <a href=\"#bib28\">Bauer, &amp; Lee, 2006</a>; <a href=\"#bib29\">Levy &amp; Friend, 2002</a>) and the Yale University model (<a href=\"#bib20\">Holford, Zhang, &amp; Mckay, 1994</a>; <a href=\"#bib21\">Holford, Zhang, Zheng, &amp; McKay, 1996</a>) are not microsimulation models, as they adopt the cohort-simulation representation of the underlying Markov process, rather than a Monte Carlo simulation.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Among the other four CISNET MSMs for lung cancer, the RICE-MDA model by <a href=\"#bib10\">Foy, Deng, Spitz, Gorlova, and Kimmel (2012)</a> predicts lung-cancer mortality without any detail on disease progression, such as tumor growth, age, tumor type and stage at diagnosis, etc. The FHCRC model by <a href=\"#bib17\">Hazelton, Jeon, Meza, and Moolgavkar (2012)</a> only comprises a natural history component, as the module we suggest in this article. However, unlike the MILC, the FHCRC model focuses on the effect of smoking on lung-cancer mortality without providing an explicit definition of the distinct disease states, or information on tumor diagnosis. The MISCAN-lung model by <a href=\"#bib15\">Habbema, van Oortmarssen, Lubbe, and van der Maas (1985)</a>, on the other hand, does not monitor tumor size in the simulation procedure. Finally, the key difference between the MILC and the Lung Cancer Policy Model (LCPM) by <a href=\"#bib32\">McMa-hon <i>et al</i>. (2012)</a> lies in the way they simulate the initiation of the local stage. The LCPM employs a logistic regression approach to estimate the risk for the onset of the first malignant cell, rather than the TSCE approach followed in the MILC model.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "To our knowledge, no other microsimulation model for lung cancer is readily available to potential end users. The motivation for creating the MILC model, and a major strength, is that it has been fully developed in R. The MILC package makes the source code publicly available thus enhancing the transparency of the model. This is the first MSM for lung cancer built in open source statistical software.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The implementation of MILC in an open source statistical software also facilitates the research on the statistical properties of continuous time MSMs by providing a handy tool for developing, testing and comparing statistical methods applied to this type of models. Two papers in preparation, study statistical methods for calibration, and evaluation of the predictive accuracy of dynamic, continuous time MSMs. These working papers use the MILC model as a tool for assessing the performance of the investigated techniques.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "In addition, potential end users, especially people in health services, policy, and practice, could use MILC in its current version, or easily modified (calibration) to represent different (sub-)populations depending on the available data and research questions. It can also serve as a good starting point for building a more comprehensive MSM for lung cancer incorporating further assumptions, adding extra components (involving interventions), and predicting more detailed information about the development and progression of lung tumors in a person\u2019s lifetime.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Despite its usefulness, the MILC model has some limitations. In its current version it only models the natural history of lung cancer in the absence of any screening or treatment components. In addition, this is a streamlined MSM that, when simulating individual lung-cancer trajectories, it only takes into account age, sex, smoking. It is well known that there are several other potential risk factors for lung cancer such as exposure to environmental hazards, second-hand smoking, family history, etc. These are important risk factors that, in certain cases, should be considered for a more accurate and realistic representation of the natural history of lung cancer.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "We plan to expand the MILC model so as to describe the natural history of lung cancer in more detail, including screening and treatment components, and incorporating further information from lung cancer research (more complex smoking patterns, additional risk factors, etc.). We envisage to develop MILC into a comprehensive microsimulation model that can constitute an integral part of decision models aimed to inform health policy and clinical practice related to lung cancer.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s4",
+            "title": "4. Discussion",
+            "type": "section"
+        }
+    ],
+    "references": [
+        {
+            "articleTitle": "Multistate statistical modeling: A tool to build a lung cancer microsimulation model that includes parameter uncertainty and patient heterogeneity",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Bongers, ML",
+                        "preferred": "ML Bongers"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "de Ruysscher, D",
+                        "preferred": "D de Ruysscher"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Oberije, C",
+                        "preferred": "C Oberije"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Lambin, P",
+                        "preferred": "P Lambin"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Uyl-de Groot, CA",
+                        "preferred": "CA Uyl-de Groot"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Coupe, VM",
+                        "preferred": "VM Coupe"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2016",
+            "id": "bib1",
+            "journal": "Med Decis Making",
+            "pages": {
+                "first": "86",
+                "last": "100",
+                "range": "86\u2013100"
+            },
+            "type": "journal",
+            "volume": "36"
+        },
+        {
+            "articleTitle": "Multi-state statistical modelling to quantify an individual-based micro simulation model for radiotherapy treatment in lung cancer patients",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Bongers, ML",
+                        "preferred": "ML Bongers"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "De Ruysscher, D",
+                        "preferred": "D De Ruysscher"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Oberije, C",
+                        "preferred": "C Oberije"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Lambin, P",
+                        "preferred": "P Lambin"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Uyl-de Groot, CA",
+                        "preferred": "CA Uyl-de Groot"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Coupe, VMH",
+                        "preferred": "VMH Coupe"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2013",
+            "id": "bib2",
+            "journal": "Value in Health",
+            "pages": {
+                "first": "A325",
+                "last": "A325",
+                "range": "A325\u2013A325"
+            },
+            "type": "journal",
+            "volume": "16"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Chrysanthopoulou, SA",
+                        "preferred": "SA Chrysanthopoulou"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2013",
+            "details": "Statistical methods in micro-simulation modeling: Calibration and predictive accuracy, Doctoral dissertation, Brown University, https://repository.library.brown.edu/studio/item/bdr:386153/, (Biostatistics Dissertations, Brown Digital Repository",
+            "id": "bib3",
+            "title": "Statistical methods in micro-simulation modeling: Calibration and predictive accuracy",
+            "type": "unknown",
+            "uri": "https://repository.library.brown.edu/studio/item/bdr:386153/"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Chrysanthopoulou, SA",
+                        "preferred": "SA Chrysanthopoulou"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2014",
+            "details": "MILC: Microsimulation lung cancer (MILC) model [Computer software manual], Retrieved from , http://CRAN.R-project.org/package=MILC, (R package version 1.0)",
+            "id": "bib4",
+            "title": "MILC: Microsimulation lung cancer (MILC) model [Computer software manual]",
+            "type": "unknown",
+            "uri": "http://CRAN.R-project.org/package=MILC"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Chrysanthopoulou, SA",
+                        "preferred": "SA Chrysanthopoulou"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2017",
+            "details": "Comparative Analysis of Calibration Methods for Microsimulation Models, Manuscript in preparation",
+            "id": "bib5",
+            "title": "Comparative Analysis of Calibration Methods for Microsimulation Models",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Chrysanthopoulou, SA",
+                        "preferred": "SA Chrysanthopoulou"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2018",
+            "details": "Assessing the Predictive Accuracy of Microsimulation Models, Manuscript in preparation",
+            "id": "bib6",
+            "title": "Assessing the Predictive Accuracy of Microsimulation Models",
+            "type": "unknown"
+        },
+        {
+            "articleTitle": "Turning gray: The natural history of lung cancer over time",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Detterbeck, FC",
+                        "preferred": "FC Detterbeck"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Gibson, CJ",
+                        "preferred": "CJ Gibson"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2008",
+            "id": "bib7",
+            "journal": "Journal of Thoracic Oncology",
+            "pages": {
+                "first": "781",
+                "last": "792",
+                "range": "781\u2013792"
+            },
+            "type": "journal",
+            "volume": "3"
+        },
+        {
+            "articleTitle": "Uncovering the effects of smoking: historical perspective",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Doll, R",
+                        "preferred": "R Doll"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1998",
+            "id": "bib8",
+            "journal": "Statistical Methods in Medical Research",
+            "pages": {
+                "first": "87",
+                "last": "117",
+                "range": "87\u2013117"
+            },
+            "type": "journal",
+            "volume": "7"
+        },
+        {
+            "articleTitle": "Performance of the cancer risk management model lung cancer screening module [Journal Article]",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Flanagan, WM",
+                        "preferred": "WM Flanagan"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Evans, WK",
+                        "preferred": "WK Evans"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Fitzgerald, NR",
+                        "preferred": "NR Fitzgerald"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Goffin, JR",
+                        "preferred": "JR Goffin"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Miller, AB",
+                        "preferred": "AB Miller"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Wolfson, MC",
+                        "preferred": "MC Wolfson"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2015",
+            "id": "bib9",
+            "journal": "Health Rep",
+            "pages": {
+                "first": "11",
+                "last": "8",
+                "range": "11\u20138"
+            },
+            "type": "journal",
+            "volume": "26"
+        },
+        {
+            "articleTitle": "Rice-md anderson lung cancer model",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Foy, M",
+                        "preferred": "M Foy"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Deng, L",
+                        "preferred": "L Deng"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Spitz, M",
+                        "preferred": "M Spitz"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Gorlova, O",
+                        "preferred": "O Gorlova"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Kimmel, M",
+                        "preferred": "M Kimmel"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2012",
+            "id": "bib10",
+            "journal": "Risk Analysis",
+            "pages": {
+                "first": "S142",
+                "last": "S150",
+                "range": "S142\u2013S150"
+            },
+            "type": "journal",
+            "volume": "32"
+        },
+        {
+            "articleTitle": "Bridging population and tissue scale tumor dynamics: a new paradigm for understanding differences in tumor growth and metastatic disease [Journal Article]",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Gallaher, J",
+                        "preferred": "J Gallaher"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Babu, A",
+                        "preferred": "A Babu"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Plevritis, S",
+                        "preferred": "S Plevritis"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Anderson, AR",
+                        "preferred": "AR Anderson"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2014",
+            "id": "bib11",
+            "journal": "Cancer Res",
+            "pages": {
+                "first": "426",
+                "last": "35",
+                "range": "426\u201335"
+            },
+            "type": "journal",
+            "volume": "74"
+        },
+        {
+            "articleTitle": "Maximum-likelihood estimation of the parameters of the gompertz survival function",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Garg, ML",
+                        "preferred": "ML Garg"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Rao, B.R",
+                        "preferred": "B.R Rao"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Redmond, CK",
+                        "preferred": "CK Redmond"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1970",
+            "id": "bib12",
+            "journal": "Journal of the Royal Statistical Society. Series C (Applied Statistics)",
+            "pages": {
+                "first": "152",
+                "last": "159",
+                "range": "152\u2013159"
+            },
+            "type": "journal",
+            "volume": "19"
+        },
+        {
+            "articleTitle": "The natural history of lung cancer: a review based on rates of tumour growth",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Geddes, DM",
+                        "preferred": "DM Geddes"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1979",
+            "id": "bib13",
+            "journal": "Br J Dis Chest",
+            "pages": {
+                "first": "1",
+                "last": "17",
+                "range": "1\u201317"
+            },
+            "type": "journal",
+            "volume": "73"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Goldwasser, DL",
+                        "preferred": "DL Goldwasser"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "Parameter estimation in mathematical models of lung cancer",
+            "date": "2009",
+            "id": "bib14",
+            "publisher": {
+                "name": [
+                    "RICE University"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "articleTitle": "The miscan simulation program for the evaluation of screening for disease",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Habbema, JDF",
+                        "preferred": "JDF Habbema"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "van Oortmarssen, GJ",
+                        "preferred": "GJ van Oortmarssen"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Lubbe, JT",
+                        "preferred": "JT Lubbe"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "van der Maas, PJ",
+                        "preferred": "PJ van der Maas"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1985",
+            "id": "bib15",
+            "journal": "Computer Methods and Programs in Biomedicine",
+            "pages": {
+                "first": "79",
+                "last": "93",
+                "range": "79\u201393"
+            },
+            "type": "journal",
+            "volume": "20"
+        },
+        {
+            "articleTitle": "Multistage carcinogenesis and lung cancer mortality in three cohorts",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Hazelton, WD",
+                        "preferred": "WD Hazelton"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Clements, MS",
+                        "preferred": "MS Clements"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Moolgavkar, SH",
+                        "preferred": "SH Moolgavkar"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2005",
+            "id": "bib16",
+            "journal": "Cancer Epidemiology Biomarkers & Prevention",
+            "pages": {
+                "first": "1171",
+                "last": "1181",
+                "range": "1171\u20131181"
+            },
+            "type": "journal",
+            "volume": "14"
+        },
+        {
+            "articleTitle": "The FHCRC lung cancer model",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Hazelton, WD",
+                        "preferred": "WD Hazelton"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Jeon, J",
+                        "preferred": "J Jeon"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Meza, R",
+                        "preferred": "R Meza"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Moolgavkar, SH",
+                        "preferred": "SH Moolgavkar"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2012",
+            "id": "bib17",
+            "journal": "Risk Analysis",
+            "pages": {
+                "first": "32",
+                "last": "S116",
+                "range": "32\u2013S116"
+            },
+            "type": "journal"
+        },
+        {
+            "articleTitle": "Analysis of a historical cohort of chinese tin miners with arsenic, radon, cigarette smoke, and pipe smoke exposures using the biologically based two-stage clonal expansion model",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Hazelton, WD",
+                        "preferred": "WD Hazelton"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Luebeck, EG",
+                        "preferred": "EG Luebeck"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Heidenreich, WE",
+                        "preferred": "WE Heidenreich"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Moolgavkar, SH",
+                        "preferred": "SH Moolgavkar"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2001",
+            "id": "bib18",
+            "journal": "Radiation Research",
+            "pages": {
+                "first": "78",
+                "last": "94",
+                "range": "78\u201394"
+            },
+            "type": "journal",
+            "volume": "156"
+        },
+        {
+            "articleTitle": "Some properties of the hazard function of the two-mutation clonal expansion model",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Heidenreich, WF",
+                        "preferred": "WF Heidenreich"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Luebeck, EG",
+                        "preferred": "EG Luebeck"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Moolgavkar, SH",
+                        "preferred": "SH Moolgavkar"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1997",
+            "id": "bib19",
+            "journal": "Risk Analysis",
+            "pages": {
+                "first": "391",
+                "last": "399",
+                "range": "391\u2013399"
+            },
+            "type": "journal",
+            "volume": "17"
+        },
+        {
+            "articleTitle": "Estimating age, period and cohort effects using the multistage model for cancer",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Holford, TR",
+                        "preferred": "TR Holford"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Zhang, ZX",
+                        "preferred": "ZX Zhang"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Mckay, LA",
+                        "preferred": "LA Mckay"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1994",
+            "id": "bib20",
+            "journal": "Statistics in Medicine",
+            "pages": {
+                "first": "23",
+                "last": "41",
+                "range": "23\u201341"
+            },
+            "type": "journal",
+            "volume": "13"
+        },
+        {
+            "articleTitle": "A model for the effect of cigarette smoking on lung cancer incidence in connecticut",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Holford, TR",
+                        "preferred": "TR Holford"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Zhang, ZX",
+                        "preferred": "ZX Zhang"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Zheng, TZ",
+                        "preferred": "TZ Zheng"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "McKay, LA",
+                        "preferred": "LA McKay"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1996",
+            "id": "bib21",
+            "journal": "Statistics in Medicine",
+            "pages": {
+                "first": "565",
+                "last": "580",
+                "range": "565\u2013580"
+            },
+            "type": "journal",
+            "volume": "15"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Klein, JP",
+                        "preferred": "JP Klein"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Moeschberger, ML",
+                        "preferred": "ML Moeschberger"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2003",
+            "details": "Survival analysis: techniques for censored and truncated data",
+            "id": "bib22",
+            "title": "Survival analysis: techniques for censored and truncated data",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Kopec, JA",
+                        "preferred": "JA Kopec"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Edwards, K",
+                        "preferred": "K Edwards"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Manuel, DG",
+                        "preferred": "DG Manuel"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Rutter, CM",
+                        "preferred": "CM Rutter"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2012",
+            "details": "Epidemiology Research International, Article ID 584739",
+            "id": "bib23",
+            "title": "Advances in microsimulation modeling of population health determinants, diseases, and outcomes",
+            "type": "unknown"
+        },
+        {
+            "articleTitle": "Validation of population-based disease simulation models: a review of concepts and methods [Journal Article]",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Kopec, JA",
+                        "preferred": "JA Kopec"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Fines, P",
+                        "preferred": "P Fines"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Manuel, DG",
+                        "preferred": "DG Manuel"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Buckeridge, DL",
+                        "preferred": "DL Buckeridge"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Flanagan, WM",
+                        "preferred": "WM Flanagan"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Oderkirk, J",
+                        "preferred": "J Oderkirk"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Wolfson, MC",
+                        "preferred": "MC Wolfson"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2010",
+            "id": "bib24",
+            "journal": "BMC Public Health",
+            "pages": "10",
+            "type": "journal"
+        },
+        {
+            "articleTitle": "Breast-cancer - relationship between the size of the primary tumor and the probability of metastatic dissemination",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Koscielny, S",
+                        "preferred": "S Koscielny"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Tubiana, M",
+                        "preferred": "M Tubiana"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Le, MG",
+                        "preferred": "MG Le"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Valleron, AJ",
+                        "preferred": "AJ Valleron"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Mouriesse, H",
+                        "preferred": "H Mouriesse"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Contesso, G",
+                        "preferred": "G Contesso"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Sarrazin, D",
+                        "preferred": "D Sarrazin"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1984",
+            "id": "bib25",
+            "journal": "British Journal of Cancer",
+            "pages": {
+                "first": "709",
+                "last": "715",
+                "range": "709\u2013715"
+            },
+            "type": "journal",
+            "volume": "49"
+        },
+        {
+            "articleTitle": "A simulation model of the natural history of human breast cancer",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Koscielny, S",
+                        "preferred": "S Koscielny"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Tubiana, M",
+                        "preferred": "M Tubiana"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Valleron, AJ",
+                        "preferred": "AJ Valleron"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1985",
+            "id": "bib26",
+            "journal": "Br J Cancer",
+            "pages": {
+                "first": "515",
+                "last": "524",
+                "range": "515\u2013524"
+            },
+            "type": "journal",
+            "volume": "52"
+        },
+        {
+            "articleTitle": "Dynamics of tumor growth",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Laird, AK",
+                        "preferred": "AK Laird"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1964",
+            "id": "bib27",
+            "journal": "British Journal of Cancer",
+            "pages": {
+                "first": "490",
+                "last": "502",
+                "range": "490\u2013502"
+            },
+            "type": "journal",
+            "volume": "18"
+        },
+        {
+            "articleTitle": "Simulation modeling and tobacco control: creating more robust public health policies [Journal Article]",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Levy, DT",
+                        "preferred": "DT Levy"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Bauer, JE",
+                        "preferred": "JE Bauer"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Lee, HR",
+                        "preferred": "HR Lee"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2006",
+            "id": "bib28",
+            "journal": "Am J Public Health",
+            "pages": {
+                "first": "494",
+                "last": "8",
+                "range": "494\u20138"
+            },
+            "type": "journal",
+            "volume": "96"
+        },
+        {
+            "articleTitle": "A simulation model of policies directed at treating tobacco use and dependence",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Levy, DT",
+                        "preferred": "DT Levy"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Friend, K",
+                        "preferred": "K Friend"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2002",
+            "id": "bib29",
+            "journal": "Medical Decision Making",
+            "pages": {
+                "first": "6",
+                "last": "17",
+                "range": "6\u201317"
+            },
+            "type": "journal",
+            "volume": "22"
+        },
+        {
+            "articleTitle": "A survey of dynamic microsimulation models: uses, model structure and methodology [Journal Article]",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Li, J",
+                        "preferred": "J Li"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "O\u2019Donoghue, C",
+                        "preferred": "C O\u2019Donoghue"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2013",
+            "id": "bib30",
+            "journal": "International Journal of Microsimulation",
+            "pages": {
+                "first": "3",
+                "last": "55",
+                "range": "3\u201355"
+            },
+            "type": "journal",
+            "volume": "6"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "McMahon, PM",
+                        "preferred": "PM McMahon"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2005",
+            "details": "Policy assessment of medical imaging utilization: methods and applications, Unpublished doctoral dissertation, Harvard University",
+            "id": "bib31",
+            "title": "Policy assessment of medical imaging utilization: methods and applications",
+            "type": "unknown"
+        },
+        {
+            "articleTitle": "The mgh-hms lung cancer policy model: Tobacco control versus screening",
+            "authors": [
+                {
+                    "name": {
+                        "index": "McMahon, PM",
+                        "preferred": "PM McMahon"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Kong, CY",
+                        "preferred": "CY Kong"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Johnson, BE",
+                        "preferred": "BE Johnson"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Weinstein, MC",
+                        "preferred": "MC Weinstein"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Weeks, JC",
+                        "preferred": "JC Weeks"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Tramontano, AC",
+                        "preferred": "AC Tramontano"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Gazelle, GS",
+                        "preferred": "GS Gazelle"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2012",
+            "id": "bib32",
+            "journal": "Risk Analysis",
+            "pages": {
+                "first": "S117",
+                "last": "S124",
+                "range": "S117\u2013S124"
+            },
+            "type": "journal",
+            "volume": "32"
+        },
+        {
+            "articleTitle": "Comparative analysis of 5 lung cancer natural history and screening models that reproduce outcomes of the nlst and plco trials [Journal Article]",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Meza, R",
+                        "preferred": "R Meza"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "ten Haaf, K",
+                        "preferred": "K ten Haaf"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Kong, CY",
+                        "preferred": "CY Kong"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Erdogan, A",
+                        "preferred": "A Erdogan"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Black, WC",
+                        "preferred": "WC Black"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Tammemagi, MC",
+                        "preferred": "MC Tammemagi"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Plevritis, SK",
+                        "preferred": "SK Plevritis"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2014",
+            "id": "bib33",
+            "journal": "Cancer",
+            "pages": {
+                "first": "1713",
+                "last": "24",
+                "range": "1713\u201324"
+            },
+            "type": "journal",
+            "volume": "120"
+        },
+        {
+            "articleTitle": "Two-event model for carcinogenesis: Biological, mathematical, and statistical considerations",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Moolgavkar, SH",
+                        "preferred": "SH Moolgavkar"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Luebeck, G",
+                        "preferred": "G Luebeck"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1990",
+            "id": "bib34",
+            "journal": "Risk Analysis",
+            "pages": {
+                "first": "323",
+                "last": "341",
+                "range": "323\u2013341"
+            },
+            "type": "journal",
+            "volume": "10"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Oderkirk, J",
+                        "preferred": "J Oderkirk"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Sassi, F",
+                        "preferred": "F Sassi"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Cecchini, M",
+                        "preferred": "M Cecchini"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2012",
+            "details": "OECD",
+            "id": "bib35",
+            "title": "Toward a new comprehensive international health and health care policy decision support tool",
+            "type": "unknown"
+        },
+        {
+            "articleTitle": "A new type of socio-economic system",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Orcutt, GH",
+                        "preferred": "GH Orcutt"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1957",
+            "id": "bib36",
+            "journal": "The Review of Economics and Statistics",
+            "pages": {
+                "first": "116",
+                "last": "123",
+                "range": "116\u2013123"
+            },
+            "type": "journal",
+            "volume": "39"
+        },
+        {
+            "articleTitle": "A natural history model of stage progression applied to breast cancer",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Plevritis, SK",
+                        "preferred": "SK Plevritis"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Salzman, P",
+                        "preferred": "P Salzman"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Sigal, BM",
+                        "preferred": "BM Sigal"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Glynn, PW",
+                        "preferred": "PW Glynn"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2007",
+            "id": "bib37",
+            "journal": "Statistics in Medicine",
+            "pages": {
+                "first": "581",
+                "last": "595",
+                "range": "581\u2013595"
+            },
+            "type": "journal",
+            "volume": "26"
+        },
+        {
+            "articleTitle": "Bayesian calibration of microsimulation models",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Rutter, CM",
+                        "preferred": "CM Rutter"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Miglioretti, DL",
+                        "preferred": "DL Miglioretti"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Savarino, JE",
+                        "preferred": "JE Savarino"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2009",
+            "id": "bib38",
+            "journal": "J Am Stat Assoc",
+            "pages": {
+                "first": "1338",
+                "last": "1350",
+                "range": "1338\u20131350"
+            },
+            "type": "journal",
+            "volume": "104"
+        },
+        {
+            "articleTitle": "An evidence-based microsimulation model for colorectal cancer: Validation and application [Journal Article]",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Rutter, CM",
+                        "preferred": "CM Rutter"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Savarino, JE",
+                        "preferred": "JE Savarino"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2010",
+            "id": "bib39",
+            "journal": "Cancer Epidemiology Biomarkers & Prevention",
+            "pages": {
+                "first": "1992",
+                "last": "2002",
+                "range": "1992\u20132002"
+            },
+            "type": "journal",
+            "volume": "19"
+        },
+        {
+            "articleTitle": "Dynamic microsimulation models for health outcomes",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Rutter, CM",
+                        "preferred": "CM Rutter"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Zaslavsky, AM",
+                        "preferred": "AM Zaslavsky"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Feuer, EJ",
+                        "preferred": "EJ Feuer"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2011",
+            "id": "bib40",
+            "journal": "Medical Decision Making",
+            "pages": {
+                "first": "10",
+                "last": "18",
+                "range": "10\u201318"
+            },
+            "type": "journal",
+            "volume": "31"
+        },
+        {
+            "articleTitle": "Markov-models in medical decision-making - a practical guide",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Sonnenberg, FA",
+                        "preferred": "FA Sonnenberg"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Beck, JR",
+                        "preferred": "JR Beck"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1993",
+            "id": "bib41",
+            "journal": "Medical Decision Making",
+            "pages": {
+                "first": "322",
+                "last": "338",
+                "range": "322\u2013338"
+            },
+            "type": "journal",
+            "volume": "13"
+        },
+        {
+            "articleTitle": "Rates of growth of pulmonary metastases and host survival",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Spratt, JS",
+                        "preferred": "JS Spratt"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Spratt, TL",
+                        "preferred": "TL Spratt"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1964",
+            "id": "bib42",
+            "journal": "Annals of Surgery",
+            "pages": {
+                "first": "161",
+                "last": "171",
+                "range": "161\u2013171"
+            },
+            "type": "journal",
+            "volume": "159"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Steel, GG",
+                        "preferred": "GG Steel"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "Growth kinetics of tumours : cell population kinetics in relation to the growth and treatment of cancer",
+            "date": "1977",
+            "id": "bib43",
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "Oxford"
+                        ]
+                    },
+                    "formatted": [
+                        "Oxford"
+                    ]
+                },
+                "name": [
+                    "Clarendon Press"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "authors": [
+                {
+                    "name": "American Cancer Society",
+                    "type": "group"
+                }
+            ],
+            "date": "2017",
+            "details": "\u201cLung and Bronchus Cancer Statistics\u201d, [Web Page]. Retrieved from, https://cancerstatisticscenter.cancer.org/#/cancer-site/Lung\u00b0/o20and\u00b0/o20bronchus",
+            "id": "bib44",
+            "title": "[Web Page]. Retrieved from",
+            "type": "unknown",
+            "uri": "https://cancerstatisticscenter.cancer.org/#/cancer-site/Lung\u00b0/o20and\u00b0/o20bronchus"
+        },
+        {
+            "authors": [
+                {
+                    "name": "IARC",
+                    "type": "group"
+                }
+            ],
+            "date": "1986",
+            "details": "IARC Monographs on the Evaluation of Carcinogenic Risks to Humans, 38",
+            "id": "bib45",
+            "title": "International agency for research on cancer. Tobacco smoking",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": "National Cancer Institute",
+                    "type": "group"
+                }
+            ],
+            "date": "2017",
+            "details": "\u201cCancer Staging\u201d, [Web Page]. Retrieved from, https://www.cancer.gov/about-cancer/diagnosis-staging/staging",
+            "id": "bib46",
+            "title": "[Web Page]. Retrieved from",
+            "type": "unknown",
+            "uri": "https://www.cancer.gov/about-cancer/diagnosis-staging/staging"
+        },
+        {
+            "authors": [
+                {
+                    "name": "National Cancer Institute",
+                    "type": "group"
+                }
+            ],
+            "date": "2017",
+            "details": "\u201cHarms of cigarette smoking and health benefits of quitting\u201d, [Web Page]. Retrieved from, https://www.cancer.gov/about-cancer/causes-prevention/risk/tobacco/cessation-fact-sheet",
+            "id": "bib47",
+            "title": "[Web Page]. Retrieved from",
+            "type": "unknown",
+            "uri": "https://www.cancer.gov/about-cancer/causes-prevention/risk/tobacco/cessation-fact-sheet"
+        },
+        {
+            "articleTitle": "Frequency of first metastatic events in breast cancer: Implications for sequencing of systemic and local-regional treatment",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Thames, HD",
+                        "preferred": "HD Thames"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Buchholz, TA",
+                        "preferred": "TA Buchholz"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Smith, CD",
+                        "preferred": "CD Smith"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1999",
+            "id": "bib48",
+            "journal": "Journal of Clinical Oncology",
+            "pages": {
+                "first": "2649",
+                "last": "2658",
+                "range": "2649\u20132658"
+            },
+            "type": "journal",
+            "volume": "17"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Wolfson, M",
+                        "preferred": "M Wolfson"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "Linking policies to well-being outcomes through micro-simulation",
+            "date": "2011",
+            "id": "bib49",
+            "publisher": {
+                "name": [
+                    "OECD Publishing"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "articleTitle": "The evaluation of health policies through dynamic microsimulation methods",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Zucchelli, E",
+                        "preferred": "E Zucchelli"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Jones, AM",
+                        "preferred": "AM Jones"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Rice, N",
+                        "preferred": "N Rice"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2012",
+            "id": "bib50",
+            "journal": "International Journal of Microsimulation",
+            "pages": {
+                "first": "2",
+                "last": "20",
+                "range": "2\u201320"
+            },
+            "type": "journal",
+            "volume": "5"
+        }
+    ],
+    "appendices": [
+        {
+            "content": [
+                {
+                    "content": [
+                        {
+                            "text": "<a href=\"#tableA1\">Table A.1</a> presents the steps followed for the simulation of an individual trajectory using the natural history module of the MILC model.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "footnotes": [
+                                        {
+                                            "id": "tfnA-1",
+                                            "label": "a",
+                                            "text": [
+                                                {
+                                                    "text": "Smoking history comprises: smoking status (never, former or current smoker), smoking intensity (average number of cigarettes smoked per day), as well as start and quit smoking ages where relevant.",
+                                                    "type": "paragraph"
+                                                }
+                                            ]
+                                        }
+                                    ],
+                                    "id": "tableA1",
+                                    "label": "Table A.1",
+                                    "tables": [
+                                        "<table>\n<thead>\n<tr>\n<th>Steps</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>1. \u201cFeed\u201d the model with the individual baseline characteristics X=(age, sex, smoking history <a href=\"#tfnA-1\"><sup>a</sup></a>).</td>\n</tr>\n<tr>\n<td>2. Simulate age of death (T<sub><i>d_other</i></sub>) from a cause other than lung cancer given age, sex, and smoking status.</td>\n</tr>\n<tr>\n<td>3. Simulate age at the onset of the first malignant cell (<i>T<sub>mal</sub></i>), given sex, and smoking history.</td>\n</tr>\n<tr>\n<td>4. Simulate ages at the beginning of regional (T<sub><i>reg</i></sub>), and distant stage (<i>T<sub>dist</sub></i>) given <i>T<sub>mal</sub></i>, and tumor growth rate.</td>\n</tr>\n<tr>\n<td>5. Simulate age (T<i><sub>diagn</sub></i>) at diagnosis given <i>T<sub>mal</sub></i>, and tumor diameter (d<sub><i>diagn</i></sub>).</td>\n</tr>\n<tr>\n<td>6. Find tumor stage at diagnosis comparing T<i><sub>diagn</sub></i> with T<sub><i>reg</i></sub> and T<i><sub>dist</sub>.</i></td>\n</tr>\n<tr>\n<td>7. Simulate age of death from lung cancer (T<i><sub>d_lung</sub></i>) given the simulated individual\u2019s characteristics at diagnosis (T<sub><i>diagn</i></sub>, and tumor stage).</td>\n</tr>\n<tr>\n<td>8. Predict one trajectory, that is, combine the simulated characteristics to \u201ctell\u201d a story for the specific individual with covariates X.</td>\n</tr>\n</tbody>\n</table>"
+                                    ],
+                                    "title": "Simulation algorithm to predict the lung cancer trajectory of an individual using the MILC model.",
+                                    "type": "table"
+                                }
+                            ],
+                            "type": "figure"
+                        }
+                    ],
+                    "id": "s-a-1",
+                    "title": "A.1 Simulation algorithm",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "<a href=\"#figa1\">Figure A.1</a> presents four possible individual trajectories predicted by the MILC model. According to these trajectories, only Individual 1 and Individual 2 die from lung cancer, while only the first one is diagnosed before death. Individual 3 and Individual 4 die from some other cause, while at regional and local tumor stage respectively. Estimates of lung cancer related outcomes can be obtained by aggregating multiple simulated trajectories, either for the same individual or for a sample of people.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "figa1",
+                                    "image": {
+                                        "alt": "",
+                                        "uri": "%iiif_uri%/00164%2Fijm-00164-figa1.tif",
+                                        "size": {
+                                            "width": 538,
+                                            "height": 448
+                                        },
+                                        "source": {
+                                            "mediaType": "image/jpeg",
+                                            "uri": "%iiif_uri%/00164%2Fijm-00164-figa1.tif/full/full/0/default.jpg",
+                                            "filename": "ijm-00164-figa1.jpg"
+                                        }
+                                    },
+                                    "label": "Figure A.1",
+                                    "title": "Examples of individual trajectories generated by the MILC model.",
+                                    "type": "image"
+                                }
+                            ],
+                            "type": "figure"
+                        }
+                    ],
+                    "id": "s-a-2",
+                    "title": "A.2 Individual trajectories",
+                    "type": "section"
+                }
+            ],
+            "id": "app1",
+            "title": "Appendix"
+        }
+    ],
+    "acknowledgements": [
+        {
+            "text": "The author is deeply grateful to Dr. Carolyn M. Rutter and Dr. Constantine A. Gatsonis for the inspiration to specialize in micro-simulation modeling, and the very helpful comments on this manuscript; Dr. Samir S. Soneji for calculation of the CIF survival estimates based on real data; Dr Arlene Ash and Dr Kate Lapane for their useful comments that improved clarity. The reviewers\u2019 comments which have considerably improved the final version of this manuscript. The work presented in this paper constitutes part of the author\u2019s PhD research, conducted with support received from the American College of Radiology Imaging Network (ACRIN) (grant number: U01-CA-79778 from the National Cancer Institute).",
+            "type": "paragraph"
+        }
+    ],
+    "-meta": {
+        "patched": true
+    },
+    "stage": "published"
+}

@@ -1,0 +1,1409 @@
+{
+    "status": "vor",
+    "id": "00137",
+    "version": 1,
+    "type": "research-article",
+    "doi": "10.34196/ijm.00137",
+    "authorLine": "Kate A Timmins, Kimberley L Edwards",
+    "title": "Validation of spatial microsimulation models: A proposal to adopt the Bland-Altman method",
+    "published": "2016-08-31T00:00:00Z",
+    "versionDate": "2016-08-31T00:00:00Z",
+    "statusDate": "2016-08-31T00:00:00Z",
+    "volume": 9,
+    "issue": 2,
+    "elocationId": "n/a",
+    "pdf": "http://web:8082/00137/ijm-00137.pdf",
+    "subjects": [
+        {
+            "id": "methodology",
+            "name": "Methodology"
+        },
+        {
+            "id": "spatial-microsimulation",
+            "name": "Spatial microsimulation"
+        }
+    ],
+    "abstract": {
+        "content": [
+            {
+                "text": "Model validation is recognised as crucial to microsimulation modelling. However, modellers encounter difficulty in choosing the most meaningful methods to compare simulated and actual values. The aim of this paper is to introduce and demonstrate a method employed widely in healthcare calibration studies.",
+                "type": "paragraph"
+            },
+            {
+                "text": "The \u2018Bland-Altman plot\u2019 consists of a plot of the difference between two methods against the mean (x-y versus x+y/2). A case study is presented to illustrate the method in practice for spatial microsimulation validation. The study features a deterministic combinatorial model (SimObesity), which modelled a synthetic population for England at the ward level using survey (ELSA) and Census 2011 data. Bland-Altman plots were generated, plotting simulated and census ward-level totals for each category of all constraint (benchmark) variables. Other validation metrics, such as R<sup>2</sup>, SEI, TAE and RMSE, are also presented for comparison.",
+                "type": "paragraph"
+            },
+            {
+                "text": "The case study demonstrates how the Bland-Altman plots are interpreted. The simple visualisation of both individual- (ward-) level difference and total variation gives the method an advantage over existing tools used in model validation. There still remains the question of what constitutes a valid or well-fitting model. However, the Bland Altman method can usefully be added to the canon of calibration methods.",
+                "type": "paragraph"
+            }
+        ]
+    },
+    "copyright": {
+        "license": "CC-BY-4.0",
+        "holder": "Timmins & Edwards",
+        "statement": "This article is distributed under the terms of the <a href=\"http://creativecommons.org/licenses/by/4.0/\">Creative Commons Attribution License</a>, which permits unrestricted use and redistribution provided that the original author and source are credited."
+    },
+    "authors": [
+        {
+            "affiliations": [
+                {
+                    "address": {
+                        "components": {
+                            "country": "United Kingdom"
+                        },
+                        "formatted": [
+                            "United Kingdom"
+                        ]
+                    },
+                    "name": [
+                        "School of Sport and Exercise Science, University of Lincoln"
+                    ]
+                }
+            ],
+            "emailAddresses": [
+                "ktimmins@lincoln.ac.uk"
+            ],
+            "name": {
+                "index": "Timmins, Kate A",
+                "preferred": "Kate A Timmins"
+            },
+            "type": "person"
+        },
+        {
+            "affiliations": [
+                {
+                    "address": {
+                        "components": {
+                            "country": "United Kingdom"
+                        },
+                        "formatted": [
+                            "United Kingdom"
+                        ]
+                    },
+                    "name": [
+                        "Arthritis Research UK Centre for Sport Exercise and Osteoarthritis, University of Nottingham"
+                    ]
+                }
+            ],
+            "emailAddresses": [
+                "Kimberley.Edwards@nottingham.ac.uk"
+            ],
+            "name": {
+                "index": "Edwards, Kimberley L",
+                "preferred": "Kimberley L Edwards"
+            },
+            "type": "person"
+        }
+    ],
+    "keywords": [
+        "validation",
+        "Bland Altman",
+        "spatial microsimulation"
+    ],
+    "body": [
+        {
+            "content": [
+                {
+                    "text": "The goal of a spatial microsimulation model, in most cases, is to create a data set that mimics the \u2018real-world situation\u2019 as accurately as possible. To have confidence in the simulated data, it is necessary to validate the model, comparing the output to actual data (<a href=\"#bib8\">Edwards &amp; Tanton, 2012</a>). The validation process for microsimulation modelling has been broadly divided into two components: internal (in-sample, or endogenous) and external (out-of-sample, or exogenous) (<a href=\"#bib8\">Edwards &amp; Tanton, 2012</a>; <a href=\"#bib15\">O\u2019Donoghue, Morrissey, &amp; Lennon, 2014</a>). Internal validation refers to the process of comparing values from the simulated data set to the original data set. This includes model calibration, whereby the model fit is assessed by comparing the actual and simulated values for constraining (or benchmark) variables. In-sample validation also occurs where actual and simulated outcomes are compared at an aggregate level (<a href=\"#bib2\">Ballas &amp; Clarke, 2001</a>). External validation occurs where values are compared against data not used in the simulation.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Although the importance of validation is widely recognised (<a href=\"#bib7\">Edwards <i>et al</i>., 2011</a>), researchers still encounter difficulty in choosing the most meaningful methods to compare simulated and actual values. To date, quantitative methods for internal validation that have been proposed or used include:",
+                    "type": "paragraph"
+                },
+                {
+                    "items": [
+                        [
+                            {
+                                "text": "Coefficient of determination (R<sup>2</sup>)",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "Standard Error about Identity (SEI) ( <a href=\"#bib3\">Ballas <i>et al</i>, 2007</a>; <a href=\"#bib23\">Tanton &amp; Vidyattama, 2010</a>)",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "Total Absolute Error (TAE) (<a href=\"#bib27\">Voas &amp; Williamson, 2001</a>)",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "Standardized Absolute Error (SAE) (<a href=\"#bib8\">Edwards &amp; Tanton, 2012</a>)",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "Root Mean Squared Error (RMSE) (<a href=\"#bib11\">Legates &amp; McCabe Jr, 1999</a>)",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "Z-score or modified z-score (zm) (<a href=\"#bib27\">Voas &amp; Williamson, 2001</a>) or overall relative sum of z-square scores (<a href=\"#bib24\">Tanton, Williamson, &amp; Harding, 2014</a>)",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "E5 (<a href=\"#bib12\">Lovelace <i>et al</i>, 2015</a>)",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "Statistical techniques to derive confidence intervals (e.g. bootstrapping (<a href=\"#bib22\">Tanton, 2015</a>))",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "Statistical tests for difference (e.g. the t test (<a href=\"#bib6\">Edwards &amp; Clarke, 2009</a>), or a test based on the Z-statistic (<a href=\"#bib18\">Rahman <i>et al</i>, 2013</a>)).",
+                                "type": "paragraph"
+                            }
+                        ]
+                    ],
+                    "prefix": "bullet",
+                    "type": "list"
+                },
+                {
+                    "text": "A brief description of the methods appropriate for deterministic and other models is offered in <a href=\"#table1\">Table 1</a>. The remainder of this paper will not directly discuss techniques for deriving confidence intervals or tests for difference. Techniques to derive confidence intervals, although their potential to aid in model calibration has been well argued, are not appropriate for deterministic models, where iterative runs of the model would not result in different simulated populations. (See Voas and Williamson (<a href=\"#bib26\">Voas &amp; Williamson, 2000</a>) for a discussion of bootstrapping for combinatorial models). Nor will hypothesis-driven tests be included in the comparison which follows, since validation seeks to find agreement, rather than difference, and using tests for difference presume that no observed difference can be interpreted as no difference. A discussion about the hazards of \u2018accepting the null hypothesis\u2019 is elegantly described by Altman and Bland (<a href=\"#bib1\">Altman &amp; Bland, 1995</a>). The relative strengths and merits of these validation methods have been extensively explored by a number of reviews (<a href=\"#bib8\">Edwards &amp; Tanton, 2012</a>; <a href=\"#bib12\">Lovelace <i>et al</i>., 2015</a>; <a href=\"#bib18\">Rahman <i>et al</i>., 2013</a>; <a href=\"#bib19\">Scarborough <i>et al</i>, 2009</a>).",
+                    "type": "paragraph"
+                },
+                {
+                    "assets": [
+                        {
+                            "id": "table1",
+                            "label": "Table 1",
+                            "tables": [
+                                "<table>\n<thead>\n<tr>\n<th align=\"center\">Method</th>\n<th align=\"center\">Description</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>Correlation and R<sup>2</sup></td>\n<td>Plots simulated area count against actual area count. The R<sup>2</sup>, or coefficient of determination, is the square of the Pearson correlation coefficient and gives an indication of fit.</td>\n</tr>\n<tr>\n<td>Standard Error about Identity (SEI)</td>\n<td>In contrast to R2, SEI reflects the error around the line of identity (x=y; also known as the line of equality), rather than the line of best fit.</td>\n</tr>\n<tr>\n<td>Total Absolute Error (TAE)</td>\n<td>A sum of the error (the difference between simulated and actual population counts for each area) across a category.</td>\n</tr>\n<tr>\n<td>Standardized Absolute Error (SAE)</td>\n<td>TAE is divided by the total expected count. The standardization allows comparison between tables.</td>\n</tr>\n<tr>\n<td>Root Mean Squared Error (RMSE)</td>\n<td>The square root of the mean squared error. Gives an indication of error dispersion (if error follows a normal distribution).</td>\n</tr>\n<tr>\n<td>z-score, modified z-score, and zm<sup>2</sup></td>\n<td>The z-score is a cell level statistic that reflects the difference in the relative size of the category between actual and simulated populations. The modified score deals better with small cell counts, though an adjustment still needs to be made where area counts are 0. The zm2 is an overall measure, summing the squared z-scores.</td>\n</tr>\n<tr>\n<td>E5</td>\n<td>A count of the number of areas where error is greater than 5%.</td>\n</tr>\n</tbody>\n</table>"
+                            ],
+                            "title": "Methods to assess goodness-of-fit of spatial microsimulation models.",
+                            "type": "table"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "text": "One of the chief problems encountered in validation, particularly in model calibration, is that there is often a large quantity of values to compare, each with a varying degree of agreement between actual and simulated values, so that gaining an overall assessment of model fit is challenging. On the other hand, summary measures of model fit have the disadvantage of losing information (<a href=\"#bib12\">Lovelace <i>et al</i>., 2015</a>). One review concluded that a combination of approaches was necessary to overcome these shortcomings (<a href=\"#bib10\">Kopec <i>et al</i>., 2010</a>).",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "With such an arsenal of tools at modellers\u2019 disposal, it may be questioned whether yet another suggestion is necessary. However, the demonstration and discussion which follow will make clear the advantages of a method for validation borrowed from the healthcare literature, the Bland Altman plot. In particular, the Bland Altman plot, or BA plot, is unique in its ability to illustrate both cell (area) level and overall (matrix) error.",
+                    "type": "paragraph"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "Validation techniques are commonly employed in healthcare to calibrate clinical measurement instruments. Typically, agreement between the instrument and a \u2018gold standard\u2019 is illustrated using a method proposed by Martin Bland and Doug Altman (Bland &amp; Altman, 1986) in the 1980s. This method involves plotting the difference between two methods (x-y) against the mean (x+y/2). This enables the examination of both the absolute and relative difference, and the shape of the plot reveals how well two methods agree overall as well as across a range of values. A hypothetical example is shown in <a href=\"#fig1\">Figure 1</a>: a) showing perfect agreement and b) showing a more typical comparison.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "fig1",
+                                    "image": {
+                                        "alt": "",
+                                        "uri": "%iiif_uri%/00137%2Fijm-00137-fig1.tif",
+                                        "size": {
+                                            "width": 1755,
+                                            "height": 616
+                                        },
+                                        "source": {
+                                            "mediaType": "image/jpeg",
+                                            "uri": "%iiif_uri%/00137%2Fijm-00137-fig1.tif/full/full/0/default.jpg",
+                                            "filename": "ijm-00137-fig1.jpg"
+                                        }
+                                    },
+                                    "label": "Figure 1",
+                                    "title": "Hypothetical illustrations of Bland Altman plots.",
+                                    "type": "image"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "text": "The method also typically incorporates a calculation of \u2018limits of agreement\u2019 (not shown in <a href=\"#fig1\">Figure 1</a>): \u00b11.96*standard deviation of the differences, assuming the differences are normally distributed. These limits illustrate where 95% of differences lie. When generated with the plots the limits are typically denoted by horizontal lines",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The features of the BA method have been well described and explored in the medical literature and elsewhere. Indeed, the original 1986 paper is one of the most highly cited research papers ever (<a href=\"#bib25\">Van Noorden, Maher, &amp; Nuzzo, 2014</a>). Discussions about its use in repeatability studies, the use of confidence intervals, and interpretation are helpfully collated on Martin Bland\u2019s website (<a href=\"#bib4\">Bland, 2011</a>). The method is now well established in medical measurement comparison studies. A systematic review found the method was adopted in 85% of studies validating medical instruments (<a href=\"#bib30\">Zaki <i>et al</i>, 2012</a>). As a result, most standard statistical packages now include options to produce the plot with limits of agreement. In Stata, for example, BA plots can be generated using the \u2018baplot\u2019 command (<a href=\"#bib20\">Seed, 2014</a>). Alternatively, it is possible to generate Bland Altman plots with trend lines rather than limits of agreement (using the \u2018batplot\u2019 command (<a href=\"#bib13\">Mander, 2016</a>)) where the assumption of normally distributed error is not met (and straight limits of agreement could be misleading). In R, BA plots can be generated using the \u2018MethComp\u2019 package.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "This paper is not intended as an exhaustive exposition about the relative merits and disadvantages of all the methods described in <a href=\"#table1\">Table 1</a>. This has been clearly and comprehensively covered by previous publications (<a href=\"#bib8\">Edwards &amp; Tanton, 2012</a>; <a href=\"#bib12\">Lovelace <i>et al</i>., 2015</a>; <a href=\"#bib19\">Scarborough <i>et al</i>., 2009</a>). Nor is it an attempt to establish a framework for validation across all spatial microsimulation types, which lies beyond the scope of its aims. Rather, the purpose is to draw attention to another evaluation method, which satisfies many of the requirements identified in the literature, not least that it is \u2018fast, robust and easy to use\u2019 (<a href=\"#bib27\">Voas &amp; Williamson, 2001</a>). The case study which follows demonstrates the advantage of the BA plot in calibrating a spatial microsimulation model.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s1-1",
+                    "title": "1.1 The Bland Altman method",
+                    "type": "section"
+                }
+            ],
+            "id": "s1",
+            "title": "1. Background",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "content": [
+                        {
+                            "text": "This case study is merely intended as an illustration to demonstrate the use of validation methods and compare these to the BA method. The principles of validation apply to many other microsimulation models, particularly those based on combinatorial optimisation. A brief description of the model is given in order to aid interpretation of the outputs.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s2-1",
+                    "title": "2.1 Introduction",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "content": [
+                                {
+                                    "text": "Data on the prevalence of osteoarthritis (OA) \u2013 a debilitating condition of the joints \u2013 are not available at a small-area level in the UK. In order to explore geographic patterns, a spatial microsimulation model created a synthetic population data set for England.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "Spatial microsimulation was performed using a deterministic combinatorial optimisation method, encapsulated in an executable file, \u2018SimObesity\u2019. The model has been described previously (<a href=\"#bib6\">Edwards &amp; Clarke, 2009</a>). In brief, a two stage process, of deterministic reweighting followed by optimisation, is used. The model is deterministic and the order of constraint entry is inconsequential. The optimisation stage uses a \u2018floor\u2019 function to convert reweights to integers (\u2018whole persons\u2019 rather than fractions which may result from the reweighting).",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "In this example, the data sets used were the English Longitudinal Study of Ageing (ELSA) (<a href=\"#bib14\">Marmot <i>et al</i>, 2015</a>) (a nationally representative survey of older adults) and the 2011 Census data for England (<a href=\"#bib16\">Office for National Statistics, 2011</a>). For this study, data from Wave 6 of ELSA, collected in 201213, were used (n=10,601), along with ward-level tables from the Census (England only). Wards are key UK geographic boundaries (<a href=\"#bib17\">Office for National Statistics, 2013</a>), of which there are 7,689 in England with a mean population of ~5,500. The outcome for the model was OA. In the interests of simplicity for this case study, just two benchmarks were used: age (7 categories: 50\u201354yr, 55\u201359yr, 60\u201364yr, 65\u201369yr, 70\u201374yr, 75\u201379yr and \u226580yr) and sex (male/female). These two constraint variables were cross-tabulated.",
+                                    "type": "paragraph"
+                                }
+                            ],
+                            "id": "s2-2-1",
+                            "title": "2.2.1 The model",
+                            "type": "section"
+                        },
+                        {
+                            "content": [
+                                {
+                                    "text": "BA plots were generated using the \u2018batplot\u2019 command in Stata. Scatter plots are also presented. In order to facilitate comparison with other commonly used validation methods, the following were calculated: R<sup>2</sup>, TAE, SAE, RMSE, SEI and zm<sup>2</sup>.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "R<sup>2</sup> was derived using the Stata \u2018regress\u2019 command. TAE was calculated as the sum of error terms in a constraint category (<a href=\"#bib26\">Voas &amp; Williamson, 2000</a>). SAE was taken as the TAE divided by the expected total population count in that category (<a href=\"#bib8\">Edwards &amp; Tanton, 2012</a>). RMSE is the square root of the mean squared error. SEI was calculated using the formula cited by Tanton <i>et al</i> (<a href=\"#bib23\">Tanton &amp; Vidyattama, 2010</a>). Zm2 is the sum of squared modified z-scores (zm), as suggested by Williamson <i>et al</i> (<a href=\"#bib29\">Williamson, Birkin, &amp; Rees, 1998</a>). The modified score (zm) better takes into account low cell counts. It is still unable to deal with empty cells, however. In this paper, an adjustment was made in the case of empty cells, as described by Williamson <i>et al</i>, where the error was used instead of the zm.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "Analyses were performed using Microsoft Excel and Stata Release 13 (<a href=\"#bib21\">StataCorp, 2013</a>).",
+                                    "type": "paragraph"
+                                }
+                            ],
+                            "id": "s2-2-2",
+                            "title": "2.2.2 The validation",
+                            "type": "section"
+                        }
+                    ],
+                    "id": "s2-2",
+                    "title": "2.2 Methods",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "<a href=\"#fig2\">Figure 2</a> shows scatter plots and coefficients of determination for the ward population counts (\u2018Total\u2019) as well as for each constraint category. Observed census counts are plotted on the x axis and simulated counts on the y axis.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "fig2",
+                                    "image": {
+                                        "alt": "",
+                                        "uri": "%iiif_uri%/00137%2Fijm-00137-fig2.tif",
+                                        "size": {
+                                            "width": 1809,
+                                            "height": 1075
+                                        },
+                                        "source": {
+                                            "mediaType": "image/jpeg",
+                                            "uri": "%iiif_uri%/00137%2Fijm-00137-fig2.tif/full/full/0/default.jpg",
+                                            "filename": "ijm-00137-fig2.jpg"
+                                        }
+                                    },
+                                    "label": "Figure 2",
+                                    "title": "Scatter plots for age and sex categories, simulated counts versus census ward totals.",
+                                    "type": "image"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "text": "<a href=\"#fig3\">Figure 3</a> shows the BA plots for the same categories. In contrast to <a href=\"#fig2\">Figure 2</a>, where the scatterplots indicate near perfect correlation, <a href=\"#fig3\">Figure 3</a> demonstrates the variability of counts within individual wards, as well as the heterogeneity across ward sizes. For all categories plotted, the majority of data points fit along the horizontal 0 line, showing exact agreement for these wards. However, we can also identify which categories are less well fitted: population counts for the oldest age category, for example, Category 7, have been under- or over-simulated by as much as 15 individuals for several wards. (Readers should take note of the y axis scale on each plot.) In addition, we can tell that this discrepancy is prevalent only amongst the smaller wards, with the wider spread data points confined to the left-hand side of the graph. Conversely, the simulated population in the youngest age group is almost perfectly calibrated with census data, with a discrepancy of only 1 extra individual in each of 2 wards. Finally, it can be seen that the total simulated ward counts either match exactly with census numbers or under-represent by 1 individual (this under-estimation likely reflects the flooring function employed by SimObesity in the optimisation algorithm, which prevents partial people \u2018existing\u2019 in the simulated dataset).",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "fig3",
+                                    "image": {
+                                        "alt": "",
+                                        "uri": "%iiif_uri%/00137%2Fijm-00137-fig3.tif",
+                                        "size": {
+                                            "width": 1510,
+                                            "height": 1539
+                                        },
+                                        "source": {
+                                            "mediaType": "image/jpeg",
+                                            "uri": "%iiif_uri%/00137%2Fijm-00137-fig3.tif/full/full/0/default.jpg",
+                                            "filename": "ijm-00137-fig3.jpg"
+                                        }
+                                    },
+                                    "label": "Figure 3",
+                                    "title": "Bland Altman plots for age and sex categories, simulated versus census ward totals.",
+                                    "type": "image"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "text": "<a href=\"#table2\">Table 2</a> shows the corresponding metrics for each category: R<sup>2</sup>, SEI, TAE, SAE, RMSE, zm<sup>2</sup> and E5. It can be seen that R<sup>2</sup> does not reflect the differences in fit of the categories which is described by the other methods. All of the other measures agree that age group 1 is the best fitted category. This is also evident in the BA plot for age category 1, which shows just two areas differ and by just 1 individual in each. Beyond this, however, the metrics imply differing pictures about the model fit.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "table2",
+                                    "label": "Table 2",
+                                    "tables": [
+                                        "<table>\n<thead>\n<tr>\n<th align=\"center\">Category</th>\n<th align=\"center\">R<sup>2</sup></th>\n<th align=\"center\">SEI</th>\n<th align=\"center\">TAE</th>\n<th align=\"center\">SAE</th>\n<th align=\"center\">RMSE</th>\n<th align=\"center\">zm<sup>2</sup></th>\n<th align=\"center\">E5</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>Age group 1</td>\n<td align=\"center\">1</td>\n<td align=\"center\">1</td>\n<td>2</td>\n<td>0.0000006</td>\n<td>0.016128</td>\n<td>0.003318</td>\n<td align=\"center\">0</td>\n</tr>\n<tr>\n<td>Age group 2</td>\n<td align=\"center\">1</td>\n<td>0.999999</td>\n<td>\u2212522</td>\n<td>\u22120.0001742</td>\n<td>0.260556</td>\n<td>2.175607</td>\n<td align=\"center\">0</td>\n</tr>\n<tr>\n<td>Age group 3</td>\n<td align=\"center\">1</td>\n<td>0.999991</td>\n<td>\u221262</td>\n<td>\u22120.0000195</td>\n<td>0.688421</td>\n<td>13.26152</td>\n<td align=\"center\">6</td>\n</tr>\n<tr>\n<td>Age group 4</td>\n<td align=\"center\">1</td>\n<td>0.999988</td>\n<td>\u22121365</td>\n<td>\u22120.0005442</td>\n<td>0.626817</td>\n<td>12.09789</td>\n<td align=\"center\">6</td>\n</tr>\n<tr>\n<td>Age group 5</td>\n<td align=\"center\">1</td>\n<td>0.999999</td>\n<td>\u2212221</td>\n<td>\u22120.0001081</td>\n<td>0.169536</td>\n<td>2.005676</td>\n<td align=\"center\">1</td>\n</tr>\n<tr>\n<td>Age group 6</td>\n<td align=\"center\">1</td>\n<td>0.999988</td>\n<td>\u22121591</td>\n<td>\u22120.0009531</td>\n<td>0.455455</td>\n<td>14.59673</td>\n<td align=\"center\">3</td>\n</tr>\n<tr>\n<td>Age group 7</td>\n<td align=\"center\">1</td>\n<td>0.999989</td>\n<td>\u2212251</td>\n<td>\u22120.0001029</td>\n<td>0.689271</td>\n<td>22.73108</td>\n<td align=\"center\">22</td>\n</tr>\n<tr>\n<td>Male</td>\n<td align=\"center\">1</td>\n<td>0.999998</td>\n<td>\u22121703</td>\n<td>\u22120.0001987</td>\n<td>0.809217</td>\n<td>6.331774</td>\n<td align=\"center\">0</td>\n</tr>\n<tr>\n<td>Female</td>\n<td align=\"center\">1</td>\n<td>0.999999</td>\n<td>\u22122307</td>\n<td>\u22120.0002389</td>\n<td>0.85425</td>\n<td>7.099424</td>\n<td align=\"center\">4</td>\n</tr>\n<tr>\n<td>Total</td>\n<td align=\"center\">1</td>\n<td align=\"center\">1</td>\n<td>\u22124010</td>\n<td>\u22120.0002200</td>\n<td>0.722166</td>\n<td>2.450981</td>\n<td align=\"center\">0</td>\n</tr>\n</tbody>\n</table>"
+                                    ],
+                                    "title": "Validation metrics for the comparison of simulated and census counts in each constraint category.",
+                                    "type": "table"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "text": "SEI does not offer much more in the way of detail than the R<sup>2</sup> in this example, but with perhaps a slight indication that age categories 4 and 6 contain more error. The other metrics pinpoint either the sex categories (TAE, SAE, RMSE) or age category 7 (E5, zm<sup>2</sup>) as the worst fitted. This is in keeping with the BA plots for these categories. The BA plots, however, also clearly demonstrate the absolute error for each ward relative to ward size. The E5 informs us that the error is greater than a 5% difference in 22 wards.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s2-3",
+                    "title": "2.3 Results",
+                    "type": "section"
+                }
+            ],
+            "id": "s2",
+            "title": "2. Case study",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "The figures clearly demonstrate how informative the BA plot is in gauging agreement between two data sets. The case study illustrates the use and interpretation of these plots for calibrating or validating spatial microsimulation models. As far as the authors are aware, this is the first published instance of the use of the BA method in calibrating or validating a spatial microsimulation model. This case study serves merely as an illustration: in application, there would likely be many more plots to match the number of benchmark categories used as well as any variables used for external validation. The interpretation would remain the same for evaluation of external agreement. The benefits for directly comparing the fit of different models are also clear.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "<a href=\"#table3\">Table 3</a> summarises the strengths and weaknesses of the methods used. The following points summarise the key advantages of the BA plot.",
+                    "type": "paragraph"
+                },
+                {
+                    "assets": [
+                        {
+                            "id": "table3",
+                            "label": "Table 3",
+                            "tables": [
+                                "<table>\n<thead>\n<tr>\n<th align=\"center\"/>\n<th align=\"center\">R<sup>2</sup></th>\n<th align=\"center\">SEI</th>\n<th align=\"center\">TAE</th>\n<th align=\"center\">SAE</th>\n<th align=\"center\"><i>RMSE</i></th>\n<th align=\"center\">zm</th>\n<th align=\"center\">Zm<sup>2</sup></th>\n<th align=\"center\">E5</th>\n<th align=\"center\">BA plot</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>Indication of individual area error</td>\n<td align=\"center\">X</td>\n<td align=\"center\">X</td>\n<td align=\"center\">X</td>\n<td align=\"center\">X</td>\n<td align=\"center\">X</td>\n<td align=\"center\">\u221a</td>\n<td align=\"center\">X</td>\n<td align=\"center\">\u221a</td>\n<td align=\"center\">\u221a</td>\n</tr>\n<tr>\n<td>Indication of systematic (overall) bias</td>\n<td align=\"center\">X</td>\n<td align=\"center\">\u221a</td>\n<td align=\"center\">\u221a</td>\n<td align=\"center\">\u221a</td>\n<td align=\"center\">X</td>\n<td align=\"center\">X</td>\n<td align=\"center\">\u221a</td>\n<td align=\"center\">X</td>\n<td align=\"center\">\u221a</td>\n</tr>\n<tr>\n<td>Identify outliers</td>\n<td align=\"center\">\u221a</td>\n<td align=\"center\">X</td>\n<td align=\"center\">X</td>\n<td align=\"center\">X</td>\n<td align=\"center\">X</td>\n<td align=\"center\">\u221a</td>\n<td align=\"center\">X</td>\n<td align=\"center\">\u221a</td>\n<td align=\"center\">\u221a</td>\n</tr>\n<tr>\n<td>Indication of error distribution (by area size)</td>\n<td align=\"center\">X</td>\n<td align=\"center\">X</td>\n<td align=\"center\">X</td>\n<td align=\"center\">X</td>\n<td align=\"center\">\u221a</td>\n<td align=\"center\">X</td>\n<td align=\"center\">X</td>\n<td align=\"center\">X</td>\n<td align=\"center\">\u221a</td>\n</tr>\n<tr>\n<td>Handles empty cells (0 counts)</td>\n<td align=\"center\">\u221a</td>\n<td align=\"center\">\u221a</td>\n<td align=\"center\">\u221a</td>\n<td align=\"center\">\u221a</td>\n<td align=\"center\">\u221a</td>\n<td align=\"center\">X</td>\n<td align=\"center\">X</td>\n<td align=\"center\">X</td>\n<td align=\"center\">\u221a</td>\n</tr>\n<tr>\n<td>Comparable across models (of different sizes)</td>\n<td align=\"center\">\u221a</td>\n<td align=\"center\">\u221a</td>\n<td align=\"center\">X</td>\n<td align=\"center\">\u221a</td>\n<td align=\"center\">X</td>\n<td align=\"center\">\u221a</td>\n<td align=\"center\">X</td>\n<td align=\"center\">\u221a</td>\n<td align=\"center\">\u221a</td>\n</tr>\n<tr>\n<td>Single overall metric (for each category)</td>\n<td align=\"center\">\u221a</td>\n<td align=\"center\">\u221a</td>\n<td align=\"center\">\u221a</td>\n<td align=\"center\">\u221a</td>\n<td align=\"center\">\u221a</td>\n<td align=\"center\">X</td>\n<td align=\"center\">\u221a</td>\n<td align=\"center\">\u221a</td>\n<td align=\"center\">X</td>\n</tr>\n</tbody>\n</table>"
+                            ],
+                            "title": "Summary of the strengths and weaknesses of validation methods presented.",
+                            "type": "table"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "content": [
+                        {
+                            "content": [
+                                {
+                                    "text": "Huang &amp; Williamson (<a href=\"#bib9\">Huang &amp; Williamson, 2001</a>) stressed the importance of examining both local, cellular fit and tabular or overall fit. The latter allows an assessment of how well the model performs overall, whilst the former can be used to identify key sources of error. Local fit is typically examined using absolute or relative error or z-scores. If tables are large, it is challenging to identify which are key sources of error. The E5 is helpful in summarizing how many areas could be considered key sources of error, though it is still necessary to locate these. Most other metrics offer a summary measure of category fit (R<sup>2</sup>, SEI, TAE, SAE, RMSE, zm<sup>2</sup>). In other words, these metrics give an overall summary of the accuracy across all of the small areas. The BA plot, on the other hand, provides information both about performance across all the geographic areas (bias, limits of agreement) as well as displaying the error for each individual area which can be seen from the plot.",
+                                    "type": "paragraph"
+                                }
+                            ],
+                            "id": "s3-3-1",
+                            "title": "3.1.1 Bland Altman plots are informative about overall error and individual area error",
+                            "type": "section"
+                        },
+                        {
+                            "content": [
+                                {
+                                    "text": "Some of the standard methods in use do address systematic bias: for instance the TAE, SAE and zm<sup>2</sup> show both the overall size of inaccuracy (bias) as well as the direction of bias (whether it is an under- or over-estimation). RMSE and SEI can be said to address bias; however, in using squared values, the direction of bias is not given. The inability to detect systematic bias is one of the common criticisms of the R<sup>2</sup> measure (<a href=\"#bib12\">Lovelace <i>et al</i>., 2015</a>). In most standard statistical packages, a line of bias will be generated with each BA plot, showing for example if one measure consistently underestimates at all levels of the scale.",
+                                    "type": "paragraph"
+                                }
+                            ],
+                            "id": "s3-1-2",
+                            "title": "3.1.2 Bland-Altmanplots identify systematic bias",
+                            "type": "section"
+                        },
+                        {
+                            "content": [
+                                {
+                                    "text": "The visual representation of the error in the BA plot makes it easy to detect outliers, where error is especially large for particular areas. In Stata, data points can be labelled (using the \u2018valabel\u2019 option) so outliers can be identified, and, if necessary, potential explanations for the error investigated.",
+                                    "type": "paragraph"
+                                }
+                            ],
+                            "id": "s3-1-3",
+                            "title": "3.1.3 Bland-Altman plots reveal outliers",
+                            "type": "section"
+                        },
+                        {
+                            "content": [
+                                {
+                                    "text": "Some calibration metrics \u2013 such as z-scores \u2013 have difficulty handling empty cells, or 0 cell counts (<a href=\"#bib29\">Williamson <i>et al</i>., 1998</a>). Empty cells are not unusual in spatial microsimulation modelling, particularly where small areas are modelled. The BA plot does not entail division, therefore 0 counts are not problematic",
+                                    "type": "paragraph"
+                                }
+                            ],
+                            "id": "s3-1-4",
+                            "title": "3.1.4 Bland-Altman plots can handle empty cell counts",
+                            "type": "section"
+                        },
+                        {
+                            "content": [
+                                {
+                                    "text": "It is potentially informative to see if the variation of error is consistent across all population sizes, or whether it is larger at one extreme. RMSE, although large variance at the extreme high populous areas will affect the RMSE, does not illustrate the variability across the scale. The visual spread of the data points on the BA plot would show, for example, if error was greater for larger areas (the right-hand side of the plot) or smaller areas (to the left of the plot).",
+                                    "type": "paragraph"
+                                }
+                            ],
+                            "id": "s3-1-5",
+                            "title": "3.1.5 Bland-Altman plots show the error distribution",
+                            "type": "section"
+                        },
+                        {
+                            "content": [
+                                {
+                                    "text": "Several authors have identified the need for \u2018scale-free metrics\u2019 (<a href=\"#bib12\">Lovelace <i>et al</i>., 2015</a>). Although the BA plot cannot be said to be scale-free, it is possible to compare the visual characteristics of plots on different scales. The comparison would rely on judgement of the relative visual characteristics of the plots, rather than a directly comparable metric. Nevertheless, this is useful to illustrate the comparative goodness of fit. It is especially relevant where the models to be compared are of different sizes. Summary measures such as TAE depend not only on the size of the error, but also the size of the matrix. As shown in the example used here, where TAE was seemingly high at -4010, but this was across 7,689 wards",
+                                    "type": "paragraph"
+                                }
+                            ],
+                            "id": "s3-1-6",
+                            "title": "3.1.6 Bland-Altman plots can be compared across models",
+                            "type": "section"
+                        },
+                        {
+                            "content": [
+                                {
+                                    "text": "Lastly, BA plots have the distinct advantage over other methods in that they are \u201crobust, fast and easy to understand\u201d (<a href=\"#bib27\">Voas &amp; Williamson, 2001</a>). They are not computationally demanding, and are easily interpreted.",
+                                    "type": "paragraph"
+                                }
+                            ],
+                            "id": "s3-1-7",
+                            "title": "3.1.7 Bland-Altman plots are \u201crobust, fast and easy to understand\u201d",
+                            "type": "section"
+                        }
+                    ],
+                    "id": "s3-1",
+                    "title": "3.1 Key advantages of the BA plot",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "The BA plot does not offer a simple, single metric or criterion for judgement of model performance. Rather, it offers an informative description of the error, from which an informed decision can be made. Appraisal of validity is made on a case-by-case judgement. In medicine, this decision will directly relate to the clinical relevance of any observed bias or heterogeneity. The beauty of this is that the BA plot is widely applicable across tools, and across disciplines. The potential downside is confusion surrounding the interpretation of BA plots. Bland and Altman themselves recognised some of the common difficulties in interpreting the plots (<a href=\"#bib5\">Bland &amp; Altman, 2003</a>). In particular, there appears to have been widespread misunderstanding of the assumptions for the calculation of limits of agreement.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "In spatial microsimulation modelling, the literature reveals both criterion based approaches and more subjective approaches to model appraisal. For example, Tanton and Vidyattama (<a href=\"#bib23\">Tanton &amp; Vidyattama, 2010</a>) employ a criterion in validating the GREGWT model: the \u2018TAE criteria\u2019 is met where the TAE for all constraints does not exceed the population of a small area (in their paper, a statistical local error, SLA). This has the advantage of making validity assessment transparent and uniform. However, the authors themselves point out that there is no statistical basis for this criterion, and although based on modelling experience, it represents a somewhat arbitrary cut-off.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Other authors have advocated a \u201cstatistical approach\u201d to determine if a model is valid (<a href=\"#bib18\">Rahman <i>et al</i>., 2013</a>). There are difficulties in such approaches, however: chiefly, because validation seeks to assess agreement rather than difference, and therefore standard hypothesis-based approaches do not readily apply. (See <a href=\"#bib1\">Altman and Bland (1995)</a> for a discussion regarding \u2018acceptance\u2019 of the null hypothesis.) For this reason, tests for difference (such as the t test (<a href=\"#bib6\">Edwards &amp; Clarke, 2009</a>)), were not included in the comparisons presented here.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The case study used in this paper to demonstrate the BA plot used a deterministic combinatorial optimisation model. Therefore, the BA plots could only be compared with validation methods appropriate to this kind of model. It is likely that there are different considerations for alternative types of model which were beyond the scope of this paper. For example, a range of further validation methods have been proposed for probabilistic models (e.g. deriving confidence intervals using multiple iterations (<a href=\"#bib22\">Tanton, 2015</a>)) or regression-based models (this is covered well in a review of regression model validation by Scarborough <i>et al</i> (<a href=\"#bib19\">Scarborough <i>et al</i>., 2009</a>)). Although BA plots could equally be used for these alternative models, further work would need to be carried out to examine how the method compares.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Similarly, this paper did not cover external validation, where outputs are compared to an exogenous data set. The example presented here focusses only on internal convergence of the model constraints; therefore only partially addressing the question of its validity. External validation was not performed here because the case study was merely intended as an introduction to the BA method, and also because there was not an external data set readily available. Again, further work could explore its use in all aspects of validity. often there may a trade-off between internal convergence and external validity (<a href=\"#bib23\">Tanton &amp; Vidyattama, 2010</a>).",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s3-2",
+                    "title": "3.2 Limitations",
+                    "type": "section"
+                }
+            ],
+            "id": "s3",
+            "title": "3. Discussion",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "This case study clearly demonstrates the added benefit of using Bland Altman plots in model validation. Bland Altman plots show not only overall agreement, but also agreement according to ward size and an indication of individual ward error, which gives the method an advantage over existing tools used in model validation. However, the Bland Altman method requires subjective judgement about whether the model fit is \u2018good\u2019. This is both a strength (in that it is not blindly interpreted on the basis of an arbitrary p value) and a weakness.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "There still remains a lack of agreement among microsimulation modellers regarding what constitutes a valid or well-fitting model (<a href=\"#bib8\">Edwards &amp; Tanton, 2012</a>). It remains for the community to establish some form of consensus or guidance on best practice (<a href=\"#bib28\">Whitworth, 2013</a>). It seems unlikely that there is a one-size-fits-all quantitative tool to meet all needs. The information that we require of a validation exercise \u2013 the size, direction, source and distribution of the error \u2013 is perhaps too much to ask of a single, summary measure, and it may be misguided to seek one. Comparing models according to a single measure may hide the nuanced differences between models \u2013 where one performs well for low-density areas for instance. The impact of these differences will depend on the purposes of the microsimulation. The choice of validation will remain dependent on the nature of the research (<a href=\"#bib12\">Lovelace <i>et al</i>., 2015</a>), as well as taking into account comparability with previous literature and other models. Nevertheless, the Bland Altman method of assessing agreement is a useful tool to add to the canon of calibration methods.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s4",
+            "title": "4. Conclusion",
+            "type": "section"
+        }
+    ],
+    "references": [
+        {
+            "articleTitle": "Statistics notes: absence of evidence is not evidence of absence",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Altman, DG",
+                        "preferred": "DG Altman"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Bland, JM",
+                        "preferred": "JM Bland"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1995",
+            "id": "bib1",
+            "journal": "BMJ",
+            "pages": "485",
+            "type": "journal",
+            "volume": "311"
+        },
+        {
+            "articleTitle": "Modelling the local impacts of national social policies: A spatial microsimulation approach",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Ballas, D",
+                        "preferred": "D Ballas"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Clarke, GP",
+                        "preferred": "GP Clarke"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2001",
+            "id": "bib2",
+            "journal": "Environment and Planning C: Government and Policy",
+            "pages": {
+                "first": "587",
+                "last": "606",
+                "range": "587\u2013606"
+            },
+            "type": "journal",
+            "volume": "19"
+        },
+        {
+            "articleTitle": "Using SimBritain to model the geographical impact of national government policies",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Ballas, D",
+                        "preferred": "D Ballas"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Clarke, GP",
+                        "preferred": "GP Clarke"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Dorling, D",
+                        "preferred": "D Dorling"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2007",
+            "id": "bib3",
+            "journal": "Geographical Analysis",
+            "pages": {
+                "first": "44",
+                "last": "77",
+                "range": "44\u201377"
+            },
+            "type": "journal",
+            "volume": "39"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Bland, JM",
+                        "preferred": "JM Bland"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2011",
+            "id": "bib4",
+            "title": "https://www-users.york.ac.uk/~mb55/meas/meas.htm",
+            "type": "web",
+            "uri": "https://www-users.york.ac.uk/~mb55/meas/meas.htm",
+            "website": "Design and analysis of measurement studies"
+        },
+        {
+            "articleTitle": "Applying the right statistics: analyses of measurement studies",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Bland, JM",
+                        "preferred": "JM Bland"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Altman, DG",
+                        "preferred": "DG Altman"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2003",
+            "id": "bib5",
+            "journal": "Ultrasound in obstetrics and Gynecology",
+            "pages": {
+                "first": "85",
+                "last": "93",
+                "range": "85\u201393"
+            },
+            "type": "journal",
+            "volume": "22"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Edwards, KL",
+                        "preferred": "KL Edwards"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Clarke, GP",
+                        "preferred": "GP Clarke"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "The design and validation of a spatial microsimulation model of obesogenic environments for children in Leeds",
+            "date": "2009",
+            "id": "bib6",
+            "pages": {
+                "first": "1127",
+                "last": "1134",
+                "range": "1127\u20131134"
+            },
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "UK"
+                        ]
+                    },
+                    "formatted": [
+                        "UK"
+                    ]
+                },
+                "name": [
+                    "SimObesity, Social Science & Medicine"
+                ]
+            },
+            "type": "book",
+            "volume": "69"
+        },
+        {
+            "articleTitle": "Internal and external validation of spatial microsimulation models: small area estimates of adult obesity",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Edwards, KL",
+                        "preferred": "KL Edwards"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Clarke, GP",
+                        "preferred": "GP Clarke"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Thomas, J",
+                        "preferred": "J Thomas"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2011",
+            "id": "bib7",
+            "journal": "Applied Spatial Analysis and Policy",
+            "pages": {
+                "first": "281",
+                "last": "300",
+                "range": "281\u2013300"
+            },
+            "type": "journal",
+            "volume": "4"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Edwards, KL",
+                        "preferred": "KL Edwards"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Tanton, R",
+                        "preferred": "R Tanton"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "Validation of spatial microsimulation models",
+            "date": "2012",
+            "editors": [
+                {
+                    "name": {
+                        "index": "Tanton, R",
+                        "preferred": "R Tanton"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Edwards, KL",
+                        "preferred": "KL Edwards"
+                    },
+                    "type": "person"
+                }
+            ],
+            "id": "bib8",
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "NL"
+                        ]
+                    },
+                    "formatted": [
+                        "NL"
+                    ]
+                },
+                "name": [
+                    "Springer, SBM"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Huang, Z",
+                        "preferred": "Z Huang"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Williamson, P",
+                        "preferred": "P Williamson"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2001",
+            "details": "A comparison of synthetic reconstruction and combinatorial optimisation approaches to the creation of small-area microdata: Working Paper, http://pcwww.liv.ac.uk/~william/microdata/workingpapers/hw_wp_2001_2.pdf",
+            "id": "bib9",
+            "title": "A comparison of synthetic reconstruction and combinatorial optimisation approaches to the creation of small-area microdata: Working Paper",
+            "type": "unknown",
+            "uri": "http://pcwww.liv.ac.uk/~william/microdata/workingpapers/hw_wp_2001_2.pdf"
+        },
+        {
+            "articleTitle": "Validation of population-based disease simulation models: a review of concepts and methods",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Kopec, JA",
+                        "preferred": "JA Kopec"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Fines, P",
+                        "preferred": "P Fines"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Manuel, DG",
+                        "preferred": "DG Manuel"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2010",
+            "id": "bib10",
+            "journal": "BMC Public Health",
+            "pages": "710",
+            "type": "journal",
+            "volume": "10"
+        },
+        {
+            "articleTitle": "Evaluating the use of \u201cgoodness-of-fit\u201d measures in hydrologic and hydroclimatic model validation",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Legates, DR",
+                        "preferred": "DR Legates"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "McCabe, GJ, Jr",
+                        "preferred": "GJ McCabe Jr"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1999",
+            "id": "bib11",
+            "journal": "Water Resources Research",
+            "pages": {
+                "first": "233",
+                "last": "241",
+                "range": "233\u2013241"
+            },
+            "type": "journal",
+            "volume": "35"
+        },
+        {
+            "articleTitle": "Evaluating the performance of iterative proprtional fitting for spatial microsimulation: new tests for an established technique",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Lovelace, R",
+                        "preferred": "R Lovelace"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Birkin, M",
+                        "preferred": "M Birkin"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Ballas, D",
+                        "preferred": "D Ballas"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2015",
+            "id": "bib12",
+            "journal": "Journal of Artificial Societies and Social Simulation",
+            "pages": "21",
+            "type": "journal",
+            "volume": "18"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Mander, A",
+                        "preferred": "A Mander"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2016",
+            "id": "bib13",
+            "title": "http://econpapers.repec.org/software/bocbocode/s448703.htm",
+            "type": "web",
+            "uri": "http://econpapers.repec.org/software/bocbocode/s448703.htm",
+            "website": "BATPLOT: Stata module to produce Bland-Altman plots accounting for trend"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Marmot, M",
+                        "preferred": "M Marmot"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "al, e",
+                        "preferred": "e al"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2015",
+            "details": "1998\u20132013, English Longitudinal Study of Ageing: Waves 0-6",
+            "id": "bib14",
+            "title": "English Longitudinal Study of Ageing: Waves 0-6",
+            "type": "unknown"
+        },
+        {
+            "articleTitle": "Spatial microsimulation modelling: a review of applications and methodological choices",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Donoghue, C",
+                        "preferred": "C Donoghue"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Morrissey, K",
+                        "preferred": "K Morrissey"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Lennon, J",
+                        "preferred": "J Lennon"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2014",
+            "id": "bib15",
+            "journal": "International Journal of Microsimulation",
+            "pages": {
+                "first": "26",
+                "last": "75",
+                "range": "26\u201375"
+            },
+            "type": "journal",
+            "volume": "7"
+        },
+        {
+            "authors": [
+                {
+                    "name": "Office for National Statistics",
+                    "type": "group"
+                }
+            ],
+            "date": "2011",
+            "id": "bib16",
+            "title": "http://infuse.mimas.ac.uk",
+            "type": "web",
+            "uri": "http://infuse.mimas.ac.uk",
+            "website": "2011 Census: Aggregate data (England and Wales) [computer file]"
+        },
+        {
+            "authors": [
+                {
+                    "name": "Office for National Statistics",
+                    "type": "group"
+                }
+            ],
+            "date": "2013",
+            "id": "bib17",
+            "title": "http://www.ons.gov.uk/ons/index.html",
+            "type": "web",
+            "uri": "http://www.ons.gov.uk/ons/index.html",
+            "website": "Statistical wards, CAS wards and ST wards"
+        },
+        {
+            "articleTitle": "Simulating the characteristics of populations at the small-area level: new validation techniques for a spatial microsimulation model in Australia",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Rahman, A",
+                        "preferred": "A Rahman"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Harding, A",
+                        "preferred": "A Harding"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Tanton, R",
+                        "preferred": "R Tanton"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2013",
+            "id": "bib18",
+            "journal": "Computational Statistics and Data Analysis",
+            "pages": "149",
+            "type": "journal",
+            "volume": "57"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Scarborough, P",
+                        "preferred": "P Scarborough"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Allender, S",
+                        "preferred": "S Allender"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Rayner, M",
+                        "preferred": "M Rayner"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2009",
+            "details": "596\u2013605, et al, Validation of model-based estimates (synthetic estimates) of the prevalence of risk factors for coronary heart disease for wards in England, Health & Place, 15, 2",
+            "id": "bib19",
+            "title": "Validation of model-based estimates (synthetic estimates) of the prevalence of risk factors for coronary heart disease for wards in England, Health & Place",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Seed, P",
+                        "preferred": "P Seed"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2014",
+            "id": "bib20",
+            "title": "http://fmwww.bc.edu/repec/bocode/b/baplot.ado",
+            "type": "web",
+            "uri": "http://fmwww.bc.edu/repec/bocode/b/baplot.ado",
+            "website": "BAPLOT: Stata module to produce Bland-Altman plots, King\u2019s College London"
+        },
+        {
+            "authors": [
+                {
+                    "name": "StataCorp",
+                    "type": "group"
+                }
+            ],
+            "bookTitle": "Stata Statistical Software: Release 13",
+            "date": "2013",
+            "id": "bib21",
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "College Station, TX"
+                        ]
+                    },
+                    "formatted": [
+                        "College Station, TX"
+                    ]
+                },
+                "name": [
+                    "StataCorp LP"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Tanton, R",
+                        "preferred": "R Tanton"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2015",
+            "details": "Estimating confidence intervals in a spatial microsimulation model using survey replicate weights, Paper presented at the Fifth World Congress of the International Microsimulation Association (IMA), Esch-sur-Alzette, Luxembourg",
+            "id": "bib22",
+            "title": "Paper presented at the Fifth World Congress of the International Microsimulation Association (IMA)",
+            "type": "unknown"
+        },
+        {
+            "articleTitle": "Pushing it to the edge: extending generalised regression as a spatial microsimulation method",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Tanton, R",
+                        "preferred": "R Tanton"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Vidyattama, Y",
+                        "preferred": "Y Vidyattama"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2010",
+            "id": "bib23",
+            "journal": "International Journal of Microsimulation",
+            "pages": {
+                "first": "23",
+                "last": "33",
+                "range": "23\u201333"
+            },
+            "type": "journal",
+            "volume": "3"
+        },
+        {
+            "articleTitle": "Comparing two methods of reweighting a survey file to small area data",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Tanton, R",
+                        "preferred": "R Tanton"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Williamson, P",
+                        "preferred": "P Williamson"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Harding, A",
+                        "preferred": "A Harding"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2014",
+            "id": "bib24",
+            "journal": "International Journal of Microsimulation",
+            "pages": {
+                "first": "76",
+                "last": "99",
+                "range": "76\u201399"
+            },
+            "type": "journal",
+            "volume": "7"
+        },
+        {
+            "articleTitle": "The top 100 papers",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Maher, B",
+                        "preferred": "B Maher"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Nuzzo, R",
+                        "preferred": "R Nuzzo"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2014",
+            "id": "bib25",
+            "journal": "Nature",
+            "pages": {
+                "first": "550",
+                "last": "553",
+                "range": "550\u2013553"
+            },
+            "type": "journal",
+            "volume": "514"
+        },
+        {
+            "articleTitle": "An evaluation of the combinatorial optimisation approach to the creation of synthetic microdata",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Voas, D",
+                        "preferred": "D Voas"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Williamson, P",
+                        "preferred": "P Williamson"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2000",
+            "id": "bib26",
+            "journal": "International Journal of Population Geography",
+            "pages": {
+                "first": "349",
+                "last": "366",
+                "range": "349\u2013366"
+            },
+            "type": "journal",
+            "volume": "6"
+        },
+        {
+            "articleTitle": "Evaluating goodness-of-fit measures for synthetic microdata",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Voas, D",
+                        "preferred": "D Voas"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Williamson, P",
+                        "preferred": "P Williamson"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2001",
+            "id": "bib27",
+            "journal": "Geographical and Environmental Modelling",
+            "pages": {
+                "first": "177",
+                "last": "200",
+                "range": "177\u2013200"
+            },
+            "type": "journal",
+            "volume": "5"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Whitworth, A",
+                        "preferred": "A Whitworth"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2013",
+            "id": "bib28",
+            "title": "http://eprints.ncrm.ac.uk/3210/1/sme_whitworth.pdf",
+            "type": "web",
+            "uri": "http://eprints.ncrm.ac.uk/3210/1/sme_whitworth.pdf",
+            "website": "Evaluations and improvements in small area estimation methodologies"
+        },
+        {
+            "articleTitle": "The estimation of population microdata by using data from small area statistics and sample of anonymised records",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Williamson, P",
+                        "preferred": "P Williamson"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Birkin, M",
+                        "preferred": "M Birkin"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Rees, P",
+                        "preferred": "P Rees"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1998",
+            "id": "bib29",
+            "journal": "Environment and Planning Analysis",
+            "pages": {
+                "first": "785",
+                "last": "816",
+                "range": "785\u2013816"
+            },
+            "type": "journal",
+            "volume": "30"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Zaki, R",
+                        "preferred": "R Zaki"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Bulgiba, A",
+                        "preferred": "A Bulgiba"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Ismail, R",
+                        "preferred": "R Ismail"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2012",
+            "details": "e37908, et al, Statistical methods used to test for agreement of medical instruments measuring continuous variables in method comparison studies: a systematic review, Plos One, 7, 5",
+            "id": "bib30",
+            "title": "Statistical methods used to test for agreement of medical instruments measuring continuous variables in method comparison studies: a systematic review, Plos One",
+            "type": "unknown"
+        }
+    ],
+    "-meta": {
+        "patched": true
+    },
+    "stage": "published"
+}
