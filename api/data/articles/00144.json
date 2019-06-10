@@ -1,0 +1,1125 @@
+{
+    "status": "vor",
+    "id": "00144",
+    "version": 1,
+    "type": "research-article",
+    "doi": "10.34196/ijm.00144",
+    "authorLine": "Peter Stephensen",
+    "title": "Logit scaling: A general method for alignment in microsimulation models",
+    "published": "2016-12-31T00:00:00Z",
+    "versionDate": "2016-12-31T00:00:00Z",
+    "statusDate": "2016-12-31T00:00:00Z",
+    "volume": 9,
+    "issue": 3,
+    "elocationId": "n/a",
+    "pdf": "http://web:8082/00144/ijm-00144.pdf",
+    "subjects": [
+        {
+            "id": "methodology",
+            "name": "Methodology"
+        }
+    ],
+    "abstract": {
+        "content": [
+            {
+                "text": "We explore the prospects for using the Eurosystem Household Finance and Consumption Survey (HFCS) dataset as an underlying micro-database for the EU tax-benefit model, EUROMOD. This will allow expanding the policy domains currently covered in EUROMOD with dimensions like wealth taxation, incentives for wealth accumulation and asset tests determining benefit eligibility. As the HFCS only contains gross income amounts which are not suitable for distributive analysis, the purpose of this paper is to derive net incomes by simulating the gross-to-net transition with EUROMOD taking into account all important details of the social security and personal income tax system. In order to identify the issues and illustrate their importance a trial database for Belgium and Italy is constructed.",
+                "type": "paragraph"
+            }
+        ]
+    },
+    "copyright": {
+        "license": "CC-BY-4.0",
+        "holder": "Stephensen et al.",
+        "statement": "This article is distributed under the terms of the <a href=\"http://creativecommons.org/licenses/by/4.0/\">Creative Commons Attribution License</a>, which permits unrestricted use and redistribution provided that the original author and source are credited."
+    },
+    "authors": [
+        {
+            "affiliations": [
+                {
+                    "address": {
+                        "components": {
+                            "country": "Denmark"
+                        },
+                        "formatted": [
+                            "Denmark"
+                        ]
+                    },
+                    "name": [
+                        "Danish research institute of applied economic modelling, DREAM"
+                    ]
+                }
+            ],
+            "emailAddresses": [
+                "psp@dreammodel.dk"
+            ],
+            "name": {
+                "index": "Stephensen, Peter",
+                "preferred": "Peter Stephensen"
+            },
+            "type": "person"
+        }
+    ],
+    "keywords": [
+        "EUROMOD",
+        "HFCS",
+        "simulations",
+        "gross-to-net incomes",
+        "wealth taxation"
+    ],
+    "body": [
+        {
+            "content": [
+                {
+                    "text": "Alignment is the core facility for controlling microsimulation models. Microsimulation models are large, elab- orate models that need such a tool at the macro level. Alignment works by manipulating the probabilities of the model, aiming to do <i>model calibration</i>, <i>comparative analysis</i> (static or dynamic) and/or to <i>eliminate Monte- Carlo noise</i>.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "In a more technical sense, alignment can be said to do one of two things: <i>mean-correction</i> or <i>variance-elimination</i><a href=\"#fn1\"><sup>1</sup></a>. The focus of this paper is mean-correction, meaning the process by which you manipulate the probabilities of the individuals such that i) you hit a predefined mean/average propensity for the entire group, and ii) the ma- nipulation is as gentle as possible (discussed below). Mean-correction alignment makes it possible to calibrate the model and do comparative analysis. The other kind of alignment, here called variance-elimination, is equiva- lent to the above mentioned elimination of Monte-Carlo noise. In microsimulation models, events are typically modeled by drawing a uniformly distributed number and comparing it to a probability associated with the event occurring. This Monte-Carlo technique introduces noise into the model. Such noise can be eliminated from the model, using alignment techniques (<a href=\"#bib2\">B\u00e6kgaard, 2002</a>).",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Most existing alignment methods address the binary case and they typically put special emphasis on one of the alternatives rather than treating all alternatives in a symmetric way (for a review, see <a href=\"#bib5\">Li &amp; O\u2019Donoghue, 2014</a>). In this paper we propose a more general mathematical foundation of multinominal alignment. Our mean- correction alignment method is called <i>Logit Scaling</i>, and is defined as a method that minimizes the <i>information loss</i> in the adjustment process. The analytical solution to the alignment problem is characterized and further- more applied in deriving various properties for the method. It is demonstrated that there exits an algorithm called Bi-Proportional Scaling that converge to the solution of the problem. This is tested against two versions of the Newton-Raphson-algoritm, and it is demonstrated that it is at least twice as fast as these methods. Finally, it is argued, that the method is very easy to implement.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The practical implementation of Logit Scaling is very simple. Assume <i>N</i> individuals can be in one of <i>A</i> alternative states, and that you have probabilities <math id=\"inf1\"><mrow><msubsup><mi>p</mi><mrow><mi>i</mi><mi>a</mi></mrow><mn>0</mn></msubsup></mrow></math> for all individuals <i>i</i> \u2208 {1,\u2026,<i>N</i>} and alternatives <i>a</i> \u2208 {1,\u2026,<i>A</i>}. We necessarily have that <math id=\"inf2\"><mrow><mstyle displaystyle=\"true\"><msub><mo>\u2211</mo><mi>a</mi></msub><mrow><msubsup><mi>p</mi><mrow><mi>i</mi><mi>a</mi></mrow><mn>0</mn></msubsup><mo>=</mo><mn>1</mn></mrow></mstyle></mrow></math> for all <i>i</i> and <math id=\"inf3\"><mrow><msubsup><mi>p</mi><mrow><mi>i</mi><mi>a</mi></mrow><mn>0</mn></msubsup><mo>\u2265</mo><mn>1</mn></mrow></math> for all <i>i</i> and <i>a.</i> In the alignment process you would like to find new probabilities <i>p<sub>ia</sub></i> such that the aggregated number of individuals in the various states satisfies certain targets:",
+                    "type": "paragraph"
+                },
+                {
+                    "id": "uequ1",
+                    "label": "(1)",
+                    "mathml": "<math><mrow><mstyle displaystyle=\"true\"><munder><mo>\u2211</mo><mi>i</mi></munder><mrow><msub><mi>p</mi><mrow><mi>i</mi><mi>a</mi></mrow></msub><mo>=</mo><msub><mover accent=\"true\"><mi>X</mi><mo>\u00af</mo></mover><mi>a</mi></msub><mo>,</mo><mn>1</mn><mo>\u2264</mo><mi>a</mi><mo>\u2264</mo><mi>A</mi><mo>.</mo></mrow></mstyle></mrow></math>",
+                    "type": "mathml"
+                },
+                {
+                    "text": "The algorithm we use is called Bi-Proportionate Scaling and is demonstrated in <a href=\"#stat1\">Algorithm 1</a>. Initially let <math id=\"inf4\"><msub><mi>p</mi><mrow><mi>i</mi><mi>a</mi></mrow></msub><mo>=</mo><mrow><msubsup><mi>p</mi><mrow><mi>i</mi><mi>a</mi></mrow><mn>0</mn></msubsup></mrow></math>. Think about <i>p<sub>ia</sub></i> as a matrix with <i>N</i> rows and <i>A</i> columns. Scale all columns such that the alignment targets are satisfied <math id=\"inf5\"><mrow><mrow><mo>(</mo><mrow><mstyle displaystyle=\"true\"><msub><mo>\u2211</mo><mi>a</mi></msub><mrow><msub><mi>p</mi><mrow><mi>i</mi><mi>a</mi></mrow></msub><mo>=</mo><msub><mover accent=\"true\"><mi>X</mi><mo>\u00af</mo></mover><mi>a</mi></msub></mrow></mstyle></mrow><mo>)</mo></mrow></mrow></math>. Then scale all rows such that <math id=\"inf6\"><mrow><mstyle displaystyle=\"true\"><msub><mo>\u2211</mo><mi>a</mi></msub><mrow><msubsup><mi>p</mi><mrow><mi>i</mi><mi>a</mi></mrow><mrow><mn>0</mn></mrow></msubsup><mo>=</mo><mn>1</mn></mrow></mstyle></mrow></math> for all <i>i.</i> Repeat this until the system converges. In real-world problems the algorithm converges very quickly even for many individuals and states.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "<b>Require</b>: Initially <math id=\"inf7\"><mrow><msub><mi>p</mi><mrow><mi>i</mi><mi>a</mi></mrow></msub></mrow><mo>=</mo><msubsup><mi>p</mi><mrow><mi>i</mi><mi>a</mi></mrow><mn>0</mn></msubsup></math>",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "<b>Ensure</b>: <math id=\"inf8\"><mrow><mstyle displaystyle=\"true\"><msub><mo>\u2211</mo><mi>i</mi></msub><mrow><msub><mi>p</mi><mrow><mi>i</mi><mi>a</mi></mrow></msub></mrow></mstyle><mo>=</mo><msub><mover accent=\"true\"><mi>X</mi><mo>\u00af</mo></mover><mi>a</mi></msub></mrow></math>",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "1: <b>while</b> not converged <b>do</b>",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "2:  Scale columns with <i>\u03b3<sub>a</sub></i>\u2019s: <i>p<sub>ia</sub></i>:= <i>\u03b3<sub>a</sub>p<sub>ia</sub></i> such that <math id=\"inf9\"><mrow><mstyle displaystyle=\"true\"><msub><mo>\u2211</mo><mi>i</mi></msub><mrow><msub><mi>p</mi><mrow><mi>i</mi><mi>a</mi></mrow></msub></mrow></mstyle><mo>=</mo><msub><mover accent=\"true\"><mi>X</mi><mo>\u00af</mo></mover><mi>a</mi></msub></mrow></math>",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "3:  Scale rows with <i>\u03b1<sub>i</sub></i>\u2019s: <i>p<sub>ia</sub></i>:= <i>\u03b1<sub>i</sub>p<sub>ia</sub></i> such that <math id=\"inf10\"><mrow><mstyle displaystyle=\"true\"><msub><mo>\u2211</mo><mi>i</mi></msub><mrow><msub><mi>p</mi><mrow><mi>i</mi><mi>a</mi></mrow></msub></mrow></mstyle><mo>=</mo><mn>1</mn></mrow></math>",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "4: <b>end while</b>",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s1",
+            "title": "1. Introduction",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "We would like to start by defining what a good mean-correction alignment method is. The points in the follow- ing list ensures that the alignment method is theoretically sound and useable at the same time:",
+                    "type": "paragraph"
+                },
+                {
+                    "items": [
+                        [
+                            {
+                                "text": "Adjust correctly to the target means",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "Retain the original shape of the probability distribution",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "Retain zero probabilities",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "Symmetric formulation",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "Multinominal alignment",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "Ability to work well in a logit environment",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "Computer efficiency",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "Easy implementation",
+                                "type": "paragraph"
+                            }
+                        ]
+                    ],
+                    "prefix": "bullet",
+                    "type": "list"
+                },
+                {
+                    "text": "Points 1) and 2) are similar to the first two points in <a href=\"#bib5\">Li &amp; O\u2019Donoghue (2014)</a>. The idea of mean-correction alignment is to be able to change the mean of the probability distribution. Therefore the method should be precise when it comes to adjusting to a new target (point 1). Let\u2019s try to make this more precise. Consider a population of <i>N</i> individuals, and a number <i>A</i> of alternatives the individuals can be in. Let <i>p<sub>ia </sub></i> be individual <i>i<sup>!</sup></i>s probability of entering alternative <i>a</i>(<i>i</i>= 1,\u2026,<i>N</i> and <i>a</i>= 1,\u2026,<i>A</i>). In a binary model <i>A</i>= 2. Because we are working with probabilities we should necessarily have that",
+                    "type": "paragraph"
+                },
+                {
+                    "id": "uequ2",
+                    "label": "(2)",
+                    "mathml": "<math><mrow><mstyle displaystyle=\"true\"><munder><mo>\u2211</mo><mi>a</mi></munder><mrow><msub><mi>p</mi><mrow><mi>i</mi><mi>a</mi></mrow></msub><mo>=</mo><mn>1</mn><mo>,</mo><mspace width=\"0.2em\"/><mi>i</mi><mo>=</mo><mn>1</mn><mo>,</mo><mo>\u2026</mo><mo>,</mo><mi>N</mi></mrow></mstyle></mrow></math>",
+                    "type": "mathml"
+                },
+                {
+                    "text": "Let <i>X<sub>a</sub></i> be the number of persons in alternative <i>a</i>(such that <math id=\"inf11\"><mrow><mstyle displaystyle=\"true\"><msub><mo>\u2211</mo><mi>a</mi></msub><mrow><msub><mi>X</mi><mi>a</mi></msub></mrow></mstyle><mo>=</mo><mi>N</mi></mrow></math>. The expected number of persons in alternative <i>a</i> is given by:",
+                    "type": "paragraph"
+                },
+                {
+                    "id": "uequ3",
+                    "label": "(3)",
+                    "mathml": "<math><mrow><mi>E</mi><mo stretchy=\"false\">[</mo><msub><mi>X</mi><mi>a</mi></msub><mo stretchy=\"false\">]</mo><mo>=</mo><mstyle displaystyle=\"true\"><munder><mo>\u2211</mo><mi>i</mi></munder><mrow><msub><mi>p</mi><mrow><mi>i</mi><mi>a</mi></mrow></msub><mo>,</mo><mi>a</mi><mo>=</mo><mn>1</mn><mo>,</mo><mo>\u2026</mo><mo>,</mo><mi>A</mi></mrow></mstyle></mrow></math>",
+                    "type": "mathml"
+                },
+                {
+                    "text": "We can now define mean-correction alignment:",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Let <math id=\"inf12\"><mrow><msubsup><mi>p</mi><mrow><mi>i</mi><mi>a</mi></mrow><mn>0</mn></msubsup></mrow></math> (<i>i</i> = 1,\u2026,<i>N</i> and <i>a</i> = 1,\u2026,<i>A</i>) be the initial probabilities in a population. A <i>mean-correction alignment</i> to a target <math id=\"inf13\"><mo>(</mo><msub><mrow><mover accent=\"true\"><mi>X</mi><mo>\u00af</mo></mover></mrow><mrow><mn>1</mn></mrow></msub><mo>,</mo><mo>\u2026</mo><mo>,</mo><msub><mrow><mover accent=\"true\"><mi>X</mi><mo>\u00af</mo></mover></mrow><mrow><mi>A</mi></mrow></msub><mo>)</mo></math> is a set of aligned probabilities <i>p<sub>ia</sub></i>, (<i>i</i> = 1,\u2026,<i>N</i> and <i>a</i> = 1,\u2026,<i>A</i>) such that:",
+                    "type": "paragraph"
+                },
+                {
+                    "id": "equ1",
+                    "label": "(4)",
+                    "mathml": "<math><mrow><mstyle displaystyle=\"true\"><munder><mo>\u2211</mo><mi>i</mi></munder><mrow><msub><mi>p</mi><mrow><mi>i</mi><mi>a</mi></mrow></msub><mo>,</mo><mo>=</mo><msub><mover accent=\"true\"><mi>X</mi><mo>\u00af</mo></mover><mi>a</mi></msub><mo>,</mo><mspace width=\"0.2em\"/><mi>a</mi><mo>=</mo><mn>1</mn><mo>,</mo><mo>\u2026</mo><mo>,</mo><mi>A</mi></mrow></mstyle></mrow></math>",
+                    "type": "mathml"
+                },
+                {
+                    "id": "equ2",
+                    "label": "(5)",
+                    "mathml": "<math><mrow><mstyle displaystyle=\"true\"><munder><mo>\u2211</mo><mi>a</mi></munder><mrow><msub><mi>p</mi><mrow><mi>i</mi><mi>a</mi></mrow></msub><mo>,</mo><mo>=</mo><mn>1</mn><mo>,</mo><mspace width=\"0.2em\"/><mi>i</mi><mo>=</mo><mn>1</mn><mo>,</mo><mo>\u2026</mo><mo>,</mo><mi>N</mi></mrow></mstyle></mrow></math>",
+                    "type": "mathml"
+                },
+                {
+                    "id": "equ3",
+                    "label": "(6)",
+                    "mathml": "<math><mrow><msub><mi>p</mi><mrow><mi>i</mi><mi>a</mi></mrow></msub><mo>,</mo><mo>\u2265</mo><mn>0</mn><mo>,</mo><mspace width=\"0.2em\"/><mi>i</mi><mo>=</mo><mn>1</mn><mo>,</mo><mo>\u2026</mo><mo>,</mo><mi>N</mi><mo>,</mo><mspace width=\"0.2em\"/><mi>a</mi><mo>=</mo><mn>1</mn><mo>,</mo><mo>\u2026</mo><mo>,</mo><mi>A</mi></mrow></math>",
+                    "type": "mathml"
+                },
+                {
+                    "text": "Observe that this definition only involves the aligned probabilities. Nothing is said about the link between the initial and the aligned probabilities. This is the subject of point 2: a very basic demand for an alignment method is that it makes as little harm as possible to the original probabilities, in the sense that we strive to retain the shape of the original distribution. A way to handle this is to define a distance measure that measures the difference between the initial probabilities and the aligned probabilities. Let <i>P</i> be a <i>N\u00d7A</i> matrix containing the <i>p<sub>ia</sub>\u2212</i> elements. Let <i>D</i> (<i>P</i>, <i>P</i><sup>0</sup>) be our measure. A precise version of point 2 would be to minimize <i>D</i> (<i>P</i>,<i>P</i><sup>0</sup>) given the restrictions in <a href=\"#stat2\">Definition 1</a>. We will return to this optimization problem later.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The third point in our list deals with zero probabilities. Saying that a probability is zero is a very strong state- ment. It means that something is impossible. An alignment method should therefore retain zeroes such that what is impossible before the alignment is also impossible after the alignment.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The fourth point on the list is <i>symmetric formulation</i>. A good example of an asymmetric alignment method is the often used <i>multiplicative scaling</i> (<a href=\"#bib5\">Li &amp; O\u2019Donoghue, 2014</a>). According to this kind of alignment you choose one of the alternatives (let\u2019s say alternative 1) and scale the probabilities to the desired level:",
+                    "type": "paragraph"
+                },
+                {
+                    "id": "uequ7",
+                    "label": "(7)",
+                    "mathml": "<math><mrow><msub><mi>p</mi><mrow><mi>i</mi><mn>1</mn></mrow></msub><mo>=</mo><mi>\u03bb</mi><msubsup><mi>p</mi><mrow><mi>i</mi><mn>1</mn></mrow><mn>0</mn></msubsup></mrow></math>",
+                    "type": "mathml"
+                },
+                {
+                    "text": "where the scaling factor <i>\u03bb</i> is defined by",
+                    "type": "paragraph"
+                },
+                {
+                    "id": "uequ8",
+                    "label": "(8)",
+                    "mathml": "<math><mrow><mstyle displaystyle=\"true\"><munder><mo>\u2211</mo><mi>i</mi></munder><mrow><msub><mi>p</mi><mrow><mi>i</mi><mn>1</mn></mrow></msub></mrow></mstyle><mo>=</mo><mstyle displaystyle=\"true\"><munder><mo>\u2211</mo><mi>i</mi></munder><mrow><mi>\u03bb</mi><msubsup><mi>p</mi><mrow><mi>i</mi><mn>1</mn></mrow><mn>0</mn></msubsup><mo>\u2261</mo><msub><mover accent=\"true\"><mi>X</mi><mo>\u00af</mo></mover><mn>1</mn></msub></mrow></mstyle></mrow></math>",
+                    "type": "mathml"
+                },
+                {
+                    "text": "If we have two alternatives, the probability of the other alternative is given residually",
+                    "type": "paragraph"
+                },
+                {
+                    "id": "uequ9",
+                    "label": "(9)",
+                    "mathml": "<math><mrow><msub><mi>p</mi><mrow><mi>i</mi><mn>2</mn></mrow></msub><mo>=</mo><mn>1</mn><mo>\u2212</mo><msub><mi>p</mi><mrow><mi>i</mi><mn>1</mn></mrow></msub></mrow></math>",
+                    "type": "mathml"
+                },
+                {
+                    "text": "This is clearly asymmetric. If we had chosen to scale the probabilities of the second alternative instead, we would have had another alignment. This is not satisfying as the alignment method introduces arbitrariness into the analysis. This asymmetry seems not to be a well-known property in the microsimulation community. As an example it is not mentioned in <a href=\"#bib5\">Li &amp; O\u2019Donoghue (2014)</a>. We give an graphical example in <a href=\"#s3-2\">Section 3.2</a>.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The only way to make sure that the alignment formulation is symmetric, is to make a definition based on all alternatives. A good alignment method should therefore depend on <i>all</i> the initial probabilities and some pa- rameter vector <i>\u03b8<sub>a</sub></i>",
+                    "type": "paragraph"
+                },
+                {
+                    "id": "uequ10",
+                    "label": "(10)",
+                    "mathml": "<math><mrow><msub><mi>p</mi><mrow><mi>i</mi><mi>a</mi></mrow></msub><mo>=</mo><msub><mi>f</mi><mi>a</mi></msub><mrow><mo>(</mo><mrow><msubsup><mi>p</mi><mrow><mi>i</mi><mn>1</mn></mrow><mn>0</mn></msubsup><mo>,</mo><mo>\u2026</mo><mo>,</mo><msubsup><mi>p</mi><mrow><mi>i</mi><mi>A</mi></mrow><mn>0</mn></msubsup><mo>;</mo><msub><mi>\u03b8</mi><mi>a</mi></msub></mrow><mo>)</mo></mrow><mo>,</mo><mi>a</mi><mo>=</mo><mn>1</mn><mo>,</mo><mo>\u2026</mo><mo>,</mo><mi>A</mi></mrow></math>",
+                    "type": "mathml"
+                },
+                {
+                    "text": "This is typically not the case in the most used alignment methods (<a href=\"#bib5\">Li &amp; O\u2019Donoghue, 2014</a>).",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "A good alignment technique should generalize easily to the <i>multinominal</i> case (<i>A</i> &gt; 2). As mentioned above, most alignment methods are binary. Multinominal problems are often solved by a sequence of binary align- ments. This is also a source of arbitrariness. If we change the order of the binary alignments we potentially get a different total alignment. It is therefore preferable to have a method that is designed to the general multinominal case.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The final 3 points on the list have to do with the usability of the method. The logit specification is one of the most used methods to estimate probabilities. It is therefore a nice feature if an alignment method works well with this specification<a href=\"#fn2\"><sup>2</sup></a>. Finally it is important for the usability of a method to have both computer efficiency and ease of implementation. These two goals can be conflicting goals. As will be demonstrated later, this is not the case here.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s2",
+            "title": "2. What is a good alignment method?",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "You can think about alignment as a method for manipulating probability distributions. Define",
+                    "type": "paragraph"
+                },
+                {
+                    "id": "uequ11",
+                    "label": "(11)",
+                    "mathml": "<math><mrow><msub><mi>q</mi><mrow><mi>i</mi><mi>a</mi></mrow></msub><mo>\u2261</mo><mfrac><mn>1</mn><mi>N</mi></mfrac><msub><mi>p</mi><mrow><mi>i</mi><mi>a</mi></mrow></msub></mrow></math>",
+                    "type": "mathml"
+                },
+                {
+                    "text": "where <i>N</i> is the number of individuals. <i>Q</i> = {<i>q<sub>ia</sub></i>|<i>i</i> = 1,.., <i>N</i>; <i>a</i> = 1,.., <i>A</i>} is a joined discrete probability distribution simultaneously decribing preferences (the <i>A</i> alternatives) and heterogenity (the <i>N</i> individuals)<a href=\"#fn3\"><sup>3</sup></a>.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Let <i>Q</i><sup>0</sup> be the initial probability distribution. According to <a href=\"#stat2\">definition 1</a>, a mean-correction alignment to a target <math id=\"inf14\"><mo>(</mo><msub><mrow><mover accent=\"true\"><mi>X</mi><mo>\u00af</mo></mover></mrow><mrow><mn>1</mn></mrow></msub><mo>,..,</mo><msub><mrow><mover accent=\"true\"><mi>X</mi><mo>\u00af</mo></mover></mrow><mrow><mi>A</mi></mrow></msub><mo>)</mo></math> is a new probability distribution <i>Q</i> satisfying:",
+                    "type": "paragraph"
+                },
+                {
+                    "id": "uequ12",
+                    "label": "(12)",
+                    "mathml": "<math><mrow><mstyle displaystyle=\"true\"><munder><mo>\u2211</mo><mi>i</mi></munder><mrow><msub><mi>q</mi><mrow><mi>i</mi><mi>a</mi></mrow></msub></mrow></mstyle><mo>=</mo><mfrac><mn>1</mn><mi>N</mi></mfrac><msub><mover accent=\"true\"><mi>X</mi><mo>\u00af</mo></mover><mi>a</mi></msub><mo>,</mo><mspace width=\"0.2em\"/><mi>a</mi><mo>=</mo><mn>1</mn><mo>,</mo><mo>\u2026</mo><mo>,</mo><mi>A</mi></mrow></math>",
+                    "type": "mathml"
+                },
+                {
+                    "id": "uequ13",
+                    "label": "(13)",
+                    "mathml": "<math><mtable columnalign=\"left\"><mtr><mtd><mstyle displaystyle=\"true\"><munder><mo>\u2211</mo><mi>a</mi></munder><mrow><msub><mi>q</mi><mrow><mi>i</mi><mi>a</mi></mrow></msub></mrow></mstyle><mo>=</mo><mfrac><mn>1</mn><mi>N</mi></mfrac><mo>,</mo><mi>i</mi><mo>=</mo><mn>1</mn><mo>,</mo><mo>\u2026</mo><mo>,</mo><mi>A</mi></mtd></mtr><mtr><mtd><msub><mi>q</mi><mrow><mi>i</mi><mi>a</mi></mrow></msub><mo>\u2265</mo><mn>0</mn><mo>,</mo><mi>i</mi><mo>=</mo><mn>1</mn><mo>,</mo><mo>\u2026</mo><mi>N</mi><mo>,</mo><mi>a</mi><mo>=</mo><mn>1</mn><mo>,</mo><mo>\u2026</mo><mo>,</mo><mi>A</mi></mtd></mtr></mtable></math>",
+                    "type": "mathml"
+                },
+                {
+                    "text": "We would like to satisfy these linear restrictions with as little change in the distribution as possible.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Our way of solving this problem is inspired by methods developed in finance during the mid 90s (<a href=\"#bib7\">Stutzer, 1996</a>; <a href=\"#bib2\">Kitamura &amp; Stutzer, 1997</a>; <a href=\"#bib3\">Buchen &amp; Kelly, 1996</a>). The basic idea is to minimize the relative entropy between the two distributions, subject to the additional restrictions imposed on the new distribution. In <a href=\"#bib9\">Stutzer (1996)</a> the goal is to modify a nonparametric predictive distribution for the price of an asset to satify the martingale condition associated with risk-neutral pricing. In <a href=\"#bib4\">Kitamura &amp; Stutzer (1997)</a> the goal is to provide an alternative to generalized method of moments estimation in which the moment conditions holds exactly. In <a href=\"#bib3\">Buchen &amp; Kelly (1996)</a> it is demonstrated how to estimate a distribution of an underlying asset from a set of option prices. The method has been used by <a href=\"#bib5\">Robertson <i>et al</i>. (2005)</a> for VAR model forecasting. For an overview of the use of entropy in finance, see <a href=\"#bib11\">Zhou <i>et al</i>. (2013)</a>.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The entropy measure used in the above papers is the Kullbeck-Leibler Information Criterion (KLIC) distance from <i>Q</i><sub>0</sub> to <i>Q</i>(<a href=\"#bib10\">White, 1982</a>):",
+                    "type": "paragraph"
+                },
+                {
+                    "id": "equ4",
+                    "label": "(14)",
+                    "mathml": "<math><mrow><mtable columnalign=\"left\"><mtr columnalign=\"left\"><mtd columnalign=\"left\"><mrow><mi>D</mi><mrow><mo>(</mo><mrow><mi>Q</mi><mo>,</mo><msup><mi>Q</mi><mn>0</mn></msup></mrow><mo>)</mo></mrow></mrow></mtd><mtd columnalign=\"left\"><mo>=</mo></mtd><mtd columnalign=\"left\"><mrow><mstyle displaystyle=\"true\"><munder><mo>\u2211</mo><mi>i</mi></munder><mrow><mstyle displaystyle=\"true\"><munder><mo>\u2211</mo><mi>a</mi></munder><mrow><msub><mi>q</mi><mrow><mi>i</mi><mi>a</mi></mrow></msub><mi>l</mi><mi>o</mi><mi>g</mi><mrow><mo>(</mo><mrow><mfrac><mrow><msub><mi>q</mi><mrow><mi>i</mi><mi>a</mi></mrow></msub></mrow><mrow><msubsup><mi>q</mi><mrow><mi>i</mi><mi>a</mi></mrow><mn>0</mn></msubsup></mrow></mfrac></mrow><mo>)</mo></mrow></mrow></mstyle></mrow></mstyle></mrow></mtd></mtr><mtr columnalign=\"left\"><mtd columnalign=\"left\"><mrow/></mtd><mtd columnalign=\"left\"><mo>=</mo></mtd><mtd columnalign=\"left\"><mrow><mfrac><mn>1</mn><mi>N</mi></mfrac><mstyle displaystyle=\"true\"><munder><mo>\u2211</mo><mi>i</mi></munder><mrow><mstyle displaystyle=\"true\"><munder><mo>\u2211</mo><mi>a</mi></munder><mrow><msub><mi>p</mi><mrow><mi>i</mi><mi>a</mi></mrow></msub><mi>l</mi><mi>o</mi><mi>g</mi><mrow><mo>(</mo><mrow><mfrac><mrow><msub><mi>p</mi><mrow><mi>i</mi><mi>a</mi></mrow></msub></mrow><mrow><msubsup><mi>p</mi><mrow><mi>i</mi><mi>a</mi></mrow><mn>0</mn></msubsup></mrow></mfrac></mrow><mo>)</mo></mrow></mrow></mstyle></mrow></mstyle></mrow></mtd></mtr></mtable></mrow></math>",
+                    "type": "mathml"
+                },
+                {
+                    "text": "This is also called the <i>Relative Entropy</i>. It is well-known that (<i>D</i> <i>Q</i>, <i>Q</i><sup>0</sup>) \u2265 0, with equality if and only if <i>Q</i> = <i>Q</i><sup>0</sup>. The KLIC measures the information gained when one revises one\u2019s beliefs from the prior probability distribution <i>Q</i><sup>0</sup> to the posterior probability distribution <i>Q</i>. In our use of the concept we therefore wish to minimize the <i>information loss</i> from moving away from the original distribution. The KLIC is a special case of a broader class of divergences called f-divergences as well as the class of Bregman divergences. It is the only such divergence over probabilities that is a member of both classes.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The KLIC is not a true <i>metric</i> as it is not symmetric (<i>D</i> (<i>Q</i>,<i>Q</i><sup>0</sup>) \u2260 <i>D</i> (<i>Q</i><sup>0</sup>,<i>Q</i>). Even so, it is a <i>premetric</i> and generates a topology on the space of probability distributions. To see that it actually works as it should, let us look at the binary case. Define:",
+                    "type": "paragraph"
+                },
+                {
+                    "id": "uequ15",
+                    "label": "(15)",
+                    "mathml": "<math><mrow><msub><mi>D</mi><mi>i</mi></msub><mo>=</mo><mstyle displaystyle=\"true\"><munder><mo>\u2211</mo><mi>a</mi></munder><mrow><msub><mi>q</mi><mrow><mi>i</mi><mi>a</mi></mrow></msub><mi>l</mi><mi>o</mi><mi>g</mi><mrow><mo>(</mo><mrow><mfrac><mrow><msub><mi>q</mi><mrow><mi>i</mi><mi>a</mi></mrow></msub></mrow><mrow><msubsup><mi>q</mi><mrow><mi>i</mi><mi>a</mi></mrow><mn>0</mn></msubsup></mrow></mfrac></mrow><mo>)</mo></mrow></mrow></mstyle></mrow></math>",
+                    "type": "mathml"
+                },
+                {
+                    "text": "In the binary case we have",
+                    "type": "paragraph"
+                },
+                {
+                    "id": "uequ16",
+                    "label": "(16)",
+                    "mathml": "<math><mrow><msub><mi>D</mi><mi>i</mi></msub><mo>=</mo><msub><mi>q</mi><mrow><mi>i</mi><mi>a</mi></mrow></msub><mi>l</mi><mi>o</mi><mi>g</mi><mrow><mo>(</mo><mrow><mfrac><mrow><msub><mi>q</mi><mrow><mi>i</mi><mn>1</mn></mrow></msub></mrow><mrow><msubsup><mi>q</mi><mrow><mi>i</mi><mn>1</mn></mrow><mn>0</mn></msubsup></mrow></mfrac></mrow><mo>)</mo></mrow><mo>+</mo><mo stretchy=\"false\">(</mo><mn>1</mn><mo>\u2212</mo><msub><mi>q</mi><mrow><mi>i</mi><mn>1</mn></mrow></msub><mo stretchy=\"false\">)</mo><mi>l</mi><mi>o</mi><mi>g</mi><mrow><mo>(</mo><mrow><mfrac><mrow><mn>1</mn><mo>\u2212</mo><msub><mi>q</mi><mrow><mi>i</mi><mn>1</mn></mrow></msub></mrow><mrow><mn>1</mn><mo>\u2212</mo><msubsup><mi>q</mi><mrow><mi>i</mi><mn>1</mn></mrow><mn>0</mn></msubsup></mrow></mfrac></mrow><mo>)</mo></mrow></mrow></math>",
+                    "type": "mathml"
+                },
+                {
+                    "text": "For which value of <i>q<sub>i</sub></i><sub>1</sub> is this function minimized? For <i>D<sub>i</sub></i> to be a distance measure we would prefere <math id=\"inf15\"><mrow><msub><mi>q</mi><mrow><mi>i</mi><mn>1</mn></mrow></msub></mrow><mrow><mo>=</mo><msubsup><mi>q</mi><mrow><mi>i</mi><mn>1</mn></mrow><mn>0</mn></msubsup></mrow></math> to minimize the function, and this is surely the case. Differentiation yields:",
+                    "type": "paragraph"
+                },
+                {
+                    "id": "uequ41",
+                    "label": "(17)",
+                    "mathml": "<math><mrow><mfrac><mrow><mo>\u2202</mo><msub><mi>D</mi><mi>i</mi></msub></mrow><mrow><mo>\u2202</mo><msub><mrow><mi>q</mi></mrow><mrow><mi>i</mi><mn>1</mn></mrow></msub></mrow></mfrac></mrow><mo>=</mo><mi>l</mi><mi>o</mi><mi>g</mi><mrow><mo>(</mo><mrow><mfrac><mrow><msub><mi>q</mi><mrow><mi>i</mi><mn>1</mn></mrow></msub></mrow><mrow><msubsup><mi>q</mi><mrow><mi>i</mi><mn>1</mn></mrow><mn>0</mn></msubsup></mrow></mfrac></mrow><mo>)</mo></mrow><mo>-</mo><mi>l</mi><mi>o</mi><mi>g</mi><mrow><mo>(</mo><mrow><mfrac><mrow><mn>1</mn><mo>\u2212</mo><msub><mi>q</mi><mrow><mi>i</mi><mn>1</mn></mrow></msub></mrow><mrow><mn>1</mn><mo>\u2212</mo><msubsup><mi>q</mi><mrow><mi>i</mi><mn>1</mn></mrow><mn>0</mn></msubsup></mrow></mfrac></mrow><mo>)</mo></mrow></math>",
+                    "type": "mathml"
+                },
+                {
+                    "text": "and <math id=\"inf16\"><mrow><mfrac><mrow><mo>\u2202</mo><msub><mi>D</mi><mi>i</mi></msub></mrow><mrow><mo>\u2202</mo><msub><mi>q</mi><mrow><mi>i</mi><mn>1</mn></mrow></msub></mrow></mfrac><mo>=</mo><mn>0</mn></mrow></math> if and only if <math id=\"inf17\"><mrow><msub><mi>q</mi><mrow><mi>i</mi><mn>1</mn></mrow></msub></mrow><mrow><mo>=</mo><msubsup><mi>q</mi><mrow><mi>i</mi><mn>1</mn></mrow><mn>0</mn></msubsup></mrow></math>. In <a href=\"#fig1\">Figure 3.1</a> an example is shown. It is assumed that <math id=\"inf18\"><mrow><msubsup><mi>q</mi><mrow><mi>i</mi><mi>1</mi></mrow><mn>0</mn></msubsup><mo>=</mo><mn>0.2</mn></mrow></math>. For comparison the dashed curve shows <math id=\"inf19\"><mrow><mi>a</mi><mo stretchy=\"false\">(</mo><msub><mi>q</mi><mrow><mi>i</mi><mn>1</mn></mrow></msub></mrow><mrow><mo>-</mo><msubsup><mi>q</mi><mrow><mi>i</mi><mn>1</mn></mrow><mn>0</mn></msubsup><mo stretchy=\"false\">)</mo></mrow></math> where <i>a</i> is chosen such that the the curves are close to the right of <math id=\"inf20\"><mrow><msubsup><mi>q</mi><mrow><mi>i</mi><mn>1</mn></mrow><mn>0</mn></msubsup></mrow></math>. It can be seen that KLIC acts much like quadratic distance to the right of the minimum, but has more curverture to the left.",
+                    "type": "paragraph"
+                },
+                {
+                    "assets": [
+                        {
+                            "caption": [
+                                {
+                                    "text": "Example of binary KLIC (solid line) compared to quadratic distance. It is assumed that <i>q</i>0 = 0.2.",
+                                    "type": "paragraph"
+                                }
+                            ],
+                            "id": "fig1",
+                            "image": {
+                                "alt": "",
+                                "uri": "%iiif_uri%/00144%2Fijm-00144-fig1.tif",
+                                "size": {
+                                    "width": 628,
+                                    "height": 458
+                                },
+                                "source": {
+                                    "mediaType": "image/jpeg",
+                                    "uri": "%iiif_uri%/00144%2Fijm-00144-fig1.tif/full/full/0/default.jpg",
+                                    "filename": "ijm-00144-fig1.jpg"
+                                }
+                            },
+                            "label": "Figure 3.1",
+                            "type": "image"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "assets": [
+                        {
+                            "caption": [
+                                {
+                                    "text": "Alignment methods.",
+                                    "type": "paragraph"
+                                }
+                            ],
+                            "id": "fig2",
+                            "image": {
+                                "alt": "",
+                                "uri": "%iiif_uri%/00144%2Fijm-00144-fig2.tif",
+                                "size": {
+                                    "width": 780,
+                                    "height": 713
+                                },
+                                "source": {
+                                    "mediaType": "image/jpeg",
+                                    "uri": "%iiif_uri%/00144%2Fijm-00144-fig2.tif/full/full/0/default.jpg",
+                                    "filename": "ijm-00144-fig2.jpg"
+                                }
+                            },
+                            "label": "Figure 3.2",
+                            "type": "image"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "text": "We would like to minimize the information loss <i>D</i> given the restrictions (<a href=\"#equ1\">4</a>), (<a href=\"#equ2\">5</a>) and (<a href=\"#equ3\">6</a>) from <a href=\"#stat2\">definition 1</a>. The restriction (<a href=\"#equ1\">4</a>) makes sure that we satisfy 1) in our list (ability to adjust correctly to the target means). The fact that we minimize the information loss satisfies 2) in the list (ability to retain the original shape of the probability distribution). \u2019Symmetric formulation\u2019 and \u2019multinominal alignment\u2019 follows automatically (point 4 and 5).",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "We can now derive our new alignment method:",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Let <math id=\"inf21\"><mrow><msubsup><mi>p</mi><mrow><mi>i</mi><mn>a</mn></mrow><mn>0</mn></msubsup></mrow></math> (<i>i</i> = 1,\u2026,<i>N</i> and <i>a</i> = 1,\u2026,<i>A</i>) be the initial probabilities in a population. A <i>Relative-Entropy-Minimizing Mean-Correction Alignment</i> to a target <math id=\"inf22\"><mo>(</mo><msub><mrow><mover accent=\"true\"><mi>X</mi><mo>\u00af</mo></mover></mrow><mrow><mn>1</mn></mrow></msub><mo>,</mo><mo>\u2026</mo><mo>,</mo><msub><mrow><mover accent=\"true\"><mi>X</mi><mo>\u00af</mo></mover></mrow><mrow><mi>A</mi></mrow></msub><mo>)</mo></math> is a set of aligned probabilities <i>p<sub>ia</sub></i> that minimize (<a href=\"#equ4\">14</a>), given the restrictions (<a href=\"#equ1\">4</a>), (<a href=\"#equ2\">5</a>) and (<a href=\"#equ3\">6</a>).",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "And we can prove the theorem:",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "<i>Let p</i><sup>0</sup> <i>(i</i>= 1,\u2026,<i>N and a</i>= 1,\u2026,<i>A) be the initial probabilities in a population. In a Relative-Entropy-Minimizing Mean-Correction Alignment the aligned probabilities p<sub>ia</sub> are given by:</i>",
+                    "type": "paragraph"
+                },
+                {
+                    "id": "uequ18",
+                    "label": "(18)",
+                    "mathml": "<math><mrow><msub><mi>p</mi><mrow><mi>i</mi><mi>a</mi></mrow></msub><mo>=</mo><mfrac><mrow><msup><mi>e</mi><mrow><mi>\u03c6</mi><mi>a</mi></mrow></msup><msubsup><mi>p</mi><mrow><mi>i</mi><mi>a</mi></mrow><mn>0</mn></msubsup></mrow><mrow><mstyle displaystyle=\"true\"><msub><mo>\u2211</mo><mi>s</mi></msub><mrow><msup><mi>e</mi><mrow><mi>\u03c6</mi><mi>a</mi></mrow></msup><msubsup><mi>p</mi><mrow><mi>i</mi><mi>s</mi></mrow><mn>0</mn></msubsup></mrow></mstyle></mrow></mfrac></mrow></math>",
+                    "type": "mathml"
+                },
+                {
+                    "text": "<i>where the parameters \u03c6<sub>a</sub> satisfy:</i>",
+                    "type": "paragraph"
+                },
+                {
+                    "id": "uequ19",
+                    "label": "(19)",
+                    "mathml": "<math><mrow><mstyle displaystyle=\"true\"><munder><mo>\u2211</mo><mi>a</mi></munder><mrow><msub><mi>\u03c6</mi><mi>a</mi></msub><mo>=</mo><mn>0</mn></mrow></mstyle></mrow></math>",
+                    "type": "mathml"
+                },
+                {
+                    "text": "<i>Proof.</i> (<a href=\"#bib8\">White, 1982</a>) Define the Lagrange-function <i>L</i>:",
+                    "type": "paragraph"
+                },
+                {
+                    "id": "uequ20",
+                    "label": "(20)",
+                    "mathml": "<math><mrow><mi>L</mi><mo>=</mo><mstyle displaystyle=\"true\"><munder><mo>\u2211</mo><mi>i</mi></munder><mrow><mstyle displaystyle=\"true\"><munder><mo>\u2211</mo><mi>a</mi></munder><mrow><msub><mi>p</mi><mrow><mi>i</mi><mi>a</mi></mrow></msub><mrow><mo>(</mo><mrow><mi>l</mi><mi>o</mi><mi>g</mi><mo stretchy=\"false\">(</mo><msub><mi>p</mi><mrow><mi>i</mi><mi>a</mi></mrow></msub><mo stretchy=\"false\">)</mo><mo>\u2212</mo><mi>l</mi><mi>o</mi><mi>g</mi><mrow><mo>(</mo><mrow><msubsup><mi>p</mi><mrow><mi>i</mi><mi>a</mi></mrow><mn>0</mn></msubsup></mrow><mo>)</mo></mrow></mrow><mo>)</mo></mrow><mo>\u2212</mo></mrow></mstyle><mstyle displaystyle=\"true\"><munder><mo>\u2211</mo><mi>i</mi></munder><mrow><msub><mi>\u03bb</mi><mi>i</mi></msub><mrow><mo>(</mo><mrow><mstyle displaystyle=\"true\"><munder><mo>\u2211</mo><mi>a</mi></munder><mrow><msub><mi>p</mi><mrow><mi>i</mi><mi>a</mi></mrow></msub><mo>\u2212</mo><mn>1</mn></mrow></mstyle></mrow><mo>)</mo></mrow><mo>\u2212</mo><mstyle displaystyle=\"true\"><munder><mo>\u2211</mo><mi>a</mi></munder><mrow><msub><mi>\u03c6</mi><mi>a</mi></msub><mrow><mo>(</mo><mrow><mstyle displaystyle=\"true\"><munder><mo>\u2211</mo><mi>i</mi></munder><mrow><msub><mi>p</mi><mrow><mi>i</mi><mi>a</mi></mrow></msub><mo>\u2212</mo><msub><mover accent=\"true\"><mi>X</mi><mo>\u00af</mo></mover><mi>a</mi></msub></mrow></mstyle></mrow><mo>)</mo></mrow></mrow></mstyle></mrow></mstyle></mrow></mstyle></mrow></math>",
+                    "type": "mathml"
+                },
+                {
+                    "text": "The first order derivatives are given by",
+                    "type": "paragraph"
+                },
+                {
+                    "id": "uequ21",
+                    "label": "(21)",
+                    "mathml": "<math><mrow><mfrac><mrow><mo>\u2202</mo><mi>L</mi></mrow><mrow><mo>\u2202</mo><msub><mi>p</mi><mrow><mi>i</mi><mi>a</mi></mrow></msub></mrow></mfrac><mo>=</mo><mrow><mo>(</mo><mrow><mi>l</mi><mi>o</mi><mi>g</mi><mo stretchy=\"false\">(</mo><msub><mi>p</mi><mrow><mi>i</mi><mi>a</mi></mrow></msub><mo stretchy=\"false\">)</mo><mo>\u2212</mo><mi>l</mi><mi>o</mi><mi>g</mi><mrow><mo>(</mo><mrow><msubsup><mi>p</mi><mrow><mi>i</mi><mi>a</mi></mrow><mn>0</mn></msubsup></mrow><mo>)</mo></mrow></mrow><mo>)</mo></mrow><mo>+</mo><mn>1</mn><msub><mi>\u03bb</mi><mi>i</mi></msub><mo>\u2212</mo><mi>\u03c6</mi><mo>=</mo><mn>0</mn></mrow></math>",
+                    "type": "mathml"
+                },
+                {
+                    "text": "such that:",
+                    "type": "paragraph"
+                },
+                {
+                    "id": "equ5",
+                    "label": "(22)",
+                    "mathml": "<math><mrow><msub><mi>p</mi><mrow><mi>i</mi><mi>a</mi></mrow></msub><mo>=</mo><msup><mi>e</mi><mrow><msub><mi>\u03bb</mi><mi>i</mi></msub><mo>\u2212</mo><mn>1</mn></mrow></msup><msup><mi>e</mi><mrow><mi>\u03c6</mi><mi>a</mi></mrow></msup><msubsup><mi>p</mi><mrow><mi>i</mi><mi>a</mi></mrow><mn>0</mn></msubsup></mrow></math>",
+                    "type": "mathml"
+                },
+                {
+                    "text": "Sum over the alternatives <i>a</i>(using (<a href=\"#equ2\">5</a>)):",
+                    "type": "paragraph"
+                },
+                {
+                    "id": "uequ22",
+                    "label": "(23)",
+                    "mathml": "<math><mrow><mstyle displaystyle=\"true\"><munder><mo>\u2211</mo><mi>a</mi></munder><mrow><msub><mi>p</mi><mrow><mi>i</mi><mi>a</mi></mrow></msub><mo>=</mo></mrow></mstyle><mstyle displaystyle=\"true\"><munder><mo>\u2211</mo><mi>a</mi></munder><mrow><msup><mi>e</mi><mrow><msub><mi>\u03bb</mi><mi>i</mi></msub><mo>\u2212</mo><mn>1</mn></mrow></msup><msup><mi>e</mi><mrow><mi>\u03c6</mi><mi>a</mi></mrow></msup><msubsup><mi>p</mi><mrow><mi>i</mi><mi>a</mi></mrow><mn>0</mn></msubsup><mo>=</mo><mn>1</mn></mrow></mstyle></mrow></math>",
+                    "type": "mathml"
+                },
+                {
+                    "text": "such that",
+                    "type": "paragraph"
+                },
+                {
+                    "id": "uequ23",
+                    "label": "(24)",
+                    "mathml": "<math><mrow><msup><mi>e</mi><mrow><msub><mi>\u03bb</mi><mi>i</mi></msub><mo>\u2212</mo><mn>1</mn></mrow></msup><mo>=</mo><msup><mrow><mrow><mo>[</mo><mrow><mstyle displaystyle=\"true\"><munder><mo>\u2211</mo><mi>a</mi></munder><mrow><msup><mi>e</mi><mrow><mi>\u03c6</mi><mi>a</mi></mrow></msup><msubsup><mi>p</mi><mrow><mi>i</mi><mi>a</mi></mrow><mn>0</mn></msubsup></mrow></mstyle></mrow><mo>]</mo></mrow></mrow><mrow><mo>\u2212</mo><mn>1</mn></mrow></msup></mrow></math>",
+                    "type": "mathml"
+                },
+                {
+                    "text": "Inserting this into (<a href=\"#equ5\">22</a>) yields:",
+                    "type": "paragraph"
+                },
+                {
+                    "id": "uequ24",
+                    "label": "(25)",
+                    "mathml": "<math><mrow><msub><mi>p</mi><mrow><mi>i</mi><mi>a</mi></mrow></msub><mo>=</mo><mfrac><mrow><msup><mi>e</mi><mrow><mi>\u03c6</mi><mi>a</mi></mrow></msup><msubsup><mi>p</mi><mrow><mi>i</mi><mi>a</mi></mrow><mn>0</mn></msubsup></mrow><mrow><mstyle displaystyle=\"true\"><msub><mo>\u2211</mo><mi>s</mi></msub><mrow><msup><mi>e</mi><mrow><mi>\u03c6</mi><mi>s</mi></mrow></msup></mrow></mstyle><msubsup><mi>p</mi><mrow><mi>i</mi><mi>s</mi></mrow><mn>0</mn></msubsup></mrow></mfrac></mrow></math>",
+                    "type": "mathml"
+                },
+                {
+                    "text": "Observe that the Lagrange-parameters <i>\u03c6<sub>a</sub></i> are not unique, as",
+                    "type": "paragraph"
+                },
+                {
+                    "id": "uequ25",
+                    "label": "(26)",
+                    "mathml": "<math><mrow><mfrac><mrow><msup><mi>e</mi><mrow><msub><mi>\u03c6</mi><mi>a</mi></msub></mrow></msup><msubsup><mi>p</mi><mrow><mi>i</mi><mi>a</mi></mrow><mn>0</mn></msubsup></mrow><mrow><munder><mstyle displaystyle=\"true\"><mo>\u2211</mo></mstyle><mi>s</mi></munder><msup><mi>e</mi><mrow><msub><mi>\u03c6</mi><mi>s</mi></msub></mrow></msup><msubsup><mi>p</mi><mrow><mi>i</mi><mi>s</mi></mrow><mn>0</mn></msubsup></mrow></mfrac><mo>=</mo><mfrac><mrow><msup><mi>e</mi><mrow><mi>x</mi><mo>+</mo><msub><mi>\u03c6</mi><mi>a</mi></msub></mrow></msup><msubsup><mi>p</mi><mrow><mi>i</mi><mi>a</mi></mrow><mn>0</mn></msubsup></mrow><mrow><munder><mstyle displaystyle=\"true\"><mo>\u2211</mo></mstyle><mi>s</mi></munder><msup><mi>e</mi><mrow><mi>x</mi><mo>+</mo><msub><mi>\u03c6</mi><mi>s</mi></msub></mrow></msup><msubsup><mi>p</mi><mrow><mi>i</mi><mi>s</mi></mrow><mn>0</mn></msubsup></mrow></mfrac></mrow></math>",
+                    "type": "mathml"
+                },
+                {
+                    "text": "We can therefore assume that",
+                    "type": "paragraph"
+                },
+                {
+                    "id": "uequ26",
+                    "label": "(27)",
+                    "mathml": "<math><mrow><mstyle displaystyle=\"true\"><munder><mo>\u2211</mo><mi>a</mi></munder><mrow><msub><mi>\u03c6</mi><mi>a</mi></msub><mo>=</mo><mn>0</mn></mrow></mstyle></mrow></math>",
+                    "type": "mathml"
+                },
+                {
+                    "text": "Observe that <i>p<sub>ia</sub></i> \u2208[0,1] and that 3) is satisfied (retaining zero).",
+                    "type": "paragraph"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "We will actually prefere to give our method the catchier name <i>Logit Scaling</i>. The method fits perfectly a situation where the initial probabilities are supplied from a logit-model (point 6 in the list). Assume the probabilities are given by",
+                            "type": "paragraph"
+                        },
+                        {
+                            "id": "uequ27",
+                            "label": "(28)",
+                            "mathml": "<math><mrow><msubsup><mi>p</mi><mrow><mi>i</mi><mi>a</mi></mrow><mn>0</mn></msubsup><mo>=</mo><mfrac><mrow><msup><mi>e</mi><mrow><msubsup><mi>V</mi><mrow><mi>i</mi><mi>a</mi></mrow><mn>0</mn></msubsup></mrow></msup></mrow><mrow><mstyle displaystyle=\"true\"><msub><mo>\u2211</mo><mi>s</mi></msub><mrow><msup><mi>e</mi><mrow><msubsup><mi>V</mi><mrow><mi>i</mi><mi>s</mi></mrow><mn>0</mn></msubsup></mrow></msup></mrow></mstyle></mrow></mfrac></mrow></math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "where <i>V</i><sup>0</sup> are some logit-utilities. Then according to <a href=\"#stat4\">theorem 3</a>:",
+                            "type": "paragraph"
+                        },
+                        {
+                            "id": "uequ28",
+                            "label": "(29)",
+                            "mathml": "<math><msubsup><mi>p</mi><mrow><mi>i</mi><mi>a</mi></mrow><mrow/></msubsup><mo>=</mo><mfrac><msup><mi>e</mi><mrow><msubsup><mi>\u03c6</mi><mi>a</mi><mrow/></msubsup><mo>+</mo><msubsup><mi>V</mi><mrow><mi>i</mi><mi>a</mi></mrow><mn>0</mn></msubsup></mrow></msup><mstyle displaystyle=\"true\"><msub><mo>\u2211</mo><mi>s</mi></msub><msup><mi>e</mi><mrow><msub><mi>\u03c6</mi><mi>s</mi></msub><mo>+</mo><msubsup><mi>V</mi><mrow><mi>i</mi><mi>s</mi></mrow><mn>0</mn></msubsup></mrow></msup></mstyle></mfrac></math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "The alignment is done by adding alternative-specific constants to the logit-utilities. As a corollary to this, if the preferences of the agents change in an additive way, the probabilities can be corrected with alignment. This is similar to the result in <a href=\"#bib5\">Li &amp; O\u2019Donoghue (2014)</a> where it is shown that a \u201cbiased intercept\u201d in a logit model can be corrected with some of the alignment methods (\u201cSidewalk hybrid with non linear adjustment\u201d and \u201cSort by the difference between logistic adjusted predicted probability and random number\u201d). Here we give a mathe- matical explanation.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "After an alignment, the scaling parameters <i>\u03c6<sub>a</sub></i> can be calculated and used to solve the following problem: assume we have a logit model describing some events in our microsimulation model. In the base run of the model we align these logit probabilities to given macro levels. In an alternative analysis we would like to calculate the behavioral responses using the logit model. But how can we do that when we have manipulated our logit probabilities in the alignment process?",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Assume the logit model is given by",
+                            "type": "paragraph"
+                        },
+                        {
+                            "id": "uequ29",
+                            "label": "(30)",
+                            "mathml": "<math><mrow><msubsup><mi>p</mi><mrow><mi>i</mi><mi>a</mi></mrow><mn>0</mn></msubsup><mo>=</mo><mfrac><mrow><msup><mi>e</mi><mrow><mi>\u03b2</mi><mi>a</mi><msubsup><mi>x</mi><mi>i</mi><mn>0</mn></msubsup></mrow></msup></mrow><mrow><mstyle displaystyle=\"true\"><msub><mo>\u2211</mo><mi>s</mi></msub><mrow><msup><mi>e</mi><mrow><msub><mi>\u03b2</mi><mi>s</mi></msub><msubsup><mi>x</mi><mi>i</mi><mn>0</mn></msubsup></mrow></msup></mrow></mstyle></mrow></mfrac></mrow></math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "where <i>x</i><sup>0</sup> is a vector characterizing individual <i>i</i> and <i>\u03b2<sub>a</sub></i> is a vector of logit-parameters for each alternative <i>a.</i> Let the aligned probabilities be:",
+                            "type": "paragraph"
+                        },
+                        {
+                            "id": "equ6",
+                            "label": "(31)",
+                            "mathml": "<math><mrow><msub><mi>p</mi><mrow><mi>i</mi><mi>a</mi></mrow></msub><mo>=</mo><mfrac><mrow><msup><mi>e</mi><mrow><mi>\u03c6</mi><mi>a</mi><mo>+</mo><msub><mi>\u03b2</mi><mi>a</mi></msub><msubsup><mi>x</mi><mi>i</mi><mn>0</mn></msubsup></mrow></msup></mrow><mrow><mstyle displaystyle=\"true\"><msub><mo>\u2211</mo><mi>s</mi></msub><mrow><msup><mi>e</mi><mrow><msub><mi>\u03c6</mi><mi>s</mi></msub><mo>+</mo><msub><mi>\u03b2</mi><mi>s</mi></msub><msubsup><mi>x</mi><mi>i</mi><mn>0</mn></msubsup></mrow></msup></mrow></mstyle></mrow></mfrac></mrow></math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "Now assume we would like to analyze the effect of changing <i>x</i><sup>0</sup> to <i>x<sub>i</sub></i> for all individuals <i>i.</i> Having calculated the <i>\u03c6<sup>!</sup><sub>a</sub></i>s we can calculate the new probabilities <i>p</i>^<i><sub>ia</sub></i>:",
+                            "type": "paragraph"
+                        },
+                        {
+                            "id": "uequ31",
+                            "label": "(32)",
+                            "mathml": "<math><mrow><msub><mi>p</mi><mrow><mi>i</mi><mi>a</mi></mrow></msub><mo>=</mo><mfrac><mrow><msup><mi>e</mi><mrow><mi>\u03c6</mi><mi>a</mi><mo>+</mo><msub><mi>\u03b2</mi><mi>a</mi></msub><msubsup><mi>x</mi><mi>i</mi><mn>0</mn></msubsup></mrow></msup></mrow><mrow><mstyle displaystyle=\"true\"><msub><mo>\u2211</mo><mi>s</mi></msub><mrow><msup><mi>e</mi><mrow><msub><mi>\u03c6</mi><mi>s</mi></msub><mo>+</mo><msub><mi>\u03b2</mi><mi>s</mi></msub><mi>x</mi><mi>i</mi></mrow></msup></mrow></mstyle></mrow></mfrac></mrow></math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "These probabilities will give the best possible representation of the marginal effects of the changed characteristics of the individuals.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "If the aligned probabilities <i>p<sub>ia</sub></i> are known, it is possible to calculate the <i>\u03c6<sup>!</sup><sub>a</sub></i>s. It can be derived that, for any <i>i</i>:",
+                            "type": "paragraph"
+                        },
+                        {
+                            "id": "equ7",
+                            "label": "(33)",
+                            "mathml": "<math><mrow><msub><mi>\u03c6</mi><mi>a</mi></msub><mo>=</mo><mi>l</mi><mi>o</mi><mi>g</mi><mrow><mo>(</mo><mrow><mfrac><mrow><msub><mi>p</mi><mrow><mi>i</mi><mi>a</mi></mrow></msub></mrow><mrow><msubsup><mi>p</mi><mrow><mi>i</mi><mi>a</mi></mrow><mn>0</mn></msubsup></mrow></mfrac></mrow><mo>)</mo></mrow><mo>\u2212</mo><mfrac><mn>1</mn><mi>A</mi></mfrac><mstyle displaystyle=\"true\"><munder><mo>\u2211</mo><mi>s</mi></munder><mrow><mi>l</mi><mi>o</mi><mi>g</mi></mrow></mstyle><mrow><mo>(</mo><mrow><mfrac><mrow><msub><mi>p</mi><mrow><mi>i</mi><mi>s</mi></mrow></msub></mrow><mrow><msubsup><mi>p</mi><mrow><mi>i</mi><mi>s</mi></mrow><mn>0</mn></msubsup></mrow></mfrac></mrow><mo>)</mo></mrow></mrow></math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "This is so-called <i>centered log-ratios</i> known from compositional data analysis (<a href=\"#bib1\">Aitchison, 1986</a>). Even if we are not doing the alignment via a direct calculation of the <i>\u03c6<sup>!</sup><sub>a</sub></i>s (an idea we will introduce in the next section) we can calculate them from (3.4).",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "In the binary case (<i>A</i>= 2) it can be proven that",
+                            "type": "paragraph"
+                        },
+                        {
+                            "id": "uequ33",
+                            "label": "(34)",
+                            "mathml": "<math><mrow><msub><mi>\u03c6</mi><mi>a</mi></msub><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mrow><mo>(</mo><mrow><mi>l</mi><mi>o</mi><mi>g</mi><mrow><mo>(</mo><mrow><mfrac><mrow><msub><mi>p</mi><mrow><mi>i</mi><mi>a</mi></mrow></msub></mrow><mrow><msubsup><mi>p</mi><mrow><mi>i</mi><mi>a</mi></mrow><mn>0</mn></msubsup></mrow></mfrac></mrow><mo>)</mo></mrow><mo>\u2212</mo><mi>l</mi><mi>o</mi><mi>g</mi><mrow><mo>(</mo><mrow><mfrac><mrow><msubsup><mi>p</mi><mrow><mi>i</mi><mi>a</mi></mrow><mn>0</mn></msubsup></mrow><mrow><mn>1</mn><mo>-</mo><msubsup><mi>p</mi><mrow><mi>i</mi><mi>a</mi></mrow><mn>0</mn></msubsup></mrow></mfrac></mrow><mo>)</mo></mrow></mrow><mo>)</mo></mrow></mrow></math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "such that the scaling factors are calculated from changes in log-odd-ratios.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s3-1",
+                    "title": "3.1 Logit scaling",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "Let us consider a simple example. We have two alternatives (<i>A</i> = 2; death or survive) and two individuals (<i>N</i> = 2). We assume that the death probability of the first person is <i>p</i><sub>1</sub> = 0.2 (such that the probability of survival is 0.8) and the death probability of the second person is <i>p</i><sub>2</sub> = 0.4. The expected number of deaths in this tiny microsimulation model is 0.2 + 0.4 = 0.6. Let us assume we want to increase the expected number of deaths to 0.85. We will do this by alignment.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The first method we will use is the popular <i>Multiplicative Scaling</i> (<a href=\"#bib5\">Li &amp; O\u2019Donoghue, 2014</a>). The initial point is A in the figure. The alignment process should move us to some point on the downward sloping curve defined by <i>p</i><sub>1</sub> + <i>p</i><sub>2</sub> = 0.85. With multiplicative scaling we have to possibilities<a href=\"#fn4\"><sup>4</sup></a>: scaling up the probabilities of death or scaling down the probabilities of survival. If we scale up the probabilities of death we move from A to B. If we scale down the probabilities of survival we move from A to C. As we can see there is a significant difference in the resulting alignments.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Another problem associated with multiplicative scaling is that the aligned probabilities can exceed 1. If the death probabilitis is scales up to a certain level we reach the point Z. Here the probability of death for person 2 is 1. Any further scaling will imply a death probability larger than 1. Likewise, if the probabilities of survival is scaled enough, we reach the point Y.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Now let us consider <i>Logit Scaling</i>. In the binary case we have from <a href=\"#stat4\">theorem 3</a> that:",
+                            "type": "paragraph"
+                        },
+                        {
+                            "id": "equ8",
+                            "label": "(35)",
+                            "mathml": "<math><mrow><msub><mi>p</mi><mi>i</mi></msub><mo>=</mo><mfrac><mrow><msup><mi>e</mi><mi>\u03c6</mi></msup><msubsup><mi>p</mi><mi>i</mi><mn>0</mn></msubsup></mrow><mrow><msup><mi>e</mi><mi>\u03c6</mi></msup><msubsup><mi>p</mi><mi>i</mi><mn>0</mn></msubsup><mo>+</mo><msup><mi>e</mi><mrow><mo>\u2212</mo><mi>\u03c6</mi></mrow></msup><mo stretchy=\"false\">(</mo><mn>1</mn><mo>\u2212</mo><msubsup><mi>p</mi><mi>i</mi><mn>0</mn></msubsup><mo stretchy=\"false\">)</mo></mrow></mfrac></mrow></math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "The microsimulation model DYNACAN uses an algorithm called \u2019Sidewalk with Non-Linear Transformation\u2019 (<a href=\"#bib5\">Li &amp; O\u2019Donoghue, 2014</a>). This non-linear transformation is given by:",
+                            "type": "paragraph"
+                        },
+                        {
+                            "id": "uequ35",
+                            "label": "(36)",
+                            "mathml": "<math><mrow><mi>p</mi><mo>=</mo><mfrac><mrow><mi>a</mi><msup><mi>p</mi><mn>0</mn></msup></mrow><mrow><mn>1</mn><mo>+</mo><mrow><mo>(</mo><mrow><mi>a</mi><mo>\u2212</mo><mn>1</mn></mrow><mo>)</mo></mrow><msup><mi>p</mi><mn>0</mn></msup></mrow></mfrac><mo>,</mo><mi>a</mi><mo>&gt;</mo><mn>0.</mn></mrow></math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "We can re-write (22) to:",
+                            "type": "paragraph"
+                        },
+                        {
+                            "id": "uequ36",
+                            "label": "(37)",
+                            "mathml": "<math><mrow><msub><mi>p</mi><mi>i</mi></msub><mo>=</mo><mfrac><mrow><msup><mi>e</mi><mn>2</mn></msup><msup><mrow/><mi>\u03c6</mi></msup><msubsup><mi>p</mi><mi>i</mi><mn>0</mn></msubsup></mrow><mrow><mn>1</mn><mo>+</mo><mrow><mo>(</mo><mrow><msup><mi>e</mi><mn>2</mn></msup><msup><mrow/><mi>\u03c6</mi></msup><mo>\u2212</mo><mn>1</mn></mrow><mo>)</mo></mrow><msubsup><mi>p</mi><mi>i</mi><mn>0</mn></msubsup></mrow></mfrac></mrow></math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "such that the transformations are identical for",
+                            "type": "paragraph"
+                        },
+                        {
+                            "id": "uequ37",
+                            "label": "(38)",
+                            "mathml": "<math><mrow><mi>a</mi><mo>=</mo><msup><mi>e</mi><mrow><mn>2</mn><mi>\u03c6</mi></mrow></msup></mrow></math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "In the figure the solid non-linear curve shows all possible alignments for varying values of <i>\u03c6</i>. The current align- ment is the point D. Observe that comparet to multiplicative scaling, the method is a compromise between point A and B. Also observe that the system can be aligned to any number of deaths between 0 and <i>N</i> = 2.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s3-2",
+                    "title": "3.2 An example",
+                    "type": "section"
+                }
+            ],
+            "id": "s3",
+            "title": "3. A multinominal alignment method",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "So far the alignment method seems to have nice theoretical properties, but how about the practical side of the equation? If we substitute the results of <a href=\"#stat4\">theorem 3</a> into <a href=\"#equ1\">equation (4)</a>, we get the following problem: choose parameters <i>\u03c6<sub>a</sub>, a</i>= 1,\u2026,<i>A</i>, such that:",
+                    "type": "paragraph"
+                },
+                {
+                    "id": "uequ38",
+                    "label": "(39)",
+                    "mathml": "<math><mrow><mstyle displaystyle=\"true\"><munder><mo>\u2211</mo><mi>a</mi></munder><mrow><msub><mi>\u03c6</mi><mi>a</mi></msub><mo>=</mo><mn>0</mn></mrow></mstyle></mrow></math>",
+                    "type": "mathml"
+                },
+                {
+                    "id": "uequ39",
+                    "label": "(40)",
+                    "mathml": "<math><mrow><mstyle displaystyle=\"true\"><munder><mo>\u2211</mo><mi>i</mi></munder><mrow><mfrac><mrow><msup><mi>e</mi><mrow><mi>\u03c6</mi><mi>a</mi></mrow></msup><msubsup><mi>p</mi><mrow><mi>i</mi><mi>a</mi></mrow><mn>0</mn></msubsup></mrow><mrow><mstyle displaystyle=\"true\"><msub><mo>\u2211</mo><mi>S</mi></msub><mrow><msup><mi>e</mi><mrow><mi>\u03c6</mi><mi>a</mi></mrow></msup><msubsup><mi>p</mi><mrow><mi>i</mi><mi>S</mi></mrow><mn>0</mn></msubsup></mrow></mstyle></mrow></mfrac><mo>=</mo></mrow></mstyle><msub><mover accent=\"true\"><mi>X</mi><mo>\u00af</mo></mover><mi>a</mi></msub><mo>,</mo><mi>a</mi><mo>=</mo><mn>1</mn><mo>,</mo><mo>\u2026</mo><mo>,</mo><mi>A</mi><mo>\u2212</mo><mn>1</mn></mrow></math>",
+                    "type": "mathml"
+                },
+                {
+                    "text": "This is a system of <i>A</i>non-linear equations with <i>A</i> unknowns. As <i>A</i> is typically small (2 to 10), this is not a big equation system. But from a computational point of view it is a problem that we sum over the number of individuals <i>i.</i> This can be a very big number (up to millions). We therefore need a fast algorithm.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The standard computational way to solve a set of non-linear equations is to use the Newton-Raphson algorithm. This algoritm works by making a local linear approximation of the system (the Jacobian mitrix). This linear system is solved (the Jacobian matrix is inverted), and by repeating the process it is possible to converge to the solution of the non-linear set of equations.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Using the Newton-Raphson algoritm implies the calculation of the <i>A\u00d7A</i> Jacobian matrix in each iteration, where each element in this matrix is a sum over all individuals. A considerably faster approach is <i>Bi-proportional scaling</i>. Look at the original problem: minimize (<a href=\"#equ4\">14</a>) given (<a href=\"#equ1\">4</a>) and (<a href=\"#equ2\">5</a>). This is actually a <i>Matrix Balancing Problem</i> (<a href=\"#bib6\">Schneider &amp; Zenios, 1990</a>). Instead of the initial matrix <i>P</i><sup>0</sup> we should choose another matrix <i>P</i>, such that the difference between the matrices is as small as possible, and such that the row sums are given (see 2.2) and the column sums are given (see 2.1). It is well known (<a href=\"#bib4\">McDougall, 1999</a>) that if the measure of difference between the matrices is Relative Entropy, then there exists a simple algorithm that converges to the solution of the matrix balancing problem. This algorithm is called bi-proportional scaling and is very simple and fast. You start out with the original matric <i>P</i><sup>0</sup>. In this matrix the row sums are 1 because we work with probabilities. The column sums are equal to the expected numbers of outcomes distributed on the <i>A</i> alternatives. First you scale the columns such that the colums sums are correct according to the restrictions, i.e. the expected numbers are equal to the alignment targets. Then you scale the rows such that the column sums are correct (sums to 1 again). But then the column sums are not correct any more. If you repeat this process again and again, you will realize that the errors in the column sums will decrease dramatically, and the system will converge. In real world problems the convergence is very fast (often less than 10 iterations). We therefore have a very surprising result: our very non-linear problem can be solved by simpel iterative scaling.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The method is tested against two versions of the Newton-Raphson algorithm, a standard version and an op- timized version (see <a href=\"#table1\">Table 1</a>). The reason for this comparison is twofold: first, it is proven that Bi-proportional scaling is faster then the standard method (even when it is optimized), and second, it is demonstrated that the methods yields the same results.",
+                    "type": "paragraph"
+                },
+                {
+                    "assets": [
+                        {
+                            "caption": [
+                                {
+                                    "text": "Comparing Bi-proportional scaling with two Newton-Raphson algorithms (<i>N</i> = 1.000.000, <i>A</i> = 4). The centered log-ratios <i>\u03c6<sub>a</sub><sup>s</sup></i> are the output of the Newton-Raphson algorithms. In the case of Bi-Proportional Scaling they are calculated using (3.4).",
+                                    "type": "paragraph"
+                                }
+                            ],
+                            "id": "table1",
+                            "label": "Table 1",
+                            "tables": [
+                                "<table>\n<thead>\n<tr>\n<td/>\n<td>Time (Sec.)</td>\n<td><i>\u03c6</i><sub>1</sub></td>\n<td><i>\u03c6</i><sub>2</sub></td>\n<td><i>\u03c6</i><sub>3</sub></td>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>Newton-Raphson (Standard)</td>\n<td>3.94</td>\n<td>0.53841805</td>\n<td>\u22120.58964392</td>\n<td>0.00557946</td></tr>\n<tr>\n<td>Newton-Raphson (Optimized)</td>\n<td>1.45</td>\n<td>0.54167153</td>\n<td>\u22120.59175494</td>\n<td>0.00659708</td></tr>\n<tr>\n<td>Bi-Proportional Scaling</td>\n<td>0.60</td>\n<td>0.53841807</td>\n<td>\u22120.58964390</td>\n<td>0.00557951</td></tr>\n</tbody>\n</table>"
+                            ],
+                            "type": "table"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "text": "In the standard version of the Newton-Raphson algoritm, the Jacobian matrix is calculated based on abstract differentiation of the non-linear equation system. In each iteration the elements in the matrix is calculated by an average over all individuals. The matrix is inverted using the C#-library Math.Net. In the optimized version, the procedure is the same except for the calculation of the Jacobian matrix. The elements in the matrix is averaged over a sample of 10 pct. of the individuals. This improves the speed, only slightly compromising precision.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The artificial population is 1.000.000 individuals with 4 alternatives. The artificial set of probabilities are cal- culated by drawing 1 mill. numbers from each of 4 normal distributions<a href=\"#fn5\"><sup>5</sup></a>. If (<i>x<sub>i</sub></i><sub>1</sub>,<i>x<sub>i</sub></i><sub>2</sub>,<i>x<sub>i</sub></i><sub>3</sub>,<i>x<sub>i</sub></i><sub>4</sub>) are these 4 number for individual <i>i,</i> the probabilitis are calculated as:",
+                    "type": "paragraph"
+                },
+                {
+                    "id": "uequ40",
+                    "label": "(41)",
+                    "mathml": "<math><mrow><msub><mi>p</mi><mrow><mi>i</mi><mi>a</mi></mrow></msub><mo>=</mo><mfrac><mrow><msub><mi>x</mi><mrow><mi>i</mi><mi>a</mi></mrow></msub></mrow><mrow><mstyle displaystyle=\"true\"><msubsup><mo>\u2211</mo><mrow><mi>s</mi><mo>=</mo><mn>1</mn></mrow><mn>4</mn></msubsup><mrow><msub><mi>x</mi><mrow><mi>i</mi><mi>s</mi></mrow></msub></mrow></mstyle></mrow></mfrac></mrow></math>",
+                    "type": "mathml"
+                },
+                {
+                    "text": "The result of the test is given in <a href=\"#table1\">Table 1</a>. Bi-proportional scaling ran twice as fast as the optimized Newton- Raphson, and more than 6 times faster than the standard Newton-Raphson. If we look at the centered log-ratios we see that these are practically identical for the standard Newton-Raphson and Bi-Propotional Scaling. As mentioned the speed of the optimized Newton-Raphson resulted in a somewhat lower precision. This precision cost is not observed for Bi-Proportional Scaling.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The final point on the list is ease of implementation. It took more than a week to develop and test the Newton- Raphson algorithms. When the idea came to the author, it took half an hour to code bi-proportional scaling, showing the power of the approach.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s4",
+            "title": "4. Bi-proportional scaling: An algorithmic solution",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "A general mathematical foundation of multinominal alignment in microsimulation models is derived. The alignment problem is characterized as the solution to an optimization problem. The analytical solution to this problem is characterized and applied in deriving various properties for the method. It is demonstrated that there exits an algorithm called <i>Bi-Proportional Scaling</i> that converges to the solution of the optimization problem, that the new method is more general than existing methods, and that it is fast and easy to implement.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s5",
+            "title": "5. Conclusion",
+            "type": "section"
+        }
+    ],
+    "references": [
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Aitchison, J",
+                        "preferred": "J Aitchison"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "The statistical analysis of compositional data",
+            "date": "1986",
+            "id": "bib1",
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "London"
+                        ]
+                    },
+                    "formatted": [
+                        "London"
+                    ]
+                },
+                "name": [
+                    "Chapman and Hall London"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "B\u00e6kgaard, H",
+                        "preferred": "H B\u00e6kgaard"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2002",
+            "details": "Micro-macro linkage and the alignment of transition processes. Technical paper(25).",
+            "id": "bib2",
+            "title": "Micro-macro linkage and the alignment of transition processes. Technical paper(25).",
+            "type": "unknown"
+        },
+        {
+            "articleTitle": "The maximum entropy distribution of an asset inferred from option prices",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Buchen, PW",
+                        "preferred": "PW Buchen"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Kelly, M",
+                        "preferred": "M Kelly"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1996",
+            "id": "bib3",
+            "journal": "Journal of Financial and Quantitative Analysis",
+            "pages": {
+                "first": "143",
+                "last": "159",
+                "range": "143\u2013159"
+            },
+            "type": "journal",
+            "volume": "31"
+        },
+        {
+            "articleTitle": "An information-theoretic alternative to generalized method of moments estimation",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Kitamura, Y",
+                        "preferred": "Y Kitamura"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Stutzer, M",
+                        "preferred": "M Stutzer"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1997",
+            "id": "bib4",
+            "journal": "Econometrica: Journal of the Econometric Society",
+            "pages": {
+                "first": "861",
+                "last": "874",
+                "range": "861\u2013874"
+            },
+            "type": "journal"
+        },
+        {
+            "articleTitle": "Evaluating binary alignment methods in microsimulation models",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Li, J",
+                        "preferred": "J Li"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "O\u2019Donoghue, C",
+                        "preferred": "C O\u2019Donoghue"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2014",
+            "id": "bib5",
+            "journal": "Journal of Artiftcial Societies and Social Simulation",
+            "pages": "15",
+            "type": "journal",
+            "volume": "17"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "McDougall, RA",
+                        "preferred": "RA McDougall"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1999",
+            "details": "Entropy theory and RAS are friends. GTAP Working Papers, 6",
+            "id": "bib6",
+            "title": "Entropy theory and RAS are friends. GTAP Working Papers",
+            "type": "unknown"
+        },
+        {
+            "articleTitle": "Forecasting using relative entropy",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Robertson, JC",
+                        "preferred": "JC Robertson"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Tallman, EW",
+                        "preferred": "EW Tallman"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Whiteman, CH",
+                        "preferred": "CH Whiteman"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2005",
+            "id": "bib7",
+            "journal": "Journal of Money, Credit, and Banking",
+            "pages": {
+                "first": "383",
+                "last": "401",
+                "range": "383\u2013401"
+            },
+            "type": "journal",
+            "volume": "37"
+        },
+        {
+            "articleTitle": "A comparative study of algorithms for matrix balancing",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Schneider, MH",
+                        "preferred": "MH Schneider"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Zenios, SA",
+                        "preferred": "SA Zenios"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1990",
+            "id": "bib8",
+            "journal": "Operations research",
+            "pages": {
+                "first": "439",
+                "last": "455",
+                "range": "439\u2013455"
+            },
+            "type": "journal",
+            "volume": "38"
+        },
+        {
+            "articleTitle": "A simple nonparametric approach to derivative security valuation",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Stutzer, M",
+                        "preferred": "M Stutzer"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1996",
+            "id": "bib9",
+            "journal": "The Journal of Finance",
+            "pages": {
+                "first": "1633",
+                "last": "1652",
+                "range": "1633\u20131652"
+            },
+            "type": "journal",
+            "volume": "51"
+        },
+        {
+            "articleTitle": "Maximum likelihood estimation of misspecified models",
+            "authors": [
+                {
+                    "name": {
+                        "index": "White, H",
+                        "preferred": "H White"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1982",
+            "id": "bib10",
+            "journal": "Econometrica: Journal of the Econometric Society",
+            "pages": {
+                "first": "1",
+                "last": "25",
+                "range": "1\u201325"
+            },
+            "type": "journal"
+        },
+        {
+            "articleTitle": "Applications of entropy in finance: A review",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Zhou, R",
+                        "preferred": "R Zhou"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Cai, R",
+                        "preferred": "R Cai"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Tong, G",
+                        "preferred": "G Tong"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2013",
+            "id": "bib11",
+            "journal": "Entropy",
+            "pages": {
+                "first": "4909",
+                "last": "4931",
+                "range": "4909\u20134931"
+            },
+            "type": "journal",
+            "volume": "15"
+        }
+    ],
+    "acknowledgements": [
+        {
+            "text": "The author would like to thank Joao Miguel Ejarque, Michael Andersen, Marianne Frank Hansen and two anonymous referees for many thoughtful comments and edits. We would also like to thank the The Knowledge Centre for Housing Economics under Realdania for generous financial support.",
+            "type": "paragraph"
+        }
+    ],
+    "-meta": {
+        "patched": true
+    },
+    "stage": "published"
+}

@@ -1,0 +1,2348 @@
+{
+    "status": "vor",
+    "id": "00143",
+    "version": 1,
+    "type": "research-article",
+    "doi": "10.34196/ijm.00143",
+    "authorLine": "M. Esteban Mu\u00f1oz H. et al.",
+    "title": "Constructing a synthetic city for estimating spatially disaggregated heat demand",
+    "published": "2016-12-31T00:00:00Z",
+    "versionDate": "2016-12-31T00:00:00Z",
+    "statusDate": "2016-12-31T00:00:00Z",
+    "volume": 9,
+    "issue": 3,
+    "elocationId": "n/a",
+    "pdf": "http://web:8082/00143/ijm-00143.pdf",
+    "subjects": [
+        {
+            "id": "methodology",
+            "name": "Methodology"
+        }
+    ],
+    "abstract": {
+        "content": [
+            {
+                "text": "We present a procedure for creating a spatially referenced building stock with population living therein \u201ca synthetic city\u201d for the case of Germany. The level of spatial disaggregation is the European NUTS\u20133 level for which data from the newest census (2011) exist. Our application is on the estimation of heat demand.",
+                "type": "paragraph"
+            },
+            {
+                "text": "We use the German microcensus (2010) which contains both: (a) detailed sociodemographic characteristics of individuals and (b) detailed information on the type of buildings in which these individuals live. With this data we can generate not only a synthetic population but also a synthetic building stock. The microcensus records the construction year and number of dwelling units of buildings. This allow us to classify the buildings for the estimation of heat demand.",
+                "type": "paragraph"
+            },
+            {
+                "text": "This procedure has two major advantages: (1) there exist many models for the estimation of heat demand at building level, we can make use of these models, and (2) with the microcensus as the only required data source we are able to estimate heat demand at a spatially disaggregated level for the entire country.",
+                "type": "paragraph"
+            },
+            {
+                "text": "We conclude our paper with an internal validation of the microsimulation model by means of the Total Absolute Error <i>TAE</i> and present the first results from this model aggregated at the NUTS\u20133 level for the entire country. We briefly discuss the observed patters of the results and attempt to hypothesize on the reasons behind this patterns. We also discuss the difficulties of an external validation of this model and how we can address them in the future.",
+                "type": "paragraph"
+            }
+        ]
+    },
+    "copyright": {
+        "license": "CC-BY-4.0",
+        "holder": "Mu\u00f1oz et al.",
+        "statement": "This article is distributed under the terms of the <a href=\"http://creativecommons.org/licenses/by/4.0/\">Creative Commons Attribution License</a>, which permits unrestricted use and redistribution provided that the original author and source are credited."
+    },
+    "authors": [
+        {
+            "affiliations": [
+                {
+                    "address": {
+                        "components": {
+                            "country": "Germany"
+                        },
+                        "formatted": [
+                            "Germany"
+                        ]
+                    },
+                    "name": [
+                        "Technical Urban Infrastructure Systems Group, HafenCity University"
+                    ]
+                }
+            ],
+            "emailAddresses": [
+                "marcelo.hidalgo@hcu-hamburg.de"
+            ],
+            "name": {
+                "index": "Mu\u00f1oz H., M. Esteban",
+                "preferred": "M. Esteban Mu\u00f1oz H."
+            },
+            "type": "person"
+        },
+        {
+            "affiliations": [
+                {
+                    "address": {
+                        "components": {
+                            "country": "Germany"
+                        },
+                        "formatted": [
+                            "Germany"
+                        ]
+                    },
+                    "name": [
+                        "Technical Urban Infrastructure Systems Group, HafenCity University"
+                    ]
+                }
+            ],
+            "emailAddresses": [
+                "ivan.dochev@hcu-hamburg.de"
+            ],
+            "name": {
+                "index": "Dochev, Ivan",
+                "preferred": "Ivan Dochev"
+            },
+            "type": "person"
+        },
+        {
+            "affiliations": [
+                {
+                    "address": {
+                        "components": {
+                            "country": "Germany"
+                        },
+                        "formatted": [
+                            "Germany"
+                        ]
+                    },
+                    "name": [
+                        "Technical Urban Infrastructure Systems Group, HafenCity University"
+                    ]
+                }
+            ],
+            "emailAddresses": [
+                "hannes.seller@hcu-hamburg.de"
+            ],
+            "name": {
+                "index": "Seller, Hannes",
+                "preferred": "Hannes Seller"
+            },
+            "type": "person"
+        },
+        {
+            "affiliations": [
+                {
+                    "address": {
+                        "components": {
+                            "country": "Germany"
+                        },
+                        "formatted": [
+                            "Germany"
+                        ]
+                    },
+                    "name": [
+                        "Technical Urban Infrastructure Systems Group, HafenCity University"
+                    ]
+                }
+            ],
+            "emailAddresses": [
+                "irene.peters@hcu-hamburg.de"
+            ],
+            "name": {
+                "index": "Peters, Irene",
+                "preferred": "Irene Peters"
+            },
+            "type": "person"
+        }
+    ],
+    "keywords": [
+        "heating demand",
+        "synthetic building stock",
+        "spatial microsimulation",
+        "GREGWT"
+    ],
+    "body": [
+        {
+            "content": [
+                {
+                    "text": "The development of a synthetic city representing the urban fabric of urban agglomerations has proved helpful for the development of urban models, the focus of this endeavour has been the use of remote sensing data or other type of image and laser data available at a low aggregation level in order to generate urban structures. <a href=\"#bib20\">Laycock and Day (2003)</a> presents an overview of used data sources and methods for the generation of urban structures. <a href=\"#bib31\">Parish and M\u00fcller (2001)</a> used a procedural approach based on L-systems to generate urban structures. The authors use different maps as input for the generation of the geometrical representation of the city. Our aim is to expand these methods by creating appropriate data regarding the building stock and the population living and working on this building stock that can be used as input to these models for the generation of synthetic cities. <a href=\"#bib17\">Kang, Ma, Tong, and Liu (2012)</a> create a set of synthetic cities in order to asses the relationship between urban morphologies and human mobility. <a href=\"#bib18\">Kii, Akimoto, and Doi (2014)</a> develop a simple synthetic city for the assessment of urban transport policies, the authors generate the synthetic city and use this data as input for a land use model, subsequently the authors apply the postulated policies to the model in order to asses them. The authors argue in favor of including user behaviour in urban models. <a href=\"#bib11\">Farber, Neutens, Miller, and Li (2013)</a> generate eighty different synthetic cities in order to analyze the Social Interaction Potential of these environments based on commuting patterns and land use distribution. <a href=\"#bib1\">Bagchi, Sprintson, and Singh (2013)</a> use a synthetic city for the simulation of fire dispersion on an electrical distribution grid, in this case the authors represent the building stock and an electrical grid. <a href=\"#bib23\">Mei <i>et al</i>. (2015)</a> develop a synthetic city in order to study the diffusion of infectious diseases. The authors use the synthetic city in order to understand the outbreak of influenza in dense populated urban areas in China. In this case the authors do not require a detailed description of the building stock geometry but only the building use. <a href=\"#bib39\">St\u00f6tzer, Hauer, Richter, and Styczynski (2015)</a> define a simple synthetic city for the estimation of the potential load shift of commercial and residential electricity demand. Because the authors are only interested in electric consumption, they do not create a geometrical representation of the building stock nor do they have any type of geo-reference in the synthetic city. In this paper the authors define the electric consumption as a function of household size. Many of the examples presented above could be implemented on a more realistic environment describing the characteristics of the building stock and the population living on them.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The development of a robust method for the creation of synthetic cities representing specific urban agglomerations with known population aggregates constitutes the scope of this paper. This paper presents first results from this endeavour. It is shown the developed method for the representation of a synthetic city, describing individuals and the characteristics of their households and the building they reside on. Here we do not discuss in detail the pursued method for the representation of geo-referenced geometrical objects. We present some discussion regarding the different alternatives to generate a geometrical representation of the synthetic city extending the methods described in this paper.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The method used in this analysis is a spatial microsimulation method. Microsimulation, introduced by <a href=\"#bib30\">Orcutt <i>et al</i>. (1977)</a> is a commonly used method among social scientist used to simulate a large range of social phenomena at a micro-level. The first step of this method is normally the generation of a synthetic population representing the population under analysis. The spatial microsimulation methodology extends this concept by allocating estimated synthetic populations to geographical areas (<a href=\"#bib7\">Clarke &amp; Holm, 1987</a>). This simulation method is applied by a large number of disciplines. <a href=\"#bib4\">Brown and Harding (2002)</a> and <a href=\"#bib38\">Smith, Pearce, and Harland (2011)</a> argue the use of this type of models for the analysis of health systems, the modeling of resources consumption is addressed by <a href=\"#bib44\">Williamson, Clarke, and McDonald (1996)</a>; <a href=\"#bib45\">Williamson, Mitchell, and McDonald (2002)</a> for the estimation of water consumption and <a href=\"#bib6\">Chingcuanco and Miller (2012)</a> and <a href=\"#bib25\">Mu\u00f1oz H. and Peters (2014)</a> for the estimation of energy demand. Many transport models use this approach for the generation of synthetic populations (<a href=\"#bib12\">Farooq, Bierlaire, Hurtubia, &amp; Fl\u00f6tter\u00f6d, 2013</a>). For overview of spatial microsimulation models, its applications and methods see (<a href=\"#bib41\">Tanton, 2014</a>; <a href=\"#bib29\">O\u2019Donoghue, Morrissey, &amp; Lennon, 2014)</a>. In this paper we make use of an \u201cgeneralised regression weighting\u201d (GREGWT) algorithm to create a synthetic population. We use the available R library (<a href=\"#bib27\">Mu\u00f1oz H., Vidyattama, &amp; Tanton, 2015a</a>), implementing the GREGWT algorithm, originally developed by the Australian Bureau of Statistics (ABS) (<a href=\"#bib3\">Bell, 2000</a>). This algorithm is used by the National Center for Social and Economic Modeling (NATSEM) on their spatial microsimulation model spatialMSM (<a href=\"#bib40\">Tanton, 2007</a>).",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The presented paper is structured as follows: <a href=\"#s2\">Section 2</a> presents and describes the used data for the analysis and the undertaken steps in preparing the data for the simulation, the next section, <a href=\"#s3\">Section 3</a>, describes the computation method to estimate heat demand for each individual on the microcensus and the assumptions made for this computation. <a href=\"#s4\">Section 4</a> describes the method used for the reweighting of the microcensus with the computed heating demand values. We benchmark the survey to benchmarks describing individuals, dwelling units and buildings. These process is described under <a href=\"#s5\">Section 5</a>. The results from the simulation are described and discussed under <a href=\"#s6\">Section 6</a>. On <a href=\"#s7\">Section 7</a> we highlight the benefits and shortcomings of the developed method and propose extensions to this method in order to address some shortcomings of the applied method. In the last section, <a href=\"#s8\">Section 8</a>, we make a brief resume of the paper, its main findings and possible applications for the infrastructure planning of urban environments.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s1",
+            "title": "1. Introduction: Creating a synthetic building stock",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "In the literature we find two type of models for the construction of synthetic data: (1) synthetic reconstruction and (2) reweighting (<a href=\"#bib33\">Rahman, 2008</a>). The GREGWT algorithm forms part of the latter group. This algorithm is a deterministic method that reweights a sample survey to match aggregated statistics available at small geographical areas.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "In order to create a synthetic population with the GREGWT method we need two data sets: (1) a survey sample containing individual records and (2) aggregated statistics available at a NUTS\u20133 geographical level. For the purpose of this simulation we want to create a synthetic population describing the demographic characteristics of the individuals as well as characteristics of the dwelling units these individuals reside on. In order to generate such a data set we select data describing three different aggregation units: (1) individuals, (2) household/dwelling units and (3) buildings. <a href=\"#table1\">Table 1</a> list the used variables from the two data sets.",
+                    "type": "paragraph"
+                },
+                {
+                    "assets": [
+                        {
+                            "caption": [
+                                {
+                                    "text": "Used benchmarks from the 2011 Census and corresponding micro census attributes.",
+                                    "type": "paragraph"
+                                }
+                            ],
+                            "footnotes": [
+                                {
+                                    "id": "table1_fn1",
+                                    "label": "*",
+                                    "text": [
+                                        {
+                                            "text": "Micro Census Code",
+                                            "type": "paragraph"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "id": "table1_fn2",
+                                    "label": "**",
+                                    "text": [
+                                        {
+                                            "text": "Refers only to Census",
+                                            "type": "paragraph"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "id": "table1",
+                            "label": "Table 1",
+                            "tables": [
+                                "<table>\n<thead>\n<tr>\n<th>MC Code<sup><a href=\"#table1_fn1\">*</a></sup></th>\n<th>Census Code</th>\n<th>Unit<sup><a href=\"#table1_fn2\">**</a></sup></th>\n<th>Description</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>EF1</td>\n<td>/</td>\n<td>/</td>\n<td>Federal State (NUTS 2)</td>\n</tr>\n<tr>\n<td>EF952</td>\n<td>/</td>\n<td>Person</td>\n<td>Weight</td>\n</tr>\n<tr>\n<td>EF44</td>\n<td>ALTER_KURZ</td>\n<td>Person</td>\n<td>Age (five classes of years)</td>\n</tr>\n<tr>\n<td>EF49</td>\n<td>FAMSTND_AUSF</td>\n<td>Person</td>\n<td>Marital status (in detail)</td>\n</tr>\n<tr>\n<td>EF46</td>\n<td>GESCHLECHT</td>\n<td>Person</td>\n<td>Sex</td>\n</tr>\n<tr>\n<td>EF20</td>\n<td>HHGROESS_KLASS</td>\n<td>Person</td>\n<td>Size of private household</td>\n</tr>\n<tr>\n<td>EF368</td>\n<td>STAATSANGE_KURZ</td>\n<td>Person</td>\n<td>Citizenship</td>\n</tr>\n<tr>\n<td>EF492</td>\n<td>WOHNFLAECHE_<span class=\"small-caps\">20</span>S</td>\n<td>Dwelling</td>\n<td>Floor area of the dwelling (20<i>m</i><sup>2</sup> intervals)</td>\n</tr>\n<tr>\n<td>EF494</td>\n<td>BAUJAHR_MZ</td>\n<td>Building</td>\n<td>Year of construction (microcensus classes)</td>\n</tr>\n<tr>\n<td>EF635</td>\n<td>ZAHLWOHNGN_HHG</td>\n<td>Building</td>\n<td>Number of dwellings in a building</td>\n</tr>\n</tbody>\n</table>"
+                            ],
+                            "type": "table"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "text": "The synthetic population is represented as the reweighted German micro census, we reweight this survey with help of an R library implementing the GREGWT method (<a href=\"#bib27\">Mu\u00f1oz H., Vidyattama, &amp; Tanton, 2015a</a>). The GREGWT method is classified as a deterministic reweight method (<a href=\"#bib43\">Tanton, Williamson, &amp; Harding, 2014</a>). Deterministic reweighting methods aim to reweight a survey to match known aggregated values of geographical areas. The sample size and availability of the data of these geographical areas vary between countries. For the European Union a standard incorporating the different national definitions exist. This is the Nomenclature of Territorial Units for Statistics (NUTS<sup><a href=\"#fn1\">1</a></sup>) standard. This nomenclature describes four hierarchies: (0) national territories; (1) NUTS\u20131; (2) NUTS\u20132; and NUTS\u20133. A reweighting of a national survey could be implemented at any of the NUTS levels. Depending on the research question a suitable geographical area should be selected. These geographical areas have different names on each country and the authors referee them according to the use case location. These areas are known as: (a) Summary Files in the U.S.; (b) Profile Tables or Basic Summary Tabulations (BSTs) in Canada; (c) and Small Area Statistics in the U.K. (<a href=\"#bib32\">Pritchard &amp; Miller, 2012</a>).",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s2",
+            "title": "2. Data: Census (2011) & micro census (2010)",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "The heating demand is computed for each individual in the microcensus. For the computation of heating demand of each individual we need to consider the characteristics of the building stock. In order to take these characteristics into account we make use of the IWU building typology (<a href=\"#bib10\">Diefenbach, Cischinsky, Rodenfels, &amp; Clausnitzer, 2010</a>; <a href=\"#bib21\">Loga, Diefenbach, &amp; Born, 2011</a>). We classify each individual to one of the 36 IWU building typology types. For the estimation of heating demand per dwelling unit we need to take into account the household size and divide the estimated heating demand by its household size. For a household with four members we compute the heating demand for each member of the family as <i>kWh</i> per dwelling unit <i>m</i><sup>2</sup>. In order to get the heating demand of the dwelling unit we sum the heating demand of each member divided by household size. On this model the computed heating demand of each family member is the same, nonetheless if we where to take user behaviour into account this values would differ from each other (<a href=\"#bib24\">Mu\u00f1oz H., 2014</a>). This is necessary because the computed heating demand is the estimated heating demand per squared meter of dwelling unit. An alternative to this would be to divide the dwelling unit area by household size.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "In order to classify the microcensus into the building types we use three parameters from the microcensus: (1) building construction year, (2) dwelling unit size, and (3) number of dwelling units per building. A summary of the rules applied to the microcensus to achieve this classification are listed in <a href=\"#table4\">Table 4</a>.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The main parameter used for the classification is the building construction year. We use the number of dwelling units to differentiate between single family houses and multi-family houses. Finally, the dwelling unit size multiplied by the number of dwelling units is used to distinguish between small mutli-family housed, large multifamily houses and high rise buildings. The specific heating values of the IWU building typology used in this analysis are listed in <a href=\"#table2\">Table 2</a>.",
+                    "type": "paragraph"
+                },
+                {
+                    "assets": [
+                        {
+                            "caption": [
+                                {
+                                    "text": "IWU-de building typology matrix for Germany.",
+                                    "type": "paragraph"
+                                }
+                            ],
+                            "footnotes": [
+                                {
+                                    "text": [
+                                        {
+                                            "text": "<i>source</i>: (<a href=\"#bib21\">Loga <i>et al</i>., 2011</a>) (a) Speci..c Heat demand (spez. W\u00e4rmebedarfskennzahl) [<i>kWh</i>/<i>m</i><sup>2</sup><i>a</i>] (EFH) Single family house \u201cEinfamilienhaus\u201d; (RH) Terrace house \u201cReihenhaus\u201d; (KMH) Apartment house \u201cMehrfamilienhaus\u201d; (GMH) Large apartment house \u201cGro\u00dfes Mehrfamilienhaus\u201d; (HH) High-rise \u201cHochhaus\u201d;",
+                                            "type": "paragraph"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "id": "table2",
+                            "label": "Table 2",
+                            "tables": [
+                                "<table>\n<thead>\n<tr>\n<th/>\n<th>&lt;1859</th>\n<th>1860\u20131918</th>\n<th>1919\u20131948</th>\n<th>1949\u20131957</th>\n<th>1958\u20131968</th>\n<th>1969\u20131978</th>\n<th>1979\u20131983</th>\n<th>1984\u20131994</th>\n<th>1995\u20132001</th>\n<th>2002\u20132009</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>EFH<sup>a</sup></td>\n<td>183</td>\n<td>180</td>\n<td>164</td>\n<td>181</td>\n<td>146</td>\n<td>155</td>\n<td>118</td>\n<td>132</td>\n<td>110</td>\n<td>88</td>\n</tr>\n<tr>\n<td>RH</td>\n<td/>\n<td>153</td>\n<td>137</td>\n<td>156</td>\n<td>106</td>\n<td>127</td>\n<td>127</td>\n<td>98</td>\n<td>78</td>\n<td>86</td>\n</tr>\n<tr>\n<td>KMH</td>\n<td>190</td>\n<td>143</td>\n<td>168</td>\n<td>156</td>\n<td>129</td>\n<td>134</td>\n<td>118</td>\n<td>122</td>\n<td>92</td>\n<td>79</td>\n</tr>\n<tr>\n<td>GMH</td>\n<td/>\n<td>127</td>\n<td>144</td>\n<td>142</td>\n<td>131</td>\n<td>117</td>\n<td/>\n<td/>\n<td/>\n<td/>\n</tr>\n<tr>\n<td>HH</td>\n<td/>\n<td/>\n<td/>\n<td/>\n<td>114</td>\n<td>113</td>\n<td/>\n<td/>\n<td/>\n<td/>\n</tr>\n</tbody>\n</table>"
+                            ],
+                            "type": "table"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "text": "The advantage of using a building typology for the estimation of heating demand is that we don\u2019t need to take assumptions about the building geometry. This is because the values listed under the building typology represent specific heating demand. In order to compute the absolute heating demand we simply multiply this value by the building square meters. In order to explicitly account for building geometry we need to allocate individuals to a digital cadastre describing the building properties, see (<a href=\"#bib25\">Mu\u00f1oz H. &amp; Peters, 2014</a>).",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The disadvantages of using the digital cadastre for the computation of heating demand are: (1) the digital cadastre of other type of building information data are not as homogeneous as demographic data and building typologies, there are many building typologies available for Europe (<a href=\"#bib5\">Caputo, Costa, &amp; Ferrari, 2013</a>; <a href=\"#bib16\">Hrabovszky-Horv\u00e1th, P\u00e1lv\u00f6lgyi, Csoknyai, &amp; Talamon, 2013</a>; <a href=\"#bib19\">Kragh &amp; Wittchen, 2013</a>; M. K. <a href=\"#bib37\">Singh, Mahapatra, &amp; Teller, 2013</a>; <a href=\"#bib8\">Dall\u2019O\u2019, Galante, &amp; Torri, 2012</a>; <a href=\"#bib9\">Dascalaki, Droutsa, Balaras, &amp; Kontoyiannidis, 2011</a>; <a href=\"#bib2\">Balaras <i>et al</i>., 2007</a>), as for its demographic data. (2) the complexity of data representing the building stock makes it difficult to make projections into the future, <a href=\"#bib28\">Mu\u00f1oz H., Vidyattama, and Tanton (2015b)</a> present an application of a synthetic building stock projected into the future with a simplified building geometry.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s3",
+            "title": "3. Heating demand",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "The aim of the GREGWT is to reweight a survey implementing method number 5 from A. <a href=\"#bib36\">Singh and Mohl (1996)</a>. <a href=\"#bib42\">Tanton, Vidyattama, Nepal, and McNamara (2011)</a> makes a detailed description of the algorithm and its applications. <a href=\"#bib34\">Rahman, Harding, Tanton, and Liu (2013)</a> presents an application of the GREGWT algorithm for the construction of synthetic population, the authors show a good performance of the method for the estimation of household stress in Australia. The mathematical description of the GREGWT algorithm presented below is taken from <a href=\"#bib35\">Rahman, Harding, Tanton, and Shuangzhe (2010)</a> and the algorithm description from <a href=\"#bib26\">Mu\u00f1oz H., Tanton, and Vidattama (2015)</a>.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Aim of the GREGWT algorithm is to find a set of new weights <i>w</i> that can be used to match a survey <i>X</i> to a set of given benchmarks <i>T</i> so that <math id=\"inf1\"><mrow><mi>T</mi><mo>=</mo><mstyle displaystyle=\"true\"><mo>\u2211</mo> <mrow><msub><mi>w</mi><mi>j</mi></msub><msub><mi>X</mi><mi>j</mi></msub></mrow></mstyle></mrow></math> (e.g. small area aggregates) by minimizing the weight difference between these new weights <i>w</i> and the sample design weights <i>d</i> from the survey. For the distance <i>D</i> between design and estimated weights the GREGWT algorithm makes use of the truncated Chi-Squared distance function, represented in Equation 1.",
+                    "type": "paragraph"
+                },
+                {
+                    "id": "equ1",
+                    "label": "(1)",
+                    "mathml": "<math><mrow><mi>D</mi><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mstyle displaystyle=\"true\"><munder><mo>\u2211</mo><mi>j</mi></munder><mrow><mfrac><mrow><msup><mrow><mo stretchy=\"false\">(</mo><msub><mi>w</mi><mi>j</mi></msub><mo>\u2212</mo><msub><mi>d</mi><mi>j</mi></msub><mo stretchy=\"false\">)</mo></mrow><mn>2</mn></msup></mrow><mrow><msub><mi>d</mi><mi>j</mi></msub></mrow></mfrac></mrow></mstyle></mrow></math>",
+                    "type": "mathml"
+                },
+                {
+                    "text": "The equation needed to minimize the weight distance constraint to some given marginal totals of a geographical area (<i>T</i>) can be expressed as the Lagrangian function of the Chi-Squared function, as follows:",
+                    "type": "paragraph"
+                },
+                {
+                    "id": "equ2",
+                    "label": "(2)",
+                    "mathml": "<math><mrow><mi>L</mi><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mstyle displaystyle=\"true\"><munder><mo>\u2211</mo><mi>j</mi></munder><mrow><mfrac><mrow><msup><mrow><mo stretchy=\"false\">(</mo><msub><mi>w</mi><mi>j</mi></msub><mo>\u2212</mo><msub><mi>d</mi><mi>j</mi></msub><mo stretchy=\"false\">)</mo></mrow><mn>2</mn></msup></mrow><mrow><msub><mi>d</mi><mi>j</mi></msub></mrow></mfrac><mo>+</mo></mrow></mstyle><mstyle displaystyle=\"true\"><munder><mo>\u2211</mo><mi>k</mi></munder><mrow><msub><mi>\u03bb</mi><mi>k</mi></msub><mrow><mo>(</mo><mrow><msub><mi>T</mi><mi>k</mi></msub><mo>\u2212</mo><mstyle displaystyle=\"true\"><munder><mo>\u2211</mo><mi>j</mi></munder><mrow><msub><mi>w</mi><mrow><mi>j</mi><mo>,</mo><mi>k</mi></mrow></msub><msub><mi>X</mi><mrow><mi>j</mi><mo>,</mo><mi>k</mi></mrow></msub></mrow></mstyle></mrow><mo>)</mo></mrow></mrow></mstyle></mrow></math>",
+                    "type": "mathml"
+                },
+                {
+                    "text": "By differentiating <a href=\"#equ1\">(1)</a> with respect to <i>w<sub>j</sub></i> and applying the first order condition, we have:",
+                    "type": "paragraph"
+                },
+                {
+                    "id": "equ3",
+                    "label": "(3)",
+                    "mathml": "<math><mrow><mfrac><mrow><mi>\u03b4</mi><mi>L</mi></mrow><mrow><mi>\u03b4</mi><msub><mi>w</mi><mi>j</mi></msub></mrow></mfrac><mo>=</mo><mrow><mo>(</mo><mrow><mfrac><mrow><msub><mi>w</mi><mi>j</mi></msub><mo>\u2212</mo><msub><mi>d</mi><mi>j</mi></msub></mrow><mrow><msub><mi>d</mi><mi>j</mi></msub></mrow></mfrac></mrow><mo>)</mo></mrow><mo>\u2212</mo><mstyle displaystyle=\"true\"><munder><mo>\u2211</mo><mi>j</mi></munder><mrow><msub><mi>\u03bb</mi><mi>j</mi></msub><msub><mi>X</mi><mi>j</mi></msub><mo>=</mo><mn>0</mn></mrow></mstyle></mrow></math>",
+                    "type": "mathml"
+                },
+                {
+                    "text": "With this equation we can formulate an equation for the new weights. Where <math id=\"inf2\"><mrow><msub><msup><mi>X</mi><mo>\u2032</mo></msup><mi>j</mi></msub><mo>=</mo><mstyle displaystyle=\"true\"><mo>\u2211</mo> <mrow><msub><mi>\u03bb</mi><mi>k</mi></msub><msub><mi>X</mi><mrow><mi>j</mi><mo>,</mo><mi>k</mi></mrow></msub></mrow></mstyle></mrow></math>.",
+                    "type": "paragraph"
+                },
+                {
+                    "id": "equ4",
+                    "label": "(4)",
+                    "mathml": "<math><mrow><msub><mi>w</mi><mi>j</mi></msub><mo>=</mo><msub><mi>d</mi><mi>j</mi></msub><mo>+</mo><msub><mi>d</mi><mi>j</mi></msub><msub><msup><mi>X</mi><mo>\u2032</mo></msup><mi>j</mi></msub></mrow></math>",
+                    "type": "mathml"
+                },
+                {
+                    "text": "The new weights computed by the GREGWT algorithm are float values. Without any restrictions the algorithm will produce negative weights, both implementations of the algorithm introduce boundary constrains as user input. The user can define an upper and lower bound, if the algorithm computes weights outside these bounds the weights will be truncated to the corresponding bounds. In this case the algorithm will iterate with the new computed weights until a predefined convergence parameter is met or until there is no improvement in the iteration.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The implementation of the GREGWT algorithm in the R language adds an extra calibration method for the new estimated weights. This last process makes sure that the sum of the new weights is equal to the total population of the specific area. Equation 5 shows the alignment used to calibrate the resulting weights.",
+                    "type": "paragraph"
+                },
+                {
+                    "id": "equ5",
+                    "label": "(5)",
+                    "mathml": "<math><mrow><mi>w</mi><msub><mi>o</mi><mi>i</mi></msub><mo>=</mo><mfrac><mrow><mi>p</mi><mo>\u00d7</mo><msub><mi>w</mi><mi>i</mi></msub></mrow><mrow><mstyle displaystyle=\"true\"><mo>\u2211</mo> <mrow><msub><mi>w</mi><mi>i</mi></msub></mrow></mstyle></mrow></mfrac></mrow></math>",
+                    "type": "mathml"
+                },
+                {
+                    "text": "Where <i>wo</i> are the new calibrated weights, <i>p</i> is the population total and <i>w</i> are the computed new weights from the GREGWT algorithm.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s4",
+            "title": "4. Simulation: Using gregwt to reweight the microcensus",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "The defined benchmarks for the reweighting of the survey are aggregated by different units: (1) Individuals, (2) Families, and (3) Buildings (see <a href=\"#table1\">Table 1</a> and <a href=\"#s2\">Section 2</a>). The used R implementation of GREGWT algorithm is able to perform an integrated reweight. This is important for maintaining unit aggregations, f.ex. to maintain the family structure given by the survey. Nonetheless, this does not allow us to benchmark to different aggregation units. Attempts to address this issue exist in the literature, <a href=\"#bib13\">Guo and Bhat (2007)</a> benchmark an initial survey to household characteristics and fit the result to individual benchmarks in the integerization<sup><a href=\"#fn2\">2</a></sup> of the weights via a Monte Carlo process. This method allows to \u201cbenchmark\u201d to both aggregation units. The disadvantage of this approach relies on its inegerization process, this process is only required for the construction of agents at the cost of a decline of the algorithm performance. For the presented simulation we do not require individual agents and therefore any form of integerization would be contra productive for the final result. For a description of other similar approaches see <a href=\"#bib32\">Pritchard and Miller (2012)</a> and Ma and Srinivasan (2015). <a href=\"#bib32\">Pritchard and Miller (2012)</a> propose a \u201cConditional Monte Carlo Synthesis Procedure\u201d to fit the synthetic population to both: household and individual benchmarks. Again this procedure assumes an integerization of the survey. As described above we aim to develop a method that does not require an integerization step in order to avoid: (a) a decline in the performance of the algorithm, (b) an explosion of computational time, and (c) introduction of a stochastic element to a deterministic approach. <a href=\"#bib22\">Ma and Srinivasan (2015)</a> developed another method to create a synthetic population: \u201cfitness-based synthesis\u201d (FBS). The method presented by Ma and Srinivasan proposed the computation of two fitness values expressing the adding and subtracting probability of individuals from the random selected population from the reweighted population survey.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The GREGWT algorithm needs to transform the input matrix <i>X</i> (micro census) to a binary matrix, each 1 on the matrix corresponds to an individual. This works well if we benchmark the survey to aggregates counting individuals (e.g. number of individuals on age category 18 to 20) but fails if we try to benchmark to an aggregate counting dwelling units (e.g. number of dwelling units with floor space of 60 <i>m</i><sup>2</sup>). We need to control for this difference. With the available information of the input survey we can manipulate the binary matrix in order to make the benchmarking to different aggregation units possible. For variables benchmarked to dwelling units we divide them by household size, an individual with household size 3 will get a 1/3 instead of 1 in the <i>X</i> input matrix. For all variables counting buildings we divide the values by the household size and number of dwelling units, the same individual living in a building with 6 dwelling units will have a value of 1/3/6. This calibration is formalized in Equation 6 and 7, where <i>HH</i> is household size and <i>DU</i> is number of dwelling units.",
+                    "type": "paragraph"
+                },
+                {
+                    "id": "equ6",
+                    "label": "(6)",
+                    "mathml": "<math><mrow><msubsup><mi>X</mi><mi>i</mi><mrow><mi>d</mi><mi>u</mi></mrow></msubsup><mo>=</mo><msub><mi>X</mi><mi>i</mi></msub><mo>\u00f7</mo><mi>H</mi><msub><mi>H</mi><mi>i</mi></msub></mrow></math>",
+                    "type": "mathml"
+                },
+                {
+                    "id": "equ7",
+                    "label": "(7)",
+                    "mathml": "<math><mrow><msubsup><mi>X</mi><mi>i</mi><mrow><mi>b</mi><mi>u</mi></mrow></msubsup><mo>=</mo><msub><mi>X</mi><mi>i</mi></msub><mo>\u00f7</mo><mi>H</mi><msub><mi>H</mi><mi>i</mi></msub><mo>\u00f7</mo><mi>D</mi><msub><mi>U</mi><mi>i</mi></msub></mrow></math>",
+                    "type": "mathml"
+                },
+                {
+                    "text": "With this simple modification of the survey we are able to benchmark the input survey to three aggregation levels. In theory this method allows us to benchmark to any number of aggregation units.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s5",
+            "title": "5. Benchmarking to different aggregation units",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "In this section we present the main results from the performed spatial microsimulation. The results show the estimated heating demand for the German residential sector. First we present an internal validation of the spatial microsimulation model and the resulting heating demand. The results are aggregated back to the geographical areas in order to visualize them.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "In order to internally validate the model we compare the results at the NUTS\u20133 level. We compare the output results with the benchmarks used in the reweighting process. For the comparison we make use of the Total Absolute Error (<i>TAE</i>) and the Percentage Absolute Error (<i>PTAE</i>), two measures of the model internal error. The <i>TAE</i> is the absolute difference between the simulated <math id=\"inf3\"><mover accent=\"true\"><mi>T</mi><mo>^</mo></mover></math> and observed <i>T</i> benchmarks, the <i>PTAE</i> is an extension of the <i>TAE</i> measure. The <i>PTAE</i> divides the computed <i>TAE</i> by the total population <i>pop</i> of the geographical area <i>i</i>. The mathematical expressions of both measures are expressed below.",
+                    "type": "paragraph"
+                },
+                {
+                    "id": "equ8",
+                    "label": "(8)",
+                    "mathml": "<math><mrow><mi>T</mi><mi>A</mi><msub><mi>E</mi><mi>i</mi></msub><mo>=</mo><mstyle displaystyle=\"true\"><munder><mo>\u2211</mo><mi>i</mi></munder><mrow><mrow><mo>|</mo> <mrow><msub><mi>T</mi><mi>i</mi></msub><mo>\u2212</mo><msub><mover accent=\"true\"><mi>T</mi><mo>^</mo></mover><mi>i</mi></msub></mrow> <mo>|</mo></mrow></mrow></mstyle></mrow></math>",
+                    "type": "mathml"
+                },
+                {
+                    "id": "equ9",
+                    "label": "(9)",
+                    "mathml": "<math><mrow><mi>P</mi><mi>T</mi><mi>A</mi><msub><mi>E</mi><mi>i</mi></msub><mo>=</mo><mi>T</mi><mi>A</mi><msub><mi>E</mi><mi>i</mi></msub><mo>\u00f7</mo><mi>p</mi><mi>o</mi><msub><mi>p</mi><mi>i</mi></msub><mo>\u00d7</mo><mn>100</mn></mrow></math>",
+                    "type": "mathml"
+                },
+                {
+                    "text": "The resulting <i>PTAE</i> values show a very low miss-allocation of individuals at this aggregation level. There are only four areas with a <i>PTAE</i> value higher than 0.2% and 52 areas with a value higher than 0.1%. <a href=\"#fig1\">Figure 1</a> shows: (a) the distribution of the <i>PTAE</i> values for all simulation areas; and (b) a scatter plot comparing the observed and simulated marginal sums. <a href=\"#fig1\">Figure 1b</a> compares the simulated and observed small area benchmarks. The plot shows a very good performance of the estimation. The mean <i>TAE</i> of the estimation of 182.05, this means that on average 182.05 individuals are misrepresented on a small area. In order to compared the misrepresentation of individuals per small are we divide this value by the total population on the corresponding area <i>PTAE</i>. The mean <i>PTAE</i> value is of 0.04. This means that on average 0.04% of individuals are misrepresented on the small areas.",
+                    "type": "paragraph"
+                },
+                {
+                    "assets": [
+                        {
+                            "id": "fig1",
+                            "image": {
+                                "alt": "",
+                                "uri": "%iiif_uri%/00143%2Fijm-00143-fig1.tif",
+                                "size": {
+                                    "width": 882,
+                                    "height": 400
+                                },
+                                "source": {
+                                    "mediaType": "image/jpeg",
+                                    "uri": "%iiif_uri%/00143%2Fijm-00143-fig1.tif/full/full/0/default.jpg",
+                                    "filename": "ijm-00143-fig1.jpg"
+                                }
+                            },
+                            "label": "Figure 1",
+                            "title": "(a) Distribution of <i>PTAE</i> and (b) difference between estimated and simulated population.",
+                            "type": "image"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "text": "The Internal validation of the model shows extremely good results, these results do not reflect on the accuracy of the estimated heating demand. An external validation of the model is necessary in order to validate the estimation of heating demand. This paper shows that the use of a spatial microsimulation model for the estimation of heating demand at low aggregation levels is possible. The underlying model used for the estimation of heating demand has not yet been validated, still the estimation is able to show plausible differences in heating demand between small geographical areas. This method can be applied at a city level, differentiating the heating demand at a neighbourhood level.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "An external validation of the model is not possible because energy consumption data is not available at this disaggregation level. Available energy consumption data exist at a higher aggregation level. This data does not differentiate between consumption sectors, neither does it between primary and end-energy consumption. Our model simulates residential end-heating demand. There is also a difference between heating demand and heating consumption, our model does not consider efficiency rates of heating supply infrastructure. Further steps are planned to make an external validation possible. The first step we envision towards a validation of estimated heating demand is the integration of the non residential sector to the model. With an estimate of the non residential sector we might be able to validate the sum of residential and non residential heating demand at a higher aggregation level. We also plan to include efficiency rates of the underlying heating supply infrastructure as well as the energy carrier used to supply the heating.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "In order to show the results in a more meaningful way we divide the estimated total heating demand by the number of dwelling units in each geographical area and by a constant (60) representing the average dwelling unit size in <i>m</i><sup>2</sup> for Germany<sup><a href=\"#fn3\">3</a></sup>. The resulting specific heating demand allows us to asses the performance of the model. The distribution of this value for all simulation areas is plotted on <a href=\"#fig2\">Figure 2</a>, the values and distribution shown in this plot are consistent to known consumption values for the German building stock.",
+                    "type": "paragraph"
+                },
+                {
+                    "assets": [
+                        {
+                            "id": "fig2",
+                            "image": {
+                                "alt": "",
+                                "uri": "%iiif_uri%/00143%2Fijm-00143-fig2.tif",
+                                "size": {
+                                    "width": 983,
+                                    "height": 411
+                                },
+                                "source": {
+                                    "mediaType": "image/jpeg",
+                                    "uri": "%iiif_uri%/00143%2Fijm-00143-fig2.tif/full/full/0/default.jpg",
+                                    "filename": "ijm-00143-fig2.jpg"
+                                }
+                            },
+                            "label": "Figure 2",
+                            "title": "Mean heating consumption per dwelling unit.",
+                            "type": "image"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "text": "We present two figures showing the estimated heating demand at a NUTS-3 level. The first map (<a href=\"#fig3\">Figure 3</a>) shows the distribution of specific heating demand for the entire country. The second map shows the detail of four specific areas of Germany. In addition to the estimated heating demand we plot urban agglomerations retrieved from Landsat images, we make use of the GADM dataset containing this information (<a href=\"#bib14\">Hijmans <i>et al</i>., 2014</a>).",
+                    "type": "paragraph"
+                },
+                {
+                    "assets": [
+                        {
+                            "id": "fig3",
+                            "image": {
+                                "alt": "",
+                                "uri": "%iiif_uri%/00143%2Fijm-00143-fig3.tif",
+                                "size": {
+                                    "width": 888,
+                                    "height": 832
+                                },
+                                "source": {
+                                    "mediaType": "image/jpeg",
+                                    "uri": "%iiif_uri%/00143%2Fijm-00143-fig3.tif/full/full/0/default.jpg",
+                                    "filename": "ijm-00143-fig3.jpg"
+                                }
+                            },
+                            "label": "Figure 3",
+                            "title": "Simulated heat demand for Germany at a NUTS-3 level as per capita heat demand in <i>kWh</i>/<i>cap</i>.",
+                            "type": "image"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "text": "On the first map (see <a href=\"#fig3\">Figure 3</a>) we can identify a differentiation between West- and East-Germany. The specific heating consumption is higher in East-Germany. The specific heating consumption on East-Germany is higher because the building stock on this part of Germany is older and less energy efficient. This regional differentiation on heating demand shows that the presented model is sensitive to regional characteristics of the building stock. There is a big difference between East and West regarding the heating supply infrastructure. The share of households connected to a district heating network in East-Germany is much higher than in West-Germany.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Also the construction quality of the building stock differs significantly between these regions. This clear differentiation between small areas shows that the model is able to correctly capture the differences of the building stock.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The second map (<a href=\"#fig4\">Figure 4</a>), showing a detail of the distribution of heating demand for the two largest cities in Germany: (a) Berlin and its surroundings, (b) Hamburg and its surroundings and two urban agglomerations: (c) the south-east part of North Rhine-Westphalia \u201cNordrhein Westfalen\u201d and (d) Thuringia \u201cTh\u00fcringen\u201d, a federal state of East-Germany. In the case of the German cities, Berlin and Hamburg, the official NUTS\u20133 level is equivalent to the NUTS\u20132 and NUTS\u20131 level. Both areas have a disproportional large population size compared to all the other geographical areas. Statistics at a lower aggregation level are available for both cities and a second reweighting algorithm could be perform for these two areas separately. In both cases we see that the areas corresponding to the cities have a higher specific heating demand and the peripheries show a lower specific heating demand, we find an explanation for this differentiation in the construction year of the corresponding building stock. We expect to have an old building stock within the historical urban fabric of the cities, this part of the city will be well within the corresponding geographical area. Both cities have outgrown the boundaries of these geographical areas. The development of urban settlements at the periphery of the city, constructed in more recent years, are constrained to newer building codes regulating the heating transmission losses of the building shell and therefore consuming less heat.",
+                    "type": "paragraph"
+                },
+                {
+                    "assets": [
+                        {
+                            "id": "fig4",
+                            "image": {
+                                "alt": "",
+                                "uri": "%iiif_uri%/00143%2Fijm-00143-fig4.tif",
+                                "size": {
+                                    "width": 751,
+                                    "height": 918
+                                },
+                                "source": {
+                                    "mediaType": "image/jpeg",
+                                    "uri": "%iiif_uri%/00143%2Fijm-00143-fig4.tif/full/full/0/default.jpg",
+                                    "filename": "ijm-00143-fig4.jpg"
+                                }
+                            },
+                            "label": "Figure 4",
+                            "title": "Simulated heat demand for selected regions of Germany.",
+                            "type": "image"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "text": "We see a similar effect on the large urban agglomeration of North Rhine-Westphalia (see <a href=\"#fig4\">Figure 4c</a>), the high values of heating demand correspond to the original settlements in the region. These settlements have the oldest building stock in the region. Large part of these settlements are under heritage protection, making the retrofit of the buildings extremely expensive and difficult. We can\u2019t see this differentiation on the East-German urban agglomeration in the Thuringia state (see <a href=\"#fig3\">Figure 3d</a>). The urban agglomeration is not as big as in North Rhine-Westphalia and the urban and population growth hasn\u2019t been as big as in other German regions. In the case of North Rhine-Westphalia we see the opposite phenomena in which more rural areas in the periphery have higher consumption values.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The results presented in this paper show that an estimation of heating demand at this level of aggregation with relative little input data is possible. Future developments of the models aim to integrate projections of the heating demand consumption at the same area of aggregation. A theoretical background to perform a projection of heating demand with a spatial microsimulation model exists (<a href=\"#bib28\">Mu\u00f1oz H., Vidyattama, &amp; Tanton, 2015b</a>). <a href=\"#bib28\">Mu\u00f1oz H., Vidyattama, and Tanton (2015b)</a> project the heating demand at a low aggregation level for the city of Hamburg using a spatial microsimulation model. Recent developments show an alternative method to project heating demand by simulating retrofits through the manipulation of the input weights of the micro census (<a href=\"#bib26\">Mu\u00f1oz H., Tanton, &amp; Vidattama, 2015</a>). This method presents a clear advantage while simulating and projecting heating demand for the entire country at a low level of aggregation because we do not have to make assumptions for the projection of retrofit levels at a low level of aggregation. A possible implementation of this method is to align the initial weight distribution to proposed policies implemented at a federal level. In this scenario the aggregated retrofit rates are defined at a federal level and the allocation of these retrofits could be simulated as function of demographic characteristics at a lower geographical level.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s6",
+            "title": "6. Results: Heating demand",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "The next envisioned step is to group the synthetic individuals into: (a) households and (b) into buildings. The advantage of grouping individuals into single buildings are: (1) the ability to represent energy consumption at a building level and (2) the possibility to geo-reference these buildings at a finer spatial resolution.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "One of the applications for this synthetic data is the dimensioning and planning of decentralized energy supply systems. In order to make data usable for this application we need to represent energy demand at a finer spatial resolution. We may achieve this by obtaining aggregated benchmarks at a finer spatial resolution, this may not be possible due to data protection concerns. For this reason we want to develop new methods to further disaggregate heating consumption values. For this disaggregation we see two possible paths, the first step for both paths is the grouping of individual data into buildings.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The first approach makes use of the digital cadastre. The problem of this method is that a digital cadastre may not always be able for the desire area, this is specially true for rural areas. The second approach makes use of satellite images for the computation of spatial probability distributions of relevant building parameters (e.g. density, construction year, etc.) and stochastically allocated buildings to build up areas based on the computed spatial probabilities. The advantage of this method is that satellite images are available for the entire world, making the transferability of the method higher.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "With a more efficient building stock in place the roll of user-behaviour will take a dominant place in the estimation of heating demand (<a href=\"#bib15\">Hong, D\u2019Oca, Turner, &amp; Taylor-Lange, 2015</a>). The presented method already solves a common problem of urban models aimed at the estimation of residential heating demand with an explicit consideration of human behaviour, this is the allocation of families to the building stock. <a href=\"#bib25\">Mu\u00f1oz H. and Peters (2014)</a> use a spatial microsimulation model to describe households and the building characteristics they reside on for the estimation of heating demand varying user related parameters on the model according to the demographics of the user. A more elaborated approach is presented by <a href=\"#bib24\">Mu\u00f1oz H. (2014)</a>, in this paper the author enriches the German micro census with a time-use survey for the generation of household schedules, these schedules are used as input in a thermal simulation model.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s7",
+            "title": "7. Next steps: Integrated reweighting",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "The presented method describes a process to represent core characteristics of the building stock in an abstract fashion without fully describing, neither the real building geometry not an accurate location of the individual buildings. We make use of a new R library (<a href=\"#bib27\">Mu\u00f1oz H., Vidyattama, &amp; Tanton, 2015a</a>) for the reweighting of the German micro census survey (2010) to small geographical areas, corresponding to the European NUTS-3 level. Available aggregated data regarding demographic information as well as information on the building stock are available at this level from the last German census (2011). In order estimate heat demand at a micro level we classify each individual in the micro census to a building type. We make use of a well established building typology for this classification (<a href=\"#bib21\">Loga <i>et al</i>., 2011</a>). Because we know the dwelling unit size of every individual in the micro census we are able to transform the specific heat demand provided by the building typology into an absolute value, we control this value by household size, dividing the absolute estimate heat demand by the household size of each individual.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "We make use of an innovative feature of the R library which allows us to benchmark the micro census to three different levels of aggregation: (1) individuals, (2) households and (3) building units. Preliminary results from the simulation are presented as maps at the NUTS-3 level. On these results we are able to identify a distinction between East and West Germany as well as a distinction between historical urban agglomerations, with a high heat demand, and new developments in the suburbs, with a more moderate heat demand. We conclude this paper by offering the reader a prospective on the challenges ahead and the potential of the application of this method for other kind of urban related phenomena.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "A construction of synthetic cities by means of a spatial microsimulation model seems promising, the generation of such a rich data-set with a relative low amount of input data is extremely useful, specially for regions without detailed information about their building stock. In addition to a simplified representation of the building stock this model connects the households populating the building stock, increasing the usability of this synthetic data to an entire new community, we are specially interested in the emerging community exploring the nexus between health and indoor environment of the building stock.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s8",
+            "title": "8. Conclusions: Creating rich data-sets for the Urban simulation community",
+            "type": "section"
+        }
+    ],
+    "references": [
+        {
+            "articleTitle": "Modeling the impact of fire spread on an electrical distribution network",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Bagchi, A",
+                        "preferred": "A Bagchi"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Sprintson, A",
+                        "preferred": "A Sprintson"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Singh, C",
+                        "preferred": "C Singh"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2013",
+            "doi": "10.1016/j.epsr.2013.01.009",
+            "id": "bib1",
+            "journal": "Electric Power Systems Research",
+            "pages": {
+                "first": "15",
+                "last": "24",
+                "range": "15\u201324"
+            },
+            "type": "journal",
+            "volume": "100"
+        },
+        {
+            "articleTitle": "European residential buildings and empirical assessment of the hellenic building stock, energy consumption, emissions and potential energy savings",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Balaras, CA",
+                        "preferred": "CA Balaras"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Gaglia, AG",
+                        "preferred": "AG Gaglia"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Georgopoulou, E",
+                        "preferred": "E Georgopoulou"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Mirasgedis, S",
+                        "preferred": "S Mirasgedis"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Sarafidis, Y",
+                        "preferred": "Y Sarafidis"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Lalas, DP",
+                        "preferred": "DP Lalas"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2007",
+            "doi": "10.1016/j.buildenv.2005.11.001",
+            "id": "bib2",
+            "journal": "Building and Environment",
+            "pages": {
+                "first": "1298",
+                "last": "1314",
+                "range": "1298\u20131314"
+            },
+            "type": "journal",
+            "volume": "42"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Bell, P",
+                        "preferred": "P Bell"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2000",
+            "details": "Australian Bureau of Statistics (ABS), Canberra",
+            "id": "bib3",
+            "title": "GREGWT and TABLE macros \u2014 User guide [Computer software manual]",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Brown, L",
+                        "preferred": "L Brown"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Harding, A",
+                        "preferred": "A Harding"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2002",
+            "details": "Journal of Artificial Societies and Social Simulation, 5, 4, http://jasss.soc.surrey.ac.uk/5/4/6.html",
+            "id": "bib4",
+            "title": "Social modelling and public policy: Application of microsimulation modelling in australia",
+            "type": "unknown",
+            "uri": "http://jasss.soc.surrey.ac.uk/5/4/6.html"
+        },
+        {
+            "articleTitle": "A supporting method for defining energy strategies in the building sector at urban scale",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Caputo, P",
+                        "preferred": "P Caputo"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Costa, G",
+                        "preferred": "G Costa"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Ferrari, S",
+                        "preferred": "S Ferrari"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2013",
+            "doi": "10.1016/j.enpol.2012.12.006",
+            "id": "bib5",
+            "journal": "Energy Policy",
+            "pages": {
+                "first": "261",
+                "last": "270",
+                "range": "261\u2013270"
+            },
+            "type": "journal",
+            "volume": "55"
+        },
+        {
+            "articleTitle": "A microsimulation model of urban energy use: Modelling residential space heating demand in ilute",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Chingcuanco, F",
+                        "preferred": "F Chingcuanco"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Miller, EJ",
+                        "preferred": "EJ Miller"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2012",
+            "doi": "10.1016/j.compenvurbsys.2011.11.005",
+            "id": "bib6",
+            "journal": "Computers, Environment and Urban Systems",
+            "pages": {
+                "first": "186",
+                "last": "194",
+                "range": "186\u2013194"
+            },
+            "type": "journal",
+            "volume": "36"
+        },
+        {
+            "articleTitle": "Microsimulation methods in spatial analysis and planning. <i>Geografiska Annaler. Series B</i>",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Clarke, M",
+                        "preferred": "M Clarke"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Holm, E",
+                        "preferred": "E Holm"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1987",
+            "doi": "10.2307/490448",
+            "id": "bib7",
+            "journal": "Human Geography",
+            "pages": {
+                "first": "145",
+                "last": "164",
+                "range": "145\u2013164"
+            },
+            "type": "journal",
+            "volume": "69"
+        },
+        {
+            "articleTitle": "A methodology for the energy performance classification of residential building stock on an urban scale",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Dall\u2019O\u2019, G",
+                        "preferred": "G Dall\u2019O\u2019"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Galante, A",
+                        "preferred": "A Galante"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Torri, M",
+                        "preferred": "M Torri"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2012",
+            "doi": "10.1016/j.enbuild.2012.01.034",
+            "id": "bib8",
+            "journal": "Energy and Buildings",
+            "pages": {
+                "first": "211",
+                "last": "219",
+                "range": "211\u2013219"
+            },
+            "type": "journal",
+            "volume": "48"
+        },
+        {
+            "articleTitle": "Building typologies as a tool for assessing the energy performance of residential buildings \u2013 a case study for the hellenic building stock",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Dascalaki, EG",
+                        "preferred": "EG Dascalaki"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Droutsa, KG",
+                        "preferred": "KG Droutsa"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Balaras, CA",
+                        "preferred": "CA Balaras"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Kontoyiannidis, S",
+                        "preferred": "S Kontoyiannidis"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2011",
+            "doi": "10.1016/j.enbuild.2011.09.002",
+            "id": "bib9",
+            "journal": "Energy and Buildings",
+            "pages": {
+                "first": "3400",
+                "last": "3409",
+                "range": "3400\u20133409"
+            },
+            "type": "journal",
+            "volume": "43"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Diefenbach, N",
+                        "preferred": "N Diefenbach"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Cischinsky, H",
+                        "preferred": "H Cischinsky"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Rodenfels, M",
+                        "preferred": "M Rodenfels"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Clausnitzer, K-D.",
+                        "preferred": "K-D. Clausnitzer"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "Datenbasis geb\u00e4udebe-stand: Datenerhebung zur energetischen qualit\u00e4t und zu den modernisierungstrends im deutschen wohngeb\u00e4udebestand",
+            "date": "2010",
+            "edition": "1",
+            "id": "bib10",
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "Institut Wohnen und Umwelt (IWU) and Bremer Energie Institut (BEI)"
+                        ]
+                    },
+                    "formatted": [
+                        "Institut Wohnen und Umwelt (IWU) and Bremer Energie Institut (BEI)"
+                    ]
+                },
+                "name": [
+                    "Darmstadt"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "articleTitle": "The social interaction potential of metropolitan regions: A time-geographic measurement approach using joint accessibility",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Farber, S",
+                        "preferred": "S Farber"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Neutens, T",
+                        "preferred": "T Neutens"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Miller, HJ",
+                        "preferred": "HJ Miller"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Li, X",
+                        "preferred": "X Li"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2013",
+            "doi": "10.1080/00045608.2012.689238",
+            "id": "bib11",
+            "journal": "Annals of the Association of American Geographers",
+            "pages": {
+                "first": "483",
+                "last": "504",
+                "range": "483\u2013504"
+            },
+            "type": "journal",
+            "volume": "103"
+        },
+        {
+            "articleTitle": "Simulation based population synthesis",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Farooq, B",
+                        "preferred": "B Farooq"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Bierlaire, M",
+                        "preferred": "M Bierlaire"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Hurtubia, R",
+                        "preferred": "R Hurtubia"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Fl\u00f6tter\u00f6d, G",
+                        "preferred": "G Fl\u00f6tter\u00f6d"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2013",
+            "doi": "10.1016/j.trb.2013.09.012",
+            "id": "bib12",
+            "journal": "Transportation Research Part B: Methodological",
+            "pages": {
+                "first": "243",
+                "last": "263",
+                "range": "243\u2013263"
+            },
+            "type": "journal",
+            "volume": "58"
+        },
+        {
+            "articleTitle": "Population synthesis for microsimulating travel behavior",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Guo, J",
+                        "preferred": "J Guo"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Bhat, C",
+                        "preferred": "C Bhat"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2007",
+            "doi": "10.3141/2014-12",
+            "id": "bib13",
+            "journal": "Transportation Research Record: Journal of the Transportation Research Board, 2014",
+            "pages": {
+                "first": "92",
+                "last": "101",
+                "range": "92\u2013101"
+            },
+            "type": "journal"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Hijmans, R",
+                        "preferred": "R Hijmans"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Kapoor, J",
+                        "preferred": "J Kapoor"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Wieczorek, J",
+                        "preferred": "J Wieczorek"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Garcia, N",
+                        "preferred": "N Garcia"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Maunahan, A",
+                        "preferred": "A Maunahan"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Rala, A",
+                        "preferred": "A Rala"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Mandel, A",
+                        "preferred": "A Mandel"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2014",
+            "id": "bib14",
+            "title": "http://www.gadm.org/",
+            "type": "web",
+            "uri": "http://www.gadm.org/",
+            "website": "Gadm database of global administrative areas, version 2.0. gadm"
+        },
+        {
+            "articleTitle": "An ontology to represent energy-related occupant behavior in buildings. part i: Introduction to the <i>{</i>DNAs<i>}</i>framework",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Hong, T",
+                        "preferred": "T Hong"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "D\u2019Oca, S",
+                        "preferred": "S D\u2019Oca"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Turner, WJ",
+                        "preferred": "WJ Turner"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Taylor-Lange, SC",
+                        "preferred": "SC Taylor-Lange"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2015",
+            "doi": "10.1016/j.buildenv.2015.02.019",
+            "id": "bib15",
+            "journal": "Building and Environment",
+            "pages": {
+                "first": "764",
+                "last": "777",
+                "range": "764\u2013777"
+            },
+            "type": "journal",
+            "volume": "92"
+        },
+        {
+            "articleTitle": "Generalized residential building typology for urban climate change mitigation and adaptation strategies: The case of Hungary",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Hrabovszky-Horv\u00e1th, S",
+                        "preferred": "S Hrabovszky-Horv\u00e1th"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "P\u00e1lv\u00f6lgyi, T",
+                        "preferred": "T P\u00e1lv\u00f6lgyi"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Csoknyai, T",
+                        "preferred": "T Csoknyai"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Talamon, A",
+                        "preferred": "A Talamon"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2013",
+            "doi": "10.1016/j.enbuild.2013.03.011",
+            "id": "bib16",
+            "journal": "Energy and Buildings",
+            "pages": {
+                "first": "475",
+                "last": "485",
+                "range": "475\u2013485"
+            },
+            "type": "journal",
+            "volume": "62"
+        },
+        {
+            "articleTitle": "Intra-urban human mobility patterns: An urban morphology perspective",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Kang, C",
+                        "preferred": "C Kang"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Ma, X",
+                        "preferred": "X Ma"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Tong, D",
+                        "preferred": "D Tong"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Liu, Y",
+                        "preferred": "Y Liu"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2012",
+            "doi": "10.1016/j.physa.2011.11.005",
+            "id": "bib17",
+            "journal": "Physica A: Statistical Mechanics and its Applications",
+            "pages": {
+                "first": "1702",
+                "last": "1717",
+                "range": "1702\u20131717"
+            },
+            "type": "journal",
+            "volume": "391"
+        },
+        {
+            "articleTitle": "Measuring the impact of urban policies on transportation energy saving using a land use-transport model",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Kii, M",
+                        "preferred": "M Kii"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Akimoto, K",
+                        "preferred": "K Akimoto"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Doi, K",
+                        "preferred": "K Doi"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2014",
+            "doi": "10.1016/j.iatssr.2014.03.002",
+            "id": "bib18",
+            "journal": "{IATSS} Research",
+            "pages": {
+                "first": "98",
+                "last": "109",
+                "range": "98\u2013109"
+            },
+            "type": "journal",
+            "volume": "37"
+        },
+        {
+            "articleTitle": "Development of two danish building typologies for residential buildings",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Kragh, J",
+                        "preferred": "J Kragh"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Wittchen, K",
+                        "preferred": "K Wittchen"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2013",
+            "doi": "10.1016/j.enbuild.2013.04.028",
+            "id": "bib19",
+            "journal": "Energy and Buildings, 68, Part A",
+            "pages": {
+                "first": "79",
+                "last": "86",
+                "range": "79\u201386"
+            },
+            "type": "journal"
+        },
+        {
+            "articleTitle": "Rapid generation of urban models",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Laycock, RG",
+                        "preferred": "RG Laycock"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Day, AM",
+                        "preferred": "AM Day"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2003",
+            "doi": "10.1016/S0097-8493(03)00037-2",
+            "id": "bib20",
+            "journal": "Computers & Graphics",
+            "pages": {
+                "first": "423",
+                "last": "433",
+                "range": "423\u2013433"
+            },
+            "type": "journal",
+            "volume": "27"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Loga, T",
+                        "preferred": "T Loga"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Diefenbach, N",
+                        "preferred": "N Diefenbach"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Born, R",
+                        "preferred": "R Born"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2011",
+            "details": "Deutsche Geb\u00e4udetypologie: Beispielhafte Ma\u00dfnahmen zur Verbesserung der Energieeifi zienz von typischen Wohngeb\u00e4uden",
+            "id": "bib21",
+            "title": "Deutsche Geb\u00e4udetypologie: Beispielhafte Ma\u00dfnahmen zur Verbesserung der Energieeifi zienz von typischen Wohngeb\u00e4uden",
+            "type": "unknown"
+        },
+        {
+            "articleTitle": "Synthetic population generation with multilevel controls: A fitness-based synthesis approach and validations",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Ma, L",
+                        "preferred": "L Ma"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Srinivasan, S",
+                        "preferred": "S Srinivasan"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2015",
+            "doi": "10.1111/mice.12085",
+            "id": "bib22",
+            "journal": "Computer-Aided Civil and Infrastructure Engineering",
+            "pages": {
+                "first": "135",
+                "last": "150",
+                "range": "135\u2013150"
+            },
+            "type": "journal",
+            "volume": "30"
+        },
+        {
+            "articleTitle": "Simulating city-level airborne infectious diseases. <i>Computers</i>",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Mei, S",
+                        "preferred": "S Mei"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Chen, B",
+                        "preferred": "B Chen"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Zhu, Y",
+                        "preferred": "Y Zhu"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Lees, M",
+                        "preferred": "M Lees"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Boukhanovsky, A",
+                        "preferred": "A Boukhanovsky"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Sloot, P",
+                        "preferred": "P Sloot"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2015",
+            "doi": "10.1016/j.compenvurbsys.2014.12.002",
+            "id": "bib23",
+            "journal": "Environment and Urban Systems",
+            "pages": {
+                "first": "97",
+                "last": "105",
+                "range": "97\u2013105"
+            },
+            "type": "journal",
+            "volume": "51"
+        },
+        {
+            "articleTitle": "A microsimulation approach to generate occupancy rates of small urban areas",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Mu\u00f1oz, HME",
+                        "preferred": "HME Mu\u00f1oz"
+                    },
+                    "type": "person"
+                }
+            ],
+            "conference": {
+                "name": [
+                    "2nd Asia Conference on International Building Performance Simulation Associatio, IBPSA Japan. Nagoya University"
+                ]
+            },
+            "date": "2014",
+            "id": "bib24",
+            "type": "conference-proceeding",
+            "uri": "http://ibpsa.org/proceedings/asim2014/140_AsimC3-28-370.pdf"
+        },
+        {
+            "articleTitle": "Constructing an urban microsimulation model to assess the influence of demographics on heat consumption",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Mu\u00f1oz, HME",
+                        "preferred": "HME Mu\u00f1oz"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Peters, I",
+                        "preferred": "I Peters"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2014",
+            "id": "bib25",
+            "journal": "International Journal of Microsimulation",
+            "pages": {
+                "first": "127",
+                "last": "157",
+                "range": "127\u2013157"
+            },
+            "type": "journal",
+            "uri": "http://www.microsimulation.org/IJM/V7_1/6_IJM_7_1_Munoz_Peters.pdf",
+            "volume": "7"
+        },
+        {
+            "articleTitle": "A comparison of the GREGWT and IPF methods for the re-weighting of surveys",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Mu\u00f1oz, HME",
+                        "preferred": "HME Mu\u00f1oz"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Tanton, R",
+                        "preferred": "R Tanton"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Vidattama, Y",
+                        "preferred": "Y Vidattama"
+                    },
+                    "type": "person"
+                }
+            ],
+            "conference": {
+                "name": [
+                    "5th world congress of the international microsimulation association (IMA)"
+                ]
+            },
+            "date": "2015",
+            "id": "bib26",
+            "type": "conference-proceeding"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Mu\u00f1oz, HME",
+                        "preferred": "HME Mu\u00f1oz"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Vidyattama, Y",
+                        "preferred": "Y Vidyattama"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Tanton, R",
+                        "preferred": "R Tanton"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2015",
+            "discriminator": "a",
+            "id": "bib27",
+            "title": "http://github.com/emunozh/GREGWT",
+            "type": "web",
+            "uri": "http://github.com/emunozh/GREGWT",
+            "website": "GREGWT: an implementation of the GREGWT algorithm in R. github.com/emunozh/gregwt"
+        },
+        {
+            "articleTitle": "The influence of an ageing population and an efficient building stock on heat consumption patterns",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Mu\u00f1oz, HME",
+                        "preferred": "HME Mu\u00f1oz"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Vidyattama, Y",
+                        "preferred": "Y Vidyattama"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Tanton, R",
+                        "preferred": "R Tanton"
+                    },
+                    "type": "person"
+                }
+            ],
+            "conference": {
+                "name": [
+                    "14th international conference of the international building performance simulation association (IBPSA)"
+                ]
+            },
+            "date": "2015",
+            "discriminator": "b",
+            "id": "bib28",
+            "type": "conference-proceeding",
+            "uri": "http://www.ibpsa.org/proceedings/BS2015/p2917.pdf"
+        },
+        {
+            "articleTitle": "Spatial microsimulation modelling: a review of applications and methodological choices",
+            "authors": [
+                {
+                    "name": {
+                        "index": "O\u2019Donoghue, C",
+                        "preferred": "C O\u2019Donoghue"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Morrissey, K",
+                        "preferred": "K Morrissey"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Lennon, J",
+                        "preferred": "J Lennon"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2014",
+            "id": "bib29",
+            "journal": "International Journal of Microsimulation",
+            "pages": {
+                "first": "26",
+                "last": "75",
+                "range": "26\u201375"
+            },
+            "type": "journal",
+            "volume": "7"
+        },
+        {
+            "articleTitle": "Applications of microsimulation methodology",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Orcutt, GH",
+                        "preferred": "GH Orcutt"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Franklin, SD",
+                        "preferred": "SD Franklin"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Medelsohn, R",
+                        "preferred": "R Medelsohn"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Smith, JD",
+                        "preferred": "JD Smith"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Bergmann, BR",
+                        "preferred": "BR Bergmann"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Bennett, RL",
+                        "preferred": "RL Bennett"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Eliason, G",
+                        "preferred": "G Eliason"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1977",
+            "id": "bib30",
+            "journal": "The American economic review",
+            "pages": {
+                "first": "260",
+                "last": "281",
+                "range": "260\u2013281"
+            },
+            "type": "journal",
+            "volume": "67"
+        },
+        {
+            "articleTitle": "Procedural modeling of cities",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Parish, YIH",
+                        "preferred": "YIH Parish"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "M\u00fcller, P",
+                        "preferred": "P M\u00fcller"
+                    },
+                    "type": "person"
+                }
+            ],
+            "conference": {
+                "name": [
+                    "in proceedings of the 28th annual conference on computer graphics and interactive techniques"
+                ]
+            },
+            "date": "2001",
+            "id": "bib31",
+            "pages": {
+                "first": "301",
+                "last": "308",
+                "range": "301\u2013308"
+            },
+            "type": "conference-proceeding"
+        },
+        {
+            "articleTitle": "Advances in population synthesis: fitting many attributes per agent and fitting to household and person margins simultaneously",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Pritchard, D",
+                        "preferred": "D Pritchard"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Miller, E",
+                        "preferred": "E Miller"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2012",
+            "doi": "10.1007/s11116-011-9367-4",
+            "id": "bib32",
+            "journal": "Transportation",
+            "pages": {
+                "first": "685",
+                "last": "704",
+                "range": "685\u2013704"
+            },
+            "type": "journal",
+            "volume": "39"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Rahman, A",
+                        "preferred": "A Rahman"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2008",
+            "id": "bib33",
+            "title": "http://www.natsem.canberra.edu.au/storage/Azizur_paper%20in%20new%20template_Work CX%20-%20final%20edit.pdf",
+            "type": "web",
+            "uri": "http://www.natsem.canberra.edu.au/storage/Azizur_paper%20in%20new%20template_Work CX%20-%20final%20edit.pdf",
+            "website": "A review of small area estimation problems and methodological developments"
+        },
+        {
+            "articleTitle": "Simulating the characteristics of populations at the small area level: New validation techniques for a spatial microsimulation model in australia",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Rahman, A",
+                        "preferred": "A Rahman"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Harding, A",
+                        "preferred": "A Harding"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Tanton, R",
+                        "preferred": "R Tanton"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Liu, S",
+                        "preferred": "S Liu"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2013",
+            "doi": "10.1016/j.csda.2012.06.018",
+            "id": "bib34",
+            "journal": "Computational Statistics & Data Analysis",
+            "pages": {
+                "first": "149",
+                "last": "165",
+                "range": "149\u2013165"
+            },
+            "type": "journal",
+            "volume": "57"
+        },
+        {
+            "articleTitle": "Methodological issues in spatial microsimulation modelling for small area estimation",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Rahman, A",
+                        "preferred": "A Rahman"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Harding, A",
+                        "preferred": "A Harding"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Tanton, R",
+                        "preferred": "R Tanton"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Shuangzhe, L",
+                        "preferred": "L Shuangzhe"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2010",
+            "id": "bib35",
+            "journal": "International Journal of Microsimulation",
+            "pages": {
+                "first": "3",
+                "last": "22",
+                "range": "3\u201322"
+            },
+            "type": "journal",
+            "volume": "3"
+        },
+        {
+            "articleTitle": "Understanding calibration estimators in survey sampling",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Singh, A",
+                        "preferred": "A Singh"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Mohl, C",
+                        "preferred": "C Mohl"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1996",
+            "id": "bib36",
+            "journal": "Survey Methodology",
+            "pages": {
+                "first": "107",
+                "last": "115",
+                "range": "107\u2013115"
+            },
+            "type": "journal",
+            "volume": "22"
+        },
+        {
+            "articleTitle": "An analysis on energy efficiency initiatives in the building stock of Liege, Belgium",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Singh, MK",
+                        "preferred": "MK Singh"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Mahapatra, S",
+                        "preferred": "S Mahapatra"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Teller, J",
+                        "preferred": "J Teller"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2013",
+            "doi": "10.1016/j.enpol.2013.07.138",
+            "id": "bib37",
+            "journal": "Energy Policy",
+            "pages": {
+                "first": "729",
+                "last": "741",
+                "range": "729\u2013741"
+            },
+            "type": "journal",
+            "volume": "62"
+        },
+        {
+            "articleTitle": "Can a deterministic spatial microsimulation model provide reliable small-area estimates of health behaviours? an example of smoking prevalence in new zealand",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Smith, DM",
+                        "preferred": "DM Smith"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Pearce, JR",
+                        "preferred": "JR Pearce"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Harland, K",
+                        "preferred": "K Harland"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2011",
+            "doi": "10.1016/j.healthplace.2011.01.001",
+            "id": "bib38",
+            "journal": "Health & Place",
+            "pages": {
+                "first": "618",
+                "last": "624",
+                "range": "618\u2013624"
+            },
+            "type": "journal",
+            "volume": "17"
+        },
+        {
+            "articleTitle": "Potential of demand side integration to maximize use of renewable energy sources in germany",
+            "authors": [
+                {
+                    "name": {
+                        "index": "St\u00f6tzer, M",
+                        "preferred": "M St\u00f6tzer"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Hauer, I",
+                        "preferred": "I Hauer"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Richter, M",
+                        "preferred": "M Richter"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Styczynski, ZA",
+                        "preferred": "ZA Styczynski"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2015",
+            "doi": "10.1016/j.apenergy.2015.02.015",
+            "id": "bib39",
+            "journal": "Applied Energy",
+            "pages": {
+                "first": "344",
+                "last": "352",
+                "range": "344\u2013352"
+            },
+            "type": "journal",
+            "volume": "146"
+        },
+        {
+            "articleTitle": "spatialMSM: The Australian spatial microsimulation model",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Tanton, R",
+                        "preferred": "R Tanton"
+                    },
+                    "type": "person"
+                }
+            ],
+            "conference": {
+                "name": [
+                    "The 1st general conference of the international microsimulation association"
+                ]
+            },
+            "date": "2007",
+            "id": "bib40",
+            "type": "conference-proceeding"
+        },
+        {
+            "articleTitle": "A review of spatial microsimulation methods",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Tanton, R",
+                        "preferred": "R Tanton"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2014",
+            "id": "bib41",
+            "journal": "International Journal of Microsimulation",
+            "pages": {
+                "first": "4",
+                "last": "25",
+                "range": "4\u201325"
+            },
+            "type": "journal",
+            "volume": "7"
+        },
+        {
+            "articleTitle": "Small area estimation using a reweighting algorithm",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Tanton, R",
+                        "preferred": "R Tanton"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Vidyattama, Y",
+                        "preferred": "Y Vidyattama"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Nepal, B",
+                        "preferred": "B Nepal"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "McNamara, J",
+                        "preferred": "J McNamara"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2011",
+            "doi": "10.1111/j.1467-985X.2011.00690.x",
+            "id": "bib42",
+            "journal": "Journal of the Royal Statistical Society: Series A (Statistics in Society",
+            "pages": {
+                "first": "931",
+                "last": "951",
+                "range": "931\u2013951"
+            },
+            "type": "journal",
+            "volume": "174"
+        },
+        {
+            "articleTitle": "Comparing two methods of reweighting a survey file to small area data: generalised regression and combinatorial optimisation",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Tanton, R",
+                        "preferred": "R Tanton"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Williamson, P",
+                        "preferred": "P Williamson"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Harding, A",
+                        "preferred": "A Harding"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2014",
+            "id": "bib43",
+            "journal": "International Journal of Microsimulation",
+            "pages": {
+                "first": "76",
+                "last": "99",
+                "range": "76\u201399"
+            },
+            "type": "journal",
+            "volume": "7"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Williamson, P",
+                        "preferred": "P Williamson"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Clarke, GP",
+                        "preferred": "GP Clarke"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "McDonald, AT",
+                        "preferred": "AT McDonald"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "Microsimulation for urban and regional policy analysis",
+            "chapterTitle": "Estimating small area demands for water with the use of microsimulation",
+            "date": "1996",
+            "doi": "10.1111/j.1747-6593.1997.tb00114.x",
+            "editors": [
+                {
+                    "name": {
+                        "index": "Clarke, GP",
+                        "preferred": "GP Clarke"
+                    },
+                    "type": "person"
+                }
+            ],
+            "id": "bib44",
+            "pages": {
+                "first": "117",
+                "last": "148",
+                "range": "117\u2013148"
+            },
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "London"
+                        ]
+                    },
+                    "formatted": [
+                        "London"
+                    ]
+                },
+                "name": [
+                    "Pion"
+                ]
+            },
+            "type": "book-chapter",
+            "volume": "6"
+        },
+        {
+            "articleTitle": "Domestic water demand forecasting: A static microsimulation approach",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Williamson, P",
+                        "preferred": "P Williamson"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Mitchell, G",
+                        "preferred": "G Mitchell"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "McDonald, AT",
+                        "preferred": "AT McDonald"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2002",
+            "doi": "10.1111/j.1747-6593.2002.tb00410.x",
+            "id": "bib45",
+            "journal": "Water and Environment Journal",
+            "pages": {
+                "first": "243",
+                "last": "248",
+                "range": "243\u2013248"
+            },
+            "type": "journal",
+            "volume": "16"
+        }
+    ],
+    "appendices": [
+        {
+            "content": [
+                {
+                    "assets": [
+                        {
+                            "caption": [
+                                {
+                                    "text": "Categories of benchmarks from the 2011 Census and categories of the micro census 2010.",
+                                    "type": "paragraph"
+                                }
+                            ],
+                            "footnotes": [
+                                {
+                                    "id": "table3_fn1",
+                                    "label": "*",
+                                    "text": [
+                                        {
+                                            "text": "See <a href=\"#table1\">Table 1</a> for a description of the code names",
+                                            "type": "paragraph"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "id": "table3_fn2",
+                                    "label": "**",
+                                    "text": [
+                                        {
+                                            "text": "Sum is not equal to total population, an extra category is added to match the total population",
+                                            "type": "paragraph"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "id": "table3",
+                            "label": "Table 3",
+                            "tables": [
+                                "<table>\n<thead>\n<tr>\n<th>MC Code [<i>S</i>]</th>\n<th>Code [<i>B</i>]</th>\n<th>Categories</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>EF<sub>44</sub></td>\n<td/>\n<td>0\u201399 (integers)</td>\n</tr>\n<tr>\n<td/>\n<td>ALTER_<span class=\"small-caps\">01</span>JS<a href=\"#table3_fn1\">*</a></td>\n<td>(1) Under 18, (2) 18\u201329, (3) 30\u201349, (4) 50\u201364, (5) 65 and over,</td>\n</tr>\n<tr>\n<td colspan=\"3\"><math id=\"inf4\"><mrow><msub><mi>S</mi><mn>1</mn></msub><mo>=</mo><mstyle displaystyle=\"true\"><msubsup><mo>\u2211</mo><mrow><mi>i</mi><mo>=</mo><mn>0</mn></mrow><mrow><mn>17</mn></mrow></msubsup><mrow><msub><mi>S</mi><mi>i</mi></msub></mrow></mstyle><mo>;</mo><msub><mi>S</mi><mn>2</mn></msub><mo>=</mo><mstyle displaystyle=\"true\"><msubsup><mo>\u2211</mo><mrow><mi>i</mi><mo>=</mo><mn>18</mn></mrow><mrow><mn>29</mn></mrow></msubsup><mrow><msub><mi>S</mi><mi>i</mi></msub></mrow></mstyle><mo>;</mo><msub><mi>S</mi><mn>3</mn></msub><mo>=</mo><mstyle displaystyle=\"true\"><msubsup><mo>\u2211</mo><mrow><mi>i</mi><mo>=</mo><mn>30</mn></mrow><mrow><mn>49</mn></mrow></msubsup><mrow><msub><mi>S</mi><mi>i</mi></msub></mrow></mstyle><mo>;</mo><msub><mi>S</mi><mn>4</mn></msub><mo>=</mo><mstyle displaystyle=\"true\"><msubsup><mo>\u2211</mo><mrow><mi>i</mi><mo>=</mo><mn>50</mn></mrow><mrow><mn>64</mn></mrow></msubsup><mrow><msub><mi>S</mi><mi>i</mi></msub></mrow></mstyle><mo>;</mo><msub><mi>S</mi><mn>5</mn></msub><mo>=</mo><mstyle displaystyle=\"true\"><msubsup><mo>\u2211</mo><mrow><mi>i</mi><mo>=</mo><mn>65</mn></mrow><mi>n</mi></msubsup><mrow><msub><mi>S</mi><mi>i</mi></msub></mrow></mstyle></mrow></math></td>\n</tr>\n<tr>\n<td>EF<sub>49</sub></td>\n<td/>\n<td>(1) Single, (2) Married, (3) Widowed, (4) Divorced, (5) Party to a civil union, (6) Civil partner deceased, (7) Civil union annulled</td>\n</tr>\n<tr>\n<td/>\n<td>FAMSTND_AUSF</td>\n<td>(1) Single, (2) Married, (3) Widowed, (4) Divorced, (5) Party to a civil union, (6) Civil partner deceased, (7) Civil union annulled, (8) No data</td>\n</tr>\n<tr>\n<td colspan=\"3\"><math id=\"inf5\"><mrow><msub><msup><mi>B</mi><mo>\u2032</mo></msup><mi>i</mi></msub><mo>=</mo><msub><mi>B</mi><mi>i</mi></msub><mo>+</mo><mn>1</mn></mrow></math> if <math id=\"inf6\"><mrow><mi>r</mi><mi>a</mi><mi>n</mi><mi>d</mi><mo stretchy=\"false\">(</mo><mo stretchy=\"false\">)</mo><mo>&lt;</mo><msub><mi>B</mi><mi>i</mi></msub><mo>\u00f7</mo><mstyle displaystyle=\"true\"><msubsup><mo>\u2211</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mn>7</mn></msubsup><mrow><msub><mi>B</mi><mi>i</mi></msub><mtext>\u2009</mtext><mo>\u2200</mo><mi>i</mi><mo>=</mo><mn>1</mn><mo>\u2026</mo><mn>7</mn></mrow></mstyle></mrow></math> until <math id=\"inf7\"><mrow><mstyle displaystyle=\"true\"><msubsup><mo>\u2211</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mn>8</mn></msubsup><mrow><msub><mi>B</mi><mi>i</mi></msub><mo>=</mo></mrow></mstyle><mstyle displaystyle=\"true\"><msubsup><mo>\u2211</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mn>7</mn></msubsup><mrow><msub><msup><mi>B</mi><mo>\u2032</mo></msup><mi>i</mi></msub></mrow></mstyle></mrow></math></td>\n</tr>\n<tr>\n<td>EF46</td>\n<td/>\n<td>(1)Male, (2) Female</td>\n</tr>\n<tr>\n<td/>\n<td>GESCHLECHT</td>\n<td>(1)Male, (2) Female</td>\n</tr>\n<tr>\n<td>EF20</td>\n<td/>\n<td>1\u201362 (integers)</td>\n</tr>\n<tr>\n<td/>\n<td>HHGROESS_KLASS</td>\n<td>(1) 1 person, (2) 2 persons, (3) 3 persons, (4) 4 persons, (5) 5 persons, (6) 6 or more people<br/><math id=\"inf8\"><mrow><msub><msup><mi>S</mi><mo>\u2032</mo></msup><mn>6</mn></msub><mo>=</mo><mstyle displaystyle=\"true\"><munderover><mo>\u2211</mo><mrow><mi>i</mi><mo>=</mo><mn>6</mn></mrow><mrow><mn>62</mn></mrow></munderover><mrow><msub><mi>S</mi><mi>i</mi></msub></mrow></mstyle></mrow></math></td>\n</tr>\n<tr>\n<td>EF<sub>368</sub></td>\n<td/>\n<td>(1) Only German, (2) German and a second citizenship, (3) Abroad</td>\n</tr>\n<tr>\n<td/>\n<td>STAATSANGE_KURZ</td>\n<td>(1) Germany, (2) Abroad<br/><math id=\"inf9\"><mrow><msub><msup><mi>S</mi><mo>\u2032</mo></msup><mn>1</mn></msub><mo>=</mo><msub><mi>S</mi><mn>1</mn></msub><mo>+</mo><msub><mi>S</mi><mn>2</mn></msub><mo>;</mo><mtext>\u2009</mtext><msub><msup><mi>S</mi><mo>\u2032</mo></msup><mn>2</mn></msub><mo>=</mo><msub><mi>S</mi><mn>3</mn></msub></mrow></math></td>\n</tr>\n<tr>\n<td>EF<sub>492</sub></td>\n<td/>\n<td>(-1/-5) not applicable</td>\n</tr>\n<tr>\n<td/>\n<td>WOHNFLAECHE_<span class=\"small-caps\">20</span>S</td>\n<td>(1) Under 40, (2) 40\u201359, (3) 60\u201379, (4) 80\u201399, (5) 100\u2013119, (6) 120\u2013139, (7) 140\u2013159, (8) 160\u2013179, (9) 180\u2013199, (10) 200 and more</td>\n</tr>\n<tr>\n<td>EF<sub>494</sub></td>\n<td/>\n<td>(1) Pre\u20131919, (2) 1919\u20131948, (3) 1949\u20131978, (4) 1979\u20131986, (5) 1987\u20131990, (6) 1991\u20132000, (7) 2001\u20132004, (8) 2005\u20132008, (9) 2009 and later, (99) no response, (-1/-5) not applicable</td>\n</tr>\n<tr>\n<td/>\n<td>BAUJAHR_MZ</td>\n<td>(1) Pre\u20131919, (2) 1919\u20131948, (3) 1949\u20131978, (4) 1979\u20131986, (5) 1987\u20131990, (6) 1991\u20131995, (7) 1996\u20132000, (8) 2001\u20132004, (9) 2005\u20132008, (10) 2009 and later<br/><math id=\"inf10\"><mrow><msub><msup><mi>B</mi><mo>\u2032</mo></msup><mn>6</mn></msub><mo>=</mo><msub><mi>B</mi><mn>6</mn></msub><mo>+</mo><msub><mi>B</mi><mn>7</mn></msub></mrow></math></td>\n</tr>\n<tr>\n<td>EF6<sub>35</sub></td>\n<td/>\n<td>(1) 1 dwelling, (2) 2 dwellings, (3) 3 dwellings, (4) 4 dwellings, (5) 5 dwellings, (6) 6 dwellings, (7) 7\u201312 dwellings, (8) 13\u201320, (9) 21 or more dwellings, (-1/-5) not applicable</td>\n</tr>\n<tr>\n<td/>\n<td>ZAHLWOHNGN_HHG</td>\n<td>(1) 1 dwelling, (2) 2 dwellings, (3) 3\u20146 dwellings, (4) 7\u201412 dwellings, (5) 13 or more dwellings<br/><math id=\"inf11\"><mrow><mtable><mtr><mtd><mrow><msub><msup><mi>S</mi><mo>\u2032</mo></msup><mn>3</mn></msub><mo>=</mo><msub><mi>S</mi><mn>3</mn></msub><mo>+</mo><msub><mi>S</mi><mn>4</mn></msub><mo>+</mo><msub><mi>S</mi><mn>5</mn></msub><mo>+</mo><msub><mi>S</mi><mn>6</mn></msub></mrow></mtd></mtr><mtr><mtd><mrow><msub><msup><mi>S</mi><mo>\u2032</mo></msup><mn>4</mn></msub><mo>=</mo><msub><mi>S</mi><mn>7</mn></msub></mrow></mtd></mtr><mtr><mtd><mrow><msub><msup><mi>S</mi><mo>\u2032</mo></msup><mn>5</mn></msub><mo>=</mo><msub><mi>S</mi><mn>8</mn></msub><mo>+</mo><msub><mi>S</mi><mn>9</mn></msub></mrow></mtd></mtr></mtable></mrow></math></td>\n</tr>\n</tbody>\n</table>"
+                            ],
+                            "type": "table"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "assets": [
+                        {
+                            "caption": [
+                                {
+                                    "text": "Defined rules to classify individuals into building typologies.",
+                                    "type": "paragraph"
+                                }
+                            ],
+                            "id": "table4",
+                            "label": "Table 4",
+                            "tables": [
+                                "<table>\n<thead>\n<tr>\n<th>BJA</th>\n<th># DU</th>\n<th/>\n<th>SQM</th>\n<th/>\n<th>BTYP</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>bja = 1</td>\n<td>du = 1</td>\n<td/>\n<td>sqm</td>\n<td>&lt; 600</td>\n<td>Btyp03</td>\n</tr>\n<tr>\n<td>bja = 1</td>\n<td>du &gt; 1</td>\n<td/>\n<td>sqm</td>\n<td>&lt; 600</td>\n<td>Btyp04</td>\n</tr>\n<tr>\n<td>bja = 1</td>\n<td>du &gt; 1</td>\n<td>4000 &lt;</td>\n<td>sqm</td>\n<td>&gt; 600</td>\n<td>Btyp05</td>\n</tr>\n<tr>\n<td>bja = 1</td>\n<td>du &gt; 1</td>\n<td>10000 &lt;</td>\n<td>sqm</td>\n<td>&lt; 4000</td>\n<td>Btyp06</td>\n</tr>\n<tr>\n<td>bja = 2</td>\n<td>du = 1</td>\n<td/>\n<td>sqm</td>\n<td>&lt; 600</td>\n<td>Btyp07</td>\n</tr>\n<tr>\n<td>bja = 2</td>\n<td>du &gt; 1</td>\n<td/>\n<td>sqm</td>\n<td>&lt; 600</td>\n<td>Btyp08</td>\n</tr>\n<tr>\n<td>bja = 2</td>\n<td>du &gt; 1</td>\n<td>4000 &lt;</td>\n<td>sqm</td>\n<td>&gt; 600</td>\n<td>Btyp09</td>\n</tr>\n<tr>\n<td>bja = 2</td>\n<td>du &gt; 1</td>\n<td>10000 &lt;</td>\n<td>sqm</td>\n<td>&lt; 4000</td>\n<td>Btyp10</td>\n</tr>\n<tr>\n<td>bja = 3</td>\n<td>du = 1</td>\n<td/>\n<td>sqm</td>\n<td>&lt; 600</td>\n<td>Btyp15</td>\n</tr>\n<tr>\n<td>bja = 3</td>\n<td>du &gt; 1</td>\n<td/>\n<td>sqm</td>\n<td>&lt; 600</td>\n<td>Btyp16</td>\n</tr>\n<tr>\n<td>bja = 3</td>\n<td>du &gt; 1</td>\n<td>4000 &lt;</td>\n<td>sqm</td>\n<td>&gt; 600</td>\n<td>Btyp17</td>\n</tr>\n<tr>\n<td>bja = 3</td>\n<td>du &gt; 1</td>\n<td>10000 &lt;</td>\n<td>sqm</td>\n<td>&lt; 4000</td>\n<td>Btyp18</td>\n</tr>\n<tr>\n<td>bja = 3</td>\n<td>du &gt; 1</td>\n<td/>\n<td>sqm</td>\n<td>&gt; 10000</td>\n<td>Btyp19</td>\n</tr>\n<tr>\n<td>bja = 4</td>\n<td>du = 1</td>\n<td/>\n<td>sqm</td>\n<td>&lt; 600</td>\n<td>Btyp25</td>\n</tr>\n<tr>\n<td>bja = 4</td>\n<td>du &gt; 1</td>\n<td/>\n<td>sqm</td>\n<td>&lt; 600</td>\n<td>Btyp26</td>\n</tr>\n<tr>\n<td>bja = 4</td>\n<td>du &gt; 1</td>\n<td>4000 &lt;</td>\n<td>sqm</td>\n<td>&gt; 600</td>\n<td>Btyp27</td>\n</tr>\n<tr>\n<td>bja = 5</td>\n<td>du = 1</td>\n<td/>\n<td>sqm</td>\n<td>&lt; 600</td>\n<td>Btyp28</td>\n</tr>\n<tr>\n<td>bja = 5</td>\n<td>du &gt; 1</td>\n<td/>\n<td>sqm</td>\n<td>&lt; 600</td>\n<td>Btyp29</td>\n</tr>\n<tr>\n<td>bja = 5</td>\n<td>du &gt; 1</td>\n<td>4000 &lt;</td>\n<td>sqm</td>\n<td>&gt; 600</td>\n<td>Btyp30</td>\n</tr>\n<tr>\n<td>bja = 6</td>\n<td>du = 1</td>\n<td/>\n<td>sqm</td>\n<td>&lt; 600</td>\n<td>Btyp31</td>\n</tr>\n<tr>\n<td>bja = 6</td>\n<td>du &gt; 1</td>\n<td/>\n<td>sqm</td>\n<td>&lt; 600</td>\n<td>Btyp32</td>\n</tr>\n<tr>\n<td>bja = 6</td>\n<td>du &gt; 1</td>\n<td>4000 &lt;</td>\n<td>sqm</td>\n<td>&gt; 600</td>\n<td>Btyp33</td>\n</tr>\n<tr>\n<td>bja = 7</td>\n<td>du = 1</td>\n<td/>\n<td>sqm</td>\n<td>&lt; 600</td>\n<td>Btyp34</td>\n</tr>\n<tr>\n<td>bja = 7</td>\n<td>du &gt; 1</td>\n<td/>\n<td>sqm</td>\n<td>&lt; 600</td>\n<td>Btyp35</td>\n</tr>\n<tr>\n<td>bja = 7</td>\n<td>du &gt; 1</td>\n<td>4000 &lt;</td>\n<td>sqm</td>\n<td>&gt; 600</td>\n<td>Btyp36</td>\n</tr>\n</tbody>\n</table>"
+                            ],
+                            "type": "table"
+                        }
+                    ],
+                    "type": "figure"
+                }
+            ],
+            "id": "app1",
+            "title": "Annex"
+        }
+    ],
+    "-meta": {
+        "patched": true
+    },
+    "stage": "published"
+}

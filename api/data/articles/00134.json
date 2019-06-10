@@ -1,0 +1,1606 @@
+{
+    "status": "vor",
+    "id": "00134",
+    "version": 1,
+    "type": "research-article",
+    "doi": "10.34196/ijm.00134",
+    "authorLine": "Peter Levell, Jonathan Shaw",
+    "title": "Constructing full adult life-cycles from short panels",
+    "published": "2016-08-31T00:00:00Z",
+    "versionDate": "2016-08-31T00:00:00Z",
+    "statusDate": "2016-08-31T00:00:00Z",
+    "volume": 9,
+    "issue": 2,
+    "elocationId": "n/a",
+    "pdf": "http://web:8082/00134/ijm-00134.pdf",
+    "subjects": [
+        {
+            "id": "methodology",
+            "name": "Methodology"
+        }
+    ],
+    "abstract": {
+        "content": [
+            {
+                "text": "In this paper we discuss two alternative approaches to constructing complete adult life-cycles using data from an 18-year panel. The first of these is a splicing approach \u2013 closely related to imputation \u2013 that involves stitching together individuals observed at different ages. The second is a microsimulation approach that uses panel data to estimate transition probabilities between different states at adjacent ages and then simulates a large number of individuals with different initial values. Our aim throughout is to construct life-cycle profiles of employment, earnings and family circumstances that are representative of UK individuals born between 1945 and 1954. On balance, we find the microsimulation approach is to be preferred because it allows us to correct for observable differences across cohorts, and it is more amenable to counterfactual modelling.",
+                "type": "paragraph"
+            }
+        ]
+    },
+    "copyright": {
+        "license": "CC-BY-4.0",
+        "holder": "Levell & Shaw",
+        "statement": "This article is distributed under the terms of the <a href=\"http://creativecommons.org/licenses/by/4.0/\">Creative Commons Attribution License</a>, which permits unrestricted use and redistribution provided that the original author and source are credited."
+    },
+    "authors": [
+        {
+            "affiliations": [
+                {
+                    "address": {
+                        "components": {
+                            "country": "United Kingdom"
+                        },
+                        "formatted": [
+                            "United Kingdom"
+                        ]
+                    },
+                    "name": [
+                        "Institute for Fiscal Studies"
+                    ]
+                }
+            ],
+            "emailAddresses": [
+                "peter_l@ifs.org.uk"
+            ],
+            "name": {
+                "index": "Levell, Peter",
+                "preferred": "Peter Levell"
+            },
+            "type": "person"
+        },
+        {
+            "affiliations": [
+                {
+                    "address": {
+                        "components": {
+                            "country": "United Kingdom"
+                        },
+                        "formatted": [
+                            "United Kingdom"
+                        ]
+                    },
+                    "name": [
+                        "Institute for Fiscal Studies"
+                    ]
+                }
+            ],
+            "emailAddresses": [
+                "jonathan_s@ifs.org.uk"
+            ],
+            "name": {
+                "index": "Shaw, Jonathan",
+                "preferred": "Jonathan Shaw"
+            },
+            "type": "person"
+        }
+    ],
+    "keywords": [
+        "microsimulation models",
+        "lifetime income distribution"
+    ],
+    "body": [
+        {
+            "content": [
+                {
+                    "text": "There is a growing recognition of the need to measure policy outcomes over horizons longer than a snapshot. For example, it makes a big difference whether wage returns to a given education policy last for just one year or persist throughout life. Likewise, it is important to know whether a health-related advertising campaign affects consumption choices in the long run as well as the short run. One area where a life-cycle perspective is particularly pertinent is the tax and benefit system. Snapshot measures of the impact of taxes and benefits obscure the fact that much of the diversity across individuals simply reflects individuals\u2019 stage in life, and ignore the fact that individuals can transfer resources across time through saving and borrowing. Moreover, some of the most interesting questions about the tax and benefit system explicitly relate to the life-cycle: what proportion benefits received by individuals are effectively self-financed by taxes paid at other times in life? How much insurance do taxes and benefits provide? How should the tax and benefit system optimally vary with age and circumstances?",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "To answer such questions, a long panel dataset covering individuals from early-adulthood until death is needed. In some countries, notably in Scandinavia, increasing availability of long time series of administrative records is beginning to make this possible for a small number of cohorts. But in many countries such data are not readily available. This has led researchers in several countries to attempt to construct data on full life-cycles based on short panels and cross-sectional data (e.g. <a href=\"#bib4\">Bovenberg, Hansen, &amp; Sorensen, 2008</a>; <a href=\"#bib7\">Congressional Budget Office, 2009</a>; <a href=\"#bib10\">Falkingham &amp; Hills, 1995</a>; <a href=\"#bib13\">Waaijers &amp; Lever, 2013</a>). So far two basic approaches have been employed. The first of these is a splicing approach \u2013 closely related to imputation \u2013 that involves stitching together individuals observed at different ages. The second is a microsimulation approach that uses panel data to estimate transition probabilities between different states at adjacent ages and then simulates a large number of individuals with different initial values. However, as far as we are aware, little work has been done to compare the strengths and weaknesses of these two approaches. In this paper we implement and discuss these two alternatives using of a short panel dataset supplemented by cross-sectional information from another survey. Our own aim throughout is to construct life-cycles that are representative of UK individuals born between 1945 and 1954 (which we label the \u2018baby-boom\u2019 cohort), an important group who have now begun to retire.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "On balance, we find that of the two approaches, the microsimulation approach is preferable for this purpose. This is because it is easier to adjust in ways that better replicate the experiences of the baby-boom cohort, and it is more amenable to modelling counterfactual outcomes (e.g. the possible future paths an individual could experience, and how the tax and benefit system insures them against future shocks).",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The rest of this paper is structured as follows. In <a href=\"#s2\">Section 2</a>, we describe the datasets we use for both approaches. <a href=\"#s3\">Section 3</a> then discusses the splicing approach, and <a href=\"#s4\">Section 4</a> discusses how we have implemented the microsimulation approach. <a href=\"#s5\">Section 5</a> provides evidence on the performance of the two methods by comparing them against available data sources. <a href=\"#s6\">Section 6</a> summarises key considerations when comparing the two approaches.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s1",
+            "title": "1. Introduction",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "We rely primarily on two datasets: the British Household Panel Survey (BHPS) and the Living Costs and Food Survey (LCFS).",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The BHPS is a panel survey that ran for 18 waves from 1991 to 2008, collecting a wide range of demographic and socio-economic information. The survey followed individuals and their descendants over successive waves. The original sample comprised around 10,000 individuals in 5,500 households and was nationally representative. Booster samples were introduced for Scotland and Wales in 1999. In each wave, the survey aimed to interview all individuals aged 16+ in each household, including children who reach adulthood after the survey began and adults who moved into households that were previously surveyed. If an individual was too ill or busy for a full interview, some information may have been collected through a telephone interview or by consulting a proxy (such as a partner or adult child).",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The Living Costs and Food Survey (LCFS) is the latest name for a long-running, annual (for most of its history), cross-sectional survey of household spending patterns in the UK. It was known as the Family Expenditure Survey (FES) between 1957 and 2001 and the Expenditure and Food Survey (EFS) between 2001 and 2008. The LCFS collects data on household incomes from various sources over the past 12 months, employment, family characteristics and expenditures. Education is only included from 1978 onwards. We make use of the LCFS/EFS/FES between 1968 and 2012.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s2",
+            "title": "2. Data",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "content": [
+                        {
+                            "text": "Our splicing approach develops that of (<a href=\"#bib4\">Bovenberg <i>et al</i>., 2008</a>) (henceforth BHS) which, in turn, was inspired by (<a href=\"#bib11\">Huss\u00e9nius &amp; Sel\u00e9n, 1994</a>). The approach is analogous to \u201chot-deck\u201d imputation in that observations for ages when we do not observe an individual (a \u201crecipient\u201d) are taken from another individual with similar characteristics (a \u201cdonor\u201d) from our data.<sup><a href=\"#fn1\">1</a></sup> The approach will reconstruct accurate life-cycles provided donors (who will in general come from different cohorts to recipients) are representative of what recipients would have experienced in those years we do not observe them, and that appropriate donors can be found. We aim to splice together histories for individuals rather than households.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "To implement the splicing approach we take BHPS data for the years 1991 to 2008, and then employ the following steps",
+                            "type": "paragraph"
+                        },
+                        {
+                            "items": [
+                                [
+                                    {
+                                        "text": "Take all individuals aged 50 in waves 5\u201314 (the years 1995\u20132004 and hence those born between 1945 and 1954)",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "For each individual, find backward matches going back to age 16. For instance, if an individual we start with is observed at ages 40\u201355 in 1993\u20132008, we begin by finding an individual with similar characteristics at age 40 and who is observed beforehand (to \u2018fill in\u2019 what happened to the individual at earlier ages). We may for example match him to an individual who is observed over the ages 30\u201340 from 1995\u20132005. Linking these two individuals together creates a spliced individual that covers the ages 30\u201355. The individual aged 30 in 1995 may then be linked to another individual who is seen aged 25\u201330 over the period 2003\u20132008. We then continue to try to find additional matches going backward in time until we have constructed a complete history from age 16 until the last year we observe the original individual.",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "Then we repeat the process going forwards until the whole adult life-cycle is complete. For our example individual we find a match who we see aged 55 and afterwards (to represent what would have happened to that individual at later ages), and continue matching the individual to future donors until death.",
+                                        "type": "paragraph"
+                                    }
+                                ]
+                            ],
+                            "prefix": "number",
+                            "type": "list"
+                        },
+                        {
+                            "text": "We stop splicing when the individual or one of his/her donors dies in the data, or when no further matches can be found.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s3-1",
+                    "title": "3.1 Overview of approach",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "To form a match, we insist that the two individuals have the same age, sex, education level (GCSEs or less, A-levels and vocational higher, university), employment status, couple status, number of children, partner employment status and renter/owner housing status. We also ensure that they are the same in terms of whether the individual receives a private pension, whether their partner is aged over 60, whether the partner receives a private pension, whether the individual receives disability living allowance, and whether the individual receives incapacity benefit. We also make sure the the youngest child in the household of the donor is within \u00b12 years of the youngest child of the recipient. Out of the set of possible donors (those who meet these requirements), we then find the closest match across a number of dimensions, namely: rank in the cross-sectional earnings distribution for their age in that year, rank in the distribution of partner\u2019s income for the individual\u2019s age in that year, rank in the distribution of rental costs, and hours worked. The \u201cclosest\u201d match is defined according to the Mahalanobis distance",
+                            "type": "paragraph"
+                        },
+                        {
+                            "id": "ueqn1",
+                            "label": "(1)",
+                            "mathml": "<math><mrow><mi>M</mi><mo>=</mo><mo stretchy=\"false\">(</mo><mtext>x</mtext><mo>\u2212</mo><mi>\u03bc</mi><msup><mo stretchy=\"false\">)</mo><mo>\u2032</mo></msup><msup><mi>W</mi><mrow><mo>\u2212</mo><mn>1</mn></mrow></msup><mo stretchy=\"false\">(</mo><mi>x</mi><mo>\u2212</mo><mi>\u03bc</mi><mo stretchy=\"false\">)</mo></mrow></math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "where <b>x</b> is the vector of characteristics of the potential donor, <b><i>\u03bc</i></b> represents the characteristics of the recipient and <b>W</b> is the variance-covariance matrix for these variables. Variances and covariances are calculated using the residuals in panel regressions of each of our matching variables on individual-level fixed effects, so that the variances represent individual-level volatility (as opposed to cross-sectional variances). Using the Mahalanobis distance ensures that characteristics are weighted depending on how volatile they are: less importance is attached to variables that vary more from one period to the next. A given match can be used several times across different individuals and there are no restrictions on how long a match would need to last beyond that it should provide at least one additional year of data (meaning a match can last from 2 years to 18 years \u2013 which is the maximum length of time an individual can be observed for in the BHPS).",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Given the limited size of the BHPS dataset, it is not feasible to insist on exact matches for all possible characteristics\u2014otherwise we would very soon run out of data. As a result, there will be discontinuities in variables for which we do not insist on an exact match. For example, there is no guarantee that partner age or child ages will be consistent between donor and recipient. However, once the splicing procedure is complete we make these variables consistent for our constructed life-cycles. The age of a given child is made consistent by subtracting the parent\u2019s age when that child first appears in the household from the parent\u2019s current age (any children leaving the household, permanently or temporarily, are assumed to be the oldest children). We match according to whether or not the individual\u2019s partner\u2019s age is over 60, and by taking the age at which this first occurs, we can also make a consistent partner age using the simple formula",
+                            "type": "paragraph"
+                        },
+                        {
+                            "id": "eqn1",
+                            "label": "(2)",
+                            "mathml": "<math><mrow><mtext>age\u00a0of\u00a0</mtext><mi>i</mi><mo>'</mo><mtext>s\u00a0partner</mtext><mo>=</mo><mtext>60\u00a0+\u00a0(current\u00a0age\u00a0of\u00a0</mtext><mi>i</mi><mo>\u2212</mo><mtext>age\u00a0of\u00a0</mtext><mi>i</mi><mtext>\u00a0when\u00a0partner\u00a0turns\u00a060)</mtext></mrow></math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "Some characteristics such as partner\u2019s education are left inconsistent over time as they are not relevant for tax and benefit calculations.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s3-2",
+                    "title": "3.2 Matching",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "The splicing approach matches people of the same age, but from different cohorts and time periods. Cohort differences mean that even when we achieve a \u201cgood\u201d match by our criteria, outcomes and covariates might systematically differ between our donor and our recipient. Two individuals from different cohorts who are matched on the basis of having the same employment status at say age 45 may not have had similar employment experiences in their 20s for example. The same goes for other variables such as tenure.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "To guarantee the accuracy of the splicing approach therefore requires an assumption that, conditional on the variables we match on across cohorts, outcomes are the same as they would have been for our cohort of interest. We can illustrate why such an assumption is required using the following simple example of a splice made when we have two cohorts and two ages (a more detailed discussion of the required assumptions is provided in (<a href=\"#bib12\">Kim, Levell, &amp; Shaw, 2014</a>)).",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Let our aim be to draw from the joint distribution of (<i>Y</i><sub>1</sub>, <i>Y</i><sub>2</sub>) for cohort <i>C</i> = 2 (where the subscripts on Y indicate ages). We observe <i>Y</i><sub>1</sub> for individuals in cohort <i>C</i> = 2 and <i>Y</i><sub>2</sub> for individuals in cohort <i>C</i> = 1 and want to use the latter as a proxy for <i>Y</i><sub>2</sub> in cohort <i>C</i> = 2, which we don\u2019t observe.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "We can factor the joint density of outcomes for cohort <i>C</i> = 2 as follows",
+                            "type": "paragraph"
+                        },
+                        {
+                            "id": "eqn2",
+                            "label": "(3)",
+                            "mathml": "<math><mrow><msub><mi>f</mi><mrow><msub><mi>Y</mi><mn>1</mn></msub><mo>,</mo><msub><mi>Y</mi><mn>2</mn></msub><mo>|</mo><mi>C</mi></mrow></msub><mrow><mo>(</mo><mrow><msub><mi>y</mi><mn>1</mn></msub><mo>,</mo><msub><mi>y</mi><mn>2</mn></msub><mo>|</mo><mi>C</mi><mo>=</mo><mn>2</mn></mrow><mo>)</mo></mrow><mo>=</mo><msub><mi>f</mi><mrow><msub><mi>Y</mi><mn>1</mn></msub><mo>|</mo><mi>C</mi></mrow></msub><mrow><mo>(</mo><mrow><msub><mi>y</mi><mn>1</mn></msub><mo>|</mo><mi>C</mi><mo>=</mo><mn>2</mn></mrow><mo>)</mo></mrow><msub><mi>f</mi><mrow><msub><mi>Y</mi><mn>2</mn></msub><mo>|</mo><msub><mi>Y</mi><mn>1</mn></msub><mo>,</mo><mi>C</mi></mrow></msub><mrow><mo>(</mo><mrow><msub><mi>y</mi><mn>2</mn></msub><mo>|</mo><msub><mi>y</mi><mn>1</mn></msub><mo>,</mo><mi>C</mi><mo>=</mo><mn>2</mn></mrow><mo>)</mo></mrow></mrow></math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "We observe draws corresponding to the term <i>f<sub>Y</sub></i><sub>1</sub>|<i>C</i>(<i>y</i><sub>1</sub> | <i>C</i> = 2) but we must proxy for the term <i>f<sub>Y</sub></i><sub>2|<i>Y</i><sub>1</sub>,<i>C</i></sub>(<i>y</i><sub>2</sub> | <i>y</i><sub>1</sub>,<i>C</i> = 2). For the latter, all we observe is draws from <i>f<sub>Y</sub></i><sub>2|<i>C</i></sub>(<i>y</i><sub>2</sub> | <i>C</i> = 1). To use these as a proxy for draws from <i>f<sub>Y</sub></i><sub>2 |<i>Y</i>1,<i>C</i></sub>(<i>y</i><sub>2</sub> | <i>y</i><sub>1</sub>,<i>C</i> = 2) we must assume",
+                            "type": "paragraph"
+                        },
+                        {
+                            "id": "eqn3",
+                            "label": "(4)",
+                            "mathml": "<math><mrow><msub><mi>f</mi><mrow><msub><mi>Y</mi><mn>2</mn></msub><mo>|</mo><msub><mi>Y</mi><mn>1</mn></msub><mo>,</mo><mi>C</mi></mrow></msub><mrow><mo>(</mo><mrow><msub><mi>y</mi><mn>2</mn></msub><mo>|</mo><msub><mi>y</mi><mn>1</mn></msub><mo>,</mo><mi>C</mi><mo>=</mo><mn>2</mn></mrow><mo>)</mo></mrow><mo>=</mo><msub><mi>f</mi><mrow><msub><mi>Y</mi><mn>2</mn></msub><mo>|</mo><mi>C</mi></mrow></msub><mrow><mo>(</mo><mrow><msub><mi>y</mi><mn>2</mn></msub><mo>|</mo><mi>C</mi><mo>=</mo><mn>1</mn></mrow><mo>)</mo></mrow></mrow></math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "A sufficient condition for this is <i>f<sub>Y</sub></i><sub>2|<i>Y</i>1, <i>C</i></sub>(<i>y</i><sub>2</sub> | <i>y</i><sub>1</sub>, <i>C</i>) = <i>fY</i><sub>2</sub>(<i>y</i><sub>2</sub>) i.e <i>Y</i><sub>2</sub> \u22a5 <i>Y</i><sub>1</sub>, <i>C</i> (<i>Y</i><sub>2</sub> is independent of the joint distribution of <i>Y</i><sub>1</sub> and <i>C</i>).",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "When we apply this method in our own multiperiod setting, we make matches conditional on characteristics when both donors and recipients are observed. Letting <i>Y<sub>a</sub></i> denote a vector of outcomes at age a, the assumption we require for matching forward in time is therefore",
+                            "type": "paragraph"
+                        },
+                        {
+                            "id": "eqn4",
+                            "label": "(5)",
+                            "mathml": "<math><mrow><msub><mi>Y</mi><mi>a</mi></msub><mo>\u22a5</mo><msub><mi>Y</mi><mrow><mi>a</mi><mo>\u2212</mo><mn>2</mn></mrow></msub><mo>,</mo><msub><mi>Y</mi><mrow><mi>a</mi><mo>\u2212</mo><mn>3</mn></mrow></msub><mo>,</mo><mn>...</mn><mo>,</mo><mi>C</mi><mo>|</mo><msub><mi>Y</mi><mrow><mi>a</mi><mo>\u2212</mo><mn>1</mn></mrow></msub></mrow></math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "where we are conditioning on the past value of <i>Y</i> (<i>Y</i><sub><i>a</i>\u20131</sub>) when making matches. This assumption can be split into two",
+                            "type": "paragraph"
+                        },
+                        {
+                            "id": "eqn5",
+                            "label": "(6)",
+                            "mathml": "<math><mrow><msub><mi>Y</mi><mi>a</mi></msub><mo>\u22a5</mo><mi>C</mi><mo>|</mo><msub><mi>Y</mi><mrow><mi>a</mi><mo>\u2212</mo><mn>1</mn></mrow></msub></mrow></math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "id": "eqn6",
+                            "label": "(7)",
+                            "mathml": "<math><mrow><msub><mi>Y</mi><mi>a</mi></msub><mo>\u22a5</mo><msub><mi>Y</mi><mrow><mi>a</mi><mo>\u2212</mo><mn>2</mn></mrow></msub><mo>,</mo><msub><mi>Y</mi><mrow><mi>a</mi><mo>\u2212</mo><mn>3</mn></mrow></msub><mo>,</mo><mn>...</mn><mo>|</mo><msub><mi>Y</mi><mrow><mi>a</mi><mo>\u2212</mo><mn>1</mn></mrow></msub><mo>,</mo><mi>C</mi></mrow></math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "We call the first of these the <i>cohort independence assumption.</i> This prevents cohort differences between donors and recipients causing us problems. The second is a Markov assumption that precludes outcomes at age <i>a</i> also depending on <i>a</i> \u2212 2 (or earlier periods) conditional on information in <i>a</i> \u2212 1 (allowing us to match on one period\u2019s characteristics only).",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "For matches backward in time, the required assumption is",
+                            "type": "paragraph"
+                        },
+                        {
+                            "id": "eqn7",
+                            "label": "(8)",
+                            "mathml": "<math><mrow><msub><mi>Y</mi><mi>a</mi></msub><mo>\u22a5</mo><msub><mi>Y</mi><mrow><mi>a</mi><mo>+</mo><mn>2</mn></mrow></msub><mo>,</mo><msub><mi>Y</mi><mrow><mi>a</mi><mo>+</mo><mn>3</mn></mrow></msub><mo>,</mo><mn>...</mn><mo>,</mo><mi>C</mi><mo>|</mo><msub><mi>Y</mi><mrow><mi>a</mi><mo>+</mo><mn>1</mn></mrow></msub></mrow></math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "As with the forward matching case, this can be split into a cohort independence assumption and a Markov assumption.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s3-3",
+                    "title": "3.3 Splicing approach assumptions",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "Our approach to matching on earnings (and rents) differs from that employed in BHS.<sup><a href=\"#fn2\">2</a></sup> In BHS, individuals are matched on the basis of predicted incomes (estimated using a regression of incomes on various demographics) within income deciles. Actual incomes of donors and recipients (uprated with average income growth) are then used to give a life-cycle income profile. This approach is unlikely to be appropriate for us as we are attempting to reconstruct earnings profiles for a particular cohort. Cohort differences in earnings may mean that actual incomes of donors are not representative of what recipients experienced. Donors are also likely to have experienced a different set of economy-wide shocks (such as booms and recessions) to recipients. Instead we match on earnings <i>ranks</i> (measured as numbers between 0 and 1). By doing this we can ignore differences in cohort and period effects, and instead assume that transitions between different parts of the earnings distribution within cohorts are stable over time. We can then \u201cfill in\u201d actual earnings/rents from the cross-sectional earnings distribution observed in successive years of the LCFS for the cohort of individuals born in 1945\u201354. This ensures that the distribution of earnings and rents for our spliced individuals at each age will automatically match real-world cross-sectional distributions (in terms of mean, variance and other features). As we only observe this cohort in the LCFS from 1968 until 2012, we project earnings forward beyond 2012 by uprating the distribution for the last age each cohort is observed with forecasts for average earnings growth taken for the Office for Budget Responsibility up to age 75 (after age 75 we impose that all individuals are retired). Some cohorts reach 16 prior to 1968 leaving us with a few ages when their earnings distributions are not observed. To obtain earnings distributions for these cohorts, we take the distributions at the appropriate ages from later cohorts and downrate them with average earnings growth.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The assumption that transitions in earnings at different ages are stable across time is testable. To test it, we make use of a test proposed in (<a href=\"#bib3\">Bickenbach &amp; Bode, 2002</a>). This involves splitting the BHPS into three different subsamples corresponding to the periods 1991\u20131996, 1997\u20132003, and 2004\u20132009.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "We then compare transition probabilities for ages 16\u201364 across earnings quartiles in the subsample to transition probabilities in the whole sample using Pearson\u2019s <i>\u03c7</i><sup>2</sup> tests. Three of the 48 tests we do at age 16\u201364 reject the null at the 5% level, a result which is roughly what we would expect through chance alone \u2013 lending some support to the idea that transitions observed in the BHPS may serve as adequete representations of what the baby-boom cohort would have experienced.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "As far as possible, we want to avoid dropping observations that have missing values at certain ages, as this not only reduces the pool of potential donors but also the length of each match. To do this we assign lags or leads of the partner\u2019s rank in the earnings distribution and hours worked as well as the household\u2019s rank in the rent distribution when this information is not recorded. Those who do not participate in a full interview for the survey are sometimes asked to give their earnings in bands (with a top band of \u201c&gt;\u00a3480 a week\u201d) rather than an actual amount. We assign these individuals the midpoint of their band before calculating earning ranks, and for those in the top band we assign a random rank in a location of the earnings distribution above \u00a3480. If we did not impute in this way, it could potentially lead us to throw out many years of useful data. In the end only a very small proportion (less than 1%) of the observations in our completed life-cycles are imputed.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s3-4",
+                    "title": "3.4 Earnings and rents",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "We use private pension income reported in the BHPS for individuals and their partners inflated or deflated using average earnings growth.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s3-5",
+                    "title": "3.5 Private pensions",
+                    "type": "section"
+                }
+            ],
+            "id": "s3",
+            "title": "3. Splicing approach",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "content": [
+                        {
+                            "text": "In this second approach we hope to <i>simulate</i> plausible life-cycles with experiences representative of the baby-boom cohort (those born between 1945 and 1954). We make use of both panel data from the BHPS and cross-sectional data from the LCFS. The microsimulation approach proceeds through the following steps",
+                            "type": "paragraph"
+                        },
+                        {
+                            "items": [
+                                [
+                                    {
+                                        "text": "Estimation stage",
+                                        "type": "paragraph"
+                                    },
+                                    {
+                                        "items": [
+                                            [
+                                                {
+                                                    "text": "Run regressions to predict the probability of moving from one state to another for individuals with a given set of characteristics at each age. The outcomes we simulate are those that are central to determining taxes and benefits: mortality, partnering, separation, child arrival and departure, movements into and out of disability, movements in and out of employment, movements between full-time and part-time work, movements between locations in the earnings distribution, movements into and out of rented accommodation, and movements between council tax bands (which determine what property taxes individuals must pay). A summary of the exact specifications we use in the estimation stage 1(a) are set out in <a href=\"#table1\">Tables 1</a> and <a href=\"#table2\">2</a>.",
+                                                    "type": "paragraph"
+                                                }
+                                            ]
+                                        ],
+                                        "prefix": "alpha-lower",
+                                        "type": "list"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "Simulation stage",
+                                        "type": "paragraph"
+                                    },
+                                    {
+                                        "items": [
+                                            [
+                                                {
+                                                    "text": "Start simulating in 1960 when all individuals are in childhood. Initial conditions (education levels, likelihood of being a renter and so on) are set using data on the baby-boom cohort from the LCFS.",
+                                                    "type": "paragraph"
+                                                }
+                                            ],
+                                            [
+                                                {
+                                                    "text": "Simulate transitions for all our variables of interest between years t and t + 1 using the regression results from 1(a) above.",
+                                                    "type": "paragraph"
+                                                }
+                                            ],
+                                            [
+                                                {
+                                                    "text": "Scale these transitions up or down by multiplicative factors so as to achieve the overall averages for different subgroups of the baby-boomer cohort in the LCFS data.",
+                                                    "type": "paragraph"
+                                                }
+                                            ],
+                                            [
+                                                {
+                                                    "text": "dvance the year by one and repeat previous three steps until complete life-cycles are simulated for all individuals in the cohort.",
+                                                    "type": "paragraph"
+                                                }
+                                            ]
+                                        ],
+                                        "prefix": "alpha-lower",
+                                        "type": "list"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "Imputation stage",
+                                        "type": "paragraph"
+                                    },
+                                    {
+                                        "items": [
+                                            [
+                                                {
+                                                    "text": "Use the LCFS data to impute actual earnings levels given the locations in the earnings distribution we have simulated year-by-year. Since these are imputed according to the earnings ranks (which we model), they will have an appropriate time series process. The same is done for rents.",
+                                                    "type": "paragraph"
+                                                }
+                                            ],
+                                            [
+                                                {
+                                                    "text": "Use the English Longitundinal Study of Ageing (ELSA) to impute private pension income to simulated individuals.",
+                                                    "type": "paragraph"
+                                                }
+                                            ]
+                                        ],
+                                        "prefix": "alpha-lower",
+                                        "type": "list"
+                                    }
+                                ]
+                            ],
+                            "prefix": "number",
+                            "type": "list"
+                        },
+                        {
+                            "text": "We use this procedure to simulate 5,000 life-cycles.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "As it is not possible to determine all variables of the system simultaneously during the simulation in a given period, variables must be determined in a sequential manner. <a href=\"#fig1\">Figure 1</a> shows the order we impose on the determination agents\u2019 outcomes in each period (private pensions are determined after the simulations are complete). First we determine whether or not the agent lives or dies in the period. We then randomly assign births to individuals according to probabilities of child arrival that we have estimated, and determine whether children between ages 16 and 18 leave the household. Individuals in our simulation then partner or separate. Childbirth is determined prior to partnering so that it will depend on lagged rather than current partner status (thus allowing for a nine month gestation period). We then determine whether or not individuals receive Incapacity benefit (IB), Disability Living Allowance (DLA) or both, before assigning an employment status, and a location in the earnings distribution (we impose that all those who are disabled are unemployed). Finally we determine whether or not the individual is a renter and the household\u2019s council tax band, before incrementing individuals\u2019 ages and repeating the process. The order imposed here represents assumptions about the way in which outcomes are determined. For example, since child arrival and departure are determined before partnering and separation, the number of children an individual has this period can affect his probability of being in a couple this period, but not vice-versa. (The number of children last period can affect the probability of being in a couple this period).",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "fig1",
+                                    "image": {
+                                        "alt": "",
+                                        "uri": "%iiif_uri%/00134%2Fijm-00134-fig1.tif",
+                                        "size": {
+                                            "width": 1554,
+                                            "height": 477
+                                        },
+                                        "source": {
+                                            "mediaType": "image/jpeg",
+                                            "uri": "%iiif_uri%/00134%2Fijm-00134-fig1.tif/full/full/0/default.jpg",
+                                            "filename": "ijm-00134-fig1.jpg"
+                                        }
+                                    },
+                                    "label": "Figure 1",
+                                    "title": "Microsimulation approach.",
+                                    "type": "image"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "text": "The microsimulation approach requires us to specify a set of parametric models for the nature of transitions over time. The specification of these models (and the order in which variables are modelled) need to be reasonable. In addition, the microsimulation approach does not avoid the problems of cohort differences that affect the splicing approach (although by scaling our transition probabilities as we discuss below, we can mitigate them) and so further assumptions are needed. In particular, if we are to estimate next period\u2019s transition probabilities for characteristics Y on the basis of current information only, using data from cohorts other than the baby-boom cohort we require that",
+                            "type": "paragraph"
+                        },
+                        {
+                            "id": "eqn8",
+                            "label": "(9)",
+                            "mathml": "<math><mrow><msub><mi>Y</mi><mi>a</mi></msub><mo>\u22a5</mo><msub><mi>Y</mi><mrow><mi>a</mi><mo>\u2212</mo><mn>2</mn></mrow></msub><mo>,</mo><msub><mi>Y</mi><mrow><mi>a</mi><mo>\u2212</mo><mn>3</mn></mrow></msub><mo>,</mo><mn>...</mn><mo>,</mo><mi>C</mi><mo>|</mo><msub><mi>Y</mi><mrow><mi>a</mi><mo>\u2212</mo><mn>1</mn></mrow></msub></mrow></math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "which is equivalent to the cohort independence assumption (5) made in the splicing approach",
+                            "type": "paragraph"
+                        },
+                        {
+                            "id": "eqn9",
+                            "label": "(10)",
+                            "mathml": "<math><mrow><msub><mi>Y</mi><mi>a</mi></msub><mo>\u22a5</mo><mi>C</mi><mo>|</mo><msub><mi>Y</mi><mrow><mi>a</mi><mo>\u2212</mo><mn>1</mn></mrow></msub></mrow></math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "and the Markov assumption (6)",
+                            "type": "paragraph"
+                        },
+                        {
+                            "id": "eqn10",
+                            "label": "(11)",
+                            "mathml": "<math><mrow><msub><mi>Y</mi><mi>a</mi></msub><mo>\u22a5</mo><msub><mi>Y</mi><mrow><mi>a</mi><mo>\u2212</mo><mn>2</mn></mrow></msub><mo>,</mo><msub><mi>Y</mi><mrow><mi>a</mi><mo>\u2212</mo><mn>3</mn></mrow></msub><mo>,</mo><mn>...</mn><mo>|</mo><msub><mi>Y</mi><mrow><mi>a</mi><mo>\u2212</mo><mn>1</mn></mrow></msub><mo>,</mo><mi>C</mi></mrow></math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "We do not however require the backward matching assumptions that we made for the splicing approach as we only model transitions going from younger to older ages. For more details, see (<a href=\"#bib12\">Kim <i>et al</i>., 2014</a>).<sup><a href=\"#fn3\">3</a></sup> In the microsimulation approach, we have also found it relatively simple to relax the Markov assumption for some processes by including additional lags of variables when modelling transition probabilities (particularly for earnings and employment as we discuss below). Something similar could in principle be done to relax the Markov assumption in the splicing approach, though at the cost of making it harder to find matches (and by reducing the pool of potential donors, worsening the match quality for other variables we match on).",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "footnotes": [
+                                        {
+                                            "text": [
+                                                {
+                                                    "text": "<i>Notes</i>: LPM = Linear probability model, OL = Ordered Logit, MNL = multinomial logit.",
+                                                    "type": "paragraph"
+                                                }
+                                            ]
+                                        }
+                                    ],
+                                    "id": "table1",
+                                    "label": "Table 1",
+                                    "tables": [
+                                        "<table>\n<thead>\n<tr>\n<th>Outcome</th>\n<th>Method</th>\n<th>Subsamples</th>\n<th>Independent variables</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>Mortality</td>\n<td>Logit</td>\n<td/>\n<td>Cubic in age, dummy for receipt of disability benefits, couple status, education dummies and earnings quintile</td>\n</tr>\n<tr>\n<td>Child arrival</td>\n<td>LPM</td>\n<td>Run separately for women in couples and single women</td>\n<td>For childless women: quadratic in age, dummy for ever had kids, number of kids ever had For women in couples: as for childless but also banded number of kids (0,1,2, and 3 or more) in household, age of youngest child, age of youngest child interacted with age</td>\n</tr>\n<tr>\n<td>Child departure</td>\n<td>LPM</td>\n<td>Run separately by age of child (16\u201319)</td>\n<td>Dummies for mothers and fathers education</td>\n</tr>\n<tr>\n<td>Partnering</td>\n<td>Logit</td>\n<td>Run separately for 3 education groups and sex</td>\n<td>Quartic in age, dummy for employed last period, dummies for number of kids in household (0,1,and 2 or more), dummies for couple status in previous three periods, dummy for single status last period interacted with age</td>\n</tr>\n<tr>\n<td>Separating</td>\n<td>Logit</td>\n<td>Run separately for own education and sex</td>\n<td>Quartic in age, employed last period, partner employed last period, dummies for banded number of kids in household (0,1,and 2 or more), cubic in current relationship length, age of youngest child, dummy for education same as partner</td>\n</tr>\n<tr>\n<td>Health (IB and DLA receipt)</td>\n<td>Logit</td>\n<td/>\n<td>For IB: quartic in age, 4 lags of employment status (interacted), 4 lags of IB status (interacted) earnings quartile last period\nFor DLA: quartic in age, 4 lags of employment status (interacted), 4 lags of DLA status (interacted) earnings quartile last period and 2 lags of IB status</td>\n</tr>\n<tr>\n<td>Renter (21 and over)</td>\n<td>Logit</td>\n<td>Run separately for current owners and current renters and for over and under 21s</td>\n<td>Age of head of household, education of head of household, earnings quintile last period of head of household, banded number of kids (0,1,2 or 3 or more), couple status, relationship length dummy for rented last period, 4 lags of ownership status</td>\n</tr>\n<tr>\n<td>Rank in rent distribution (21 and over)</td>\n<td>OL</td>\n<td>Run separately for owners, and renters in each of 5 rent quintiles</td>\n<td>Age of head of household, education of head of household, earnings quintile last period of head of household, banded number of kids (0,1,2 or 3 or more), couple status, relationship length dummy for rented last period, 4 lags of ownership status</td>\n</tr>\n<tr>\n<td>Renter status and rank (under 21)</td>\n<td>MNL</td>\n<td/>\n<td>Age of head of household, Age of head of household squared,</td>\n</tr>\n<tr>\n<td>Council tax band</td>\n<td>OL</td>\n<td>Run separately for each of 8 possible prior bands</td>\n<td>cubic in age, banded number of children (0,1,2,3, 4 or more) renter status earnings quartile of household head, employment status</td>\n</tr>\n</tbody>\n</table>"
+                                    ],
+                                    "title": "Estimation equations.",
+                                    "type": "table"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "footnotes": [
+                                        {
+                                            "text": [
+                                                {
+                                                    "text": "<i>Notes</i>: MNL = multinomial logit.",
+                                                    "type": "paragraph"
+                                                }
+                                            ]
+                                        }
+                                    ],
+                                    "id": "table2",
+                                    "label": "Table 2",
+                                    "tables": [
+                                        "<table>\n<thead>\n<tr>\n<th>Outcome</th>\n<th>Method</th>\n<th>Subsamples</th>\n<th>Independent variables</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>Employment (22 and over)</td>\n<td>Logit</td>\n<td>Run separately for males and females, by employment in prior wave and by employment 2 waves ago</td>\n<td>Education dummies, quartic in age, age-education interactions, dummy for over state pension age, dummy for having kids, dummy for couple status, dummy for having kids under 5, kids under 5 interacted with cubic in age, 3 lags of full-time status, banded number of kids (0,1,2 and 3 or more), couple status, couple-age interaction, lagged full-time status, lagged earnings rank,dummies for earnings quartiles (and 5 lags), employment status 3, 4,5 and 6 waves ago (and interactions), lagged disability status</td>\n</tr>\n<tr>\n<td>Earnings quartile and part-time/full-time status (22 and over)</td>\n<td>MNL</td>\n<td>Run separately for each of 5 possible prior states: in part-time work, in full-time work and in 4 earnings quartiles and separately for males and females</td>\n<td>Education dummies, quartic in age, age-education interactions, dummy for over state pension age, dummy for has kids, couple status, dummy for kids under 5, 3 lags of full-time status, current earnings rank (and 3 lags), 3 lags of earnings quartile dummies, 3 lags of employment status (interacted)</td>\n</tr>\n<tr>\n<td>Employment and earnings (under 22)</td>\n<td>MNL</td>\n<td>Run separately for each of 6 prior possible states: unemployment, in part-time work, in full-time work and in 4 earnings quartiles</td>\n<td>Sex, education dummies, dummy for has kids and age</td>\n</tr>\n<tr>\n<td>Earnings rank within \u2018bin\u2019 (20 and over)</td>\n<td>OLS</td>\n<td>Run separately by prior state and sex</td>\n<td>cubics in 4 lagged (within bin) ranks interacted with cubic in age, education dummies, dummies for \u2018bin\u2019 in previous 4 periods</td>\n</tr>\n<tr>\n<td>Earnings rank within \u2018bin\u2019 (under 20)</td>\n<td>OLS</td>\n<td>Run separately by prior state and sex</td>\n<td>cubics in lagged (within bin) ranks interacted with cubic in age, education dummies</td>\n</tr>\n</tbody>\n</table>"
+                                    ],
+                                    "title": "Estimation equations for employment and earnings.",
+                                    "type": "table"
+                                }
+                            ],
+                            "type": "figure"
+                        }
+                    ],
+                    "id": "s4-1",
+                    "title": "4.1 Overview of approach",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "In this section, we describe the scaling procedure we use to bring our profiles of our simulated individuals closer to the experiences of the baby-boom cohort.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Our aim is to replicate the experiences of the baby-boom cohort, in terms of employment rates, partnering and separation rates and so on. The problem is that we do not have panel data that covers all the years of that cohort. Instead, we have to make use of data from later cohorts when estimating transitions at younger ages in the BHPS and earlier cohorts when estimating transitions at older ages. Differences across cohorts may mean that these individuals do not provide a realistic representation of what happened to baby-boomers. For example individuals from later cohorts may be less likely to partner, may have fewer children and may have them later. However we do observe the evolution of these variables in a succession of cross-sections from the LCFS. This can be used to adjust estimates of transition probabilities based on the BHPS such that the transitions are consistent with the aggregate levels of the baby-boom cohort observed in the LCFS. This is something that is relatively easy to implement in the microsimulation approach, but is much harder to do in the splicing approach.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "We start by noting that by the law of total probability gives us",
+                            "type": "paragraph"
+                        },
+                        {
+                            "id": "ueqn2",
+                            "label": "(12)",
+                            "mathml": "<math><mrow><mrow><mo>[</mo> <mrow><mtable><mtr><mtd><mrow><msubsup><mi>\u03c0</mi><mrow><mn>00</mn></mrow><mi>t</mi></msubsup></mrow></mtd><mtd><mrow><msubsup><mi>\u03c0</mi><mrow><mn>10</mn></mrow><mi>t</mi></msubsup></mrow></mtd></mtr><mtr><mtd><mrow><msubsup><mi>\u03c0</mi><mrow><mn>01</mn></mrow><mi>t</mi></msubsup></mrow></mtd><mtd><mrow><msubsup><mi>\u03c0</mi><mrow><mn>11</mn></mrow><mi>t</mi></msubsup></mrow></mtd></mtr></mtable></mrow> <mo>]</mo></mrow><mtext>\u2009</mtext><mo>\u00d7</mo><mtext>\u2009</mtext><mrow><mo>[</mo> <mrow><mtable><mtr><mtd><mrow><msubsup><mi>\u03c0</mi><mn>0</mn><mi>t</mi></msubsup></mrow></mtd></mtr><mtr><mtd><mrow><msubsup><mi>\u03c0</mi><mn>1</mn><mi>t</mi></msubsup></mrow></mtd></mtr></mtable></mrow> <mo>]</mo></mrow><mo>=</mo><mrow><mo>[</mo> <mrow><mtable><mtr><mtd><mrow><msubsup><mi>\u03c0</mi><mn>0</mn><mrow><mi>t</mi><mo>+</mo><mn>1</mn></mrow></msubsup></mrow></mtd></mtr><mtr><mtd><mrow><msubsup><mi>\u03c0</mi><mn>1</mn><mrow><mi>t</mi><mo>+</mo><mn>1</mn></mrow></msubsup></mrow></mtd></mtr></mtable></mrow> <mo>]</mo></mrow></mrow></math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "where <math><mrow><msubsup><mi>\u03c0</mi><mi>i</mi><mi>t</mi></msubsup></mrow></math> is the probability of being in state in <i>i</i> in period <i>t</i> (e.g being employed), and <math><mrow><msubsup><mi>\u03c0</mi><mrow><mi>i</mi><mi>j</mi></mrow><mi>t</mi></msubsup></mrow></math> denotes the probability of moving from state <i>i</i> in period <i>t</i> to state <i>j</i> in period <i>t</i> +1. <math><mrow><msubsup><mi>\u03c0</mi><mi>i</mi><mi>t</mi></msubsup></mrow></math> can be observed in the LCFS data, but the elements of the transition matrix (what we are interested in) are unknown. Since there are more unknowns than equations, the system does not have a unique solution. In order to choose from possible solutions, we choose the solution that is closest to the transition matrix estimated from the BHPS. We do this by minimising the norm of log differences between candidate transition matrices and transition matrices estimated from the BHPS. This gives us the smallest multiplicative factor that we would need to apply to our transition probabilities to reach the observed probabilities of being employed and so on in the LCFS data.<sup><a href=\"#fn4\">4</a></sup> The resulting transition probabilities are used to produce the correct proportions for couples, renters, and employment.<sup><a href=\"#fn5\">5</a></sup>",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "So far, we have been describing the scaling procedure as if it is applied once at the aggregate level. We can, however, scale separately for different population cells. For instance, we can scale transition matrices to match employment rates separately for those with children and those without. This allows us to capture differences in the likelihood of parents being employed in our cohort of interest relative to the cohorts observed in the BHPS. <a href=\"#table3\">Table 3</a> sets out the cells within which we match. Adopting this approach means that the scaling factors applied to each of the variables we are adjusting will vary by cell, and year.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "table3",
+                                    "label": "Table 3",
+                                    "tables": [
+                                        "<table>\n<thead>\n<tr>\n<th>State</th>\n<th>Cells</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>Couple</td>\n<td>Age, year, sex, has children</td>\n</tr>\n<tr>\n<td>Renter</td>\n<td>Age, year</td>\n</tr>\n<tr>\n<td>Employed</td>\n<td>Age, year, sex, has children</td>\n</tr>\n</tbody>\n</table>"
+                                    ],
+                                    "title": "Cells within which probabilities are matched to the LCFS.",
+                                    "type": "table"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "text": "We scale the mortality rate using a simpler method. For this we take data from the Office for National Statistics Life Tables which provide average mortality rates for men and women at different ages for different birth years. We then use the difference between these and average mortality rates for individuals in the BHPS to scale mortality rates as predicted by a logit regression on income, disability benefit receipt, education and couple status.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s4-2",
+                    "title": "4.2 Scaling BHPS transition probabilities",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "In the simulation, the aim in the partnering module is to partner individuals within the simulated sample (i.e. if one individual has a partner then his partner will also be in the sample). Thus all matches are assumed to take place within the same (nine year) birth cohort. This is in contrast to the splicing approach where partnering within the sample was not feasible. We allow for assortative matching in the choice of partners on the basis of education level, such that university-educated individuals are more likely to match with other university-educated individuals than those with GCSEs or less are. In order to implement this, we match potential partners based on an index that depends on education level and a random shock:",
+                            "type": "paragraph"
+                        },
+                        {
+                            "id": "eqn11",
+                            "label": "(13)",
+                            "mathml": "<math><mrow><mi>I</mi><mo>=</mo><mi>e</mi><msub><mi>d</mi><mn>2</mn></msub><mo>+</mo><mi>\u03b2</mi><mi>e</mi><msub><mi>d</mi><mn>3</mn></msub><mo>+</mo><mi>u</mi></mrow></math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "where <i>ed</i><sub>2</sub> is a dummy for having a secondary-level education and <i>ed</i><sub>3</sub> is a dummy for having a tertiary-level education. The values of the unknown parameters <i>\u03b2</i> and \u03c3<sup>2</sup> are chosen such that the distance between the simulated three-by-three matrix of education group against partner education group is as close to the empirical one as possible.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Which potential couples are realised, and which actual couples are dissolved, depends on partner arrival and departure probabilities estimated from our panel data.<sup><a href=\"#fn6\">6</a></sup> New couples and newly single individuals do not return to the partnering market until the following period. These probabilities are then scaled to match the marriage rates observed in repeated cross-sections of the baby-boom cohort we are interested in (see <a href=\"#s4\">Section 4.3</a>). Each couple requires a male and a female, and so a mismatch in the numbers of each can lead to too few matches being formed relative to what what our estimated probabilities would imply. To avoid this happening, probabilities of partnering are scaled again to achieve the expected number of matches. Matches can only occur between individuals who are both aged 16 or older.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "All matches are assumed to take place within the same cohort, however we also wish to allow for the fact that males in couples in the 1945\u201354 cohort seen in the LCFS are on average just over 2 years older than females. (This is important because it has a knock-on effect on the ages at which children are born). To achieve this, our simulated males are born in the years 1945\u201352 while females are born between 1947\u20131954. This means in each period that the marriage market will be composed of females that are on average 2 years younger than their male counterparts.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s4-3",
+                    "title": "4.3 Partnering",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "A standard regression model of earnings can accurately capture changes in means and variances of earnings dynamics over time. However, as pointed out in (<a href=\"#bib5\">Bowlus &amp; Robin, 2012</a>), they suffer from the drawback of typically assuming that increases and decreases in earnings are equally likely regardless of where individuals are located in the earnings distribution. As a result, they will typically not capture key features of earnings mobility well (particularly mobility for the tails of the earnings distribution). Those in the top of the earnings distribution, for example, should be more likely to see their earnings fall than those at the bottom.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "An alternative is to model transition probabilities between different segments of the distribution. We do this using a procedure that develops on that used in (<a href=\"#bib5\">Bowlus &amp; Robin, 2012</a>). Bowlus and Robin model transitions between segments of the residual distribution after a fixed-effects earnings regression. One concern with this approach is that when applied to a short panel, an earnings regression may conflate cohort and age effects on earnings levels (since those seen at older ages will tend to be from earlier cohorts). An alternative approach is to model movements within the earnings distribution of the cohort (i.e. earnings ranks). As with the splicing approach this would assume no cohort or period differences in the nature of transitions, but the exercise in <a href=\"#s3\">Section 3.3</a> suggests that this assumption may not be too unreasonable (and in any case we would need to make a similar assumption if modelling residual transitions). Importantly, it would however allow for entirely arbitrary period and cohort effects in earnings levels.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "To model movements in and out of the labour market, movements between part-time and full-time work, and movements around positions in the earnings distribution, we proceed through the following three steps:",
+                            "type": "paragraph"
+                        },
+                        {
+                            "items": [
+                                [
+                                    {
+                                        "text": "<i>Determine employment status:</i> We estimate transition matrices for employment status separately for males and females and according to individuals\u2019 employment status over the previous two waves. The probabilities making up this matrix are estimated through a set of logit models which include several lags of employment status (and interactions thereof) to help us match the high persistence of employment status observed in the data. They are also scaled so as to match the observed unemployment rates at different ages for the baby-boom cohort in the cross-sectional LCFS data (as discussed above).",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "<i>Place the individual in an earnings \u2018bin\u2019:</i> Once an individual\u2019s employment status is determined, we then place the individual in one of 5 possible states or \u2018bins\u2019: in part-time work, or in full-time work and in one of four different earnings quartiles. Distinguishing between part- and full-time work is important for the receipt of tax credits. We assume that part-time work corresponds to 20 hours per week and full-time work to 40 hours. To determine which bin an individual should be placed in we estimate multinomial logits from each of the six possible prior states <i>i</i> (which include unemployment)",
+                                        "type": "paragraph"
+                                    },
+                                    {
+                                        "id": "eqn12",
+                                        "label": "(14)",
+                                        "mathml": "<math><mrow><mi>P</mi><mi>r</mi><mrow><mo>(</mo><mrow><mi>i</mi><mo>,</mo><mi>j</mi><mo>|</mo><msub><mi>x</mi><mrow><mi>h</mi><mi>t</mi></mrow></msub></mrow><mo>)</mo></mrow><mo>=</mo><mfrac><mrow><mi>exp</mi><mrow><mo>(</mo><mrow><msub><mi>x</mi><mrow><mi>h</mi><mi>t</mi></mrow></msub><mi>\u03ba</mi><mo stretchy=\"false\">(</mo><mi>i</mi><mo>,</mo><mi>j</mi><mo stretchy=\"false\">)</mo></mrow><mo>)</mo></mrow></mrow><mrow><mstyle displaystyle=\"true\"><msubsup><mo>\u2211</mo><mrow><mi>m</mi><mo>=</mo><mn>0</mn></mrow><mi>N</mi></msubsup><mrow><mi>exp</mi><mrow><mo>(</mo><mrow><msub><mi>x</mi><mrow><mi>h</mi><mi>t</mi></mrow></msub><mi>\u03ba</mi><mo stretchy=\"false\">(</mo><mi>i</mi><mo>,</mo><mi>m</mi><mo stretchy=\"false\">)</mo></mrow><mo>)</mo></mrow></mrow></mstyle></mrow></mfrac></mrow></math>",
+                                        "type": "mathml"
+                                    },
+                                    {
+                                        "text": "The set of covariates included in x includes a cubic in age, education, a dummy for whether individuals have children or not, and a dummy for whether they have children under the age of 5, sex (as well as various interactions of all of these), their current earnings rank (entering linearly) as well as lags of full-time and employment status and lagged earnings quartiles.",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "<i>Determine the individual\u2019s precise earnings rank:</i> The results from these models can be used to estimate the probability of moving between unemployment, part-time and full-time work and the different income quartiles. However, it does not place individuals precisely within these quartiles. One approach is to deal with this is to match simulated individuals to real-world individuals who made the same transitions as they did and use these individuals\u2019 new ranks to determine the simulated individual\u2019s new locations (the approach adopted by Bowlus and Robin). We found that in our case we were better able to match the persistence in earnings ranks by using a parametric approach. We predict ranks using the following regression",
+                                        "type": "paragraph"
+                                    },
+                                    {
+                                        "id": "eqn13",
+                                        "label": "(15)",
+                                        "mathml": "<math><mrow><msup><mi>\u03a6</mi><mrow><mo>\u2212</mo><mn>1</mn></mrow></msup><mo stretchy=\"false\">(</mo><msub><mi>r</mi><mrow><mi>i</mi><mo>,</mo><mi>t</mi></mrow></msub><mo stretchy=\"false\">)</mo><mo>=</mo><mstyle displaystyle=\"true\"><munderover><mo>\u2211</mo><mi>\u03c4</mi><mn>4</mn></munderover><mrow><mstyle displaystyle=\"true\"><munder><mo>\u2211</mo><mi>j</mi></munder><mrow><msubsup><mi>\u03b4</mi><mn>0</mn><mi>j</mi></msubsup><msubsup><mi>D</mi><mrow><msub><mi>Q</mi><mrow><mi>t</mi><mo>\u2212</mo><mi>\u03c4</mi></mrow></msub><mo>=</mo><mi>j</mi></mrow><mi>i</mi></msubsup></mrow></mstyle></mrow></mstyle><mo>+</mo><mstyle displaystyle=\"true\"><munderover><mo>\u2211</mo><mi>\u03c4</mi><mn>4</mn></munderover><mrow><mstyle displaystyle=\"true\"><munder><mo>\u2211</mo><mi>j</mi></munder><mrow><msubsup><mi>\u03b4</mi><mn>1</mn><mi>j</mi></msubsup><msubsup><mi>D</mi><mrow><msub><mi>Q</mi><mrow><mi>t</mi><mo>\u2212</mo><mi>\u03c4</mi></mrow></msub><mo>=</mo><mi>j</mi></mrow><mi>i</mi></msubsup></mrow></mstyle></mrow></mstyle><mo>\u00d7</mo><msub><mi>r</mi><mrow><mi>i</mi><mo>,</mo><mi>t</mi><mo>\u2212</mo><mn>1</mn></mrow></msub><mo>+</mo><mstyle displaystyle=\"true\"><munderover><mo>\u2211</mo><mi>\u03c4</mi><mn>4</mn></munderover><mrow><mstyle displaystyle=\"true\"><munder><mo>\u2211</mo><mi>j</mi></munder><mrow><msubsup><mi>\u03b4</mi><mn>1</mn><mi>j</mi></msubsup><msubsup><mi>D</mi><mrow><msub><mi>Q</mi><mrow><mi>t</mi><mo>\u2212</mo><mn>1</mn></mrow></msub><mo>=</mo><mi>j</mi></mrow><mi>i</mi></msubsup></mrow></mstyle></mrow></mstyle><mo>\u00d7</mo><msubsup><mi>r</mi><mrow><mi>i</mi><mo>,</mo><mi>t</mi><mo>\u2212</mo><mn>1</mn></mrow><mn>2</mn></msubsup><mn>...</mn></mrow></math>",
+                                        "type": "mathml"
+                                    },
+                                    {
+                                        "text": "where <i>r<sub>i,t</sub></i> the within-bin rank of individual <i>i</i> in period <i>t</i>, and <math><mrow><msubsup><mi>D</mi><mrow><msub><mi>Q</mi><mrow><mi>t</mi><mo>\u2212</mo><mi>\u03c4</mi></mrow></msub><mo>=</mo><mi>j</mi></mrow><mi>i</mi></msubsup></mrow></math> is a dummy which equals one if the individual was located in bin <i>j</i> in period <i>t -</i> \u03c4. \u03a6<sup>-1</sup>(.) is the inverse of the CDF of the normal distribution. Linearly predicting \u03a6<sup><i>\u2014</i>1</sup><i>(r<sub>i,t</sub></i>) (and then feeding this prediction through \u03a6(.)) ensures that the predicted within bin rank always lies between 0 and 1. The polynomial of past ranks (up to a cubic) included in this regression is also interacted with a cubic in age in order to help us match the differing persistence of earnings over the life-cycle. In our simulations, we add a normally distributed noise term with the variance of residuals seen in the data to a linear prediction made using (5) to match the variance of ranks observed in the data.",
+                                        "type": "paragraph"
+                                    }
+                                ]
+                            ],
+                            "prefix": "number",
+                            "type": "list"
+                        },
+                        {
+                            "text": "Younger individuals (who do not have all the lags needed to be included in the regression models mentioned so far) have their status determined by a multinomial logit (across our five possible bins and unemployment) and a within bin regression involving only one lag. Once we have individuals\u2019 ranks in the earnings distribution we can then fill actual values of earnings using cross-sectional data for the relevant cohort from the LCFS. As in the splicing approach, this means we will automatically capture changes in inequality, means and variances and other moments of the cohort of interest.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s4-4",
+                    "title": "4.4 Employment and earnings",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "For rental payments and ownership status, we adopt a very similar procedure to that for earnings. We first use the estimates of a logit to determine whether an individual is an owner or a renter. For those who are renters, we then use the estimates of an ordered logit to predict their rent quintile; controlling for education of the household head (assumed to be the male in any couple), a cubic in age for the household head, couple status, relationship length, banded number of children and several lags of past renter status and past quintiles of the rent distribution. Placement within rental quintiles is random (the variance of the rental distribution is not as great as that of earnings meaning the exact placement within quintiles matters less). If the lagged variables differ between two members of a couple, they are taken from the household head. For younger individuals for whom we do not have a complete set of lags (those under 21), we run a simpler multinomial logit to determine transitions across all the possible states.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s4-5",
+                    "title": "4.5 Rent",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "For private pensions we combine information from two datasets. The first consists of estimates of the discounted value of future private pension incomes for individuals in the BHPS survey from (<a href=\"#bib9\">Disney, Emmerson, &amp; Tetlow, 2007</a>). These estimates give the present value of future incomes for individuals if had they retired in 2001 or earlier, as well as projections for the future value of private pension wealth if individuals had continued in their present employment status until state retirement age. They are calculated using information from the special module of questions on private pensions included in the 2001 wave of the survey.<sup><a href=\"#fn7\">7</a></sup> The second is a set of predicted future private pension incomes for individuals seen in 2008 of the English Longitudinal Study of Ageing (ELSA). These include projected income streams conditional on individuals beginning to draw their private pensions in different years from 2008 onwards. The authors are indebted to Rowena Crawford, Soumaya Keynes and Gemma Tetlow for producing these projections and sharing them with us. Details of their methodology can be found in (<a href=\"#bib8\">Crawford, 2012</a>) with an example of their use in (<a href=\"#bib2\">Banks, Emmerson, &amp; Tetlow, 2014</a>).",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The approach we follow allows us to match real-world private pension income profiles to our simulated individuals on the basis of their labour market histories and other characteristics. We implement it in the following steps (once our simulations have finished)",
+                            "type": "paragraph"
+                        },
+                        {
+                            "items": [
+                                [
+                                    {
+                                        "text": "We first estimate a probability that a simulated individual will ever receive a private pension using an individuals\u2019 characteristics in 2001. We do this by estimating a logit model in the BHPS for that year. This regresses a dummy for positive projected private pension wealth in 2001 on sex and education dummies (and interactions of these), dummies for the number of the previous 5 years the individual was employed and dummies for the individuals\u2019 decile of a 5 year moving average of previous earnings ranks.",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "We then predict the 2001 private pension \u2018wealth\u2019 (defined in here as the discounted value of future private pension incomes) for those simulated individuals who are to receive private pensions. This is done using the results of a regression of pension wealth in 2001 on a cubic in age, education dummies (and interactions of these) sex, years employed and a moving average of past earnings in the BHPS to which we add a normally distributed noise term.",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "We then calculate the simulated individuals\u2019 ranks in this distribution within cells defined by age and year and use these to match them to a future stream of private pension income at the same rank from the ELSA data within cells defined by cohort, sex and couple status in 2008 (or earlier if they retire before this).",
+                                        "type": "paragraph"
+                                    }
+                                ]
+                            ],
+                            "prefix": "number",
+                            "type": "list"
+                        },
+                        {
+                            "text": "An individual\u2019s retirement age is defined as the maximum of the final age at which they stopped working and 55. The ELSA data only predicts pension income for those who retire from 2008 onwards. For those who retire earlier than this, we deflate pension profiles associated with their retirement age using average earnings growth between 2008 and the year of their retirement. Earnings growth is what would determine private pension income for prior years from a defined benefit final salary scheme. The matching procedure works well, with on average 100 potential matches for each individual and an average distance between the ranks of donors and recipients of less than 1 percentage point.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s4-6",
+                    "title": "4.6 Private pensions",
+                    "type": "section"
+                }
+            ],
+            "id": "s4",
+            "title": "4. Microsimulation approach",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "content": [
+                        {
+                            "text": "<a href=\"#table4\">Table 4</a> shows some summary statistics for the life-cycles we construct using the splicing approach. We fully or partially construct just over 1,900 life-cycles, on average completing 88% of the years between 16 and 83 (or death). However, only 514 (26%) complete fully from age 16 until an individual\u2019s verifiable death. This is because matches for individuals cannot always be found in some circumstances (with particular difficulties at older ages when attrition from the BHPS sample for reasons other than death may be greater). At each join point there are an average of just over 35 potential matches, and on average our synthetic life-cycles are composed of 8.48 different individuals. The standard approach to dealing with data where there is non-random attrition or non-response is to weight observations according to their sampling probabilities as calculated from more representative data (such as population censuses or administrative sources). In a cross-sectional dataset these can be based on characteristics observed in a particular survey year (such as current income, race, sex etc.). To ensure that our spliced individuals provide representative results however, weights would need to be applied to each complete life-cycle. These weights would need to depend not only on the probabilities of having observed each individual in our initial sample, but also the probability of successive splicing producing a complete life-cycle. Unfortunately, there is no source from which we could obtain such weights.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "table4",
+                                    "label": "Table 4",
+                                    "tables": [
+                                        "<table>\n<tbody>\n<tr>\n<td>Number of synthetic life-cycles</td>\n<td>1,952</td>\n</tr>\n<tr>\n<td>Number of individuals used in splicing</td>\n<td>5,806</td>\n</tr>\n<tr>\n<td>Average number of splices per life-cycle</td>\n<td>8.48</td>\n</tr>\n<tr>\n<td>Average number of possible matches at joins</td>\n<td>35.4</td>\n</tr>\n<tr>\n<td>Proportion of years 16\u201383 (or death) covered</td>\n<td>88%</td>\n</tr>\n<tr>\n<td>Completed until death</td>\n<td>514</td>\n</tr>\n</tbody>\n</table>"
+                                    ],
+                                    "title": "Summary statistics (splicing approach).",
+                                    "type": "table"
+                                }
+                            ],
+                            "type": "figure"
+                        }
+                    ],
+                    "id": "s5-1",
+                    "title": "5.1 Summary statistics for the splicing approach",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "One test of the quality of our matches in the splicing approach is to compare the autocorrelations of spliced variables at joint points (across two ages when a splice occurs) and at non-join points for variables which we do not insist on a perfect match for. When matches are not perfect, there is likely to be a slight discontinuity in outcomes at join points, which will give rise to a lower autocorrelation than that observed when no join is made. <a href=\"#table5\">Tables 5</a>\u2013<a href=\"#table8\">8</a> compare the two sets of autocorrelations for different five-year age groups. Despite matching across many different dimensions, autocorrelations at match points are not too dissimilar from autocorrelations observed in the data. Our matching procedure is less effective at capturing autocorrelations for the ranks of the rent distribution and for ranks of the earnings distribution and hours for over 65 year olds (due to the fact that fewer earners are available for matches in these years).",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "table5",
+                                    "label": "Table 5",
+                                    "tables": [
+                                        "<table>\n<thead>\n<tr>\n<th>Age group</th>\n<th colspan=\"2\">Autocorrelations when <i>N</i> match occurs</th>\n<th colspan=\"2\">Autocorrelations when <i>N</i> no match occurs</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>16\u201323</td>\n<td>0.58</td>\n<td>1,115</td>\n<td>0.63</td>\n<td>5,010</td>\n</tr>\n<tr>\n<td>24\u201329</td>\n<td>0.69</td>\n<td>1,202</td>\n<td>0.82</td>\n<td>5,401</td>\n</tr>\n<tr>\n<td>30\u201335</td>\n<td>0.75</td>\n<td>1,114</td>\n<td>0.85</td>\n<td>6,265</td>\n</tr>\n<tr>\n<td>36\u201341</td>\n<td>0.84</td>\n<td>1,173</td>\n<td>0.88</td>\n<td>6,832</td>\n</tr>\n<tr>\n<td>42\u201347</td>\n<td>0.81</td>\n<td>1,110</td>\n<td>0.88</td>\n<td>7,440</td>\n</tr>\n<tr>\n<td>48\u201353</td>\n<td>0.77</td>\n<td>694</td>\n<td>0.87</td>\n<td>7,578</td>\n</tr>\n<tr>\n<td>54\u201359</td>\n<td>0.76</td>\n<td>1,052</td>\n<td>0.87</td>\n<td>6,102</td>\n</tr>\n<tr>\n<td>60\u201365</td>\n<td>0.73</td>\n<td>787</td>\n<td>0.85</td>\n<td>3,140</td>\n</tr>\n<tr>\n<td>66\u201371</td>\n<td>0.36</td>\n<td>119</td>\n<td>0.68</td>\n<td>1,299</td>\n</tr>\n</tbody>\n</table>"
+                                    ],
+                                    "title": "Autocorrelations in ranks for earnings.",
+                                    "type": "table"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "table6",
+                                    "label": "Table 6",
+                                    "tables": [
+                                        "<table>\n<thead>\n<tr>\n<th>Age group</th>\n<th colspan=\"2\">Autocorrelations when <i>N</i> match occurs</th>\n<th colspan=\"2\">Autocorrelations when <i>N</i> no match occurs</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>16\u201323</td>\n<td>0.45</td>\n<td>410</td>\n<td>0.66</td>\n<td>1,228</td>\n</tr>\n<tr>\n<td>24\u201329</td>\n<td>0.64</td>\n<td>998</td>\n<td>0.78</td>\n<td>4,046</td>\n</tr>\n<tr>\n<td>30\u201335</td>\n<td>0.76</td>\n<td>913</td>\n<td>0.86</td>\n<td>5,261</td>\n</tr>\n<tr>\n<td>36\u201341</td>\n<td>0.67</td>\n<td>1,015</td>\n<td>0.83</td>\n<td>5,829</td>\n</tr>\n<tr>\n<td>42\u201347</td>\n<td>0.78</td>\n<td>924</td>\n<td>0.83</td>\n<td>6,041</td>\n</tr>\n<tr>\n<td>48\u201353</td>\n<td>0.75</td>\n<td>560</td>\n<td>0.80</td>\n<td>6,312</td>\n</tr>\n<tr>\n<td>54\u201359</td>\n<td>0.67</td>\n<td>832</td>\n<td>0.80</td>\n<td>4,862</td>\n</tr>\n<tr>\n<td>60\u201365</td>\n<td>0.50</td>\n<td>526</td>\n<td>0.73</td>\n<td>2,493</td>\n</tr>\n<tr>\n<td>66\u201371</td>\n<td>0.34</td>\n<td>134</td>\n<td>0.68</td>\n<td>969</td>\n</tr>\n</tbody>\n</table>"
+                                    ],
+                                    "title": "Autocorrelations in ranks for partner\u2019s earnings.",
+                                    "type": "table"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "table7",
+                                    "label": "Table 7",
+                                    "tables": [
+                                        "<table>\n<thead>\n<tr>\n<th>Age group</th>\n<th colspan=\"2\">Autocorrelations when <i>N</i> match occurs</th>\n<th colspan=\"2\">Autocorrelations when <i>N</i> no match occurs</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>16\u201323</td>\n<td>0.39</td>\n<td>1,310</td>\n<td>0.47</td>\n<td>6,115</td>\n</tr>\n<tr>\n<td>24\u201329</td>\n<td>0.37</td>\n<td>1,321</td>\n<td>0.65</td>\n<td>5,752</td>\n</tr>\n<tr>\n<td>30\u201335</td>\n<td>0.61</td>\n<td>1,188</td>\n<td>0.74</td>\n<td>6,618</td>\n</tr>\n<tr>\n<td>36\u201341</td>\n<td>0.65</td>\n<td>1,224</td>\n<td>0.75</td>\n<td>7,183</td>\n</tr>\n<tr>\n<td>42\u201347</td>\n<td>0.61</td>\n<td>1,152</td>\n<td>0.74</td>\n<td>7,752</td>\n</tr>\n<tr>\n<td>48\u201353</td>\n<td>0.60</td>\n<td>730</td>\n<td>0.72</td>\n<td>7,924</td>\n</tr>\n<tr>\n<td>54\u201359</td>\n<td>0.68</td>\n<td>1,085</td>\n<td>0.76</td>\n<td>6,363</td>\n</tr>\n<tr>\n<td>60\u201365</td>\n<td>0.58</td>\n<td>811</td>\n<td>0.76</td>\n<td>3,351</td>\n</tr>\n<tr>\n<td>66\u201371</td>\n<td>-0.02</td>\n<td>151</td>\n<td>0.63</td>\n<td>1,418</td>\n</tr>\n</tbody>\n</table>"
+                                    ],
+                                    "title": "Autocorrelations in ranks for hours worked.",
+                                    "type": "table"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "table8",
+                                    "label": "Table 8",
+                                    "tables": [
+                                        "<table>\n<thead>\n<tr>\n<th>Age group</th>\n<th colspan=\"2\">Autocorrelations when <i>N</i> match occurs</th>\n<th colspan=\"2\">Autocorrelations when <i>N</i> no match occurs</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>16\u201323</td>\n<td>0.54</td>\n<td>529</td>\n<td>0.70</td>\n<td>2,324</td>\n</tr>\n<tr>\n<td>24\u201329</td>\n<td>0.69</td>\n<td>446</td>\n<td>0.82</td>\n<td>1,893</td>\n</tr>\n<tr>\n<td>30\u201335</td>\n<td>0.40</td>\n<td>295</td>\n<td>0.78</td>\n<td>1,418</td>\n</tr>\n<tr>\n<td>36\u201341</td>\n<td>0.37</td>\n<td>226</td>\n<td>0.78</td>\n<td>1,334</td>\n</tr>\n<tr>\n<td>42\u201347</td>\n<td>0.61</td>\n<td>259</td>\n<td>0.77</td>\n<td>1,477</td>\n</tr>\n<tr>\n<td>48\u201353</td>\n<td>0.70</td>\n<td>195</td>\n<td>0.79</td>\n<td>1,476</td>\n</tr>\n<tr>\n<td>54\u201359</td>\n<td>0.50</td>\n<td>180</td>\n<td>0.77</td>\n<td>1,209</td>\n</tr>\n<tr>\n<td>60\u201365</td>\n<td>0.50</td>\n<td>142</td>\n<td>0.78</td>\n<td>980</td>\n</tr>\n<tr>\n<td>66\u201371</td>\n<td>0.63</td>\n<td>103</td>\n<td>0.76</td>\n<td>558</td>\n</tr>\n</tbody>\n</table>"
+                                    ],
+                                    "title": "Autocorrelations in ranks for rent.",
+                                    "type": "table"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "text": "There is no analog in the microsimulation approach for the above statistics. There are no join points over which difficulties can arise and of course all simulated life-cycles cover the whole period from childhood until death.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The following two subsections discuss measures which can be used to compare the performance of the two methods directly.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s5-2",
+                    "title": "5.2 Quality of matches in the splicing approach",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "<a href=\"#fig2\">Figures 2</a>\u2013<a href=\"#fig7\">7</a> show how age profiles for males and females from our simulated and spliced individuals compare to those observed for the baby-boom cohort in the LCFS for couple status, parenthood, single parenthood, number of children, renters and employment.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The figures show that the microsimultion approach performs well. Averages from our simulations need not automatically match those in the LCFS even with our scaling procedure. For instance, even if we accurately reproduced probabilities of being in a couple for those who have children and those who don\u2019t, the proportion of couples would not match those in the LCFS if we did not also have the correct probabilities of being a parent at each age. Nonetheless, the match between the simulated individuals and cross-sectional averages in the data is excellent for all variables and both sexes. A difference in employment rates between the simulations and the data for younger ages is due to the fact that we impose that all those who have not completed full-time education are unemployed. A similar difference in the proportion of parents who are single in <a href=\"#fig5\">Figure 5</a> is due to the fact that, for years when cohorts are unobserved, we set the marriage rate for under 18s to be zero.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Our splicing procedure also does a good job of matching the experiences of the baby-boom cohort for couple status (<a href=\"#fig3\">Figure 3</a>), parenthood (<a href=\"#fig4\">Figure 4</a>) and number of children (<a href=\"#fig6\">Figure 6</a>). For other variables, the profiles of our spliced individuals are however a little different those from the baby-boom cohort, reflecting cohort differences between the baby-boomers and individuals we observe in the BHPS. For instance, our spliced individuals are much more likely to be single parents at younger ages (<a href=\"#fig5\">Figure 5</a>) reflecting the increase in lone parenthood over recent decades. Female employment rates also tend to be higher for our spliced individuals at younger ages and lower at older ages (<a href=\"#fig2\">Figure 2</a>). Male employment rates are however captured quite well (except at younger ages when our spliced individuals are more likely to still be in education than the baby boomers). <a href=\"#fig7\">Figure 7</a> perhaps best illustrates some of the problems that can be created by cohort differences between individuals in the BHPS and the baby-boomers. It shows the proportion of individuals renting at different ages. It is apparent that individuals in the baby-boom cohort were far more likely to rent than our spliced individuals at younger ages. This likely reflects changes in the pattern of tenure in the UK, in particular the so-called \u201cright-to-buy\u201d reforms introduced in the 1980 Housing Act which gave those who had been renting social housing for at least 3 years the right to purchase their homes at a substantial discount. The effect of the policy was to dramatically reduce the number of social renters and increase home ownership from 59% in 1983 to 69% in 2003 (<a href=\"#bib6\">Chandler &amp; Disney, 2014</a>). This explains why those from later cohorts who comprise the donors to our spliced individuals at younger ages tend to be much more likely to own than the baby-boomers were at the same ages. The difficulty of capturing such cohort differences in the splicing approach tends in our view to favour microsimulation.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "fig2",
+                                    "image": {
+                                        "alt": "",
+                                        "uri": "%iiif_uri%/00134%2Fijm-00134-fig2.tif",
+                                        "size": {
+                                            "width": 1615,
+                                            "height": 707
+                                        },
+                                        "source": {
+                                            "mediaType": "image/jpeg",
+                                            "uri": "%iiif_uri%/00134%2Fijm-00134-fig2.tif/full/full/0/default.jpg",
+                                            "filename": "ijm-00134-fig2.jpg"
+                                        }
+                                    },
+                                    "label": "Figure 2",
+                                    "title": "Employment: two approaches vs. LCFS, 1945\u201354 cohort.",
+                                    "type": "image"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "fig3",
+                                    "image": {
+                                        "alt": "",
+                                        "uri": "%iiif_uri%/00134%2Fijm-00134-fig3.tif",
+                                        "size": {
+                                            "width": 1614,
+                                            "height": 707
+                                        },
+                                        "source": {
+                                            "mediaType": "image/jpeg",
+                                            "uri": "%iiif_uri%/00134%2Fijm-00134-fig3.tif/full/full/0/default.jpg",
+                                            "filename": "ijm-00134-fig3.jpg"
+                                        }
+                                    },
+                                    "label": "Figure 3",
+                                    "title": "Proportion in couples: two approaches vs. LCFS, 1945\u201354 cohort.",
+                                    "type": "image"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "fig4",
+                                    "image": {
+                                        "alt": "",
+                                        "uri": "%iiif_uri%/00134%2Fijm-00134-fig4.tif",
+                                        "size": {
+                                            "width": 1614,
+                                            "height": 706
+                                        },
+                                        "source": {
+                                            "mediaType": "image/jpeg",
+                                            "uri": "%iiif_uri%/00134%2Fijm-00134-fig4.tif/full/full/0/default.jpg",
+                                            "filename": "ijm-00134-fig4.jpg"
+                                        }
+                                    },
+                                    "label": "Figure 4",
+                                    "title": "Proportion parents: two approaches vs. LCFS, 1945\u201354 cohort.",
+                                    "type": "image"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "fig5",
+                                    "image": {
+                                        "alt": "",
+                                        "uri": "%iiif_uri%/00134%2Fijm-00134-fig5.tif",
+                                        "size": {
+                                            "width": 1615,
+                                            "height": 707
+                                        },
+                                        "source": {
+                                            "mediaType": "image/jpeg",
+                                            "uri": "%iiif_uri%/00134%2Fijm-00134-fig5.tif/full/full/0/default.jpg",
+                                            "filename": "ijm-00134-fig5.jpg"
+                                        }
+                                    },
+                                    "label": "Figure 5",
+                                    "title": "Proportion of parents that are single parents: two approaches vs. LCFS, 1945\u201354 cohort.",
+                                    "type": "image"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "fig6",
+                                    "image": {
+                                        "alt": "",
+                                        "uri": "%iiif_uri%/00134%2Fijm-00134-fig6.tif",
+                                        "size": {
+                                            "width": 1615,
+                                            "height": 707
+                                        },
+                                        "source": {
+                                            "mediaType": "image/jpeg",
+                                            "uri": "%iiif_uri%/00134%2Fijm-00134-fig6.tif/full/full/0/default.jpg",
+                                            "filename": "ijm-00134-fig6.jpg"
+                                        }
+                                    },
+                                    "label": "Figure 6",
+                                    "title": "Number of children: two approaches vs. LCFS, 1945\u201354 cohort.",
+                                    "type": "image"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "fig7",
+                                    "image": {
+                                        "alt": "",
+                                        "uri": "%iiif_uri%/00134%2Fijm-00134-fig7.tif",
+                                        "size": {
+                                            "width": 1614,
+                                            "height": 707
+                                        },
+                                        "source": {
+                                            "mediaType": "image/jpeg",
+                                            "uri": "%iiif_uri%/00134%2Fijm-00134-fig7.tif/full/full/0/default.jpg",
+                                            "filename": "ijm-00134-fig7.jpg"
+                                        }
+                                    },
+                                    "label": "Figure 7",
+                                    "title": "Proportion renters: two approaches vs. LCFS, 1945\u201354 cohort.",
+                                    "type": "image"
+                                }
+                            ],
+                            "type": "figure"
+                        }
+                    ],
+                    "id": "s5-3",
+                    "title": "5.3 Life-cycle profiles",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "It is important that our spliced and simulated individuals do a good job at replicating the average lifetime profiles of the baby-boom cohort for our characteristics of interest. But since we intend to use our spliced individuals for distributional analysis of lifetime outcomes it is also important that the persistence of these variables match those of the data. Unfortunately we are not able to compare autocorrelations of our spliced and simulated individuals directly with individuals from the baby-boom cohort throughout the whole life-cycle, because we do not have access to a panel dataset covering the whole of the adult life-cycle for the baby boomers. Instead, we plot autocorrelations for our spliced individuals against those individuals seen in the BHPS. These are intended to show whether the transitions we obtain are plausible but cannot be used to see whether they are representative of the baby-boomers. <a href=\"#fig8\">Figures 8</a>\u2013<a href=\"#fig11\">11</a> plot autocorrelations for 1 year ahead, 5 years ahead and 10 years ahead for males and females from ages 16\u201365 for employment status, earnings ranks, couple status, and parent status.<sup><a href=\"#fn8\">8</a></sup>",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Our splicing procedure might not match the persistence of these variables in the BHPS if there are frequent joins or if matches only give appropriate continuations of earnings, couple status and so on for a few periods ahead. It is clear however that our spliced individuals match the transitions and persistence in the data well across all ages.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The processes experienced by our microsimulated individuals tend to have similiar persistence to those observed in the BHPS, although the difference is perhaps slightly greater than for the splicing approach. For example <a href=\"#fig9\">Figure 9</a> shows that for our simulated individuals, ranks in the earnings distribution are less persistent at middle ages for longer horizons than earnings ranks in the BHPS, and a little more persistent at older ages. The difference is a little larger for males than for females. Employment, couple, and parent status have similar persistence in our simulations to the data \u2013 even over 10 a year horizon. Overall the fit appears to be about as good as under the splicing approach.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "fig8",
+                                    "image": {
+                                        "alt": "",
+                                        "uri": "%iiif_uri%/00134%2Fijm-00134-fig8.tif",
+                                        "size": {
+                                            "width": 1592,
+                                            "height": 1130
+                                        },
+                                        "source": {
+                                            "mediaType": "image/jpeg",
+                                            "uri": "%iiif_uri%/00134%2Fijm-00134-fig8.tif/full/full/0/default.jpg",
+                                            "filename": "ijm-00134-fig8.jpg"
+                                        }
+                                    },
+                                    "label": "Figure 8",
+                                    "title": "Autocorrelations for employment status: two approaches vs. BHPS, ages 16\u201365.",
+                                    "type": "image"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "fig9",
+                                    "image": {
+                                        "alt": "",
+                                        "uri": "%iiif_uri%/00134%2Fijm-00134-fig9.tif",
+                                        "size": {
+                                            "width": 1592,
+                                            "height": 1131
+                                        },
+                                        "source": {
+                                            "mediaType": "image/jpeg",
+                                            "uri": "%iiif_uri%/00134%2Fijm-00134-fig9.tif/full/full/0/default.jpg",
+                                            "filename": "ijm-00134-fig9.jpg"
+                                        }
+                                    },
+                                    "label": "Figure 9",
+                                    "title": "Autocorrelations in earnings ranks: two approaches vs. BHPS, ages 16\u201365.",
+                                    "type": "image"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "fig10",
+                                    "image": {
+                                        "alt": "",
+                                        "uri": "%iiif_uri%/00134%2Fijm-00134-fig10.tif",
+                                        "size": {
+                                            "width": 1592,
+                                            "height": 1131
+                                        },
+                                        "source": {
+                                            "mediaType": "image/jpeg",
+                                            "uri": "%iiif_uri%/00134%2Fijm-00134-fig10.tif/full/full/0/default.jpg",
+                                            "filename": "ijm-00134-fig10.jpg"
+                                        }
+                                    },
+                                    "label": "Figure 10",
+                                    "title": "Autocorrelations for couple status: two approaches vs. BHPS, ages 16\u201365.",
+                                    "type": "image"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "fig11",
+                                    "image": {
+                                        "alt": "",
+                                        "uri": "%iiif_uri%/00134%2Fijm-00134-fig11.tif",
+                                        "size": {
+                                            "width": 1592,
+                                            "height": 1131
+                                        },
+                                        "source": {
+                                            "mediaType": "image/jpeg",
+                                            "uri": "%iiif_uri%/00134%2Fijm-00134-fig11.tif/full/full/0/default.jpg",
+                                            "filename": "ijm-00134-fig11.jpg"
+                                        }
+                                    },
+                                    "label": "Figure 11",
+                                    "title": "Autocorrelations for parent status: two approaches vs. BHPS, ages 16\u201365.",
+                                    "type": "image"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "text": "As an additional check on the performance of our simulations, we can compare our simulated and spliced individuals to those from the same cohort in the waves they are observed in the BHPS. <a href=\"#table9\">Table 9</a> shows the proportions always employed, always unemployed, always in a couple and always single over 10 years from 1995 to 2004 (inclusive) in the BHPS, under the splicing approach, and in our simulations. The sample size in the splicing column differs from the number of synthetic life-cycles shown in <a href=\"#table4\">Table 4</a> as some individuals die in the period 1995\u20132004 (and so are not observed over the whole 10 years).",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Our microsimulations come very close to matching the proportions always employed and always in a couple although they appear to slightly underpredict the number of people always unemployed and always single. The splicing approach appears to a do a little better but the differences are not great.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "footnotes": [
+                                        {
+                                            "text": [
+                                                {
+                                                    "text": "<i>Notes</i>: BHPS probabilities weighted for probability of attrition.",
+                                                    "type": "paragraph"
+                                                }
+                                            ]
+                                        }
+                                    ],
+                                    "id": "table9",
+                                    "label": "Table 9",
+                                    "tables": [
+                                        "<table>\n<thead>\n<tr>\n<th/>\n<th>BHPS</th>\n<th>Splicing</th>\n<th>Microsimulation</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>Always employed</td>\n<td align=\"center\">55.9%</td>\n<td align=\"center\">55.8%</td>\n<td align=\"center\">56.3%</td>\n</tr>\n<tr>\n<td>Always unemployed</td>\n<td align=\"center\">12.4%</td>\n<td align=\"center\">10.2%</td>\n<td align=\"center\">11.4%</td>\n</tr>\n<tr>\n<td>Always couple</td>\n<td align=\"center\">73.7%</td>\n<td align=\"center\">73.7%</td>\n<td align=\"center\">73.6%</td>\n</tr>\n<tr>\n<td>Always single</td>\n<td align=\"center\">15.6%</td>\n<td align=\"center\">15.1%</td>\n<td align=\"center\">12.9%</td>\n</tr>\n<tr>\n<td>N</td>\n<td align=\"center\">676</td>\n<td align=\"center\">1807</td>\n<td align=\"center\">4666</td>\n</tr>\n</tbody>\n</table>"
+                                    ],
+                                    "title": "Persistence of employment and couple status for 1945\u201354 cohort in BHPS, spliced life-cycles, and simulations (1995\u20132004).",
+                                    "type": "table"
+                                }
+                            ],
+                            "type": "figure"
+                        }
+                    ],
+                    "id": "s5-4",
+                    "title": "5.4 Transitions",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "We judge our two approaches by their ability to replicate the experiences of the baby-boom cohort.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The splicing approach does well at recreating the transitions across the earnings distribution and between couple and tenure status that we observe in the BHPS, but is less good at replicating the average lifetime profiles of characteristics that differ greatly between cohorts. It is also not always feasible to find appropriate matches, meaning that only around a third of our spliced individuals produce complete life-cycles that run from age 16 until death. To the extent that the profiles which complete are non-random, this likely introduces a selection issue.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The microsimulation approach does not suffer from this particular drawback. Another key advantage over the splicing approach is that we are able to adjust transition probabilities estimated using panel data so as to match the age profiles we observe in a long-running cross-sectional survey. The match achieved in this respect is near perfect. Comparing the autocorrelations of variables over time suggests that our microsimulated processes also achieve a similar persistence to that observed in the BHPS.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Thus we favour microsimulation.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s5-5",
+                    "title": "5.5 Validation summary",
+                    "type": "section"
+                }
+            ],
+            "id": "s5",
+            "title": "5. Validation",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "In this paper, we have outlined the practical steps we have taken to implement two different approaches to constructing full-adult life-cycles. Both approaches have strengths and weaknesses. The imputation literature provides helpful analogies when it comes to comparing the two methods. In this field, researchers often have a choice of imputing missing data using real-world data from similar individuals (a \u201chot-deck\u201d imputation) or predicting it using a parametric approach estimated on the rest of the sample. The splicing approach has obvious similarities with the former method, while the microsimulation approach is closer to the latter. When is one approach to be preferred over the other? (<a href=\"#bib1\">Andridge &amp; Little, 2010</a>) compare these two approaches in a review of hot deck procedures, concluding from the available literature that \u201cthe relative performance of the methods depends on the validity of the parametric model and the sample size.\u201d The hot deck approach is less vulnerable to model misspecification than the predicted outcome approach, but when the sample size is small, and the pool of potential matches diminishes, good matches can be difficult to find. Small sample sizes (or, for the same reasons, there being a large number of outcomes that need to be matched on) would therefore seem to favour the microsimulation approach. In a similar way, the splicing approach avoids the parametric assumptions of the microsimulation approach but matches may become less appropriate in smaller datasets where the pool of potential donors is smaller.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "On balance we believe that for our application the microsimulation approach is to be preferred. While it is potentially sensitive to model misspecification, the assumptions it makes on transitions are slightly weaker than those of the splicing approach. In addition, it has the advantage that we can apply corrections to ensure that average outcomes are more similar to those experienced by the baby-boom cohort. Finally, the microsimulation approach is more amenable to simulating counterfactual outcomes (for instance, different future outcomes for the same individual).",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s6",
+            "title": "6. Summary",
+            "type": "section"
+        }
+    ],
+    "references": [
+        {
+            "articleTitle": "A review of hot deck imputation for survey non-response",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Andridge, R",
+                        "preferred": "R Andridge"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Little, R",
+                        "preferred": "R Little"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2010",
+            "id": "bib1",
+            "journal": "International Statistical Review",
+            "pages": {
+                "first": "40",
+                "last": "64",
+                "range": "40\u201364"
+            },
+            "type": "journal",
+            "volume": "78"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Banks, J",
+                        "preferred": "J Banks"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Emmerson, C",
+                        "preferred": "C Emmerson"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Tetlow, G",
+                        "preferred": "G Tetlow"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2014",
+            "details": "Effect of pensions and disability benefits on retirement in the uk. NBER Working Paper No. 19907., http://www.nber.org/papers/w19907",
+            "id": "bib2",
+            "title": "Effect of pensions and disability benefits on retirement in the uk. NBER Working Paper No. 19907.",
+            "type": "unknown",
+            "uri": "http://www.nber.org/papers/w19907"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Bickenbach, F",
+                        "preferred": "F Bickenbach"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Bode, E",
+                        "preferred": "E Bode"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2002",
+            "details": "Markov or not markov - this should be a question. Kiel Institute of World Economics Working Paper Series No 1086",
+            "id": "bib3",
+            "title": "Markov or not markov - this should be a question. Kiel Institute of World Economics Working Paper Series No 1086",
+            "type": "unknown"
+        },
+        {
+            "articleTitle": "Individual savings accounts for social insurance: rationale and alternative designs",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Bovenberg, L",
+                        "preferred": "L Bovenberg"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Hansen, MI",
+                        "preferred": "MI Hansen"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Sorensen, PB",
+                        "preferred": "PB Sorensen"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2008",
+            "id": "bib4",
+            "journal": "Internatinal Tax and Public Finance",
+            "pages": {
+                "first": "67",
+                "last": "86",
+                "range": "67\u201386"
+            },
+            "type": "journal",
+            "volume": "15"
+        },
+        {
+            "articleTitle": "An international comparison of lifetime inequality: how continental europe resembles north america",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Bowlus, A",
+                        "preferred": "A Bowlus"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Robin, J-M",
+                        "preferred": "J-M Robin"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2012",
+            "id": "bib5",
+            "journal": "Journal of the European Economic Association",
+            "pages": {
+                "first": "1236",
+                "last": "1262",
+                "range": "1236\u20131262"
+            },
+            "type": "journal",
+            "volume": "10"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Chandler, D",
+                        "preferred": "D Chandler"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Disney, R",
+                        "preferred": "R Disney"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "The IFS green budget",
+            "chapterTitle": "Housing market trends and recent policies",
+            "date": "2014",
+            "editors": [
+                {
+                    "name": {
+                        "index": "Emmerson, C",
+                        "preferred": "C Emmerson"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Johnson, P",
+                        "preferred": "P Johnson"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Miller, H",
+                        "preferred": "H Miller"
+                    },
+                    "type": "person"
+                }
+            ],
+            "id": "bib6",
+            "pages": {
+                "first": "90",
+                "last": "125",
+                "range": "90\u2013125"
+            },
+            "publisher": {
+                "name": [
+                    "Institute for Fiscal Studies"
+                ]
+            },
+            "type": "book-chapter"
+        },
+        {
+            "authors": [
+                {
+                    "name": "Congressional Budget Office",
+                    "type": "group"
+                }
+            ],
+            "date": "2009",
+            "details": "CBO\u2019s long-term model: An overview. Congressional Budget Office Background paper, http://www.cbo.gov/sites/default/files/06-26-cbolt.pdf",
+            "id": "bib7",
+            "title": "CBO\u2019s long-term model: An overview. Congressional Budget Office Background paper",
+            "type": "unknown",
+            "uri": "http://www.cbo.gov/sites/default/files/06-26-cbolt.pdf"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Crawford",
+                        "preferred": "Crawford"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2012",
+            "details": "UK Data Archive Study Number 5050 - English Longitudinal Study of Ageing",
+            "id": "bib8",
+            "title": "ELSA pension wealth derived variables (waves 2 to 5): Methodology",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Disney, R",
+                        "preferred": "R Disney"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Emmerson, C",
+                        "preferred": "C Emmerson"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Tetlow, G",
+                        "preferred": "G Tetlow"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2007",
+            "id": "bib9",
+            "publisher": {
+                "name": [
+                    "Institute for Fiscal Studies"
+                ]
+            },
+            "source": "What is a public sector pension worth?. IFS Working Papers W07/17",
+            "title": "What is a public sector pension worth?. IFS Working Papers W07/17",
+            "type": "report"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Falkingham, Falkingham.",
+                        "preferred": "Falkingham. Falkingham"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Hills, J",
+                        "preferred": "J Hills"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "The dynamic of welfare: The welfare state and the life cycle",
+            "date": "1995",
+            "id": "bib10",
+            "publisher": {
+                "name": [
+                    "Harvester-Wheatsheaf"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Huss\u00e9nius, J",
+                        "preferred": "J Huss\u00e9nius"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Sel\u00e9n, J",
+                        "preferred": "J Sel\u00e9n"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "Skatter och socialfors\u00e4kringer \u00f6ver livscykeln - en simuleringsmodell (Taxes and social insurance across the life cycle - a simulation model). Ds 1994, 86 (ESO)",
+            "date": "1994",
+            "id": "bib11",
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "Stockholm"
+                        ]
+                    },
+                    "formatted": [
+                        "Stockholm"
+                    ]
+                },
+                "name": [
+                    "Swedish Ministry of Finance"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Kim, D",
+                        "preferred": "D Kim"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Levell, P",
+                        "preferred": "P Levell"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Shaw, J",
+                        "preferred": "J Shaw"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2014",
+            "details": "Assumptions needed to construct lifecycle data, Unpublished Manuscript",
+            "id": "bib12",
+            "title": "Assumptions needed to construct lifecycle data",
+            "type": "unknown"
+        },
+        {
+            "articleTitle": "Inkomen en netto profijt van sociale zekerheid gedurende de levensloop uitkomsten van een trail (Transities van Inkomens tijdens de Levensloop) analyse (Income and net gains from social security during the life course)",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Waaijers, R",
+                        "preferred": "R Waaijers"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Lever, M",
+                        "preferred": "M Lever"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2013",
+            "id": "bib13",
+            "journal": "CPB Achtergronddocument",
+            "pages": "7",
+            "type": "journal"
+        }
+    ],
+    "-meta": {
+        "patched": true
+    },
+    "stage": "published"
+}

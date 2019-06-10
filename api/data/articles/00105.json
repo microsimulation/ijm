@@ -1,0 +1,1692 @@
+{
+    "status": "vor",
+    "id": "00105",
+    "version": 1,
+    "type": "research-article",
+    "doi": "10.34196/ijm.00105",
+    "authorLine": "Sabine Zinn",
+    "title": "The MicSim package of R: An entry-level toolkit for continuous-time microsimulation",
+    "published": "2014-12-31T00:00:00Z",
+    "versionDate": "2014-12-31T00:00:00Z",
+    "statusDate": "2014-12-31T00:00:00Z",
+    "volume": 7,
+    "issue": 3,
+    "elocationId": "n/a",
+    "pdf": "http://web:8082/00105/ijm-00105.pdf",
+    "subjects": [
+        {
+            "id": "methodology",
+            "name": "Methodology"
+        }
+    ],
+    "abstract": {
+        "content": [
+            {
+                "text": "High entry barriers might discourage many social scientists from using existing microsimulation software. This article presents the functionality and capabilities of the free and open source <b>R</b> package MicSim which allows performing continuous-time microsimulation at a very fine-grained level from a low level entry point. Hence, the package might also be of interest to people who are new to <b>R</b>. The package implements a generic microsimulation model for a wide range of demographic applications. Its central device is the individual life-course, which is defined by the sequence of states the individual visits over time and the intervals between the transitions from one state to another. The MicSim model is by design a discrete-event simulation model in which a demographic event implies a change in the state of an individual. The considered population is open and life-courses are specified to evolve along three continuous time scales: individual age, calendar time, and the time that an individual has already spent in the current state. The stochastic model of the microsimulation is parameterized with a base population, transition rates, and (if applicable) a population of migrants. Besides stochastic events, the package allows specifying deterministic events such as enrolment of children in elementary school. Example applications illustrate the capabilities of the package.",
+                "type": "paragraph"
+            }
+        ]
+    },
+    "copyright": {
+        "license": "CC-BY-4.0",
+        "holder": "Zinn",
+        "statement": "This article is distributed under the terms of the <a href=\"http://creativecommons.org/licenses/by/4.0/\">Creative Commons Attribution License</a>, which permits unrestricted use and redistribution provided that the original author and source are credited."
+    },
+    "authors": [
+        {
+            "affiliations": [
+                {
+                    "address": {
+                        "components": {
+                            "country": "Germany"
+                        },
+                        "formatted": [
+                            "Germany"
+                        ]
+                    },
+                    "name": [
+                        "Max Planck Institute for Demographic Research Rostock"
+                    ]
+                },
+                {
+                    "address": {
+                        "components": {
+                            "country": "Germany"
+                        },
+                        "formatted": [
+                            "Germany"
+                        ]
+                    },
+                    "name": [
+                        "Leibniz Institute for Educational Trajectories Bamberg"
+                    ]
+                }
+            ],
+            "emailAddresses": [
+                "sabine.zinn@lifbi.de"
+            ],
+            "name": {
+                "index": "Zinn, Sabine",
+                "preferred": "Sabine Zinn"
+            },
+            "type": "person"
+        }
+    ],
+    "keywords": [
+        "microsimulation toolkit",
+        "continuous-time",
+        "discrete-event simulation",
+        "<b>R</b> package"
+    ],
+    "body": [
+        {
+            "content": [
+                {
+                    "text": "With steadily growing computer power, microsimulation techniques become increasingly relevant in the social sciences, implying a rising demand of related software. Having, however, to write new software for each new microsimulation application from scratch places enormous and unnecessary burdens on researchers. Recently, researchers have responded to this obstacle by following mainly two strategies. Either they have implemented microsimulation models by using general simulation frameworks such as \u03bcsik (<a href=\"#bib22\">Perumalla, 2005</a>; <a href=\"#bib21\">Onggo, 2010</a>) and JAMES II (<a href=\"#bib11\">Himmelspach, 2012</a>) or they have used microsimulation toolkits especially designed for their needs such as the microsimulation language Modgen (<a href=\"#bib25\">Statistics Canada, 2011</a>) and the microsimulation modelling policy tool JAMSIM (<a href=\"#bib15\">Mannion, 2014</a>). (An extensive list of simulation tools relevant in this context is given by, for example, <a href=\"#bib16\">Mannion <i>et al</i>. (2012)</a>.) Unfortunately, often the value of simulation frameworks and microsimulation tools is hampered by being both very complex and hard to use or by requiring prior expert knowledge of the software being used. A further impediment of many existing software package is their restriction to specific settings and sets of variables. Obviously, due to the complexity of the issue, an all-purpose simulation standard tool for all kinds of conceivable simulation models and applications is not practicable. Rather, the development of user-friendly and up-to-date microsimulation toolkits tailored to specific areas seems to be the ideal solution. In demography, such toolkits exist, but commonly they assume a certain level of expert knowledge in form of the specification language being used. Thus, to many demographers the first hurdle to take might be too high. For example, the Mic-Core is a continuous-time microsimulation tool for population projections (<a href=\"#bib30\">Zinn <i>et al</i>., 2009</a>). It is written in Java and makes use of the simulation framework JAMES II (<a href=\"#bib11\">Himmelspach, 2012</a>). It features an own graphical user interface and is very performant in terms of run times, allowing for the simulation of thousands of life-courses within a few seconds. However, the Mic-Core demands that the input data (i.e., the base population and the transition rates) are in a very special format that some users might find hard to prepare. In addition, its output data come in a format with which most social scientists are not familiar. For example, the Mic-Core reports birth times and transition times in milliseconds since January 1, 1970.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "In this article, we present an easy-to-use, free, and open source toolkit for continuous-time microsimulation tailored to the needs of demographers. We describe the functionality and capabilities of the <b>R</b> package MicSim<sup><a href=\"#fn1\">1</a></sup> (<a href=\"#bib29\">Zinn, 2014</a>; <a href=\"#bib23\">R Development Core Team, 2013</a>) which re-implements and extends the model and simulation techniques of the Mic-Core. Compared to the Mic-Core, the MicSim package enables a simplified specification of the microsimulation model and of the input data. As <b>R</b> is becoming the software tool of choice for statistical analysis, it is brimming with up-to-date statistical methods which are free and open source. Thus, the MicSim package allows conducting data preparation and evaluation in a very sophisticated way by using these methods. In addition, the MicSim package extends the functionality of the Mic-Core by facilitating the modelling of a wider class of transition models. On the one hand, the package relaxes the assumption of piecewise constant transition rates, which in the Mic-Core is essential. That is, it allows transition rates to be defined by any parametric and nonparametric function. On the other hand, the MicSim package allows transition rates to vary along age, calendar time, and the time that an individual has already spent in the current state. (The Mic-Core determines transition rates to vary only along age and calendar time.) In other words, all applications that can be run with the Mic-Core can also be run with the MicSim package, but additionally the MicSim package allows performing simulation runs relying on more complex transition models. The new microsimulation toolkit can be downloaded from the <b>R</b> package database and used without further ado. Thus, it is easily accessible and its implementation is traceable. However, not employing Java and JAMES II for microsimulation has its price: opposed to the Mic-Core, the microsimulation routines implemented in the MicSim package are not as performant in terms of run times. The MicSim package addresses this problem by offering a function for distributed computation.<sup><a href=\"#fn2\">2</a></sup>",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The topic of this paper is the generic microsimulation model of the MicSim package, and its realization and application. The remainder of the paper is structured as follows. First, in <a href=\"#s2\">Section 2</a>, we shortly describe the generic microsimulation model that has been implemented, and explain in detail how the functions of the MicSim package have to be specified to obtain viable microsimulation models. All of the general descriptions presented are substantiated by excerpts of two illustrative examples whose source code can be found in the example section of the help page of the <span class=\"monospace\">micSim</span> function of the MicSim package<sup><a href=\"#fn3\">3</a></sup>. The first (very simple) example deals with gender-specific mortality. The second (more complex) example focuses on individual behaviour concerning changes in marital status, educational attainment, and fertility status. The second example also considers immigration and emigration. In order to better understand the functionality of the package, we strongly recommend running the examples while reading the paper<sup><a href=\"#fn4\">4</a></sup>. In <a href=\"#s3\">Section 3</a>, we present the special features of the MicSim package: Specifically, we demonstrate the simulation of the birth of offspring during the simulation, the modelling of enrolment in elementary school, and procedures for following migrants. Then, in <a href=\"#s4\">Section 4</a>, we show how to actually perform a continuous-time microsimulation, and we outline the structure of its output. Finally, in <a href=\"#s5\">Section 5</a>, we provide some concluding remarks and ideas for possible extensions of our package.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s1",
+            "title": "1. Introduction",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "The MicSim package implements a demographic microsimulation model which comprises a stochastic model of individual behaviour and a virtual population. The virtual population consists of a set of individuals who are assigned to attributes which are considered demographically relevant, such as sex, marital status, fertility status, and educational attainment. To each member of the virtual population a birth date is assigned. Commonly, the virtual population resembles a real population structure. It evolves over time as individuals experience demographic events across their lifetimes. For reasons of feasibility, the MicSim microsimulation model is framed by a simulation horizon; i.e., a simulation start date and a simulation end date, and a maximum age up to which each life-course is followed. Modelling and simulating the life-courses of a representative share of population members allows mapping population dynamics on a very detailed scale. Despite the considerable regularity of demographic behaviour, the order- and age-specific incidence of demographic events varies between individuals, and cannot be fully explained by observable characteristics. Thus, in efforts to describe individual behaviour, commonly a stochastic model is applied (<a href=\"#bib18\">Mayer &amp; Tuma, 1990</a>). The most common type of stochastic model used is a continuous-time multi-state model (<a href=\"#bib2\">Andersen &amp; Keiding, 2002</a>; <a href=\"#bib10\">Gampe &amp; Zinn, 2007</a>; <a href=\"#bib1\">Aalen <i>et al.,</i> 2008</a>). A multi-state model is a stochastic process that at any point in time occupies one of a set of discrete states (<a href=\"#bib12\">Hougaard, 1999</a>). In the microsimulation model under consideration, these states form the state space. In the following, we describe provide a succinct description of the components of the microsimulation model. In addition, we show the required specifications of these components in the MicSim package.",
+                    "type": "paragraph"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "Generally, the state space is determined by the problem to be studied, but often it will at least have \u201csex\u201d as a basic demographic characteristic. It should be emphasized that, in a continuous-time microsimulation model such as the one considered, age runs parallel to the process time; that is, age evolves in continuous time and is not modelled by means of a discrete variable. In other words, age is not part of the state space. One element always present in the state space is \u201cdead,\u201d a risk to which each individual is always exposed<sup><a href=\"#fn5\">5</a></sup>. In the terminology used in the MicSim package, an individual\u2019s state is a combined characteristic, given by the combination of several attributes (if several attributes are considered). To simplify the description, we define so-called state variables. All of the unique combinations of values of these state variables define the state space. <a href=\"#table1\">Table 1</a> shows an example comprising six state variables: sex, marital status, fertility status, educational attainment, mortality, and emigration. Throughout this paper, we rely on extracts of this example (whose full specification is part of the help page of the <span class=\"monospace\">micSim</span> function of the MicSim package).",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "table1",
+                                    "label": "Table 1",
+                                    "tables": [
+                                        "<table>\n<thead>\n<tr>\n<th>State Variable</th>\n<th>Possible Values</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>Sex</td>\n<td>Female (f), male (m)</td>\n</tr>\n<tr>\n<td>Marital status</td>\n<td>never married (NM), married (M), divorced (D), widowed (W)</td>\n</tr>\n<tr>\n<td>Fertility status</td>\n<td>childless (0), one child (1), two children (2), three and more children (3+)</td>\n</tr>\n<tr>\n<td>educational attainment</td>\n<td>no education (no), primary education only (low), lower secondary school (med), upper secondary or tertiary education (high)</td>\n</tr>\n<tr>\n<td>Mortality</td>\n<td>Alive, dead (dead)</td>\n</tr>\n<tr>\n<td>Emigration</td>\n<td>Not emigrated, emigrated (rest)</td>\n</tr>\n</tbody>\n</table>"
+                                    ],
+                                    "title": "Example state space: State variables and their corresponding values. (Value labels, subsequently used, are given in parentheses)",
+                                    "type": "table"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "text": "For example, <i>(female, married, childless, lower secondary school)</i> is one potential state in this state space. Exceptions to this rule are the attributes \u201calive\u201d and \u201cnot emigrated,\u201d which are not explicitly listed for obvious reasons; and the attributes \u201cdead\u201d and \u201cemigrated,\u201d which themselves denote states. \u201cDead\u201d and \u201cemigrated\u201d are both absorbing states that, once they have been entered, will never be left again. All of the other states are nonabsorbing; they can, at least potentially, be left again<sup><a href=\"#fn6\">6</a></sup>.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The MicSim package requires the specification of the nonabsorbing states of the state space in the form of a data frame. Each column of this data frame defines one state variable, and each row gives one potential nonabsorbing state. Hence, in sum, the data frame comprises as many rows as unique combinations of nonabsorbing values of state variables exist. All of the state variables considered, as well as the accordant value labels, have to be provided by the user. The only exception is sex, which is predefined by the labels \u201cm\u201d and \u201cf,\u201d indicating male and female individuals. Furthermore, the label values \u201cno\u201d and \u201clow\u201d are reserved for enrolment in elementary school (see <a href=\"#s3-2\">Section 3.2</a>). The simplest state space that the MicSim package can handle has only sex as a state variable. (The full specification of the accordant working example is also given in the help page of the <span class=\"monospace\">micSim</span> function of the MicSim package).",
+                            "type": "paragraph"
+                        },
+                        {
+                            "code": "\nR> sex <- c(\"m\", \"f\")\nR> stateSpace <- sex\nR> attr(stateSpace, \"name\") <- \"sex\"",
+                            "type": "code"
+                        },
+                        {
+                            "text": "Here and in the subsequent, the prefix <span class=\"monospace\">R&gt;</span> denotes a command to <b>R</b>. Line breaks within commands are marked by the sign <span class=\"monospace\">+</span>. The user should be aware that for further processing, MicSim requires a name for each state variable. Names are created by assigning an accordant attribute to <span class=\"monospace\">stateSpace</span>. The following command determines the (nonabsorbing) states of the example state space given in <a href=\"#table1\">Table 1</a>.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "code": "\nR> sex <- c(\"m\", \"f\")\nR> fert <- c(\"0\", \"1\", \"2\", \"3+\")\nR> marital <- c(\"NM\", \"M\", \"D\", \"W\")\nR> edu <- c(\"no\", \"low\", \"med\", \"high\")\nR> stateSpace <- expand.grid(sex = sex, fert = fert,\n+ marital = marital, edu = edu)",
+                            "type": "code"
+                        },
+                        {
+                            "text": "At this point, the <b>R</b> function <span class=\"monospace\">expand.grid</span> (part of the basic configuration of <b>R</b>) helps in building up the state space by creating a data frame from all of the combinations of the values of the supplied vectors. Absorbing states have to be given as strings, such as \u201cdead\u201d for being dead or \u201crest\u201d for having emigrated. They are specified by means of a vector named <span class=\"monospace\">absStates</span>.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "code": "\nR> absStates <- c(\"dead\", \"rest\")\n",
+                            "type": "code"
+                        },
+                        {
+                            "text": "If out-migration of the population is not considered, <span class=\"monospace\">absStates</span> reduces to",
+                            "type": "paragraph"
+                        },
+                        {
+                            "code": "\nR> absStates <- \"dead\"\n",
+                            "type": "code"
+                        }
+                    ],
+                    "id": "s2-1",
+                    "title": "2.1 The state space",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "Each simulation model demands the specification of a simulation start date, as well as a simulation end date. Furthermore, the maximum age to which the life-courses are followed has to be determined. In the MicSim package, the simulation horizon is set using the function <span class=\"monospace\">setSimHorizon</span>. This function has two arguments: the simulation start date and the simulation end date. Both have to be given as strings of the format \u201cdd/mm/yyyy;\u201d for instance,",
+                            "type": "paragraph"
+                        },
+                        {
+                            "code": "\nR> simHorizon <- setSimHorizon(startDate = \"01/01/2000\",\n+ endDate = \"31/12/2050\")",
+                            "type": "code"
+                        },
+                        {
+                            "text": "The maximum age up to which individuals are followed is determined by the scalar <span class=\"monospace\">maxAge</span> and has to be an integer number of years; for example,",
+                            "type": "paragraph"
+                        },
+                        {
+                            "code": "\nR> maxAge <- 100\n",
+                            "type": "code"
+                        }
+                    ],
+                    "id": "s2-2",
+                    "title": "2.2 Simulation horizon and maximum age",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "The virtual population consists of all of the individuals who are considered during the simulation. It can be regarded as a longitudinal sample from a synthetically constructed population that resembles a real one. Each individual enters the virtual population in a state that is an element of the state space. Usually, there are three possibilities for becoming part of the virtual population:",
+                            "type": "paragraph"
+                        },
+                        {
+                            "items": [
+                                [
+                                    {
+                                        "text": "by being a member of the base population at the simulation start date,",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "by birth during simulation, or",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "by immigration during simulation (if the model includes immigration into the population).",
+                                        "type": "paragraph"
+                                    }
+                                ]
+                            ],
+                            "prefix": "number",
+                            "type": "list"
+                        },
+                        {
+                            "text": "The base population comprises information about the distribution of individuals according to birth dates and to the states they occupy at simulation start date. This information has to be given by the user. MicSim expects the base population to be provided in form of a data frame. Each row of the data frame corresponds to one individual with the following information: a unique numerical person identifier (<span class=\"monospace\">ID</span>), a birth date (<span class=\"monospace\">birthDate</span>), and an initial state (<span class=\"monospace\">initState</span>); that is, the state occupied by the individual when entering the virtual population. Birth dates have to be <span class=\"monospace\">chron</span> objects. Initial states are given in the form of composites of the labels of the values of the state variables previously specified when defining the state space. Within each initial state the ordering of the state variables has to be equivalent to the ordering determined when defining the state space. Within states, labels are separated by a forward slash \u201c<span class=\"monospace\">/</span>\u201d. We illustrate the composition of an initial population using a very simple setting with only five individuals who are distinguished only by their gender and their birth date<sup><a href=\"#fn7\">7</a></sup>",
+                            "type": "paragraph"
+                        },
+                        {
+                            "code": "\nR> dts <- c(\"31/12/1930\", \"03/04/1999\", \"15/10/1956\",\n+ \"11/11/1991\", \"01/01/1965\")\nR> birthDates <- chron(dates = dts, format = c(dates = \"d/m/Y\"))\nR> initStates <- c(\"f\", \"m\", \"f\", \"m\", \"m\")\nR> initPop <- data.frame(ID = 1:5, birthDate = birthDates,\n+ initState = initStates, stringsAsFactors = FALSE)",
+                            "type": "code"
+                        },
+                        {
+                            "text": "(Here, we have to be careful to ensure that <b>R</b> does not convert strings into factors when constructing the data frame, by using the command <span class=\"monospace\">stringsAsFactors = FALSE</span>.)",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "We yield the following base population:",
+                            "type": "paragraph"
+                        },
+                        {
+                            "code": "\nID birthDate initState\n1 31/12/30 f\n2 03/04/99 m\n3 15/10/56 f\n4 11/11/91 m\n5 01/01/65 m\n",
+                            "type": "code"
+                        },
+                        {
+                            "text": "To yield meaningful population projections, it is generally advisable to use census data or data of representative cross sections to construct base populations.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "If the microsimulation model considered assumes female fertility resulting in offspring (see <a href=\"#s3-1\">Section 3.1</a>), newborns might enter the virtual population over the course of the simulation period. These newborns also have to be assigned to the state space. Obviously, most states do not apply, as newborns are always childless, have no education, and so on. In order to determine those states that can actually be initial states of newborns (denoted as <span class=\"monospace\">initStates</span>), according occurrence probabilities need to be defined. Newborns are then randomly assigned corresponding to these states according to their occurrence probabilities<sup><a href=\"#fn8\">8</a></sup>. Usually, simulation models that allow for the creation of newborns employ an empirical sex ratio (the number of male newborns relative to the number of female newborns) to determine a newborn\u2019s sex. This has to be taken into account when setting the occurrence probabilities of the possible <span class=\"monospace\">initStates</span>. An example is the subsequent setting for the example state space of <a href=\"#table1\">Table 1</a>.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "code": "\nR> initStates <- rbind(c(\"m\", \"0\", \"NM\", \"no\"),\n+ c(\"f\", \"0\", \"NM\", \"no\"))\nR> initStatesProb <- c(0.517, 0.483)\n",
+                            "type": "code"
+                        },
+                        {
+                            "text": "Here, we assume a sex ratio of 51.7 male newborns to 48.3 female newborns, as well as <i>(male, never married, childless, no education)</i> as the initial state for male newborns and <i>(female, never married, childless, no education)</i> as the initial state for female newborns. By default, MicSim states that <span class=\"monospace\">initStates = c()</span> and <span class=\"monospace\">initStatesProb = c()</span>; that is, if not specified otherwise, it assumes that along simulation time no newborns enter the virtual population.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The microsimulation model of MicSim is <i>per se</i> an open population model; that is, it allows for immigration. Immigrants have to be assigned to the state space when entering the virtual population. Furthermore, for each migrant a birth date has to be given. As in the case of the base population, information about immigrants has to be given in the form of a data frame (<span class=\"monospace\">immigrPop</span>). Each row of the data frame corresponds to one immigrant. The data frame <span class=\"monospace\">immigrPop</span> has to contain the following data: a unique numerical person identifier (<span class=\"monospace\">ID</span>), an immigration date (<span class=\"monospace\">immigrDate</span>), a birth date (<span class=\"monospace\">birthDate</span>), and an initial state (<span class=\"monospace\">immigrInitState</span>); that is, the state occupied by the immigrant when entering the virtual population. Immigration dates and birth dates have to be <span class=\"monospace\">chron</span> objects. Coming back to our example of <a href=\"#table1\">Table 1</a>, a potential set of migrants could be defined by",
+                            "type": "paragraph"
+                        },
+                        {
+                            "code": "\nID immigrDate birthDate immigrInitState\n10001 11/Mar/2027 10/Mar/1981 m/1/NM/low\n10002 25/Apr/2021 09/Mar/1973 f/1/W/low\n10003 19/Jan/2032 29/Dec/2013 m/0/NM/no\n10004 15/Jul/2024 12/Aug/1989 f/0/M/high\n10005 15/May/2017 23/Nov/1991 m/1/D/med\n10006 20/Jan/2014 16/Sep/1964 m/3+/M/high\n...",
+                            "type": "code"
+                        },
+                        {
+                            "text": "It is important to note that numerical person identifiers have to be unique. Hence, IDs for migrants are given depending on the size of the base population. If, for example, we have a base population of size N=10000, then the first ID that can be given to a migrant is 10001. As in the base population definition, the initial states of migrants have to be strings (not factors). By default, the MicSim package does not assume immigration into the virtual population; that is, <span class=\"monospace\">immigrPop = NULL</span>. The generic model of MicSim allows for following migrants once they have entered the virtual population. The respective processing is described in <a href=\"#s3-3\">Section 3.3</a>.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Individuals can leave the population either by death or by emigration (if emigration is allowed). MicSim handles both types of events by asking for accordant transition rates; see Section 2.3.4.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "In its current version, the MicSim package does not require the base population and the data on immigrants to include any information about the amount of time individuals have already spent in their initial states. Such a setting is appropriate if we assume that the waiting times already spent in the initial states do not affect any upcoming events. Nonetheless, the situation is different if we assume state duration dependence; that is, if we employ semi-Markov processes to describe individual behaviour (cp. <a href=\"#s2-4-1\">Section 2.4.1</a>). Here, it is usually incorrect to simply ignore the length of time individuals have already spent in their current states when entering the virtual population. A failure to take this time period into account might lead to a distortion of the duration effects when determining the first events of members of the base population and of immigrants. We will return to this issue in our conclusion when we elaborate on the work in progress and list further possible extensions of the MicSim package.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s2-3",
+                    "title": "2.3 The virtual population",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "content": [
+                                {
+                                    "text": "In a continuous-time microsimulation such as the one considered in the MicSim package, individual life-courses are usually specified by sequences of state transitions (events) and the time spans between these transitions. A common way to characterize an individual life-course is by means of a continuous-time multi-state model; that is, an individual life-course is described by a stochastic process <math><mrow><mi>Z</mi><mo stretchy=\"false\">(</mo><mi>t</mi><mo stretchy=\"false\">)</mo><mo>,</mo><mtext>\u2009</mtext><mtext>\u2009</mtext><mtext>\u2009</mtext><mi>t</mi><mtext>\u2009</mtext><mo>\u2208</mo><msubsup><mi>R</mi><mn>0</mn><mo>+</mo></msubsup></mrow></math> , usually from the family of Markovian processes (<a href=\"#bib13\">Kijima, 1997</a>). Here, the process time <i>t</i> maps the time span over which we \u201cobserve\u201d an individual life-course. The time <i>t</i> is set to zero when an individual enters the virtual population. As long as the individual is part of the virtual population, <i>t</i> evolves along the individual lifetime. Individual age and calendar time are simple translations of the process time. <a href=\"#fig1\">Figure 1</a> shows a part of a potential synthetic life-course.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "assets": [
+                                        {
+                                            "id": "fig1",
+                                            "image": {
+                                                "alt": "",
+                                                "uri": "%iiif_uri%/00105%2Fijm-00105-fig1.tif",
+                                                "size": {
+                                                    "width": 1721,
+                                                    "height": 689
+                                                },
+                                                "source": {
+                                                    "mediaType": "image/jpeg",
+                                                    "uri": "%iiif_uri%/00105%2Fijm-00105-fig1.tif/full/full/0/default.jpg",
+                                                    "filename": "ijm-00105-fig1.jpg"
+                                                }
+                                            },
+                                            "label": "Figure 1",
+                                            "title": "Sketch of a life-course of a male who is part of the initial population on January 1, 2000. At this time he is a = 10.9 years old, never married, and childless. On May 5, 2013, 13.3 years after he had entered the virtual population, he marries; and after 19.6 years he becomes father for the first time.",
+                                            "type": "image"
+                                        }
+                                    ],
+                                    "type": "figure"
+                                },
+                                {
+                                    "text": "For many situations, it is feasible to assume that the propensity of an individual to change his/her current state depends only on his/her age, and possibly also on the calendar time. This applies, for example, to first birth events. However, some applications require the consideration of an additional third time scale: namely, the amount of time an individual has already spent in the current state. For example, the divorce risk strongly depends on the amount of time that has elapsed since the wedding (<a href=\"#bib3\">Becker <i>et al</i>., 1977</a>; <a href=\"#bib7\">Diekmann &amp; Schmidheiny, 2008</a>) while the propensity to give birth to a second child depends on the amount of time that has elapsed since the delivery of the first child (<a href=\"#bib20\">Neyer &amp; Andersson, 2008</a>). To meet this need, the MicSim package allows life-course transitions hinging on age, calendar time, and also on the time already spent in a state. If life-course transitions are determined to depend on age or on age and calendar time, <i>Z(t)</i> can be described by a non-homogeneous continuous-time Markov process. If the user also assumes a dependence on the \u201ctime that has elapsed since the last event,\u201d a non-homogeneous semi-Markov process must be used instead (<a href=\"#bib19\">Monteiro <i>et al</i>., 2006</a>). Transition rates describing the propensity to leave a state to enter another one are the key quantities of the kind of stochastic processes. Once they are known, one can compute the distribution functions of the waiting times in the distinct states of the state space, and thus random variates of (latent) waiting times to next events. Since the microsimulation model implemented in the MicSim package specifies life-courses as sequences of waiting times to the next event, these random waiting time variates are its building blocks. A comprehensive and detailed documentation of how to derive from transition rates waiting time variates and from them synthetic life-courses is given in great detail elsewhere, see, for example, <a href=\"#bib31\">Zinn (2011</a>, Chapter 2.3). We refer the interested reader to this literature.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "In the MicSim package, life-courses can be described using non-homogeneous continuous-time Markov processes and non-homogeneous semi-Markov processes in combination; that is, different types of life-course events can be specified by either one or the other model type. For example, as a next event, a married woman with one child might either experience a divorce or become mother again or die. A different stochastic model might apply to each of these events. Concretely, the divorce risk and the propensity of giving birth to a second child can properly be explained by non-homogeneous semi-Markov processes, whereas mortality can be mapped by a non-homogeneous continuous-time Markov process. Once the user has figured out for a specific application the best models to use, that information and the corresponding transition rates have to be entered into MicSim. The process for doing this is the topic of the next section.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "Note that in MicSim the life-course of an individual is censored at simulation end date if simulation stop date has been reached before the individual has died or emigrated.",
+                                    "type": "paragraph"
+                                }
+                            ],
+                            "id": "s2-4-1",
+                            "title": "2.4.1 Modeling life-course events over age, calendar time, and time elapsed",
+                            "type": "section"
+                        },
+                        {
+                            "content": [
+                                {
+                                    "text": "Before life-courses can be constructed, the transition pattern applied during simulation has to be detailed. In other words, the user has to provide MicSim with information about the events that should be considered. The MicSim package requires two types of information: first, for all events and time scales along which dependency is assumed, functions of transition rates have to be defined; and, second, a transition matrix has to be determined which indicates when which transition rates function applies.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "content": [
+                                        {
+                                            "text": "All of the transition rates have to be provided in form of <b>R</b> functions; that is, for each transition considered during the simulation, the user has to specify a corresponding transition rates function. By convention, a transition rates function might apply to distinct types of events; for example, a function describing non-parity specific fertility rates applies to all parity-specific birth events. The naming of the transition rates functions is up to the user. Each transition rates function has to feature three numerical input arguments: <span class=\"monospace\">age</span>, <span class=\"monospace\">calTime</span>, and <span class=\"monospace\">duration</span>. Via <span class=\"monospace\">age</span> the age of an individual is provided, via <span class=\"monospace\">calTime</span> the calendar time is entered, and via <span class=\"monospace\">duration</span> the time that has been elapsed since the last transition is provided. Not all of the input parameters have to affect the result of the transition rates function (also only one or two input parameters can affect the result). The user can also specify that none of the input parameters affects the result of the transition rates function; that is, a transition rate can be defined as being constant. This depends on the stochastic model assumed for an event. If the rates are assumed to be independent of a specific time scale, the corresponding input argument can simply be ignored within the body of the function when determining the specific rate values. All of the input arguments have to be given in decimal years. It should be noted that the time elapsed is measured starting from the last change in the state variable affected; that is, if a transition rates function describes the propensity for a second birth, <span class=\"monospace\">duration</span> marks the time since the first birth. For example, the transition rates among women of giving birth to a second child could be assumed to follow the Hadwiger mixture model (<a href=\"#bib6\">Chandola <i>et al.,</i> 1999</a>):",
+                                            "type": "paragraph"
+                                        },
+                                        {
+                                            "code": "\nR> fert2Rates <- function(age, calTime, duration){\n+ b <- ifelse(calTime <= 2020, 6.0, 5.7)\n+ c <- ifelse(calTime <= 2020, 32, 33)\n+ rate <- (b / c) * (c / age) <sup>\u039b</sup> (3 / 2) *\n+ exp(- b <sup>\u039b</sup> 2 * (c / age + age / c \u2212 2))\n+ rate[age <= 15 | age >= 45 | duration < 0.75] <- 0\n+ return(rate)\n+ }\n",
+                                            "type": "code"
+                                        },
+                                        {
+                                            "text": "Here, the transition rates to giving birth to a second child are defined such that they vary with age, calendar time, and the time elapsed since first birth. The function returns zero for a time period of 0.75 years after the first birth. Thus, it accounts for the time range when a woman is pregnant. Furthermore, the function <span class=\"monospace\">fert2Rates</span> defines that women younger than age 16 and older than age 44 cannot have a (further) child. To describe age- and calendar time-dependent mortality rates, we might use the Gompertz model, parameterized to vary with age, and for periods before the year 2020 and after that year. Since we measure the duration in a state starting from the last change in the state variable affected, any kind of duration dependence of the mortality process is already described by its age dependence. (In other words, age is the time already spent in the \u201calive state.\u201d) Hence, the duration argument is not used when computing the mortality rates.",
+                                            "type": "paragraph"
+                                        },
+                                        {
+                                            "code": "\nR> mortRates <- function(age, calTime, duration){\n+ a <- 0.00003\n+ b <- ifelse(calTime <= 2020, 0.1, 0.097)\n+ rate <- a * exp(b * age)\n+ return(rate)\n+ }\n",
+                                            "type": "code"
+                                        },
+                                        {
+                                            "text": "To ensure viable simulation results, every transition rates function has to return feasible values, at least for the considered simulation horizon and for all ages ranging from zero to the maximum age specified. All of the transition rates functions specified have to handle vectors of input values.<sup><a href=\"#fn9\">9</a></sup> This is the case with most <b>R</b> functions, and should not cause any problems. A special feature of the MicSim package is that it is able to handle deterministic events which occur with the probability of one at predetermined (whole numbered) ages, calendar years, or duration spans. This is achieved by setting the accordant transition rate(s) to infinity. For instance, we determine that every child will certainly enter elementary school in the year when he/she turns seven years old. The respective transition rates function may then be defined as follows:",
+                                            "type": "paragraph"
+                                        },
+                                        {
+                                            "code": "\nR> noToLowEduRates <- function(age, calTime, duration){\n+ rate <- ifelse(age == 7, Inf, 0)\n+ return(rate)\n+ }\n",
+                                            "type": "code"
+                                        },
+                                        {
+                                            "text": "This function returns infinity for age seven, and zero otherwise. It does not depend on calendar time nor on the time elapsed in a state. If for one specific transition deterministic events have been defined to happen at several points in time (e.g., at age seven, age 20, and age 50), MicSim chooses the earliest of these events.",
+                                            "type": "paragraph"
+                                        }
+                                    ],
+                                    "id": "s2-4-2-1",
+                                    "title": "Transition rates functions",
+                                    "type": "section"
+                                },
+                                {
+                                    "content": [
+                                        {
+                                            "text": "After having defined transition rates functions for all events of interest, the user has to specify the transition pattern to which they apply. For this purpose, a transition matrix (denoted as <span class=\"monospace\">transitionMatrix</span>) has to be constructed which indicates the possible (and impossible) transitions between the states of the state space, as well as the names of the functions determining the respective events. The transition matrix consists of as many rows as the state space contains states, and of as many columns as the state space contains states, plus the number of absorbing states defined. Since dying is a competing risk to which all individuals are always exposed, it mandatorily comprises a minimum of one absorbing state (namely, \u201cdead\u201d), and a maximum of two absorbing states if \u201cemigrated\u201d is also considered. By definition, the rows of the transition matrix correspond to the states in which the transitions start, and the columns correspond to the states in which the transitions end. We illustrate the design of the transition matrix by means of our simple mortality example that includes only two state variables: sex and mortality. The accordant state space is defined as",
+                                            "type": "paragraph"
+                                        },
+                                        {
+                                            "code": "\nR> sex <- c(\"m\", \"f\")\nR> stateSpace <- sex R> attr(stateSpace, \"name\") <- \"sex\"\nR> absStates <- \"dead\"\n",
+                                            "type": "code"
+                                        },
+                                        {
+                                            "text": "Here, we determine that transitions are only possible to <span class=\"monospace\">dead</span>; that is, this example does not include any transitions between nonabsorbing states. The MicSim package contains the function <span class=\"monospace\">buildTransitionMatrix</span>, which helps the user construct the transition matrix. The function has three input arguments: <span class=\"monospace\">allTransitions</span>, <span class=\"monospace\">absTransitions</span>, and <span class=\"monospace\">stateSpace</span>. Obviously, the argument <span class=\"monospace\">stateSpace</span> comprises the nonabsorbing states of the state space of the microsimulation application. Its definition is extensively described in <a href=\"#s2-1\">Section 2.1</a>. The input matrix <span class=\"monospace\">allTransitions</span> consists of all of the possible transitions between values of state variables (which are not \u201cdead\u201d or \u201cemigrated\u201d) in the first column and in the second column it contains the names of the functions that define the corresponding transition rates. Likewise, the matrix <span class=\"monospace\">absTransitions</span> contains the names of the absorbing states which individuals are exposed to (i.e., \u201cdead\u201d for being dead or \u201crest\u201d for emigrated) in the first column, and the names of the functions defining the corresponding transition rates in the second column. By means of <span class=\"monospace\">buildTransitionMatrix</span>, we can define the transition matrix of our simple example as follows.",
+                                            "type": "paragraph"
+                                        },
+                                        {
+                                            "code": "\nR> absTransitions <- c(\"dead\", \"mortRates\")\nR> transitionMatrix <- buildTransitionMatrix(\n+ allTransitions = NULL, absTransitions =\n+ absTransitions, stateSpace = stateSpace)\n",
+                                            "type": "code"
+                                        },
+                                        {
+                                            "text": "Here, <span class=\"monospace\">allTransitions</span> is set to <span class=\"monospace\">NULL</span> because our simple example only includes transitions to \u201cdead.\u201d To <span class=\"monospace\">absTransitions</span> a vector is assigned which indicates that the (user-defined) function <span class=\"monospace\">mortRates</span> describes all of the mortality rates. Hence, in sum, we yield the subsequent transition matrix. (The character \u201c0\u201d marks impossible transitions.)",
+                                            "type": "paragraph"
+                                        },
+                                        {
+                                            "code": "m f dead\nm \"0\" \"0\" \"mortRates\"\nf \"0\" \"0\" \"mortRates\"",
+                                            "type": "code"
+                                        },
+                                        {
+                                            "text": "For further illustration, let us consider a slightly more complicated example involving the three state variables sex, being partnered, and mortality. Being partnered takes the two values \u201cbeing alone\u201d (labeled as \u201c<span class=\"monospace\">A</span>\u201d) and \u201cbeing partnered\u201d (labeled as \u201c<span class=\"monospace\">P</span>\u201d). The corresponding state space is given by",
+                                            "type": "paragraph"
+                                        },
+                                        {
+                                            "code": "\nR> sex <- c(\"m\", \"f\")\nR> partnered <- c(\"A\", \"P\")\nR> stateSpace <- expand.grid(sex = sex, partnered =\n+ partnered)\nR> absStates <- \"dead\"\n",
+                                            "type": "code"
+                                        },
+                                        {
+                                            "text": "We are interested in partnership formation and dissolution events; that is, in the transitions between \u201c<span class=\"monospace\">A</span>\u201d and \u201c<span class=\"monospace\">P</span>.\u201d Furthermore, all of the individuals are always exposed to the risk of dying. In this example, for all of the events we assume distinct transition rates for females and males. We construct the corresponding transition matrix using the function <span class=\"monospace\">buildTransitionMatrix</span>. The specification of <span class=\"monospace\">stateSpace</span> is as described. As was already stated, the matrix <span class=\"monospace\">allTransitions</span> determines the transitions originating from nonabsorbing states in its first column, and the corresponding transition rates functions in its second column. Each element of its first column has to be of the form \u201c<span class=\"monospace\">X-&gt;Y</span>,\u201d with \u201c<span class=\"monospace\">X</span>\u201d indicating the starting value of a transition and \u201c<span class=\"monospace\">Y</span>\u201d indicating the arrival value. The character <span class=\"monospace\">-&gt;</span> is the placeholder defined as marking a transition. For example, \u201c<span class=\"monospace\">A</span>\u201d describes the starting value of a partnership formation event and \u201cP\u201d describes its arrival value. (Clearly, all of the value labels used have to be identical to the value labels of the state variables specifying the simulation model.) In the example considered, we assume that all of the transition rates depend on the value of another state variable; namely, on the value of <span class=\"monospace\">sex</span>. The <span class=\"monospace\">buildTransitionMatrix</span> function allows us to use such a setting in a straightforward way, as it facilitates the specification of transitions that depend on one or more state variables. Therefore, the starting value and the arrival value of a transition have to be specified as a combination of the considered attributes, separated by a forward slash and in accordance with the ordering of the state variables in the state space. For example, \u201c<span class=\"monospace\">f/A-&gt;f/P</span>\u201d describes a female specific transition from \u201c<span class=\"monospace\">A</span>\u201d to \u201c<span class=\"monospace\">P</span>.\u201d For absorbing states, a prefix indicates the attributes on which a transition is assumed to depend (also separated by a forward slash), for example, \u201c<span class=\"monospace\">f/dead</span>\u201d and \u201c<span class=\"monospace\">m/dead</span>\u201d describe gender-specific mortality transitions. Thus, the input matrices <span class=\"monospace\">allTransitions</span> and <span class=\"monospace\">absTransitions</span> can be defined as follows:",
+                                            "type": "paragraph"
+                                        },
+                                        {
+                                            "code": "\nR> trMatrix_f <- cbind(c(\"f/A->f/P\", \"f/P->f/A\"),\n+ c(\"rates1\", \"rates2\"))\nR> trMatrix_m <- cbind(c(\"m/A->m/P\", \"m/P->m/A\"),\n+ c(\"rates3\", \"rates4\"))\nR> allTransitions <- rbind(trMatrix_f, trMatrix_m)\nR> absTransitions <- rbind(c(\"f/dead\", \"mortRates_f\"),\n+ c(\"m/dead\", \"mortRates_m\"))\n",
+                                            "type": "code"
+                                        },
+                                        {
+                                            "text": "Here, <span class=\"monospace\">rates1</span>, <span class=\"monospace\">rates2</span>, <span class=\"monospace\">rates3</span>, and <span class=\"monospace\">rates4</span> indicate (where applicable) the transition rate functions related to partnership formation and dissolution, and <span class=\"monospace\">mortRates_f</span> and <span class=\"monospace\">mortRates_m</span> give gender-specific mortality rates. Hence, for <span class=\"monospace\">allTransitions</span> we obtain",
+                                            "type": "paragraph"
+                                        },
+                                        {
+                                            "code": "\n[1,] \"f/A->f/P\" \"rates1\"\n[2,] \"f/P->f/A\" \"rates2\"\n[3,] \"m/A->m/P\" \"rates3\"\n[4,] \"m/P->m/A\" \"rates4\"\n",
+                                            "type": "code"
+                                        },
+                                        {
+                                            "text": "and for <span class=\"monospace\">absTransitions</span> we get",
+                                            "type": "paragraph"
+                                        },
+                                        {
+                                            "code": "\n[,1] [,2]\n[1,] \"f/dead\" \"mortRates_f\"\n[2,] \"m/dead\" \"mortRates_m\"\n",
+                                            "type": "code"
+                                        },
+                                        {
+                                            "text": "All in all, we obtain the corresponding transition matrix by",
+                                            "type": "paragraph"
+                                        },
+                                        {
+                                            "code": "\nR> transitionMatrix <- buildTransitionMatrix(\n+ allTransitions = allTransitions, absTransitions =\n+ absTransitions, stateSpace = stateSpace)\n",
+                                            "type": "code"
+                                        },
+                                        {
+                                            "text": "that is, the <span class=\"monospace\">transitionMatrix</span> is",
+                                            "type": "paragraph"
+                                        },
+                                        {
+                                            "code": "\nm/A f/A m/P f/P dead\nm/A \"0\" \"0\" \"rates3\" \"0\" \"mortRates_m\"\nf/A \"0\" \"0\" \"0\" \"rates1\" \"mortRates_f\"\nm/P \"rates4\" \"0\" \"0\" \"0\" \"mortRates_m\"\nf/P \"0\" \"rates2\" \"0\" \"0\" \"mortRates_f\"\n",
+                                            "type": "code"
+                                        }
+                                    ],
+                                    "id": "s2-4-2-2",
+                                    "title": "Transition matrix",
+                                    "type": "section"
+                                }
+                            ],
+                            "id": "s2-4-2",
+                            "title": "2.4.2 Specifying models for life-course events in MicSim",
+                            "type": "section"
+                        }
+                    ],
+                    "id": "s2-4",
+                    "title": "2.4 Stochastic model of individual behavior",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "The base population, the transition matrix, and the corresponding transition rates functions are mandatory ingredients for conducting a microsimulation run. The inclusion of migration, the creation of newborns during the simulation, and enrollment in elementary school is optional. This section deals with the specification of these extra options",
+                            "type": "paragraph"
+                        },
+                        {
+                            "content": [
+                                {
+                                    "text": "In the MicSim package, the user decides whether female fertility results in offspring. For this purpose, an accordant vector (denoted as <span class=\"monospace\">fertTr</span>) has to be specified marking all of the transitions triggering a childbirth event during simulation; that is, the creation of a new individual. Obviously, such transitions have to be in accordance with the state space and the previously defined transition pattern. Consider, for example, the following state space comprising sex and fertility:",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "code": "\nR> sex <- \"f\"\nR> fert <- c(\"0\", \"1+\")\nR> stateSpace <- expand.grid(sex = sex, fert = fert)\nR> absStates <- \"dead\"\n",
+                                    "type": "code"
+                                },
+                                {
+                                    "text": "The state variable \u201csex\u201d takes only the value female (labeled \u201c<span class=\"monospace\">f</span>\u201d), and the state variable <span class=\"monospace\">fert</span> maps being childless (labeled \u201c<span class=\"monospace\">0</span>\u201d) and being mother (labeled \u201c<span class=\"monospace\">1+</span>\u201d). The corresponding transition matrix is defined as:",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "code": "\nR> allTransitions <- cbind(c(\"0->1+\", \"1+->1+\"),\n+ c(\"fertRates1\", \"fertRates2\"))\nR> absTransitions <- c(\"dead\", \"mortRates\")\nR> transitionMatrix <- buildTransitionMatrix(\n+ allTransitions = allTransitions, absTransitions =\n+ absTransitions, stateSpace = stateSpace)",
+                                    "type": "code"
+                                },
+                                {
+                                    "text": "On that, we define that during simulation transitions of the type \u201c0\u21921+\u201d and \u201c1+\u21921+\u201d imply newborns.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "code": "\nR> fertTr <- c(\"0->1+\",\"1+->1+\")\n",
+                                    "type": "code"
+                                },
+                                {
+                                    "text": "Once the microsimulation yields a newborn, he/she has to be assigned to the state space. The process MicSim employs to do this is detailed in <a href=\"#s2-3\">Section 2.3</a>. Ultimately, it is left to the user to determine the possible initial states of newborns and their occurrence probabilities (<span class=\"monospace\">initStates</span> and <span class=\"monospace\">initStatesProb</span>). As a default, the MicSim package does not account for any offspring; i.e., <span class=\"monospace\">fertTr = c()</span>, <span class=\"monospace\">initStates = c()</span>, <span class=\"monospace\">initStatesProb = c()</span>.",
+                                    "type": "paragraph"
+                                }
+                            ],
+                            "id": "s3-1",
+                            "title": "3.1 Simulating offspring",
+                            "type": "section"
+                        },
+                        {
+                            "content": [
+                                {
+                                    "text": "If the state space includes educational achievement and if individuals of the relevant age are simulated, it may be necessary to model the enrolment of children in elementary school. The MicSim package is able to take into account enrolment events that take place on a general enrolment date (denoted as <span class=\"monospace\">dateSchoolEnrol</span>) of a particular year. For this purpose, first a state variable defining educational attainment has to be created. Then, labels of possible values have to be defined, with \u201cno\u201d describing no education and \u201clow\u201d describing elementary education. The general enrolment date is set via <span class=\"monospace\">dateSchoolEnrol</span> using a string of the form \u201cmonth/day,\u201d for example, \u201c09/13\u201d for September 13. The default setting is \u201c09/01.\u201d Finally, the transition function determining the transition rate for the respective enrolment event has to be defined to return <span class=\"monospace\">Inf</span> for the age <i>x</i> at which children should be enrolled (e.g., at age seven), and zero otherwise. In this way, an event \u201cschool enrolment on <span class=\"monospace\">dateSchoolEnrol</span> of the year in which a child turns <i>x</i> years old\u201d is determined.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "code": "\nR> sex <- c(\"m\", \"f\")\nR> edu <- c(\"no\", \"low\")\nR> stateSpace <- expand.grid(sex = sex, edu = edu)\nR> absStates <- \"dead\"",
+                                    "type": "code"
+                                },
+                                {
+                                    "code": "\nR> dateSchoolEnrol <- \"09/01\"\nR> noToLowEduRates <- function(age, calTime, duration){\n+ rate <- ifelse(age == 7, Inf, 0)\n+ return(rate)\n+ }\n",
+                                    "type": "code"
+                                },
+                                {
+                                    "code": "\nR> allTransitions <- matrix(c(\"no->low\",\n+ \"noToLowEduRates\"), nrow = 1)\nR> absTransitions <- c(\"dead\", \"mortRates\")\nR> transitionMatrix <- buildTransitionMatrix(\n+ allTransitions = allTransitions, absTransitions =\nabsTransitions, stateSpace = stateSpace)\n",
+                                    "type": "code"
+                                },
+                                {
+                                    "text": "Generally, it is completely up to the user how to define changes in the educational achievement. As described, enrolment to elementary school can be modelled to happen on a pre-defined general enrolment date at a certain age. Alternatively, it can be modelled to happen, for example, in a certain (whole numbered) year or even completely at random. In the latter cases, the user has simply to choose labels others than \u201cno\u201d and \u201clow\u201d to describe enrolment to elementary school, set <span class=\"monospace\">dateSchoolEnrol=c()</span>, and to determine the related transition rates functions accordingly (cp. <a href=\"#s2-4-2\">Section 2.4.2</a>).",
+                                    "type": "paragraph"
+                                }
+                            ],
+                            "id": "s3-2",
+                            "title": "3.2 Enrolment in elementary school",
+                            "type": "section"
+                        },
+                        {
+                            "content": [
+                                {
+                                    "text": "The MicSim package also offers the option of allowing immigrants to enter the virtual population during simulation. In <a href=\"#s2-3\">Section 2.3</a>, we describe in detail how migration data have to be prepared so that MicSim can process them. After migrants have entered the virtual population, the user might be interested in following them. The generic model of MicSim can easily cope with such a demand. The user simply has to specify a state variable called \u201cbeing a migrant,\u201d with a value that indicates whether an individual is a migrant. When entering the virtual population, the respective state value is then assigned according to the migration status of an individual. For example, the state <i>(male, divorced, childless, high education, being migrant)</i> describes a childless, divorced man with a high level of education who is flagged as being a migrant when entering the virtual population by immigration. Once a migrant is assumed to be assimilated into the population of immigration his/her status changes to \u201cnot being a migrant.\u201d For this purpose, only an accordant transition rate has to be defined. For example, five years after migration, the probability that a migrant will behave like a native is assumed to be one. By its very nature, such an event is similar to an enrolment event into elementary school (cp. <a href=\"#s3-2\">Section 3.2</a>), and thus has to be defined accordingly: namely, a transition rate is defined as being equal to infinity for a duration of stay that is five years or longer. An excerpt of the related source code is given in the subsequent. The whole example can be found in the appendix.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "code": "\nR> migrant <- c(\"mig\", \"notMig\")\nR> stateSpace <- expand.grid(sex = sex, migrant = migrant)\nR> migToNotMigRates <- function(age, calTime, duration){\n+ rate <- ifelse(duration >= 5, Inf, 0)\n+ return(rate)\n+ }\nR> allTransitions <- matrix(c(\"mig->notMig\",\n+ \"migToNotMigRates\"), nrow = 1)\n",
+                                    "type": "code"
+                                }
+                            ],
+                            "id": "s3-3",
+                            "title": "3.3 Following migrants",
+                            "type": "section"
+                        }
+                    ],
+                    "id": "s3",
+                    "title": "3. Special features of m<span class=\"small-caps\">ic</span>S<span class=\"small-caps\">im</span>",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "After having defined",
+                            "type": "paragraph"
+                        },
+                        {
+                            "items": [
+                                [
+                                    {
+                                        "text": "the base population <span class=\"monospace\">initPop</span>,",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "the maximum age <span class=\"monospace\">maxAge</span>,",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "the simulation horizon <span class=\"monospace\">simHorizon</span>,",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "the state space of nonabsorbing states <span class=\"monospace\">stateSpace</span>,",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "the set of absorbing states <span class=\"monospace\">absStates</span>, and",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "the transition rates functions and the accordant transition pattern (reported by means of the transition matrix; <span class=\"monospace\">transitionMatrix</span>),",
+                                        "type": "paragraph"
+                                    }
+                                ]
+                            ],
+                            "prefix": "bullet",
+                            "type": "list"
+                        },
+                        {
+                            "text": "and, optionally also",
+                            "type": "paragraph"
+                        },
+                        {
+                            "items": [
+                                [
+                                    {
+                                        "text": "data on migrants <span class=\"monospace\">immigrPop</span>,",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "transitions leading to offspring <span class=\"monospace\">fertTr</span>, and",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "a general date of enrolment to elementary school <span class=\"monospace\">dateSchoolEnrol</span>,",
+                                        "type": "paragraph"
+                                    }
+                                ]
+                            ],
+                            "prefix": "bullet",
+                            "type": "list"
+                        },
+                        {
+                            "text": "the MicSim package has been provided with all of the information required to perform a microsimulation run. For this purpose, the package offers two functions. The function <span class=\"monospace\">micSim</span> conducts microsimulation using one single CPU core. In terms of run times, this is not a very performant solution, especially today when most computers are equipped with CPUs with more than one core. The function <span class=\"monospace\">micSimParallel</span> performs microsimulation making use of as many cores as the user specifies. Of course, the number is restricted by the maximum number of cores a computer (or a computer cluster) has. When conducting any kind of simulation, one should always pay special attention to the pseudo random number generator (PRNG). By default, <b>R</b> uses the Mersenne Twister, which is based on a matrix linear recurrence over a finite binary field (<a href=\"#bib17\">Matsumoto &amp; Nishimura, 1997</a>). The MicSim package relies on the positive qualities of the Mersenne Twister, and applies it for microsimulation. To ensure that the results are replicable and are therefore reasonable, the user should always assign a seed to each PRNG representation used. Thus, for each core accessed, MicSim asks for a seed. When running the microsimulation on a single core, we define the seed by means of the <span class=\"monospace\">set.seed</span> function before calling the actual microsimulation function <span class=\"monospace\">micSim</span>.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "code": "\nR> set.seed(234)\nR> pop <- micSim(initPop = initPop, transitionMatrix =\n+ transitionMatrix, absStates = absStates, maxAge =\n+ maxAge, simHorizon = simHorizon)\n",
+                            "type": "code"
+                        },
+                        {
+                            "text": "Alternatively, if immigration, offspring born during the simulation, and enrolment in elementary school are also considered, the following command conducts a single-core microsimulation run:",
+                            "type": "paragraph"
+                        },
+                        {
+                            "code": "\nR> set.seed(234)\nR> pop <- micSim(initPop = initPop, immigrPop = immigrPop,\n+ transitionMatrix = transitionMatrix, absStates =\n+ absStates, initStates = initStates, initStatesProb =\n+ initStatesProb, maxAge = maxAge, simHorizon =\n+ simHorizon, fertTr = fertTr, dateSchoolEnrol =\n+ dateSchoolEnrol)\n",
+                            "type": "code"
+                        },
+                        {
+                            "text": "In the multicore specification, we enter a set of seeds via the input arguments of <span class=\"monospace\">micSimParallel</span>. An accordant example is given in the appendix.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The output object <span class=\"monospace\">pop</span> of <span class=\"monospace\">micSim</span> and <span class=\"monospace\">micSimParallel</span> is a data frame that contains the whole synthetic population considered during the simulation, including all of the events generated; that is, the <span class=\"monospace\">pop</span> object contains as many rows as there are transitions performed by the individuals of the virtual population. (\u201cEntering the virtual population\u201d is also considered as an event.) For the example focusing on individual behaviour concerning changes in marital status, educational attainment, and fertility status (The accordant state space is described in <a href=\"#s2-3\">Section 2.3</a>.) and the simulation horizon from January 1, 2014, to December, 31, 2050, we get the following output:",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The column <span class=\"monospace\">ID</span> gives the unique numerical person identifiers, the column <span class=\"monospace\">birthDate</span> gives the birth dates of the individuals, and the column <span class=\"monospace\">initState</span> gives the states the individuals were in when they entered the virtual population. The columns <span class=\"monospace\">From</span> and <span class=\"monospace\">To</span> mark the transitions the individuals experienced during the simulation. <span class=\"monospace\">From</span> gives the states of origin and <span class=\"monospace\">To</span> gives the states of destination. The columns <span class=\"monospace\">transitionTime</span> and <span class=\"monospace\">transitionAge</span> document the corresponding transition dates and ages. In the example given, the individual with <span class=\"monospace\">ID=1</span> is a female born on February, 25, 1968, who enters the virtual population by being part of the base population. At simulation starting time she is a never married woman with a lower secondary education and mother of three or more children. She marries on July 29, 2018 at age 50.43. On April 30, 2049 at age 81.18 she dies. The two individuals shown at the end of the example are born during the simulation; namely, on December 6, 2050 and on December 23, 2050. Apart from their birth, no further events are simulated up to the end point of the simulation, as indicated by the <span class=\"monospace\">&lt;NA&gt;</span> and <span class=\"monospace\">NA</span> entries in the respective lines. Generally, <span class=\"monospace\">micSim</span> and <span class=\"monospace\">micSimParallel</span> return all of the birth dates and the transition dates in the form of <span class=\"monospace\">chron</span> objects.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "To ease further processing, the MicSim package provides a function that reshapes the microsimulation output into a long format that might be more familiar to people working with event data. That function, called <span class=\"monospace\">convertToLongFormat</span>, transforms the microsimulation output into a dataset with one row for each episode which an individual experiences.<sup><a href=\"#fn10\">10</a></sup> The function <span class=\"monospace\">convertToLongFormat</span> contains two input arguments: the output object of <span class=\"monospace\">micSim</span> or <span class=\"monospace\">micSimParallel</span> and an indicator variable marking whether the simulation model considered immigration (the default setting is \u201cno immigration considered\u201d).",
+                            "type": "paragraph"
+                        },
+                        {
+                            "code": "\nR> convertToLongFormat(pop, migr = TRUE)\n",
+                            "type": "code"
+                        },
+                        {
+                            "text": "By means of the example given above, we detail the output of the function <span class=\"monospace\">convertToLongFormat</span>.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The first column gives the unique numerical person identifier <span class=\"monospace\">ID</span> and the second column gives the birth date of an individual. The variables <span class=\"monospace\">Tstart</span> and <span class=\"monospace\">Tstop</span> mark the start and the end dates of episodes. The column <span class=\"monospace\">statusEntry</span> specifies whether the entry into an episode has been observed. The value \u201c1\u201d marks an observed entry, and the value \u201c0\u201d marks a left-truncated episode. Likewise, the column <span class=\"monospace\">statusExit</span> specifies whether the episode was completed by a transition between two states or by right-censoring. Value \u201c1\u201d indicates a transition and value \u201c0\u201d indicates a censoring event. The column <span class=\"monospace\">OD</span> identifies the transition which completed an episode. Here, right-censoring is marked by \u201ccens.\u201d The column <span class=\"monospace\">ns</span> gives the number of episodes an individual has passed and the column <span class=\"monospace\">Episode</span> enumerates these episodes. The last columns of the data frame contain for each individual and episode the values of the state variables during that episode, such as \u201csex,\u201d or \u201ceducation.\u201d",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s4",
+                    "title": "4. Conducting microsimulation and output",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "The <b>R</b> package MicSim performs continuous-time microsimulations for population projection. Its key ingredients are the virtual population and a stochastic model describing life-course dynamics. The virtual population maps the composition and the development of the population under study along simulation time. To each individual who is part of the virtual population, a set of demographically relevant attributes is assigned. These attributes may change along the simulation time span. To describe life-course dynamics, stochastic models are usually applied. The MicSim package implements two classes of stochastic models: non-homogeneous continuous-time Markov processes and non-homogeneous semi-Markov processes. The first class of models specifies life-course events over age and calendar time. The second class of models also postulate duration dependence; that is, it assumes that the propensity of an individual to change his/her current set of attributes may depend not only on his/her age and on calendar time, but also on the amount of time elapsed since a last transition. Thus, the MicSim package is able to cover a wide range of situations relevant for demographic population projections. A further useful feature of the MicSim package is its ability to deal with deterministic events. In other words, the package allows the user to specify that certain events will occur with a probability of one. A relevant example is the enrolment of children in elementary school in the year in which they turn seven years old. Furthermore, due to the generic structure of the microsimulation model being implemented, the MicSim package allows users to follow migrants once they have entered the virtual population. All in all, we find that the MicSim package is able to conduct meaningful population projections at a very fine-grained level from a relatively low level entry point. This article provides excerpts of examples that illustrate its applicability. The full specification of the examples given can be found on the help pages of the package.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Clearly, the work on the MicSim package is not completed, and there are several issues that still need to be addressed. One challenge lies in taking into account the amount of time individuals have already spent in their initial states when entering the virtual population. This is of special importance if semi-Markov processes are used to describe life-course dynamics. Ignoring the time already spent in the initial states might cause distorted first event times. In particular, members of the base population and migrants are affected by this problem. In its current version, the MicSim package does not ask for the time spans members of the base population and migrants have spent in their initial states. Thus, this kind of information is not accessible for further processing. This issue is related to another problem: namely, that of which time point should be used as a reference point for duration measurement. Currently, the MicSim package measures the length of duration starting from the last change of the affected state variable. While this might make sense with regard to birth intervals and gestation gaps, it could be problematic with regard to divorce events. For example, we know that the divorce risk depends not only on the time elapsed since the wedding, but also on the time elapsed since the last birth event (if there was one). We are currently extending the MicSim package to tackle these issues: First, we are broadening the definition of the base population and the definition of the set of immigrants so that the time already spent in the initial states can be documented. In addition, we will provide the user with the opportunity to decide the reference point of the duration measurement for each event separately.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The <b>R</b> environment provides a huge set of visualization tools. However, the MicSim package currently does not make use of this potential and does not offer any plotting option. As the MicSim package relies on a generic microsimulation model, the simulation outcome might be of any type, and tailor-made plotting functions are hard to specify. We therefore argue that the user will know best how he/she wants the simulation output of a specific application to be visualized. Furthermore, we recommend the use of existing visualization devices provided by other related <b>R</b> packages. For example, the Biograph package (<a href=\"#bib27\">Willekens, 2013</a>) makes it possible to plot life histories in Lexis diagrams and to generate state occupation diagrams, while the TraMineR package facilitates the visualization of state and event sequences (<a href=\"#bib8\">Gabadinho <i>et al.,</i> 2014</a>). Nevertheless, we are currently working on a set of plotting functions that apply to particular situations, such as population pyramids that refer to distinct time points.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The presented microsimulation model can be extended in other directions, as well. Parental characteristics and behaviour might be modelled to influence children\u2019s characteristics and behaviour. Marriage markets can be included, with couples and household entities being modelled and simulated. Furthermore, macro components such as macroeconomic indicators might be considered and spatial patterns may be added. However, including a large number of potential influencing factors in a microsimulation model is generally difficult, as causal relationships might be disturbed and even distorted. Hence, while it is possible to add some of the functionality outlined above to the MicSim package, doing so would require very careful reasoning, and thus remains an issue for further research and software versions.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s5",
+                    "title": "5. Conclusion",
+                    "type": "section"
+                }
+            ],
+            "id": "s2",
+            "title": "2. Microsimulation model",
+            "type": "section"
+        }
+    ],
+    "references": [
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Aalen, O",
+                        "preferred": "O Aalen"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Borgan, O",
+                        "preferred": "O Borgan"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Gjessing, H",
+                        "preferred": "H Gjessing"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "Survival and event history analysis: A process point of view",
+            "date": "2008",
+            "id": "bib1",
+            "publisher": {
+                "name": [
+                    "Springer"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "articleTitle": "Multi-state models for event history analysis",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Andersen, P",
+                        "preferred": "P Andersen"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Keiding, N",
+                        "preferred": "N Keiding"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2002",
+            "id": "bib2",
+            "journal": "Statistical Methods in Medical Research",
+            "pages": {
+                "first": "91",
+                "last": "115",
+                "range": "91\u2013115"
+            },
+            "type": "journal",
+            "volume": "11"
+        },
+        {
+            "articleTitle": "An economic analysis of marital instability",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Becker, G",
+                        "preferred": "G Becker"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Landes, E",
+                        "preferred": "E Landes"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Michael, R",
+                        "preferred": "R Michael"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1977",
+            "id": "bib3",
+            "journal": "The Journal of Political Economy",
+            "pages": {
+                "first": "1141",
+                "last": "1187",
+                "range": "1141\u20131187"
+            },
+            "type": "journal",
+            "volume": "85"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Blossfeld, H-P.",
+                        "preferred": "H-P. Blossfeld"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Hamerle, A",
+                        "preferred": "A Hamerle"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Mayer, K",
+                        "preferred": "K Mayer"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "Event history analysis",
+            "date": "1989",
+            "id": "bib4",
+            "publisher": {
+                "name": [
+                    "Lawrence Erlbaum Associates"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "articleTitle": "The log-logistic rate model: Two generalizations with an application to demographic data",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Br\u00fcderle, J",
+                        "preferred": "J Br\u00fcderle"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Diekmann, A",
+                        "preferred": "A Diekmann"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1995",
+            "id": "bib5",
+            "journal": "Sociological Methods & Research",
+            "pages": {
+                "first": "158",
+                "last": "186",
+                "range": "158\u2013186"
+            },
+            "type": "journal",
+            "volume": "24"
+        },
+        {
+            "articleTitle": "Recent European fertility patterns: Fitting curves to \u2018distorted\u2019 distributions",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Chandola, T",
+                        "preferred": "T Chandola"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Coleman, D",
+                        "preferred": "D Coleman"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Horns, R",
+                        "preferred": "R Horns"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1999",
+            "id": "bib6",
+            "journal": "Population Studies",
+            "pages": {
+                "first": "317",
+                "last": "329",
+                "range": "317\u2013329"
+            },
+            "type": "journal",
+            "volume": "53"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Diekmann, A",
+                        "preferred": "A Diekmann"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Schmidheiny, K",
+                        "preferred": "K Schmidheiny"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2008",
+            "id": "bib7",
+            "publisher": {
+                "name": [
+                    "ETH Zurich, Chair of Sociology"
+                ]
+            },
+            "source": "The intergenerational transmission of divorce: A fifteen-country study with the Fertility and Family Survey (ETH Zurich Sociology Working Papers No. 4)",
+            "title": "The intergenerational transmission of divorce: A fifteen-country study with the Fertility and Family Survey (ETH Zurich Sociology Working Papers No. 4)",
+            "type": "report"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Gabadinho, A",
+                        "preferred": "A Gabadinho"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Studer, M",
+                        "preferred": "M Studer"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Muller, N",
+                        "preferred": "N Muller"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Buergin, R",
+                        "preferred": "R Buergin"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Ritschard, G",
+                        "preferred": "G Ritschard"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2014",
+            "details": "TraMineR: Trajectory miner: A toolbox for exploring and rendering sequence data [Computer software manual], http://cran.r-project.org/package-TraMineR, (R package version 1.8.8)",
+            "id": "bib8",
+            "title": "TraMineR: Trajectory miner: A toolbox for exploring and rendering sequence data [Computer software manual]",
+            "type": "unknown",
+            "uri": "http://cran.r-project.org/package-TraMineR"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Galler, H",
+                        "preferred": "H Galler"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1997",
+            "id": "bib9",
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "University of Canberra"
+                        ]
+                    },
+                    "formatted": [
+                        "University of Canberra"
+                    ]
+                },
+                "name": [
+                    "NATSEM, National Centre for Social and Economic Modelling, University of Canberra"
+                ]
+            },
+            "source": "Discrete-time and continuous-time approaches to dynamic microsimulation (reconsidered) (Tech. Rep.)",
+            "title": "Discrete-time and continuous-time approaches to dynamic microsimulation (reconsidered) (Tech. Rep.)",
+            "type": "report"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Gampe, J",
+                        "preferred": "J Gampe"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Zinn, S",
+                        "preferred": "S Zinn"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2007",
+            "id": "bib10",
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "Rostock"
+                        ]
+                    },
+                    "formatted": [
+                        "Rostock"
+                    ]
+                },
+                "name": [
+                    "MPIDR"
+                ]
+            },
+            "source": "Description of the microsimulation model (Technical report, MicMac project)",
+            "title": "Description of the microsimulation model (Technical report, MicMac project)",
+            "type": "report"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Himmelspach, J",
+                        "preferred": "J Himmelspach"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2012",
+            "details": "208\u2013210, Proceedings of the 5th International ICST Conference on Simulation Tools and Techniques, ICST, Brussels, Belgium, Belgium, ICST (Institute for Computer Sciences, Social-Informatics and Telecommunications Engineering)",
+            "id": "bib11",
+            "title": "JAMES II: Extending, using, and experiments",
+            "type": "unknown"
+        },
+        {
+            "articleTitle": "Multi-state models: A review",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Hougaard, P",
+                        "preferred": "P Hougaard"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1999",
+            "id": "bib12",
+            "journal": "Lifetime Data Analysis",
+            "pages": {
+                "first": "239",
+                "last": "264",
+                "range": "239\u2013264"
+            },
+            "type": "journal",
+            "volume": "5"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Kijima, M",
+                        "preferred": "M Kijima"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1997",
+            "details": "167\u2013241, Continuous-time Markov chains, Markov processes for stochastic modeling, Chapman & Hall",
+            "id": "bib13",
+            "title": "Markov processes for stochastic modeling",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Law, A",
+                        "preferred": "A Law"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Kelton, W",
+                        "preferred": "W Kelton"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2000",
+            "details": "437\u2013495, Generating random variates, Simulation modeling and analysis, Mc Graw Hill Higher Education",
+            "id": "bib14",
+            "title": "Simulation modeling and analysis",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Mannion, O",
+                        "preferred": "O Mannion"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2014",
+            "id": "bib15",
+            "title": "jamsim: Java &amp; <b>R</b> based microsimulation",
+            "type": "web",
+            "uri": "https://code.google.com/p/jamsim/"
+        },
+        {
+            "articleTitle": "Jamsim: A microsimulation modelling policy tool",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Mannion, O",
+                        "preferred": "O Mannion"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Lay-Yee, R",
+                        "preferred": "R Lay-Yee"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Wrapson, W",
+                        "preferred": "W Wrapson"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Davis, P",
+                        "preferred": "P Davis"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Pearson, J",
+                        "preferred": "J Pearson"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2012",
+            "id": "bib16",
+            "journal": "Journal of Artificial Societies and Social Simulation",
+            "pages": "8",
+            "type": "journal",
+            "volume": "15"
+        },
+        {
+            "articleTitle": "Mersenne twister: A 623-dimensionally equidistributed uniform pseudo-random number generator",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Matsumoto, M",
+                        "preferred": "M Matsumoto"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Nishimura, T",
+                        "preferred": "T Nishimura"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1997",
+            "id": "bib17",
+            "journal": "Transactions on Modeling and Computer Simulation: Special issue on uniform random number generation",
+            "pages": {
+                "first": "3",
+                "last": "30",
+                "range": "3\u201330"
+            },
+            "type": "journal",
+            "volume": "8"
+        },
+        {
+            "bookTitle": "Event history analysis in life course research",
+            "date": "1990",
+            "editors": [
+                {
+                    "name": {
+                        "index": "Mayer, K",
+                        "preferred": "K Mayer"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Tuma, N",
+                        "preferred": "N Tuma"
+                    },
+                    "type": "person"
+                }
+            ],
+            "id": "bib18",
+            "publisher": {
+                "name": [
+                    "University of Wisconsin Press"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Monteiro, A",
+                        "preferred": "A Monteiro"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Smirnov, G",
+                        "preferred": "G Smirnov"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Lucas, A",
+                        "preferred": "A Lucas"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "Non-parametric estimation for non-homogeneous semi-Markov processes: an application to credit risk",
+            "date": "2006",
+            "id": "bib19",
+            "publisher": {
+                "name": [
+                    "Tinbergen Institute"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "articleTitle": "Consequences of family policies on childbearing behavior: Effects or artifacts?",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Neyer, G",
+                        "preferred": "G Neyer"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Andersson, G",
+                        "preferred": "G Andersson"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2008",
+            "id": "bib20",
+            "journal": "Population and Development Review",
+            "pages": {
+                "first": "699",
+                "last": "724",
+                "range": "699\u2013724"
+            },
+            "type": "journal",
+            "volume": "34"
+        },
+        {
+            "articleTitle": "Parallel discrete-event simulation tool for population analysis",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Onggo, B",
+                        "preferred": "B Onggo"
+                    },
+                    "type": "person"
+                }
+            ],
+            "conference": {
+                "name": [
+                    "Proceedings of the Operational Research Society Simulation Workshop 2010 (sw10)"
+                ]
+            },
+            "date": "2010",
+            "id": "bib21",
+            "type": "conference-proceeding"
+        },
+        {
+            "articleTitle": "\u03bcsik: A micro-kernel for parallel/distributed simulation systems",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Perumalla, K",
+                        "preferred": "K Perumalla"
+                    },
+                    "type": "person"
+                }
+            ],
+            "conference": {
+                "name": [
+                    "ACM/IEEE/SCS Workshop on Parallel and Distributed Simulation (pads)"
+                ]
+            },
+            "date": "2005",
+            "id": "bib22",
+            "type": "conference-proceeding"
+        },
+        {
+            "authors": [
+                {
+                    "name": "R Development Core Team",
+                    "type": "group"
+                }
+            ],
+            "date": "2013",
+            "id": "bib23",
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "Vienna, Austria"
+                        ]
+                    },
+                    "formatted": [
+                        "Vienna, Austria"
+                    ]
+                },
+                "name": [
+                    "R: A language and environment for statistical computing [Computer software manual]"
+                ]
+            },
+            "source": "R: A language and environment for statistical computing [Computer software manual]",
+            "title": "R: A language and environment for statistical computing [Computer software manual]",
+            "type": "software",
+            "uri": "http://www.R-project.org"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Rubinstein, R",
+                        "preferred": "R Rubinstein"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Kroese, D",
+                        "preferred": "D Kroese"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "Simulation and the Monte Carlo Method",
+            "date": "2008",
+            "edition": "2nd ed.",
+            "id": "bib24",
+            "publisher": {
+                "name": [
+                    "Wiley"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "authors": [
+                {
+                    "name": "Statistics Canada",
+                    "type": "group"
+                }
+            ],
+            "date": "2011",
+            "id": "bib25",
+            "publisher": {
+                "name": [
+                    "Modgen version 10.1.0: Developer's guide"
+                ]
+            },
+            "source": "Modgen version 10.1.0: Developer's guide",
+            "title": "Modgen version 10.1.0: Developer's guide",
+            "type": "software",
+            "uri": "http://www.statcan.gc.ca/microsimulation/modgen/doc-eng.htm"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Willekens, F",
+                        "preferred": "F Willekens"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2009",
+            "details": "353\u2013376, Continuous-time microsimulation in longitudinal analysis, New frontiers in microsimulation modelling, Ashgate, Farnham, Surrey, UK, (Book released during 2nd International Microsimulation Conference, Ottawa, June 2009)",
+            "id": "bib26",
+            "title": "New frontiers in microsimulation modelling",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Willekens, F",
+                        "preferred": "F Willekens"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2013",
+            "id": "bib27",
+            "publisher": {
+                "name": [
+                    "Biograph: Explore life histories [Computer software manual]"
+                ]
+            },
+            "source": "Biograph: Explore life histories [Computer software manual]",
+            "title": "Biograph: Explore life histories [Computer software manual]",
+            "type": "software",
+            "uri": "http://cran.r-project.org/package=Biograph",
+            "version": "(R package version 2.0.4)"
+        },
+        {
+            "articleTitle": "Simulation methods for analyzing continuous-time event-history models",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Wolf, D",
+                        "preferred": "D Wolf"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1986",
+            "id": "bib28",
+            "journal": "Sociological Methodology",
+            "pages": {
+                "first": "283",
+                "last": "308",
+                "range": "283\u2013308"
+            },
+            "type": "journal",
+            "volume": "16"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Zinn, S",
+                        "preferred": "S Zinn"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2014",
+            "id": "bib29",
+            "publisher": {
+                "name": [
+                    "MicSim: Performing continuous-time microsimulation [Computer software manual]"
+                ]
+            },
+            "source": "MicSim: Performing continuous-time microsimulation [Computer software manual]",
+            "title": "MicSim: Performing continuous-time microsimulation [Computer software manual]",
+            "type": "software",
+            "uri": "http://cran.r-project.org/package=MicSim",
+            "version": "(R package version 1.0.6)"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Zinn, S",
+                        "preferred": "S Zinn"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Himmelspach, J",
+                        "preferred": "J Himmelspach"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Gampe, J",
+                        "preferred": "J Gampe"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Uhrmacher, A",
+                        "preferred": "A Uhrmacher"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Rossetti, MD",
+                        "preferred": "MD Rossetti"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Hill, RR",
+                        "preferred": "RR Hill"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Johansson, B",
+                        "preferred": "B Johansson"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Dunkin, A",
+                        "preferred": "A Dunkin"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Ingalls, RG",
+                        "preferred": "RG Ingalls"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2009",
+            "details": "Mic-core: A tool for microsimulation, Proceedings of the 2009 winter simulation conference, Piscataway, NJ, IEEE",
+            "id": "bib30",
+            "title": "Proceedings of the 2009 winter simulation conference",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Zinn, S",
+                        "preferred": "S Zinn"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2011",
+            "details": "PhD dissertation, Faculty of Information Science and Electrotechnics, University of Rostock, http://rosdok.unirostock.de/file/rosdok derivate0000004766/DissertationZinn2011.pdf",
+            "id": "bib31",
+            "title": "A continuous-time microsimulation and first steps towards a multi-level approach in demography",
+            "type": "unknown",
+            "uri": "http://rosdok.unirostock.de/file/rosdok derivate0000004766/DissertationZinn2011.pdf"
+        }
+    ],
+    "appendices": [
+        {
+            "content": [
+                {
+                    "text": "The MicSim package allows following migrants and integrating them into the native population after some time, for example, after five years. The source code of an accordant example is given in the subsequent.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "First, we define the simulation horizon and the state space comprising besides \u201cdead\u201d the state variables \u201csex\u201d and \u201cmigrant\u201d. The migrant variable has two values: \u201cbeing migrant\u201d (<span class=\"monospace\">mig</span>) and \u201cnot being migrant\u201d (<span class=\"monospace\">notMig</span>).",
+                    "type": "paragraph"
+                },
+                {
+                    "code": "\nR> simHorizon <- setSimHorizon(startDate=\"01/01/2000\",\n+ endDate=\"31/12/2020\")\nR> sex <- c(\"m\", \"f\")\nR> migrant <- c(\"mig\", \"notMig\")\nR> stateSpace <- expand.grid(sex = sex, migrant = migrant)\nR> absStates <- \"dead\"\n",
+                    "type": "code"
+                },
+                {
+                    "text": "Then, we construct a base population with five individuals.",
+                    "type": "paragraph"
+                },
+                {
+                    "code": "\nR> dts <- c(\"31/12/1930\", \"03/04/1999\", \"15/10/1956\",\n+ \"11/11/1991\", \"01/01/1965\")\nR> birthDates <- chron(dates = dts, format = c(dates =\n+ \"d/m/Y\"))\nR> initStates <- c(\"f/notMig\", \"m/notMig\", \"f/notMig\",\n+ \"m/notMig\", \"m/notMig\")\nR> initPop <- data.frame(ID = 1:5, birthDate = birthDates,\n+ initState = initStates, stringsAsFactors = FALSE)\n",
+                    "type": "code"
+                },
+                {
+                    "text": "We create five migrants entering the virtual population at June 6, 2001.",
+                    "type": "paragraph"
+                },
+                {
+                    "code": "\nR> # Defining a set of migrants; M=5 R> IMdts <- rep(c(\"6/6/2001\"), 5)\nR> immigrDates <- chron(dates = IMdts, format = c(dates =\n+ \"d/m/Y\"))\nR> IMinitStates <- c(\"f/mig\", \"m/mig\", \"f/mig\", \"m/mig\",\n+ \"m/mig\")\nR> immigrPop <- data.frame(ID = 6:10, immigrDate =\n+ immigrDates, birthDate = birthDates, immigrInitState =\n+ IMinitStates, stringsAsFactors = FALSE)\n",
+                    "type": "code"
+                },
+                {
+                    "text": "The transition rate for experiencing a transition from \u201cbeing migrant\u201d to \u201cnot being migrant\u201d is set to zero during the first five years after migration and set to infinity after that time.",
+                    "type": "paragraph"
+                },
+                {
+                    "code": "\n# Defining a transition rate for becoming a nonmigrant R> migToNotMigRates <- function(age, calTime, duration){\n+ rate <- ifelse(duration >= 5, Inf, 0)\n+ return(rate)\n+ }\n",
+                    "type": "code"
+                },
+                {
+                    "text": "We use the Gompertz model to describe mortality rates.",
+                    "type": "paragraph"
+                },
+                {
+                    "code": "\nR> mortRates <- function(age, calTime, duration){\n+ a <- 0.00003\n+ b <- ifelse(calTime <= 2020, 0.1, 0.097)\n+ rate <- a * exp(b * age)\n+ return(rate)\n+ }\n",
+                    "type": "code"
+                },
+                {
+                    "text": "The transition matrix determines two possible events, namely the transition from \u201cbeing migrant\u201d to \u201cnot being migrant\u201d and dying.",
+                    "type": "paragraph"
+                },
+                {
+                    "code": "\nR> allTransitions <- matrix(c(\"mig->notMig\",\n+ \"migToNotMigRates\"), nrow = 1)\nR> absTransitions <- c(\"dead\", \"mortRates\")\nR> transitionMatrix <- buildTransitionMatrix(\n+ allTransitions = allTransitions, absTransitions =\n+ absTransitions, stateSpace = stateSpace)\n",
+                    "type": "code"
+                },
+                {
+                    "text": "After having defined all of the ingredients required, we are ready to conduct a microsimulation run.",
+                    "type": "paragraph"
+                },
+                {
+                    "code": "\nR> set.seed(234)\nR> pop <- micSim(initPop=initPop, immigrPop=immigrPop,\n+ transitionMatrix=transitionMatrix,\n+ absStates=absStates, maxAge=maxAge,\n+ simHorizon=simHorizon)\n",
+                    "type": "code"
+                }
+            ],
+            "id": "A1",
+            "title": "Following migrants: an example"
+        },
+        {
+            "content": [
+                {
+                    "text": "For a simple setting (without considering immigration, offspring born during the simulation, and enrolment in elementary school), a parallel execution on, for example, five cores can be performed by:",
+                    "type": "paragraph"
+                },
+                {
+                    "code": "\nR> cores <- 5\nR> seeds <- c(1233, 1245, 1234, 5, 2)\nR> pop <- micSimParallel(initPop = initPop, transitionMatrix + = transitionMatrix, absStates = absStates, maxAge =\n+ maxAge, simHorizon = simHorizon, cores = cores, seeds\n+ = seeds)\n",
+                    "type": "code"
+                },
+                {
+                    "text": "Here, the number of cores to be accessed and the related set of seeds are given to <span class=\"monospace\">micSimParallel</span> via its input arguments <span class=\"monospace\">cores</span> and <span class=\"monospace\">seeds</span>. When accounting in addition for migration, offspring born during the simulation, and enrolment in elementary school, the following command is used:",
+                    "type": "paragraph"
+                },
+                {
+                    "code": "\nR> cores <- 5\nR> seeds <- c(1233, 1245, 1234, 5, 2)\nR> pop <- micSimParallel(initPop = initPop, immigrPop =\n+ immigrPop, transitionMatrix = transitionMatrix,\n+ absStates = absStates, initStates = initStates,\n+ initStatesProb = initStatesProb, maxAge = maxAge,\n+ simHorizon = simHorizon, fertTr = fertTr,\n+ dateSchoolEnrol = dateSchoolEnrol, cores = cores, seeds\n+ = seeds)\n",
+                    "type": "code"
+                }
+            ],
+            "id": "A2",
+            "title": "Parallel execution via micSimParallel"
+        }
+    ],
+    "acknowledgements": [
+        {
+            "text": "I have to acknowledge my gratitude to Frans Willekens who encouraged me and gave me the opportunity to develop and to work on the MicSim package. Furthermore, I am in debt to him and Anna Klabunde for fruitful discussions, a lot of helpful suggestions, and for revising first versions of this article. Moreover, I have to thank two anonymous referees for very helpful comments to improve the quality and the content of this article.",
+            "type": "paragraph"
+        }
+    ],
+    "-meta": {
+        "patched": true
+    },
+    "stage": "published"
+}

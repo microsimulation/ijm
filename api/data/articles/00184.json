@@ -1,0 +1,1646 @@
+{
+    "status": "vor",
+    "id": "00184",
+    "version": 1,
+    "type": "research-article",
+    "doi": "10.34196/ijm.00184",
+    "authorLine": "Trond Husby et al.",
+    "title": "Simulating the joint distribution of individuals, households and dwellings in small areas",
+    "published": "2018-08-31T00:00:00Z",
+    "versionDate": "2018-08-31T00:00:00Z",
+    "statusDate": "2018-08-31T00:00:00Z",
+    "volume": 11,
+    "issue": 2,
+    "elocationId": "n/a",
+    "pdf": "http://web:8082/00184/ijm-00184.pdf",
+    "subjects": [
+        {
+            "id": "spatial-microsimulation",
+            "name": "Spatial microsimulation"
+        }
+    ],
+    "abstract": {
+        "content": [
+            {
+                "text": "This article proposes a sample-based methodology for synthesizing individuals, households and dwellings in small areas, illustrated using a case study of Amsterdam. The method encompasses the following steps: first, individual- and household-level tables are created separately using Iterative Proportional Fitting (IPF). Second, synthetic individuals are allocated into synthetic households using a combination of sorting algorithms and mixed integer programming. As such, the synthetic households are adjusted to accommodate the synthetic individuals, ensuring a consistent joint distribution of individuals, households and dwellings in small areas.",
+                "type": "paragraph"
+            }
+        ]
+    },
+    "copyright": {
+        "license": "CC-BY-4.0",
+        "holder": "Husby et al.",
+        "statement": "This article is distributed under the terms of the <a href=\"http://creativecommons.org/licenses/by/4.0/\">Creative Commons Attribution License</a>, which permits unrestricted use and redistribution provided that the original author and source are credited."
+    },
+    "authors": [
+        {
+            "affiliations": [
+                {
+                    "address": {
+                        "components": {
+                            "country": "Netherlands"
+                        },
+                        "formatted": [
+                            "Netherlands"
+                        ]
+                    },
+                    "name": [
+                        "Netherlands Environmental Assessment Agency (PBL)"
+                    ]
+                }
+            ],
+            "emailAddresses": [
+                "trond.husby@pbl.nl"
+            ],
+            "name": {
+                "index": "Husby, Trond",
+                "preferred": "Trond Husby"
+            },
+            "type": "person"
+        },
+        {
+            "affiliations": [
+                {
+                    "address": {
+                        "components": {
+                            "country": "Netherlands"
+                        },
+                        "formatted": [
+                            "Netherlands"
+                        ]
+                    },
+                    "name": [
+                        "Netherlands Environmental Assessment Agency (PBL)"
+                    ]
+                }
+            ],
+            "emailAddresses": [
+                "olga.ivanova@pbl.nl"
+            ],
+            "name": {
+                "index": "Ivanova, Olga",
+                "preferred": "Olga Ivanova"
+            },
+            "type": "person"
+        },
+        {
+            "affiliations": [
+                {
+                    "address": {
+                        "components": {
+                            "country": "Netherlands"
+                        },
+                        "formatted": [
+                            "Netherlands"
+                        ]
+                    },
+                    "name": [
+                        "Netherlands Environmental Assessment Agency (PBL)"
+                    ]
+                }
+            ],
+            "emailAddresses": [
+                "mark.thissen@pbl.nl"
+            ],
+            "name": {
+                "index": "Thissen, Mark",
+                "preferred": "Mark Thissen"
+            },
+            "type": "person"
+        }
+    ],
+    "keywords": [
+        "spatial microsimulation",
+        "iterative proportional fitting",
+        "mixed integer programming"
+    ],
+    "body": [
+        {
+            "content": [
+                {
+                    "text": "There is a growing interest in microsimulation models covering small geographical areas (<a href=\"#bib21\">Tanton, 2014</a>). Such spatial microsimulation models attempt to solve the problem of lacking or non-representative data within small geographical areas, providing a \u2018best guess\u2019 of policy-relevant indicators at a small scale. For example, spatial microsimulation has been used to estimate smoking rates in zones within a city using knowledge about the composition of the population in these zones (<a href=\"#bib24\">Tomintz, Clarke, &amp; Rigby, 2008</a>). An important usage of the technique is synthetic reconstruction of population within small areas. The synthetic population is a key component of disaggregated models of travel- and residential energy use, used for spatially fine-grained scenario analysis or for predicting local impacts of policy interventions (<a href=\"#bib10\">Guo &amp; Bhat, 2007</a>; <a href=\"#bib18\">Mu\u00f1oz &amp; Peters, 2014</a>).",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "One of the main usages of spatial microsimulation is <i>reweighting</i> of survey sample weights to reflect the population-composition of a small area and possibly new constraints (<a href=\"#bib3\">Ballas, Rossiter, Thomas, Clarke, &amp; Dorling, 2005</a>). The output of the reweighting is a weight matrix, reflecting the probability that a household or individual is located in a certain zone. A second main usage is <i>synthetic reconstruction</i>, which entails constructing full tables of synthetic households or individuals on the basis of the weight matrix.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Spatial microsimulation methods can be further classified into deterministic or probabilistic techniques. The most widely used deterministic technique is iterative proportional fitting (IPF \u2014 see <a href=\"#bib14\">Lovelace &amp; Dumont, 2016</a>). Despite its popularity, IPF has a number of limitations. First, non- xistent individual- or household-types in the seed data can lead to the so-called \u2018empty cell problem\u2019. Second, control variables need to belong to the same \u2018universe\u2019, meaning that IPF can not be directly used to synthesize individuals and households at the same time (<a href=\"#bib20\">Pritchard &amp; Miller, 2012</a>). The latter limitation is the focus of this paper.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "A number of recent papers has proposed methods for generating synthetic individuals and households at the same time (<a href=\"#bib2\">Auld &amp; Mohammadian, 2010</a>; <a href=\"#bib15\">Ma &amp; Srinivasan, 2015</a>; <a href=\"#bib19\">Namazi-Rad, Tanton, Steel, Mokhtarian, &amp; Das, 2017</a>). For example <a href=\"#bib1\">Arentze, Timmermans, and Hofman (2007)</a> develop a two-step approach, where a first IPF procedure is used to aggregate individual-level attributes to the household-level and a second IPF procedure is used to synthesize the household population. <a href=\"#bib25\">Ye, Konduri, Pendyala, Sana, and Waddell (2009)</a> propose the method of Iterative Proportional Updating (IPU), whereby individual- and household-level weights are adjusted to match joint individual- and household-level constraints. However, in cases with large number of constraints, sample-based algorithms such as the IPU become prone to the empty cell problem and may not converge (<a href=\"#bib12\">Lenormand &amp; Deffuant, 2012</a>; <a href=\"#bib20\">Pritchard &amp; Miller, 2012</a>).",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "This paper provides a sample-based method for estimating the joint distribution of individuals, households and dwellings and we illustrate the methodology with a case study of Amsterdam. In a similar vein as <a href=\"#bib17\">Mu\u00f1oz, Dochev, Seller, and Peters (2016)</a>, we aim to develop a realistic environment of the building stock and its resident population. This requires synthesizing a consistent population of individuals, households and dwellings. The structure of our household survey is such that we could potentially generate a population of households and individuals with IPU. However, as shown in <a href=\"#sA-1\">Appendix A.1</a>, using IPU we experience problems with convergence. To overcome the problems we instead create two tables: one with synthetic household and dwellings and one with synthetic individuals. The main contribution of this paper is a methodology for resolving inconsistencies between the resulting individual- and household-level tables.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "We base the population synthesis primarily on IPF. The technique is well known for its numerical stability and algebraic simplicity, making it fairly intuitive and attractive to practitioners. Our strategy involves an additional step to allocate synthetic individuals to synthetic households. We opt for an approach similar to that discussed in <a href=\"#bib5\">Barthelemy and Toint (2013)</a>; namely to start allocating synthetic household heads, proceeding by allocating the remaining family members. However, Barthelemy and Toint (2013) construct households from the table of individuals, using a combination of maximum likelihood estimation and tabu-search optimisation. Consequently, the synthetic households are, in their case, already consistent with the synthetic individuals. Due to the large number of household- and dwelling-level constraints, we choose to start with two separate tables of synthetic households and individuals. Although these tables are internally consistent, they are not consistent with each other, meaning that the synthetic households can generally not accommodate the number of synthetic individuals. The inconsistencies between the individual- and household-level tables could therefore lead to non-allocated individuals or households without members. We solve this problem using mixed integer programming, adjusting the members of the synthetic households in such a way that the changes to the household composition are minimised.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Our methodology encompasses the following steps: first, we create separate tables of synthetic households and individuals using IPF. Next, we allocate synthetic persons into synthetic households using a combination of heuristic sorting algorithms and mixed integer programming. This allows us to adjust the synthetic households such that they accommodate the synthetic individuals, ensuring consistency between the individual- and household-level tables.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The paper is structured as follows: Section 2 presents the data used for the population synthesis; Section 3 discusses the proposed methodology; Section 4 shows the results of an internal validation and Section 5 concludes.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s1",
+            "title": "1. Introduction",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "The first key input to IPF is a (non-spatial) survey which is used to create a seed of individuals or households. In our case, we use two separate surveys: one capturing households and dwellings and another capturing individual people. The second key input is aggregate geographical data, which is used to create small area constraints. This section gives a description of the data sources used in the paper.",
+                    "type": "paragraph"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "The Dutch Mobility Survey (OVIN) is collected yearly by Statistics Netherlands (CBS). The goal of the survey is to provide adequate information on the daily mobility of the Dutch population. To this end, the movement behavior of the Dutch population is described by place of origin and destination, time of the carriage, means of transport used and reasons for travel. In addition, considerable attention is paid to the background variables for a particular movement pattern and choice of transport.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Each version of OVIN contains around 40,000 respondents, and CBS assumes that the survey covers 1.9% of total travelled kilometres in the Netherlands. Respondents are individual persons and not households, although the data set contains information about household-level variables for each respondent.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "In this paper we use 7 versions of OVIN (2010\u20131016) to generate a seed of individuals, ignoring the location of residence of each respondent. <a href=\"#table1\">Table 1</a> shows the variables we include in the seed of individuals.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "table1",
+                                    "label": "Table 1",
+                                    "tables": [
+                                        "<table>\n<thead>\n<tr>\n<th>Variable</th>\n<th>Levels</th>\n<th>Explanation</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>ind_lmstatus</td>\n<td>active, not-active</td>\n<td>labour-market status</td>\n</tr>\n<tr>\n<td>ind_ethn</td>\n<td>Dutch, foreign</td>\n<td>ethnicity</td>\n</tr>\n<tr>\n<td>ind_income</td>\n<td>high, low, mid</td>\n<td>household income</td>\n</tr>\n<tr>\n<td>ind_gender</td>\n<td>man, woman</td>\n<td>gender</td>\n</tr>\n<tr>\n<td>ind_age</td>\n<td>00_14, 15_44, 45_64, 65_AO</td>\n<td>age</td>\n</tr>\n</tbody>\n</table>"
+                                    ],
+                                    "title": "Variables from OVIN and their levels.",
+                                    "type": "table"
+                                }
+                            ],
+                            "type": "figure"
+                        }
+                    ],
+                    "id": "s2-1",
+                    "title": "2.1 Survey data: Dutch mobility survey (OVIN)",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "The goal of the Netherlands\u2019 Household Survey (WOON) is to gather information about the housing situation of the Dutch population and their living requirements and needs. The survey includes information about the composition of households, the dwelling and living environment, housing costs, living requirements and housing re-locations. Frequency is three-yearly. A minimum of 60,000 respondents have to be reached, as the survey should also provide reliable information on small geographical areas. In this paper we use two versions of WOON (2012 and 2015).",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "WOON contains a large number of variables about households and dwellings, and we have to make choices on which household characteristics to include. Firstly, included variables should cover basic demographic information and they must be associated with the outcome(s) of interest (<a href=\"#bib8\">Burden &amp; Steel, 2016</a>). Secondly, the variables need to exist in both the survey data as well as in the aggregate geographical data. <a href=\"#table2\">Table 2</a> shows the dwelling- and household characteristics that are included in our analysis. WOON contains additional information about the number of household members by age. As has been discussed, this information, listed in <a href=\"#table3\">Table 3</a>, can not directly be used for a joint individual-household synthesis with IPF. However, by using information from <a href=\"#table3\">Table 3</a>, we can aggregate the household members to estimate the population in each small area, predicting the population of individuals from the synthetic households.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "table2",
+                                    "label": "Table 2",
+                                    "tables": [
+                                        "<table>\n<thead>\n<tr>\n<th>Variable</th>\n<th>Levels</th>\n<th>Explanation</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>dw_typei</td>\n<td>rental, owner-occupied</td>\n<td>dwelling tenure</td>\n</tr>\n<tr>\n<td>dw_type2</td>\n<td>apartment, house</td>\n<td>type of dwelling</td>\n</tr>\n<tr>\n<td>dw_byear</td>\n<td>before 1945,1945\u20131969,1970\u20131989,1990 and later</td>\n<td>building year</td>\n</tr>\n<tr>\n<td>dw_dheat</td>\n<td>no, yes</td>\n<td>district heating</td>\n</tr>\n<tr>\n<td>dw_size</td>\n<td>(6,51], (51,68], (68,89], (89,3e+04]</td>\n<td>size (m2)</td>\n</tr>\n<tr>\n<td>hh_age_h</td>\n<td>15_44, 45_64, 65_AO</td>\n<td>age household head</td>\n</tr>\n<tr>\n<td>hh_gender_h</td>\n<td>man, woman</td>\n<td>gender household head</td>\n</tr>\n<tr>\n<td>hh_ethn_h</td>\n<td>Dutch, foreign</td>\n<td>ethnicity household head</td>\n</tr>\n<tr>\n<td>hh_income</td>\n<td>high, low, mid</td>\n<td>household income</td>\n</tr>\n<tr>\n<td>hh_lmstatus</td>\n<td>active, not-active</td>\n<td>labour-market status head</td>\n</tr>\n<tr>\n<td>hh_type</td>\n<td>single, w_child, wo_child</td>\n<td>household type\n</td>\n<td/>\n<td/>\n</tr>\n</tbody>\n</table>"
+                                    ],
+                                    "title": "Household and dwelling characteristics from WOON.",
+                                    "type": "table"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "table3",
+                                    "label": "Table 3",
+                                    "tables": [
+                                        "<table>\n<thead>\n<tr>\n<th>Variable</th>\n<th>Levels</th>\n<th>Explanation</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>n_00_i4</td>\n<td>numeric</td>\n<td>members between 0 and 14 years</td>\n</tr>\n<tr>\n<td>n_i5_44</td>\n<td>numeric</td>\n<td>members between 15 and 44 years</td>\n</tr>\n<tr>\n<td>n_45_64</td>\n<td>numeric</td>\n<td>members between 45 and 64 years</td>\n</tr>\n<tr>\n<td>n_65_AO</td>\n<td>numeric</td>\n<td>members 65 years and older</td>\n</tr>\n<tr>\n<td>n_persons</td>\n<td>numeric</td>\n<td>number ofmembers</td>\n</tr>\n</tbody>\n</table>"
+                                    ],
+                                    "title": "Information about household members from WOON.",
+                                    "type": "table"
+                                }
+                            ],
+                            "type": "figure"
+                        }
+                    ],
+                    "id": "s2-2",
+                    "title": "2.2 Survey data: Netherlands\u2019 household survey (WOON)",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "The Neighbourhood and District maps from Statistics Netherlands contain digital geographical information as well as key figures for municipalities, neighbourhoods and districts (gemeente, buurt, wijk) in the Netherlands. Key figures include data on population and its composition; firms; housing stock; energy use; income and transport.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "<a href=\"#fig1\">Figure 1</a> shows the population of each neighbourhood in Amsterdam. We use the 2014 classification of neighbourhoods, with a total of 98 neighbourhoods. Several of these neighbourhoods are industrial zones with negligible population, meaning that the number of neighbourhoods included in the analysis is 95. The total number of inhabitants is 810,825, distributed over 440,675 households. The plot shows that population is concentrated mainly around the centre and in suburbs in the south-eastern parts of the city.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "fig1",
+                                    "image": {
+                                        "alt": "",
+                                        "uri": "%iiif_uri%/00184%2Fijm-00184-fig1.tif",
+                                        "size": {
+                                            "width": 287,
+                                            "height": 287
+                                        },
+                                        "source": {
+                                            "mediaType": "image/jpeg",
+                                            "uri": "%iiif_uri%/00184%2Fijm-00184-fig1.tif/full/full/0/default.jpg",
+                                            "filename": "ijm-00184-fig1.jpg"
+                                        }
+                                    },
+                                    "label": "Figure 1",
+                                    "title": "Population in neighbourhoods in Amsterdam.",
+                                    "type": "image"
+                                }
+                            ],
+                            "type": "figure"
+                        }
+                    ],
+                    "id": "s2-3",
+                    "title": "2.3 The neighbourhood and district maps (Buurt en wijk kaarten)",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "The Neighbourhood and District maps only reports the mean value for a number of key variables of dwelling characteristics. In order to obtain a distribution for these variables we used additional open data sources. First, a distribution for the cadastral value of each neighbourhood was calculated from the 100x100m grid cell data from Statistics Netherlands. Second, categories of construction year as well as categories of dwelling size per neighbourhood were constructed on the basis of the Dutch Kadaster data. <a href=\"#table4\">Table 4</a> lists all data sources and their usage.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "table4",
+                                    "label": "Table 4",
+                                    "tables": [
+                                        "<table>\n<thead>\n<tr>\n<th>Source</th>\n<th>Variables</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>OVIN 2010\u20132016</td>\n<td>Survey sample of individuals</td>\n</tr>\n<tr>\n<td>WOON 2012 and 2015</td>\n<td>Survey sample of households and dwellings</td>\n</tr>\n<tr>\n<td>Neighbourhood and District maps 2014</td>\n<td>Constraints on individuals, households and dwellings</td>\n</tr>\n<tr>\n<td>100x100m statistics</td>\n<td>Constraint on cadastral value of dwelling</td>\n</tr>\n<tr>\n<td>Dutch Kadaster data</td>\n<td>Constraints on dwelling size and building year</td>\n</tr>\n</tbody>\n</table>"
+                                    ],
+                                    "title": "Data sources and their usage.",
+                                    "type": "table"
+                                }
+                            ],
+                            "type": "figure"
+                        }
+                    ],
+                    "id": "s2-4",
+                    "title": "2.4 Additional data",
+                    "type": "section"
+                }
+            ],
+            "id": "s2",
+            "title": "2. Data",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "We use IPF to calculate neighbourhood-level weights for (i) individual respondents from the mobility survey OVIN and (ii) household respondents in the housing demand survey WOON, to fit the neighbourhood-level constraints. This results in separate tables of synthetic individuals and households consistent with the constraints. We proceed by allocating the synthetic individuals to the synthetic households. In this Section we first describe the generation of individuals\u2019 and household tables including the constraints used. Next, we describe the methodology for allocating individuals into households.",
+                    "type": "paragraph"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "In general, the main output of a spatial microsimulation exercise is a table representing the most probable configuration of the population of small areas. The table is generated using a \u2018seed\u2019 of individuals or households from a survey and a number of constraints from geographically aggregated data. One of the most frequently used algorithms to generate the table is IPF. IPF is simple, computationally efficient, rigorously founded and it has a long history: it was first implemented by <a href=\"#bib9\">Deming and Stephan (1940)</a>, who estimated internal cells based on known marginals. The technique is also known as <i>raking</i> and is in practice identical to maximum entropy (<a href=\"#bib23\">Thissen &amp; L\u00f6fgren, 1998</a>). The output of IPF, when used in spatial microsimulation, is a series of non-integer weight matrices of a survey sample. Each cell in the matrix indicates how representative one survey respondent is of the real population within each geographical area. The weight matrix thus gives the most probable configuration of individuals in these areas.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The standard population synthesis using IPF involves two steps (<a href=\"#bib6\">Beckman, Baggerly, &amp; McKay, 1996</a>): the first step is to generate a joint multiway distribution of all relevant attributes of households or individuals. Next, persons or households are drawn from a seed of individual records in order to satisfy the distribution of attributes. The last step involves creating a list representing the synthetic population of individuals or households, using the weights generated by the IPF procedure. Since the weights are fractional, this step also involves integerisation of the weight matrix (<a href=\"#bib13\">Lovelace &amp; Ballas, 2013</a>).",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Due to the popularity of IPF, there are several accessible and ready-to-use implementations of IPF in software programmes such as R (<a href=\"#bib14\">Lovelace &amp; Dumont, 2016</a>). In this paper the synthetic population of individuals is generated in R using the IPF procedure from the ipfp package (<a href=\"#bib7\">Blocker, 2016</a>). As a consistency check, we repeated the exercise with the mipfp package (<a href=\"#bib4\">Barthelemy &amp; Suesse, 2015</a>) and results were identical.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "As input for the synthetic population of individuals we used the respondent from the OVIN data set to generate the seed. The output of IPF in this case is a respondent-neighbourhood weight matrix consistent with the individual-level constraints for each neighbourhood. Constraints are the labourmarket status (ind_lmstatus), ethnicity (ind_ethnicity), gender (ind_gender) and age (ind_age) of each individual. The Buurt en Wijk Kaarten contains data for all these variables in percentages. To obtain the actual number we simply multiply the percentage with the number of individuals in the neighbourhood. The individual-level constraints, with their respective mean and standard deviation across neighbourhoods are presented in <a href=\"#tableA1\">Table A.1</a> in the <a href=\"#app1\">Appendix</a>.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The synthetic household population is also generated with the IPF procedure from the ipfp package, using respondent from WOON as constraints. Dwelling variables include two types of classifications (dw_type1 and dw_type2), building year (dw_byear), size (dw_size), district heating (dw_dheat) and cadastral value (dw_value). For the sake of simplicity we ignore empty dwellings, setting the number of dwellings equal to the number of households. In addition to the dwelling-related constraints we also include constraints related to the household or to the household head; namely household income (hh_income), household type (hh_type), labour market status (hh_lmstatus), gender (hh_gender) and ethnicity of the household head (hh_ethn). <a href=\"#tableA2\">Table A.2</a> in the <a href=\"#app1\">Appendix</a> shows the household- and dwelling-level constraints. <a href=\"#table5\">Table 5</a> shows an example of five households from the sample seed derived from WOON. Note that the household-level constraints includes some information on the household head and the household composition.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "table5",
+                                    "label": "Table 5",
+                                    "tables": [
+                                        "<table>\n<thead>\n<tr>\n<th/>\n<th>hh 1</th>\n<th>hh2</th>\n<th>hh 3</th>\n<th>hh 4</th>\n<th>hh 5</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>dw_value</td>\n<td>oo_199</td>\n<td>oo_199</td>\n<td>2oo_299</td>\n<td>2oo_299</td>\n<td>00_199</td>\n</tr>\n<tr>\n<td>dw_typei</td>\n<td>rental</td>\n<td>owner</td>\n<td>owner</td>\n<td>owner</td>\n<td>rental</td>\n</tr>\n<tr>\n<td>dw_type2</td>\n<td>apartment</td>\n<td>house</td>\n<td>house</td>\n<td>house</td>\n<td>apartment</td>\n</tr>\n<tr>\n<td>dw_byear</td>\n<td>1970\u20131989</td>\n<td>1970\u20131989</td>\n<td>1970\u20131989</td>\n<td>before 1945</td>\n<td>1970\u20131989</td>\n</tr>\n<tr>\n<td>dw_dheat</td>\n<td>No</td>\n<td>no</td>\n<td>no</td>\n<td>no</td>\n<td>no</td>\n</tr>\n<tr>\n<td>dw_size</td>\n<td>(68,89]</td>\n<td>(89,3e+04]</td>\n<td>(89,3e+04]</td>\n<td>(89,3e+04]</td>\n<td>(51,68]</td>\n</tr>\n<tr>\n<td>hh_age_h</td>\n<td>65_AO</td>\n<td>65_AO</td>\n<td>45_64</td>\n<td>45_64</td>\n<td>65_AO</td>\n</tr>\n<tr>\n<td>hh_gender_h</td>\n<td>Man</td>\n<td>man</td>\n<td>man</td>\n<td>man</td>\n<td>woman</td>\n</tr>\n<tr>\n<td>hh_ethn_h</td>\n<td>dutch</td>\n<td>dutch</td>\n<td>dutch</td>\n<td>dutch</td>\n<td>dutch</td>\n</tr>\n<tr>\n<td>hh_income</td>\n<td>Low</td>\n<td>low</td>\n<td>mid</td>\n<td>high</td>\n<td>low</td>\n</tr>\n<tr>\n<td>hh_lmstatus</td>\n<td>not-active</td>\n<td>not-active</td>\n<td>active</td>\n<td>active</td>\n<td>not-active</td>\n</tr>\n<tr>\n<td>hh_type</td>\n<td>wo_child</td>\n<td>wo_child</td>\n<td>wo_child</td>\n<td>wo_child</td>\n<td>single</td>\n</tr>\n<tr>\n<td>n_00_14</td>\n<td>0</td>\n<td>0</td>\n<td>0</td>\n<td>0</td>\n<td>0</td>\n</tr>\n<tr>\n<td>n_15_44</td>\n<td>0</td>\n<td>0</td>\n<td>0</td>\n<td>0</td>\n<td>0</td>\n</tr>\n<tr>\n<td>n_45_64</td>\n<td>1</td>\n<td>0</td>\n<td>2</td>\n<td>2</td>\n<td>0</td>\n</tr>\n<tr>\n<td>n_65_AO</td>\n<td>1</td>\n<td>2</td>\n<td>0</td>\n<td>0</td>\n<td>1</td>\n</tr>\n<tr>\n<td>n_persons</td>\n<td>2</td>\n<td>2</td>\n<td>2</td>\n<td>2</td>\n<td>1</td>\n</tr>\n</tbody>\n</table>"
+                                    ],
+                                    "title": "Five households from the sample seed.",
+                                    "type": "table"
+                                }
+                            ],
+                            "type": "figure"
+                        }
+                    ],
+                    "id": "s3-1",
+                    "title": "3.1 Generating synthetic individuals and households using IPF",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "The overall approach for allocating individuals to households is summarised in <a href=\"#fig2\">Figure 2</a>. The allocation of individuals into households consists of three parts: we first assign a household head from the individuals\u2019 table to each household in the household table. This makes sure that each household has at least one member. Next, we adjust the numbers of remaining household members in the household table using mixed integer programming. Finally, we allocate the remaining household members to the adjusted households.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "fig2",
+                                    "image": {
+                                        "alt": "",
+                                        "uri": "%iiif_uri%/00184%2Fijm-00184-fig2.tif",
+                                        "size": {
+                                            "width": 328,
+                                            "height": 440
+                                        },
+                                        "source": {
+                                            "mediaType": "image/jpeg",
+                                            "uri": "%iiif_uri%/00184%2Fijm-00184-fig2.tif/full/full/0/default.jpg",
+                                            "filename": "ijm-00184-fig2.jpg"
+                                        }
+                                    },
+                                    "label": "Figure 2",
+                                    "title": "The overall population synthesis methodology.",
+                                    "type": "image"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "content": [
+                                {
+                                    "text": "In order to find household heads, we start with a pool of candidate individuals <i>i</i> = 1, ..., <i>I</i> with certain characteristics <i>c</i> and a pool of households <i>h</i> = 1, ..., <i>H</i>. Remember from <a href=\"#table5\">Table 5</a> that the household survey WOON allows us to identify the following groups of characteristics of each household head: age, gender, ethnicity, labour market status (the levels of each group of characteristic can be found in the <a href=\"#table2\">Table 2</a>). Our strategy involves searching the pool of individuals whose characteristics match those of the household heads, allocating individuals to households using the matching characteristics.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "More formally, in each neighbourhood, household heads are gathered in the matrix <i>head<sub>h,c</sub></i> where rows indicate household ID and columns represent characteristics of the household head (for simplicity, the neighbourhood index is dropped). Similarly, individuals are gathered in the matrix <i>ind<sub>i,c</sub></i>. Each entry in <i>head<sub>h,c</sub></i> and <i>ind<sub>i,c</sub></i> is a binary variable indicating whether the household head of household <i>h</i> or individual <i>i</i> has a specific characteristic <i>c</i>. The set <i>c</i> is a tuple, described in <a href=\"#table6\">Table 6</a>. The elements of <i>c</i> are defined in the second column of the table.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "assets": [
+                                        {
+                                            "id": "table6",
+                                            "label": "Table 6",
+                                            "tables": [
+                                                "<table>\n<thead>\n<tr>\n<td>Dimension</td>\n<td>Levels</td>\n<td>Explanation</td>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>lmstatus</td>\n<td>active, not-active</td>\n<td>labour-market status</td>\n</tr>\n<tr>\n<td>ethn</td>\n<td>Dutch, foreign</td>\n<td>ethnicity</td>\n</tr>\n<tr>\n<td>gender</td>\n<td>man, woman</td>\n<td>gender</td>\n</tr>\n<tr>\n<td/>\n<td>00_14,15_44, 45_64, 65_AO</td>\n<td>age</td>\n</tr>\n</tbody>\n</table>"
+                                            ],
+                                            "title": "Characteristics used to match households and individuals.",
+                                            "type": "table"
+                                        }
+                                    ],
+                                    "type": "figure"
+                                },
+                                {
+                                    "text": "The algorithm used for allocating household heads is described in Algorithm 1. We first initiate an empty matrix representing individuals per characteristics allocated into households <i>al<sub>h,c</sub></i> = 0 and an indicator for successful match between an individual and households <i>wd<sub>i,h</sub></i> = 0. We proceed by searching over all individuals who have matching characteristics with the household head in household <i>h</i>, updating <i>al<sub>h,c</sub></i> when the first individual is found. In some cases there are no individuals left with fully matching characteristics. In those cases we search for individuals with matching characteristics in only three groups (age, gender, ethnicity). This way we make sure that each household has at least one member.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "assets": [
+                                        {
+                                            "id": "alg1",
+                                            "label": "Algorithm 1",
+                                            "tables": [
+                                                "<table>\n<tbody>\n<tr>\n<td>1: <b>for</b> all households <b>do</b></td>\n</tr>\n<tr>\n<td>2: \u2003<b>while</b> <inline-formula id=\"inline1\"><math display=\"inline\" id=\"i1\"><mrow><mstyle displaystyle=\"true\"><msub><mo>\u2211</mo><mi>i</mi></msub><mrow><mi>w</mi><msub><mi>d</mi><mrow><mi>i</mi><mo>,</mo><mi>h</mi></mrow></msub><mo>=</mo><mn>0</mn></mrow></mstyle></mrow></math> <b>do</b></td>\n</tr>\n<tr>\n<td>3: \u2003\u2003<b>for</b> non-allocated individuals with matching characteristics <b>do</b></td>\n</tr>\n<tr>\n<td>4: \u2003\u2003\u2003update <i>al<sub>h,c</sub></i> = <i>al<sub>h,c</sub></i> + <i>ind<sub>i,c</sub></i></td>\n</tr>\n<tr>\n<td>5: \u2003\u2003\u2003set <i>wd<sub>i,h</sub></i> = 1</td>\n</tr>\n<tr>\n<td>6: \u2003\u2003<b>end for</b></td>\n</tr>\n<tr>\n<td>7: \u2003<b>end while</b></td>\n</tr>\n<tr>\n<td>8: <b>end for</b></td>\n</tr>\n</tbody>\n</table>"
+                                            ],
+                                            "title": "Allocation of household heads.",
+                                            "type": "table"
+                                        }
+                                    ],
+                                    "type": "figure"
+                                }
+                            ],
+                            "id": "s3-2-1",
+                            "title": "3.2.1 Allocating household heads",
+                            "type": "section"
+                        },
+                        {
+                            "content": [
+                                {
+                                    "text": "As shown in <a href=\"#table5\">Table 5</a>, WOON allows us to calculate the number of remaining household members by age, ethnicity and gender. We can express the amount of remaining household members with characteristic <i>d</i> in household <i>h</i> as the matrix <i>hh<sub>h,d</sub></i> where <i>d = c \u2208 age, ethnicity, gender</i>. Each entry in the matrix indicates the number of household members in <i>h</i> of category <i>d</i>. Therefore, the number of household members of characteristic <i>d</i> in household <i>h</i> is <i>head<sub>h,d</sub></i> + <i>hh<sub>h,d</sub></i>. Consequently, <inline-formula id=\"inline2\"><math display=\"inline\" id=\"i2\"><mrow><mstyle displaystyle=\"true\"><msub><mo>\u2211</mo><mrow><mi>d</mi><mo>\u2208</mo><mi>a</mi><mi>g</mi><mi>e</mi></mrow></msub><mrow><mi>h</mi><msub><mi>h</mi><mrow><mi>h</mi><mo>,</mo><mi>d</mi></mrow></msub><mo>=</mo></mrow></mstyle><mstyle displaystyle=\"true\"><msub><mo>\u2211</mo><mrow><mi>d</mi><mo>\u2208</mo><mi>e</mi><mi>t</mi><mi>h</mi><mi>n</mi><mi>i</mi><mi>c</mi><mi>i</mi><mi>t</mi><mi>y</mi></mrow></msub><mrow><mi>h</mi><msub><mi>h</mi><mrow><mi>h</mi><mi>d</mi></mrow></msub></mrow></mstyle><mstyle displaystyle=\"true\"><msub><mo>\u2211</mo><mrow><mi>d</mi><mo>\u2208</mo><mi>g</mi><mi>e</mi><mi>n</mi><mi>d</mi><mi>e</mi><mi>r</mi></mrow></msub><mrow><mi>h</mi><msub><mi>h</mi><mrow><mi>h</mi><mo>,</mo><mi>d</mi></mrow></msub></mrow></mstyle></mrow></math>. This means that we can calculate the population of household members in a particular neighbourhood as <inline-formula id=\"inline3\"><math display=\"inline\" id=\"i3\"><mrow><mstyle displaystyle=\"true\"><msub><mo>\u2211</mo><mrow><mi>d</mi><mo>\u2208</mo><mi>a</mi><mi>g</mi><mi>e</mi></mrow></msub><mrow><mi>h</mi><mi>e</mi><mi>a</mi><msub><mi>d</mi><mrow><mi>h</mi><mo>,</mo><mi>d</mi></mrow></msub><mo>+</mo><mi>h</mi><msub><mi>h</mi><mrow><mi>h</mi><mo>,</mo><mi>d</mi></mrow></msub></mrow></mstyle></mrow></math>. However, the number of household members does not necessarily match the constraints from the individuals\u2019 table. In fact, as will be shown in the following section, the population of household members calculated from the household table tends to be an underestimate of the population of individuals from the individuals\u2019 table. This means that there is a potential mismatch between the number of individuals to allocate and the number of available slots for additional members in each household. The result could be individuals that are not allocated to households or, more likely in our case, radical changes to the composition of the households. To ensure that there are enough available slots for the allocation of individuals, we must adjust the households.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "The adjustment is formulated as a mixed integer problem where the (squared) adjustments of household members by characteristic are minimised. Adjustments are written as <i>w<sub>h,d</sub></i>. In the case where <i>w<sub>h,d</sub> \u2208 {\u22121, 0, 1}</i>, we have:",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "id": "uequ1",
+                                    "label": "1",
+                                    "mathml": "<math><mrow><msub><mi>w</mi><mrow><mi>h</mi><mo>,</mo><mi>d</mi></mrow></msub><mo>=</mo><mrow><mo>{</mo> <mrow><mtable columnalign=\"left\"><mtr columnalign=\"left\"><mtd columnalign=\"left\"><mn>1</mn></mtd><mtd columnalign=\"left\"><mrow><mtext>if\u00a0an\u00a0individual\u00a0with\u00a0characteristic</mtext><mtext>\u2009</mtext><mi>d</mi><mtext>\u2009</mtext><mtext>is\u00a0added\u00a0to\u00a0household</mtext><mtext>\u2009</mtext><mi>h</mi></mrow></mtd></mtr><mtr columnalign=\"left\"><mtd columnalign=\"left\"><mn>0</mn></mtd><mtd columnalign=\"left\"><mrow><mtext>if\u00a0no\u00a0changes\u00a0are\u00a0made\u00a0to\u00a0household\u00a0</mtext><mi>h</mi></mrow></mtd></mtr><mtr columnalign=\"left\"><mtd columnalign=\"left\"><mrow><mo>\u2212</mo><mn>1</mn></mrow></mtd><mtd columnalign=\"left\"><mrow><mtext>if\u00a0an\u00a0individual\u00a0with\u00a0characteristic\u00a0</mtext><mi>d</mi><mtext>\u2009</mtext><mtext>is\u00a0removed\u00a0from\u00a0household</mtext><mtext>\u2009</mtext><mi>h</mi></mrow></mtd></mtr></mtable></mrow></mrow></mrow></math>",
+                                    "type": "mathml"
+                                },
+                                {
+                                    "text": "Intuitively, the mixed integer problem involves minimising the changes to the household composition (objective function) necessary to achieve consistency with the individuals\u2019 table (constraints). The constraints in the the problem are (1) that same amount of adjustments are made across all groups of characteristics; (2) the amount of household members by characteristic <i>d</i> is non-negative and (3) the sum of household members by characteristic <i>d</i> is equal to the sum of individuals by characteristic <i>d</i> who have not been allocated as household head (<i>ind<sub>i,d</sub></i> for which <i>wd<sub>i,h</sub></i> = 0):",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "id": "equ1",
+                                    "label": "2",
+                                    "mathml": "<math><mrow><mtable columnalign=\"left\"><mtr columnalign=\"left\"><mtd columnalign=\"left\"><mrow><mi>min</mi></mrow></mtd><mtd columnalign=\"left\"><mrow><mstyle displaystyle=\"true\"><munder><mo>\u2211</mo><mrow><mi>h</mi><mo>,</mo><mi>d</mi></mrow></munder><mrow><msubsup><mi>w</mi><mrow><mi>h</mi><mo>,</mo><mi>d</mi></mrow><mn>2</mn></msubsup></mrow></mstyle></mrow></mtd></mtr><mtr columnalign=\"left\"><mtd columnalign=\"left\"><mrow><mtext>s</mtext><mtext>.t</mtext><mtext>.</mtext></mrow></mtd><mtd columnalign=\"left\"><mrow/></mtd></mtr><mtr columnalign=\"left\"><mtd columnalign=\"left\"><mrow/></mtd><mtd columnalign=\"left\"><mrow><mstyle displaystyle=\"true\"><munder><mo>\u2211</mo><mrow><mi>d</mi><mo>\u2208</mo><mi>a</mi><mi>g</mi><mi>e</mi></mrow></munder><mrow><msub><mi>w</mi><mrow><mi>h</mi><mo>,</mo><mi>d</mi></mrow></msub></mrow></mstyle><mo>=</mo><mstyle displaystyle=\"true\"><munder><mo>\u2211</mo><mrow><mi>d</mi><mo>\u2208</mo><mi>e</mi><mi>t</mi><mi>h</mi><mi>n</mi><mi>i</mi><mi>c</mi><mi>i</mi><mi>t</mi><mi>y</mi></mrow></munder><mrow><msub><mi>w</mi><mrow><mi>h</mi><mo>,</mo><mi>d</mi></mrow></msub></mrow></mstyle><mo>=</mo><mstyle displaystyle=\"true\"><munder><mo>\u2211</mo><mrow><mi>d</mi><mo>\u2208</mo><mi>g</mi><mi>e</mi><mi>n</mi><mi>d</mi><mi>e</mi><mi>r</mi></mrow></munder><mrow><msub><mi>w</mi><mrow><mi>h</mi><mo>,</mo><mi>d</mi></mrow></msub></mrow></mstyle></mrow></mtd></mtr><mtr columnalign=\"left\"><mtd columnalign=\"left\"><mrow/></mtd><mtd columnalign=\"left\"><mrow><msub><mi>w</mi><mrow><mi>h</mi><mo>,</mo><mi>d</mi></mrow></msub><mo>+</mo><mi>h</mi><msub><mi>h</mi><mrow><mi>h</mi><mo>,</mo><mi>d</mi></mrow></msub><mo>\u2265</mo><mn>0</mn></mrow></mtd></mtr><mtr columnalign=\"left\"><mtd columnalign=\"left\"><mrow/></mtd><mtd columnalign=\"left\"><mrow><mstyle displaystyle=\"true\"><munder><mo>\u2211</mo><mi>h</mi></munder><mrow><msub><mi>w</mi><mrow><mi>h</mi><mo>,</mo><mi>d</mi></mrow></msub><mo>+</mo><mi>h</mi><msub><mi>h</mi><mrow><mi>h</mi><mo>,</mo><mi>d</mi></mrow></msub></mrow></mstyle><mo>=</mo><mstyle displaystyle=\"true\"><munder><mo>\u2211</mo><mrow><mi>i</mi><mo>|</mo><mstyle displaystyle=\"true\"><msub><mo>\u2211</mo><mi>h</mi></msub><mrow><mi>w</mi><msub><mi>d</mi><mrow><mi>i</mi><mo>,</mo><mi>h</mi></mrow></msub><mo>=</mo><mn>0</mn></mrow></mstyle></mrow></munder><mrow><mi>i</mi><mi>n</mi><msub><mi>d</mi><mrow><mi>i</mi><mo>,</mo><mi>d</mi></mrow></msub></mrow></mstyle></mrow></mtd></mtr></mtable></mrow></math>",
+                                    "type": "mathml"
+                                },
+                                {
+                                    "text": "The problem is solved for each neighbourhood separately, using the MOSEK solver in GAMS (<a href=\"#bib16\">MOSEK, 2018</a>). We initially limit adjustments such that <i>w<sub>h,d</sub> \u2208 {\u22121, 0, 1}</i>. In one small neighbourhood the problem is infeasible. In this cases we run the mixed integerisation problem iteratively, increasing the maximum value of adjustments until a solution is found.",
+                                    "type": "paragraph"
+                                }
+                            ],
+                            "id": "s3-2-2",
+                            "title": "3.2.2 Resolving inconsistencies between household and individuals\u2019 tables",
+                            "type": "section"
+                        },
+                        {
+                            "content": [
+                                {
+                                    "text": "The adjustments made in the previous step ensure consistency between the household and individuallevel tables, meaning that there are enough \u2018slots\u2019 for allocating the individuals who have not yet been allocated as household heads. The algorithm used for the allocation of the remaining individuals (Algorithm 2), is similar to the algorithm used for the allocation of household heads. The algorithm starts with the pool of individuals who have not been assigned as household heads, and searches over households with available slots on characteristics matching those of the individual. For example, if individual <i>i</i> is a Dutch male between 15 and 44 years old, the algorithm will search over households with available slots on these characteristics. Once such a household is found, the number of household members in the household will be updated with the new member. In cases where there are no households with available slots on these matching characteristics, we simply allocate individuals to households who have an available slot.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "assets": [
+                                        {
+                                            "id": "alg2",
+                                            "label": "Algorithm 2",
+                                            "tables": [
+                                                "<table>\n<tbody>\n<tr>\n<td>1: <b>for</b> non-allocated individuals <b>do</b></td>\n</tr>\n<tr>\n<td>2: \u2003<b>while</b> <inline-formula id=\"inline4\"><math display=\"inline\" id=\"i4\"><mrow><mstyle displaystyle=\"true\"><msub><mo>\u2211</mo><mi>h</mi></msub><mrow><mi>w</mi><msub><mi>d</mi><mrow><mi>i</mi><mo>,</mo><mi>h</mi></mrow></msub><mo>=</mo><mn>0</mn></mrow></mstyle></mrow></math> <b>do</b></td>\n</tr>\n<tr>\n<td>3: \u2003\u2003<b>for</b> households with available slots on matching characteristics <b>do</b></td>\n</tr>\n<tr>\n<td>4: \u2003\u2003\u2003set <i>al<sub>h,d</sub></i> = <i>al<sub>h,d</sub></i> + <i>ind<sub>i,d</sub></i></td>\n</tr>\n<tr>\n<td>5: \u2003\u2003\u2003set <i>wd<sub>i,h</sub></i> = 1</td>\n</tr>\n<tr>\n<td>6: \u2003\u2003<b>end for</b></td>\n</tr>\n<tr>\n<td>7: \u2003<b>end while</b></td>\n</tr>\n<tr>\n<td>8: <b>end for</b></td>\n</tr>\n</tbody>\n</table>"
+                                            ],
+                                            "title": "Allocation of the remaining household members.",
+                                            "type": "table"
+                                        }
+                                    ],
+                                    "type": "figure"
+                                }
+                            ],
+                            "id": "s3-2-3",
+                            "title": "3.2.3 Allocating the remaining household members",
+                            "type": "section"
+                        }
+                    ],
+                    "id": "s3-2",
+                    "title": "3.2 Allocating individuals to households",
+                    "type": "section"
+                }
+            ],
+            "id": "s3",
+            "title": "3. Population synthesis: Methodology",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "This section presents internal validations of the household and individuals\u2019 tables generated by IPF and of the allocation of individuals into households. As is common in the literature, we evaluate the fit of individual- and household-level tables using the correlation coefficient Pearson\u2019s <i>r</i> and the root means square error (RMSE). The correlation coefficient shows the bivariate correlation between the fitted values and the constraints in each neighbourhood. It is thus a rough check of the numerical precision of the weight matrix per neighbourhood. RMSE gives further insight into the distribution of the residuals across constraints. We first calculate the residual <i>e<sub>z,k</sub></i> of constraint <i>k</i> in neighbourhood <i>z</i> as the difference between the value of the constraint <i>obs<sub>z,k</sub></i> and the simulated value <i>sim<sub>z,k</sub></i>. Then RMSE is calculated as follows:",
+                    "type": "paragraph"
+                },
+                {
+                    "id": "equ2",
+                    "label": "3",
+                    "mathml": "<math><mrow><msub><mi>e</mi><mrow><mi>z</mi><mo>,</mo><mi>k</mi></mrow></msub><mo>=</mo><mi>o</mi><mi>b</mi><msub><mi>s</mi><mrow><mi>z</mi><mo>,</mo><mi>k</mi></mrow></msub><mo>\u2212</mo><mi>s</mi><mi>i</mi><msub><mi>m</mi><mrow><mi>z</mi><mo>,</mo><mi>k</mi></mrow></msub></mrow></math>",
+                    "type": "mathml"
+                },
+                {
+                    "id": "equ3",
+                    "label": "4",
+                    "mathml": "<math><mrow><mi>R</mi><mi>M</mi><mi>S</mi><msub><mi>E</mi><mi>k</mi></msub><mo>=</mo><msqrt><mrow><mfrac><mn>1</mn><mi>Z</mi></mfrac><mstyle displaystyle=\"true\"><munderover><mo>\u2211</mo><mi>z</mi><mi>Z</mi></munderover><mrow><msubsup><mi>e</mi><mrow><mi>z</mi><mo>,</mo><mi>k</mi></mrow><mn>2</mn></msubsup></mrow></mstyle></mrow></msqrt></mrow></math>",
+                    "type": "mathml"
+                },
+                {
+                    "text": "Since RMSE is scale-dependent, its value should be seen in light of the (mean) value of the constrain: the RMSE for a constraint with very large values across all neighbourhoods should be larger than the RMSE for a constraint with small values (see <a href=\"#tableA1\">Table A.1</a> in the <a href=\"#app1\">Appendix</a>). However, in our case this is less of a problem. <a href=\"#fig3\">Figure 3</a>, showing the correlation coefficient and the RMSE across all constraints for the individual-level table, reveals that all RMSE are very close to zero, suggesting a near perfect fit.",
+                    "type": "paragraph"
+                },
+                {
+                    "assets": [
+                        {
+                            "id": "fig3",
+                            "image": {
+                                "alt": "",
+                                "uri": "%iiif_uri%/00184%2Fijm-00184-fig3.tif",
+                                "size": {
+                                    "width": 476,
+                                    "height": 336
+                                },
+                                "source": {
+                                    "mediaType": "image/jpeg",
+                                    "uri": "%iiif_uri%/00184%2Fijm-00184-fig3.tif/full/full/0/default.jpg",
+                                    "filename": "ijm-00184-fig3.jpg"
+                                }
+                            },
+                            "label": "Figure 3",
+                            "title": "Correlation coefficient and RMSE of the individual-level table.",
+                            "type": "image"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "text": "Due to the fairly large amount of constraints one might expect the fit of the household table to be worse than that of the individuals\u2019 table. However, as <a href=\"#fig4\">Figure 4</a> shows, this is not the case: also here all RMSE values are very close to zero. From the internal validation we can conclude that the household- and individual-level tables both have a very good fit.",
+                    "type": "paragraph"
+                },
+                {
+                    "assets": [
+                        {
+                            "id": "fig4",
+                            "image": {
+                                "alt": "",
+                                "uri": "%iiif_uri%/00184%2Fijm-00184-fig4.tif",
+                                "size": {
+                                    "width": 476,
+                                    "height": 337
+                                },
+                                "source": {
+                                    "mediaType": "image/jpeg",
+                                    "uri": "%iiif_uri%/00184%2Fijm-00184-fig4.tif/full/full/0/default.jpg",
+                                    "filename": "ijm-00184-fig4.jpg"
+                                }
+                            },
+                            "label": "Figure 4",
+                            "title": "Correlation coefficient and RMSE of the household-level table.",
+                            "type": "image"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "text": "As shown in the previous section, we are able to calculate the population of each neighbourhood by using information about household members from the household table. However, we also suggested that there were discrepancies between population from the household members and the individuals\u2019 table. Obviously, if this were not the case, the mixed integer step would not be necessary.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "We investigate whether there are discrepancies by calculating the percentage difference between the sum of unadjusted household members (<i>members<sub>z,h,d</sub></i>) and the sum of individuals in neighbourhood <i>z</i>. In essence, this amounts to checking whether the predicted population from the synthetic households is consistent with the constraint <i>n</i>_<i>ind</i> from <a href=\"#tableA1\">Table A.1</a>. The percentage difference is cal- culated as:",
+                    "type": "paragraph"
+                },
+                {
+                    "id": "equ4",
+                    "label": "5",
+                    "mathml": "<math><mrow><mi>d</mi><mi>i</mi><mtext>\u2009</mtext><mi>f</mi><mtext>\u2009</mtext><msub><mi>f</mi><mi>z</mi></msub><mo>=</mo><mn>100</mn><mo>*</mo><mfrac><mrow><mstyle displaystyle=\"true\"><msub><mo>\u2211</mo><mrow><mi>d</mi><mo>\u2208</mo><mi>a</mi><mi>g</mi><mi>e</mi></mrow></msub><mrow><mrow><mo>(</mo><mrow><mstyle displaystyle=\"true\"><msub><mo>\u2211</mo><mi>h</mi></msub><mrow><mi>m</mi><mi>e</mi><mi>m</mi><mi>b</mi><mi>e</mi><mi>r</mi><msub><mi>s</mi><mrow><mi>z</mi><mo>,</mo><mi>h</mi><mo>,</mo><mi>d</mi></mrow></msub><mo>\u2212</mo><mstyle displaystyle=\"true\"><msub><mo>\u2211</mo><mi>i</mi></msub><mrow><mi>i</mi><mi>n</mi><msub><mi>d</mi><mrow><mi>z</mi><mo>,</mo><mi>i</mi><mo>,</mo><mi>d</mi></mrow></msub></mrow></mstyle></mrow></mstyle></mrow><mo>)</mo></mrow></mrow></mstyle></mrow><mrow><mstyle displaystyle=\"true\"><msub><mo>\u2211</mo><mrow><mi>d</mi><mo>\u2208</mo><mi>a</mi><mi>g</mi><mi>e</mi></mrow></msub><mrow><mstyle displaystyle=\"true\"><msub><mo>\u2211</mo><mi>i</mi></msub><mrow><mi>i</mi><mi>n</mi><msub><mi>d</mi><mrow><mi>z</mi><mo>,</mo><mi>i</mi><mo>,</mo><mi>d</mi></mrow></msub></mrow></mstyle></mrow></mstyle></mrow></mfrac></mrow></math>",
+                    "type": "mathml"
+                },
+                {
+                    "text": "<a href=\"#fig5\">Figure 5</a> shows that there are indeed substantial discrepancies between the population from the household table and the population from the individuals\u2019 table. The left panel, showing the density of <i>diff<sub>z</sub></i>, gives evidence of positive deviations of up to 30%. However, the right panel, showing the cumulative density of <i>diff<sub>z</sub></i>, suggests that the population is underestimated in a majority of the neighbourhoods.",
+                    "type": "paragraph"
+                },
+                {
+                    "assets": [
+                        {
+                            "id": "fig5",
+                            "image": {
+                                "alt": "",
+                                "uri": "%iiif_uri%/00184%2Fijm-00184-fig5.tif",
+                                "size": {
+                                    "width": 408,
+                                    "height": 288
+                                },
+                                "source": {
+                                    "mediaType": "image/jpeg",
+                                    "uri": "%iiif_uri%/00184%2Fijm-00184-fig5.tif/full/full/0/default.jpg",
+                                    "filename": "ijm-00184-fig5.jpg"
+                                }
+                            },
+                            "label": "Figure 5",
+                            "title": "Neighbourhood population calculated from the households table relative to population calculated from the person-table.",
+                            "type": "image"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "text": "We also run a <i>x</i><sup>2</sup> test of the improvement in fit by comparing the population from the unadjusted <inline-formula id=\"inline5\"><math display=\"inline\" id=\"i5\"><mrow><mrow><mo>(</mo><mrow><mstyle displaystyle=\"true\"><msub><mo>\u2211</mo><mrow><mi>d</mi><mo>\u2208</mo><mi>a</mi><mi>g</mi><mi>e</mi></mrow></msub><mrow><mstyle displaystyle=\"true\"><msub><mo>\u2211</mo><mi>h</mi></msub><mrow><mi>m</mi><mi>e</mi><mi>m</mi><mi>b</mi><mi>e</mi><msub><mi>r</mi><mrow><mi>z</mi><mo>,</mo><mi>h</mi><mo>,</mo><mi>d</mi></mrow></msub></mrow></mstyle></mrow></mstyle></mrow><mo>)</mo></mrow></mrow></math> and adjusted households <inline-formula id=\"inline6\"><math display=\"inline\" id=\"i6\"><mrow><mrow><mo>(</mo><mrow><mstyle displaystyle=\"true\"><msub><mo>\u2211</mo><mrow><mi>d</mi><mo>\u2208</mo><mi>a</mi><mi>g</mi><mi>e</mi></mrow></msub><mrow><mstyle displaystyle=\"true\"><msub><mo>\u2211</mo><mi>h</mi></msub><mrow><mi>a</mi><msub><mi>l</mi><mrow><mi>z</mi><mo>,</mo><mi>h</mi><mo>,</mo><mi>d</mi></mrow></msub></mrow></mstyle></mrow></mstyle></mrow><mo>)</mo></mrow></mrow></math> in each neighbourhood with the constraint <inline-formula id=\"inline7\"><math display=\"inline\" id=\"i7\"><mrow><mrow><mo>(</mo><mrow><mstyle displaystyle=\"true\"><msub><mo>\u2211</mo><mrow><mi>d</mi><mo>\u2208</mo><mi>a</mi><mi>g</mi><mi>e</mi></mrow></msub><mrow><mstyle displaystyle=\"true\"><msub><mo>\u2211</mo><mi>h</mi></msub><mrow><mi>i</mi><mi>n</mi><msub><mi>d</mi><mrow><mi>z</mi><mo>,</mo><mi>i</mi><mo>,</mo><mi>d</mi></mrow></msub></mrow></mstyle></mrow></mstyle></mrow><mo>)</mo></mrow></mrow></math>. This tests whether the two predictions of neighbourhood population are independent from the actual neighbourhood population. The p-values from <a href=\"#table7\">Table 7</a> reveals that we can cannot reject the null hypothesis of independence for the population derived from the unadjusted households. The adjusted households fare better: the p-value of 1 and <i>x</i><sup>2</sup> value of 0 suggest that the population from the adjusted households is as good as identical with the constraint.",
+                    "type": "paragraph"
+                },
+                {
+                    "assets": [
+                        {
+                            "id": "table7",
+                            "label": "Table 7",
+                            "tables": [
+                                "<table>\n<thead>\n<tr>\n<th/>\n<th>X-squared</th>\n<th>p-value</th>\n<th>df</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>unadjusted households</td>\n<td>617</td>\n<td>0</td>\n<td>94</td>\n</tr>\n<tr>\n<td>adjusted households</td>\n<td>0</td>\n<td>1</td>\n<td>94</td>\n</tr>\n</tbody>\n</table>"
+                            ],
+                            "title": "Chi-squared test of neighbourhood population.",
+                            "type": "table"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "text": "In addition to ensuring correspondence between the household- and individual-level tables, our mixed integer programming aims at minimising changes to the household composition. It is therefore necessary to investigate whether we also achieve this goal. <a href=\"#fig6\">Figure 6</a> plots the frequency of households by number of members before (yellow) and after (purple) the adjustments. The figure suggests that our methodology leads to a slight increase in the number of households with one and three members relative to the unadjusted household.",
+                    "type": "paragraph"
+                },
+                {
+                    "assets": [
+                        {
+                            "id": "fig6",
+                            "image": {
+                                "alt": "",
+                                "uri": "%iiif_uri%/00184%2Fijm-00184-fig6.tif",
+                                "size": {
+                                    "width": 408,
+                                    "height": 289
+                                },
+                                "source": {
+                                    "mediaType": "image/jpeg",
+                                    "uri": "%iiif_uri%/00184%2Fijm-00184-fig6.tif/full/full/0/default.jpg",
+                                    "filename": "ijm-00184-fig6.jpg"
+                                }
+                            },
+                            "label": "Figure 6",
+                            "title": "Number of members in the adjusted (purple) and in the unadjusted households (yellow).",
+                            "type": "image"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "text": "<a href=\"#fig7\">Figure 7</a> plots the number of household members across age groups in the unadjusted (yellow) and adjusted (purple) households. It does not give evidence of very large changes to the age composition. Adjustments were primarily carried out in the age group 15 to 44.",
+                    "type": "paragraph"
+                },
+                {
+                    "assets": [
+                        {
+                            "id": "fig7",
+                            "image": {
+                                "alt": "",
+                                "uri": "%iiif_uri%/00184%2Fijm-00184-fig7.tif",
+                                "size": {
+                                    "width": 476,
+                                    "height": 337
+                                },
+                                "source": {
+                                    "mediaType": "image/jpeg",
+                                    "uri": "%iiif_uri%/00184%2Fijm-00184-fig7.tif/full/full/0/default.jpg",
+                                    "filename": "ijm-00184-fig7.jpg"
+                                }
+                            },
+                            "label": "Figure 7",
+                            "title": "Number of household members by age in the unadjusted (yellow) and adjusted (purple) households.",
+                            "type": "image"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "text": "<a href=\"#fig8\">Figure 8</a> plots the distribution of the percentage men and women per household across the unadjusted (yellow) and adjusted (purple) households. The figure shows that the share of households with an equal gender balance has been reduced, while there is a slight increase in the share of households consisting of only men. As above, the figure suggests that the adjusted households are fairly similar to the unadjusted households.",
+                    "type": "paragraph"
+                },
+                {
+                    "assets": [
+                        {
+                            "id": "fig8",
+                            "image": {
+                                "alt": "",
+                                "uri": "%iiif_uri%/00184%2Fijm-00184-fig8.tif",
+                                "size": {
+                                    "width": 476,
+                                    "height": 336
+                                },
+                                "source": {
+                                    "mediaType": "image/jpeg",
+                                    "uri": "%iiif_uri%/00184%2Fijm-00184-fig8.tif/full/full/0/default.jpg",
+                                    "filename": "ijm-00184-fig8.jpg"
+                                }
+                            },
+                            "label": "Figure 8",
+                            "title": "Percentage members gender in the unadjusted (yellow) and adjusted (purple) households.",
+                            "type": "image"
+                        }
+                    ],
+                    "type": "figure"
+                }
+            ],
+            "id": "s4",
+            "title": "4. Internal validation of the results",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "This article reports on the creation of a spatial microsimulation model of Amsterdam. In the paper we have presented a methodology for joint synthesis of individuals, households and dwellings. Our proposed methodology encompasses the following steps: we first create separate household- and individual-level tables using IPF. Next, we allocate persons to households, resolving inconsistencies between the household- and individual-level tables using mixed integer programming. Our internal validation suggests that the method leads to a significant improvement in consistency between the two tables.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "A major usage of spatial microsimulation is to construct a synthetic population for bottom-up models of mobility and residential energy use. These models are important tools in scenario analysis and policy analysis. However, this requires including variables that are relevant to mobility choices and energy use. In our case, the Dutch housing demand survey WOON provides detailed information about dwellings, households and persons. As such, one would be able to estimate energy use based on the household table alone. However, as evidenced by <a href=\"#fig5\">Figure 5</a>, a population of individuals calculated from the household table deviates substantially from the population \u2014in some cases by up to 30%. Such inconsistencies could potentially be solved by an algorithm such as the IPU. In fact, we first attempted to do so, but with limited success (see <a href=\"#sA-1\">Appendix A.1</a>). We suspect that the number or combination of constraints in our case are such that the IPU becomes vulnerable to the empty cell problem.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "We provide, in our opinion, a fairly intuitive method for solving the problem of inconsistency. Granted, combining synthetic households and persons drawn from different surveys will always be difficult: a sample-free approach may be easier to implement and could indeed give a better fit (<a href=\"#bib5\">Barthelemy &amp; Toint, 2013</a>; <a href=\"#bib11\">Jeong, Lee, Kim, &amp; Shin, 2016</a>). We are of the opinion that a sample-based approach such as presented here is useful in practice. The survey used for creating the seed may well be used for purposes related to the spatial microsimulation exercise \u2013 for example to estimate the model used to predict a small-scale indicator. Such a direct connection between the population synthesis and the prediction is valuable in practical applications of spatial microsimulation.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s5",
+            "title": "5. Conclusions",
+            "type": "section"
+        }
+    ],
+    "references": [
+        {
+            "articleTitle": "Creating synthetic household populations: Problems and approach",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Arentze, T",
+                        "preferred": "T Arentze"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Timmermans, H",
+                        "preferred": "H Timmermans"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Hofman, F",
+                        "preferred": "F Hofman"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2007",
+            "id": "bib1",
+            "journal": "Transportation Research Record: Journal of the Transportation Research Board",
+            "pages": {
+                "first": "85",
+                "last": "91",
+                "range": "85\u201391"
+            },
+            "type": "journal",
+            "volume": "2014"
+        },
+        {
+            "articleTitle": "Efficient methodology for generating synthetic populations with multiple control levels",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Auld, J",
+                        "preferred": "J Auld"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Mohammadian, A",
+                        "preferred": "A Mohammadian"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2010",
+            "id": "bib2",
+            "journal": "Transportation Research Record: Journal of the Transportation Research Board",
+            "pages": {
+                "first": "138",
+                "last": "147",
+                "range": "138\u2013147"
+            },
+            "type": "journal",
+            "volume": "2175"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Ballas, D",
+                        "preferred": "D Ballas"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Rossiter, D",
+                        "preferred": "D Rossiter"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Thomas, B",
+                        "preferred": "B Thomas"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Clarke, G",
+                        "preferred": "G Clarke"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Dorling, D",
+                        "preferred": "D Dorling"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2005",
+            "details": "Joseph Rowntree Foundation, York",
+            "id": "bib3",
+            "title": "Geography matters: Simulating the local impacts of national social policies",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Barthelemy, J",
+                        "preferred": "J Barthelemy"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Suesse, T",
+                        "preferred": "T Suesse"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2015",
+            "details": "mipfp: Multidimensional Iterative Proportional Fitting and Alternative Models, Retrieved from, http://cran.r-project.org/package=mipfp",
+            "id": "bib4",
+            "title": "Retrieved from",
+            "type": "unknown",
+            "uri": "http://cran.r-project.org/package=mipfp"
+        },
+        {
+            "articleTitle": "Synthetic population generation without a sample",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Barthelemy, J",
+                        "preferred": "J Barthelemy"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Toint, PL",
+                        "preferred": "PL Toint"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2013",
+            "id": "bib5",
+            "journal": "Transportation Science",
+            "pages": {
+                "first": "266",
+                "last": "279",
+                "range": "266\u2013279"
+            },
+            "type": "journal",
+            "volume": "47"
+        },
+        {
+            "articleTitle": "Creating synthetic baseline populations",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Beckman, RJ",
+                        "preferred": "RJ Beckman"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Baggerly, KA",
+                        "preferred": "KA Baggerly"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "McKay, MD",
+                        "preferred": "MD McKay"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1996",
+            "id": "bib6",
+            "journal": "Transportation Research Part A: Policy and Practice",
+            "pages": {
+                "first": "415",
+                "last": "429",
+                "range": "415\u2013429"
+            },
+            "type": "journal",
+            "volume": "30"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Blocker, A",
+                        "preferred": "A Blocker"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2016",
+            "details": "ipfp: Fast Implementation of the ITerative Proportional Fitting Procedure in C, Retrieved from, http://cran.r-project.org/package=ipfp",
+            "id": "bib7",
+            "title": "Retrieved from",
+            "type": "unknown",
+            "uri": "http://cran.r-project.org/package=ipfp"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Burden, S",
+                        "preferred": "S Burden"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Steel, D",
+                        "preferred": "D Steel"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2016",
+            "details": "568\u2013583, Population, Space and Place, 22, 6, (PSP-14-0020.R2), 10.1002/psp.1942",
+            "id": "bib8",
+            "title": "Constraint Choice for Spatial Microsimulation",
+            "type": "unknown"
+        },
+        {
+            "articleTitle": "On a least squares adjustment of a sampled frequency table when the expected marginal totals are known",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Deming, W",
+                        "preferred": "W Deming"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Stephan, F",
+                        "preferred": "F Stephan"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1940",
+            "id": "bib9",
+            "journal": "The Annals of Mathematical Statistics",
+            "pages": {
+                "first": "427",
+                "last": "444",
+                "range": "427\u2013444"
+            },
+            "type": "journal",
+            "volume": "11"
+        },
+        {
+            "articleTitle": "Population synthesis for microsimulating travel behavior",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Guo, J",
+                        "preferred": "J Guo"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Bhat, C",
+                        "preferred": "C Bhat"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2007",
+            "id": "bib10",
+            "journal": "Transportation Research Record: Journal of the Transportation Research Board",
+            "pages": {
+                "first": "92",
+                "last": "101",
+                "range": "92\u2013101"
+            },
+            "type": "journal",
+            "volume": "2014"
+        },
+        {
+            "articleTitle": "Copula-Based Approach to Synthetic Population Generation",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Jeong, B",
+                        "preferred": "B Jeong"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Lee, W",
+                        "preferred": "W Lee"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Kim, D-S",
+                        "preferred": "D-S Kim"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Shin, H",
+                        "preferred": "H Shin"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2016",
+            "doi": "10.1371/journal.pone.0159496",
+            "id": "bib11",
+            "journal": "PLOS ONE",
+            "pages": {
+                "first": "1",
+                "last": "28",
+                "range": "1\u201328"
+            },
+            "type": "journal",
+            "volume": "11"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Lenormand, M",
+                        "preferred": "M Lenormand"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Deffuant, G",
+                        "preferred": "G Deffuant"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2012",
+            "details": "Generating a synthetic population of individuals in households: Sample-free vs sample-based methods, arXiv preprint arXiv:1208.6403",
+            "id": "bib12",
+            "title": "Generating a synthetic population of individuals in households: Sample-free vs sample-based methods",
+            "type": "unknown"
+        },
+        {
+            "articleTitle": "\u2018Truncate, replicate, sample\u2019: A method for creating integer weights for spatial microsimulation",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Lovelace, R",
+                        "preferred": "R Lovelace"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Ballas, D",
+                        "preferred": "D Ballas"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2013",
+            "id": "bib13",
+            "journal": "Computers, Environment and Urban Systems",
+            "pages": {
+                "first": "1",
+                "last": "11",
+                "range": "1\u201311"
+            },
+            "type": "journal",
+            "volume": "41"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Lovelace, R",
+                        "preferred": "R Lovelace"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Dumont, M",
+                        "preferred": "M Dumont"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "Spatial microsimulation with R",
+            "date": "2016",
+            "id": "bib14",
+            "publisher": {
+                "name": [
+                    "CRC Press"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "articleTitle": "Synthetic Population Generation with Multilevel Controls: A Fitness-Based Synthesis Approach and Validations",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Ma, L",
+                        "preferred": "L Ma"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Srinivasan, S",
+                        "preferred": "S Srinivasan"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2015",
+            "id": "bib15",
+            "journal": "Computer-Aided Civil and Infrastructure Engineering",
+            "pages": {
+                "first": "135",
+                "last": "150",
+                "range": "135\u2013150"
+            },
+            "type": "journal",
+            "volume": "30"
+        },
+        {
+            "authors": [
+                {
+                    "name": "MOSEK",
+                    "type": "group"
+                }
+            ],
+            "date": "2018",
+            "details": "MOSEK, The MOSEK optimization software, Retrieved from, http://www.mo[a115]ek.com",
+            "id": "bib16",
+            "title": "The MOSEK optimization software",
+            "type": "unknown",
+            "uri": "http://www.mo[a115]ek.com"
+        },
+        {
+            "articleTitle": "Constructing a synthetic city for estimating spatially disaggregated heat demand",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Mu\u00f1oz, E",
+                        "preferred": "E Mu\u00f1oz"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Dochev, I",
+                        "preferred": "I Dochev"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Seller, H",
+                        "preferred": "H Seller"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Peters, I",
+                        "preferred": "I Peters"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2016",
+            "id": "bib17",
+            "journal": "International Journal of Microsimulation",
+            "pages": {
+                "first": "66",
+                "last": "88",
+                "range": "66\u201388"
+            },
+            "type": "journal",
+            "volume": "9"
+        },
+        {
+            "articleTitle": "Constructing an Urban Microsimulation Model to Assess the Influence of Demographics on Heat Consumption",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Mu\u00f1oz, E",
+                        "preferred": "E Mu\u00f1oz"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Peters, I",
+                        "preferred": "I Peters"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2014",
+            "id": "bib18",
+            "journal": "International Journal of Microsimulation",
+            "pages": {
+                "first": "127",
+                "last": "157",
+                "range": "127\u2013157"
+            },
+            "type": "journal",
+            "volume": "7"
+        },
+        {
+            "articleTitle": "An unconstrained statistical matching algorithm for combining individual and household level geo-specific census and survey data",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Namazi-Rad, M.-R",
+                        "preferred": "M.-R Namazi-Rad"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Tanton, R",
+                        "preferred": "R Tanton"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Steel, D",
+                        "preferred": "D Steel"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Mokhtarian, P",
+                        "preferred": "P Mokhtarian"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Das, S",
+                        "preferred": "S Das"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2017",
+            "id": "bib19",
+            "journal": "Computers, Environment and Urban Systems",
+            "pages": {
+                "first": "3",
+                "last": "14",
+                "range": "3\u201314"
+            },
+            "type": "journal",
+            "volume": "63"
+        },
+        {
+            "articleTitle": "Advances in population synthesis: Fitting many attributes per agent and fitting to household and person margins simultaneously",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Pritchard, DR",
+                        "preferred": "DR Pritchard"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Miller, EJ",
+                        "preferred": "EJ Miller"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2012",
+            "doi": "10.1007/s11116-011-9367-4",
+            "id": "bib20",
+            "journal": "Transportation",
+            "pages": {
+                "first": "685",
+                "last": "704",
+                "range": "685\u2013704"
+            },
+            "type": "journal",
+            "volume": "39"
+        },
+        {
+            "articleTitle": "A review of spatial microsimulation methods",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Tanton, R",
+                        "preferred": "R Tanton"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2014",
+            "id": "bib21",
+            "journal": "International Journal of Microsimulation",
+            "pages": {
+                "first": "4",
+                "last": "25",
+                "range": "4\u201325"
+            },
+            "type": "journal",
+            "volume": "7"
+        },
+        {
+            "articleTitle": "Simulation of Synthetic Complex Data: The R Package simPop",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Templ, M",
+                        "preferred": "M Templ"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Meindl, B",
+                        "preferred": "B Meindl"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Kowarik, A",
+                        "preferred": "A Kowarik"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Dupriez, O",
+                        "preferred": "O Dupriez"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2017",
+            "doi": "10.18637/jss.v079.i10",
+            "id": "bib22",
+            "journal": "Journal of Statistical Software",
+            "pages": {
+                "first": "1",
+                "last": "38",
+                "range": "1\u201338"
+            },
+            "type": "journal",
+            "volume": "79"
+        },
+        {
+            "articleTitle": "A new approach to SAM updating with an application to Egypt",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Thissen, M",
+                        "preferred": "M Thissen"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "L\u00f6fgren, H",
+                        "preferred": "H L\u00f6fgren"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1998",
+            "id": "bib23",
+            "journal": "Environment and Planning A",
+            "pages": {
+                "first": "1991",
+                "last": "2003",
+                "range": "1991\u20132003"
+            },
+            "type": "journal",
+            "volume": "30"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Tomintz, MN",
+                        "preferred": "MN Tomintz"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Clarke, GP",
+                        "preferred": "GP Clarke"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Rigby, J. E",
+                        "preferred": "J. E Rigby"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2008",
+            "details": "341\u2013353, The geography of smoking in Leeds: Estimating individual smoking rates and the implications for the location of stop smoking services, Area, 40, 3",
+            "id": "bib24",
+            "title": "The geography of smoking in Leeds: Estimating individual smoking rates and the implications for the location of stop smoking services",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Ye, X",
+                        "preferred": "X Ye"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Konduri, K",
+                        "preferred": "K Konduri"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Pendyala, RM",
+                        "preferred": "RM Pendyala"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Sana, B",
+                        "preferred": "B Sana"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Waddell, P",
+                        "preferred": "P Waddell"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2009",
+            "details": "In, 88th Annual Meeting of the Transportation Research Board, Washington, DC",
+            "id": "bib25",
+            "title": "A methodology to match distributions of both household and person attributes in the generation of synthetic populations",
+            "type": "unknown"
+        }
+    ],
+    "appendices": [
+        {
+            "content": [
+                {
+                    "content": [
+                        {
+                            "text": "In this Appendix we construct a combined household-individuals\u2019 table using the IPU algorithm implemented in the [a115]im[a80]op package (<a href=\"#bib22\">Templ, Meindl, Kowarik, &amp; Dupriez, 2017</a>). As mentioned, WOON also gives information about the number of household members by age category as well as the total household size. Since we have four age categories, we run the IPU with a total of 37 constraints: 32 for households and 5 for individuals. In the majority of the neighbourhoods, the algorithm did not converge. <a href=\"#figA1\">Figure A.1</a> shows the correlation coeffient and RMSE for the fit from IPU. The left panel suggests that problems with convergence are concentrated in a couple of neighbourhoods. The right panel of the figure suggests that the RMSE are orders of magnitude larger than in the IPF presented in the tables in the text. We believe that the problems we experience with IPU are related to the large number and composition of constraints.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "figA1",
+                                    "image": {
+                                        "alt": "",
+                                        "uri": "%iiif_uri%/00184%2Fijm-00184-figA1.tif",
+                                        "size": {
+                                            "width": 476,
+                                            "height": 336
+                                        },
+                                        "source": {
+                                            "mediaType": "image/jpeg",
+                                            "uri": "%iiif_uri%/00184%2Fijm-00184-figA1.tif/full/full/0/default.jpg",
+                                            "filename": "ijm-00184-figA1.jpg"
+                                        }
+                                    },
+                                    "label": "Figure A.1",
+                                    "title": "Correlation and RMSE for the synthetic population created with IPU.",
+                                    "type": "image"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "text": "It is well known that the ordering of the constraints matter for both IPF and IPU: the best fit is likely to be seen with last constraint. <a href=\"#figA2\">Figure A.2</a> shows the residuals by constraints including the ordering of the constraints (the constraint on the top is the last). The blue dot shows the mean residual of each constraint. The figure clearly illustrates that the residuals are smallest for the last constraints (number of individuals) and that they in general are quite small for all individual-level constraints. The IPU algorithm seems to encounter difficulties with the constraints on the number of households, district heating and apartment.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "figA2",
+                                    "image": {
+                                        "alt": "",
+                                        "uri": "%iiif_uri%/00184%2Fijm-00184-figA2.tif",
+                                        "size": {
+                                            "width": 476,
+                                            "height": 475
+                                        },
+                                        "source": {
+                                            "mediaType": "image/jpeg",
+                                            "uri": "%iiif_uri%/00184%2Fijm-00184-figA2.tif/full/full/0/default.jpg",
+                                            "filename": "ijm-00184-figA2.jpg"
+                                        }
+                                    },
+                                    "label": "Figure A.2",
+                                    "title": "Residuals by constraints for the synthetic population created with IPU.",
+                                    "type": "image"
+                                }
+                            ],
+                            "type": "figure"
+                        }
+                    ],
+                    "id": "sA-1",
+                    "title": "A.1 Results from IPU",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "assets": [
+                                {
+                                    "id": "tableA1",
+                                    "label": "Table A.1",
+                                    "tables": [
+                                        "<table>\n<thead>\n<tr>\n<th>Variable</th>\n<th>Mean</th>\n<th>Standard deviation</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>ind_lmstatusactive</td>\n<td>494i</td>\n<td>3182.8</td>\n</tr>\n<tr>\n<td>ind_lmstatusnot-active</td>\n<td>3594</td>\n<td>2605.4</td>\n</tr>\n<tr>\n<td>ind_ethndutch</td>\n<td>4211</td>\n<td>2665.4</td>\n</tr>\n<tr>\n<td>ind_ethnforeign</td>\n<td>4324</td>\n<td>3833.8</td>\n</tr>\n<tr>\n<td>ind_incomehigh</td>\n<td>1394</td>\n<td>ii84.4</td>\n</tr>\n<tr>\n<td>ind_incomelow</td>\n<td>4445</td>\n<td>3i97.i</td>\n</tr>\n<tr>\n<td>ind_incomemid</td>\n<td>2697</td>\n<td>i857.9</td>\n</tr>\n<tr>\n<td>ind_genderman</td>\n<td>4204</td>\n<td>2762.4</td>\n</tr>\n<tr>\n<td>ind_genderwoman</td>\n<td>433i</td>\n<td>2865.2</td>\n</tr>\n<tr>\n<td>ind_age00_14</td>\n<td>i334</td>\n<td>ii08.0</td>\n</tr>\n<tr>\n<td>ind_age15_44</td>\n<td>4099</td>\n<td>2674.7</td>\n</tr>\n<tr>\n<td>ind_age45_64</td>\n<td>2095</td>\n<td>i467.5</td>\n</tr>\n<tr>\n<td>ind_age65_AO</td>\n<td>i007</td>\n<td>776.5</td>\n</tr>\n<tr>\n<td>n_ind</td>\n<td>8535</td>\n<td>56i8.7</td>\n</tr>\n</tbody>\n</table>"
+                                    ],
+                                    "title": "Individual-level constraints.",
+                                    "type": "table"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "tableA2",
+                                    "label": "Table A.2",
+                                    "tables": [
+                                        "<table>\n<thead>\n<tr>\n<th>Var</th>\n<th>Mean</th>\n<th>SD</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>dw_type1owner</td>\n<td>1247.2</td>\n<td>861.0</td>\n</tr>\n<tr>\n<td>dw_type1rental</td>\n<td>3391.4</td>\n<td>2278.5</td>\n</tr>\n<tr>\n<td>dw_type2apartment</td>\n<td>4074.4</td>\n<td>2838.3</td>\n</tr>\n<tr>\n<td>dw_type2house</td>\n<td>564.2</td>\n<td>885.5</td>\n</tr>\n<tr>\n<td>dw_byearbefore.1945</td>\n<td>2070.9</td>\n<td>2315.3</td>\n</tr>\n<tr>\n<td>dw_byear1945.1969</td>\n<td>678.4</td>\n<td>1343.6</td>\n</tr>\n<tr>\n<td>dw_byear1970.1989</td>\n<td>778.4</td>\n<td>1576.8</td>\n</tr>\n<tr>\n<td>dw_byear1990.and.later</td>\n<td>1111.0</td>\n<td>1424.9</td>\n</tr>\n<tr>\n<td>hh_typesingle</td>\n<td>2536.6</td>\n<td>1722.9</td>\n</tr>\n<tr>\n<td>hh_typew_child</td>\n<td>1160.1</td>\n<td>913.4</td>\n</tr>\n<tr>\n<td>hh_typewo_child</td>\n<td>942.0</td>\n<td>575.0</td>\n</tr>\n<tr>\n<td>hh_incomehigh</td>\n<td>747.2</td>\n<td>592.1</td>\n</tr>\n<tr>\n<td>hh_incomelow</td>\n<td>2445.1</td>\n<td>1739.0</td>\n</tr>\n<tr>\n<td>hh_incomemid</td>\n<td>1446.4</td>\n<td>943.7</td>\n</tr>\n<tr>\n<td>hh_gender_opman</td>\n<td>2287.3</td>\n<td>1469.7</td>\n</tr>\n<tr>\n<td>hh_gender_opwoman</td>\n<td>2351.4</td>\n<td>1516.3</td>\n</tr>\n<tr>\n<td>hh_ethn_opdutch</td>\n<td>2331.3</td>\n<td>1541.5</td>\n</tr>\n<tr>\n<td>hh_ethn_opforeign</td>\n<td>2307.4</td>\n<td>1928.8</td>\n</tr>\n<tr>\n<td>hh_lmstatusactive</td>\n<td>2698.0</td>\n<td>1730.9</td>\n</tr>\n<tr>\n<td>hh_lmstatusnot.active</td>\n<td>1940.7</td>\n<td>1340.5</td>\n</tr>\n<tr>\n<td>dw_value00_199</td>\n<td>1545.4</td>\n<td>2169.1</td>\n</tr>\n<tr>\n<td>dw_value200_299</td>\n<td>1965.0</td>\n<td>1759.5</td>\n</tr>\n<tr>\n<td>dw_value300_399</td>\n<td>646.1</td>\n<td>893.8</td>\n</tr>\n<tr>\n<td>dw_value400_499</td>\n<td>218.5</td>\n<td>330.8</td>\n</tr>\n<tr>\n<td>dw_value500_AO</td>\n<td>263.7</td>\n<td>661.3</td>\n</tr>\n<tr>\n<td>dw_dheatno</td>\n<td>4296.3</td>\n<td>2805.9</td>\n</tr>\n<tr>\n<td>dw_dheatyes</td>\n<td>342.4</td>\n<td>864.2</td>\n</tr>\n<tr>\n<td>dw_size.6.51.</td>\n<td>1135.7</td>\n<td>1108.2</td>\n</tr>\n<tr>\n<td>dw_size.51.68.</td>\n<td>1226.5</td>\n<td>966.2</td>\n</tr>\n<tr>\n<td>dw_size.68.89.</td>\n<td>1152.7</td>\n<td>965.1</td>\n</tr>\n<tr>\n<td>dw_size.89.3e.04.</td>\n<td>1123.8</td>\n<td>1131.9</td>\n</tr>\n<tr>\n<td>n_hh</td>\n<td>4638.7</td>\n<td>2980.3</td>\n</tr>\n</tbody>\n</table>"
+                                    ],
+                                    "title": "Household-level constraints.",
+                                    "type": "table"
+                                }
+                            ],
+                            "type": "figure"
+                        }
+                    ],
+                    "id": "sA-2",
+                    "title": "A.2 Descriptive statistics of the constraints",
+                    "type": "section"
+                }
+            ],
+            "id": "app1",
+            "title": "Appendix"
+        }
+    ],
+    "acknowledgements": [
+        {
+            "text": "The research leading to this paper has been carried out under the Horizon 2020 project Clair-City. This project has received funding from the European Research Council (ERC) under the European Union\u2019s Horizon 2020 research and innovation programme. Hans van Amsterdam (PBL) helped with collecting the Dutch cadaster data. The paper has benefited from comments from consortium members and from colleagues at PBL.",
+            "type": "paragraph"
+        }
+    ],
+    "-meta": {
+        "patched": true
+    },
+    "stage": "published"
+}
