@@ -349,9 +349,7 @@ final class ArticlesController extends Controller
                 return $body;
             });
 
-        $arguments['google_scholar_metadata'] = (bool) $request->headers->get('X-eLife-Google-Scholar-Metadata', false);
-
-        return new Response($this->get('templating')->render('::article-text.html.twig', $arguments), Response::HTTP_OK, ['Vary' => 'X-eLife-Google-Scholar-Metadata']);
+        return new Response($this->get('templating')->render('::article-text.html.twig', $arguments));
     }
 
     public function figuresAction(Request $request, string $id, int $version = null) : Response

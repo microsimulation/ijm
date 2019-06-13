@@ -8,11 +8,14 @@ use Microsimulation\Journal\Helper\Callback;
 use Microsimulation\Journal\Helper\Paginator;
 use Microsimulation\Journal\Pagerfanta\SequenceAdapter;
 use Microsimulation\Journal\Patterns\ViewModel\ContentHeader;
+use Microsimulation\Journal\Patterns\ViewModel\ContentHeaderImage;
+use Microsimulation\Journal\Patterns\ViewModel\Image;
 use Microsimulation\Journal\Patterns\ViewModel\LeadPara;
 use Microsimulation\Journal\Patterns\ViewModel\LeadParas;
 use Microsimulation\Journal\Patterns\ViewModel\Link;
 use Microsimulation\Journal\Patterns\ViewModel\ListHeading;
 use Microsimulation\Journal\Patterns\ViewModel\ListingTeasers;
+use Microsimulation\Journal\Patterns\ViewModel\Picture;
 use Microsimulation\Journal\Patterns\ViewModel\SectionListing;
 use Microsimulation\Journal\Patterns\ViewModel\SectionListingLink;
 use Microsimulation\Journal\Patterns\ViewModel\SeeMoreLink;
@@ -82,7 +85,14 @@ final class HomeController extends Controller
 
     private function createFirstPage(array $arguments) : Response
     {
-        $arguments['contentHeader'] = new ContentHeader('International Journal of Microsimulation');
+        $arguments['contentHeader'] = new ContentHeader(
+            'International Journal of Microsimulation',
+            new ContentHeaderImage(
+                new Picture([], new Image($this->get('elife.assets.packages')->getUrl('assets/header.jpg'))),
+                null,
+                true
+            )
+        );
 
         $arguments['leadParas'] = new LeadParas(
             [

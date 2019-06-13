@@ -94,6 +94,9 @@ final class SiteHeaderFactory
 
         $secondaryLinks = [
             NavLinkedItem::asLink(new Link('About', $this->urlGenerator->generate('about'))),
+            NavLinkedItem::asButton(
+                Button::link('Submit my research', 'https://www.epress.ac.uk/ijm/webforms/author.php', Button::SIZE_EXTRA_SMALL, Button::STYLE_DEFAULT, true, false, 'submitResearchButton')
+            ),
         ];
 
         $secondaryLinks = SiteHeaderNavBar::secondary($secondaryLinks);
