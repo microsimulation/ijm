@@ -8,15 +8,15 @@ Feature: Search page
   - If the ordering can't separate two or more search results, fallback ordering is publication date (most recent first) then title (A first).
 
   Background:
-    Given there are 30 research articles about 'Cells'
-    And I am on the search page
+    Given there is 44 research article about 'Demography'
+    And user is on the 'Search' page
 
   Scenario: List shows 10 most relevant results
-    When I search for 'Cells'
-    Then I should see the 10 most relevant results for 'Cells'
+    When user searches for 'demography'
+    Then user should see the 10 most relevant results for 'demography'
 
   @javascript
   Scenario: Loading more adds previous 10 to the list
-    When I search for 'Cells'
-    And I load more results
-    Then I should see the 20 most relevant results for 'Cells'
+    When user searches for 'demography'
+    And user clicks on 'load more' results
+    Then user should see the 20 most relevant results for 'demography'

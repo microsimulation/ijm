@@ -7,12 +7,12 @@ Feature: Homepage 'Latest research' list
   - If an article is POA, the date used for ordering is the first POA date
   - If an article is VOR, the date used for ordering is the first VOR date
   - The following types of article are included:
-    - Research article
-    - Research advance
-    - Research exchange
-    - Short report
-    - Tools and resources
-    - Replication study
+  - Research article
+  - Research advance
+  - Research exchange
+  - Short report
+  - Tools and resources
+  - Replication study
 
   Scenario: List shows latest 10 articles
     Given 20 articles have been published
@@ -25,3 +25,5 @@ Feature: Homepage 'Latest research' list
     When I go to the homepage
     And I load more articles
     Then I should see the latest 20 articles in the 'Latest research' list
+
+
