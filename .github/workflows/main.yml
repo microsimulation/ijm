@@ -1,0 +1,28 @@
+name: CI
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Scan for secrets left
+      uses: max/secret-scan@master
+    - name: Create deploy package
+      run: tar -cf test.tar .
+    - name: Cache 
+      uses: actions/cache@v2.0.0
+      with:
+        key: cached_artifacts
+        path: ./test.tar
+  deploy:
+    needs: [build]
+    runs-on: ubuntu-latest
+    steps:
+      - name: temp
+        run: |
+          echo "This will be deploy job"
