@@ -46,8 +46,7 @@ final class ArticleTeaserConverter implements ViewModelConverter
                     new ViewModel\Link(
                         ModelName::singular($object->getType()),
                         $this->urlGenerator->generate('article-type', ['type' => $object->getType()])
-                    ),
-                    $this->simpleDate($object, $context)
+                    )
                 ),
                 $object instanceof ArticleVoR || null === $object->getPdf(),
                 null !== $object->getPdf()
