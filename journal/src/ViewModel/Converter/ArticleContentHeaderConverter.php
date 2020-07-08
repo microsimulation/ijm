@@ -72,6 +72,16 @@ final class ArticleContentHeaderConverter implements ViewModelConverter
             $this->simpleDate($object, ['date' => 'published'] + $context)
         );
 
+        $articleCollectionLink = null;
+        if (isset($context['articleIssue'])) {
+            $articleCollectionLink = ViewModel\Meta::withLink(
+                new ViewModel\Link(
+                    $context['articleIssue']->getTitle(),
+                    $this->urlGenerator->generate("collection", ['id' => "{$object->getVolume()}-{$object->getIssue()}"])
+                )
+            );
+        }
+
         return new ViewModel\ContentHeader(
             $object->getFullTitle(),
             null,
@@ -88,7 +98,9 @@ final class ArticleContentHeaderConverter implements ViewModelConverter
             ),
             null,
             $meta,
-            LicenceUri::forCode($object->getCopyright()->getLicense())
+            LicenceUri::forCode($object->getCopyright()->getLicense()),
+            null,
+            $articleCollectionLink
         );
     }
 

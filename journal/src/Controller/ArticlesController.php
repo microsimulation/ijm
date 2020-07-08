@@ -581,6 +581,17 @@ final class ArticlesController extends Controller
             ->getHistory($id)
             ->otherwise($this->mightNotExist());
 
+        $arguments['articleIssue'] = $arguments['item']
+            ->then(function(ArticleVersion $item) {
+                $id = "{$item->getVolume()}-{$item->getIssue()}";
+
+                $issue = $this->get('elife.api_sdk.collections')
+                    ->get($id)
+                    ->otherwise($this->mightNotExist());
+
+                return $issue;
+            });
+
         $arguments['textPath'] = $arguments['history']
             ->then(function (ArticleHistory $history) use ($version) {
                 return $this->generatePath($history, $version);
@@ -596,8 +607,11 @@ final class ArticlesController extends Controller
                 return $this->generatePath($history, $version, 'xml');
             });
 
-        $arguments['contentHeader'] = $arguments['item']
-            ->then($this->willConvertTo(ContentHeader::class));
+        $arguments['contentHeader'] = $arguments['articleIssue']
+            ->then(function ($articleIssue) use ($arguments) {
+                return $arguments['item']
+                    ->then($this->willConvertTo(ContentHeader::class, ['articleIssue' => $articleIssue]));
+            });
 
         $arguments['infoBars'] = all(['item' => $arguments['item'], 'history' => $arguments['history']])
             ->then(function (array $parts) {

@@ -26,6 +26,7 @@ final class ContentHeader implements ViewModel
     private $meta;
     private $licence;
     private $audioPlayer;
+    private $articleCollectionLink;
 
     public function __construct(
         string $title,
@@ -41,7 +42,8 @@ final class ContentHeader implements ViewModel
         SelectNav $selectNav = null,
         Meta $meta = null,
         string $licence = null,
-        AudioPlayer $audioPlayer = null
+        AudioPlayer $audioPlayer = null,
+        Meta $articleCollectionLink = null
     ) {
         Assertion::notBlank($title);
         Assertion::allIsInstanceOf($subjects, Link::class);
@@ -76,6 +78,7 @@ final class ContentHeader implements ViewModel
         $this->meta = $meta;
         $this->licence = $licence;
         $this->audioPlayer = $audioPlayer;
+        $this->articleCollectionLink = $articleCollectionLink;
     }
 
     public function getTemplateName() : string
