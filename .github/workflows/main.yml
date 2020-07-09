@@ -88,8 +88,9 @@ jobs:
           mv docker-compose.prod.yml docker-compose.yml;
           mkdir -p journal/.docker;
           mv nginx.conf journal/.docker;
-          docker-compose down;
-          docker-compose up -d;
+          aws ecr get-login-password --region ${{ secrets.AWS_DEFAULT_REGION }} | sudo docker login --username AWS --password-stdin ${{ secrets.ecr_registry }}
+          sudo docker-compose down;
+          sudo docker-compose up -d;
     - name: ECR logout
       if: always()
       run: docker logout ${{ steps.login-ecr.outputs.registry }}
