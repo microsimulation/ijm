@@ -77,11 +77,13 @@ jobs:
         user: ${{ secrets.SSH_USER }}
         key: ${{ secrets.SSH_KEY }} 
     - name: Deploy application
-      uses: JimCronqvist/action-ssh@0.1.1
+      uses: alinz/ssh-scp-action@v0.1.1
       with: 
-        hosts: '${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}'
-        privateKey: ${{ secrets.SSH_KEY }} 
-        command: |
+        key: ${{ secrets.SSH_KEY }}
+        host: ${{ secrets.SSH_HOST }}
+        port: ${{ secrets.SSH_PORT }}
+        user: ${{ secrets.SSH_USER }}
+        ssh_before: |
           cd ${{ secrets.SSH_DIR }};
           mv docker-compose.prod.yml docker-compose.yml;
           mkdir -p journal/.docker;
