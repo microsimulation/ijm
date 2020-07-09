@@ -34,6 +34,16 @@ final class ArticleTeaserConverter implements ViewModelConverter
             $image = null;
         }
 
+        $articleIssue = null;
+        if (isset($context['articleIssue'])) {
+            $articleIssue = ViewModel\Meta::withLink(
+                new ViewModel\Link(
+                    $context['articleIssue']->getTitle(),
+                    $this->urlGenerator->generate('collection', ['id' => "{$object->getVolume()}-{$object->getIssue()}"])
+                )
+            );
+        }
+
         return ViewModel\Teaser::main(
             $object->getFullTitle(),
             $this->urlGenerator->generate('article', [$object]),
@@ -49,7 +59,8 @@ final class ArticleTeaserConverter implements ViewModelConverter
                     )
                 ),
                 $object instanceof ArticleVoR || null === $object->getPdf(),
-                null !== $object->getPdf()
+                null !== $object->getPdf(),
+                $articleIssue
             )
         );
     }
