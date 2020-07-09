@@ -49,6 +49,45 @@ jobs:
         echo "API_HOST=${{ secrets.API_URL_PUBLIC }}" >> .env
         echo "API_IMAGE=$ECR_REGISTRY/ijm-api:$IMAGE_TAG" >> .env
         echo "JOURNAL_IMAGE=$ECR_REGISTRY/ijm-journal:$IMAGE_TAG" >> .env
+    - name: Publish env
+      uses: nogsantos/ssh-scp-deploy@v1.2.1
+      with:
+        src: ./.env
+        host: ${{ secrets.SSH_HOST }}
+        remote: ${{ secrets.SSH_DIR }}
+        port: ${{ secrets.SSH_PORT }}
+        user: ${{ secrets.SSH_USER }}
+        key: ${{ secrets.SSH_KEY }} 
+    - name: Publish compose
+      uses: nogsantos/ssh-scp-deploy@v1.2.1
+      with:
+        src: ./docker-compose.prod.yml
+        host: ${{ secrets.SSH_HOST }}
+        remote: ${{ secrets.SSH_DIR }}
+        port: ${{ secrets.SSH_PORT }}
+        user: ${{ secrets.SSH_USER }}
+        key: ${{ secrets.SSH_KEY }} 
+    - name: Publish config
+      uses: nogsantos/ssh-scp-deploy@v1.2.1
+      with:
+        src: ./journal/.docker/nginx.conf
+        host: ${{ secrets.SSH_HOST }}
+        remote: ${{ secrets.SSH_DIR }}
+        port: ${{ secrets.SSH_PORT }}
+        user: ${{ secrets.SSH_USER }}
+        key: ${{ secrets.SSH_KEY }} 
+    - name: Deploy application
+      uses: JimCronqvist/action-ssh@0.1.1
+      with: 
+        hosts: '${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}'
+        privateKey: ${{ secrets.SSH_KEY }} 
+        command: |
+          cd ${{ secrets.SSH_DIR }};
+          mv docker-compose.prod.yml docker-compose.yml;
+          mkdir -p journal/.docker;
+          mv nginx.conf journal/.docker;
+          docker-compose down;
+          docker-compose up -d;
     - name: ECR logout
       if: always()
       run: docker logout ${{ steps.login-ecr.outputs.registry }}
