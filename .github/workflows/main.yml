@@ -12,17 +12,61 @@ jobs:
     - uses: actions/checkout@v2
     - name: Scan for secrets left
       uses: AlicanAkkus/pinder-action@1.0.0
-    - name: Create deploy package
-      run: tar -cf test.tar .
-    - name: Cache 
-      uses: actions/cache@v2.0.0
+    - name: Configure AWS Access
+      uses: aws-actions/configure-aws-credentials@v1
       with:
-        key: cached_artifacts
-        path: ./test.tar
-  deploy:
-    needs: [build]
-    runs-on: ubuntu-latest
-    steps:
-      - name: temp
-        run: |
-          echo "This will be deploy job"
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
+    - name: ECR login
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v1
+    - name: API image build and push
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        ECR_REPOSITORY: ijm-api
+        IMAGE_TAG: ${{ github.sha }}
+      run: |
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:IMAGE_TAG -f api/Dockerfile ./api;
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+    - name: Journal image build and push
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        ECR_REPOSITORY: ijm-journal
+        IMAGE_TAG: ${{ github.sha }}
+      run: |
+        docker build --build-arg app_env=${{ secrets.env }} \
+          --build-arg api_url=${{ secrets.api_url }}} \
+          --build-arg api_url_public=${{ secrets.API_URL_PUBLIC }} \
+          --build-arg api_key=${{ secrets.api_key }} -t $ECR_REGISTRY/$ECR_REPOSITORY:IMAGE_TAG -f journal/Dockerfile ./journal;
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+    - name: Update env file
+      env: 
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        IMAGE_TAG: ${{ github.sha }}
+      run: |
+        echo "IIIF_HOST=${{ secrets.API_URL_PUBLIC }}" > .env
+        echo "API_HOST=${{ secrets.API_URL_PUBLIC }}" >> .env
+        echo "API_IMAGE=$ECR_REGISTRY/ijm-api:$IMAGE_TAG" >> .env
+        echo "JOURNAL_IMAGE=$ECR_REGISTRY/ijm-journal:$IMAGE_TAG" >> .env
+    - name: Publish
+      uses: nogsantos/ssh-scp-deploy@v1.2.1
+      with:
+        src: ./.env
+        host: ${{ secrets.SSH_HOST }}
+        remote: ${{ secrets.SSH_DIR }}
+        port: ${{ secrets.SSH_PORT }}
+        user: ${{ secrets.SSH_USER }}
+        key: ${{ secrets.SSH_KEY }} 
+    - name: Deploy application
+      uses: JimCronqvist/action-ssh@0.1.1
+      with: 
+        hosts: '${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}'
+        privateKey: ${{ secrets.SSH_KEY }} 
+        command: |
+          cd /home/ec2-user/ijm-prod;
+          docker-compose down;
+          docker-compose up -d;
+    - name: ECR logout
+      if: always()
+      run: docker logout ${{ steps.login-ecr.outputs.registry }}

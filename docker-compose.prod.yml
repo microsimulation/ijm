@@ -1,0 +1,62 @@
+version: '3.4'
+
+services:
+    api:
+        image: ${API_IMAGE}
+        environment:
+            IIIF_URI: http://${IIIF_HOST}:8081/iiif/2
+        logging:
+            driver: awslogs
+            options:
+                awslogs-region: eu-west-2
+                awslogs-group: ijm-api-docker
+    journal:
+        image: ${JOURNAL_IMAGE}
+        volumes:
+            - public-journal:/app/web/
+        depends_on:
+            - api
+        logging:
+            driver: awslogs
+            options:
+                awslogs-region: eu-west-2
+                awslogs-group: ijm-journal-docker
+    iiif:
+        image: mitlibraries/cantaloupe:latest
+        environment:
+            SOURCE_STATIC: FilesystemSource
+            FILESYSTEMSOURCE_BASICLOOKUPSTRATEGY_PATH_PREFIX: /imageroot/
+            FILESYSTEMSOURCE_BASICLOOKUPSTRATEGY_PATH_SUFFIX: ''
+            PROCESSOR_FALLBACK: Java2dProcessor
+            CACHE_SERVER_DERIVATIVE: FilesystemCache
+            OVERLAYS_STRATEGY: BasicStrategy
+            FILESYSTEMCACHE_PATHNAME: /cache
+        volumes:
+            - ./assets/files:/imageroot:ro
+        ports:
+            - 8081:8182
+        logging:
+            driver: awslogs
+            options:
+                awslogs-region: eu-west-2
+                awslogs-group: ijm-iiif-docker
+    web:
+        image: nginx:1.15.5-alpine
+        volumes:
+            - ./journal/.docker/nginx.conf:/etc/nginx/conf.d/journal.conf
+            - ./assets/.docker/nginx.conf:/etc/nginx/conf.d/assets.conf
+            - public-journal:/app/journal/:ro
+            - ./assets/files:/app/assets:ro
+        ports:
+            - 80:8080
+            - 8082:8082
+        depends_on:
+            - journal
+        logging:
+            driver: awslogs
+            options:
+                awslogs-region: eu-west-2
+                awslogs-group: ijm-web-docker
+volumes:
+    public-journal:
+
