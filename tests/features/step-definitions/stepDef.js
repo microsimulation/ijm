@@ -5,7 +5,12 @@ const config = require('../../config.json')
 
 Given(/^user navigates to 'Home' page$/, {timeout: 50 * 1000}, function (callback) {
     this.state.driver.get(config.url).then((result) => {
-        callback(null, result)
+        this.state.driver.takeScreenshot().then(buffer => {
+            this.attach(buffer, 'image/png');
+            callback(null, result)
+        }).catch(err => {
+            callback(err)
+        })
     }).catch(err => {
         callback(err)
     })
@@ -62,4 +67,20 @@ Then(/^'Issues' page is displayed$/, {timeout: 15 * 1000}, function (callback) {
             callback()
         }, 10000)
     });
+});
+
+When(/^user navigates to "([^"]*)" article$/, function (articleNumber, callback) {
+    this.state.driver.get(config.url + "articles/" + articleNumber).then((result) => {
+        callback(null, result)
+    }).catch(err => {
+        callback(err)
+    })
+});
+
+Then(/^the article type is "([^"]*)"$/, {timeout: 15 * 1000}, function (articleType, callback) {
+    this.state.driver.findElement(By.xpath("//*[@id='maincontent']/header/div[4]/div/a")).getText()
+        .then((result) => {
+            expect(result).to.equal(articleType);
+            callback(null, result)
+        });
 });

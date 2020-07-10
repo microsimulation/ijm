@@ -1,5 +1,5 @@
 require('chromedriver')
-const {After, Before} = require('cucumber');
+const {AfterAll, Before} = require('cucumber');
 const {Builder} = require('selenium-webdriver');
 const World = require('../world/world')
 const chrome = require('selenium-webdriver/chrome');
@@ -14,6 +14,6 @@ Before(function () {
     this.state = new World(chromeDriver);
 });
 
-After(function () {
+AfterAll(function () {
     chromeDriver.quit();
 });
