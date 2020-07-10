@@ -4,6 +4,7 @@ namespace Microsimulation\Journal\ViewModel\Converter;
 
 use eLife\ApiSdk\Model\ArticleVersion;
 use eLife\ApiSdk\Model\ArticleVoR;
+use eLife\ApiSdk\Model\Collection;
 use Microsimulation\Journal\Helper\ModelName;
 use Microsimulation\Journal\Patterns\ViewModel;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -34,6 +35,23 @@ final class ArticleTeaserConverter implements ViewModelConverter
             $image = null;
         }
 
+        $articleIssue = null;
+        if (isset($context['collections'])) {
+            $collectionTitle = $context['collections']
+                ->filter(function(Collection $collection) use ($object) {
+                    return strpos($collection->getTitle(), "{$object->getVolume()}({$object->getIssue()})");
+                });
+
+            if ($collectionTitle && 1 === $collectionTitle->count()) {
+                $articleIssue = ViewModel\Meta::withLink(
+                    new ViewModel\Link(
+                        $collectionTitle[0]->getTitle(),
+                        $this->urlGenerator->generate('collection', ['id' => "{$object->getVolume()}-{$object->getIssue()}"])
+                    )
+                );
+            }
+        }
+
         return ViewModel\Teaser::main(
             $object->getFullTitle(),
             $this->urlGenerator->generate('article', [$object]),
@@ -49,7 +67,8 @@ final class ArticleTeaserConverter implements ViewModelConverter
                     )
                 ),
                 $object instanceof ArticleVoR || null === $object->getPdf(),
-                null !== $object->getPdf()
+                null !== $object->getPdf(),
+                $articleIssue
             )
         );
     }

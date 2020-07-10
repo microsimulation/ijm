@@ -25,11 +25,13 @@ final class PaginatorListingTeasersConverter implements ViewModelConverter
         $nextText = trim('Older '.$type);
         $emptyText = $context['emptyText'] ?? (trim('No '.($type ?? 'items').' available.'));
 
-        if (0 === count($object->getItems())) {
+        $items = $object->getItems();
+
+        if (0 === count($items)) {
             return new EmptyListing($heading, $emptyText);
         } elseif ($object->getCurrentPage() > 1) {
             return $viewModel::withPagination(
-                $object->getItems(),
+                $items,
                 ViewModel\Pager::subsequentPage(
                     new ViewModel\Link($prevText, $object->getPreviousPagePath()),
                     $object->getNextPage()
@@ -39,7 +41,7 @@ final class PaginatorListingTeasersConverter implements ViewModelConverter
             );
         } elseif ($object->getNextPage()) {
             return $viewModel::withPagination(
-                $object->getItems(),
+                $items,
                 $object->getNextPage()
                     ? ViewModel\Pager::firstPage(new ViewModel\Link('Load more', $object->getNextPagePath()), 'listing')
                     : null,
@@ -48,7 +50,7 @@ final class PaginatorListingTeasersConverter implements ViewModelConverter
             );
         }
 
-        return $viewModel::basic($object->getItems(), $heading, 'listing');
+        return $viewModel::basic($items, $heading, 'listing');
     }
 
     public function supports($object, string $viewModel = null, array $context = []) : bool
