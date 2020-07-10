@@ -34,26 +34,32 @@ final class HomeController extends Controller
 
         $arguments = $this->defaultPageArguments($request);
 
-        $latestResearch = promise_for(
-            $this->get('elife.api_sdk.search')
-                ->forType(
-                    'research-article',
-                    'research-communication',
-                    'registered-report',
-                    'scientific-correspondence',
-                    'short-report',
-                    'tools-resources'
-                )
-                ->sortBy('date')
-        )
-            ->then(
-                function (Sequence $sequence) use ($page, $perPage) {
-                    $pagerfanta = new Pagerfanta(new SequenceAdapter($sequence, $this->willConvertTo(Teaser::class)));
-                    $pagerfanta->setMaxPerPage($perPage)->setCurrentPage($page);
+        $arguments['collections'] = $this->get('elife.api_sdk.collections')
+            ->slice(0);
 
-                    return $pagerfanta;
-                }
-            );
+        $latestResearch = $arguments['collections']
+            ->then(function($collections) use ($page, $perPage) {
+                return promise_for(
+                    $this->get('elife.api_sdk.search')
+                        ->forType(
+                            'research-article',
+                            'research-communication',
+                            'registered-report',
+                            'scientific-correspondence',
+                            'short-report',
+                            'tools-resources'
+                        )
+                        ->sortBy('date')
+                )
+                    ->then(
+                        function (Sequence $sequence) use ($page, $perPage, $collections) {
+                            $pagerfanta = new Pagerfanta(new SequenceAdapter($sequence, $this->willConvertTo(Teaser::class, ['collections' => $collections])));
+                            $pagerfanta->setMaxPerPage($perPage)->setCurrentPage($page);
+
+                            return $pagerfanta;
+                        }
+                    );
+            });
 
         $arguments['title'] = 'Latest research';
 
@@ -74,7 +80,7 @@ final class HomeController extends Controller
             );
 
         $arguments['listing'] = $arguments['paginator']
-            ->then($this->willConvertTo(ListingTeasers::class, ['heading' => 'Latest research', 'type' => 'articles', 'articleIssue' => 'test']));
+            ->then($this->willConvertTo(ListingTeasers::class, ['heading' => 'Latest research', 'type' => 'articles']));
 
         if (1 === $page) {
             return $this->createFirstPage($arguments);
