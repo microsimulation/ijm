@@ -57,15 +57,13 @@ jobs:
         docker build -t ijm-selenium-tests:latest --build-arg APP_HOSTNAME=$APP_IP -f tests/Dockerfile ./tests
     - name: Run Automation suite
       run: |
-        pwd
         CURR_PATH=$(pwd)
+        mkdir -p $CURR_PATH/reports && chmod 756 $CURR_PATH/reports
         docker run -d --name ijm-selenium -v $CURR_PATH/reports:/app/reports ijm-selenium-tests:latest
         docker logs -f ijm-selenium
     - name: Export results
       id: test-res
       run: |
-        pwd
-        ls -ls
         docker-compose down
         RESULT=$(jq '.[].elements[].steps[].result.status' reports/report.json)
         echo "::set-output name=TEST_RESULTS::$RESULTS"
