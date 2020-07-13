@@ -2,6 +2,9 @@ name: CI
 on:
   push:
     branches: [ master ]
+    paths-ignore:
+      - assets/**
+      - tests/**  
   pull_request:
     branches: [ master ]
 
@@ -21,15 +24,14 @@ jobs:
     - name: ECR login
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v1
-    - name: API image build and push
+    - name: API image build
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         ECR_REPOSITORY: ijm-api
         IMAGE_TAG: ${{ github.sha }}
       run: |
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -f api/Dockerfile ./api;
-        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-    - name: Journal image build and push
+    - name: Journal image build
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         ECR_REPOSITORY: ijm-journal
@@ -39,7 +41,6 @@ jobs:
           --build-arg api_url=${{ secrets.api_url }}} \
           --build-arg api_url_public=${{ secrets.API_URL_PUBLIC }} \
           --build-arg api_key=${{ secrets.api_key }} -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -f journal/Dockerfile ./journal;
-        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
     - name: Update env file
       env: 
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
@@ -49,6 +50,32 @@ jobs:
         echo "API_HOST=${{ secrets.API_URL_PUBLIC }}" >> .env
         echo "API_IMAGE=$ECR_REGISTRY/ijm-api:$IMAGE_TAG" >> .env
         echo "JOURNAL_IMAGE=$ECR_REGISTRY/ijm-journal:$IMAGE_TAG" >> .env
+    - name: Prepare env for Automation tests to run
+      run: |
+        docker-compose up -d 
+        APP_IP=$(hostname -I | awk '{print $1}')
+        docker build -t ijm-selenium-tests:latest --build-arg APP_HOSTNAME=$APP_IP -f tests/Dockerfile ./tests
+    - name: Run Automation suite
+      run: |
+        CURR_PATH=$(pwd)
+        docker run -d --rm --name ijm-selenium -v $CURR_PATH/reports:/app/reports ijm-selenium-tests:latest
+    - name: Export results
+      id: test-res
+      run: |
+        docker-compose down
+        docker container stop ijm-selenium
+        RESULT=$(jq '.[].elements[].steps[].result.status' reports/report.json)
+        echo "::set-output name=TEST_RESULTS::$RESULTS"
+    - name: Analyze results
+      if: ${{ contains(steps.test-res.outputs.TEST_RESULTS, 'failed') }}
+      run: exit 1
+    - name: Push docker images
+      env:  
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        IMAGE_TAG: ${{ github.sha }}
+      run: |
+        docker push $ECR_REGISTRY/ijm-api:$IMAGE_TAG
+        docker push $ECR_REGISTRY/ijm-journal:$IMAGE_TAG
     - name: Publish env
       uses: nogsantos/ssh-scp-deploy@v1.2.1
       with:
