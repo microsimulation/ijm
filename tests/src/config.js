@@ -1,4 +1,4 @@
 module.exports = {
-    "url": "http://microsimulation.pub/",
+    "url": process.env.WEB_URL || "http://microsimulation.pub/",
     "headless": process.env.HEADLESS_MODE || false
 }
