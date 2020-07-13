@@ -67,6 +67,7 @@ jobs:
         docker-compose down
         RESULT=$(jq '[ .[].elements[].steps[].result.status ] | unique | tostring | test("failed")' reports/report.json)
         echo "::set-output name=TEST_RESULTS::$RESULT"
+        echo "Test results - $RESULT"
     - name: Publish test results
       uses: actions/upload-artifact@v2
       with:
@@ -75,6 +76,7 @@ jobs:
     - name: Examine test results
       if: ${{ steps.test-res.outputs.TEST_RESULTS }}
       run: |
+        echo "Test results output - ${{ steps.test-res.outputs.TEST_RESULTS }}"
         echo "Test failed - preventing pipeline from further deployment"
         exit 1
     - name: Push docker images
@@ -82,6 +84,7 @@ jobs:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         IMAGE_TAG: ${{ github.sha }}
       run: |
+        echo "Test results output - ${{ steps.test-res.outputs.TEST_RESULTS }}"
         docker push $ECR_REGISTRY/ijm-api:$IMAGE_TAG
         docker push $ECR_REGISTRY/ijm-journal:$IMAGE_TAG
     - name: Publish env
