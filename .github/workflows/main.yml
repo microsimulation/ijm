@@ -52,8 +52,6 @@ jobs:
         echo "JOURNAL_IMAGE=$ECR_REGISTRY/ijm-journal:$IMAGE_TAG" >> .env
     - name: Prepare env for Automation tests to run
       run: |
-        rm docker-compose.override.yml docker-compose.yml
-        cp docker-compose.prod.yml docker-compose.yml
         docker-compose up -d 
         APP_IP=$(hostname -I | awk '{print $1}')
         docker build -t ijm-selenium-tests:latest --build-arg APP_HOSTNAME=$APP_IP -f tests/Dockerfile ./tests
