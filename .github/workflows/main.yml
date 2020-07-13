@@ -6,6 +6,7 @@ on:
       - assets/** 
   pull_request:
     branches: [ master ]
+  workflow_dispatch:
 
 jobs:
   build:
@@ -57,7 +58,7 @@ jobs:
     - name: Run Automation suite
       run: |
         CURR_PATH=$(pwd)
-        docker run -d --rm --name ijm-selenium -v $CURR_PATH/reports:/app/reports ijm-selenium-tests:latest
+        docker run -it --rm --name ijm-selenium -v $CURR_PATH/reports:/app/reports ijm-selenium-tests:latest
     - name: Export results
       id: test-res
       run: |
