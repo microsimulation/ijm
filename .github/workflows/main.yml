@@ -52,8 +52,7 @@ jobs:
         echo "JOURNAL_IMAGE=$ECR_REGISTRY/ijm-journal:$IMAGE_TAG" >> .env
     - name: Prepare env for Automation tests to run
       run: |
-        rm -rf docker-compose.overrirde.yml docker-compose.yml
-        cp docker-compose.prod.yml docker-compose.yml 
+        cat .env
         docker-compose up -d 
         APP_IP=$(hostname -I | awk '{print $1}')
         echo "$APP_IP"
@@ -129,3 +128,12 @@ jobs:
     - name: ECR logout
       if: always()
       run: docker logout ${{ steps.login-ecr.outputs.registry }}
+    - name: Slack notify
+      if: failure()
+      env:
+        SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+      uses: voxmedia/github-action-slack-notify-build@v1
+      with:
+        channel: article-hosting-commits
+        status: FAILED
+        color: danger
