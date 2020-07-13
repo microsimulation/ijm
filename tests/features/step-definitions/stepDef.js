@@ -1,7 +1,7 @@
 const {When, Then, Given} = require('cucumber');
 const {expect} = require('chai')
 const {By} = require('selenium-webdriver');
-const config = require('../../config.json')
+const config = require('../../config')
 
 Given(/^user navigates to 'Home' page$/, {timeout: 50 * 1000}, function (callback) {
     this.state.driver.get(config.url).then((result) => {
@@ -31,10 +31,15 @@ Then(/^a list of 10 articles is displayed$/, {timeout: 15 * 1000}, function (cal
     }).catch(err => {
         callback(err)
     });
-
     setTimeout(() => {
         callback()
     }, 10000)
+    this.state.driver.takeScreenshot().then(buffer => {
+        this.attach(buffer, 'image/png');
+        callback(null, result)
+    }).catch(err => {
+        callback(err)
+    })
 });
 
 When(/^user clicks on the first article from the list$/, {timeout: 15 * 1000}, function (callback) {
@@ -43,13 +48,24 @@ When(/^user clicks on the first article from the list$/, {timeout: 15 * 1000}, f
             result.click();
             callback(null, result)
         });
-
+    this.state.driver.takeScreenshot().then(buffer => {
+        this.attach(buffer, 'image/png');
+        callback(null, result)
+    }).catch(err => {
+        callback(err)
+    })
 });
 
-Then(/^'Article' page is displayed$/, function () {
+Then(/^'Article' page is displayed$/,{timeout: 30 * 1000}, function (callback) {
     this.state.driver.getCurrentUrl().then(function (title) {
         expect(title).to.contains("articles");
     });
+    this.state.driver.takeScreenshot().then(buffer => {
+        this.attach(buffer, 'image/png');
+        callback(null, result)
+    }).catch(err => {
+        callback(err)
+    })
 });
 
 When(/^user clicks on 'Linked volume'$/, {timeout: 25 * 1000}, function (callback) {
@@ -58,19 +74,37 @@ When(/^user clicks on 'Linked volume'$/, {timeout: 25 * 1000}, function (callbac
             result.click();
             callback(null, result)
         });
+    this.state.driver.takeScreenshot().then(buffer => {
+        this.attach(buffer, 'image/png');
+        callback(null, result)
+    }).catch(err => {
+        callback(err)
+    })
 });
 
 Then(/^'Issues' page is displayed$/, {timeout: 15 * 1000}, function (callback) {
     this.state.driver.getCurrentUrl().then(function (title) {
         expect(title).to.contains("collections");
         setTimeout(() => {
-            callback()
+            callback(null,result)
         }, 10000)
     });
+    this.state.driver.takeScreenshot().then(buffer => {
+        this.attach(buffer, 'image/png');
+        callback(null, result)
+    }).catch(err => {
+        callback(err)
+    })
 });
 
 When(/^user navigates to "([^"]*)" article$/, function (articleNumber, callback) {
     this.state.driver.get(config.url + "articles/" + articleNumber).then((result) => {
+        callback(null, result)
+    }).catch(err => {
+        callback(err)
+    })
+    this.state.driver.takeScreenshot().then(buffer => {
+        this.attach(buffer, 'image/png');
         callback(null, result)
     }).catch(err => {
         callback(err)
@@ -83,4 +117,25 @@ Then(/^the article type is "([^"]*)"$/, {timeout: 15 * 1000}, function (articleT
             expect(result).to.equal(articleType);
             callback(null, result)
         });
+});
+When(/^user clicks on 'Linked volume' of the first article$/, function (callback) {
+    this.state.driver.findElement(By.xpath("//*[@id='listing']/li[1]/div/div/div/a"))
+        .then((result) => {
+            result.click();
+            callback(null, result)
+        });
+    this.state.driver.takeScreenshot().then(buffer => {
+        this.attach(buffer, 'image/png');
+        callback(null, result)
+    }).catch(err => {
+        callback(err)
+    })
+});
+Then(/^article preview doesn't contain date$/, function (callback) {
+    this.state.driver.findElement(By.xpath('//*[@id="listing"]/li[2]/div/footer/div[1]/a')).getId().then((result) => {
+        expect(result).not.equal("\\w{3}\\s\\d{2},\\s\\d{4}");
+        callback(null, result)
+    }).catch(err => {
+        callback(err)
+    });
 });

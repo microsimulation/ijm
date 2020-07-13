@@ -1,6 +1,6 @@
+@Run
 Feature: Link the issue to the article
 
-  @Run
   Scenario: Link to the issue is available from article page
     Given user navigates to 'Home' page
     When user is on the Home page
@@ -9,3 +9,16 @@ Feature: Link the issue to the article
     Then 'Article' page is displayed
     When user clicks on 'Linked volume'
     Then 'Issues' page is displayed
+
+   Scenario: Link to the issue is available from article preview
+     Given user navigates to 'Home' page
+     When user is on the Home page
+     Then a list of 10 articles is displayed
+     When user clicks on 'Linked volume' of the first article
+     Then 'Issues' page is displayed
+
+  Scenario: Date is not displayed in article preview
+    Given user navigates to 'Home' page
+    When user is on the Home page
+    Then a list of 10 articles is displayed
+    And article preview doesn't contain date

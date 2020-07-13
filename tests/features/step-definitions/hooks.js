@@ -3,7 +3,7 @@ const {AfterAll, Before} = require('cucumber');
 const {Builder} = require('selenium-webdriver');
 const World = require('../world/world')
 const chrome = require('selenium-webdriver/chrome');
-const config = require('../../config.json');
+const config = require('../../config');
 
 const buildChromeDriver = function () {
     const headless_run = config.headless;
