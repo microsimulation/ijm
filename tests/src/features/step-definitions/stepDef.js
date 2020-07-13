@@ -1,7 +1,8 @@
 const {When, Then, Given} = require('cucumber');
 const {expect} = require('chai')
 const {By} = require('selenium-webdriver');
-const config = require('../../config')
+const config = require('../../config');
+console.log(JSON.stringify(config,undefined,2));
 
 Given(/^user navigates to 'Home' page$/, {timeout: 50 * 1000}, async function () {
     try {

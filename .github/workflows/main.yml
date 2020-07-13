@@ -61,7 +61,7 @@ jobs:
         CURR_PATH=$(pwd)
         mkdir -p $CURR_PATH/reports && chmod 777 -R $CURR_PATH/reports
         docker run -i --name ijm-selenium -v $CURR_PATH/reports:/app/reports ijm-selenium-tests:latest
-    - name: Export results
+    - name: Get test results
       id: test-res
       run: |
         docker-compose down
@@ -72,7 +72,7 @@ jobs:
       with:
         name: selenium-test-report
         path: reports/
-    - name: Analyze results
+    - name: Examine test results
       if: ${{ steps.test-res.outputs.TEST_RESULTS }}
       run: |
         echo "Test failed - preventing pipeline from further deployment"
