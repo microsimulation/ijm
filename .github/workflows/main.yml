@@ -3,8 +3,7 @@ on:
   push:
     branches: [ master ]
     paths-ignore:
-      - assets/**
-      - tests/**  
+      - assets/** 
   pull_request:
     branches: [ master ]
 
@@ -63,7 +62,6 @@ jobs:
       id: test-res
       run: |
         docker-compose down
-        docker container stop ijm-selenium
         RESULT=$(jq '.[].elements[].steps[].result.status' reports/report.json)
         echo "::set-output name=TEST_RESULTS::$RESULTS"
     - name: Analyze results
