@@ -10,4 +10,4 @@ COPY --chown=seluser:seluser ./ /app/
 RUN npm install; \
 npm install chai --save-dev; \
 jq --arg URL "http://$APP_HOSTNAME/" '.url = $URL' config.json | sponge config.json;
-ENTRYPOINT [ "npm", "run", "test-report" ]
+ENTRYPOINT [ "npm", "run", "ci" ]
