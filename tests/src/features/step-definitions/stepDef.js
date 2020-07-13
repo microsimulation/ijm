@@ -3,18 +3,15 @@ const {expect} = require('chai')
 const {By} = require('selenium-webdriver');
 const config = require('../../config')
 
-Given(/^user navigates to 'Home' page$/, {timeout: 50 * 1000}, function (callback) {
-    this.state.driver.get(config.url).then((result) => {
-        this.state.driver.takeScreenshot().then(buffer => {
-            this.attach(buffer, 'image/png');
-            callback(null, result)
-        }).catch(err => {
-            callback(err)
-        })
-    }).catch(err => {
-        callback(err)
-    })
+Given(/^user navigates to 'Home' page$/, {timeout: 50 * 1000}, async function () {
+    try {
+        const result = await this.state.driver.get(config.url)
+        const buffer = await this.state.driver.takeScreenshot();
 
+        this.attach(buffer, 'image/png');
+    } catch (e) {
+        console.log(e);
+    }
 });
 
 When(/^user is on the Home page$/, function () {
