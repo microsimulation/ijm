@@ -52,7 +52,6 @@ jobs:
         echo "JOURNAL_IMAGE=$ECR_REGISTRY/ijm-journal:$IMAGE_TAG" >> .env
     - name: Prepare env for Automation tests to run
       run: |
-        cat .env
         docker-compose up -d 
         APP_IP=$(hostname -I | awk '{print $1}')
         echo "$APP_IP"
@@ -61,21 +60,20 @@ jobs:
       run: |
         CURR_PATH=$(pwd)
         mkdir -p $CURR_PATH/reports && chmod 777 -R $CURR_PATH/reports
-        ls -l
         docker run -d --name ijm-selenium -v $CURR_PATH/reports:/app/reports ijm-selenium-tests:latest
         docker logs -f ijm-selenium
     - name: Export results
       id: test-res
       run: |
         docker-compose down
-        ls -l
-        ls -l reports
         RESULT=$(jq '.[].elements[].steps[].result.status' reports/report.json)
-        echo "::set-output name=TEST_RESULTS::$RESULTS"
-        echo "$RESULTS"
+        echo "::set-output name=TEST_RESULTS::$RESULT"
+        echo "$RESULT"
     - name: Analyze results
       if: ${{ contains(steps.test-res.outputs.TEST_RESULTS, 'failed') }}
-      run: exit 1
+      run: |
+        echo "Test failed - preventing pipeline from further deployment"
+        exit 1
     - name: Push docker images
       env:  
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
