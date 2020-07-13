@@ -58,7 +58,7 @@ jobs:
     - name: Run Automation suite
       run: |
         CURR_PATH=$(pwd)
-        mkdir -p $CURR_PATH/reports && chmod -r 756 $CURR_PATH/reports
+        mkdir -p $CURR_PATH/reports && chmod 756 -R $CURR_PATH/reports
         ls -l
         docker run -d --name ijm-selenium -v $CURR_PATH/reports:/app/reports ijm-selenium-tests:latest
         docker logs -f ijm-selenium
@@ -69,7 +69,7 @@ jobs:
         pwd
         ls -l reports
         CURR_PATH=$(pwd)
-        chmod -r 756 $CURR_PATH/reports
+        chmod 756 -R $CURR_PATH/reports
         RESULT=$(jq '.[].elements[].steps[].result.status' reports/report.json)
         echo "::set-output name=TEST_RESULTS::$RESULTS"
     - name: Analyze results
