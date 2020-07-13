@@ -56,6 +56,7 @@ jobs:
         APP_IP=$(hostname -I | awk '{print $1}')
         echo "$APP_IP"
         docker build -t ijm-selenium-tests:latest --build-arg APP_HOSTNAME=$APP_IP -f tests/Dockerfile ./tests
+        curl $APP_IP
     - name: Run Automation suite
       run: |
         CURR_PATH=$(pwd)
@@ -69,6 +70,11 @@ jobs:
         RESULT=$(jq '[ .[].elements[].steps[].result.status ] | unique | tostring | test("failed")' reports/report.json)
         echo "::set-output name=TEST_RESULTS::$RESULT"
         echo "$RESULT"
+    - name: Publish test results
+      uses: actions/upload-artifact@v2
+      with:
+        name: selenium-test-report
+        path: reports/report.html
     - name: Analyze results
       if: ${{ steps.test-res.outputs.TEST_RESULTS }}
       run: |
@@ -132,6 +138,6 @@ jobs:
         SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
       uses: voxmedia/github-action-slack-notify-build@v1
       with:
-        channel: article-hosting-commits
+        channel: article-hosting-general
         status: FAILED
         color: danger
