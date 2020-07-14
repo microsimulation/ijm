@@ -52,41 +52,39 @@ jobs:
         echo "JOURNAL_IMAGE=$ECR_REGISTRY/ijm-journal:$IMAGE_TAG" >> .env
     - name: Prepare env for Automation tests to run
       run: |
+        rm -rf docker-compose.overrirde.yml
         docker-compose up -d 
         APP_IP=$(hostname -I | awk '{print $1}')
-        echo "$APP_IP"
-        docker build -t ijm-selenium-tests:latest --build-arg APP_HOSTNAME=$APP_IP -f tests/Dockerfile ./tests
-        curl $APP_IP
+        docker build -t ijm-selenium-tests:latest --build-arg APP_HOSTNAME="http://"$APP_IP"/" -f tests/Dockerfile ./tests
     - name: Run Automation suite
       run: |
         CURR_PATH=$(pwd)
         mkdir -p $CURR_PATH/reports && chmod 777 -R $CURR_PATH/reports
-        docker run -d --name ijm-selenium -v $CURR_PATH/reports:/app/reports ijm-selenium-tests:latest
-        docker logs -f ijm-selenium
-    - name: Export results
+        docker run -i --name ijm-selenium -v $CURR_PATH/reports:/app/reports ijm-selenium-tests:latest
+    - name: Get test results
       id: test-res
       run: |
         docker-compose down
         RESULT=$(jq '[ .[].elements[].steps[].result.status ] | unique | tostring | test("failed")' reports/report.json)
         echo "::set-output name=TEST_RESULTS::$RESULT"
-        echo "$RESULT"
+        echo "Test results - $RESULT"
     - name: Publish test results
       uses: actions/upload-artifact@v2
       with:
         name: selenium-test-report
-        path: reports/report.html
-    - name: Analyze results
-      if: ${{ steps.test-res.outputs.TEST_RESULTS }}
+        path: reports/
+    - name: Examine test results
+      if: ${{ steps.test-res.outputs.TEST_RESULTS == 'true' }}
       run: |
+        echo "Test results output - ${{ steps.test-res.outputs.TEST_RESULTS }}"
         echo "Test failed - preventing pipeline from further deployment"
         exit 1
     - name: Push docker images
       env:  
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         IMAGE_TAG: ${{ github.sha }}
-        TEST_RESULTS: ${{ steps.test-res.outputs.TEST_RESULTS }}
       run: |
-        echo "$TEST_RESULTS"
+        echo "Test results output - ${{ steps.test-res.outputs.TEST_RESULTS }}"
         docker push $ECR_REGISTRY/ijm-api:$IMAGE_TAG
         docker push $ECR_REGISTRY/ijm-journal:$IMAGE_TAG
     - name: Publish env
