@@ -18,3 +18,25 @@ Feature: Article type page
     When I go to the research articles page
     And I load more articles
     Then I should see the latest 20 research articles in the 'Latest articles' list
+
+  Scenario: Selection capability containing the special type of articles
+    Given user navigates to 'Home' page
+    When user is on the Home page
+    Then section "In addition to standard research articles, explore our:" is displayed
+    And with the following special type of articles is displayed:
+      | Book reviews     |
+      | Data watch       |
+      | Research notes   |
+      | Software reviews |
+
+  Scenario Outline: Access special type of articles
+    Given user navigates to 'Home' page
+    When user is on the Home page
+    And user navigates to "<articleName>" article
+    Then "<articleName>" page is displayed
+    Examples:
+      | articleName      |
+      | Book reviews     |
+      | Data watch       |
+      | Research notes   |
+      | Software reviews |
