@@ -1,8 +1,7 @@
-const {When, Then, Given} = require('cucumber');
-const {expect} = require('chai')
-const {By} = require('selenium-webdriver');
-const config = require('../../config');
-console.log(JSON.stringify(config,undefined,2));
+import { When, Then, Given } from 'cucumber';
+import { expect } from 'chai';
+import { By } from 'selenium-webdriver';
+import config from '../config';
 
 Given(/^user navigates to 'Home' page$/, {timeout: 50 * 1000}, async function () {
     try {
