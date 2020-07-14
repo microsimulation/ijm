@@ -1,6 +1,6 @@
-import { When, Then, Given } from 'cucumber';
-import { expect } from 'chai';
-import { By } from 'selenium-webdriver';
+import {When, Then, Given} from 'cucumber';
+import {expect} from 'chai';
+import {By} from 'selenium-webdriver';
 import config from '../config';
 
 Given(/^user navigates to 'Home' page$/, {timeout: 50 * 1000}, async function () {
@@ -53,7 +53,7 @@ When(/^user clicks on the first article from the list$/, {timeout: 15 * 1000}, f
     })
 });
 
-Then(/^'Article' page is displayed$/,{timeout: 30 * 1000}, function (callback) {
+Then(/^'Article' page is displayed$/, {timeout: 30 * 1000}, function (callback) {
     this.state.driver.getCurrentUrl().then(function (title) {
         expect(title).to.contains("articles");
     });
@@ -83,7 +83,7 @@ Then(/^'Issues' page is displayed$/, {timeout: 15 * 1000}, function (callback) {
     this.state.driver.getCurrentUrl().then(function (title) {
         expect(title).to.contains("collections");
         setTimeout(() => {
-            callback(null,result)
+            callback(null, result)
         }, 10000)
     });
     this.state.driver.takeScreenshot().then(buffer => {
@@ -135,4 +135,26 @@ Then(/^article preview doesn't contain date$/, function (callback) {
     }).catch(err => {
         callback(err)
     });
+});
+Then(/^"([^"]*)" page is displayed$/, function (articleType, callback) {
+    this.state.driver.findElement(By.xpath('//*[@id="maincontent"]//h1')).getText()
+        .then((result) => {
+            expect(result).to.equal(articleType);
+            callback(null, result)
+        });
+});
+Then(/^section "([^"]*)" is displayed$/, function (sectionName, callback) {
+    this.state.driver.findElement(By.xpath('//*[@id="subjects"]//p')).getText()
+        .then((result) => {
+            expect(result).to.equal(sectionName);
+            callback(null, result)
+        });
+
+});
+Then(/^with the following special type of articles is displayed:$/, async function (articleTypes) {
+    const types = articleTypes.rawTable.flat()
+    const elements = await this.state.driver.findElement(By.xpath('//*[@id="section-listing--types"]')).getText()
+    expect(result).to.not.equal(null);
+    const parsed = elements.split("\n")
+    expect(parsed).to.eql(types)
 });

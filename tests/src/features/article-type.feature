@@ -33,10 +33,10 @@ Feature: Article type page
     Given user navigates to 'Home' page
     When user is on the Home page
     And user navigates to "<articleName>" article
-    Then "<articleName>" page is displayed
+    Then "<pageName>" page is displayed
     Examples:
-      | articleName      |
-      | Book reviews     |
-      | Data watch       |
-      | Research notes   |
-      | Software reviews |
+      | articleName               | pageName         |
+      | scientific-correspondence | Book reviews     |
+      | tools-resources           | Data watch       |
+      | short-report              | Research notes   |
+      | registered-report         | Software reviews |
