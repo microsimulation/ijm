@@ -23,7 +23,7 @@ Feature: Article type page
     Given user navigates to 'Home' page
     When user is on the Home page
     Then section "In addition to standard research articles, explore our:" is displayed
-    And with the following special type of articles is displayed:
+    And the following special type of articles is displayed:
       | Book reviews     |
       | Data watch       |
       | Research notes   |
