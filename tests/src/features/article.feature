@@ -28,16 +28,45 @@ Feature: Article page
       | References                     |
       | Article and author information |
 
-  Scenario: Article can be downloaded
+  Scenario: Article can be downloaded in PDF format
     Given articles are uploaded
     When user navigates to 'Home' page
-    Then a list of articles is displayed
+    Then a list of 10 articles is displayed
     When user clicks on the first article from the list
-    Then 'article' page is displayed
+    Then 'Article' page is displayed
     When user clicks on 'Download' button
     And user selects 'Article PDF'
     Then a PDF file is downloaded
 
+  Scenario Outline: Download article citations option
+    Given user navigates to 'Home' page
+    When user is on the Home page
+    Then a list of 10 articles is displayed
+    When user clicks on the first article from the list
+    Then 'Article' page is displayed
+    When user clicks on 'Download' button
+    And user selects "<exportReference>"
+    Then a "<exportReference>" file is downloaded
+    Examples:
+      | exportReference |
+      | BibTeX          |
+      | RIS             |
+
+  Scenario Outline: Open article citations option
+    Given user navigates to 'Home' page
+    When user is on the Home page
+    Then a list of 10 articles is displayed
+    When user clicks on the first article from the list
+    Then 'Article' page is displayed
+    When user clicks on 'Download' button
+    And user selects "<exportReference>"
+    Then new tab "<exportPlatform>" is opened
+    Examples:
+      | exportReference | exportPlatform |
+      | Mendeley        |                |
+      | ReadCube        |                |
+      | Papers          |                |
+      | CiteULike       |                |
 
   Scenario:Article's figure and data are displayed
     Given articles are uploaded
@@ -50,3 +79,4 @@ Feature: Article page
     And following section are displayed:
       | Figures |
       | Tables  |
+

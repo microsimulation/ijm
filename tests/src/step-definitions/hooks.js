@@ -11,7 +11,10 @@ const buildChromeDriver = function () {
         return new Builder().forBrowser("chrome").setChromeOptions(new chrome.Options().windowSize({height:1920,width:1080}).headless()).build();
     }
     else{
-        return new Builder().forBrowser("chrome").build();
+        return new Builder()
+            .forBrowser("chrome")
+            .setChromeOptions(new chrome.Options().addArguments("--no-recovery-component"))
+            .build();
     }
 };
 

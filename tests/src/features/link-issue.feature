@@ -23,9 +23,12 @@ Feature: Link the issue to the article
     Then a list of 10 articles is displayed
     And article preview doesn't contain date
 
-    Scenario: List of issues is displayed and grouped into 3-year series
+    Scenario Outline: List of issues is displayed and grouped into 3-year dropdown
       Given user navigates to 'Home' page
       When user is on the Home page
       Then list of issues is displayed
-      And list of issues is collapsed in 3 section
+      When user clicks on "<issueName>"
+      Then dropdown with list of issues by 3-year is displayed
       And list of issues is grouped in a chronologically descending order
+      Examples:
+      |issueName|

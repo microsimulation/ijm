@@ -151,10 +151,33 @@ Then(/^section "([^"]*)" is displayed$/, function (sectionName, callback) {
         });
 
 });
-Then(/^with the following special type of articles is displayed:$/, async function (articleTypes) {
+Then(/^the following special type of articles is displayed:$/, async function (articleTypes) {
     const types = articleTypes.rawTable.flat()
     const elements = await this.state.driver.findElement(By.xpath('//*[@id="section-listing--types"]')).getText()
     expect(result).to.not.equal(null);
     const parsed = elements.split("\n")
     expect(parsed).to.eql(types)
+});
+When(/^user clicks on 'Download' button$/, {timeout: 20 * 1000}, function (callback) {
+    this.state.driver.findElement(By.xpath('//a[@href="#downloads"]'))
+        .then((result) => {
+            result.click();
+            callback(null, result)
+        });
+});
+When(/^user selects "([^"]*)"$/, async function (extraRef) {
+    console.log(extraRef)
+    const elemMap = {
+        "BibTeX": '//*[@id="downloads"]/ul[2]/li[1]/a',
+        "RIS": '//*[@id="downloads"]/ul[2]/li[2]/a',
+        "Mendeley": '//*[@id="downloads"]/ul[3]/li[1]/a',
+        "ReadCube": '//*[@id="downloads"]/ul[3]/li[2]/a',
+        "Papers": '//*[@id="downloads"]/ul[3]/li[3]/a',
+        "CiteULike": '//*[@id="downloads"]/ul[3]/li[4]/a'
+    }
+
+    expect(elemMap[extraRef]).to.be.a('string');
+
+    const result = await this.state.driver.findElement(By.xpath(elemMap[extraRef]))
+    result.click();
 });
