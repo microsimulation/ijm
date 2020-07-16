@@ -15,10 +15,10 @@ Feature: Article page
 
   Scenario: Article can be displayed
     Given articles are uploaded
-    When user navigates to 'Home' page
+    When user navigates to "Home" page
     Then a list of articles is displayed
     When user clicks on the first article from the list
-    Then 'article' page is displayed
+    Then "Article" is displayed
     And following sections are displayed:
       | Abstract                       |
       | Introduction                   |
@@ -30,21 +30,43 @@ Feature: Article page
 
   Scenario: Article can be downloaded in PDF format
     Given articles are uploaded
-    When user navigates to 'Home' page
+    When user navigates to "Home" page
     Then a list of 10 articles is displayed
     When user clicks on the first article from the list
-    Then 'Article' page is displayed
-    When user clicks on 'Download' button
-    And user selects 'Article PDF'
+    Then "Article" is displayed
+    When user clicks on "Download"
+    And user selects "Article PDF"
     Then a PDF file is downloaded
 
+  Scenario:Article's figure and data are displayed
+    Given articles are uploaded
+    When user navigates to "Home" page
+    Then a list of articles is displayed
+    When user clicks on the first article from the list
+    Then article is displayed in a new page
+    When user clicks on "Figures and data"
+    Then "Figures" page is displayed
+    And following section are displayed:
+      | Figures |
+      | Tables  |
+@issues
+  Scenario Outline: List of issues is displayed and grouped into 3-year dropdown
+    Given user navigates to "Home" page
+    When user is on the Home page
+    Then list of issues is displayed
+    When user clicks on "<issueName>"
+    Then dropdown with list of issues by 3-year is displayed
+    And list of issues is grouped in a chronologically descending order
+    Examples:
+      |issueName|
+
   Scenario Outline: Download article citations option
-    Given user navigates to 'Home' page
+    Given user navigates to "Home" page
     When user is on the Home page
     Then a list of 10 articles is displayed
     When user clicks on the first article from the list
-    Then 'Article' page is displayed
-    When user clicks on 'Download' button
+    Then "Article" is displayed
+    When user clicks on "Download"
     And user selects "<exportReference>"
     Then a "<exportReference>" file is downloaded
     Examples:
@@ -53,12 +75,12 @@ Feature: Article page
       | RIS             |
 
   Scenario Outline: Open article citations option
-    Given user navigates to 'Home' page
+    Given user navigates to "Home" page
     When user is on the Home page
     Then a list of 10 articles is displayed
     When user clicks on the first article from the list
-    Then 'Article' page is displayed
-    When user clicks on 'Download' button
+    Then "Article" is displayed
+    When user clicks on "Download"
     And user selects "<exportReference>"
     Then new tab "<exportPlatform>" is opened
     Examples:
@@ -66,16 +88,4 @@ Feature: Article page
       | Mendeley        |                |
       | ReadCube        |                |
       | Papers          |                |
-
-  Scenario:Article's figure and data are displayed
-    Given articles are uploaded
-    When user navigates to 'Home' page
-    Then a list of articles is displayed
-    When user clicks on the first article from the list
-    Then article is displayed in a new page
-    When user clicks on 'Figures and data'
-    Then 'Figures' page is displayed
-    And following section are displayed:
-      | Figures |
-      | Tables  |
 
