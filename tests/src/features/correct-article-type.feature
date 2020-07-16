@@ -6,7 +6,7 @@ Feature: Correct articles type for specific items
     Then a list of 10 articles is displayed
     When user navigates to "00170" article
     Then 'Article' page is displayed
-    And the article type is "RESEARCH ARTICLE"
+    And the article type is "RESEARCH NOTE"
     When user navigates to "00171" article
     Then 'Article' page is displayed
-    And the article type is "RESEARCH ARTICLE"
+    And the article type is "RESEARCH NOTE"
