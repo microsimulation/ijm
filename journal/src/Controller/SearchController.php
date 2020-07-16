@@ -54,15 +54,21 @@ final class SearchController extends Controller
 
         $search = promise_for($search);
 
-        $pagerfanta = $search
-            ->then(
-                function (Sequence $sequence) use ($page, $perPage) {
-                    $pagerfanta = new Pagerfanta(new SequenceAdapter($sequence, $this->willConvertTo(Teaser::class)));
-                    $pagerfanta->setMaxPerPage($perPage)->setCurrentPage($page);
+        $arguments['collections'] = $this->get('elife.api_sdk.collections')
+            ->slice(0);
 
-                    return $pagerfanta;
-                }
-            );
+        $pagerfanta = $arguments['collections']
+            ->then(function($collections) use ($page, $perPage, $search) {
+                return $search
+                    ->then(
+                        function (Sequence $sequence) use ($page, $perPage, $collections) {
+                            $pagerfanta = new Pagerfanta(new SequenceAdapter($sequence, $this->willConvertTo(Teaser::class, ['collections' => $collections])));
+                            $pagerfanta->setMaxPerPage($perPage)->setCurrentPage($page);
+
+                            return $pagerfanta;
+                        }
+                    );
+            });
 
         $arguments['title'] = 'Search';
 
