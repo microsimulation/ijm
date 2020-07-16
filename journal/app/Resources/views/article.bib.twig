@@ -14,7 +14,8 @@ year = {{ item.publishedDate|date('Y', 'UTC') }},
 month = {{ '{' }}{{ item.publishedDate|date('M', 'UTC')|lower }}{{ '}' }},
 pub_date = {{ '{' }}{{ item.publishedDate|date('Y-m-d', 'UTC') }}{{ '}' }},
 pages = {{ '{' }}{{ item.eLocationId }}{{ '}' }},
-citation = {{ '{' }}{{ item.citeAs|replace({'eLife': 'IJM'}) }}{{ '}' }},
+{% set articleVolume = (item.volume ~ '(' ~ item.issue ~ ')') %}
+citation = {{ '{' }}{{ item.citeAs|replace({'eLife': 'IJM', (item.volume): (articleVolume)}) }}{{ '}' }},
 doi = {{ '{' }}{{ item.doi }}{{ '}' }},
 url = {{ '{' }}https://doi.org/{{ item.doi }}{{ '}' }},
 {% if item.abstract %}
@@ -24,7 +25,7 @@ abstract = {{ '{' }}{% for paragraph in item.abstract.content %}{{ paragraph.tex
 keywords = {{ '{' }}{% for keyword in item.keywords %}{{ keyword|html2tex }}{% if not loop.last %}, {% endif %}{% endfor %}{{ '}' }},
 {% endif %}
 journal = {{ '{' }}IJM{{ '}' }},
-issn = {{ '{' }}2050-084X{{ '}' }},
+issn = {{ '{' }}1747-5864{{ '}' }},
 publisher = {{ '{' }}International Journal of Microsimulation{{ '}' }},
 {{ '}' }}
 {% endautoescape %}
