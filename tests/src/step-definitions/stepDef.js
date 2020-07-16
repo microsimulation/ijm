@@ -166,14 +166,12 @@ When(/^user clicks on 'Download' button$/, {timeout: 20 * 1000}, function (callb
         });
 });
 When(/^user selects "([^"]*)"$/, async function (extraRef) {
-    console.log(extraRef)
     const elemMap = {
         "BibTeX": '//*[@id="downloads"]/ul[2]/li[1]/a',
         "RIS": '//*[@id="downloads"]/ul[2]/li[2]/a',
         "Mendeley": '//*[@id="downloads"]/ul[3]/li[1]/a',
         "ReadCube": '//*[@id="downloads"]/ul[3]/li[2]/a',
         "Papers": '//*[@id="downloads"]/ul[3]/li[3]/a',
-        "CiteULike": '//*[@id="downloads"]/ul[3]/li[4]/a'
     }
 
     expect(elemMap[extraRef]).to.be.a('string');

@@ -66,7 +66,6 @@ Feature: Article page
       | Mendeley        |                |
       | ReadCube        |                |
       | Papers          |                |
-      | CiteULike       |                |
 
   Scenario:Article's figure and data are displayed
     Given articles are uploaded
