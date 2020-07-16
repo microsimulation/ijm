@@ -20,7 +20,8 @@ IS  - {{ item.issue }}
 PY  - {{ item.publishedDate|date('Y', 'UTC') }}
 DA  - {{ item.publishedDate|date('Y/m/d', 'UTC') }}
 SP  - {{ item.eLocationId }}
-C1  - {{ item.citeAs|replace({'eLife': 'IJM'}) }}
+{% set articleVolume = (item.volume ~ '(' ~ item.issue ~ ')') %}
+C1  - {{ item.citeAs|replace({'eLife': 'IJM', (item.volume): (articleVolume)}) }}
 DO  - {{ item.doi }}
 UR  - https://doi.org/{{ item.doi }}
 {% if item.abstract %}
@@ -33,7 +34,7 @@ KW  - {{ keyword|html2ris }}
 {% endfor %}
 {% endif %}
 JF  - IJM
-SN  - 2050-084X
+SN  - 1747-5864
 PB  - International Journal of Microsimulation
 ER  - {# end of file marker #}
 {% endautoescape %}
