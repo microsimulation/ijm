@@ -3,6 +3,7 @@ import {expect} from 'chai';
 import {By} from 'selenium-webdriver';
 import config from '../config';
 import xpaths from '../config/xpaths';
+import pages from '../config/pages';
 
 Given(/^user navigates to "([^"]*)" page$/, {timeout: 50 * 1000}, async function (pageName) {
     try {
@@ -46,18 +47,14 @@ When(/^user clicks on "([^"]*)"$/, async function (element) {
 });
 
 When(/^user navigates to "([^"]*)"$/, async function (articleNumber) {
-    try {
-        await this.state.driver.get(`${config.url}articles/${articleNumber}`);
-        const buffer = await this.state.driver.takeScreenshot();
-        this.attach(buffer, 'image/png');
-    } catch (e) {
-        console.log(e);
-    }
+    await this.state.driver.get(`${config.url}articles/${articleNumber}`);
+    const buffer = await this.state.driver.takeScreenshot();
+    this.attach(buffer, 'image/png');
 });
 
 When(/^user clicks on 'Linked volume' of the first article$/, async function () {
     try {
-        const result = await this.state.driver.findElement(By.xpath("//*[@id='listing']/li[1]/div/div/div/a"))
+        const result = await this.state.driver.findElement(By.xpath("//*[@id='listing']/li[1]/div/div/div/a"));
         result.click();
         const buffer = await this.state.driver.takeScreenshot();
         this.attach(buffer, 'image/png');
@@ -84,21 +81,26 @@ When(/^user clicks on "([^"]*)" subject$/, async function (subject) {
     }
 });
 
+When(/^user searches for "([^"]*)"$/, async function (keys) {
+    const result = await this.state.driver.findElement(By.xpath(xpaths["Search input"]))
+    result.sendKeys(keys);
+    const submit = await this.state.driver.findElement(By.xpath(xpaths["Search submit"]))
+    submit.click();
+    const buffer = await this.state.driver.takeScreenshot();
+    this.attach(buffer, 'image/png');
+});
+
 //Then section
 Then(/^a list of 10 articles is displayed$/, {timeout: 15 * 1000}, async function () {
-    try {
-        const result = await this.state.driver.findElements(By.xpath('//*[@id="listing"]/li'));
-        expect(result.length).to.equal(10);
-        const buffer = await this.state.driver.takeScreenshot();
-        this.attach(buffer, 'image/png');
-    } catch (e) {
-        console.log(e);
-    }
+    const result = await this.state.driver.findElements(By.xpath('//*[@id="listing"]/li'));
+    expect(result.length).to.equal(10);
+    const buffer = await this.state.driver.takeScreenshot();
+    this.attach(buffer, 'image/png');
 });
 
 Then(/^"([^"]*)" is displayed$/, {timeout: 30 * 1000}, async function (pageName) {
     const currentUrl = await this.state.driver.getCurrentUrl()
-    expect(currentUrl).to.contains(xpaths[pageName]);
+    expect(currentUrl).to.contains(pages[pageName]);
 });
 
 //compare header of the page
