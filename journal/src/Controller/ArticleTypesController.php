@@ -31,19 +31,25 @@ final class ArticleTypesController extends Controller
             throw new NotFoundHttpException('Unknown type '.$type, $e);
         }
 
-        $latest = promise_for(
-            $this->get('elife.api_sdk.search')
-                ->forType($type)
-                ->sortBy('date')
-        )
-            ->then(
-                function (Sequence $sequence) use ($page, $perPage) {
-                    $pagerfanta = new Pagerfanta(new SequenceAdapter($sequence, $this->willConvertTo(Teaser::class)));
-                    $pagerfanta->setMaxPerPage($perPage)->setCurrentPage($page);
+        $arguments['collections'] = $this->get('elife.api_sdk.collections')
+            ->slice(0);
 
-                    return $pagerfanta;
-                }
-            );
+        $latest = $arguments['collections']
+            ->then(function($collections) use ($page, $perPage, $type) {
+                return promise_for(
+                    $this->get('elife.api_sdk.search')
+                        ->forType($type)
+                        ->sortBy('date')
+                )
+                    ->then(
+                        function (Sequence $sequence) use ($page, $perPage, $collections) {
+                            $pagerfanta = new Pagerfanta(new SequenceAdapter($sequence, $this->willConvertTo(Teaser::class, ['collections' => $collections])));
+                            $pagerfanta->setMaxPerPage($perPage)->setCurrentPage($page);
+
+                            return $pagerfanta;
+                        }
+                    );
+            });
 
         $arguments['paginator'] = $latest
             ->then(

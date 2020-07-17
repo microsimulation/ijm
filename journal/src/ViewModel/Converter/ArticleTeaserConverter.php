@@ -39,7 +39,8 @@ final class ArticleTeaserConverter implements ViewModelConverter
         if (isset($context['collections'])) {
             $collectionTitle = $context['collections']
                 ->filter(function(Collection $collection) use ($object) {
-                    return strpos($collection->getTitle(), "{$object->getVolume()}({$object->getIssue()})");
+                    list(,$volumeNumber) = explode(" ", $collection->getTitle());
+                    return $volumeNumber === "{$object->getVolume()}({$object->getIssue()})";
                 });
 
             if ($collectionTitle && 1 === $collectionTitle->count()) {
