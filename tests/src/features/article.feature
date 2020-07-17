@@ -51,7 +51,6 @@ Feature: Article page
     Examples:
       | issueName |
 
-  @Ci
   Scenario Outline: Download article citations option
     Given user navigates to "Home" page
     When user is on the Home page
@@ -80,5 +79,3 @@ Feature: Article page
       | exportReference |
       | Mendeley        |
       | ReadCube        |
-
-
