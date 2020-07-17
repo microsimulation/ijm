@@ -5,7 +5,7 @@ Feature: Link the issue to the article
     Given user navigates to "Home" page
     When user is on the Home page
     Then a list of 10 articles is displayed
-    When user clicks on the first article from the list
+    When user clicks on the second article from the list
     Then "Article page" is displayed
     When user clicks on "Linked volume"
     Then "Issues page" is displayed
@@ -14,7 +14,7 @@ Feature: Link the issue to the article
     Given user navigates to "Home" page
     When user is on the Home page
     Then a list of 10 articles is displayed
-    When user clicks on 'Linked volume' of the first article
+    When user clicks on 'Linked volume' of the random article
     Then "Issues page" is displayed
 
   Scenario: Date is not displayed in article preview
@@ -50,6 +50,6 @@ Feature: Link the issue to the article
     And user searches for "Demography"
     Then "Search page" is displayed
     And a list of 10 articles is displayed
-    When user clicks on 'Linked volume' of the first article
+    When user clicks on 'Linked volume' of the random article
     Then "Issues page" is displayed
 

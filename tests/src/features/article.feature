@@ -28,16 +28,6 @@ Feature: Article page
       | References                     |
       | Article and author information |
 
-  Scenario: Article can be downloaded in PDF format
-    Given articles are uploaded
-    When user navigates to "Home" page
-    Then a list of 10 articles is displayed
-    When user clicks on the first article from the list
-    Then "Article" is displayed
-    When user clicks on "Download"
-    And user selects "Article PDF"
-    Then a PDF file is downloaded
-
   Scenario:Article's figure and data are displayed
     Given articles are uploaded
     When user navigates to "Home" page
@@ -49,7 +39,8 @@ Feature: Article page
     And following section are displayed:
       | Figures |
       | Tables  |
-@issues
+
+  @issues
   Scenario Outline: List of issues is displayed and grouped into 3-year dropdown
     Given user navigates to "Home" page
     When user is on the Home page
@@ -58,34 +49,36 @@ Feature: Article page
     Then dropdown with list of issues by 3-year is displayed
     And list of issues is grouped in a chronologically descending order
     Examples:
-      |issueName|
+      | issueName |
 
+  @Ci
   Scenario Outline: Download article citations option
     Given user navigates to "Home" page
     When user is on the Home page
-    Then a list of 10 articles is displayed
-    When user clicks on the first article from the list
-    Then "Article" is displayed
+    When user navigates to "00170"
+    Then "Article page" is displayed
     When user clicks on "Download"
     And user selects "<exportReference>"
     Then a "<exportReference>" file is downloaded
     Examples:
       | exportReference |
+      | Article PDF     |
       | BibTeX          |
       | RIS             |
 
+  @Ci
   Scenario Outline: Open article citations option
     Given user navigates to "Home" page
     When user is on the Home page
     Then a list of 10 articles is displayed
-    When user clicks on the first article from the list
-    Then "Article" is displayed
+    When user clicks on the second article from the list
+    Then "Article page" is displayed
     When user clicks on "Download"
     And user selects "<exportReference>"
-    Then new tab "<exportPlatform>" is opened
+    Then "<exportReference>" is displayed
     Examples:
-      | exportReference | exportPlatform |
-      | Mendeley        |                |
-      | ReadCube        |                |
-      | Papers          |                |
+      | exportReference |
+      | Mendeley        |
+      | ReadCube        |
+
 

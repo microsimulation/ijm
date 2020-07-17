@@ -80,7 +80,7 @@ final class ArticlesController extends Controller
                     $authors[] = $firstNameInitial.substr(strstr($author->getPreferredName(), " "), 1);
                 }
 
-                $citation = sprintf("%s; %s; %s; %s; %s(%s); %s",
+                $citation = sprintf("%s; %s; %s; %s; %s(%s); %s.",
                     join(', ', $authors), 
                     $item->getPublishedDate()->format('Y'),
                     $item->getTitle(),

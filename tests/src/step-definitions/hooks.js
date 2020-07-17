@@ -1,22 +1,21 @@
 import 'chromedriver';
-import { AfterAll, Before } from 'cucumber';
-import { Builder } from 'selenium-webdriver';
+import {AfterAll, Before} from 'cucumber';
+import {Builder} from 'selenium-webdriver';
+import fs from 'fs';
+import path from 'path';
 import World from '../world/world';
 import chrome from 'selenium-webdriver/chrome';
 import config from '../config';
 
 const buildChromeDriver = function () {
-    const headless_run = config.headless;
+    const { mode, windowSize } = config.headless;
 
-    if (headless_run) {
+    if (mode) {
         return new Builder()
             .forBrowser("chrome")
             .setChromeOptions(
                 new chrome.Options()
-                    .windowSize({
-                        width: 1920,
-                        height: 1080
-                    })
+                    .windowSize(windowSize)
                     .headless()
             )
             .build();
@@ -36,4 +35,9 @@ Before(function () {
 
 AfterAll(function () {
     chromeDriver.quit();
+
+    const {downloadDir} = config;
+    const files = fs.readdirSync(downloadDir);
+    files.forEach(file => file !== '.gitkeep' && fs.unlinkSync(path.join(downloadDir, file)));
 });
+
