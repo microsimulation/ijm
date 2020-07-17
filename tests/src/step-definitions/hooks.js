@@ -6,17 +6,14 @@ import chrome from 'selenium-webdriver/chrome';
 import config from '../config';
 
 const buildChromeDriver = function () {
-    const headless_run = config.headless;
+    const { mode, windowSize } = config.headless;
 
-    if (headless_run) {
+    if (mode) {
         return new Builder()
             .forBrowser("chrome")
             .setChromeOptions(
                 new chrome.Options()
-                    .windowSize({
-                        width: 1920,
-                        height: 1080
-                    })
+                    .windowSize(windowSize)
                     .headless()
             )
             .build();
