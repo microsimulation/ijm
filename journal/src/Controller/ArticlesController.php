@@ -76,7 +76,8 @@ final class ArticlesController extends Controller
                 $authors = [];
 
                 foreach ($item->getAuthors() as $author){
-                    $authors[] = $author->getPreferredName();
+                    $firstNameInitial = substr($author->getPreferredName(), 0, 1).". ";
+                    $authors[] = $firstNameInitial.substr(strstr($author->getPreferredName(), " "), 1);
                 }
 
                 $citation = sprintf("%s; %s; %s; %s; %s(%s); %s",
