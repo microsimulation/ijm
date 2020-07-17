@@ -1,6 +1,8 @@
 import 'chromedriver';
-import { AfterAll, Before } from 'cucumber';
-import { Builder } from 'selenium-webdriver';
+import {AfterAll, Before} from 'cucumber';
+import {Builder} from 'selenium-webdriver';
+import fs from 'fs';
+import path from 'path';
 import World from '../world/world';
 import chrome from 'selenium-webdriver/chrome';
 import config from '../config';
@@ -33,4 +35,9 @@ Before(function () {
 
 AfterAll(function () {
     chromeDriver.quit();
+
+    const {downloadDir} = config;
+    const files = fs.readdirSync(downloadDir);
+    files.forEach(file => file !== '.gitkeep' && fs.unlinkSync(path.join(downloadDir, file)));
 });
+
