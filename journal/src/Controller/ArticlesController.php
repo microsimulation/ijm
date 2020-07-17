@@ -73,8 +73,16 @@ final class ArticlesController extends Controller
                 if (!$item->getCiteAs()) {
                     return null;
                 }
+                $authors=[];
 
-                return ContextualData::withCitation(str_replace('eLife', 'IJM', $item->getCiteAs()), new Doi($item->getDoi()));
+                foreach($item->getAuthors() as $author){
+                    $authors[] = $author->getPreferredName();
+                }
+                // $citation = str_replace('eLife', 'XXXX', $item->getCiteAs());
+                $authorNames = join(' ', $authors);
+                $citation = "{$authorNames}";
+
+                return ContextualData::withCitation($citation, new Doi($item->getDoi()));
             });
 
         $context = all(['item' => $arguments['item'], 'history' => $arguments['history'], 'hasFigures' => $arguments['hasFigures']])
