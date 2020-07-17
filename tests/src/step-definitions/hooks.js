@@ -7,10 +7,20 @@ import config from '../config';
 
 const buildChromeDriver = function () {
     const headless_run = config.headless;
-    if(headless_run){
-        return new Builder().forBrowser("chrome").setChromeOptions(new chrome.Options().windowSize({height:1920,width:1080}).headless()).build();
-    }
-    else{
+
+    if (headless_run) {
+        return new Builder()
+            .forBrowser("chrome")
+            .setChromeOptions(
+                new chrome.Options()
+                    .windowSize({
+                        width: 1920,
+                        height: 1080
+                    })
+                    .headless()
+            )
+            .build();
+    } else {
         return new Builder()
             .forBrowser("chrome")
             .setChromeOptions(new chrome.Options().addArguments("--no-recovery-component"))
