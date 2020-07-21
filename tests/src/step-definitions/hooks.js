@@ -7,6 +7,9 @@ import World from '../world/world';
 import chrome from 'selenium-webdriver/chrome';
 import config from '../config';
 
+const MicrosimApp = require('../pom/site/microsim.app');
+const webddriver = require('selenium-webdriver');
+
 const buildChromeDriver = function () {
     const { mode, windowSize } = config.headless;
 
@@ -31,6 +34,7 @@ const chromeDriver = buildChromeDriver()
 
 Before(function () {
     this.state = new World(chromeDriver);
+    this.microsim = new MicrosimApp(webddriver, chromeDriver);
 });
 
 AfterAll(function () {
