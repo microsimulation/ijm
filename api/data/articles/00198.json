@@ -1,0 +1,2349 @@
+{
+    "status": "vor",
+    "id": "00198",
+    "version": 1,
+    "type": "research-article",
+    "doi": "10.34196/ijm.00198",
+    "authorLine": "Janne Salonen et al.",
+    "title": "Using trajectory analysis to test and illustrate microsimulation outcomes",
+    "published": "2020-07-20T00:00:00Z",
+    "versionDate": "2020-07-20T00:00:00Z",
+    "statusDate": "2020-07-20T00:00:00Z",
+    "volume": 12,
+    "issue": 2,
+    "elocationId": "n/a",
+    "pdf": "http://web:8082/00198/ijm-00198.pdf",
+    "subjects": [
+        {
+            "id": "methodology-dynamic-microsimulation",
+            "name": "Methodology, Dynamic microsimulation"
+        }
+    ],
+    "abstract": {
+        "content": [
+            {
+                "text": "We propose a new data-driven way of testing and visualizing dynamic microsimulation outcome data. The proposed statistical methodology is based on trajectory analysis (<a href=\"#bib24\">Nagin, 1999</a>), which can be used to identify several sub-populations from a population measured longitudinally. We briefly introduce the statistical basis of trajectory analysis and discuss its use in the context of microsimulation. Finally, we report our results from the Finnish microsimulation model ELSI (<a href=\"#bib36\">Tikanm\u00e4ki et al., 2014</a>; <a href=\"#bib37\">Tikanm\u00e4ki et al., 2015</a>) to illustrate the possibilities and benefits of this technique. Trajectory analysis is available in many statistical software packages (e.g., SAS, R, Stata and Mplus). We conclude that trajectory analysis is a useful tool for investigating microsimulation outcomes.",
+                "type": "paragraph"
+            }
+        ]
+    },
+    "copyright": {
+        "license": "CC-BY-4.0",
+        "holder": "Salonen et al.",
+        "statement": "This article is distributed under the terms of the <a href=\"http://creativecommons.org/licenses/by/4.0/\">Creative Commons Attribution License</a>, which permits unrestricted use and redistribution provided that the original author and source are credited."
+    },
+    "authors": [
+        {
+            "affiliations": [
+                {
+                    "address": {
+                        "components": {
+                            "country": "Finland",
+                            "locality": [
+                                "Helsinki"
+                            ]
+                        },
+                        "formatted": [
+                            "Helsinki",
+                            "Finland"
+                        ]
+                    },
+                    "name": [
+                        "Finnish Centre for Pensions"
+                    ]
+                }
+            ],
+            "emailAddresses": [
+                "janne.salonen@etk.fi"
+            ],
+            "name": {
+                "index": "Salonen, Janne",
+                "preferred": "Janne Salonen"
+            },
+            "orcid": "0000-0002-0595-6226",
+            "type": "person"
+        },
+        {
+            "affiliations": [
+                {
+                    "address": {
+                        "components": {
+                            "country": "Finland",
+                            "locality": [
+                                "Helsinki"
+                            ]
+                        },
+                        "formatted": [
+                            "Helsinki",
+                            "Finland"
+                        ]
+                    },
+                    "name": [
+                        "Finnish Centre for Pensions"
+                    ]
+                }
+            ],
+            "emailAddresses": [
+                "heikki.tikanmaki@etk.fi"
+            ],
+            "name": {
+                "index": "Tikanm\u00e4ki, Heikki",
+                "preferred": "Heikki Tikanm\u00e4ki"
+            },
+            "type": "person"
+        },
+        {
+            "affiliations": [
+                {
+                    "address": {
+                        "components": {
+                            "country": "Finland",
+                            "locality": [
+                                "Tampere"
+                            ]
+                        },
+                        "formatted": [
+                            "Tampere",
+                            "Finland"
+                        ]
+                    },
+                    "name": [
+                        "University of Tampere"
+                    ]
+                }
+            ],
+            "name": {
+                "index": "Nummi, Tapio",
+                "preferred": "Tapio Nummi"
+            },
+            "type": "person"
+        }
+    ],
+    "dataSets": {
+        "availability": [
+            {
+                "text": "The data used in the study is from ELSI-microsimulation model. The policy regarding ELSI is; Proprietary, with executable not available.",
+                "type": "paragraph"
+            }
+        ]
+    },
+    "keywords": [
+        "finite mixtures",
+        "trajectory analysis",
+        "group-based modeling",
+        "dynamic microsimulation"
+    ],
+    "body": [
+        {
+            "content": [
+                {
+                    "text": "This paper has two goals. First, we present a statistical technique called group-based trajectory analysis and demonstrate its usefulness in a microsimulation context. We use trajectory analysis to identify unknown groups or sub-populations that can yield valuable information that is not necessarily easily accessible by other means. Second, we use three examples to show how this technique, among others, can be used to validate models and to reveal possible misspecification of the microsimulation model.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Trajectory analysis has recently gained much popularity in a number of fields including psychology, criminology (<a href=\"#bib27\">Nagin and Odgers, 2010</a>; <a href=\"#bib26\">Nagin, 2016</a>; <a href=\"#bib41\">van der Geest et al., 2016</a>), sociology (<a href=\"#bib11\">Hynes and Clarkberg, 2005</a>; <a href=\"#bib5\">Don and Mickelson, 2014</a>), education (<a href=\"#bib16\">Kokko et al., 2008</a>), marketing (<a href=\"#bib21\">Mani and Nandkumar, 2016</a>) and health sciences (<a href=\"#bib31\">Nummi et al., 2014</a>; <a href=\"#bib32\">Nummi et al., 2017a</a>). It has increasingly been used in studies on labor market attachment (<a href=\"#bib34\">Peutere et al., 2015</a>; <a href=\"#bib33\">Nummi et al., 2017b</a>). To our knowledge, trajectory analysis has very seldom been used in a microsimulation context.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Dynamic microsimulation results are often reported using some ex ante classification (e.g., education, age, or labor market state). The trajectory approach offers key advantages over ex ante classification, which stem from the a priori use of an economic taxonomy. The basic advantage of trajectory analysis is that it can reveal latent patterns in longitudinal data that might otherwise remain hidden, hence complementing ex ante classifications. Furthermore, the use of a formal statistical methodology has the capacity to distinguish chance variation across individuals from real differences caused by latent sub-groups (<a href=\"#bib27\">Nagin and Odgers, 2010</a>).",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "In this paper, we propose two kind of trajectory analysis implementations. First, the data can be stratified by various background factors (e.g., by labor market state) and thus the latent sub-groups are to be found within the strata. This would yield information on, for example, how common the earnings trajectories (by population state) are in the stratas investigated. Second, another way would be to classify the trajectory groups by some background factor after trajectory analysis. This would yield information on how the ex ante classifier (e.g., labor market state) is divided in trajectory groups.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Population heterogeneity is an important topic in dynamic microsimulation. Credible heterogeneity in a simulated population is a desired property of any microsimulation model. Trajectory analysis is a powerful method for demonstrating this heterogeneity. It allows for the analysis of any microsimulation outcome with interesting population heterogeneity. For instance, in the Finnish ELSI model we could analyze the individual population state, pension contributions, working lives or incomes. The technique is especially suited to cohort-based analysis, but it can also handle several cohorts simultaneously.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The approach we propose has a number of advantages. First, trajectory analysis has the potential to reveal interesting sub-groups of individuals. Second, the technique of trajectory analysis with normal distribution (like other members of the exponential family) is a well-established method, with software packages readily available for microsimulation practitioners (e.g. <a href=\"#bib12\">Jones et al., 2001</a>; <a href=\"#bib17\">Leisch, 2004</a>; <a href=\"#bib8\">Grun and Leisch, 2007</a>; <a href=\"#bib9\">Haughton et al., 2009</a>; <a href=\"#bib23\">Muth\u00e9n and Muth\u00e9n, 2010</a>). Third, trajectory analysis is a flexible method that can be applied to both cross-sectional data (single period measurements), and more importantly, to longitudinal data (multiple periods of measurements). The most common metric for indexing time is age or year. Another possible metric would be time before or since a life-event.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Descriptive analysis is often inadequate for the purposes of empirical research. Trajectory analysis can provide a more rigorous examination with time-dependent covariates or risk factors affecting trajectory group membership (<a href=\"#bib25\">Nagin, 2005</a>; <a href=\"#bib13\">Jones and Nagin, 2007</a>). In addition to single outcome analysis, trajectory analysis also allows for the simultaneous analysis of multiple outcomes <a href=\"#bib28\">Nagin et al., 2016</a>). Indeed, there is now a growing body of research that uses multiple trajectory analysis (e.g. <a href=\"#bib10\">Hsu, 2015</a>; <a href=\"#bib33\">Nummi et al., 2017b</a>). <a href=\"#bib33\">Nummi et al. (2017b)</a> provide an example of the simultaneous modeling of employment, education, unemployment and parental leaves using a multivariate trajectory model. These abovementioned extensions also provide interesting possibilities for microsimulation data analysis.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The method has also its disadvantages. First, trajectory analysis can only be performed with discrete-time data. Most dynamic microsimulation models are defined in discrete-time, with time-point intervals of one year (<a href=\"#bib40\">Zaidi and Rake, 2001</a>; <a href=\"#bib18\">Li and O\u2019Donoghue, 2013</a>; <a href=\"#bib19\">Li et al., 2014</a>). This leads to a second disadvantage, which can be described as state vs. event microsimulation. Trajectory analysis is easiest to implement with the calendar year as the time interval, that is, using state microsimulation models.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Trajectory analysis is often applied to normally distributed data, but it is also applicable to discrete distributions such as binomial, Poisson, multinomial, etc., making this method a useful tool for the exploratory analysis of data sets. In this paper, we show three examples of trajectory analysis in microsimulation contexts. These examples cover labor market simulation topics such as wage earnings, education and pensions. Trajectory analysis of these outcomes illustrates the technique with different data distributions.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s1",
+            "title": "1. Introduction",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "content": [
+                        {
+                            "text": "Trajectory analysis is, in essence, the application of finite mixture modeling to longitudinal data. It can be used for modeling the unobserved heterogeneity of individuals measured longitudinally (e.g. <a href=\"#bib24\">Nagin, 1999</a>; <a href=\"#bib25\">Nagin, 2005</a>). In what follows we describe the statistical background for our application of trajectory analysis.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The statistical foundation of trajectory analysis is on finite mixture modeling. Well-established in the field of statistics, the mixture modeling method concerns modeling a statistical distribution by a mixture (or weighted sum) of distributions (see <a href=\"#bib39\">Titterington et al., 1985</a>; <a href=\"#bib22\">McLachlan and Peel, 2000</a>). <a href=\"#bib2\">B\u00f6hning et al. (2007)</a> give examples of the use of finite mixture modeling in various statistical applications.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Two basic modeling approaches are called growth mixture modeling and group-based trajectory modeling. They share the same analytical objective of measuring and explaining differences across population members in their developmental course. The difference between approaches lies in the way they model individual-level heterogenity in developmental trajectories.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Growth mixture models depict the average trend of outcome and individual-specific variation around the average trend with random effects using the same parameters of change (<a href=\"#bib27\">Nagin and Odgers, 2010</a>).",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Our specific aim is to identify individuals or objects in microsimulation data with the same kind of unknown developmental profiles (trajectories or sub-groups). The microsimulation population is then splitted into several sub-populations. Let <math id=\"inf1\"><mstyle displaystyle=\"true\" scriptlevel=\"0\"><mrow><msub><mi mathvariant=\"bold-italic\">y</mi><mrow><mi>i</mi></mrow></msub><mo>=</mo><msup><mrow><mo>(</mo><mrow><msub><mi>y</mi><mrow><mi>i</mi><mn>1</mn></mrow></msub><mo>,</mo><msub><mi>y</mi><mrow><mi>i</mi><mn>2</mn></mrow></msub><mo>,</mo><mo>\u2026</mo><mo>,</mo><msub><mi>y</mi><mrow><mi>i</mi><mi>T</mi></mrow></msub></mrow><mo>)</mo></mrow><mo>\u2032</mo></msup></mrow></mstyle></math> represent the sequence of measurements on an individual <i>i</i> over <i>T</i> periods and let <math id=\"inf2\"><mstyle displaystyle=\"true\" scriptlevel=\"0\"><mrow><msub><mi>f</mi><mrow><mi>i</mi></mrow></msub><mrow><mo>(</mo><mrow><msub><mi mathvariant=\"bold-italic\">y</mi><mrow><mi>i</mi></mrow></msub><mrow><mo stretchy=\"false\">|</mo></mrow><msub><mi mathvariant=\"bold-italic\">X</mi><mrow><mi>i</mi></mrow></msub></mrow><mo>)</mo></mrow></mrow></mstyle></math> denote the marginal probability distribution of <math alttext=\"\\boldsymbol{y}_{i}\" id=\"inf3\"><msub><mrow><mi mathvariant=\"bold-italic\">y</mi></mrow><mrow><mi>i</mi></mrow></msub></math> with possible time-dependent covariates <math alttext=\"\\boldsymbol{X}_{i}\" id=\"inf4\"><msub><mrow><mi mathvariant=\"bold-italic\">X</mi></mrow><mrow><mi>i</mi></mrow></msub></math>. It is assumed that <math alttext=\"f_{i}\\left (\\boldsymbol{y}_{i}|\\boldsymbol{X}_{i}\\right)\" id=\"inf5\"><msub><mrow><mi>f</mi></mrow><mrow><mi>i</mi></mrow></msub><mfenced separators=\"|\"><mrow><msub><mrow><mi mathvariant=\"bold-italic\">y</mi></mrow><mrow><mi>i</mi></mrow></msub></mrow><mrow><msub><mrow><mi mathvariant=\"bold-italic\">X</mi></mrow><mrow><mi>i</mi></mrow></msub></mrow></mfenced></math> follows a mixture of <i>K</i> densities",
+                            "type": "paragraph"
+                        },
+                        {
+                            "id": "EQ1",
+                            "label": "(1)",
+                            "mathml": "<math><msub><mrow><mi>f</mi></mrow><mrow><mi>i</mi></mrow></msub><mfenced separators=\"|\"><mrow><msub><mrow><mi mathvariant=\"bold-italic\">y</mi></mrow><mrow><mi>i</mi></mrow></msub></mrow><mrow><msub><mrow><mi mathvariant=\"bold-italic\">X</mi></mrow><mrow><mi>i</mi></mrow></msub></mrow></mfenced><mo>=</mo><mrow><munderover><mo>\u2211</mo><mrow><mi>k</mi><mo>=</mo><mn>1</mn></mrow><mrow><mi>K</mi></mrow></munderover><mrow><msub><mrow><mi>\u03c0</mi></mrow><mrow><mi>k</mi></mrow></msub></mrow></mrow><msub><mrow><mi>f</mi></mrow><mrow><mi>i</mi><mi>k</mi></mrow></msub><mfenced separators=\"|\"><mrow><msub><mrow><mi mathvariant=\"bold-italic\">y</mi></mrow><mrow><mi>i</mi></mrow></msub></mrow><mrow><msub><mrow><mi mathvariant=\"bold-italic\">X</mi></mrow><mrow><mi>i</mi></mrow></msub></mrow></mfenced><mo>,</mo><mi> </mi><mi> </mi><mrow><munderover><mo>\u2211</mo><mrow><mi>k</mi><mo>=</mo><mn>1</mn></mrow><mrow><mi>K</mi></mrow></munderover><mrow><msub><mrow><mi>\u03c0</mi></mrow><mrow><mi>k</mi></mrow></msub></mrow></mrow><mo>=</mo><mn>1</mn><mi> </mi><mi>w</mi><mi>i</mi><mi>t</mi><mi>h</mi><mi> </mi><msub><mrow><mi>\u03c0</mi></mrow><mrow><mi>k</mi></mrow></msub><mo>&gt;</mo><mn>0</mn><mo>,</mo></math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "where <math id=\"inf6\"><mstyle displaystyle=\"true\" scriptlevel=\"0\"><mrow><msub><mi>\u03c0</mi><mrow><mi>k</mi></mrow></msub></mrow></mstyle></math> is the probability of belonging to the sub-group <i>k</i> and <math alttext=\"f_{ik}\\left (\\boldsymbol{y}_{i}|\\boldsymbol{X}_{i}\\right)\" id=\"inf7\"><msub><mrow><mi>f</mi></mrow><mrow><mi>i</mi><mi>k</mi></mrow></msub><mfenced separators=\"|\"><mrow><msub><mrow><mi mathvariant=\"bold-italic\">y</mi></mrow><mrow><mi>i</mi></mrow></msub></mrow><mrow><msub><mrow><mi mathvariant=\"bold-italic\">X</mi></mrow><mrow><mi>i</mi></mrow></msub></mrow></mfenced></math> is the density for the <i>k</i>th sub-group. Trajectory analysis can handle discrete or continuous data. The simplest choice is to use the Bernoulli distribution {0, 1} for the mixture components <math alttext=\"f_{ik}\\left (\\boldsymbol{y}_{i}|\\boldsymbol{X}_{i}\\right)\" id=\"inf8\"><msub><mrow><mi>f</mi></mrow><mrow><mi>i</mi><mi>k</mi></mrow></msub><mfenced separators=\"|\"><mrow><msub><mrow><mi mathvariant=\"bold-italic\">y</mi></mrow><mrow><mi>i</mi></mrow></msub></mrow><mrow><msub><mrow><mi mathvariant=\"bold-italic\">X</mi></mrow><mrow><mi>i</mi></mrow></msub></mrow></mfenced></math> : but other members of the exponential family are often applied as well. It is assumed that given <i>k</i>th sub-group measurements are independent. For Bernoulli mixtures we can write",
+                            "type": "paragraph"
+                        },
+                        {
+                            "id": "EQ2",
+                            "label": "(2)",
+                            "mathml": "<math><mstyle displaystyle=\"true\" scriptlevel=\"0\"><mrow><msub><mi>f</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub><mrow><mo>(</mo><mrow><msub><mi mathvariant=\"bold-italic\">y</mi><mrow><mi>i</mi></mrow></msub><mrow><mo stretchy=\"false\">|</mo></mrow><msub><mi mathvariant=\"bold-italic\">X</mi><mrow><mi>i</mi></mrow></msub></mrow><mo>)</mo></mrow><mo>=</mo><munderover><mo>\u220f</mo><mrow><mi>t</mi><mo>=</mo><mn>1</mn></mrow><mrow><mi>T</mi></mrow></munderover><msubsup><mi>p</mi><mrow><mi>i</mi><mi>t</mi><mi>k</mi></mrow><mrow><msub><mi>y</mi><mrow><mi>i</mi><mi>t</mi></mrow></msub></mrow></msubsup><mrow><mo>(</mo><mrow><mn>1</mn><mo>\u2212</mo><msubsup><mi>p</mi><mrow><mi>i</mi><mi>t</mi><mi>k</mi></mrow><mrow><mn>1</mn><mo>\u2212</mo><msub><mi>y</mi><mrow><mi>i</mi><mi>t</mi></mrow></msub></mrow></msubsup></mrow><mo>)</mo></mrow><mo>,</mo></mrow></mstyle></math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "where the probability <math alttext=\"p_{itk}\" id=\"inf9\"><msub><mrow><mi>p</mi></mrow><mrow><mi>i</mi><mi>t</mi><mi>k</mi></mrow></msub></math> is a function of covariates <math alttext=\"\\boldsymbol{X}_{i}\" id=\"inf10\"><msub><mrow><mi mathvariant=\"bold-italic\">X</mi></mrow><mrow><mi>i</mi></mrow></msub></math>. For modeling the conditional distribution of <math alttext=\"p_{itk}\" id=\"inf11\"><msub><mrow><mi>p</mi></mrow><mrow><mi>i</mi><mi>t</mi><mi>k</mi></mrow></msub></math> we use the logistic regression model. For the <i>i</i>th individual, we can then use the equation",
+                            "type": "paragraph"
+                        },
+                        {
+                            "id": "EQ3",
+                            "label": "(3)",
+                            "mathml": "<math><msub><mrow><mi>p</mi></mrow><mrow><mi>i</mi><mi>t</mi><mi>k</mi></mrow></msub><mo>=</mo><mfrac><mrow><mi mathvariant=\"normal\">e</mi><mi mathvariant=\"normal\">x</mi><mi mathvariant=\"normal\">p</mi><mo>\u2061</mo><mo>(</mo><msubsup><mrow><mi mathvariant=\"bold-italic\">x</mi></mrow><mrow><mi>i</mi></mrow><mrow><mi>`</mi></mrow></msubsup><msub><mrow><mi>\u03b2</mi></mrow><mrow><mi>k</mi></mrow></msub><mo>)</mo></mrow><mrow><mn>1</mn><mo>+</mo><mi>e</mi><mi>x</mi><mi>p</mi><mo>(</mo><msubsup><mrow><mi mathvariant=\"bold-italic\">x</mi></mrow><mrow><mi>i</mi></mrow><mrow><mi>`</mi></mrow></msubsup><msub><mrow><mi>\u03b2</mi></mrow><mrow><mi>k</mi></mrow></msub><mo>)</mo></mrow></mfrac><mi> </mi><mo>,</mo></math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "where <math alttext=\"\\boldsymbol{x}_{i}^{`}\\left (t\\right)\" id=\"inf12\"><msubsup><mrow><mi mathvariant=\"bold-italic\">x</mi></mrow><mrow><mi>i</mi></mrow><mrow><mi>`</mi></mrow></msubsup><mo>(</mo><mi>t</mi><mo>)</mo></math> is the <i>t</i>th row of <math alttext=\"\\boldsymbol{X}_{i}\" id=\"inf13\"><msub><mrow><mi mathvariant=\"bold-italic\">X</mi></mrow><mrow><mi>i</mi></mrow></msub></math> and <math alttext=\"\\boldsymbol{\\beta }_{k}\" id=\"inf14\"><msub><mrow><mi mathvariant=\"bold-italic\">\u03b2</mi></mrow><mrow><mi>k</mi></mrow></msub></math> is the parameter vector for the <i>k</i>th sub-group. For the analysis of continuous data, one alternative is the multivariate normal distribution",
+                            "type": "paragraph"
+                        },
+                        {
+                            "id": "EQ4",
+                            "label": "(4)",
+                            "mathml": "<math><mstyle displaystyle=\"true\" scriptlevel=\"0\"><mrow><msub><mi>f</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub><mrow><mo>(</mo><mrow><msub><mi mathvariant=\"bold-italic\">y</mi><mrow><mi>i</mi></mrow></msub><mrow><mo stretchy=\"false\">|</mo></mrow><msub><mi mathvariant=\"bold-italic\">X</mi><mrow><mi>i</mi></mrow></msub></mrow><mo>)</mo></mrow><mo>=</mo><msup><mrow><mo>(</mo><mrow><mn>2</mn><mi>\u03c0</mi></mrow><mo>)</mo></mrow><mrow><mo>\u2212</mo><mfrac><msub><mi>p</mi><mrow><mi>i</mi></mrow></msub><mn>2</mn></mfrac></mrow></msup><mtext>\u00a0</mtext><mrow><mo stretchy=\"false\">|</mo></mrow><msub><mi mathvariant=\"normal\">\u03a3</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub><mtext>\u00a0</mtext><mrow><mo stretchy=\"false\">|</mo></mrow><msup><mtext>\u00a0</mtext><mrow><mo>\u2212</mo><mfrac><msub><mi>p</mi><mrow><mi>i</mi></mrow></msub><mn>2</mn></mfrac></mrow></msup><mtext>\u00a0</mtext><mi>e</mi><mi>x</mi><mi>p</mi><mrow><mo>{</mo><mrow><mo>\u2212</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><msup><mrow><mo>(</mo><mrow><msub><mi mathvariant=\"bold-italic\">y</mi><mrow><mi>i</mi></mrow></msub><mo>\u2212</mo><msub><mi mathvariant=\"bold-italic\">\u03bc</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub></mrow><mo>)</mo></mrow><mrow><mo>\u2032</mo></mrow></msup><msubsup><mi mathvariant=\"normal\">\u03a3</mi><mrow><mi>i</mi><mi>k</mi></mrow><mrow><mo>\u2212</mo><mn>1</mn></mrow></msubsup><mrow><mo>(</mo><mrow><msub><mi mathvariant=\"bold-italic\">y</mi><mrow><mi>i</mi></mrow></msub><mo>\u2212</mo><msub><mi mathvariant=\"bold-italic\">\u03bc</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub></mrow><mo>)</mo></mrow></mrow><mo>}</mo></mrow><mo>,</mo></mrow></mstyle></math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "where <math alttext=\"\\boldsymbol{\\mu }_{ik}\" id=\"inf15\"><msub><mrow><mi mathvariant=\"bold-italic\">\u03bc</mi></mrow><mrow><mi>i</mi><mi>k</mi></mrow></msub></math> is a function of covariates <math alttext=\"\\boldsymbol{X}_{i}\" id=\"inf16\"><msub><mrow><mi mathvariant=\"bold-italic\">X</mi></mrow><mrow><mi>i</mi></mrow></msub></math> with parameters <math alttext=\"\\boldsymbol{\\beta }_{k}\" id=\"inf17\"><msub><mrow><mi mathvariant=\"bold-italic\">\u03b2</mi></mrow><mrow><mi>k</mi></mrow></msub></math> and <math id=\"inf18\"><mstyle displaystyle=\"true\" scriptlevel=\"0\"><mrow><msub><mi mathvariant=\"normal\">\u03a3</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub><mo>=</mo><msubsup><mi>\u03c3</mi><mrow><mi>k</mi></mrow><mrow><mn>2</mn></mrow></msubsup><mi mathvariant=\"bold-italic\">I</mi></mrow></mstyle></math> a covariance matrix within <i>k</i>th sub-group. Thus, the measurements are assumed to be independent within sub-group <i>k</i>, with the variance <math alttext=\"\\sigma _{k}^{2}\" id=\"inf19\"><msubsup><mrow><mi>\u03c3</mi></mrow><mrow><mi>k</mi></mrow><mrow><mn>2</mn></mrow></msubsup></math>. One advantage of this assumption is that it considerably simplifies the likelihood function and thus yields a computationally lighter and more stable analysis.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "For modeling the trajectory mean in time <i>t,</i> simple linear models are usually applied, e.g. low-degree polynomials. For our three examples we used cubic polynomial model",
+                            "type": "paragraph"
+                        },
+                        {
+                            "id": "EQ5",
+                            "label": "(5)",
+                            "mathml": "<math><msup><mrow><mi mathvariant=\"bold-italic\">x</mi></mrow><mrow><mi>`</mi></mrow></msup><msub><mrow><mi mathvariant=\"bold-italic\">\u03b2</mi></mrow><mrow><mi>k</mi></mrow></msub><mo>=</mo><msub><mrow><mi>\u03b2</mi></mrow><mrow><mn>0</mn><mi>k</mi></mrow></msub><mo>+</mo><msub><mrow><mi>\u03b2</mi></mrow><mrow><mn>1</mn><mi>k</mi></mrow></msub><mi>t</mi><mo>+</mo><msub><mrow><mi>\u03b2</mi></mrow><mrow><mn>2</mn><mi>k</mi></mrow></msub><msup><mrow><mi>t</mi></mrow><mrow><mn>2</mn></mrow></msup><mo>+</mo><msub><mrow><mi>\u03b2</mi></mrow><mrow><mn>3</mn><mi>k</mi></mrow></msub><msup><mrow><mi>t</mi></mrow><mrow><mn>3</mn></mrow></msup></math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "to model the development within the sub-group <i>k</i> in time (age). The mean model can also include other time-dependent covariates or time-stable covariates (risk-factors).",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "For parameter estimation, Maximum Likelihood (ML) estimates can be calculated by maximizing the log-likelihood <math alttext=\"\\sum \\limits_{i=1}^{N}f_{i}\" id=\"inf20\"><mrow><munderover><mo>\u2211</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mrow><mi>N</mi></mrow></munderover><mrow><msub><mrow><mi>f</mi></mrow><mrow><mi>i</mi></mrow></msub></mrow></mrow></math> over unknown parameters <math id=\"inf21\"><mstyle displaystyle=\"true\" scriptlevel=\"0\"><mrow><msub><mi mathvariant=\"bold-italic\">\u03b2</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub></mrow></mstyle></math> and <math alttext=\"\\sigma _{k},\\ k=1,\\ldots ,K\" id=\"inf22\"><msub><mrow><mi>\u03c3</mi></mrow><mrow><mi>k</mi></mrow></msub><mo>,</mo><mi> </mi><mi>k</mi><mo>=</mo><mn>1</mn><mo>,</mo><mo>\u2026</mo><mo>,</mo><mi>K</mi></math> (see e.g. <a href=\"#bib24\">Nagin, 1999</a>; <a href=\"#bib12\">Jones et al., 2001</a>; <a href=\"#bib13\">Jones and Nagin, 2007</a>). In most software packages, the method used for ML estimation is the EM (Expectation and Maximization) algorithm (see <a href=\"#bib4\">Dempster et al., 1977</a>; <a href=\"#bib22\">McLachlan and Peel, 2000</a>). The algorithm in an iterative technique involving two steps. E step finds the expected log likelihood under current parameter estimates, the subsequent M step maximizes the expected log likelihood function. These steps are iterated until the estimates converge. When applied to trajectory analysis, the E step calculates the posterior probability for sub-group membership",
+                            "type": "paragraph"
+                        },
+                        {
+                            "label": "(6)",
+                            "mathml": "<math><msub><mrow><mi>w</mi></mrow><mrow><mi>i</mi><mi>k</mi></mrow></msub><mo>=</mo><mfrac><mrow><msub><mrow><mi>\u03c0</mi></mrow><mrow><mi>k</mi></mrow></msub><msub><mrow><mi>f</mi></mrow><mrow><mi>k</mi></mrow></msub><mfenced separators=\"|\"><mrow><msub><mrow><mi>y</mi></mrow><mrow><mi>i</mi></mrow></msub><mo>|</mo><msub><mrow><mi>X</mi></mrow><mrow><mi>i</mi></mrow></msub><mo>,</mo><msub><mrow><mi>\u2205</mi></mrow><mrow><mi>k</mi></mrow></msub></mrow></mfenced></mrow><mrow><mi>f</mi><mfenced separators=\"|\"><mrow><msub><mrow><mi>y</mi></mrow><mrow><mi>i</mi></mrow></msub><mo>|</mo><msub><mrow><mi>X</mi></mrow><mrow><mi>i</mi></mrow></msub><mo>,</mo><msub><mrow><mi>\u2205</mi></mrow><mrow><mi>k</mi></mrow></msub></mrow></mfenced></mrow></mfrac></math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "under all parameter estimates <math id=\"inf23\"><mstyle displaystyle=\"true\" scriptlevel=\"0\"><mrow><msub><mrow><mrow><mover><mi>\u2205</mi><mo>^</mo></mover></mrow></mrow><mi>k</mi></msub></mrow></mstyle></math>. The estimated sub-group probabilities are then",
+                            "type": "paragraph"
+                        },
+                        {
+                            "label": "(7)",
+                            "mathml": "<math><mstyle displaystyle=\"true\" scriptlevel=\"0\"><mrow><msub><mrow><mrow><mover><mi>\u03c0</mi><mo stretchy=\"false\">^</mo></mover></mrow></mrow><mrow><mi>k</mi></mrow></msub><mo>=</mo><mfrac><mn>1</mn><mi>N</mi></mfrac><munderover><mo movablelimits=\"false\">\u2211</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mrow><mi>N</mi></mrow></munderover><msub><mrow><mover><mi>w</mi><mo stretchy=\"false\">^</mo></mover></mrow><mrow><mi>i</mi><mi>k</mi></mrow></msub></mrow></mstyle></math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "Once the model parameters have been estimated, the posterior probability estimates provide a way to assign each individual to a specific sub-group or trajectory. Individuals can be assigned to the specific sub-group in which their posterior probability is highest. From the equations, we see that the assignment of individuals into groups takes into account regression parameter estimates, the number of groups, probability distribution, membership probability estimates and time span of longitudinal dataset. These are major topics in trajectory analysis and need careful consideration from microsimulation practitioner. <a href=\"#bib25\">Nagin (2005)</a> discusses the selection of the number of groups (p. 78\u201387) and related statistical information criteria (p. 63\u201376) and the question of conditional independence (p. 26\u201327).",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The question of groups as real entities is discussed in <a href=\"#bib27\">Nagin and Odgers (2010)</a> and <a href=\"#bib26\">Nagin (2016)</a>. <a href=\"#bib24\">Nagin (1999)</a> discusses the use of group membership probabilities in the calculations, as well as the links between group membership probabilities and other time-dependent covariates besides age (or time). The nature of trajectory groups in growth mixture modeling and group-based trajectory analysis is discussed in <a href=\"#bib25\">Nagin, 2005</a>, pp. 54\u201356), <a href=\"#bib26\">Nagin (2016)</a> and <a href=\"#bib29\">Nathalie et al. (2017)</a>. <a href=\"#bib5\">Don and Mickelson (2014)</a> discuss the good practices of trajectory analysis, especially in terms of model selection.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Note that the sub-groups revealed by trajectory analysis are not fixed constructs. They are just approximations of a more complex reality. Each individual belong to a specific group with a certain probability. It would be good if we could investigate the fit of the assumed model using the identified trajectory groups. However, since the groups are based on maximum posterior probability, this would probably introduce some correlation to within-group residuals, as the actual group could also contain individuals from other groups with a small probability or weight. The correct approach from a statistical point of view, however, would be based on the investigation, using alternative covariance structures (for example, likelihood-ratio type test statistics or some other information criterion). However, this kind of testing is impossible in Nagin\u2019s basic model. This topic has been discussed in <a href=\"#bib27\">Nagin and Odgers (2010)</a> and <a href=\"#bib26\">Nagin (2016)</a>.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "As with any statistical analysis of dynamic microsimulation outcome data, a change in the period of observation would naturally change the results of the model. The trajectory groups could also be affected to a certain extent. However, we believe that in our examples the basic main grouping structure would remain quite similar.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s2-1",
+                    "title": "2.1. Trajectory analysis",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "ELSI is a longitudinal microsimulation model (<a href=\"#bib36\">Tikanm\u00e4ki et al., 2014</a>; <a href=\"#bib3\">Dekkers and Van den Bosch, 2016</a>) that is used to assess the development of the statutory pensions in Finland. The dynamic ageing model has been developed at the Finnish Centre for Pensions, a statutory co-operation body providing research and expertise services related to the Finnish pension system.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "ELSI model has been designed to assess the future earnings-related pensions and the national pensions (<a href=\"#bib38\">Tikanm\u00e4ki et al., 2017</a>). It can also be used to analyze changes in the pension system and in the underlying demographic or macroeconomic conditions. One of its uses has been to assess the distributional effects of the pension reform of 2017 (<a href=\"#bib37\">Tikanm\u00e4ki et al., 2015</a>).",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The Finnish pension system is mainly based on pension rights accrued on the basis of the individual\u2019s life-time earnings. The only exception is the survivor\u2019s pension, which accounts for no more than 6% of total pension expenditure. The ELSI model is therefore based on individual-level information and calculations of pensions received in one\u2019s own right. The model comprises both pension recipients and those still working. The model simulates each individual\u2019s working life prior to retirement.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The base population consists of all adults aged 18 or over covered by the social insurance system in Finland. Most of the material is drawn from administrative records maintained by the Finnish Centre for Pensions and the Social Insurance Institution of Finland. Information on educational level from Statistics Finland is also added to the model. The ELSI model provides the opportunity to run large populations. For the present analysis we used a random sample of 32% of the base population, which in numerical terms translates into 1.5 million individuals in the baseline year of 2012. The population is then simulated until 2085. Deceased people remain in the model and a new cohort as well as new immigrants enter the model each year. Consequently the population increases over the course of the simulation.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The ELSI model has a modular structure (<a href=\"#fig1\">Figure 1</a>). Each colored box represents a module of the model, while white boxes represent external sources of information. There are no feedback loops from later to earlier modules. The simulation starts from the population module, followed by the earnings module, pension modules, and the taxation module, and finally brings together the results.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "fig1",
+                                    "image": {
+                                        "alt": "",
+                                        "uri": "%iiif_uri%/00198%2Fijm-00198-fig001.tif",
+                                        "size": {
+                                            "width": 2150,
+                                            "height": 1976
+                                        },
+                                        "source": {
+                                            "mediaType": "image/jpeg",
+                                            "uri": "%iiif_uri%/00198%2Fijm-00198-fig001.tif/full/full/0/default.jpg",
+                                            "filename": "ijm-00198-fig001.jpg"
+                                        }
+                                    },
+                                    "label": "Figure 1",
+                                    "title": "Structure of the ELSI microsimulation model",
+                                    "type": "image"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "text": "The population module has several functions. It simulates population and labor market transitions as well as educational changes. The population module is based on transition probabilities that are estimated from historical data for 2010\u20132014. The module also uses Statistics Finland\u2019s official population forecast to replicate general trends in the sample population. Transition probabilities, with one-year time steps, are by and large deterministic, that is, based on exogenous information.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "In the population module, we simulate a new population or labor market state for each individual based on transition probabilities. There are 22 states in the model, the most important of which are: active (employed), inactive, unemployed, various pension states for different pension benefits, and deceased.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The labor market transitions are of Markovian type, which means that the transition probabilities are based on current state rather than former history. However, it is possible to add memory to a Markov process by extending the state space. For instance, in model ELSI we have three different active states. One for those employed first consecutive year, another for those employed second year and third one for the rest. Hence, unemployment risks may be higher for those who do not yet have an established labor market position.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Education is also simulated in the population module. Post-basic education dynamics is based on age and gender-specific transition probabilities. Changes in education level are possible at any age, although they are not very common after age 35.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The transition probabilities are updated each simulation year using the population level information produced by the semi-aggregated LTP model (<a href=\"#bib38\">Tikanm\u00e4ki et al., 2017</a>). There is thus a simple alignment of microsimulation outcomes to macro level aggregates.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Wage earnings are simulated in the earnings module. Wages are simulated for each individual annually based on the labor market state and an underlying earnings-equation, which is a time-series model with a stochastic component. The earnings equation takes also into account gender, age and level of education. Wages are simulated for active workers and those in partial retirement. The earnings module is described in <a href=\"#bib36\">Tikanm\u00e4ki et al. (2014)</a>.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The earnings-related pension module calculates pension amounts based on the simulated time of retirement (retirement age) and life-course earnings. The pension calculation takes no shortcuts but is as detailed as possible given the data in use. The national pension and guarantee pension amounts are calculated as a residual of the earnings-related pension, since they are income tested. The calculation of national pensions is described in <a href=\"#bib35\">Sihvonen (2015)</a>.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The taxation module finalizes the substantive simulation. The previous modules have produced gross wages and pensions. In the taxation module, the current (2016) rules for income taxation are applied to both simulated wages and pension earnings. The calculation of income taxes is described in <a href=\"#bib35\">Sihvonen (2015)</a>.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "After the simulation run, the results are analyzed in the results module, which calculates aggregate results over the course of the simulation, based on individual-level outcomes. Measures of the distribution (mean, percentage points, Gini coefficient) of pensions can be produced by ex ante classifiers such as gender, level of education and year of birth. Aggregate measures on the duration of working life and partition of life-course into active and passive stages are also calculated in the result module. The module collects individual-level output data containing information on labor market state, wage earnings, residence, education level, pension earnings, pension benefit, working life, pension accrual, etc. Therefore the material is also available for the statistical analysis illustrated in this paper. The proposed statistical technique could be used with many other outcomes as well.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "In the following analysis we use a longitudinal individual-level data set that covers the period from 2008\u20132085 with a 25% sub-sample of the original output data. The analysis is based on three outcomes: wage earnings, education level and pension earnings. The wage and education trajectories are presented for the male cohort born in 1995 and pension trajectories for the male cohort born in 1960. With trajectory analysis, it would be possible to analyze several cohorts at the same time so long as the data is longitudinal.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Similar longitudinal data is produced in many other dynamic microsimulation models, too. For example, the Swedish SESIM model and the Norwegian MOSART model are in this respect similar to ELSI, providing rich individual or household level labor market output data (<a href=\"#bib7\">Fredriksen and St\u00f8len, 2007</a>; <a href=\"#bib15\">Klevmarken and Lindgren, 2008</a>; <a href=\"#bib6\">Flood et al., 2012</a>).",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s2-2",
+                    "title": "2.2. Finnish ELSI microsimulation model",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "Choosing the number of mixture components <i>K</i> is an important stage of finite mixture modeling. The trajectory method requires the researcher to specify the assumed number of sub-groups in the data. The optimal number of sub-groups <i>K</i> can be assessed using information criteria, which are widely used in this context.<sup>[<a href=\"#fn1\">1</a>]</sup> One commonly used criterion to assess the model fit is the Bayesian information criterion (BIC). The model with largest BIC is preferred (SAS implementation). One may also calculate the group-specific average posterior probability over individuals to measure the fit. If this values exceeds the minimum threshold (at least 0.7) the fit is considered satisfactory. <a href=\"#bib25\">Nagin (2005</a>, p. 63\u201377) provides an overview of model selection in trajectory analysis context. Ultimately, meaningful real-world interpretations of sub-groups requires not just information criteria, but also theoretical evaluation and good judgment.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "In trajectory analysis missing data is considered missing completely at random according to the taxonomy layed by <a href=\"#bib20\">Little and Rubin (1987)</a>. Software packages handle missing data in such a way that all available data is used in the estimation. In other words, all individuals or objects with some missing longitudinal data values are included in the analysis.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "From <a href=\"#table1\">Table 1</a> we can see the BIC values of our example analyses on three outcome-variables (earnings, education and pension). The BIC score indicates that, a five-group solution fits the wage earnings and pension variables, while for education BIC increases with more groups. However, increasing the number of education groups further would yield some infinitesimal groups. Therefore our choice is the five-group solution for the wage earnings and pension outcomes, and the six-group solution for the education outcome variable.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "footnotes": [
+                                        {
+                                            "text": [
+                                                {
+                                                    "text": "<i>Notes</i>: BIC = log(L) \u2212.5 * log(n) k, where L = log likelihood, n = sample size and k = number of parameters.",
+                                                    "type": "paragraph"
+                                                }
+                                            ]
+                                        }
+                                    ],
+                                    "id": "table1",
+                                    "label": "Table 1",
+                                    "tables": [
+                                        "<table>\n<thead>\n<tr>\n<th align=\"left\">Outcome</th>\n<th align=\"left\">3</th>\n<th align=\"left\">4</th>\n<th align=\"left\">5</th>\n<th align=\"left\">6</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td align=\"left\">Earnings (N=3,325)</td>\n<td align=\"left\">\u221250288.7</td>\n<td align=\"left\">\u221248178.8</td>\n<td align=\"left\">\u2212<span class=\"underline\">45974.7</span></td>\n<td align=\"left\">\u221246375.9</td>\n</tr>\n<tr>\n<td align=\"left\">Education (N=13,173)</td>\n<td align=\"left\">\u2212549399.6</td>\n<td align=\"left\">\u2212544342.9</td>\n<td align=\"left\">\u2212537412.2</td>\n<td align=\"left\">\u2212<span class=\"underline\">535026.8</span></td>\n</tr>\n<tr>\n<td align=\"left\">Pension (N=10,761)</td>\n<td align=\"left\">\u2212834881.4</td>\n<td align=\"left\">\u2212811092.8</td>\n<td align=\"left\">\u2212<span class=\"underline\">786210.9</span></td>\n<td align=\"left\">786234.1</td>\n</tr>\n</tbody>\n</table>"
+                                    ],
+                                    "title": "BIC scores and number of sub-groups <i>k</i>",
+                                    "type": "table"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "text": "In this study the computations were carried out using SAS software package with accompanying PROC TRAJ application, an easy to use PC SAS procedure for analyzing Nagin\u2019s model (e.g. <a href=\"#bib12\">Jones et al., 2001</a>; <a href=\"#bib13\">Jones and Nagin, 2007</a>; <a href=\"#bib1\">Andruff et al., 2009</a>).<sup>[<a href=\"#fn2\">2]</a></sup> <a href=\"#s5\">Appendix A.1</a> gives an example of the programming code for wage earnings trajectories (Example 1, <i>k</i>=5).",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The trajectory plots (<a href=\"#fig2\">Figures 2</a>\u2013<a href=\"#fig4\">4</a>) present conditional means of time points calculated over the simulation period. Relative sizes <math id=\"inf24\"><mstyle displaystyle=\"true\" scriptlevel=\"0\"><mrow><msub><mrow><mrow><mover><mi>\u03c0</mi><mo stretchy=\"false\">^</mo></mover></mrow></mrow><mrow><mi>k</mi></mrow></msub></mrow></mstyle></math> of the sub-groups are also presented in the figures. These plots are the main tool for interpreting the results obtained. The estimated model is summarized in <a href=\"#s6\">Appendix (A.2)</a>, which includes group-specific parameter estimates. The SAS procedure also produces a confidence interval (95%) and model-predicted values by sub-group if necessary.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "fig2",
+                                    "image": {
+                                        "alt": "",
+                                        "uri": "%iiif_uri%/00198%2Fijm-00198-fig002.tif",
+                                        "size": {
+                                            "width": 1746,
+                                            "height": 671
+                                        },
+                                        "source": {
+                                            "mediaType": "image/jpeg",
+                                            "uri": "%iiif_uri%/00198%2Fijm-00198-fig002.tif/full/full/0/default.jpg",
+                                            "filename": "ijm-00198-fig002.jpg"
+                                        }
+                                    },
+                                    "label": "Figure 2",
+                                    "title": "Earnings trajectories",
+                                    "type": "image"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "fig3",
+                                    "image": {
+                                        "alt": "",
+                                        "uri": "%iiif_uri%/00198%2Fijm-00198-fig003.tif",
+                                        "size": {
+                                            "width": 768,
+                                            "height": 616
+                                        },
+                                        "source": {
+                                            "mediaType": "image/jpeg",
+                                            "uri": "%iiif_uri%/00198%2Fijm-00198-fig003.tif/full/full/0/default.jpg",
+                                            "filename": "ijm-00198-fig003.jpg"
+                                        }
+                                    },
+                                    "label": "Figure 3",
+                                    "title": "Earnings trajectories, <i>k</i>=5",
+                                    "type": "image"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "fig4",
+                                    "image": {
+                                        "alt": "",
+                                        "uri": "%iiif_uri%/00198%2Fijm-00198-fig004.tif",
+                                        "size": {
+                                            "width": 1741,
+                                            "height": 644
+                                        },
+                                        "source": {
+                                            "mediaType": "image/jpeg",
+                                            "uri": "%iiif_uri%/00198%2Fijm-00198-fig004.tif/full/full/0/default.jpg",
+                                            "filename": "ijm-00198-fig004.jpg"
+                                        }
+                                    },
+                                    "label": "Figure 4",
+                                    "title": "Education trajectories",
+                                    "type": "image"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "text": "It must be emphasized that the trajectories in the following examples are group means, which indicates that there is a range of individual tracks around the trajectory curves. Software packages routinely output the group estimates and confidence intervals to visualize within-group population heterogeneity. For the sake of readability, the model fit curves and confidence intervals are not presented in this paper.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "In the examples we use cubic age model (see <a href=\"#EQ5\">Equation 5</a>). The choice depends on the assumed development of the data over time. One advantage in PROC TRAJ is that the age or time model can be group-specific, which means that for example one group can be fitted with a second order polynomial model, whereas another group can be fitted with a cubic model etc.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s2-3",
+                    "title": "2.3. Trajectory model selection",
+                    "type": "section"
+                }
+            ],
+            "id": "s2",
+            "title": "2. Trajectory analysis in microsimulation",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "content": [
+                        {
+                            "text": "For this example, we have chosen a young cohort to illustrate a simulated life-course. The cohort, born in 1995, enters labor markets at age 17 (year 2012), and subsequent life-course including individual wage earnings is simulated in the ELSI model\u2019s population and earnings modules.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The example shows a trajectory analysis with binary outcome data. Individual yearly wage is dichotomized (yes = 1/no = 0), so wage earnings could also be interpreted as employment. In terms of content, wage earnings could be analyzed without transformations using continuous data (euros).",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The BIC score (<a href=\"#table1\">Table 1</a>) indicates that a five-group solution yields the best fit for the earnings outcome, but we also present the solutions for three and four-groups solutions. <a href=\"#fig2\">Figure 2</a> shows that the relative sizes <math id=\"inf25\"><mstyle displaystyle=\"true\" scriptlevel=\"0\"><mrow><msub><mrow><mrow><mover><mi>\u03c0</mi><mo stretchy=\"false\">^</mo></mover></mrow></mrow><mrow><mi>k</mi></mrow></msub></mrow></mstyle></math> vary somewhat with an increasing number of groups. Nevertheless all solutions have essentially the same major sub-groups.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "In terms of content, we can see that there is a large group (<i>k</i> = 3: 49%, <i>k</i> = 4: 33% and <i>k</i> = 5: 29%) with strong labor market integration, or a strong earnings profile, until retirement age. Other groups show an early declining trend in employment. Labor market integration is weak in one group (<i>k</i> = 3: 12%, <i>k</i> = 4: 10% and <i>k</i> = 5: 8%), especially at older age. Unemployment and permanent disability draw individuals out of employment prior to old-age retirement. Retirement age for old-age pension in this cohort is 67 years and 9 months. Partial old-age pension can be drawn three years before retirement age.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "content": [
+                                {
+                                    "text": "This trajectory analysis experiment revealed a slight misspecification in the ELSI model\u2019s earnings module (see spikes at age 65 in all trajectory solutions). The spikes are visible in mean-based trajectories, but they would not be seen in fitted means models. This goes to show how useful group-based mean curves can be in revealing model misspecification.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "In the earnings module the mechanism for working after retirement did not work as intended. During the course of simulation, many of those who had stopped working earlier suddenly decided to return to work after drawing their pension (<a href=\"#fig2\">Figure 2</a>). Of course, such behavior is not plausible on a larger scale.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "The Finnish pension system allows full-time employment even after retirement on an old-age pension. However, wage earnings for old-age pensioners are typically quite low. The misspecification therefore did not have a major impact on the main results and was not observed in comparison with the LTP macro model.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "In the ELSI model earnings are calibrated with the LTP model. In practice, this is done by comparing projected average earnings each year by gender, population state and age. Any deviations imply changes in the ELSI model\u2019s parameters.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "In the LTP model, working after retirement is not modeled in detail, and the relevant point of reference is provided by the corresponding statistical figures. In the ELSI model, the share of new retirees working after retirement is the same as in the observed statistics. Trajectory analysis showed that the pool of retirees working after retirement also included individuals who had not worked in the year preceding retirement, which was not intended.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "Following the trajectory analysis of simulated earnings, the ELSI model was recalibrated appropriately. There was no change in the aggregate figures, namely wage sum and number of people working after retirement.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "Trajectory analysis is not yet routinely part of ELSI model testing, but it could be incorporated as part of its validation procedures.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "content": [
+                                        {
+                                            "text": "Checking the composition of the groups is a good way to validate also the trajectory analysis results. It is good practice to cross-tabulate the trajectory groups by the available background factors of the microsimulation. We have added an example which shows the labor market state or population state of earnings groups (<i>k</i> = 5) at age 60 in the simulated life-course (<a href=\"#fig3\">Figure 3</a>). Depending on the available information of the microsimulation model, also other background factor could be cross-tabulated.",
+                                            "type": "paragraph"
+                                        },
+                                        {
+                                            "text": "The labor market states (<a href=\"#table2\">Table 2</a>) confirm the earnings trajectory results. The high and stable wage earnings (employment) group G4 (29%) consists of people who are mainly (89.9%) in active labor market states. The weak attachment group G1 (8%) consists of individuals who had a disability or inactive status at the time. Also the share of deceased (15.5%) is higher in this group than in the other groups, which is quite natural. Another weak attachment group is G3 (17%), where the share of disabled and inactive individuals is relatively high compared to the other groups.",
+                                            "type": "paragraph"
+                                        },
+                                        {
+                                            "assets": [
+                                                {
+                                                    "id": "table2",
+                                                    "label": "Table 2",
+                                                    "tables": [
+                                                        "<table>\n<thead>\n<tr>\n<td align=\"left\"/>\n<td align=\"left\">G1 (8%)</td>\n<td align=\"left\">G2 (11%)</td>\n<td align=\"left\">G3 (17%)</td>\n<td align=\"left\">G4 (29%)</td>\n<td align=\"left\">G5 (35%)</td>\n<td align=\"left\">Total</td>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td align=\"left\">Active first year</td>\n<td align=\"left\">0.8</td>\n<td align=\"left\">2.3</td>\n<td align=\"left\">2.3</td>\n<td align=\"left\">0.5</td>\n<td align=\"left\">3.4</td>\n<td align=\"left\">2.1</td>\n</tr>\n<tr>\n<td align=\"left\">Active second year</td>\n<td align=\"left\">0.4</td>\n<td align=\"left\">0.6</td>\n<td align=\"left\">0.7</td>\n<td align=\"left\">0.3</td>\n<td align=\"left\">0.9</td>\n<td align=\"left\">0.6</td>\n</tr>\n<tr>\n<td align=\"left\">Active (working)</td>\n<td align=\"left\">2.3</td>\n<td align=\"left\">51.1</td>\n<td align=\"left\">1.2</td>\n<td align=\"left\">89.9</td>\n<td align=\"left\">54.2</td>\n<td align=\"left\">50.6</td>\n</tr>\n<tr>\n<td align=\"left\">Unemployed or in education</td>\n<td align=\"left\">1.5</td>\n<td align=\"left\">9.7</td>\n<td align=\"left\">6.2</td>\n<td align=\"left\">1.6</td>\n<td align=\"left\">10.4</td>\n<td align=\"left\">6.5</td>\n</tr>\n<tr>\n<td align=\"left\">Sickness benefits</td>\n<td align=\"left\">.</td>\n<td align=\"left\">1.1</td>\n<td align=\"left\">0.4</td>\n<td align=\"left\">.</td>\n<td align=\"left\">2.5</td>\n<td align=\"left\">1.1</td>\n</tr>\n<tr>\n<td align=\"left\">Partial disability pension and active</td>\n<td align=\"left\">.</td>\n<td align=\"left\">1.4</td>\n<td align=\"left\">0.2</td>\n<td align=\"left\">2.3</td>\n<td align=\"left\">0.4</td>\n<td align=\"left\">1</td>\n</tr>\n<tr>\n<td align=\"left\">Partial disability pension and non-active</td>\n<td align=\"left\">0.8</td>\n<td align=\"left\">1.1</td>\n<td align=\"left\">0.9</td>\n<td align=\"left\">.</td>\n<td align=\"left\">0.7</td>\n<td align=\"left\">0.6</td>\n</tr>\n<tr>\n<td align=\"left\">Full disability pension</td>\n<td align=\"left\">23.4</td>\n<td align=\"left\">2.8</td>\n<td align=\"left\">26.9</td>\n<td align=\"left\">0.5</td>\n<td align=\"left\">2.9</td>\n<td align=\"left\">7.9</td>\n</tr>\n<tr>\n<td align=\"left\">Full disability pension second year</td>\n<td align=\"left\">1.1</td>\n<td align=\"left\">1.4</td>\n<td align=\"left\">3.4</td>\n<td align=\"left\">.</td>\n<td align=\"left\">2</td>\n<td align=\"left\">1.6</td>\n</tr>\n<tr>\n<td align=\"left\">Old-age pension</td>\n<td align=\"left\">.</td>\n<td align=\"left\">.</td>\n<td align=\"left\">0.5</td>\n<td align=\"left\">0.1</td>\n<td align=\"left\">0.7</td>\n<td align=\"left\">0.4</td>\n</tr>\n<tr>\n<td align=\"left\">Only national disability pension</td>\n<td align=\"left\">15.5</td>\n<td align=\"left\">.</td>\n<td align=\"left\">.</td>\n<td align=\"left\">.</td>\n<td align=\"left\">.</td>\n<td align=\"left\">1.2</td>\n</tr>\n<tr>\n<td align=\"left\">Out of labor markets I</td>\n<td align=\"left\">18.9</td>\n<td align=\"left\">1.4</td>\n<td align=\"left\">17.2</td>\n<td align=\"left\">0.3</td>\n<td align=\"left\">1.8</td>\n<td align=\"left\">5.3</td>\n</tr>\n<tr>\n<td align=\"left\">Out of labor markets II</td>\n<td align=\"left\">14.3</td>\n<td align=\"left\">.</td>\n<td align=\"left\">2.5</td>\n<td align=\"left\">.</td>\n<td align=\"left\">0.8</td>\n<td align=\"left\">1.9</td>\n</tr>\n<tr>\n<td align=\"left\">Inactive</td>\n<td align=\"left\">5.7</td>\n<td align=\"left\">18.8</td>\n<td align=\"left\">30.8</td>\n<td align=\"left\">1.5</td>\n<td align=\"left\">15.5</td>\n<td align=\"left\">13.8</td>\n</tr>\n<tr>\n<td align=\"left\">Deceased</td>\n<td align=\"left\">15.5</td>\n<td align=\"left\">8.2</td>\n<td align=\"left\">6.9</td>\n<td align=\"left\">2.8</td>\n<td align=\"left\">3.8</td>\n<td align=\"left\">5.5</td>\n</tr>\n<tr>\n<td align=\"left\">Total</td>\n<td align=\"left\">100</td>\n<td align=\"left\">100</td>\n<td align=\"left\">100</td>\n<td align=\"left\">100</td>\n<td align=\"left\">100</td>\n<td align=\"left\">100</td>\n</tr>\n</tbody>\n</table>"
+                                                    ],
+                                                    "title": "Composition of earnings trajectories at age 60, per cent",
+                                                    "type": "table"
+                                                }
+                                            ],
+                                            "type": "figure"
+                                        }
+                                    ],
+                                    "id": "s3-1-1-1",
+                                    "title": "3.1.1.1. Composition of trajectory groups",
+                                    "type": "section"
+                                }
+                            ],
+                            "id": "s3-1-1",
+                            "title": "3.1.1. ELSI model recalibration",
+                            "type": "section"
+                        }
+                    ],
+                    "id": "s3-1",
+                    "title": "3.1. Earnings trajectories: binary outcome",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "In this second example we continue to study the young cohort born in 1995 and illustrate a simulated life-course in terms of education level. This cohort finishes compulsory education at age 16 (in 2011). The subsequent education dynamics is simulated in the education module of the ELSI model.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The example shows a trajectory analysis with class-level outcome data. The distribution of the levels of education skewed to left (low education), therefore the outcome is modeled using the zero-inflated Poisson model. Yearly individual education information records the highest level of education. In practice, each individual level of education either remains unchanged or rises during the course of the simulation. Individuals enter the model at age 18 when 99% are at the basic education level. The ELSI model includes four levels of education: 0 = basic education (ISCED 0\u20133), 1 = secondary education (ISCED 4), 2 = lower academic degree (ISCED 5, 5B) and 3 = higher academic degree (ISCED 5A, 6).",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The BIC score (<a href=\"#table1\">Table 1</a>) indicates that a six-group solution yields the best fit for the education outcome, but we also present the four-group and five-group solutions. <a href=\"#fig4\">Figure 4</a> shows that with the six-group solution, the smallest group comprises no more than 2% of the population.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The trajectory means clearly show how education dynamics play out in practice. For example, education increases sharply until around age 30, and then is virtually stagnant at age 40. In the four-group solution, the results are dominated by the final education level. The four-group and five-group solutions show adult and further education in action, with 6\u20137% of the cohort still on an upward education trajectory at later ages (<i>k</i> = 5: 6%, <i>k</i> = 6: 7%).",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Overall, we have observed that 20% have a low education, 40% complete secondary education, 21% complete a lower university degree and 15% a higher university degree.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s3-2",
+                    "title": "3.2. Education trajectories: class outcome",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "The cohort in this third example was born in 1960. For this cohort, earnings, labor market state, accrued pensions and disability pension data are covered up to age 52 (in 2012). Thereafter, pension stock and new pensions are simulated in the ELSI model\u2019s earnings-related pension module.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The example shows a trajectory analysis with continuous normal data. The outcome variable is earnings-related pension (log euros/month), excluding survivor\u2019s pensions, expressed in nominal value. If an individual is not retired (not yet retired or deceased) the outcome value is zero, otherwise the individual is retired and receives a pension (<a href=\"#fig5\">Figure 5</a>). The level of pension is determined by current pension rules for different types of pension benefit, such as disability pensions, partial old-age pensions and old-age pensions.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "fig5",
+                                    "image": {
+                                        "alt": "",
+                                        "uri": "%iiif_uri%/00198%2Fijm-00198-fig005.tif",
+                                        "size": {
+                                            "width": 1717,
+                                            "height": 619
+                                        },
+                                        "source": {
+                                            "mediaType": "image/jpeg",
+                                            "uri": "%iiif_uri%/00198%2Fijm-00198-fig005.tif/full/full/0/default.jpg",
+                                            "filename": "ijm-00198-fig005.jpg"
+                                        }
+                                    },
+                                    "label": "Figure 5",
+                                    "title": "Pension trajectories",
+                                    "type": "image"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "text": "Pension levels are affected by two factors. First, the most important factor that affects all retirees is indexation: earnings-related pensions are index-linked to prices (80%) and wages (20%). Second, some individuals continue to work while drawing their pension, which accrues additional pension benefits.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The BIC score (<a href=\"#table1\">Table 1</a>) indicates that the five-group solution yields the best fit for the pension outcome, but we also present the solutions for three-group and four-group solutions.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Trajectory analysis reveals several substantive issues. First, pensions increase as the cohort ages and approaches minimum retirement age at 64 years and 5 months (persons born in 1960 can retire flexibly between ages 64 years 5 months and 69 years). Pensions taken earlier are for the most part either disability pensions or partial old-age pensions. Second, the trajectories are affected by mortality as all trajectory means go to zero with the death of individuals in the group. For instance, one group (<i>k</i> = 5: 14%) dies early and its pension level remains low. This group, along with (<i>k</i> = 5: 11%), enters disability pensions at a higher rate than other groups. In addition, some groups have a higher life expectancy. The group with the highest life expectancy (<i>k</i> = 5: 18%) also has the highest pensions. Third, there is some indication of segregation among pensioners here.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "It is also worth noting that pension indexation rules increase pensions in those sub-groups where life expectancy is high. Finally, an increase in the number of groups leads to the emergence of some interesting sub-groups. The early transition to disability pension is evident in the five-group solution (<i>k</i> = 5: 11%).",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s3-3",
+                    "title": "3.3. Pension trajectories: continuous outcome",
+                    "type": "section"
+                }
+            ],
+            "id": "s3",
+            "title": "3. Examples",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "We have applied finite mixture modeling to longitudinal data in the context of dynamic microsimulation. It is useful in visualizing dynamic microsimulation results because it demonstrates, within a formal statistical structure, population heterogeneity in simulated datasets. Furthermore, the sub-groups identified in the analysis may reveal model misspecifications if such issues are present.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Our first goal was to illustrate the results of dynamic microsimulation, which are often presented as statistical moments or other distribution measures for a given population. Statistical moments presented on the basis of ex ante classification rules (e.g. gender, level of education, occupation or region) are a common way of reporting results for specific population sub-groups. We have shown how trajectory analysis can be applied as a data-driven method for illustrating longitudinal results in a novel way. These two ways of presenting results are mutually complementary.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Our second goal was to test the individual-level or object-level outcomes of dynamic microsimulation. Testing should be understood here by locating groups with unwanted or otherwise peculiar outcomes. Microsimulation easily yields biases and model misspecification. Microsimulation practitioners apply various techniques to calibrate models and to locate misspecification. Trajectory analysis could also be a useful tool in testing simulation model assumptions, as model misspecification may be revealed in developmental trajectories. Trajectory analysis together with other testing methods can improve microsimulation model reliability, especially in connection with large-scale revisions of model parameters.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "There are some limitations with the proposed technique. First, it takes some effort to analyze all the cohorts included in the microsimulation model. It might be advisable to focus on some key cohorts if the simulation model assumes similar parameters across cohorts. Second, given the computational requirements of the EM algorithm, it is apparent that extremely large data sets (hundreds of thousands of individuals) should be avoided. A fraction or sample of the simulated data set usually reveals the underlying sub-populations with sufficient reliability. Third, it is necessary to mention conditional independence, even though this is not a serious drawback in a microsimulation context. Finally, basically trajectory analysis cannot handle nonlinear models. The group-specific regression model needs to be linear in parameters. However, reasonable approximations can often be provided by low-degree polynomial models.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Trajectory analysis is also a highly flexible method. In our case we performed the analysis for one outcome at the time, but the technique and software is in place to model several outcomes at the same time. This is called multi-trajectory modeling, which identifies groups of individuals or objects that follow similar trajectories across multiple outcomes. For example, it would be possible to analyze income, education and labor market status simultaneously. This would yield a slightly different probability for belonging to a specific group. Another possibility would be to add time-dependent (e.g. earnings) or time-stable (e.g. gender, year of birth or nationality) covariates alongside age or time polynomial. This would be a case of multinomial logistic regression within a population sub-group, and the result would consist of risk factors influencing group membership.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s4",
+            "title": "4. Conclusion",
+            "type": "section"
+        }
+    ],
+    "references": [
+        {
+            "articleTitle": "Latent class growth modelling: a tutorial",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Andruff, H",
+                        "preferred": "H Andruff"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Carraro, N",
+                        "preferred": "N Carraro"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Thompson, A",
+                        "preferred": "A Thompson"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Gaudreau, P",
+                        "preferred": "P Gaudreau"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Louvet, B",
+                        "preferred": "B Louvet"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2009",
+            "doi": "10.20982/tqmp.05.1.p011",
+            "id": "bib1",
+            "journal": "Tutorials in Quantitative Methods for Psychology",
+            "pages": {
+                "first": "11",
+                "last": "24",
+                "range": "11\u201324"
+            },
+            "type": "journal",
+            "volume": "5"
+        },
+        {
+            "articleTitle": "Advances in mixture models",
+            "authors": [
+                {
+                    "name": {
+                        "index": "B\u00f6hning, D",
+                        "preferred": "D B\u00f6hning"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Seidel, W",
+                        "preferred": "W Seidel"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Alf\u00f3, M",
+                        "preferred": "M Alf\u00f3"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Garel, B",
+                        "preferred": "B Garel"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Patilea, V",
+                        "preferred": "V Patilea"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Walther, G",
+                        "preferred": "G Walther"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2007",
+            "doi": "10.1016/j.csda.2006.10.025",
+            "id": "bib2",
+            "journal": "Computational Statistics & Data Analysis",
+            "pages": {
+                "first": "5205",
+                "last": "5210",
+                "range": "5205\u20135210"
+            },
+            "type": "journal",
+            "volume": "51"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Dekkers, G",
+                        "preferred": "G Dekkers"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Van den Bosch, K",
+                        "preferred": "K Van den Bosch"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2016",
+            "details": "Prospective microsimulation of pensions in European Member States, Applications of microsimulation modelling",
+            "id": "bib3",
+            "title": "Applications of microsimulation modelling",
+            "type": "unknown"
+        },
+        {
+            "articleTitle": "Maximum likelihood estimation for incomplete data via the EM algorithm",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Dempster, A",
+                        "preferred": "A Dempster"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Laird, N",
+                        "preferred": "N Laird"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Rubin, D",
+                        "preferred": "D Rubin"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1977",
+            "id": "bib4",
+            "journal": "Journal of the Royal Statistical Society",
+            "pages": {
+                "first": "1",
+                "last": "38",
+                "range": "1\u201338"
+            },
+            "type": "journal",
+            "volume": "B 39"
+        },
+        {
+            "articleTitle": "Relationship satisfaction trajectories across the transition to parenthood among low-risk parents",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Don, BP",
+                        "preferred": "BP Don"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Mickelson, KD",
+                        "preferred": "KD Mickelson"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2014",
+            "doi": "10.1111/jomf.12111",
+            "id": "bib5",
+            "journal": "Journal of Marriage and Family",
+            "pages": {
+                "first": "677",
+                "last": "692",
+                "range": "677\u2013692"
+            },
+            "type": "journal",
+            "volume": "76"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Flood, L",
+                        "preferred": "L Flood"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Jansson, F",
+                        "preferred": "F Jansson"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Pettersson, T",
+                        "preferred": "T Pettersson"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Pettersson, T",
+                        "preferred": "T Pettersson"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Sundberg, O",
+                        "preferred": "O Sundberg"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Westerberg, A",
+                        "preferred": "A Westerberg"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2012",
+            "details": "SESIM III - A Swedish dynamic micro simulation model",
+            "id": "bib6",
+            "title": "SESIM III - A Swedish dynamic micro simulation model",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Fredriksen, D",
+                        "preferred": "D Fredriksen"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "St\u00f8len, N",
+                        "preferred": "N St\u00f8len"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "Modelling Our Future: Population Ageing, Health and Aged Care (International Symposia in Economic Theory and Econometrics, Volume 16)",
+            "chapterTitle": "Model 1: MOSART (Dynamic Cross-Sectional Microsimulation Model)",
+            "date": "2007",
+            "editors": [
+                {
+                    "name": {
+                        "index": "Gupta, Anil",
+                        "preferred": "Anil Gupta"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Harding, Ann",
+                        "preferred": "Ann Harding"
+                    },
+                    "type": "person"
+                }
+            ],
+            "id": "bib7",
+            "pages": {
+                "first": "433",
+                "last": "437",
+                "range": "433\u2013437"
+            },
+            "publisher": {
+                "name": [
+                    "Emerald Group Publishing Limited"
+                ]
+            },
+            "type": "book-chapter"
+        },
+        {
+            "articleTitle": "FlexMix: an R package for finite mixture modelling",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Grun, B",
+                        "preferred": "B Grun"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Leisch, F",
+                        "preferred": "F Leisch"
+                    },
+                    "type": "person"
+                }
+            ],
+            "conference": {
+                "name": [
+                    "Faculty of Commerce \u2013 Papers"
+                ]
+            },
+            "date": "2007",
+            "id": "bib8",
+            "type": "conference-proceeding"
+        },
+        {
+            "articleTitle": "Review of three latent class cluster analysis packages: latent GOLD, poLCA, and MCLUST",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Haughton, D",
+                        "preferred": "D Haughton"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Legrand, P",
+                        "preferred": "P Legrand"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Woolford, S",
+                        "preferred": "S Woolford"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2009",
+            "doi": "10.1198/tast.2009.0016",
+            "id": "bib9",
+            "journal": "The American Statistician",
+            "pages": {
+                "first": "81",
+                "last": "91",
+                "range": "81\u201391"
+            },
+            "type": "journal",
+            "volume": "63"
+        },
+        {
+            "articleTitle": "Trajectories of multimorbidity and impacts on successful aging",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Hsu, H-C",
+                        "preferred": "H-C Hsu"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2015",
+            "doi": "10.1016/j.exger.2015.04.005",
+            "id": "bib10",
+            "journal": "Experimental Gerontology",
+            "pages": {
+                "first": "32",
+                "last": "38",
+                "range": "32\u201338"
+            },
+            "type": "journal",
+            "volume": "66"
+        },
+        {
+            "articleTitle": "Women\u2019s employment patterns during early parenthood: a group-based trajectory analysis",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Hynes, K",
+                        "preferred": "K Hynes"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Clarkberg, M",
+                        "preferred": "M Clarkberg"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2005",
+            "doi": "10.1111/j.0022-2445.2005.00017.x",
+            "id": "bib11",
+            "journal": "Journal of Marriage and Family",
+            "pages": {
+                "first": "222",
+                "last": "239",
+                "range": "222\u2013239"
+            },
+            "type": "journal",
+            "volume": "67"
+        },
+        {
+            "articleTitle": "Advances in group-based trajectory modeling and an SAS procedure for estimating them",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Jones, BL",
+                        "preferred": "BL Jones"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Nagin, DS",
+                        "preferred": "DS Nagin"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2007",
+            "doi": "10.1177/0049124106292364",
+            "id": "bib13",
+            "journal": "Sociological Methods & Research",
+            "pages": {
+                "first": "542",
+                "last": "571",
+                "range": "542\u2013571"
+            },
+            "type": "journal",
+            "volume": "35"
+        },
+        {
+            "articleTitle": "A note on a STATA plugin for estimating group-based trajectory models",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Jones, BL",
+                        "preferred": "BL Jones"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Nagin, DS",
+                        "preferred": "DS Nagin"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2013",
+            "doi": "10.1177/0049124113503141",
+            "id": "bib14",
+            "journal": "Sociological Methods & Research",
+            "pages": {
+                "first": "608",
+                "last": "613",
+                "range": "608\u2013613"
+            },
+            "type": "journal",
+            "volume": "42"
+        },
+        {
+            "articleTitle": "A SAS procedure based on mixture models for estimating developmental trajectories",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Jones, BL",
+                        "preferred": "BL Jones"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Nagin, DS",
+                        "preferred": "DS Nagin"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Roeder, K",
+                        "preferred": "K Roeder"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2001",
+            "doi": "10.1177/0049124101029003005",
+            "id": "bib12",
+            "journal": "Sociological Methods & Research",
+            "pages": {
+                "first": "374",
+                "last": "393",
+                "range": "374\u2013393"
+            },
+            "type": "journal",
+            "volume": "29"
+        },
+        {
+            "bookTitle": "Simulating an Ageing Population: A microsimulation approach applied to Sweden",
+            "date": "2008",
+            "editors": [
+                {
+                    "name": {
+                        "index": "Klevmarken, A",
+                        "preferred": "A Klevmarken"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Lindgren, B",
+                        "preferred": "B Lindgren"
+                    },
+                    "type": "person"
+                }
+            ],
+            "id": "bib15",
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "Bingley"
+                        ]
+                    },
+                    "formatted": [
+                        "Bingley"
+                    ]
+                },
+                "name": [
+                    "Emerald Group Publishing Ltd"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "articleTitle": "Trajectories based on Postcomprehensive and higher education: their correlates and antecedents",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Kokko, K",
+                        "preferred": "K Kokko"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Pulkkinen, L",
+                        "preferred": "L Pulkkinen"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Mesi\u00e4inen, P",
+                        "preferred": "P Mesi\u00e4inen"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Lyyra, A-L",
+                        "preferred": "A-L Lyyra"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2008",
+            "doi": "10.1111/j.1540-4560.2008.00548.x",
+            "id": "bib16",
+            "journal": "Journal of Social Issues",
+            "pages": {
+                "first": "59",
+                "last": "76",
+                "range": "59\u201376"
+            },
+            "type": "journal",
+            "volume": "64"
+        },
+        {
+            "articleTitle": "FlexMix: A General Framework fo<i>r</i> Finite Mixture Models and Latent Class Regression in R",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Leisch, F",
+                        "preferred": "F Leisch"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2004",
+            "doi": "10.18637/jss.v011.i08",
+            "id": "bib17",
+            "journal": "Journal of Statistical Software",
+            "pages": {
+                "first": "1",
+                "last": "18",
+                "range": "1\u201318"
+            },
+            "type": "journal",
+            "volume": "11"
+        },
+        {
+            "articleTitle": "A survey of dynamic microsimulation models: uses, model structure and methodology",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Li, J",
+                        "preferred": "J Li"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "O\u2019Donoghue, C",
+                        "preferred": "C O\u2019Donoghue"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2013",
+            "id": "bib18",
+            "journal": "International Journal of Microsimulation",
+            "pages": {
+                "first": "3",
+                "last": "55",
+                "range": "3\u201355"
+            },
+            "type": "journal",
+            "volume": "6"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Li, J",
+                        "preferred": "J Li"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "O\u2019Donoghue, C",
+                        "preferred": "C O\u2019Donoghue"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Dekkers, G",
+                        "preferred": "G Dekkers"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2014",
+            "details": "Dynamic models, Handbook of Microsimulation Modelling. Contributions to economic analysis, Emerald",
+            "id": "bib19",
+            "title": "Handbook of Microsimulation Modelling. Contributions to economic analysis",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Little, R",
+                        "preferred": "R Little"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Rubin, D",
+                        "preferred": "D Rubin"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "Statistical Analysis with Missing Data",
+            "date": "1987",
+            "id": "bib20",
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "New York"
+                        ]
+                    },
+                    "formatted": [
+                        "New York"
+                    ]
+                },
+                "name": [
+                    "John Wiley & Sons"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "articleTitle": "The differential impacts of markets for technology on the value of technological resources: an application of group-based trajectory models",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Mani, D",
+                        "preferred": "D Mani"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Nandkumar, A",
+                        "preferred": "A Nandkumar"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2016",
+            "doi": "10.1002/smj.2457",
+            "id": "bib21",
+            "journal": "Strategic Management Journal",
+            "pages": {
+                "first": "192",
+                "last": "205",
+                "range": "192\u2013205"
+            },
+            "type": "journal",
+            "volume": "37"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "McLachlan, G",
+                        "preferred": "G McLachlan"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Peel, D",
+                        "preferred": "D Peel"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "Finite Mixture Models",
+            "date": "2000",
+            "id": "bib22",
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "New York"
+                        ]
+                    },
+                    "formatted": [
+                        "New York"
+                    ]
+                },
+                "name": [
+                    "John Wiley and Sons Inc"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Muth\u00e9n, L",
+                        "preferred": "L Muth\u00e9n"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Muth\u00e9n, B",
+                        "preferred": "B Muth\u00e9n"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2010",
+            "details": "MPlus Statistical Analysis With Latent Variables, User\u2019s Guide, Los Angeles, CA",
+            "id": "bib23",
+            "title": "MPlus Statistical Analysis With Latent Variables, User\u2019s Guide",
+            "type": "unknown"
+        },
+        {
+            "articleTitle": "Analyzing developmental trajectories: a semiparametric, group-based approach",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Nagin, DS",
+                        "preferred": "DS Nagin"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1999",
+            "doi": "10.1037/1082-989X.4.2.139",
+            "id": "bib24",
+            "journal": "Psychological Methods",
+            "pages": {
+                "first": "139",
+                "last": "157",
+                "range": "139\u2013157"
+            },
+            "type": "journal",
+            "volume": "4"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Nagin, D",
+                        "preferred": "D Nagin"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "Group-Based Modeling of Development",
+            "date": "2005",
+            "id": "bib25",
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "Cambridge, MA"
+                        ]
+                    },
+                    "formatted": [
+                        "Cambridge, MA"
+                    ]
+                },
+                "name": [
+                    "Harvard University Press"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "articleTitle": "Group-Based trajectory modeling and criminal career research",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Nagin, DS",
+                        "preferred": "DS Nagin"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2016",
+            "doi": "10.1177/0022427815611710",
+            "id": "bib26",
+            "journal": "Journal of Research in Crime and Delinquency",
+            "pages": {
+                "first": "356",
+                "last": "371",
+                "range": "356\u2013371"
+            },
+            "type": "journal",
+            "volume": "53"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Nathalie, M",
+                        "preferred": "M Nathalie"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Fontaine, G",
+                        "preferred": "G Fontaine"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Petersen, I",
+                        "preferred": "I Petersen"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2017",
+            "details": "Developmental Trajectories of Psychopathology. An Overview of Approaches and Applications, The Wiley Handbook of Developmental Psychopathology, John Wiley & Sons Ltd",
+            "id": "bib29",
+            "title": "The Wiley Handbook of Developmental Psychopathology",
+            "type": "unknown"
+        },
+        {
+            "articleTitle": "Group-Based criminal trajectory analysis using cross-validation criteria",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Nielsen, JD",
+                        "preferred": "JD Nielsen"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Rosenthal, JS",
+                        "preferred": "JS Rosenthal"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Sun, Y",
+                        "preferred": "Y Sun"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Day, DM",
+                        "preferred": "DM Day"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Bevc, I",
+                        "preferred": "I Bevc"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Duchesne, T",
+                        "preferred": "T Duchesne"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2014",
+            "doi": "10.1080/03610926.2012.719986",
+            "id": "bib30",
+            "journal": "Communications in Statistics - Theory and Methods",
+            "pages": {
+                "first": "4337",
+                "last": "4356",
+                "range": "4337\u20134356"
+            },
+            "type": "journal",
+            "volume": "43"
+        },
+        {
+            "articleTitle": "Group-Based multi-trajectory modelling",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Nagin, D",
+                        "preferred": "D Nagin"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Jones, B",
+                        "preferred": "B Jones"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Passos, L",
+                        "preferred": "L Passos"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Tremblay, R",
+                        "preferred": "R Tremblay"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2016",
+            "id": "bib28",
+            "journal": "Statistical Methods in Medical Research",
+            "pages": {
+                "first": "1",
+                "last": "9",
+                "range": "1\u20139"
+            },
+            "type": "journal",
+            "volume": "0"
+        },
+        {
+            "articleTitle": "Group-Based trajectory modeling (nearly) two decades later",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Nagin, DS",
+                        "preferred": "DS Nagin"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Odgers, CL",
+                        "preferred": "CL Odgers"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2010",
+            "doi": "10.1007/s10940-010-9113-7",
+            "id": "bib27",
+            "journal": "Journal of Quantitative Criminology",
+            "pages": {
+                "first": "445",
+                "last": "453",
+                "range": "445\u2013453"
+            },
+            "type": "journal",
+            "volume": "26"
+        },
+        {
+            "articleTitle": "A trajectory analysis of body mass index for Finnish children",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Nummi, T",
+                        "preferred": "T Nummi"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Hakanen, T",
+                        "preferred": "T Hakanen"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Lipi\u00e4inen, L",
+                        "preferred": "L Lipi\u00e4inen"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Harjunmaa, U",
+                        "preferred": "U Harjunmaa"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Salo, MK",
+                        "preferred": "MK Salo"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Saha, M-T",
+                        "preferred": "M-T Saha"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Vuorela, N",
+                        "preferred": "N Vuorela"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2014",
+            "doi": "10.1080/02664763.2013.872232",
+            "id": "bib31",
+            "journal": "Journal of Applied Statistics",
+            "pages": {
+                "first": "1422",
+                "last": "1435",
+                "range": "1422\u20131435"
+            },
+            "type": "journal",
+            "volume": "41"
+        },
+        {
+            "articleTitle": "Trajectories of a set of ten functional somatic symptoms from adolescence to middle age",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Nummi, T",
+                        "preferred": "T Nummi"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Virtanen, P",
+                        "preferred": "P Virtanen"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Leino-Arjas, P",
+                        "preferred": "P Leino-Arjas"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Hammarstr\u00f6m, A",
+                        "preferred": "A Hammarstr\u00f6m"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2017",
+            "discriminator": "a",
+            "doi": "10.1186/s13690-017-0178-8",
+            "id": "bib32",
+            "journal": "Archives of Public Health",
+            "pages": "11",
+            "type": "journal",
+            "volume": "75"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Nummi, T",
+                        "preferred": "T Nummi"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Salonen, J",
+                        "preferred": "J Salonen"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "O\u2019Brien, T",
+                        "preferred": "T O\u2019Brien"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2017",
+            "details": "Statistical Analysis of Labor Market Integration: A Mixture Regression Approach, New Advances in Statistics and Data Science, ICSA Book Series in Statistics, Springer",
+            "id": "bib33",
+            "title": "New Advances in Statistics and Data Science",
+            "type": "unknown"
+        },
+        {
+            "articleTitle": "Job Contract at Birth of the First Child as a Predictor of Women\u2019s Labor Market Attachment: Trajectory Analyses over 11 Years",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Peutere, L",
+                        "preferred": "L Peutere"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Vahtera, J",
+                        "preferred": "J Vahtera"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Kivim\u00e4ki, M",
+                        "preferred": "M Kivim\u00e4ki"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Pentti, J",
+                        "preferred": "J Pentti"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Virtanen, P",
+                        "preferred": "P Virtanen"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2015",
+            "doi": "10.19154/njwls.v5i1.4763",
+            "id": "bib34",
+            "journal": "Nordic Journal of Working Life Studies",
+            "pages": {
+                "first": "9",
+                "last": "30",
+                "range": "9\u201330"
+            },
+            "type": "journal",
+            "volume": "5"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Sihvonen, H",
+                        "preferred": "H Sihvonen"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2015",
+            "details": "El\u00e4keturvakeskuksen ELSI-mikrosimulointimallin laajennus Kelan el\u00e4kkeisiin ja verotukseen, Finnish Centre for Pensions Working papers 03/2015",
+            "id": "bib35",
+            "title": "El\u00e4keturvakeskuksen ELSI-mikrosimulointimallin laajennus Kelan el\u00e4kkeisiin ja verotukseen",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Tikanm\u00e4ki, H",
+                        "preferred": "H Tikanm\u00e4ki"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Sihvonen, H",
+                        "preferred": "H Sihvonen"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Salonen, J",
+                        "preferred": "J Salonen"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2014",
+            "details": "Finnish Centre for Pensions Working Papers 02/2014",
+            "id": "bib36",
+            "title": "Microsimulating Finnish earnings-related pensions",
+            "type": "unknown"
+        },
+        {
+            "articleTitle": "Distributional effects of forthcoming Finnish pension reform \u2013 a dynamic Microsimulation approach",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Tikanm\u00e4ki, H",
+                        "preferred": "H Tikanm\u00e4ki"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Sihvonen, H",
+                        "preferred": "H Sihvonen"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Salonen, J",
+                        "preferred": "J Salonen"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2015",
+            "id": "bib37",
+            "journal": "International Journal of Microsimulation",
+            "pages": {
+                "first": "75",
+                "last": "98",
+                "range": "75\u201398"
+            },
+            "type": "journal",
+            "volume": "8"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Tikanm\u00e4ki, H",
+                        "preferred": "H Tikanm\u00e4ki"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Appelqvist, J",
+                        "preferred": "J Appelqvist"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Reipas, K",
+                        "preferred": "K Reipas"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Sankala, M",
+                        "preferred": "M Sankala"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Sihvonen, H",
+                        "preferred": "H Sihvonen"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2017",
+            "details": "Statutory pensions in Finland \u2013 long-term projections 2016, Finnish Centre for Pensions Reports 02/2017",
+            "id": "bib38",
+            "title": "Statutory pensions in Finland \u2013 long-term projections 2016",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Titterington, D",
+                        "preferred": "D Titterington"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Smith, A",
+                        "preferred": "A Smith"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Makov, U",
+                        "preferred": "U Makov"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "Statistical analysis of finite mixture distributions",
+            "date": "1985",
+            "id": "bib39",
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "Great Britain"
+                        ]
+                    },
+                    "formatted": [
+                        "Great Britain"
+                    ]
+                },
+                "name": [
+                    "John Wiley & Sons"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "articleTitle": "The effects of incarceration on longitudinal trajectories of employment: a follow-up in high-risk youth from ages 23 to 32",
+            "authors": [
+                {
+                    "name": {
+                        "index": "van der Geest, V",
+                        "preferred": "V van der Geest"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Bijleveld, C",
+                        "preferred": "C Bijleveld"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Blokland, A",
+                        "preferred": "A Blokland"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Nagin, D",
+                        "preferred": "D Nagin"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2016",
+            "id": "bib41",
+            "journal": "Crime & Delinquency",
+            "pages": {
+                "first": "107",
+                "last": "140",
+                "range": "107\u2013140"
+            },
+            "type": "journal",
+            "volume": "62"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Zaidi, A",
+                        "preferred": "A Zaidi"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Rake, K",
+                        "preferred": "K Rake"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2001",
+            "id": "bib40",
+            "publisher": {
+                "name": [
+                    "The London School of Economics"
+                ]
+            },
+            "source": "Dynamic Microsimulation Models: A Review and Some Lessons for SAGE",
+            "title": "Dynamic Microsimulation Models: A Review and Some Lessons for SAGE",
+            "type": "report"
+        }
+    ],
+    "appendices": [
+        {
+            "content": [
+                {
+                    "content": [
+                        {
+                            "text": "Earnings trajectories: Five-group solution",
+                            "type": "paragraph"
+                        },
+                        {
+                            "items": [
+                                [
+                                    {
+                                        "text": "Males born 1995",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "Simulated yearly wage earnings 2015\u20132080",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "Binary outcome 1 = some wage, 0 = no wage",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "WMALE_1995 is the individual level data set with yearly observations on binary wage (bwage) and age (age).",
+                                        "type": "paragraph"
+                                    }
+                                ]
+                            ],
+                            "prefix": "bullet",
+                            "type": "list"
+                        },
+                        {
+                            "text": "The PROC TRAJ produces four output datasets. OP includes the group mean estimates and confidence intervals (95%). OS includes the mixture components (sizes of the sub-groups). OF includes individual-level information on group posterior probabilities and group assignment. This is an important data set where we can merge any other relevant background information. Finally, OE includes the regression model coefficients and information criteria (AIC and BIC). ITDETAIL statement shows the progression of maximum likelihood estimation in the SAS log window.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "content": [
+                                {
+                                    "text": "1: PROC TRAJ DATA=WMALE_1995 OUTPLOT=OP OUTSTAT=OS OUT=OF OUTEST=OE ITDETAIL;",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "2: ID idno;",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "3: VAR bwage2015-bwage2080;",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "4: INDEP age2015-age2080;",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "5: MODEL logit;",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "6: NGROUPS 5;",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "7: ORDER 3 3 3 3 3;",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "8: RUN;",
+                                    "type": "paragraph"
+                                }
+                            ],
+                            "id": "box1",
+                            "label": "Algorithm 1",
+                            "title": "PROC TRAJ.",
+                            "type": "box"
+                        },
+                        {
+                            "text": "The actual model is specified with VAR, INDEP, MODEL and ORDER statements. The MODEL logit states that we analyze binary outcomes. Other possibilities are censored normal outcome (cnorm) and zero-inflated Poisson outcome (zip). NGROUP states the number of sub-groups. ID states the number of individuals. ODRER defines the number of mixture components (=NGROUPS) and respective degree of age-polynomial. Each sub-group can have different degrees of age-polynomial.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "content": [
+                                {
+                                    "text": "1: %TRAJPLOT(OP,OS,,);",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "2: RUN;",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "3: DATA WMALE_1995; MERGE WMALE_1995 OF (KEEP=idno group); BY idno;",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "4: RUN;",
+                                    "type": "paragraph"
+                                }
+                            ],
+                            "id": "box2",
+                            "label": "Algorithm 2",
+                            "title": "TRAJPLOT-macro.",
+                            "type": "box"
+                        },
+                        {
+                            "text": "The TRAJPLOT macro statement invokes the result plot, which by default plots the trajectory means and their estimates. Finally, individual level results are collected and merged with microsimulation output dataset.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s5",
+                    "title": "A.1 An example SAS PROC TRAJ-code.",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "tables": [
+                                "<table>\n<thead>\n<tr>\n<th align=\"left\">Outcome</th>\n<th align=\"left\">Groups</th>\n<th align=\"left\"><math id=\"inf26\"><mstyle displaystyle=\"true\" scriptlevel=\"0\"><mrow><msub><mrow><mover><mi mathvariant=\"bold-italic\">\u03b2</mi><mo mathvariant=\"bold\">^</mo></mover></mrow><mn mathvariant=\"bold\">0</mn></msub></mrow></mstyle></math></th>\n<th align=\"left\"><math id=\"inf27\"><mstyle displaystyle=\"true\" scriptlevel=\"0\"><mrow><mrow><mi mathvariant=\"bold-italic\">S</mi><mi mathvariant=\"bold-italic\">E</mi></mrow><mo stretchy=\"false\">(</mo><mrow><msub><mrow><mover><mi mathvariant=\"bold-italic\">\u03b2</mi><mo mathvariant=\"bold\">^</mo></mover></mrow><mn mathvariant=\"bold\">0</mn></msub></mrow><mo stretchy=\"false\">)</mo></mrow></mstyle></math></th>\n<th align=\"left\"><math id=\"inf28\"><mstyle displaystyle=\"true\" scriptlevel=\"0\"><mrow><msub><mrow><mover><mi mathvariant=\"bold-italic\">\u03b2</mi><mo mathvariant=\"bold\">^</mo></mover></mrow><mn mathvariant=\"bold\">1</mn></msub></mrow></mstyle></math></th>\n<th align=\"left\"><math id=\"inf29\"><mstyle displaystyle=\"true\" scriptlevel=\"0\"><mrow><mrow><mi mathvariant=\"bold-italic\">S</mi><mi mathvariant=\"bold-italic\">E</mi></mrow><mo stretchy=\"false\">(</mo><mrow><msub><mrow><mover><mi mathvariant=\"bold-italic\">\u03b2</mi><mo mathvariant=\"bold\">^</mo></mover></mrow><mn mathvariant=\"bold\">1</mn></msub></mrow><mo stretchy=\"false\">)</mo></mrow></mstyle></math></th>\n<th align=\"left\"><math id=\"inf30\"><mstyle displaystyle=\"true\" scriptlevel=\"0\"><mrow><msub><mrow><mover><mi mathvariant=\"bold-italic\">\u03b2</mi><mo mathvariant=\"bold\">^</mo></mover></mrow><mn mathvariant=\"bold\">2</mn></msub></mrow></mstyle></math></th>\n<th align=\"left\"><math id=\"inf31\"><mstyle displaystyle=\"true\" scriptlevel=\"0\"><mrow><mrow><mi mathvariant=\"bold-italic\">S</mi><mi mathvariant=\"bold-italic\">E</mi></mrow><mo stretchy=\"false\">(</mo><mrow><msub><mrow><mover><mi mathvariant=\"bold-italic\">\u03b2</mi><mo mathvariant=\"bold\">^</mo></mover></mrow><mn mathvariant=\"bold\">2</mn></msub></mrow><mo stretchy=\"false\">)</mo></mrow></mstyle></math></th>\n<th align=\"left\"><math id=\"inf32\"><mstyle displaystyle=\"true\" scriptlevel=\"0\"><mrow><msub><mrow><mover><mi mathvariant=\"bold-italic\">\u03b2</mi><mo mathvariant=\"bold\">^</mo></mover></mrow><mn mathvariant=\"bold\">3</mn></msub></mrow></mstyle></math></th>\n<th align=\"left\"><math id=\"inf33\"><mstyle displaystyle=\"true\" scriptlevel=\"0\"><mrow><mrow><mi mathvariant=\"bold-italic\">S</mi><mi mathvariant=\"bold-italic\">E</mi></mrow><mo stretchy=\"false\">(</mo><mrow><msub><mrow><mover><mi mathvariant=\"bold-italic\">\u03b2</mi><mo mathvariant=\"bold\">^</mo></mover></mrow><mn mathvariant=\"bold\">3</mn></msub></mrow><mo stretchy=\"false\">)</mo></mrow></mstyle></math></th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td align=\"left\">Earnings</td>\n<td align=\"left\">1</td>\n<td align=\"left\">\u22120.60816</td>\n<td align=\"left\">0.93616</td>\n<td align=\"left\">0.17156</td>\n<td align=\"left\">0.07229</td>\n<td align=\"left\">\u22120.00845</td>\n<td align=\"left\">0.00173</td>\n<td align=\"left\">0.00008</td>\n<td align=\"left\">0.00001</td>\n</tr>\n<tr>\n<td align=\"left\">Earnings</td>\n<td align=\"left\">2</td>\n<td align=\"left\">10.77241</td>\n<td align=\"left\">0.7512</td>\n<td align=\"left\">\u22121.05243</td>\n<td align=\"left\">0.05715</td>\n<td align=\"left\">0.03048</td>\n<td align=\"left\">0.00135</td>\n<td align=\"left\">\u22120.00026</td>\n<td align=\"left\">0.00001</td>\n</tr>\n<tr>\n<td align=\"left\">Earnings</td>\n<td align=\"left\">4</td>\n<td align=\"left\">\u221224.0041</td>\n<td align=\"left\">0.69707</td>\n<td align=\"left\">1.88334</td>\n<td align=\"left\">0.05421</td>\n<td align=\"left\">\u22120.04084</td>\n<td align=\"left\">0.00128</td>\n<td align=\"left\">0.00026</td>\n<td align=\"left\">0.00001</td>\n</tr>\n<tr>\n<td align=\"left\">Earnings</td>\n<td align=\"left\">5</td>\n<td align=\"left\">2.89272</td>\n<td align=\"left\">0.93197</td>\n<td align=\"left\">\u22120.55508</td>\n<td align=\"left\">0.08212</td>\n<td align=\"left\">0.02763</td>\n<td align=\"left\">0.00225</td>\n<td align=\"left\">\u22120.00029</td>\n<td align=\"left\">0.00002</td>\n</tr>\n<tr>\n<td align=\"left\">Education</td>\n<td align=\"left\">1</td>\n<td align=\"left\">150.7634</td>\n<td align=\"left\">13.69866</td>\n<td align=\"left\">\u221223.324</td>\n<td align=\"left\">1.03504</td>\n<td align=\"left\">0.60943</td>\n<td align=\"left\">0.01352</td>\n<td align=\"left\">\u22120.00442</td>\n<td align=\"left\">0.00018</td>\n</tr>\n<tr>\n<td align=\"left\">Education</td>\n<td align=\"left\">2</td>\n<td align=\"left\">\u221238.2479</td>\n<td align=\"left\">1.84202</td>\n<td align=\"left\">1.95442</td>\n<td align=\"left\">0.10906</td>\n<td align=\"left\">\u22120.03343</td>\n<td align=\"left\">0.00214</td>\n<td align=\"left\">0.00019</td>\n<td align=\"left\">0.00001</td>\n</tr>\n<tr>\n<td align=\"left\">Education</td>\n<td align=\"left\">3</td>\n<td align=\"left\">\u22121.40435</td>\n<td align=\"left\">0.08235</td>\n<td align=\"left\">0.09431</td>\n<td align=\"left\">0.00638</td>\n<td align=\"left\">\u22120.00206</td>\n<td align=\"left\">0.00016</td>\n<td align=\"left\">0.00001</td>\n<td align=\"left\">0.00000</td>\n</tr>\n<tr>\n<td align=\"left\">Education</td>\n<td align=\"left\">4</td>\n<td align=\"left\">\u22123.82746</td>\n<td align=\"left\">0.09413</td>\n<td align=\"left\">0.27969</td>\n<td align=\"left\">0.00712</td>\n<td align=\"left\">\u22120.00568</td>\n<td align=\"left\">0.00017</td>\n<td align=\"left\">0.00004</td>\n<td align=\"left\">0.00000</td>\n</tr>\n<tr>\n<td align=\"left\">Education</td>\n<td align=\"left\">5</td>\n<td align=\"left\">\u22126.14041</td>\n<td align=\"left\">0.09384</td>\n<td align=\"left\">0.46159</td>\n<td align=\"left\">0.00701</td>\n<td align=\"left\">\u22120.00958</td>\n<td align=\"left\">0.00017</td>\n<td align=\"left\">0.00006</td>\n<td align=\"left\">0.00000</td>\n</tr>\n<tr>\n<td align=\"left\">Education</td>\n<td align=\"left\">6</td>\n<td align=\"left\">\u221234.1529</td>\n<td align=\"left\">1.02762</td>\n<td align=\"left\">2.02103</td>\n<td align=\"left\">0.06446</td>\n<td align=\"left\">\u22120.03841</td>\n<td align=\"left\">0.00133</td>\n<td align=\"left\">0.00024</td>\n<td align=\"left\">0.00001</td>\n</tr>\n<tr>\n<td align=\"left\">Pension</td>\n<td align=\"left\">1</td>\n<td align=\"left\">1352.226</td>\n<td align=\"left\">1.29912</td>\n<td align=\"left\">\u221266.1983</td>\n<td align=\"left\">0.03537</td>\n<td align=\"left\">1.07053</td>\n<td align=\"left\">0.0006</td>\n<td align=\"left\">\u22120.00572</td>\n<td align=\"left\">0.00001</td>\n</tr>\n<tr>\n<td align=\"left\">Pension</td>\n<td align=\"left\">2</td>\n<td align=\"left\">\u2212220.279</td>\n<td align=\"left\">3.93005</td>\n<td align=\"left\">5.68868</td>\n<td align=\"left\">0.15254</td>\n<td align=\"left\">\u22120.03308</td>\n<td align=\"left\">0.00196</td>\n<td align=\"left\">\u22120.00003</td>\n<td align=\"left\">0.00001</td>\n</tr>\n<tr>\n<td align=\"left\">Pension</td>\n<td align=\"left\">3</td>\n<td align=\"left\">\u2212464.879</td>\n<td align=\"left\">3.77328</td>\n<td align=\"left\">14.13735</td>\n<td align=\"left\">0.14801</td>\n<td align=\"left\">\u22120.12224</td>\n<td align=\"left\">0.00197</td>\n<td align=\"left\">0.00024</td>\n<td align=\"left\">0.00001</td>\n</tr>\n<tr>\n<td align=\"left\">Pension</td>\n<td align=\"left\">4</td>\n<td align=\"left\">27.60321</td>\n<td align=\"left\">4.88433</td>\n<td align=\"left\">\u22121.86771</td>\n<td align=\"left\">0.19721</td>\n<td align=\"left\">0.03987</td>\n<td align=\"left\">0.00262</td>\n<td align=\"left\">\u22120.00025</td>\n<td align=\"left\">0.00001</td>\n</tr>\n<tr>\n<td align=\"left\">Pension</td>\n<td align=\"left\">5</td>\n<td align=\"left\">\u2212127.459</td>\n<td align=\"left\">2.91581</td>\n<td align=\"left\">3.18956</td>\n<td align=\"left\">0.10992</td>\n<td align=\"left\">\u22120.01691</td>\n<td align=\"left\">0.00136</td>\n<td align=\"left\">\u22120.00002</td>\n<td align=\"left\">0.00001</td>\n</tr>\n</tbody>\n</table>"
+                            ],
+                            "type": "table"
+                        }
+                    ],
+                    "id": "s6",
+                    "title": "A.2 Summary of Estimated Model: Outcomes, Groups, Parameter Estimates and their Standard Errors.",
+                    "type": "section"
+                }
+            ],
+            "id": "appendix-1",
+            "title": "Appendix"
+        }
+    ],
+    "acknowledgements": [
+        {
+            "text": "The authors wish to thank Statistics Finland for providing material for this study and two anonymous referees as well as chief editor Matteo Richiardi for their many thoughtful comments that greatly improved this paper.",
+            "type": "paragraph"
+        }
+    ],
+    "-meta": {
+        "patched": true
+    },
+    "stage": "published"
+}
