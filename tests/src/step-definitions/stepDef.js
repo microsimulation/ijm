@@ -102,7 +102,9 @@ Then(/^a list of 10 articles is displayed$/, {timeout: 15 * 1000}, async functio
 });
 
 Then(/^"([^"]*)" is displayed$/, {timeout: 30 * 1000}, async function (pageName) {
-    const currentUrl = await this.state.driver.getCurrentUrl()
+    const currentUrl = await this.state.driver.getCurrentUrl();
+    console.log("currentUrl: " + currentUrl);
+    console.log("expectedUrl: " + pages[pageName]);
     expect(currentUrl).to.contains(pages[pageName]);
 });
 

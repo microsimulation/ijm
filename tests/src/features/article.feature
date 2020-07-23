@@ -65,7 +65,7 @@ Feature: Article page
       | BibTeX          |
       | RIS             |
 
-  @Ci, @Run
+  @Ci
   Scenario Outline: Open article citations option
     Given user navigates to "Home" page
     When user is on the Home page
