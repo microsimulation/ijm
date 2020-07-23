@@ -31,9 +31,9 @@ When(/^user is on the Home page$/, async function () {
     return title;
 });
 
-When(/^user clicks on the second article from the list$/, {timeout: 30 * 1000}, async function () {
+When(/^user clicks on "([^"]*)" from the list$/, {timeout: 30 * 1000}, async function (article) {
     try {
-        const result = await this.state.driver.findElement(By.xpath(xpaths["Second article"]))
+        const result = await this.state.driver.findElement(By.xpath(xpaths[article]))
         await result.click();
         const buffer = await this.state.driver.takeScreenshot();
         this.attach(buffer, 'image/png');
