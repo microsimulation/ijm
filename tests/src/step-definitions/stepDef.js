@@ -34,7 +34,7 @@ When(/^user is on the Home page$/, async function () {
 When(/^user clicks on the second article from the list$/, {timeout: 30 * 1000}, async function () {
     try {
         const result = await this.state.driver.findElement(By.xpath(xpaths["Second article"]))
-        result.click();
+        await result.click();
         const buffer = await this.state.driver.takeScreenshot();
         this.attach(buffer, 'image/png');
     } catch (e) {
@@ -58,7 +58,7 @@ When(/^user navigates to "([^"]*)"$/, async function (articleNumber) {
 When(/^user clicks on 'Linked volume' of the random article$/, async function () {
     try {
         const result = await this.state.driver.findElement(By.xpath(xpaths["Random issue link"]));
-        result.click();
+        await result.click();
         const buffer = await this.state.driver.takeScreenshot();
         this.attach(buffer, 'image/png');
     } catch (e) {
@@ -70,13 +70,13 @@ When(/^user selects "([^"]*)"$/, async function (extraRef) {
     const elemMap = xpaths.downloadButtons
     expect(elemMap[extraRef]).to.be.a('string');
     const result = await this.state.driver.findElement(By.xpath(elemMap[extraRef]));
-    result.click();
+    await result.click();
 });
 
 When(/^user clicks on "([^"]*)" subject$/, async function (subject) {
     try {
         const result = await this.state.driver.findElement(By.linkText(subject));
-        result.click();
+        await result.click();
         const buffer = await this.state.driver.takeScreenshot();
         this.attach(buffer, 'image/png');
     } catch (e) {
@@ -88,7 +88,7 @@ When(/^user searches for "([^"]*)"$/, async function (keys) {
     const result = await this.state.driver.findElement(By.xpath(xpaths["Search input"]))
     result.sendKeys(keys);
     const submit = await this.state.driver.findElement(By.xpath(xpaths["Search submit"]))
-    submit.click();
+    await submit.click();
     const buffer = await this.state.driver.takeScreenshot();
     this.attach(buffer, 'image/png');
 });

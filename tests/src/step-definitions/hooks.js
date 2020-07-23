@@ -25,7 +25,9 @@ const buildChromeDriver = function () {
     } else {
         return new Builder()
             .forBrowser("chrome")
-            .setChromeOptions(new chrome.Options().addArguments("--no-recovery-component"))
+            .setChromeOptions(
+                new chrome.Options()
+                    .addArguments("--no-recovery-component"))
             .build();
     }
 };
@@ -44,4 +46,3 @@ AfterAll(function () {
     const files = fs.readdirSync(downloadDir);
     files.forEach(file => file !== '.gitkeep' && fs.unlinkSync(path.join(downloadDir, file)));
 });
-
