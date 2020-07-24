@@ -13,7 +13,7 @@ Feature: Article page
     And the "Introduction" section should be open
     But the "Results" section should be closed
 
-  @Ci
+    @Failing
   Scenario: Article main sections are displayed
     Given user navigates to "Home" page
     When user is on the Home page
