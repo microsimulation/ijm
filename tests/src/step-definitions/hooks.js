@@ -37,6 +37,13 @@ const chromeDriver = buildChromeDriver()
 Before(function () {
     this.state = new World(chromeDriver);
     this.microsim = new MicrosimApp(webddriver, chromeDriver);
+
+    this.data = {
+        volume: {
+            name: "",
+            articles: [""]
+        }
+    };
 });
 
 AfterAll(function () {

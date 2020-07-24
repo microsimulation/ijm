@@ -64,6 +64,10 @@ When(/^user navigates to subject "([^"]*)"$/, async function (subjectNumber) {
 When(/^user clicks on 'Linked volume' of the random article$/, async function () {
     try {
         const result = await this.state.driver.findElement(By.xpath(xpaths["Random issue link"]));
+        const volumeName = (await result.getText());
+        console.log("volumeName: " + volumeName);
+        this.data.volume.name = volumeName;
+        console.log("datastore: " + JSON.stringify(this.data));
         await result.click();
         const buffer = await this.state.driver.takeScreenshot();
         this.attach(buffer, 'image/png');
@@ -108,10 +112,12 @@ Then(/^a list of 10 articles is displayed$/, {timeout: 15 * 1000}, async functio
 });
 
 Then(/^"([^"]*)" is displayed$/, {timeout: 30 * 1000}, async function (pageName) {
-    const currentUrl = await this.state.driver.getCurrentUrl();
-    console.log("currentUrl: " + currentUrl);
-    console.log("expectedUrl: " + pages[pageName]);
-    expect(currentUrl).to.contains(pages[pageName]);
+    const pageTitle = await this.state.driver.getTitle();
+    console.log("current pageTitle: " + pageTitle);
+    console.log("datastore: " + JSON.stringify(this.data));
+    expect(pageTitle.toString().toUpperCase()).to.contains(this.data.volume.name);
+    const buffer = await this.state.driver.takeScreenshot();
+    this.attach(buffer, 'image/png');
 });
 
 //compare header of the page
