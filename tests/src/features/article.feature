@@ -13,20 +13,20 @@ Feature: Article page
     And the "Introduction" section should be open
     But the "Results" section should be closed
 
-  Scenario: Article can be displayed
-    Given articles are uploaded
-    When user navigates to "Home" page
-    Then a list of articles is displayed
-    When user clicks on the first article from the list
-    Then "Article" is displayed
+  @Ci
+  Scenario: Article main sections are displayed
+    Given user navigates to "Home" page
+    When user is on the Home page
+    Then a list of 10 articles is displayed
+    When user clicks on "First article" from the list
+    Then "Article page" is displayed
     And following sections are displayed:
       | Abstract                       |
       | Introduction                   |
-      | Data and methodology           |
-      | Conclusions                    |
       | Appendix                       |
       | References                     |
       | Article and author information |
+      | Conclusion                     |
 
   Scenario:Article's figure and data are displayed
     Given articles are uploaded

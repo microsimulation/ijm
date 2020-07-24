@@ -1,15 +1,15 @@
 export default {
     "Linked volume": "//*[@id='maincontent']/header/div[5]/div/a",
-    "First article":"//*[@id='listing']/li[1]/div/header/h4/a",
-    "Second article":"//*[@id='listing']/li[2]/div/header/h4/a",
-    "List of articles":"//*[@id='listing']/li",
-    "Page header":"//*[@id='maincontent']//h1",
-    "Article type":"//*[@id='maincontent']/header/div[4]/div/a",
-    "Article preview footer":"//*[@id='listing']/li[2]/div/footer/div[1]/a",
-    "Subjects":"//*[@id='subjects']//p",
-    "Special article types":"//*[@id='section-listing--types']",
-    "Random issue link":"//*[@id='listing']/li[2]/div/div/div/a",
-    "Download": "//a[@href=\"#downloads\"]",
+    "First article": "//*[@id='listing']/li[1]/div/header/h4/a",
+    "Second article": "//*[@id='listing']/li[2]/div/header/h4/a",
+    "List of articles": "//*[@id='listing']/li",
+    "Page header": "//*[@id='maincontent']//h1",
+    "Article type": "//*[@id='maincontent']/header/div[4]/div/a",
+    "Article preview footer": "//*[@id='listing']/li[2]/div/footer/div[1]/a",
+    "Subjects": "//*[@id='subjects']//p",
+    "Special article types": "//*[@id='section-listing--types']",
+    "Random issue link": "//*[@id='listing']/li[2]/div/div/div/a",
+    "Download": "//a[@href='#downloads']",
     "Volume from category": "//*[@id='listing']/li[1]/div/div/div/a",
     "Search button": "//*[@id='siteHeader']/div[2]/nav[2]/ul/li[3]/a/picture/img",
     "Search input": "//*[@id='search']/fieldset/label/input",
@@ -23,4 +23,12 @@ export default {
         "ReadCube": "//*[@id='downloads']/ul[3]/li[2]/a",
         "Papers": "//*[@id='downloads']/ul[3]/li[3]/a"
     },
+    articleSections: {
+        "Abstract": "//h2[contains (text(),'Abstract')]",
+        "Introduction": "//h2[contains (text(),'Introduction')]",
+        "Conclusion": "//h2[contains (text(),'Conclusion')]",
+        "Appendix": "//h2[contains (text(),'Appendix')]",
+        "References": "//h2[contains (text(),'References')]",
+        "Article and author information": "//h2[contains (text(),'Article and author information')]"
+    }
 }

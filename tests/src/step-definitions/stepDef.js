@@ -55,6 +55,12 @@ When(/^user navigates to "([^"]*)"$/, async function (articleNumber) {
     this.attach(buffer, 'image/png');
 });
 
+When(/^user navigates to subject "([^"]*)"$/, async function (subjectNumber) {
+    await this.state.driver.get(`${config.url}subjects/${subjectNumber}`);
+    const buffer = await this.state.driver.takeScreenshot();
+    this.attach(buffer, 'image/png');
+});
+
 When(/^user clicks on 'Linked volume' of the random article$/, async function () {
     try {
         const result = await this.state.driver.findElement(By.xpath(xpaths["Random issue link"]));
@@ -137,12 +143,12 @@ Then(/^the following special type of articles is displayed:$/, async function (a
     expect(parsed).to.eql(types)
 });
 
-Then(/^a "([^"]*)" file is downloaded$/,async function (type) {
+Then(/^a "([^"]*)" file is downloaded$/, async function (type) {
     const elemMap = xpaths.downloadButtons
     const result = await this.state.driver.findElement(By.xpath(elemMap[type])).getAttribute("href");
-    const [filename] = path.basename(result).split("?",1);
+    const [filename] = path.basename(result).split("?", 1);
     const file = fs.createWriteStream(path.join(config.downloadDir, filename));
-    https.get(result, function(response) {
+    https.get(result, function (response) {
         response.pipe(file);
     });
 });
@@ -177,4 +183,15 @@ Then(/^the About page is loaded$/, async function () {
     const buffer3 = await this.state.driver.takeScreenshot();
 
     this.attach(buffer3, 'image/png');
+});
+Then(/^following sections are displayed:$/, async function (articleSections) {
+    for (const section of articleSections.rawTable.flat()) {
+        console.log("Section: " + section);
+        console.log("xpaths: " + xpaths.articleSections[section]);
+        const paragraphNameWebElement = await this.state.driver.findElement(By.xpath(xpaths.articleSections[section]));
+        const paragraphNameArray = (await paragraphNameWebElement.getText()).split(".");
+        const resultValue = paragraphNameArray[paragraphNameArray.length - 1].toString().trim();
+        expect(resultValue).to.equal(section);
+        await result.isDisplayed;
+    }
 });
