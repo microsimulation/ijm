@@ -201,3 +201,9 @@ Then(/^following sections are displayed:$/, async function (articleSections) {
         await result.isDisplayed;
     }
 });
+When(/^user selects "([^"]*)" checkbox$/, async function (element) {
+    const result = await this.state.driver.findElement(By.xpath(xpaths.researchCategories[element]));
+    await result.click();
+    const buffer = await this.state.driver.takeScreenshot();
+    this.attach(buffer, 'image/png');
+});

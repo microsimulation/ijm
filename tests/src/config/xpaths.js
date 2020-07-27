@@ -30,5 +30,27 @@ export default {
         "Appendix": "//h2[contains (text(),'Appendix')]",
         "References": "//h2[contains (text(),'References')]",
         "Article and author information": "//h2[contains (text(),'Article and author information')]"
+    },
+    researchCategories:{
+        "Consumption, savings and wealth":"//input[@value='consumption-savings-wealth']",
+        "Demography":"//input[@value='demography']",
+        "Dynamic microsimulation":"//input[@value='dynamic-microsimulation']",
+        "Education":"//input[@value='education']",
+        "Environment":"//input[@value='environment']",
+        "Finance":"//input[@value='finance']",
+        "Firm behaviour":"//input[@value='firm-behaviour']",
+        "Health":"//input[@value='health']",
+        "Housing":"//input[@value='housing']",
+        "Innovation":"//input[@value='innovation']",
+        "Labour supply and demand":"//input[@value='labour-supply-demand']",
+        "Methodology":"//input[@value='methodology']",
+        "Micro-macro linkage":"//input[@value='micro-macro-linkage']",
+        "Miscellaneous":"//input[@value='miscellaneous']",
+        "Pensions and retirement":"//input[@value='pensions-retirement']",
+        "Spatial microsimulation":"//input[@value='spatial-microsimulation']",
+        "Taxes and benefits":"//input[@value='taxes-benefits']",
+        "Trade":"//input[@value='trade']",
+        "Transport":"//input[@value='transport']",
+        "Institutions and incentives":"//input[@value='institutions-incentives']"
     }
 }
