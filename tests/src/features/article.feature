@@ -13,7 +13,7 @@ Feature: Article page
     And the "Introduction" section should be open
     But the "Results" section should be closed
 
-    @Failing
+  @Failing
   Scenario: Article main sections are displayed
     Given user navigates to "Home" page
     When user is on the Home page
@@ -51,21 +51,36 @@ Feature: Article page
     Examples:
       | issueName |
 
+  @Ci
   Scenario Outline: Download article citations option
     Given user navigates to "Home" page
-    When user is on the Home page
-    When user navigates to "00170"
+    And user is on the Home page
+    When user navigates to "<ArticleId>"
     Then "Article page" is displayed
     When user clicks on "Download"
-    And user selects "<exportReference>"
-    Then a "<exportReference>" file is downloaded
+    And user selects "Article PDF"
+    Then a "Article PDF" file is downloaded
+    When user selects "BibTeX"
+    Then a "BibTeX" file is downloaded
+    When user selects "RIS"
+    Then a "RIS" file is downloaded
     Examples:
-      | exportReference |
-      | Article PDF     |
-      | BibTeX          |
-      | RIS             |
+      | ArticleId |
+      | 00170     |
+      | 00197     |
+      | 00198     |
+      | 00199     |
+      | 00200     |
+      | 00201     |
+      | 00202     |
+      | 00203     |
+      | 00204     |
+      | 00205     |
+      | 00206     |
+      | 00207     |
+      | 00208     |
 
-  @Ci
+    @Ci
   Scenario Outline: Open article citations option
     Given user navigates to "Home" page
     When user is on the Home page

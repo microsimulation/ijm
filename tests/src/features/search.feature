@@ -11,7 +11,7 @@ Feature: Search page
    # Given there is 44 research article about 'Demography'
    # And user is on the 'Search' page
 
-
+@Ci
   Scenario Outline: List shows 10 most relevant results
     Given user navigates to "Home" page
     When user is on the Home page
@@ -41,7 +41,7 @@ Feature: Search page
       | transport                  | Transport                       |
       | institutions-incentives    | Institutions and incentives     |
 
-  @Run
+  @Ci
   Scenario Outline: Search by research category
     Given user navigates to "Home" page
     When user is on the Home page

@@ -9,7 +9,7 @@ Feature: Subjects page
     When I go the Subjects page
     Then I should see the 20 subjects.
 
-
+@Ci
   Scenario Outline: Access research subjects
     Given user navigates to "Home" page
     When user is on the Home page

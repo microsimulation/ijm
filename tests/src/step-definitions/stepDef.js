@@ -4,7 +4,7 @@ import {By} from 'selenium-webdriver';
 import config from '../config';
 import xpaths from '../config/xpaths';
 import pages from '../config/pages';
-import * as https from 'https';
+import * as http from 'http';
 import * as fs from 'fs';
 import path from 'path';
 
@@ -49,7 +49,7 @@ When(/^user clicks on "([^"]*)"$/, async function (element) {
     this.attach(buffer, 'image/png');
 });
 
-When(/^user navigates to "([^"]*)"$/, async function (articleNumber) {
+When(/^user navigates to "([^"]*)"$/, {timeout: 30 * 1000}, async function (articleNumber) {
     await this.state.driver.get(`${config.url}articles/${articleNumber}`);
     const buffer = await this.state.driver.takeScreenshot();
     this.attach(buffer, 'image/png');
@@ -154,7 +154,7 @@ Then(/^a "([^"]*)" file is downloaded$/, async function (type) {
     const result = await this.state.driver.findElement(By.xpath(elemMap[type])).getAttribute("href");
     const [filename] = path.basename(result).split("?", 1);
     const file = fs.createWriteStream(path.join(config.downloadDir, filename));
-    https.get(result, function (response) {
+    http.get(result, function (response) {
         response.pipe(file);
     });
 });
@@ -207,3 +207,4 @@ When(/^user selects "([^"]*)" checkbox$/, async function (element) {
     const buffer = await this.state.driver.takeScreenshot();
     this.attach(buffer, 'image/png');
 });
+
