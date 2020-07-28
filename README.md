@@ -7,4 +7,3 @@ This repository serves as a central store of issues, documents, scripts and reso
 - [Create a new Feature Issue](https://github.com/microsimulation/ijm/issues/new?template=feature_ticket.md&labels=feature-ticket)
 - [Create a new Technical Issue](https://github.com/microsimulation/ijm/issues/new?template=task.md&labels=technical-ticket)
 - [Create a new Bug Issue](https://github.com/microsimulation/ijm/issues/new?template=bug.md&labels=bug)
-
