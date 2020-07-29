@@ -136,20 +136,30 @@ final class HomeController extends Controller
             ->otherwise($this->softFailure('Failed to load subjects list'));
 
         $arguments['collections'] = $arguments['collections']
+            ->then($this->willConvertTo(CategoryGroup::class))
+            // ->then(
+            //     function (Sequence $result) {
+            //         // return ListingTeasers::
+            //     }
+            // )
             ->then(
-                function (Sequence $result) {
-                   return new CategoryGroup();
-//                    return Meta::withLink(
-//                        new Link('I am amazing link', $this->get('router')->generate('collections'))
-//                    );
-//
-//                     return ListingTeasers::withSeeMore(
-//                         $result->map($this->willConvertTo(Teaser::class, ['variant' => 'secondary']))->toArray(),
-//                         new SeeMoreLink(
-//                             new Link('See more issues', $this->get('router')->generate('collections'))
-//                         ),
-//                         new ListHeading('Issues')
-//                     );
+                function ($result) {
+                    var_dump($result);die;
+                    $test = $result
+                        ->map(function ($element) {
+                            var_dump($element);
+                            die;
+                            return $this->convertTo($element, Teaser::class, ['variant' => 'secondary']);
+                        })
+                        ->toArray();
+
+                    return CategoryGroup::withSeeMore(
+                        $test,
+                        new SeeMoreLink(
+                            new Link('See more issues', $this->get('router')->generate('collections'))
+                        ),
+                        new ListHeading('Issues')
+                    );
                 }
             )
             ->otherwise($this->softFailure('Failed to load collections list'));
