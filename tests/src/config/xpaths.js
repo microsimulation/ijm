@@ -14,6 +14,7 @@ export default {
     "Search button": "//*[@id='siteHeader']/div[2]/nav[2]/ul/li[3]/a/picture/img",
     "Search input": "//*[@id='search']/fieldset/label/input",
     "Search submit": "//*[@id='search']/fieldset/button[2]",
+    "Image fig1":"//*[@id='fig1']/figure/a/picture/img",
 
     downloadButtons: {
         "Article PDF": "//*[@id='downloads']/ul[1]/li/a",

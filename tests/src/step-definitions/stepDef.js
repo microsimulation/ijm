@@ -1,12 +1,13 @@
 import {When, Then, Given} from 'cucumber';
 import {expect} from 'chai';
 import {By} from 'selenium-webdriver';
-import config from '../config';
-import xpaths from '../config/xpaths';
-import pages from '../config/pages';
 import * as http from 'http';
 import * as fs from 'fs';
 import path from 'path';
+import axios from 'axios';
+
+import config from '../config';
+import xpaths from '../config/xpaths';
 
 Given(/^user navigates to "([^"]*)" page$/, {timeout: 50 * 1000}, async function (pageName) {
     try {
@@ -76,7 +77,7 @@ When(/^user clicks on 'Linked volume' of the random article$/, async function ()
     }
 });
 
-When(/^user selects "([^"]*)"$/, async function (extraRef) {
+When(/^user selects "([^"]*)"$/, {timeout: 15 * 1000}, async function (extraRef) {
     const elemMap = xpaths.downloadButtons
     expect(elemMap[extraRef]).to.be.a('string');
     const result = await this.state.driver.findElement(By.xpath(elemMap[extraRef]));
@@ -151,12 +152,17 @@ Then(/^the following special type of articles is displayed:$/, async function (a
 
 Then(/^a "([^"]*)" file is downloaded$/, async function (type) {
     const elemMap = xpaths.downloadButtons
-    const result = await this.state.driver.findElement(By.xpath(elemMap[type])).getAttribute("href");
-    const [filename] = path.basename(result).split("?", 1);
-    const file = fs.createWriteStream(path.join(config.downloadDir, filename));
-    http.get(result, function (response) {
-        response.pipe(file);
-    });
+    const downloadBtnUrl = await this.state.driver.findElement(By.xpath(elemMap[type])).getAttribute("href");
+    const [filename] = path.basename(downloadBtnUrl).split("?", 1);
+    await new Promise((resolve, reject) =>
+        http.get(downloadBtnUrl, (res) => {
+            expect(res.statusCode).to.equal(200);
+            const file = fs.createWriteStream(path.join(config.downloadDir, filename));
+            res.pipe(file);
+            res.on('end', () => resolve());
+        })
+            .on('error', (err) => reject(err))
+    );
 });
 
 Given(/^Microsim site Home page was loaded$/, async function () {
@@ -208,3 +214,9 @@ When(/^user selects "([^"]*)" checkbox$/, async function (element) {
     this.attach(buffer, 'image/png');
 });
 
+Then(/^Images in article is displayed$/, async function () {
+    const element = await this.state.driver.findElement(By.xpath(xpaths["Image fig1"]));
+    const imageURL = await element.getAttribute("src");
+    const response = await axios.get(imageURL);
+    expect(response.status).to.equal(200);
+});

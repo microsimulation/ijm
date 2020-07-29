@@ -80,7 +80,7 @@ Feature: Article page
       | 00207     |
       | 00208     |
 
-    @Ci
+  @Ci
   Scenario Outline: Open article citations option
     Given user navigates to "Home" page
     When user is on the Home page
@@ -94,3 +94,21 @@ Feature: Article page
       | exportReference |
       | Mendeley        |
       | ReadCube        |
+
+@Ci
+  Scenario Outline:  Images in articles are displayed
+    Given user navigates to "Home" page
+    And user is on the Home page
+    When user navigates to "<articleId>"
+    Then "Article page" is displayed
+    And Images in article is displayed
+    Examples:
+      | articleId |
+      | 00198     |
+      | 00199     |
+      | 00200     |
+      | 00201     |
+      | 00202     |
+      | 00205     |
+      | 00206     |
+      | 00208     |
