@@ -3,7 +3,7 @@ on:
   push:
     branches: [ master ]
     paths-ignore:
-      - assets/** 
+      - assets/**
   pull_request:
     branches: [ master ]
   workflow_dispatch:
@@ -42,7 +42,7 @@ jobs:
           --build-arg api_url_public=${{ secrets.API_URL_PUBLIC }} \
           --build-arg api_key=${{ secrets.api_key }} -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -f journal/Dockerfile ./journal;
     - name: Update env file
-      env: 
+      env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         IMAGE_TAG: ${{ github.sha }}
       run: |
@@ -53,14 +53,14 @@ jobs:
     - name: Prepare env for Automation tests to run
       run: |
         rm -rf docker-compose.overrirde.yml
-        docker-compose up -d 
+        docker-compose up -d
         APP_IP=$(hostname -I | awk '{print $1}')
         docker build -t ijm-selenium-tests:latest --build-arg APP_HOSTNAME="http://"$APP_IP":8080/" -f tests/Dockerfile ./tests
     - name: Run Automation suite
       run: |
         CURR_PATH=$(pwd)
         mkdir -p $CURR_PATH/reports && chmod 777 -R $CURR_PATH/reports
-        docker run -i --name ijm-selenium -v $CURR_PATH/reports:/app/reports ijm-selenium-tests:latest
+        docker run -i --name ijm-selenium -v $CURR_PATH/reports:/app/reports --network ijm_ijm-network ijm-selenium-tests:latest
     - name: Get test results
       if: always()
       id: test-res
@@ -97,7 +97,7 @@ jobs:
         remote: ${{ secrets.SSH_DIR }}
         port: ${{ secrets.SSH_PORT }}
         user: ${{ secrets.SSH_USER }}
-        key: ${{ secrets.SSH_KEY }} 
+        key: ${{ secrets.SSH_KEY }}
     - name: Publish compose
       uses: nogsantos/ssh-scp-deploy@v1.2.1
       with:
@@ -106,7 +106,7 @@ jobs:
         remote: ${{ secrets.SSH_DIR }}
         port: ${{ secrets.SSH_PORT }}
         user: ${{ secrets.SSH_USER }}
-        key: ${{ secrets.SSH_KEY }} 
+        key: ${{ secrets.SSH_KEY }}
     - name: Publish config
       uses: nogsantos/ssh-scp-deploy@v1.2.1
       with:
@@ -115,10 +115,10 @@ jobs:
         remote: ${{ secrets.SSH_DIR }}
         port: ${{ secrets.SSH_PORT }}
         user: ${{ secrets.SSH_USER }}
-        key: ${{ secrets.SSH_KEY }} 
+        key: ${{ secrets.SSH_KEY }}
     - name: Deploy application
       uses: alinz/ssh-scp-action@v0.1.1
-      with: 
+      with:
         key: ${{ secrets.SSH_KEY }}
         host: ${{ secrets.SSH_HOST }}
         port: ${{ secrets.SSH_PORT }}
