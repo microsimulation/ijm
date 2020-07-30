@@ -95,7 +95,6 @@ Feature: Article page
       | Mendeley        |
       | ReadCube        |
 
-@Ci
   Scenario Outline:  Images in articles are displayed
     Given user navigates to "Home" page
     And user is on the Home page
