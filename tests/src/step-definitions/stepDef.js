@@ -204,7 +204,7 @@ Then(/^following sections are displayed:$/, async function (articleSections) {
         const paragraphNameArray = (await paragraphNameWebElement.getText()).split(".");
         const resultValue = paragraphNameArray[paragraphNameArray.length - 1].toString().trim();
         expect(resultValue).to.equal(section);
-        await result.isDisplayed;
+        await resultValue.isDisplayed;
     }
 });
 When(/^user selects "([^"]*)" checkbox$/, async function (element) {
@@ -214,9 +214,11 @@ When(/^user selects "([^"]*)" checkbox$/, async function (element) {
     this.attach(buffer, 'image/png');
 });
 
-Then(/^Images in article is displayed$/, async function () {
-    const element = await this.state.driver.findElement(By.xpath(xpaths["Image fig1"]));
-    const imageURL = await element.getAttribute("src");
-    const response = await axios.get(imageURL);
-    expect(response.status).to.equal(200);
+Then(/^Images in article are loaded$/,{timeout: 20 * 1000}, async function () {
+    const allImages = await this.state.driver.findElements(By.xpath(xpaths["Images"]));
+    for (const image of allImages) {
+        const imageURL = await image.getAttribute("src");
+        const response = await axios.get(imageURL);
+        expect(response.status).to.equal(200);
+    }
 });

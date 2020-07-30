@@ -100,7 +100,7 @@ Feature: Article page
     And user is on the Home page
     When user navigates to "<articleId>"
     Then "Article page" is displayed
-    And Images in article is displayed
+    And Images in article are loaded
     Examples:
       | articleId |
       | 00198     |
