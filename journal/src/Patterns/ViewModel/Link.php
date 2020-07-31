@@ -19,7 +19,7 @@ final class Link implements CastsToArray
 
     public function __construct(string $name, string $url = null, bool $isCurrent = false, array $attributes = [])
     {
-        Assertion::notBlank($name);
+        // Assertion::notBlank($name);
 
         $this->name = $name;
         $this->url = $url ?? false;
