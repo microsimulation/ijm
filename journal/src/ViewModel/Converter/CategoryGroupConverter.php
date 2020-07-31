@@ -17,16 +17,16 @@ class CategoryGroupConverter implements ViewModelConverter
     use CreatesContextLabel;
     use CreatesDate;
 
-    // private $viewModelConverter;
-    // private $urlGenerator;
+    private $viewModelConverter;
+    private $urlGenerator;
 
-    // public function __construct(
-    //     ViewModelConverter $viewModelConverter,
-    //     UrlGeneratorInterface $urlGenerator
-    // ) {
-    //     $this->viewModelConverter = $viewModelConverter;
-    //     $this->urlGenerator = $urlGenerator;
-    // }
+    public function __construct(
+        ViewModelConverter $viewModelConverter,
+        UrlGeneratorInterface $urlGenerator
+    ) {
+        $this->viewModelConverter = $viewModelConverter;
+        $this->urlGenerator = $urlGenerator;
+    }
 
     public function convert($object, string $viewModel = null, array $context = []): ViewModel
     {
@@ -39,14 +39,12 @@ class CategoryGroupConverter implements ViewModelConverter
 
             $teaser = Teaser::secondary(
                 $collection->getTitle(),
-                // $this->urlGenerator->generate('collection', [$object]),
-                null,
+                $this->urlGenerator->generate('collection', [$collection]),
                 null,
                 $this->createContextLabel($collection),
                 null,
                 TeaserFooter::forNonArticle(
-                    // Meta::withLink(new Link(ModelName::singular('collection'), $this->urlGenerator->generate('collections')), $this->simpleDate($object, $context))
-                    Meta::withLink(new Link(ModelName::singular('collection'), null), $this->simpleDate($collection, $context))
+                    Meta::withLink(new Link(ModelName::singular('collection'), $this->urlGenerator->generate('collections')), $this->simpleDate($collection, $context))
                 )
             );
 
