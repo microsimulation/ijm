@@ -7,6 +7,8 @@ use eLife\ApiSdk\Model\Subject;
 use Microsimulation\Journal\Helper\Callback;
 use Microsimulation\Journal\Helper\Paginator;
 use Microsimulation\Journal\Pagerfanta\SequenceAdapter;
+use Microsimulation\Journal\Patterns\ViewModel\CategoryGroup;
+use Microsimulation\Journal\Patterns\ViewModel\Code;
 use Microsimulation\Journal\Patterns\ViewModel\ContentHeader;
 use Microsimulation\Journal\Patterns\ViewModel\ContentHeaderImage;
 use Microsimulation\Journal\Patterns\ViewModel\Image;
@@ -20,6 +22,7 @@ use Microsimulation\Journal\Patterns\ViewModel\SectionListing;
 use Microsimulation\Journal\Patterns\ViewModel\SectionListingLink;
 use Microsimulation\Journal\Patterns\ViewModel\SeeMoreLink;
 use Microsimulation\Journal\Patterns\ViewModel\Teaser;
+use Microsimulation\Journal\Patterns\ViewModel\Meta;
 use Pagerfanta\Pagerfanta;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -132,23 +135,9 @@ final class HomeController extends Controller
             )
             ->otherwise($this->softFailure('Failed to load subjects list'));
 
-        $arguments['collections'] = $this->get('elife.api_sdk.search')
-            ->forType('collection')
-            ->sortBy('date')
-            ->slice(1, 7)
-            ->then(
-                Callback::emptyOr(
-                    function (Sequence $result) {
-                        return ListingTeasers::withSeeMore(
-                            $result->map($this->willConvertTo(Teaser::class, ['variant' => 'secondary']))->toArray(),
-                            new SeeMoreLink(
-                                new Link('See more issues', $this->get('router')->generate('collections'))
-                            ),
-                            new ListHeading('Issues')
-                        );
-                    }
-                )
-            )
+
+        $arguments['collections'] = $arguments['collections']
+            ->then($this->willConvertTo(CategoryGroup::class, ['heading' => 'Issues group']))
             ->otherwise($this->softFailure('Failed to load collections list'));
 
         return new Response($this->get('templating')->render('::home.html.twig', $arguments));
