@@ -9,6 +9,7 @@ use Microsimulation\Journal\Patterns\ViewModel\ListHeading;
 use Microsimulation\Journal\Patterns\ViewModel\Teaser;
 use Microsimulation\Journal\Patterns\ViewModel\TeaserFooter;
 use Microsimulation\Journal\Patterns\ViewModel\Link;
+use Microsimulation\Journal\Patterns\ViewModel\SeeMoreLink;
 use Microsimulation\Journal\Patterns\ViewModel\Meta;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -86,9 +87,12 @@ class CategoryGroupConverter implements ViewModelConverter
             $teasers[] = $teaser;
         }
 
-        return $viewModel::basic(
-            $teasers
-            , new ListHeading($context["heading"])
+        return $viewModel::withSeeMore(
+            $teasers,
+            new SeeMoreLink(
+                new Link('See more issues', $this->urlGenerator->generate('collections'))
+            ),
+            new ListHeading($context["heading"])
         );
     }
 

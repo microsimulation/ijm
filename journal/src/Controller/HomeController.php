@@ -137,8 +137,8 @@ final class HomeController extends Controller
 
 
         $arguments['collections'] = $arguments['collections']
-            ->then($this->willConvertTo(CategoryGroup::class, ['heading' => 'Issues group']));
-        //     ->otherwise($this->softFailure('Failed to load collections list'));
+            ->then($this->willConvertTo(CategoryGroup::class, ['heading' => 'Issues group']))
+            ->otherwise($this->softFailure('Failed to load collections list'));
 
         return new Response($this->get('templating')->render('::home.html.twig', $arguments));
     }
