@@ -135,34 +135,10 @@ final class HomeController extends Controller
             )
             ->otherwise($this->softFailure('Failed to load subjects list'));
 
-        $arguments['collections'] = $arguments['collections']
-            ->then($this->willConvertTo(CategoryGroup::class))
-            // ->then(
-            //     function (Sequence $result) {
-            //         // return ListingTeasers::
-            //     }
-            // )
-            ->then(
-                function ($result) {
-                    var_dump($result);die;
-                    $test = $result
-                        ->map(function ($element) {
-                            var_dump($element);
-                            die;
-                            return $this->convertTo($element, Teaser::class, ['variant' => 'secondary']);
-                        })
-                        ->toArray();
 
-                    return CategoryGroup::withSeeMore(
-                        $test,
-                        new SeeMoreLink(
-                            new Link('See more issues', $this->get('router')->generate('collections'))
-                        ),
-                        new ListHeading('Issues')
-                    );
-                }
-            )
-            ->otherwise($this->softFailure('Failed to load collections list'));
+        $arguments['collections'] = $arguments['collections']
+            ->then($this->willConvertTo(CategoryGroup::class, ['heading' => 'Issues group']));
+        //     ->otherwise($this->softFailure('Failed to load collections list'));
 
         return new Response($this->get('templating')->render('::home.html.twig', $arguments));
     }

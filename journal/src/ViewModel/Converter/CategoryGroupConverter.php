@@ -30,21 +30,6 @@ class CategoryGroupConverter implements ViewModelConverter
 
     public function convert($object, string $viewModel = null, array $context = []): ViewModel
     {
-        // [
-        //     2019-2016 => [
-        //         groupName: 2019-2016,
-        //         teasers: [Teaser, Teaser, Teaser]
-        //     ],
-        //     {
-        //         groupName: 2019-2016,
-        //         teasers: [Teaser, Teaser, Teaser]
-        //     },
-        //     {
-        //         groupName: 2019-2016,
-        //         teasers: [Teaser, Teaser, Teaser]
-        //     },
-        // ]
-
         $items = [];
         $groupName;
         $startYear;
@@ -80,7 +65,6 @@ class CategoryGroupConverter implements ViewModelConverter
                 }
 
                 $items[$groupName]["teasers"][] = $teaser;
-                // $items[$groupName]["teasers"][] = $collection->getTitle();
             } else {
                 $startYear = $year;
                 $endYear = $year - 2;
@@ -91,20 +75,28 @@ class CategoryGroupConverter implements ViewModelConverter
                     "teasers" => []
                 ];
                 $items[$groupName]["teasers"][] = $teaser;
-                // $items[$groupName]["teasers"][] = $collection->getTitle();
             }
         }
 
+        $teasers = [];
+
+        foreach($items as $item) {
+            $teaser = (object)[];
+
+            $teaser->groupName = $item["groupName"];
+            $teaser->teasers = $item["teasers"];
+            $teasers[] = $teaser;
+        }
+
         return $viewModel::basic(
-            $items
+            $teasers
             , new ListHeading($context["heading"])
         );
     }
 
     public function supports($object, string $viewModel = null, array $context = []): bool
     {
-        $res = ViewModel\CategoryGroup::class === $viewModel;
-        return $res;
+        return ViewModel\CategoryGroup::class === $viewModel;
     }
 
     protected function getViewModelConverter() : ViewModelConverter
