@@ -15,6 +15,7 @@ export default {
     "Search input": "//*[@id='search']/fieldset/label/input",
     "Search submit": "//*[@id='search']/fieldset/button[2]",
     "Images": "//*[contains(@id,'fig')]//img",
+    "Issues Group":"//div[contains(@class,'--four-twelfths grid-secondary-column')]",
 
     downloadButtons: {
         "Article PDF": "//*[@id='downloads']/ul[1]/li/a",

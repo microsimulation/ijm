@@ -40,16 +40,17 @@ Feature: Article page
       | Figures |
       | Tables  |
 
-  @issues
   Scenario Outline: List of issues is displayed and grouped into 3-year dropdown
     Given user navigates to "Home" page
     When user is on the Home page
-    Then list of issues is displayed
-    When user clicks on "<issueName>"
-    Then dropdown with list of issues by 3-year is displayed
-    And list of issues is grouped in a chronologically descending order
+    Then list of issue group is displayed
+    When user clicks on issue group "<issueGroupName>"
+#    Then dropdown with list of issues by 3-year is displayed
+#    And list of issues is grouped in a chronologically descending order
     Examples:
-      | issueName |
+      | issueGroupName |
+      | 2019-2017      |
+      | 2016-2014      |
 
   @Ci
   Scenario Outline: Download article citations option

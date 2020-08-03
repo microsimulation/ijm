@@ -249,3 +249,14 @@ Then(/^article is displayed in Mendeley$/,{timeout: 50 * 1000}, async function (
     const actualArticleName = await this.state.driver.findElement(By.xpath(xpaths.mendeley["FirstElement"])).getText();
     await expect(expectedArticleName).to.equal(actualArticleName);
 });
+Then(/^list of issue group is displayed$/, async function () {
+    const element = await this.state.driver.findElements(By.xpath(xpaths["Issues Group"]));
+    await element.isDisplayed;
+
+});
+
+When(/^user clicks on issue group "([^"]*)"$/, async function (groupName) {
+    const element = await this.state.driver.findElements(By.xpath("//h2[contains (text(),"+groupName+")]"));
+    await element.click();
+});
+
