@@ -80,20 +80,20 @@ Feature: Article page
       | 00207     |
       | 00208     |
 
-  @Ci
-  Scenario Outline: Open article citations option
+  @Regression
+  Scenario: Open article citations using Mendeley option
     Given user navigates to "Home" page
     When user is on the Home page
     Then a list of 10 articles is displayed
     When user clicks on "First article" from the list
     Then "Article page" is displayed
     When user clicks on "Download"
-    And user selects "<exportReference>"
-    Then "<exportReference>" is displayed
-    Examples:
-      | exportReference |
-      | Mendeley        |
-      | ReadCube        |
+    And user selects "Mendeley"
+    And user logs in to Mendeley
+    And user clicks on "Import" button
+    And user clicks on "Library" menu item
+    Then article is displayed in Mendeley
+
 
   Scenario Outline:  Images in articles are displayed
     Given user navigates to "Home" page

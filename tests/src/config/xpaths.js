@@ -53,5 +53,15 @@ export default {
         "Trade": "//input[@value='trade']",
         "Transport": "//input[@value='transport']",
         "Institutions and incentives": "//input[@value='institutions-incentives']"
+    },
+    mendeley: {
+        "Email": "//*[@id='bdd-email']",
+        "Continue": "//*[@id='bdd-elsPrimaryBtn']",
+        "Password": "//*[@id='bdd-password']",
+        "Import": "//*[@id='main-content']/div[1]/div[1]/div[2]/button",
+        "Library": "//a[@href='/library/']",
+        "x":"//*[@id='wj-step-1']/span",
+        "x1":"//*[@id='wj-step-2']/span",
+        "FirstElement":"//*[@id='document-list']//li[1]/h2"
     }
 }
