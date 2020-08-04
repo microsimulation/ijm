@@ -6,8 +6,6 @@ services:
             context: api
         environment:
             IIIF_URI: ${IIIF_URI:-http://localhost:8081/iiif/2}
-        networks:
-            - ijm-network
     journal:
         build:
             context: journal
@@ -20,8 +18,6 @@ services:
             - public-journal:/app/web/
         depends_on:
             - api
-        networks:
-            - ijm-network
     iiif:
         image: mitlibraries/cantaloupe:latest
         environment:
@@ -36,8 +32,6 @@ services:
             - ./assets/files:/imageroot:ro
         ports:
             - 8081:8182
-        networks:
-            - ijm-network
     web:
         image: nginx:1.15.5-alpine
         volumes:
@@ -50,12 +44,6 @@ services:
             - 8082:8082
         depends_on:
             - journal
-        networks:
-            - ijm-network
 
 volumes:
     public-journal:
-
-networks:
-    ijm-network:
-        driver: bridge
