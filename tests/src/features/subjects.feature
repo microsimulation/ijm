@@ -1,15 +1,13 @@
 @subject
 Feature: Subjects page
 
-  Rules:
-  - All subjects are shown in alphabetical order
+  @manualOnly
+  Scenario: Loading more content adds previous 10 to the list
+    When user goes to the 'Taxes and benefits' page
+    And user clicks on 'Load More'
+    Then user should see the latest 20 items with the 'Taxes and benefits' in the 'Latest articles' list
 
-  Scenario: List shows all subjects
-    Given there are 20 subjects
-    When I go the Subjects page
-    Then I should see the 20 subjects.
-
-@Ci
+  @Ci
   Scenario Outline: Access research subjects
     Given user navigates to "Home" page
     When user is on the Home page

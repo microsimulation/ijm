@@ -1,10 +1,7 @@
 @article
 Feature: Article page
 
-  Rules:
-  - Abstract, digest and first body section are open, the rest closed
-
-  @javascript
+  @manualOnly
   Scenario: Article sections can be closed
     Given there is a research article VoR
     When I go the research article page
@@ -13,44 +10,34 @@ Feature: Article page
     And the "Introduction" section should be open
     But the "Results" section should be closed
 
-  @Failing
+  @Regression
   Scenario: Article main sections are displayed
     Given user navigates to "Home" page
     When user is on the Home page
     Then a list of 10 articles is displayed
-    When user clicks on "First article" from the list
+    When user navigates to "00201"
     Then "Article page" is displayed
     And following sections are displayed:
       | Abstract                       |
       | Introduction                   |
-      | Appendix                       |
       | References                     |
       | Article and author information |
-      | Conclusion                     |
+      | Conclusions                    |
 
-  Scenario:Article's figure and data are displayed
-    Given articles are uploaded
-    When user navigates to "Home" page
-    Then a list of articles is displayed
-    When user clicks on the first article from the list
-    Then article is displayed in a new page
-    When user clicks on "Figures and data"
-    Then "Figures" page is displayed
-    And following section are displayed:
-      | Figures |
-      | Tables  |
-
+  @Ci
   Scenario Outline: List of issues is displayed and grouped into 3-year dropdown
     Given user navigates to "Home" page
     When user is on the Home page
     Then list of issue group is displayed
-    When user clicks on issue group "<issueGroupName>"
-#    Then dropdown with list of issues by 3-year is displayed
-#    And list of issues is grouped in a chronologically descending order
+    When user clicks on issue group "<issueGroupYear>"
+    Then dropdown with list of issues by "<issueGroupYear>" is displayed
     Examples:
-      | issueGroupName |
+      | issueGroupYear |
       | 2019-2017      |
       | 2016-2014      |
+      | 2013-2011      |
+      | 2010-2008      |
+      | 2007-2005      |
 
   @Ci
   Scenario Outline: Download article citations option
@@ -95,7 +82,7 @@ Feature: Article page
     And user clicks on "Library" menu item
     Then article is displayed in Mendeley
 
-
+  @Regression
   Scenario Outline:  Images in articles are displayed
     Given user navigates to "Home" page
     And user is on the Home page

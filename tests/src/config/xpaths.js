@@ -16,6 +16,7 @@ export default {
     "Search submit": "//*[@id='search']/fieldset/button[2]",
     "Images": "//*[contains(@id,'fig')]//img",
     "Issues Group":"//div[contains(@class,'--four-twelfths grid-secondary-column')]",
+    "Years of issues":"//section[@class='article-section article-section--js']",
 
     downloadButtons: {
         "Article PDF": "//*[@id='downloads']/ul[1]/li/a",

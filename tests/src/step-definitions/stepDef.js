@@ -169,7 +169,7 @@ Then(/^a "([^"]*)" file is downloaded$/, async function (type) {
     );
 });
 
-Given(/^Microsim site Home page was loaded$/, async function () {
+Given(/^Microsim site Home page was loaded$/,{timeout: 60 * 1000}, async function () {
     const buffer = await this.state.driver.takeScreenshot();
 
     this.attach(buffer, 'image/png');
@@ -240,7 +240,7 @@ When(/^user clicks on "([^"]*)" (button|menu item)$/, {timeout: 50 * 1000}, asyn
     const result = await this.state.driver.findElement(By.xpath(xpaths.mendeley[elementName]));
     await result.click();
 });
-Then(/^article is displayed in Mendeley$/,{timeout: 50 * 1000}, async function () {
+Then(/^article is displayed in Mendeley$/, {timeout: 50 * 1000}, async function () {
     const expectedArticleName = this.data.currentArticle.name;
     const cancel1 = await this.state.driver.findElement(By.xpath(xpaths.mendeley["x"]));
     await cancel1.click();
@@ -256,7 +256,23 @@ Then(/^list of issue group is displayed$/, async function () {
 });
 
 When(/^user clicks on issue group "([^"]*)"$/, async function (groupName) {
-    const element = await this.state.driver.findElements(By.xpath("//h2[contains (text(),"+groupName+")]"));
+    const element = await this.state.driver.findElement(By.xpath("//h2[contains (text(),'" + groupName + "')]"));
     await element.click();
+    const buffer = await this.state.driver.takeScreenshot();
+    this.attach(buffer, 'image/png');
+
 });
 
+Then(/^dropdown with list of issues by "([^"]*)" is displayed$/, async function (years) {
+    const results = await this.state.driver.findElements(By.xpath(xpaths["Years of issues"]));
+    for (const issue of results) {
+        const issueText = await issue.getText();
+        console.log("Text from issue: " + issueText);
+        const period =years.split("-");
+        const volumeYear =issueText.split(" ");
+        console.log("Volume year: " + volumeYear[3]);
+        expect(parseInt(volumeYear[3])).to.be.within(parseInt(period[1]),parseInt(period[0]));
+    }
+    const buffer = await this.state.driver.takeScreenshot();
+    this.attach(buffer, 'image/png');
+});
