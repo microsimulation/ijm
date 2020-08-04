@@ -224,6 +224,8 @@ Then(/^Images in article are loaded$/, {timeout: 20 * 1000}, async function () {
         const imageURL = await image.getAttribute("src");
         const response = await axios.get(imageURL);
         expect(response.status).to.equal(200);
+        const buffer = await this.state.driver.takeScreenshot();
+        this.attach(buffer, 'image/png');
     }
 });
 When(/^user logs in to Mendeley$/, {timeout: 100 * 1000}, async function () {

@@ -24,7 +24,7 @@ Feature: Article page
       | Article and author information |
       | Conclusions                    |
 
-
+  @Regression
   Scenario Outline: List of issues is displayed and grouped into 3-year dropdown
     Given user navigates to "Home" page
     When user is on the Home page
