@@ -60,7 +60,9 @@ jobs:
       run: |
         CURR_PATH=$(pwd)
         mkdir -p $CURR_PATH/reports && chmod 777 -R $CURR_PATH/reports
-        docker run -i --name ijm-selenium -v $CURR_PATH/reports:/app/reports --network ijm_ijm-network ijm-selenium-tests:latest
+        echo "mendeley_username=${{ secrets.mendeley_user }}" > .env
+        echo "mendeley_password=${{ secrets.mendeley_pass }}" >> .env
+        docker run -i --name ijm-selenium -v $CURR_PATH/reports:/app/reports --env-file .env --network ijm_ijm-network ijm-selenium-tests:latest
     - name: Get test results
       if: always()
       id: test-res

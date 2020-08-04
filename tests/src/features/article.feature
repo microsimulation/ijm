@@ -10,7 +10,7 @@ Feature: Article page
     And the "Introduction" section should be open
     But the "Results" section should be closed
 
-  @Regression
+  @Ci
   Scenario: Article main sections are displayed
     Given user navigates to "Home" page
     When user is on the Home page
@@ -68,7 +68,7 @@ Feature: Article page
       | 00207     |
       | 00208     |
 
-  @Regression
+  @Ci
   Scenario: Open article citations using Mendeley option
     Given user navigates to "Home" page
     When user is on the Home page
@@ -82,7 +82,7 @@ Feature: Article page
     And user clicks on "Library" menu item
     Then article is displayed in Mendeley
 
-  @Regression
+  @Ci
   Scenario Outline:  Images in articles are displayed
     Given user navigates to "Home" page
     And user is on the Home page

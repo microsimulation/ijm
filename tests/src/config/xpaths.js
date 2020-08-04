@@ -29,7 +29,7 @@ export default {
     articleSections: {
         "Abstract": "//h2[contains (text(),'Abstract')]",
         "Introduction": "//h2[contains (text(),'Introduction')]",
-        "Conclusion": "//h2[contains (text(),'Conclusion')]",
+        "Conclusions": "//h2[contains (text(),'Conclusions')]",
         "Appendix": "//h2[contains (text(),'Appendix')]",
         "References": "//h2[contains (text(),'References')]",
         "Article and author information": "//h2[contains (text(),'Article and author information')]"
