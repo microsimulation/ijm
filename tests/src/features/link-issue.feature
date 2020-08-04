@@ -9,7 +9,7 @@ Feature: Link the issue to the article
     When user clicks on "Linked volume"
     Then "Issues page" is displayed
 
-  @Failing
+  @Regression
   Scenario: Link to the issue is available from article preview
     Given user navigates to "Home" page
     When user is on the Home page

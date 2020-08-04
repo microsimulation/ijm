@@ -1,4 +1,4 @@
-import {When, Then, Given} from 'cucumber';
+import {Given, Then, When} from 'cucumber';
 import {expect} from 'chai';
 import {By} from 'selenium-webdriver';
 import * as http from 'http';
@@ -34,8 +34,12 @@ When(/^user is on the Home page$/, async function () {
 
 When(/^user clicks on "([^"]*)" from the list$/, {timeout: 30 * 1000}, async function (article) {
     try {
-        const result = await this.state.driver.findElement(By.xpath(xpaths[article]))
-        await result.click();
+        const articleElement = await this.state.driver.findElement(By.xpath(xpaths[article]))
+        const articleName = (await articleElement.getText());
+        console.log("articleName: " + articleName);
+        this.data.currentArticle.name = articleName;
+
+        await articleElement.click();
         const buffer = await this.state.driver.takeScreenshot();
         this.attach(buffer, 'image/png');
     } catch (e) {
@@ -64,12 +68,12 @@ When(/^user navigates to subject "([^"]*)"$/, async function (subjectNumber) {
 
 When(/^user clicks on 'Linked volume' of the random article$/, async function () {
     try {
-        const result = await this.state.driver.findElement(By.xpath(xpaths["Random issue link"]));
-        const volumeName = (await result.getText());
+        const volumeElement = await this.state.driver.findElement(By.xpath(xpaths["Random issue link"]));
+        const volumeName = (await volumeElement.getText());
         console.log("volumeName: " + volumeName);
-        this.data.volume.name = volumeName;
-        console.log("datastore: " + JSON.stringify(this.data));
-        await result.click();
+        this.data.currentVolume.name = volumeName;
+        console.log("datastore: " + JSON.stringify(this.data, null, '\t'));
+        await volumeElement.click();
         const buffer = await this.state.driver.takeScreenshot();
         this.attach(buffer, 'image/png');
     } catch (e) {
@@ -116,7 +120,7 @@ Then(/^"([^"]*)" is displayed$/, {timeout: 30 * 1000}, async function (pageName)
     const pageTitle = await this.state.driver.getTitle();
     console.log("current pageTitle: " + pageTitle);
     console.log("datastore: " + JSON.stringify(this.data));
-    expect(pageTitle.toString().toUpperCase()).to.contains(this.data.volume.name);
+    expect(pageTitle.toString().toUpperCase()).to.contains(this.data.currentVolume.name);
     const buffer = await this.state.driver.takeScreenshot();
     this.attach(buffer, 'image/png');
 });
@@ -165,7 +169,7 @@ Then(/^a "([^"]*)" file is downloaded$/, async function (type) {
     );
 });
 
-Given(/^Microsim site Home page was loaded$/, async function () {
+Given(/^Microsim site Home page was loaded$/,{timeout: 60 * 1000}, async function () {
     const buffer = await this.state.driver.takeScreenshot();
 
     this.attach(buffer, 'image/png');
@@ -214,11 +218,61 @@ When(/^user selects "([^"]*)" checkbox$/, async function (element) {
     this.attach(buffer, 'image/png');
 });
 
-Then(/^Images in article are loaded$/,{timeout: 20 * 1000}, async function () {
+Then(/^Images in article are loaded$/, {timeout: 20 * 1000}, async function () {
     const allImages = await this.state.driver.findElements(By.xpath(xpaths["Images"]));
     for (const image of allImages) {
         const imageURL = await image.getAttribute("src");
         const response = await axios.get(imageURL);
         expect(response.status).to.equal(200);
     }
+});
+When(/^user logs in to Mendeley$/, {timeout: 100 * 1000}, async function () {
+    const username = await this.state.driver.findElement(By.xpath(xpaths.mendeley["Email"]));
+    const continueButton = await this.state.driver.findElement(By.xpath(xpaths.mendeley["Continue"]));
+    await username.sendKeys(process.env.mendeley_username);
+    await continueButton.click();
+    const password = await this.state.driver.findElement(By.xpath(xpaths.mendeley["Password"]));
+    const submit = await this.state.driver.findElement(By.xpath(xpaths.mendeley["Continue"]));
+    await password.sendKeys(process.env.mendeley_password);
+    await submit.click();
+});
+When(/^user clicks on "([^"]*)" (button|menu item)$/, {timeout: 50 * 1000}, async function (elementName, type) {
+    const result = await this.state.driver.findElement(By.xpath(xpaths.mendeley[elementName]));
+    await result.click();
+});
+Then(/^article is displayed in Mendeley$/, {timeout: 50 * 1000}, async function () {
+    const expectedArticleName = this.data.currentArticle.name;
+    const cancel1 = await this.state.driver.findElement(By.xpath(xpaths.mendeley["x"]));
+    await cancel1.click();
+    const cancel2 = await this.state.driver.findElement(By.xpath(xpaths.mendeley["x1"]));
+    await cancel2.click();
+    const actualArticleName = await this.state.driver.findElement(By.xpath(xpaths.mendeley["FirstElement"])).getText();
+    await expect(expectedArticleName).to.equal(actualArticleName);
+});
+Then(/^list of issue group is displayed$/, async function () {
+    const element = await this.state.driver.findElements(By.xpath(xpaths["Issues Group"]));
+    await element.isDisplayed;
+
+});
+
+When(/^user clicks on issue group "([^"]*)"$/, async function (groupName) {
+    const element = await this.state.driver.findElement(By.xpath("//h2[contains (text(),'" + groupName + "')]"));
+    await element.click();
+    const buffer = await this.state.driver.takeScreenshot();
+    this.attach(buffer, 'image/png');
+
+});
+
+Then(/^dropdown with list of issues by "([^"]*)" is displayed$/, async function (years) {
+    const results = await this.state.driver.findElements(By.xpath(xpaths["Years of issues"]));
+    for (const issue of results) {
+        const issueText = await issue.getText();
+        console.log("Text from issue: " + issueText);
+        const period =years.split("-");
+        const volumeYear =issueText.split(" ");
+        console.log("Volume year: " + volumeYear[3]);
+        expect(parseInt(volumeYear[3])).to.be.within(parseInt(period[1]),parseInt(period[0]));
+    }
+    const buffer = await this.state.driver.takeScreenshot();
+    this.attach(buffer, 'image/png');
 });
