@@ -11,7 +11,7 @@ const MicrosimApp = require('../pom/site/microsim.app');
 const webddriver = require('selenium-webdriver');
 
 const buildChromeDriver = function () {
-    const { mode, windowSize } = config.headless;
+    const {mode, windowSize} = config.headless;
 
     if (mode) {
         return new Builder()
@@ -27,7 +27,8 @@ const buildChromeDriver = function () {
             .forBrowser("chrome")
             .setChromeOptions(
                 new chrome.Options()
-                    .addArguments("--no-recovery-component"))
+                    .addArguments("--no-recovery-component")
+                    .windowSize(windowSize))
             .build();
     }
 };
