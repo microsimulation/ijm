@@ -1,0 +1,35 @@
+name: smoke
+on:
+  repository_dispatch:
+    types: [smoke]
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Prepare test container
+        run: | 
+          docker build -t ijm-selenium-tests:latest -f tests/Dockerfile ./tests
+      - name: Run test container
+        run: |
+          docker run -i --name ijm-selenium -v $CURR_PATH/reports:/app/reports ijm-selenium-tests:latest
+      - name: Get test results
+        id: test-res
+        run: |
+          RESULT=$(jq '[ .[].elements[].steps[].result.status ] | unique | tostring | test("failed")' reports/report.json)
+          echo "::set-output name=TEST_RESULTS::$RESULT"
+      - name: Publish test results
+        uses: actions/upload-artifact@v2
+        with:
+          name: selenium-test-report
+          path: reports/
+      - name: Slack notify
+        if: failure()
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+        uses: voxmedia/github-action-slack-notify-build@v1
+        with:
+          channel: article-hosting-general
+          status: FAILED
+          color: danger

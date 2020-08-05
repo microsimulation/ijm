@@ -54,8 +54,8 @@ jobs:
       run: |
         rm -rf docker-compose.overrirde.yml
         APP_IP=$(hostname -I | awk '{print $1}')
-        echo "IIIF_URI=http://$APP_IP:8081/iiif/2" > .env
-        echo "API_URL_PUBLIC=http://$APP_IP:8081" >> .env
+        echo "IIIF_URI=$APP_IP:8081" > .env
+        echo "API_URL_PUBLIC=$APP_IP" >> .env
         docker-compose up -d
         docker build -t ijm-selenium-tests:latest --build-arg APP_HOSTNAME="http://"$APP_IP":8080/" -f tests/Dockerfile ./tests
     - name: Run Automation suite
@@ -64,7 +64,7 @@ jobs:
         mkdir -p $CURR_PATH/reports && chmod 777 -R $CURR_PATH/reports
         echo "mendeley_username=${{ secrets.mendeley_user }}" > .env
         echo "mendeley_password=${{ secrets.mendeley_pass }}" >> .env
-        docker run -i --name ijm-selenium -v $CURR_PATH/reports:/app/reports --env-file .env --network ijm_ijm-network ijm-selenium-tests:latest
+        docker run -i --name ijm-selenium -v $CURR_PATH/reports:/app/reports --env-file .env ijm-selenium-tests:latest
     - name: Get test results
       if: always()
       id: test-res
