@@ -41,15 +41,6 @@ jobs:
           --build-arg api_url=${{ secrets.api_url }}} \
           --build-arg api_url_public=${{ secrets.API_URL_PUBLIC }} \
           --build-arg api_key=${{ secrets.api_key }} -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -f journal/Dockerfile ./journal;
-    - name: Update env file
-      env:
-        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        IMAGE_TAG: ${{ github.sha }}
-      run: |
-        echo "IIIF_HOST=${{ secrets.API_URL_PUBLIC }}" > .env
-        echo "API_HOST=${{ secrets.API_URL_PUBLIC }}" >> .env
-        echo "API_IMAGE=$ECR_REGISTRY/ijm-api:$IMAGE_TAG" >> .env
-        echo "JOURNAL_IMAGE=$ECR_REGISTRY/ijm-journal:$IMAGE_TAG" >> .env
     - name: Prepare env for Automation tests to run
       run: |
         rm -rf docker-compose.overrirde.yml
@@ -62,9 +53,7 @@ jobs:
       run: |
         CURR_PATH=$(pwd)
         mkdir -p $CURR_PATH/reports && chmod 777 -R $CURR_PATH/reports
-        echo "mendeley_username=${{ secrets.mendeley_user }}" > .env
-        echo "mendeley_password=${{ secrets.mendeley_pass }}" >> .env
-        docker run -i --name ijm-selenium -v $CURR_PATH/reports:/app/reports --env-file .env ijm-selenium-tests:latest
+        docker run -i --name ijm-selenium -v $CURR_PATH/reports:/app/reports ijm-selenium-tests:latest
     - name: Get test results
       if: always()
       id: test-res
@@ -85,6 +74,15 @@ jobs:
         echo "Test results output - ${{ steps.test-res.outputs.TEST_RESULTS }}"
         echo "Test failed - preventing pipeline from further deployment"
         exit 1
+    - name: Update env file
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        IMAGE_TAG: ${{ github.sha }}
+      run: |
+        echo "IIIF_HOST=${{ secrets.API_URL_PUBLIC }}" > .env
+        echo "API_HOST=${{ secrets.API_URL_PUBLIC }}" >> .env
+        echo "API_IMAGE=$ECR_REGISTRY/ijm-api:$IMAGE_TAG" >> .env
+        echo "JOURNAL_IMAGE=$ECR_REGISTRY/ijm-journal:$IMAGE_TAG" >> .env
     - name: Push docker images
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
