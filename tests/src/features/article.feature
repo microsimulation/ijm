@@ -68,7 +68,7 @@ Feature: Article page
       | 00207     |
       | 00208     |
 
-  @Ci
+  @Regression
   Scenario: Open article citations using Mendeley option
     Given user navigates to "Home" page
     When user is on the Home page
