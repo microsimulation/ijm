@@ -60,9 +60,9 @@ final class ArticleDownloadLinksListConverter implements ViewModelConverter
         }
 
         $groups[mixed_visibility_text('', 'Open citations', '(links to open the citations from this article in various online reference manager services)')] = [
-            new ViewModel\Link('Mendeley', 'https://www.mendeley.com/import?doi='.$object->getDoi()),
-            new ViewModel\Link('ReadCube', 'https://www.readcube.com/articles/'.$object->getDoi()),
-            new ViewModel\Link('Papers', sprintf('papers2://url/%s?title=%s', urlencode($articleUri), urlencode(strip_tags($object->getTitle()))))
+            new ViewModel\Link('Mendeley', 'https://www.mendeley.com/import?doi='.$object->getDoi())
+            // , new ViewModel\Link('ReadCube', 'https://www.readcube.com/articles/'.$object->getDoi())
+            // , new ViewModel\Link('Papers', sprintf('papers2://url/%s?title=%s', urlencode($articleUri), urlencode(strip_tags($object->getTitle()))))
         ];
 
         return new ViewModel\ArticleDownloadLinksList('downloads', 'A two-part list of links to download the article, or parts of the article, in various formats.', $groups);
