@@ -129,7 +129,8 @@ final class HomeController extends Controller
                         $links->toArray(),
                         new ListHeading('Research categories'),
                         false,
-                        'strapline'
+                        'strapline',
+                        [ 'renderArticleTypes' => true ]
                     );
                 }
             )

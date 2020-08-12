@@ -17,9 +17,16 @@ final class SectionListing implements ViewModel
     private $listHeading;
     private $singleLine;
     private $labelledBy;
+    private $context;
 
-    public function __construct(string $id, array $sections, ListHeading $listHeading, bool $singleLine = false, string $labelledBy = null)
-    {
+    public function __construct(
+        string $id, 
+        array $sections, 
+        ListHeading $listHeading, 
+        bool $singleLine = false, 
+        string $labelledBy = null,
+        array $context = []
+    ) {
         Assertion::notBlank($id);
         Assertion::allIsInstanceOf($sections, Link::class);
         Assertion::notEmpty($sections);
@@ -29,6 +36,7 @@ final class SectionListing implements ViewModel
         $this->singleLine = $singleLine;
         $this->listHeading = $listHeading;
         $this->labelledBy = $labelledBy;
+        $this->context = $context;
     }
 
     public function getTemplateName() : string
