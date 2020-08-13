@@ -16,13 +16,16 @@ framework:
 monolog:
     handlers:
         console:
+            channels:
+              - '!event'
             type: console
+            formatter: monolog.formatter.line
         main:
-            action_level: error
-            handler: composite
-            type: fingers_crossed
-            excluded_404s:
-                - ^/
+            channels:
+              - '!event'
+            level: debug
+            path: 'php://stderr'
+            type: stream
         composite:
             type: whatfailuregroup
             members:
