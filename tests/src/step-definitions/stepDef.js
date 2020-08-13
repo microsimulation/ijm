@@ -70,7 +70,7 @@ When(/^user navigates to "([^"]*)"$/, {timeout: 30 * 1000}, async function (arti
     this.attach(buffer, 'image/png');
 });
 
-When(/^user navigates to subject "([^"]*)"$/, async function (subjectNumber) {
+When(/^user navigates to subject "([^"]*)"$/,{timeout: 15 * 1000}, async function (subjectNumber) {
     await this.state.driver.get(`${config.url}subjects/${subjectNumber}`);
     const buffer = await this.state.driver.takeScreenshot();
     this.attach(buffer, 'image/png');
@@ -136,7 +136,7 @@ When(/^user selects "([^"]*)" checkbox$/, async function (element) {
     this.attach(buffer, 'image/png');
 });
 
-When(/^user logs in to Mendeley$/, {timeout: 100 * 1000}, async function () {
+When(/^user logs in to Mendeley$/, {timeout: 101 * 1000}, async function () {
     const username = await this.state.driver.findElement(By.xpath(xpaths.mendeley["Email"]));
     const continueButton = await this.state.driver.findElement(By.xpath(xpaths.mendeley["Continue"]));
     await username.sendKeys(process.env.mendeley_username);

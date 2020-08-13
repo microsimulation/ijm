@@ -4,7 +4,7 @@ services:
     api:
         image: ${API_IMAGE}
         environment:
-            IIIF_URI: http://${IIIF_HOST}:8081/iiif/2
+            IIIF_URI: https://${IIIF_HOST}:8081/iiif/2
         logging:
             driver: awslogs
             options:
@@ -33,8 +33,10 @@ services:
             FILESYSTEMCACHE_PATHNAME: /cache
         volumes:
             - ./assets/files:/imageroot:ro
+            - ./cacerts:/opt/cacerts:ro
         ports:
             - 8081:8182
+        command: ["sh", "-c", "java -Dcantaloupe.config=/etc/cantaloupe.properties -Dhttp.enabled=false -Dhttps.enabled=true -Dhttps.key_store_path=/opt/cacerts -Dhttps.port=8182 -Xmx2g -jar /usr/local/cantaloupe/cantaloupe-4.0.3.war"]
         logging:
             driver: awslogs
             options:

@@ -58,7 +58,6 @@ jobs:
       if: always()
       id: test-res
       run: |
-        docker-compose down
         RESULT=$(jq '[ .[].elements[].steps[].result.status ] | unique | tostring | test("failed")' reports/report.json)
         echo "::set-output name=TEST_RESULTS::$RESULT"
         echo "Test results - $RESULT"
@@ -83,6 +82,9 @@ jobs:
         echo "API_HOST=${{ secrets.API_URL_PUBLIC }}" >> .env
         echo "API_IMAGE=$ECR_REGISTRY/ijm-api:$IMAGE_TAG" >> .env
         echo "JOURNAL_IMAGE=$ECR_REGISTRY/ijm-journal:$IMAGE_TAG" >> .env
+        echo "${{ secrets.JKS_STORE }}" > cacerts_enc
+        base64 -d cacerts_enc > cacerts
+        rm -rf cacerts_enc
     - name: Push docker images
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
@@ -118,6 +120,15 @@ jobs:
         port: ${{ secrets.SSH_PORT }}
         user: ${{ secrets.SSH_USER }}
         key: ${{ secrets.SSH_KEY }}
+    - name: Publish certs store
+      uses: nogsantos/ssh-scp-deploy@v1.2.1
+      with:
+        src: ./cacerts
+        host: ${{ secrets.SSH_HOST }}
+        remote: ${{ secrets.SSH_DIR }}
+        port: ${{ secrets.SSH_PORT }}
+        user: ${{ secrets.SSH_USER }}
+        key: ${{ secrets.SSH_KEY }}
     - name: Deploy application
       uses: alinz/ssh-scp-action@v0.1.1
       with:
@@ -128,6 +139,7 @@ jobs:
         ssh_before: |
           cd ${{ secrets.SSH_DIR }};
           mv docker-compose.prod.yml docker-compose.yml;
+          chmod 400 cacerts;
           mkdir -p journal/.docker;
           mv nginx.conf journal/.docker;
           /bin/sh ${{ secrets.SSH_DIR }}/deploy.sh;
