@@ -24,7 +24,7 @@ class PageBase extends ComponentBase {
 
   async waitForTitle() {
     this.log(`- Expecting page title to Contain: ${this.expectedTitle}`);
-    const actualTitle = await this.state.driver.getTitle()
+    const actualTitle = await this.driver.getTitle()
     this.log(`- Actual page title: ${this.expectedTitle}`);
     expect(actualTitle).to.equal(this.expectedTitle);
   }

@@ -5,14 +5,14 @@ import {By} from 'selenium-webdriver';
 
 var PageBase = require('../page-base');
 
-class HomePage extends PageBase {
+class AboutPage extends PageBase {
 	constructor ( 
 		webdriver,
 		driver, 
 		targetUrl = 'http://microsimulation.pub/about',
 		waitTimeout = 10000
 		) {
-		const titleContents = 'Latest research | International Journal of Microsimulation';
+		const titleContents = 'Aims and scope | About | International Journal of Microsimulation';
 		super(webdriver, driver, targetUrl, titleContents, waitTimeout);
 	}
 
@@ -29,4 +29,4 @@ class HomePage extends PageBase {
 	}
 }
 
-module.exports = HomePage;
+module.exports = AboutPage;

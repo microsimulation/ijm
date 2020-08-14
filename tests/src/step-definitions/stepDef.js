@@ -25,13 +25,13 @@ Given(/^user navigates to "([^"]*)" page$/, {timeout: 50 * 1000}, async function
 });
 
 Given(/^Microsim site Home page was loaded$/, {timeout: 60 * 1000}, async function () {
-    const buffer = await this.state.driver.takeScreenshot();
+    const buffer = await this.microsim.homepage.driver.takeScreenshot();
 
     this.attach(buffer, 'image/png');
     await this.microsim.homepage.navigate();
-    const buffer2 = await this.state.driver.takeScreenshot();
-
-    this.attach(buffer2, 'image/png');
+    // const buffer2 = await this.driver.takeScreenshot();
+    //
+    // this.attach(buffer2, 'image/png');
 });
 
 //When section
@@ -70,7 +70,7 @@ When(/^user navigates to "([^"]*)"$/, {timeout: 30 * 1000}, async function (arti
     this.attach(buffer, 'image/png');
 });
 
-When(/^user navigates to subject "([^"]*)"$/,{timeout: 15 * 1000}, async function (subjectNumber) {
+When(/^user navigates to subject "([^"]*)"$/, {timeout: 15 * 1000}, async function (subjectNumber) {
     await this.state.driver.get(`${config.url}subjects/${subjectNumber}`);
     const buffer = await this.state.driver.takeScreenshot();
     this.attach(buffer, 'image/png');
@@ -119,13 +119,11 @@ When(/^user searches for "([^"]*)"$/, async function (keys) {
 });
 
 When(/^user click About link$/, async function () {
-    const buffer2 = await this.state.driver.takeScreenshot();
-
+    const buffer2 = await this.microsim.homepage.driver.takeScreenshot();
     this.attach(buffer2, 'image/png');
 
     await this.microsim.homepage.clickAboutLink();
-    const buffer3 = await this.state.driver.takeScreenshot();
-
+    const buffer3 = await this.microsim.homepage.driver.takeScreenshot();
     this.attach(buffer3, 'image/png');
 });
 
@@ -223,13 +221,12 @@ Then(/^a "([^"]*)" file is downloaded$/, async function (type) {
 });
 
 Then(/^the About page is loaded$/, async function () {
-    const buffer2 = await this.state.driver.takeScreenshot();
-
+    const buffer2 = await this.microsim.aboutpage.driver.takeScreenshot();
     this.attach(buffer2, 'image/png');
 
-    await this.microsim.homepage.waitForTitle();
-    const buffer3 = await this.state.driver.takeScreenshot();
+    await this.microsim.aboutpage.waitForTitle();
 
+    const buffer3 = await this.microsim.aboutpage.driver.takeScreenshot();
     this.attach(buffer3, 'image/png');
 });
 
