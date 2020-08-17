@@ -39,7 +39,7 @@ Feature: Article page
       | 2010-2008      |
       | 2007-2005      |
 
-  @Ci
+  @Regression
   Scenario Outline: Download article citations option
     Given user navigates to "Home" page
     And user is on the Home page
@@ -68,7 +68,7 @@ Feature: Article page
       | 00207     |
       | 00208     |
 
-  @Regression
+  @Local
   Scenario: Open article citations using Mendeley option
     Given user navigates to "Home" page
     When user is on the Home page
@@ -82,6 +82,22 @@ Feature: Article page
     And user clicks on "Library" menu item
     Then article is displayed in Mendeley
 
+  @Regression
+  Scenario Outline:  Images in articles are displayed
+    Given user navigates to "Home" page
+    And user is on the Home page
+    When user navigates to "<articleId>"
+    Then "Article page" is displayed
+    And Images in article are loaded
+    Examples:
+      | articleId |
+      | 00200     |
+      | 00201     |
+      | 00202     |
+      | 00205     |
+      | 00206     |
+      | 00208     |
+
   @Ci
   Scenario Outline:  Images in articles are displayed
     Given user navigates to "Home" page
@@ -93,9 +109,3 @@ Feature: Article page
       | articleId |
       | 00198     |
       | 00199     |
-      | 00200     |
-      | 00201     |
-      | 00202     |
-      | 00205     |
-      | 00206     |
-      | 00208     |

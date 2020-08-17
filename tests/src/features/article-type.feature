@@ -14,7 +14,7 @@ Feature: Article type page
     And I load more articles
     Then I should see the latest 20 research articles in the 'Latest articles' list
 
-  @Ci
+  @Regression
   Scenario: Selection capability containing the special type of articles
     Given user navigates to "Home" page
     When user is on the Home page

@@ -17,14 +17,14 @@ Feature: Link the issue to the article
     When user clicks on 'Linked volume' of the random article
     Then "Issues page" is displayed
 
-  @Ci
+  @Regression
   Scenario: Date is not displayed in article preview
     Given user navigates to "Home" page
     When user is on the Home page
     Then a list of 10 articles is displayed
     And article preview doesn't contain date
 
-  @Ci
+  @Regression
   Scenario: Add issue volume to the preview in category browsing
     Given user navigates to "Home" page
     When user is on the Home page

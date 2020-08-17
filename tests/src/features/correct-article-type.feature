@@ -1,5 +1,6 @@
 Feature: Correct articles type for specific items
-@Ci
+
+  @Regression
   Scenario: Article type is correct
     Given user navigates to "Home" page
     When user is on the Home page
