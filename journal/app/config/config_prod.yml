@@ -12,20 +12,16 @@ framework:
     session:
         cookie_secure: true
     trusted_hosts: '%trusted_hosts%'
-
 monolog:
     handlers:
         console:
-            channels:
-              - '!event'
             type: console
-            formatter: monolog.formatter.line
         main:
-            channels:
-              - '!event'
-            level: debug
-            path: 'php://stderr'
-            type: stream
+            action_level: error
+            handler: composite
+            type: fingers_crossed
+            excluded_404s:
+                - ^/
         composite:
             type: whatfailuregroup
             members:
