@@ -2,6 +2,7 @@
 "use strict";
 
 import {By} from 'selenium-webdriver';
+import xpaths from "../../config/xpaths";
 
 var PageBase = require('../page-base');
 
@@ -26,6 +27,12 @@ class AboutPage extends PageBase {
 		const result = await this.driver.findElement(
 			By.xpath("//*[contains(text(), 'Submit my research')]"));
 		result.click();
+	}
+
+	async clickButton(xpath){
+		const result = await  this.driver.findElement(
+			By.xpath(xpaths[xpath]));
+			result.click();
 	}
 }
 

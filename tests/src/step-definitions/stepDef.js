@@ -24,16 +24,6 @@ Given(/^user navigates to "([^"]*)" page$/, {timeout: 50 * 1000}, async function
     }
 });
 
-Given(/^Microsim site Home page was loaded$/, {timeout: 60 * 1000}, async function () {
-    const buffer = await this.microsim.homepage.driver.takeScreenshot();
-
-    this.attach(buffer, 'image/png');
-    await this.microsim.homepage.navigate();
-    // const buffer2 = await this.driver.takeScreenshot();
-    //
-    // this.attach(buffer2, 'image/png');
-});
-
 //When section
 
 When(/^user is on the Home page$/, async function () {
@@ -118,15 +108,6 @@ When(/^user searches for "([^"]*)"$/, async function (keys) {
     this.attach(buffer, 'image/png');
 });
 
-When(/^user click About link$/, async function () {
-    const buffer2 = await this.microsim.homepage.driver.takeScreenshot();
-    this.attach(buffer2, 'image/png');
-
-    await this.microsim.homepage.clickAboutLink();
-    const buffer3 = await this.microsim.homepage.driver.takeScreenshot();
-    this.attach(buffer3, 'image/png');
-});
-
 When(/^user selects "([^"]*)" checkbox$/, async function (element) {
     const result = await this.state.driver.findElement(By.xpath(xpaths.researchCategories[element]));
     await result.click();
@@ -155,7 +136,6 @@ When(/^user clicks on issue group "([^"]*)"$/, async function (groupName) {
     await element.click();
     const buffer = await this.state.driver.takeScreenshot();
     this.attach(buffer, 'image/png');
-
 });
 
 //Then section
@@ -218,16 +198,6 @@ Then(/^a "([^"]*)" file is downloaded$/, async function (type) {
         })
             .on('error', (err) => reject(err))
     );
-});
-
-Then(/^the About page is loaded$/, async function () {
-    const buffer2 = await this.microsim.aboutpage.driver.takeScreenshot();
-    this.attach(buffer2, 'image/png');
-
-    await this.microsim.aboutpage.waitForTitle();
-
-    const buffer3 = await this.microsim.aboutpage.driver.takeScreenshot();
-    this.attach(buffer3, 'image/png');
 });
 
 Then(/^following sections are displayed:$/, async function (articleSections) {

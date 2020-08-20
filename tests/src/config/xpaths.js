@@ -17,6 +17,10 @@ export default {
     "Images": "//*[contains(@id,'fig')]//img",
     "Issues Group":"//div[contains(@class,'--four-twelfths grid-secondary-column')]",
     "Years of issues":"//section[@class='article-section article-section--js']",
+    "Editorial board":"//*[@id=\"sections\"]/ol/li[2]/a",
+    "Submission policy":"//*[@id=\"sections\"]/ol/li[3]/a",
+    "Notes for authors":"//*[@id=\"sections\"]/ol/li[4]/a",
+    "Notes for reviewers":"//*[@id=\"sections\"]/ol/li[5]/a",
 
     downloadButtons: {
         "Article PDF": "//*[@id='downloads']/ul[1]/li/a",
