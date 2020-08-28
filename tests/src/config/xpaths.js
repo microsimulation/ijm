@@ -21,7 +21,7 @@ export default {
     "Submission policy":"//*[@id=\"sections\"]/ol/li[3]/a",
     "Notes for authors":"//*[@id=\"sections\"]/ol/li[4]/a",
     "Notes for reviewers":"//*[@id=\"sections\"]/ol/li[5]/a",
-
+    "Tables":"//table",
     downloadButtons: {
         "Article PDF": "//*[@id='downloads']/ul[1]/li/a",
         "BibTeX": "//*[@id='downloads']/ul[2]/li[1]/a",

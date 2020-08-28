@@ -23,6 +23,7 @@ Feature: Article page
       | References                     |
       | Article and author information |
       | Conclusions                    |
+    And all tables are displayed
 
   @Regression
   Scenario Outline: List of issues is displayed and grouped into 3-year dropdown

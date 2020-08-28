@@ -251,3 +251,11 @@ Then(/^dropdown with list of issues by "([^"]*)" is displayed$/, async function 
     const buffer = await this.state.driver.takeScreenshot();
     this.attach(buffer, 'image/png');
 });
+
+Then(/^all tables are displayed$/, async function () {
+    const allTables = await this.state.driver.findElements(By.xpath(xpaths["Tables"]));
+    for (const table of allTables) {
+        table.isDisplayed;
+        this.attach(await this.state.driver.takeScreenshot(), 'image/png');
+    }
+});
