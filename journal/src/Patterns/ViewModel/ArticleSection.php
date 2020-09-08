@@ -48,7 +48,7 @@ final class ArticleSection implements ViewModel
 
         $this->id = $id;
         $this->doi = $doi;
-        $this->title = $title !== "Main text" ? $title : "Section";
+        $this->title = $title !== "Main text" ? $title : "Introduction";
         $this->headingLevel = $headingLevel;
         $this->hasBehaviour = $hasBehaviour;
         $this->isInitiallyClosed = $isInitiallyClosed;
