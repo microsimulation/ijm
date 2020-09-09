@@ -68,6 +68,9 @@ Feature: Article page
       | 00206     |
       | 00207     |
       | 00208     |
+      | 00034     |
+      | 00048     |
+      | 00055     |
 
   @Local
   Scenario: Open article citations using Mendeley option
