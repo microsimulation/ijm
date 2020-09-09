@@ -34,10 +34,10 @@ Feature: Article page
     Then dropdown with list of issues by "<issueGroupYear>" is displayed
     Examples:
       | issueGroupYear |
-      | 2019-2017      |
-      | 2016-2014      |
-      | 2013-2011      |
-      | 2010-2008      |
+      | 2020-2018      |
+      | 2017-2015      |
+      | 2014-2012      |
+      | 2011-2009      |
       | 2007-2005      |
 
   @Regression
