@@ -383,7 +383,24 @@ final class ArticlesController extends Controller
                     return null;
                 }
 
-                return ContextualData::withCitation($item->getCiteAs(), new Doi($item->getDoi()));
+                $authors = [];
+
+                foreach ($item->getAuthors() as $author){
+                    $firstNameInitial = substr($author->getPreferredName(), 0, 1).". ";
+                    $authors[] = $firstNameInitial.substr(strstr($author->getPreferredName(), " "), 1);
+                }
+
+                $citation = sprintf("%s; %s; %s; %s; %s(%s); %s.",
+                    join(', ', $authors),
+                    $item->getPublishedDate()->format('Y'),
+                    $item->getTitle(),
+                    "International Journal of Microsimulation",
+                    $item->getVolume(),
+                    $item->getIssue(),
+                    $item->getElocationId()
+                );
+
+                return ContextualData::withCitation($citation, new Doi($item->getDoi()));
             });
 
         $allFigures = $this->findFigures($arguments['item']);
