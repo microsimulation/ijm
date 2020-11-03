@@ -1,4 +1,4 @@
-FROM selenium/standalone-chrome-debug:latest
+FROM selenium/standalone-chrome-debug:3.141.59-20200730
 USER seluser
 WORKDIR /app
 ARG APP_HOSTNAME
