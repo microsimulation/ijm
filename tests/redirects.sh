@@ -12,6 +12,10 @@ dois=(
     10.34196/ijm.00104  # found via all_doi.sh
     10.34196/ijm.00084  # found via all_doi.sh
     10.34196/ijm.00083  # found via all_doi.sh
+    10.34196/ijm.00105  # found via all_doi.sh
+    10.34196/ijm.00082  # found via all_doi.sh
+    10.34196/ijm.00107  # found via all_doi.sh
+
 )
 
 for doi in "${dois[@]}"; do
