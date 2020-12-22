@@ -11,6 +11,6 @@ dois=(
 
 for doi in "${dois[@]}"; do
     echo ${doi}
-    curl -s -L -I doi.org/${doi} | grep HTTP
+    curl -s -L -I doi.org/${doi} | grep -E 'HTTP|^[Ll]ocation'
     echo ""
 done
