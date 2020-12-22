@@ -95,3 +95,11 @@ docker-compose -f docker-compose.yml -f docker-compose.ci.yml down -v
 SELENIUM_IMAGE_SUFFIX=-debug docker-compose -f docker-compose.yml -f docker-compose.ci.yml up --build
 docker-compose -f docker-compose.yml -f docker-compose.ci.yml run ci .ci/behat
 ```
+
+Redirects for doi urls pointing at microsimulation.org
+------------------------------------------------------
+
+- configured in `journal/.docker/nginx.conf`
+  - most have per manuscript redirect using an `url_map`
+  - some issues redirect using a rewrite regex as they follow a consistent pattern
+- test the deployed rules for a subset of doi's with `./tests/redirects.sh`
