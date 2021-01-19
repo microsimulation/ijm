@@ -103,7 +103,7 @@ final class AboutController extends Controller
                 'Dr Philipp Harting (Bielefeld University)',
                 'Dr Sophie Pennec (Institut National d\'Etudes Démographiques, France)',
                 'Dr Azizur Rahman (Charles Sturt University, Australia)',
-                'Prof Luc Savard (Universit&eacute de Sherbrooke, Canada'),
+                'Prof Luc Savard (Universit&eacute de Sherbrooke, Canada)',
                 'Prof Deborah Schofield (University of Sydney, Australia)',
                 'Dr Sven Stöwhase (FIT, Germany)',
                 'Dr Gerlinde Verbist (Antwerp University, Belgium)',
