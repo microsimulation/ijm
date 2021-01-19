@@ -151,7 +151,7 @@ final class AboutController extends Controller
             ArticleSection::basic('Data and code availability', 2,
                 $this->render(new Paragraph('Authors are required to report, for any data they use, which is the source and what is the access policy to the data. 
                 If the paper is model-based, authors are also required to specify whether and how the code or algorithms can be accessed, including any restrictions to access.
-                The journal encourages the use of open-source software and the publication of the source code.')
+                The journal encourages the use of open-source software and the publication of the source code on public repositories.')
                 )
             ),            
             ArticleSection::basic('Submission', 2,
