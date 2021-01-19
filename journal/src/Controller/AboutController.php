@@ -148,6 +148,12 @@ final class AboutController extends Controller
                 $this->render(new Paragraph('All Authors are requested to disclose any actual or potential conflict of interest. Further information and can be found in COPE author guidelines.')
                 )
             ),
+            ArticleSection::basic('Data and code availability', 2,
+                $this->render(new Paragraph('Authors are required to report, for any data they use, which is the source and what is the access policy to the data. 
+                If the paper is model-based, authors are also required to specify whether and how the code or algorithms can be accessed, including any restrictions to access.
+                The journal encourages the use of open-source software and the publication of the source code.')
+                )
+            ),            
             ArticleSection::basic('Submission', 2,
                 $this->render(new Paragraph('Submission of an article implies that the work described has not been published previously (except in the form of an abstract or as part of a published lecture or academic thesis or as an electronic preprint), that it is not under consideration for publication elsewhere, that its publication is approved by all authors and tacitly or explicitly by the responsible authorities where the work was carried out, and that, if accepted, it will not be published elsewhere in the same form, in English or in any other language, including electronically without the written consent of the copyright-holder.')
                 )
