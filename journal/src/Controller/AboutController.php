@@ -148,14 +148,12 @@ final class AboutController extends Controller
                     new Paragraph('Submission implies that the work described has not been published previously (except in the form of an abstract or as part of a published lecture or academic thesis or as an electronic preprint or working paper), that it is not under consideration for publication elsewhere, that its publication is approved by all authors and tacitly or explicitly by the responsible authorities where the work was carried out, and that, if accepted, it will not be published elsewhere in the same form, in English or in any other language, including electronically without the written consent of the copyright-holder.'),
                     new Paragraph('<strong>Submission guidelines</strong>'),
                     Listing::unordered([
-                    'Submissions must be in English',
-                    'We strongly recommend that research articles do not exceed 15,000 words, and that research notes do not exceed 5,000 words.
-                    The suggested length includes reference lists, figures, and tables. Excessively long submissions may be summarily rejected, or authors requested to cut them down to the suggested length.',
-                    'All manuscript should be 1.5 spaced and use 12-point Times New Roman or similar font. Margins should be 1.5 inches on the top, bottom, and sides.',
-                    'Research articles should containt an abstract of no more than 250 words, while the abstract for research notes should not exceed 100 words.',
-                    'All manuscripts should be submitted in PDF format.', 
-            ], 'bullet'),
-                    
+                        'Submissions must be in English',
+                        'We strongly recommend that research articles do not exceed 15,000 words, and that research notes do not exceed 5,000 words. The suggested length includes reference lists, figures, and tables. Excessively long submissions may be summarily rejected, or authors requested to cut them down to the suggested length.',
+                        'All manuscript should be 1.5 spaced and use 12-point Times New Roman or similar font. Margins should be 1.5 inches on the top, bottom, and sides.',
+                        'Research articles should containt an abstract of no more than 250 words, while the abstract for research notes should not exceed 100 words.',
+                        'All manuscripts should be submitted in PDF format.', 
+                    ], 'bullet'),          
                 )
             ),
             ArticleSection::basic('Ethics in publishing', 2,
@@ -169,8 +167,6 @@ final class AboutController extends Controller
             ArticleSection::basic('Data and code availability', 2,
                 $this->render(
                     new Paragraph('It is the policy of the IJM to publish papers only if the data and code used in the analysis are clearly and precisely documented and access to the data and code is non-exclusive to the authors.'),
-                    
-             
                     new Paragraph('Authors of accepted papers that contain empirical work, simulations, or experimental work must provide, prior to acceptance, information about the data, programs, and other details of the computations sufficient to permit replication, as well as information about access to data and programs.
                     In particular, authors are required to report, for any data they use, which is the source and whether the data is:'),
                         Listing::ordered([
@@ -185,7 +181,7 @@ final class AboutController extends Controller
                             'proprietary, with executable also not available.',
                         ], 'number'),
                     new Paragraph('If data or programs cannot be published in an openly accessible trusted data repository, authors must commit to preserving data and code for a period of no less than five years following publication of the manuscript, and to providing reasonable assistance to requests for clarification and replication.'),
-                    new Paragraph('For questions, please contact the Editor Matteo Richiardi at <a href="mailto:matteo.richiardi@essex.ac.uk">matteo.richiardi@essex.ac.uk</a>') 
+                    new Paragraph('The journal encourages the use of open-source software and the publication of the source code.'),
                 )
             ),            
             ArticleSection::basic('Copyright', 2,
@@ -206,7 +202,10 @@ final class AboutController extends Controller
                 $this->render(new Paragraph('The International Microsimulation Association (IMA) and the International Journal of Microsimulation (IJM) and make every effort to ensure the accuracy of all the information contained in our publications. It however, makes no representations or warranties whatsoever as to the accuracy, completeness, or suitability for any purpose of the published work. Any opinions and views expressed in this publication are the opinions and views of the Authors, and are not necessarily the view of the Editors or the Journal.')
                 )
             ),
-
+            ArticleSection::basic('Contact information', 2,
+                $this->render(new Paragraph('For questions, please contact the Editor Matteo Richiardi at <a href="mailto:matteo.richiardi@essex.ac.uk">matteo.richiardi@essex.ac.uk</a>') 
+                )
+            ),            
         ];
         return new Response($this->get('templating')->render('::about.html.twig', $arguments));
     }
