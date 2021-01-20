@@ -169,17 +169,17 @@ final class AboutController extends Controller
                     new Paragraph('It is the policy of the IJM to publish papers only if the data and code used in the analysis are clearly and precisely documented and access to the data and code is non-exclusive to the authors.'),
                     new Paragraph('Authors of accepted papers that contain empirical work, simulations, or experimental work must provide, prior to acceptance, information about the data, programs, and other details of the computations sufficient to permit replication, as well as information about access to data and programs.
                     In particular, authors are required to report, for any data they use, which is the source and whether the data is:'),
-                        Listing::ordered([
-                            'publicly available (specifying how the data can be accessed);',
-                            'available for scientific research only upon registration;',
-                            'proprietary (specifying the nature of the data and the user agreement which they benefited from).',
-                        ], 'number'),
+                    Listing::ordered([
+                        'publicly available (specifying how the data can be accessed);',
+                        'available for scientific research only upon registration;',
+                        'proprietary (specifying the nature of the data and the user agreement which they benefited from).',
+                    ], 'number'),
                     new Paragraph('If the paper is model-based, authors are also required to specify whether the code is:'),
-                        Listing::ordered([
-                            'open-source;',
-                            'proprietary, with executable available;',
-                            'proprietary, with executable also not available.',
-                        ], 'number'),
+                    Listing::ordered([
+                        'open-source;',
+                        'proprietary, with executable available;',
+                        'proprietary, with executable also not available.',
+                    ], 'number'),
                     new Paragraph('If data or programs cannot be published in an openly accessible trusted data repository, authors must commit to preserving data and code for a period of no less than five years following publication of the manuscript, and to providing reasonable assistance to requests for clarification and replication.'),
                     new Paragraph('The journal encourages the use of open-source software and the publication of the source code.'),
                 )
