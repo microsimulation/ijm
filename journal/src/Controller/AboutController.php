@@ -135,11 +135,29 @@ final class AboutController extends Controller
     {
         $arguments = $this->aboutPageArguments($request);
 
-        $arguments['title'] = 'Submission Policy';
+        $arguments['title'] = 'Editorial Policy';
 
         $arguments['contentHeader'] = new ContentHeader($arguments['title']);
 
         $arguments['body'] = [
+            ArticleSection::basic('Submissions', 2,
+                $this->render(
+                    new Paragraph('Please see the <a href="'.$this->get('router')->generate('about').'">Aims and scope</a> page for information about the types of contributions of interest to the journal. If in doubt concerning the suitability of a particular manuscript, please contact the editor for further advice.'),
+                    new Paragraph('All submitted research notes and research articles will be subject to peer review by two independent referees appointed by the editor. Other items will be accepted for publication subject to review by at least two members of the editorial board.'),
+                    new Paragraph('The journal editors are responsible for ensuring that all submitted items are peer reviewed and published in a timely manner whilst maintaining the high standards expected of an academic journal.'),
+                    new Paragraph('Submission implies that the work described has not been published previously (except in the form of an abstract or as part of a published lecture or academic thesis or as an electronic preprint or working paper), that it is not under consideration for publication elsewhere, that its publication is approved by all authors and tacitly or explicitly by the responsible authorities where the work was carried out, and that, if accepted, it will not be published elsewhere in the same form, in English or in any other language, including electronically without the written consent of the copyright-holder.'),
+                    new Paragraph('<strong>Submission guidelines</strong>'),
+                    Listing::unordered([
+                    'Submissions must be in English',
+                    'We strongly recommend that research articles do not exceed 15,000 words, and that research notes do not exceed 5,000 words.
+                    The suggested length includes reference lists, figures, and tables. Excessively long submissions may be summarily rejected, or authors requested to cut them down to the suggested length.',
+                    'All manuscript should be 1.5 spaced and use 12-point Times New Roman or similar font. Margins should be 1.5 inches on the top, bottom, and sides.',
+                    'Research articles should containt an abstract of no more than 250 words, while the abstract for research notes should not exceed 100 words.',
+                    'All manuscripts should be submitted in PDF format.', 
+            ], 'bullet'),
+                    
+                )
+            ),
             ArticleSection::basic('Ethics in publishing', 2,
                 $this->render(new Paragraph('The IJM supports the ethical principles set out by the <a href="http://publicationethics.org/resources/guidelines">Committee on Publication Ethics (COPE).</a>')
                 )
@@ -149,21 +167,33 @@ final class AboutController extends Controller
                 )
             ),
             ArticleSection::basic('Data and code availability', 2,
-                $this->render(new Paragraph('Authors are required to report, for any data they use, which is the source and what is the access policy to the data. 
-                If the paper is model-based, authors are also required to specify whether and how the code or algorithms can be accessed, including any restrictions to access.
-                The journal encourages the use of open-source software and the publication of the source code on public repositories.')
+                $this->render(
+                    new Paragraph('It is the policy of the IJM to publish papers only if the data and code used in the analysis are clearly and precisely documented and access to the data and code is non-exclusive to the authors.'),
+                    
+             
+                    new Paragraph('Authors of accepted papers that contain empirical work, simulations, or experimental work must provide, prior to acceptance, information about the data, programs, and other details of the computations sufficient to permit replication, as well as information about access to data and programs.
+                    In particular, authors are required to report, for any data they use, which is the source and whether the data is:'),
+                        Listing::ordered([
+                            'publicly available (specifying how the data can be accessed);',
+                            'available for scientific research only upon registration;',
+                            'proprietary (specifying the nature of the data and the user agreement which they benefited from).',
+                        ], 'number'),
+                    new Paragraph('If the paper is model-based, authors are also required to specify whether the code is:'),
+                        Listing::ordered([
+                            'open-source;',
+                            'proprietary, with executable available;',
+                            'proprietary, with executable also not available.',
+                        ], 'number'),
+                    new Paragraph('If data or programs cannot be published in an openly accessible trusted data repository, authors must commit to preserving data and code for a period of no less than five years following publication of the manuscript, and to providing reasonable assistance to requests for clarification and replication.'),
+                    new Paragraph('For questions, please contact the Editor Matteo Richiardi at <a href="mailto:matteo.richiardi@essex.ac.uk">matteo.richiardi@essex.ac.uk</a>') 
                 )
             ),            
-            ArticleSection::basic('Submission', 2,
-                $this->render(new Paragraph('Submission of an article implies that the work described has not been published previously (except in the form of an abstract or as part of a published lecture or academic thesis or as an electronic preprint), that it is not under consideration for publication elsewhere, that its publication is approved by all authors and tacitly or explicitly by the responsible authorities where the work was carried out, and that, if accepted, it will not be published elsewhere in the same form, in English or in any other language, including electronically without the written consent of the copyright-holder.')
-                )
-            ),
             ArticleSection::basic('Copyright', 2,
                 $this->render(new Paragraph('All IJM articles, unless otherwise stated, are published under the terms of the Creative Commons Attribution (CC BY) License which permits use, distribution and reproduction in any medium, provided the work is properly attributed back to the original author and publisher. Copyright on any research article in the International Journal ofMicrosimulation(IJM) is retained by the Authors. Authors grant IJM a license to publish the article and identify itself as the original publisher. Authors cannot revoke these freedoms as long as the Journal follows the license terms. Authors should not submit any paper unless they agree with this policy. The full text of the CC BY 4.0 license can be found here. Special exemptions and other licensing arrangement can be made on a case by case basis, by writing a motivated request to the Editor.')
                 )
             ),
             ArticleSection::basic('Authors rights', 2,
-                $this->render(new Paragraph('Contributors will retain the rights including but not limited to the following, as permitted by the CC BY license:')
+                $this->render(new Paragraph('Upon publication, contributors will retain the rights including but not limited to the following, as permitted by the CC BY license:')
                 )
             ),
             Listing::unordered([
@@ -193,8 +223,10 @@ final class AboutController extends Controller
             new Paragraph('Please see the <a href="'.$this->get('router')->generate('about').'">Aims and scope</a> page for information about the types of contributions of interest to the journal. If in doubt concerning the suitability of a particular manuscript, please contact the editor for further advice.'),
             new Paragraph('<strong>Editorial policy</strong>'),
             new Paragraph('It is the policy of the journal to accept for consideration only original items written in English that have not previously been published and are not currently being considered for publication elsewhere. Prior release of material online or in a working paper series is not classed as publication unless subject to an independent peer review or refereeing process.'),
-            new Paragraph('All submitted technical papers and case studies will be subject to peer review by two independent referees appointed by the editor. Other items will be accepted for publication subject to review by at least two members of the editorial board.'),
-            new Paragraph('The International Journal of Microsimulation is made available to all without subscription. To support this publishing model, once an author has a paper accepted by the journal s/he is required to (i) ensure that their paper is formatted precisely as laid out in the journal\'s style guide; (ii) agree to peer review two papers by other authors submitted for consideration by the journal. The journal editors are responsible for ensuring that all submitted items are peer reviewed and published in a timely manner whilst maintaining the high standards expected of an academic journal.'),
+           
+            new Paragraph('All submitted research notes and research articles will be subject to peer review by two independent referees appointed by the editor. 
+            Other items will be accepted for publication subject to review by at least two members of the editorial board.'),
+            new Paragraph('The journal editors are responsible for ensuring that all submitted items are peer reviewed and published in a timely manner whilst maintaining the high standards expected of an academic journal.'),
             new Paragraph('Where appropriate, authors are invited to take advantage of the online nature of the journal by supplementing their written submissions with additional relevant material, such as listings of excerpts from executable code; downloadable working executables; extended results tables etc.'),
             new Paragraph('The International Journal of Microsimulation supports full transparency about data and code of published articles:'),
             new Paragraph('Authors are required to report, for any data they use, which is the source and whether the data is:'),
