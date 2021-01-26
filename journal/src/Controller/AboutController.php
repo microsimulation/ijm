@@ -135,7 +135,7 @@ final class AboutController extends Controller
     {
         $arguments = $this->aboutPageArguments($request);
 
-        $arguments['title'] = 'Editorial Policy';
+        $arguments['title'] = 'Submission Policy';
 
         $arguments['contentHeader'] = new ContentHeader($arguments['title']);
 
@@ -153,7 +153,7 @@ final class AboutController extends Controller
                         'All manuscript should be 1.5 spaced and use 12-point Times New Roman or similar font. Margins should be 1.5 inches on the top, bottom, and sides.',
                         'Research articles should containt an abstract of no more than 250 words, while the abstract for research notes should not exceed 100 words.',
                         'All manuscripts should be submitted in PDF format.', 
-                    ], 'bullet'),          
+                    ], 'bullet')       
                 )
             ),
             ArticleSection::basic('Ethics in publishing', 2,
@@ -181,7 +181,7 @@ final class AboutController extends Controller
                         'proprietary, with executable also not available.',
                     ], 'number'),
                     new Paragraph('If data or programs cannot be published in an openly accessible trusted data repository, authors must commit to preserving data and code for a period of no less than five years following publication of the manuscript, and to providing reasonable assistance to requests for clarification and replication.'),
-                    new Paragraph('The journal encourages the use of open-source software and the publication of the source code.'),
+                    new Paragraph('The journal encourages the use of open-source software and the publication of the source code.')
                 )
             ),            
             ArticleSection::basic('Copyright', 2,
