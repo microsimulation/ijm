@@ -1,0 +1,1190 @@
+{
+    "status": "vor",
+    "id": "00216",
+    "version": 1,
+    "type": "research-article",
+    "doi": "10.34196/ijm.00216",
+    "authorLine": "Robert McClelland et al.",
+    "title": "Estimating Confidence Intervals in a Tax Microsimulation Model",
+    "published": "2020-08-31T00:00:00Z",
+    "versionDate": "2020-08-31T00:00:00Z",
+    "statusDate": "2020-08-31T00:00:00Z",
+    "volume": 13,
+    "issue": 2,
+    "fpage": 2,
+    "lpage": 20,
+    "elocationId": "2-20",
+    "pdf": "http://web:8082/00216/ijm-00216.pdf",
+    "subjects": [
+        {
+            "id": "methodology",
+            "name": "Methodology"
+        }
+    ],
+    "abstract": {
+        "content": [
+            {
+                "text": "Since the creation of microsimulation models, the need to measure uncertainty has been recognized, but little research has been conducted in spite of the widespread use of these models. In this article, we calculate confidence intervals for a large tax microsimulation model, comparing a normal approximation to a bootstrap estimator. We estimate confidence intervals for five proposed changes to tax law. We explore the relationship between the size of proposals\u2019 point-estimated impacts and their confidence intervals by considering high, central, and low scenarios for three proposals. To explore uncertainty around small-magnitude estimates, we consider a proposal designed to keep tax revenue unchanged. Finally, we consider a proposal that affects a small number of taxpayers but has a large heterogeneous effect. We find that, overall, confidence intervals in the model fit tightly around the point estimates, but there are exceptions. We also find that in many cases the normal approximation is close to the bootstrap estimator but may differ for policy changes that affect a small number of taxpayers.",
+                "type": "paragraph"
+            }
+        ]
+    },
+    "copyright": {
+        "license": "CC-BY-4.0",
+        "holder": "McClelland et al.",
+        "statement": "This article is distributed under the terms of the <a href=\"http://creativecommons.org/licenses/by/4.0/\">Creative Commons Attribution License</a>, which permits unrestricted use and redistribution provided that the original author and source are credited."
+    },
+    "authors": [
+        {
+            "affiliations": [
+                {
+                    "address": {
+                        "components": {
+                            "country": "USA",
+                            "locality": [
+                                "Washington"
+                            ]
+                        },
+                        "formatted": [
+                            "Washington",
+                            "USA"
+                        ]
+                    },
+                    "name": [
+                        "The Tax Policy Center"
+                    ]
+                }
+            ],
+            "emailAddresses": [
+                "RMcClelland@urban.org"
+            ],
+            "name": {
+                "index": "McClelland, Robert",
+                "preferred": "Robert McClelland"
+            },
+            "orcid": "0000-0003-1064-7177",
+            "type": "person"
+        },
+        {
+            "affiliations": [
+                {
+                    "address": {
+                        "components": {
+                            "country": "USA",
+                            "locality": [
+                                "Washington"
+                            ]
+                        },
+                        "formatted": [
+                            "Washington",
+                            "USA"
+                        ]
+                    },
+                    "name": [
+                        "The Tax Policy Center"
+                    ]
+                }
+            ],
+            "name": {
+                "index": "Khitatrakun, Surachai",
+                "preferred": "Surachai Khitatrakun"
+            },
+            "type": "person"
+        },
+        {
+            "affiliations": [
+                {
+                    "address": {
+                        "components": {
+                            "country": "USA",
+                            "locality": [
+                                "Washington"
+                            ]
+                        },
+                        "formatted": [
+                            "Washington",
+                            "USA"
+                        ]
+                    },
+                    "name": [
+                        "The Tax Policy Center"
+                    ]
+                }
+            ],
+            "name": {
+                "index": "Lu, Chenxi",
+                "preferred": "Chenxi Lu"
+            },
+            "type": "person"
+        }
+    ],
+    "funding": {
+        "statement": "The authors are grateful for the support of this research by the Alfred P. Sloan Foundation grant G-2017-9845."
+    },
+    "dataSets": {
+        "availability": [
+            {
+                "text": "The Stata code used for this paper is open-source and it is available at <a href=\"https://github.com/UrbanInstitute/confidence-intervals-tax-microsimulation\">https://github.com/UrbanInstitute/confidence-intervals-tax-microsimulation</a>",
+                "type": "paragraph"
+            }
+        ]
+    },
+    "body": [
+        {
+            "content": [
+                {
+                    "text": "In 1957, Guy Orcutt introduced microsimulation modeling by making a radical proposition: rather than using aggregate data to predict the behavior of populations, researchers could model the decisions made by households and aggregate the results.<sup><a href=\"#fn1\">1</a></sup> Data on households would be drawn from surveys to create a sample that would represent the population; the decisions of each household would be separately modeled and the aggregate decisions would predict the behavior of the population. Further, researchers could learn how various assumptions and parameters affect the model\u2019s outcomes by recalculating the results under different assumptions and parameters. The benefit of this approach to study government policies was clear: by altering model parameters, the difference in outcomes attributable to different policy choices could be measured. Importantly, uncertainty could be estimated by repeatedly running the model on random subsamples and calculating standard errors and confidence intervals.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Scholars quickly embraced this new approach and by the early 1960s, Joseph Pechman and colleagues at the Brookings Institution had developed a microsimulation model of individual taxation that calculated both total federal revenue and the distribution of taxes across income groups. Since then the microsimulation approach has become the standard method for evaluating the United States individual income tax system, and it is used by organizations such as the Congressional Budget Office (CBO), the Treasury Department\u2019s Office of Tax Analysis, the Joint Committee on Taxation (JCT) and the Urban-Brookings Tax Policy Center (TPC).",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "In microsimulation analyses, measures of uncertainty, such as standard errors or confidence intervals, can play at least two important roles. First, they can help us understand whether economically meaningful differences in estimates by different organizations reflect different modeling choices or mere sampling variation. Second, they can also help us infer whether apparent differences in outcomes among tax units reflect differences in the population or just sampling variation.<sup><a href=\"#fn2\">2</a></sup> For example, a proposed change in tax law may appear progressive when the average tax cut for a lower income group is larger than the tax cut for those in a higher income group in a sample. Yet if the estimates are not significantly different in a statistical sense, the policy change may not be progressive if applied to the population. Unfortunately, neither standard errors nor confidence intervals are routinely calculated or published in the U.S. although some recent research using EUROMOD, the tax and benefit microsimulation model for the European Union, has included asymptotic standard errors.<sup><a href=\"#fn3\">3</a></sup>",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "For many years, measures of uncertainty were not routinely estimated because they required faster computers than were available. For example, <a href=\"#bib1\">Citro et al. (1991)</a> surveyed the state of microsimulation modeling and recommended the use of \u201cnew computer technologies to provide enhanced capabilities, such as the ability for a wider group of analysts to apply the models; conduct timely and cost-effective validation studies, including variance estimation and sensitivity analyses.\u201d Computational power has since improved substantially yet the few attempts at measuring uncertainty either use simplifying distributional assumptions (<a href=\"#bib13\">Pudney and Sutherland, 1994</a>), or simple policy changes that allow for the use of normal approximations (<a href=\"#bib7\">Goedem\u00e9 et al., 2013</a>).",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "In this paper, we demonstrate the use of bootstrapping to create standard errors and confidence intervals for estimates from TPC\u2019s individual income tax model. We also rely on a fundamental insight that may have escaped prior researchers: resampling does not require recalculating taxes for each draw. Instead, in each resample the weights are adjusted and applied to the original sample of tax units. These resamples\u2019 weights only need to be produced once and can be used to compute confidence intervals for point estimates of any policy proposal. We also calculate confidence intervals using a normal approximation and compare the results to our bootstrapped intervals. To this end, we estimate five potential changes in tax policy. For (i) a partial restoration of the personal exemption, (ii) an increase in the standard deduction, and (iii) an increase in the top marginal tax rate, we estimate the effects of high, central, and low scenarios. In addition, we consider a revenue-neutral proposal to replace the current-law farm loss deduction with a refundable tax credit based on the total farm loss that should create confidence intervals around point estimates of zero dollar for the average change in tax burden. Finally, we examine a rescission of the tax-free treatment of interest accruing from certain government bonds that should only affect a small group of heterogeneous tax units.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Our results are as follows. First, in most cases the standard errors of the estimated change in taxes for most income groups are small and the 95 percent confidence intervals fit tightly around the point estimates. This means that differences across income groups are statistically significant and, if the same holds true for other tax models, economically meaningful differences among models are also statistically significant. Further, the normal approximation are quite close to the bootstrapped estimates. Second, for the policy alternatives that have high, central and low scenarios, the scenarios leading to larger effects also lead to wider confidence intervals. Finally, when reform only affects a small number of tax units, the average change in taxes may be estimated imprecisely. In these cases, it may be difficult to determine if a proposed policy change is progressive or regressive. In addition, the normal approximation to a confidence interval may differ from the bootstrapped version.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s1",
+            "title": "1. Introduction",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "<a href=\"#bib11\">Orcutt (1957)</a> is the foundational paper on microsimulation. He hypothesized that simulations could be calculated on \u201ca large electronic machine, such as the IBM 704 or the UNIVAC II, or some improved successor to these powerful giants.\u201d Both the IBM and the UNIVAC II used vacuum tubes and the IBM could calculate up to 12,000 floating point additions per second.<sup><a href=\"#fn4\">4</a></sup> He also noted that for such models \u201cAll predictions could be obtained in the form of expected values plus some measure of uncertainty. Or, if desired, they could be in the form of confidence interval estimates.\u201d",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "<a href=\"#bib13\">Pudney and Sutherland (1994)</a> test the finite sample properties of the Central Limit Theorem by estimating the sampling variation of microsimulation models under the assumption of normality. They conclude that \u201cthe baseline simulations are reasonably accurate, but that some widely-used measure of the effects of policy changes may be very imprecise estimates of population effects.\u201d For example, when estimating the number of winners and losers from a revenue-neutral reform of family benefits, the confidence interval for the population as a whole is plus or minus four percent, but the confidence interval for single parent families is plus or minus 29 percent. We follow Pudney and Sutherland (1994) and calculate confidence intervals under the normality assumption.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "However, our research is closest to <a href=\"#bib4\">Fiorio (2003)</a>, who runs a tax microsimulation model \u201cbackwards\u201d on a small dataset. The author starts with after-tax income and estimates pre-tax income by adding calculated taxes. The author then uses a bootstrap to estimate the 90 percent confidence intervals due to sampling variation and concludes that, while the confidence interval for the entire sample is small, the distribution is very asymmetric (and therefore badly approximated by the normal distribution) and the interval can be wide in subpopulations.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "<a href=\"#bib3\">Creedy et al. (2007)</a> use a parametric bootstrap to sample from the estimated distribution of labor supply elasticities. Their algorithm runs extremely slowly, however, and even with a sample of only 7,000, calculations take weeks to complete. They address the problem by using a small sample to estimate the mean and standard deviation and then create confidence intervals by assuming the parameters are normally distributed.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "<a href=\"#bib7\">Goedem\u00e9 et al. (2013)</a> suggest that if there are no behavioral parameters, or if they are ignored, many changes in the output of tax microsimulations are nearly linear functions of income. In this case, it can be straightforward to calculate the variance of a difference between a baseline distribution of taxes and an alternative scenario using a Taylor first-order linearization of a variance estimate.<sup><a href=\"#fn5\">5</a></sup> However, even absent behavioral parameters such as labor supply elasticities, decisions involving whether or not to use various credits or deductions can create difficult-to-map nonlinear function of income.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s2",
+            "title": "2. Literature review",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "content": [
+                        {
+                            "text": "We use TPC\u2019s microsimulation individual income tax model in this research. The model is based on a base-year data set composed of a sample of tax-filing \u2018tax units\u2019, which were constructed to be nationally and state representative of the tax filing population for the 2011 tax year, and a sample of non-filers in 2011. The tax-filing sample was a projection of the 2006 public-use file (PUF) produced by the Statistics of Income (SOI) Division of the Internal Revenue Service (IRS). The 2006 PUF contains 145,858 tax unit records with detailed information from federal individual income tax returns filed in calendar year 2006. Non-filers were derived by matching the projected 2011 tax-filing tax units with the March 2012 Current Population Survey (CPS) of the U.S. Census Bureau.<sup><a href=\"#fn6\">6</a></sup> Additional variables were imputed for analyzing a wide range of tax policy proposals such as education, health, retirement, estate, and consumption taxes and tax benefits.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "To perform revenue and distribution analyses for future years, the 2011 data are further extrapolated for years beyond 2011 using a two-step process based on forecasts and projections from CBO, JCT, the IRS, and U.S. Census Bureau. First, the dollar amounts of income, adjustments, deductions, and credits on each record are inflated by their appropriate forecasted per capita growth rates. Second, TPC uses a linear programming algorithm to adjust the weights on each record so that the major income items, adjustments, and deductions match aggregate targets. TPC also adjusts the overall distribution of adjusted gross income (AGI) to match published information from SOI for available years and projections from CBO for further years.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s3-1",
+                    "title": "3.1. Public use file",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "Using the extrapolated 2011 data, TPC simulates policy options using a detailed tax calculator that captures most features of the federal individual income tax system. The model reads the data for each tax unit, calculates its tax liability, and outputs the same data with the liability appended. Importantly, this includes the weight for that tax unit. The model\u2019s current law baseline reflects major income tax legislation enacted through early 2019, including the Tax Cuts and Jobs Act of 2017 (TCJA).",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "In its analysis of the distributional effects of a simulated policy change, TPC includes the following federal taxes in its calculation of effective tax rates: individual and corporate income taxes; payroll taxes for Social Security and Medicare; excise taxes; and the estate tax. TPC calculates effective tax rates using a broad measure of income called Expanded Cash Income (ECI), which is defined as adjusted gross income (AGI) plus: above-the-line adjustments (e.g., IRA deduction, student loan interest deduction, self-employed health insurance deduction, etc.), employer paid health insurance and other nontaxable fringe benefits, employee and employer contributions to tax-deferred retirement savings plans, tax-exempt interest, nontaxable Social Security benefits, nontaxable pension and retirement income, accruals within defined benefit pension plans, inside buildup within defined contribution retirement accounts, cash and cash-like (e.g., SNAP) transfer income, employer\u2019s share of payroll taxes, and imputed corporate income tax liability.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The effects of tax policy are reported by ECI group. We focus here on groups based on dollar values of ECI. (TPC also reports groups based on percentiles.) ECI is a broad measure of pre-tax income which serves as a proxy for tax units\u2019 economic well-being and their ability to pay taxes. In this exercise, we first separate out tax units with either negative ECI or AGI. Then, we categorize the remaining tax units into 11 groups by ECI level. <a href=\"#table1\">Table 1</a> shows these ECI groups and their sample sizes.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "footnotes": [
+                                        {
+                                            "text": [
+                                                {
+                                                    "text": "Source: Urban-Brookings Tax Policy Center Microsimulation Model (version 0319-1).",
+                                                    "type": "paragraph"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "text": [
+                                                {
+                                                    "text": "Note: The sample exclude tax units with negative AGI or ECI.",
+                                                    "type": "paragraph"
+                                                }
+                                            ]
+                                        }
+                                    ],
+                                    "id": "table1",
+                                    "label": "Table 1",
+                                    "tables": [
+                                        "<table>\n<thead>\n<tr>\n<th align=\"left\" rowspan=\"2\">Expanded Cash Income Level (thousands of 2019 dollars)</th>\n<th align=\"left\" colspan=\"2\">Population (Tax Unit)</th>\n<th align=\"left\" colspan=\"2\">Sample Size</th>\n</tr>\n<tr>\n<th align=\"left\">Number (thousands)</th>\n<th align=\"left\">Percent of Total</th>\n<th align=\"left\">Number (thousands)</th>\n<th align=\"left\">Percent of Total</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td align=\"left\">Less than 10</td>\n<td align=\"left\">12,323</td>\n<td align=\"left\">7.1</td>\n<td align=\"left\">8</td>\n<td align=\"left\">3.3</td>\n</tr>\n<tr>\n<td align=\"left\">10\u201320</td>\n<td align=\"left\">21,651</td>\n<td align=\"left\">12.4</td>\n<td align=\"left\">16</td>\n<td align=\"left\">6.3</td>\n</tr>\n<tr>\n<td align=\"left\">20\u201330</td>\n<td align=\"left\">19,523</td>\n<td align=\"left\">11.2</td>\n<td align=\"left\">16</td>\n<td align=\"left\">6.3</td>\n</tr>\n<tr>\n<td align=\"left\">30\u201340</td>\n<td align=\"left\">15,976</td>\n<td align=\"left\">9.2</td>\n<td align=\"left\">14</td>\n<td align=\"left\">5.5</td>\n</tr>\n<tr>\n<td align=\"left\">40\u201350</td>\n<td align=\"left\">13,399</td>\n<td align=\"left\">7.7</td>\n<td align=\"left\">12</td>\n<td align=\"left\">4.8</td>\n</tr>\n<tr>\n<td align=\"left\">50\u201375</td>\n<td align=\"left\">25,288</td>\n<td align=\"left\">14.5</td>\n<td align=\"left\">27</td>\n<td align=\"left\">10.4</td>\n</tr>\n<tr>\n<td align=\"left\">75\u2013100</td>\n<td align=\"left\">16,983</td>\n<td align=\"left\">9.7</td>\n<td align=\"left\">20</td>\n<td align=\"left\">7.8</td>\n</tr>\n<tr>\n<td align=\"left\">100\u2013200</td>\n<td align=\"left\">31,667</td>\n<td align=\"left\">18.1</td>\n<td align=\"left\">43</td>\n<td align=\"left\">16.8</td>\n</tr>\n<tr>\n<td align=\"left\">200\u2013500</td>\n<td align=\"left\">14,026</td>\n<td align=\"left\">8.0</td>\n<td align=\"left\">35</td>\n<td align=\"left\">13.8</td>\n</tr>\n<tr>\n<td align=\"left\">500\u20131,000</td>\n<td align=\"left\">1,826</td>\n<td align=\"left\">1.1</td>\n<td align=\"left\">16</td>\n<td align=\"left\">6.3</td>\n</tr>\n<tr>\n<td align=\"left\">More than 1,000</td>\n<td align=\"left\">837</td>\n<td align=\"left\">0.5</td>\n<td align=\"left\">40</td>\n<td align=\"left\">15.7</td>\n</tr>\n<tr>\n<td align=\"left\">All</td>\n<td align=\"left\">174,690</td>\n<td align=\"left\">100.0</td>\n<td align=\"left\">256</td>\n<td align=\"left\">100.0</td>\n</tr>\n</tbody>\n</table>"
+                                    ],
+                                    "title": "Population and Sample Size of TPC Microsimulation Model, 2019",
+                                    "type": "table"
+                                }
+                            ],
+                            "type": "figure"
+                        }
+                    ],
+                    "id": "s3-2",
+                    "title": "3.2. TPC tax model",
+                    "type": "section"
+                }
+            ],
+            "id": "s3",
+            "title": "3. Data",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "The bootstrap is a common method for estimating the sampling variation and confidence interval of nonlinear functions applied to a set of observations. It is particularly useful when the distribution of these observations, such as the change in tax liability from a tax policy proposal, is asymmetric. We start by following a description of the bootstrap given in <a href=\"#bib9\">Kolenikov (2010)</a>. We then describe the bootstrapping method used in this paper.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "We start with a population distribution function  <math id=\"inf1\"> <mi>F</mi> <mfenced separators=\"|\"> <mrow> <mi>x</mi> </mrow> </mfenced> </math>  and a sample of <i>n</i> independently and identically distributed observations (<i>x<sub>1</sub> </i>,\u2026,<i>x<sub>n</sub> </i>). We wish to estimate a statistic  <math id=\"inf2\"> <mi>\u03b8</mi> </math>  as a function of the distribution  <math id=\"inf3\"> <mi>\u03b8</mi> <mo>=</mo> <mi>T</mi> <mfenced separators=\"|\"> <mrow> <mi>F</mi> </mrow> </mfenced> </math> . For example,  <math id=\"inf4\"> <mi>\u03b8</mi> </math>  could be the average change in after-tax income for tax units in a given range of income, and  <math id=\"inf5\"> <mi>T</mi> <mfenced separators=\"|\"> <mrow> <mi>F</mi> </mrow> </mfenced> </math>  could be a function of the tax code for those tax units. We estimate this statistic using our sample,  <math id=\"inf6\"> <mstyle displaystyle=\"true\" scriptlevel=\"0\"> <mrow> <msub> <mrow> <mover> <mi>\u03b8</mi> <mo stretchy=\"false\">^</mo> </mover> </mrow> <mrow> <mi>n</mi> </mrow> </msub> <mo>=</mo> <mi>T</mi> <mrow> <mo>(</mo> <msub> <mi>F</mi> <mrow> <mi>n</mi> </mrow> </msub> <mo>)</mo> </mrow> </mrow> </mstyle> </math> , where  <math id=\"inf7\"> <msub> <mrow> <mi>F</mi> </mrow> <mrow> <mi>n</mi> </mrow> </msub> </math>  is the empirical distribution. In a stratified data set such as the one used in this paper,  <math id=\"inf8\"> <mstyle displaystyle=\"true\" scriptlevel=\"0\"> <mrow> <msub> <mrow> <mover> <mi>\u03b8</mi> <mo stretchy=\"false\">^</mo> </mover> </mrow> <mrow> <mi>n</mi> </mrow> </msub> </mrow> </mstyle> </math>  is created using a weighted sample. Nevertheless, we do not need to assume that the point estimate  <math id=\"inf9\"> <mstyle displaystyle=\"true\" scriptlevel=\"0\"> <mrow> <msub> <mrow> <mover> <mi>\u03b8</mi> <mo stretchy=\"false\">^</mo> </mover> </mrow> <mrow> <mi>n</mi> </mrow> </msub> </mrow> </mstyle> </math>  is an unbiased estimate of  <math id=\"inf10\"> <mi>\u03b8</mi> </math>  in finite samples.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Of course, the exact estimate depends on our sample. If other samples had been used, the estimate would be different. In general, the estimate will vary across those samples so that we cannot be certain about the distance between the estimate and the statistic in the population. If  <math id=\"inf11\"> <mi>T</mi> <mfenced separators=\"|\"> <mrow> <mi>F</mi> </mrow> </mfenced> </math>  is a linear function, we can calculate the variance of the estimate using  <math id=\"inf12\"> <mstyle displaystyle=\"true\" scriptlevel=\"0\"> <mrow> <mi>V</mi> <mrow> <mo>(</mo> <mrow> <mover> <mi>\u03b8</mi> <mo stretchy=\"false\">^</mo> </mover> </mrow> <mo>)</mo> </mrow> <mo>=</mo> <mi>E</mi> <msup> <mrow> <mo>(</mo> <mrow> <mrow> <mover> <mi>\u03b8</mi> <mo stretchy=\"false\">^</mo> </mover> </mrow> <mo>\u2212</mo> <mi>E</mi> <mrow> <mover> <mi>\u03b8</mi> <mo stretchy=\"false\">^</mo> </mover> </mrow> </mrow> <mo>)</mo> </mrow> <mrow> <mn>2</mn> </mrow> </msup> </mrow> </mstyle> </math> , where  <math id=\"inf13\"> <mi>E</mi> </math>  is the expected value operator.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The Central Limit Theorem implies that if a large number of independent tax units are affected, the distribution of an average tax change can be approximated using the normal distribution. We calculate confidence intervals under this assumption, as  <math id=\"inf14\"> <mstyle displaystyle=\"true\" scriptlevel=\"0\"> <mrow> <mrow> <mover> <mi>\u03b8</mi> <mo stretchy=\"false\">^</mo> </mover> </mrow> <mo>\u00b1</mo> <mi>C</mi> <mo>\u00d7</mo> <msqrt> <mi>V</mi> <mrow> <mo>(</mo> <mrow> <mover> <mi>\u03b8</mi> <mo stretchy=\"false\">^</mo> </mover> </mrow> <mo>)</mo> </mrow> </msqrt> </mrow> </mstyle> </math> , where <i>C</i> is the appropriate two-sided critical value for the normal distribution.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "But under the U.S. individual income tax system, taxes owed are a highly nonlinear function of income. In addition, if the sample size is small, confidence intervals may be poorly estimated by methods that assume asymptotic normality of the statistics.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "As an alternative, the bootstrapping method estimates various aspects of the distribution of  <math id=\"inf15\"> <mstyle displaystyle=\"true\" scriptlevel=\"0\"> <mrow> <msub> <mrow> <mover> <mi>\u03b8</mi> <mo stretchy=\"false\">^</mo> </mover> </mrow> <mrow> <mi>n</mi> </mrow> </msub> </mrow> </mstyle> </math>  by repeatedly drawing subsamples. The steps are: (i) draw with replacement <i>R</i> samples of size <i>m</i>  <math id=\"inf16\"> <mstyle displaystyle=\"true\" scriptlevel=\"0\"> <mrow> <mrow> <mo>(</mo> <mrow> <msubsup> <mi>x</mi> <mrow> <mn>1</mn> </mrow> <mrow> <mo>\u2217</mo> </mrow> </msubsup> <mo>,</mo> <mo>.</mo> <mo>.</mo> <mo>.</mo> <msubsup> <mi>x</mi> <mrow> <mi>m</mi> </mrow> <mrow> <mo>\u2217</mo> </mrow> </msubsup> </mrow> <mo>)</mo> </mrow> </mrow> </mstyle> </math>  from the original observations (<i>x<sub>1</sub> </i>,\u2026,<i>x<sub>n</sub> </i>), (ii) calculate the statistic  <math id=\"inf17\"> <mstyle displaystyle=\"true\" scriptlevel=\"0\"> <mrow> <msubsup> <mrow> <mover> <mi>\u03b8</mi> <mo stretchy=\"false\">^</mo> </mover> </mrow> <mrow> <mi>m</mi> </mrow> <mrow> <mo>\u2217</mo> </mrow> </msubsup> <mo>=</mo> <mi>T</mi> <mrow> <mo>(</mo> <msubsup> <mi>F</mi> <mrow> <mi>m</mi> </mrow> <mrow> <mo>\u2217</mo> </mrow> </msubsup> <mo>)</mo> </mrow> </mrow> </mstyle> </math>  on each bootstrap sample, where  <math id=\"inf18\"> <msubsup> <mrow> <mi>F</mi> </mrow> <mrow> <mi>m</mi> </mrow> <mrow/> </msubsup> </math>  is the empirical distribution function of the bootstrapped sample, and (iii) calculate the appropriate moments  <math id=\"inf19\"> <mstyle displaystyle=\"true\" scriptlevel=\"0\"> <mrow> <msubsup> <mi>F</mi> <mrow> <mi>m</mi> </mrow> <mrow> <mo>\u2217</mo> </mrow> </msubsup> </mrow> </mstyle> </math>  from the <i>R</i> statistics  <math id=\"inf20\"> <mstyle displaystyle=\"true\" scriptlevel=\"0\"> <mrow> <msubsup> <mrow> <mover> <mi>\u03b8</mi> <mo stretchy=\"false\">^</mo> </mover> </mrow> <mrow> <mi>m</mi> </mrow> <mrow> <mo>\u2217</mo> </mrow> </msubsup> </mrow> </mstyle> </math>  . In the first step the size of the bootstrap sample <i>m</i> is usually set to <i>n</i>, the size of our sample. The number of samples <i>R</i> can be set to any number, although <a href=\"#bib9\">Kolenikov (2010)</a> indicates that <i>R</i> is usually set to be between 100 and 1,000. In the second step the statistic is calculated all <i>R</i> times.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The third step relies on the insight that simulated sampling via bootstraps mimics the original sampling process, so that  <math id=\"inf21\"> <mstyle displaystyle=\"true\" scriptlevel=\"0\"> <mrow> <msubsup> <mrow> <mover> <mi>\u03b8</mi> <mo stretchy=\"false\">^</mo> </mover> </mrow> <mrow> <mi>m</mi> </mrow> <mrow/> </msubsup> </mrow> </mstyle> </math>  relates to  <math id=\"inf22\"> <mstyle displaystyle=\"true\" scriptlevel=\"0\"> <mrow> <msub> <mrow> <mover> <mi>\u03b8</mi> <mo stretchy=\"false\">^</mo> </mover> </mrow> <mrow> <mi>n</mi> </mrow> </msub> </mrow> </mstyle> </math>  as  <math id=\"inf23\"> <mstyle displaystyle=\"true\" scriptlevel=\"0\"> <mrow> <msub> <mrow> <mover> <mi>\u03b8</mi> <mo stretchy=\"false\">^</mo> </mover> </mrow> <mrow> <mi>n</mi> </mrow> </msub> </mrow> </mstyle> </math>  relates to  <math id=\"inf24\"> <mi>\u03b8</mi> </math> . For example, the potential bias of  <math id=\"inf25\"> <mstyle displaystyle=\"true\" scriptlevel=\"0\"> <mrow> <msubsup> <mrow> <mover> <mi>\u03b8</mi> <mo stretchy=\"false\">^</mo> </mover> </mrow> <mrow> <mi>n</mi> </mrow> <mrow/> </msubsup> </mrow> </mstyle> </math> , defined as  <math id=\"inf26\"> <mstyle displaystyle=\"true\" scriptlevel=\"0\"> <mrow> <mi>E</mi> <mrow> <mo>(</mo> <mrow> <msub> <mrow> <mover> <mi>\u03b8</mi> <mo stretchy=\"false\">^</mo> </mover> </mrow> <mrow> <mi>n</mi> </mrow> </msub> <mo>\u2212</mo> <mi>\u03b8</mi> </mrow> <mo>)</mo> </mrow> </mrow> </mstyle> </math> , can be estimated as  <math id=\"inf27\"> <mstyle displaystyle=\"true\" scriptlevel=\"0\"> <mrow> <msub> <mrow> <mover> <mi>b</mi> <mo stretchy=\"false\">^</mo> </mover> </mrow> <mrow> <mi>n</mi> </mrow> </msub> <mo>=</mo> <msup> <mi>E</mi> <mrow> <mo>\u2217</mo> </mrow> </msup> <mrow> <mo>(</mo> <mrow> <msubsup> <mrow> <mover> <mi>\u03b8</mi> <mo stretchy=\"false\">^</mo> </mover> </mrow> <mrow> <mi>m</mi> </mrow> <mrow> <mo>\u2217</mo> </mrow> </msubsup> <mo>\u2212</mo> <msub> <mrow> <mover> <mi>\u03b8</mi> <mo stretchy=\"false\">^</mo> </mover> </mrow> <mrow> <mi>n</mi> </mrow> </msub> </mrow> <mo>)</mo> </mrow> </mrow> </mstyle> </math> , where  <math id=\"inf28\"> <msup> <mrow> <mi>E</mi> </mrow> <mrow/> </msup> </math>  is an unweighted average across the <i>R</i> samples. Similarly, the variance of  <math id=\"inf29\"> <msub> <mrow> <mover accent=\"true\"> <mrow> <mi>\u03b8</mi> </mrow> <mo>^</mo> </mover> </mrow> <mrow> <mi>n</mi> </mrow> </msub> </math>  is estimated as  <math id=\"inf30\"> <mstyle displaystyle=\"true\" scriptlevel=\"0\"> <mrow> <msup> <mi>E</mi> <mrow> <mo>\u2217</mo> </mrow> </msup> <msup> <mrow> <mo>(</mo> <mrow> <msubsup> <mrow> <mover> <mi>\u03b8</mi> <mo stretchy=\"false\">^</mo> </mover> </mrow> <mrow> <mi>m</mi> </mrow> <mrow/> </msubsup> <mo>\u2212</mo> <msup> <mi>E</mi> <mrow> <mo>\u2217</mo> </mrow> </msup> <msubsup> <mrow> <mover> <mi>\u03b8</mi> <mo stretchy=\"false\">^</mo> </mover> </mrow> <mrow> <mi>m</mi> </mrow> <mrow/> </msubsup> </mrow> <mo>)</mo> </mrow> <mrow> <mn>2</mn> </mrow> </msup> </mrow> </mstyle> </math> , and the calculation of the standard error of  <math id=\"inf31\"> <mstyle displaystyle=\"true\" scriptlevel=\"0\"> <mrow> <msubsup> <mrow> <mover> <mi>\u03b8</mi> <mo stretchy=\"false\">^</mo> </mover> </mrow> <mrow> <mi>m</mi> </mrow> <mrow/> </msubsup> </mrow> </mstyle> </math>  follows naturally.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "As with the bias and variance, we can estimate the cumulative distribution function of the estimated parameter  <math id=\"inf32\"> <mstyle displaystyle=\"true\" scriptlevel=\"0\"> <mrow> <mi>P</mi> <mi>r</mi> <mi>o</mi> <mi>b</mi> <mrow> <mo>(</mo> <mrow> <msub> <mrow> <mover> <mi>\u03b8</mi> <mo stretchy=\"false\">^</mo> </mover> </mrow> <mrow> <mi>n</mi> </mrow> </msub> <mo>\u2212</mo> <mi>\u03b8</mi> <mo>&lt;</mo> <mi>t</mi> </mrow> <mo>)</mo> </mrow> </mrow> </mstyle> </math>  with its analogue based on the bootstrapped sample  <math id=\"inf33\"> <mstyle displaystyle=\"true\" scriptlevel=\"0\"> <mrow> <mi>P</mi> <mi>r</mi> <mi>o</mi> <mi>b</mi> <mrow> <mo>(</mo> <mrow> <msubsup> <mrow> <mover> <mi>\u03b8</mi> <mo stretchy=\"false\">^</mo> </mover> </mrow> <mrow> <mi>m</mi> </mrow> <mrow> <mo>\u2217</mo> </mrow> </msubsup> <mo>\u2212</mo> <msub> <mrow> <mover> <mi>\u03b8</mi> <mo stretchy=\"false\">^</mo> </mover> </mrow> <mrow> <mi>n</mi> </mrow> </msub> <mo>&lt;</mo> <mi>t</mi> </mrow> <mo>)</mo> </mrow> </mrow> </mstyle> </math> . A na\u00efve estimate of a confidence interval would be based on  <math id=\"inf34\"> <mstyle displaystyle=\"true\" scriptlevel=\"0\"> <mrow> <msup> <mi>E</mi> <mrow> <mo>\u2217</mo> </mrow> </msup> <mi>I</mi> <mrow> <mo>(</mo> <mrow> <msubsup> <mrow> <mover> <mi>\u03b8</mi> <mo stretchy=\"false\">^</mo> </mover> </mrow> <mrow> <mi>m</mi> </mrow> <mrow> <mo>\u2217</mo> </mrow> </msubsup> <mo>\u2212</mo> <msub> <mrow> <mover> <mi>\u03b8</mi> <mo stretchy=\"false\">^</mo> </mover> </mrow> <mrow> <mi>n</mi> </mrow> </msub> <mo>\u2264</mo> <mi>t</mi> </mrow> <mo>)</mo> </mrow> </mrow> </mstyle> </math> , where  <math id=\"inf35\"> <mi>I</mi> </math>  is an indicator function equal to 1 if the condition holds and 0 otherwise. It has long been recognized that the bootstrap can also be used to estimate a bias-corrected confidence interval as  <math id=\"inf36\"> <mstyle displaystyle=\"true\" scriptlevel=\"0\"> <mrow> <msup> <mi>E</mi> <mrow/> </msup> <mi>I</mi> <mrow> <mo>(</mo> <mrow> <mn>2</mn> <msub> <mrow> <mover> <mi>\u03b8</mi> <mo stretchy=\"false\">^</mo> </mover> </mrow> <mrow> <mi>n</mi> </mrow> </msub> <mo>\u2212</mo> <msubsup> <mrow> <mover> <mi>\u03b8</mi> <mo stretchy=\"false\">^</mo> </mover> </mrow> <mrow> <mi>m</mi> </mrow> <mrow/> </msubsup> <mo>\u2264</mo> <mi>t</mi> </mrow> <mo>)</mo> </mrow> </mrow> </mstyle> </math> .<sup><a href=\"#fn7\">7</a></sup>",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Our goal is to estimate confidence intervals for the point estimates  <math id=\"inf37\"> <mstyle displaystyle=\"true\" scriptlevel=\"0\"> <mrow> <msub> <mrow> <mover> <mi>\u03b8</mi> <mo stretchy=\"false\">^</mo> </mover> </mrow> <mrow> <mi>n</mi> </mrow> </msub> </mrow> </mstyle> </math> , such as average tax changes and percent change in after-tax income, of the proposed changes in the individual income tax from the TPC\u2019s microsimulation model. To obtain confidence intervals of these point estimates, we bootstrap Tax Model runs in two steps: (i) producing a series of alternative analytical weights of tax units in the Tax Model and (ii) calculating relevant bootstrapped statistics using these alternative weights.",
+                    "type": "paragraph"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "Similar to a standard bootstrap exercise, we want to draw observations with replacement from the original data set after tax liabilities have been calculated. The idea is that this set of alternative analytical weights can be used to infer the population characteristics of the original Tax Model sampled tax units. However, because the Tax Model observations carry different weights (and these observations represent one hundred eighty-four million US tax units in 2019), the process is not straightforward. Here we rely on the Stata bsweight command formulated in <a href=\"#bib9\">Kolenikov (2010)</a> to produce a series of replicated observations\u2019 weights. In particular, each set of alternative analytical weights is constructed such that observations are sampled with replacement, for each ECI group <i>h</i>, set <i>m<sub>h</sub></i>=<i>n<sub>h</sub></i>-1, and the observations weights <i>w<sub>i</sub></i> within each ECI group are scaled such that totals by ECI group match the totals derived using the original weights.<sup><a href=\"#fn8\">8</a></sup>",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "In the current exercise, we produce 201 sets of alternative analytical weights.<sup><a href=\"#fn9\">9</a></sup> Producing a large set of alternative analytical weights is time consuming although they only need to be produced once and can be used to compute confidence intervals for point estimates of any policy proposal. In addition, we can use a smaller number of these alternative analytical weights to speed up the calculations of bootstrapped statistics (more on this below).",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s4-1",
+                    "title": "4.1. Producing a series of alternative analytical weights",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "In this exercise, we calculate confidence intervals using both the normal approximation and the bootstrapping approach. A complication occurs with the normal approximation because there are several formulas for calculating standard errors of weighted averages. We address this by following <a href=\"#bib6\">Gatz and Smith (1995)</a> and use the standard errors calculated from our bootstrap procedure. The normal approximation of the 95 percent confidence interval is thus calculated as the average change in taxes, plus or minus 1.96 times the bootstrapped standard error (BSE). Gatz and Smith also describe several formulas for approximating normal standard errors of weighted averages and for comparison we use one of their formulas GSSE =  <math id=\"inf38\"> <mstyle displaystyle=\"true\" scriptlevel=\"0\"> <mrow> <msqrt> <mfrac> <mn>1</mn> <mi>n</mi> </mfrac> <mrow> <mo>(</mo> <mfrac> <mn>1</mn> <msub> <mi>w</mi> <mrow> <mi>i</mi> </mrow> </msub> </mfrac> <mo>)</mo> </mrow> <mo>\u2211</mo> <msub> <mi>w</mi> <mrow> <mi>i</mi> </mrow> </msub> <msup> <mrow> <mo>(</mo> <mrow> <msub> <mi>x</mi> <mrow> <mi>i</mi> </mrow> </msub> <mo>\u2212</mo> <mrow> <mover> <mi>x</mi> <mo stretchy=\"false\">\u00af</mo> </mover> </mrow> </mrow> <mo>)</mo> </mrow> <mrow> <mn>2</mn> </mrow> </msup> </msqrt> </mrow> </mstyle> </math> . We then calculate confidence intervals as the average change in taxes plus or minus 1.96 times the GSSE.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "To calculate the bootstrap standard errors and confidence intervals we rely on built-in bias-corrections (BC) available in the Stata bootstrap command bs4rw.<sup><a href=\"#fn10\">10</a></sup> In particular, we use bs4rw with the summarize command to obtain bootstrapped statistics for totals and averages and with the ratio command to obtain bootstrapped statistics for percentages.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "In practice, the program runs progressively more slowly as the set of alternative analytical weights become larger. In this exercise, we use a set of 201 alternative weights, which allow us to theoretically rank the bootstrapped estimates with an interval of 0.5% from 0<sup>th</sup> to 100<sup>th</sup> percentiles.<sup><a href=\"#fn11\">11</a></sup>",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "As a caution, it is a good practice to inspect the derived bootstrapped statistics in detail. For example, when a policy proposal only affects a few tax units in an income group, many of these 201 simulations may not pick up any tax units affected by the policy and as a result the bootstrapped statistics will be calculated based on only the subset of simulations where affected tax units were drawn. In such case, it may be useful to focus as well on bootstrapped statistics of the fraction of tax units affected by the proposal and the average tax changes per tax units affected.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s4-2",
+                    "title": "4.2. Calculating relevant statistics",
+                    "type": "section"
+                }
+            ],
+            "id": "s4",
+            "title": "4. Method",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "We apply the bootstrapping methodology described in the previous section to examine TPC\u2019s microsimulation distributional estimates of five alternative tax policy proposals if implemented in 2019. These proposals are (i) a partial restoration of the personal exemption eliminated by TCJA, (ii) an increase in the standard deduction, (iii) an increase in the top statutory income tax rate, (iv) replacing the current-law farm loss deduction with a revenue-neutral refundable tax credit based on the total farm loss, and (v) a rescission of the tax-free treatment of interest accruing from certain government bonds. We chose these policy proposals because point estimates should be relatively more uncertain when proposals affect fewer, more diverse tax units. In addition, to allow for confidence intervals to vary with the point estimates, we also varied the relevant parameters of the first three proposals to three levels: high, central and low scenarios. In our discussion, we only present a subset of the estimates for tractability. The complete estimates are available in an online appendix.<sup><a href=\"#fn12\">12</a></sup>",
+                    "type": "paragraph"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "Before 2018, tax units could claim a personal exemption for every adult and qualified dependent. In 2017 the exemption amount was $4,050. For many low-income households, this exemption eliminated their tax liability.<sup><a href=\"#fn13\">13</a></sup> The exemption phased out at high levels of adjusted gross income (AGI), with the 2017 phase-out beginning at an AGI of $261,500 for singles, $287,650 for heads of household, $313,800 for married couples filing a joint return and $156,900 for married couples filing separately. Personal exemptions were completely phased out when AGI reached $384,000 for singles, $410,150 for heads of households, $436,300 for married couples and $218,150 for married couples filing separately. TCJA eliminated the personal exemption and increased the standard deduction and the child tax credit between 2018 and 2025.<sup><a href=\"#fn14\">14</a></sup>",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "We consider a scenario that would restore the personal exemption (and phase-out) partially in 2019 to $4,000, and estimate how taxes would change. We then repeat this exercise with scenarios that would restore the personal exemption to $2,000 or $1,000. In each scenario, each tax unit\u2019s tax change under the proposal is calculated as the difference between the tax unit\u2019s tax liability with the exemption restored and its tax liability under current law. We then apply the bootstrapping procedure and calculate estimates, such as the average change in income for tax units in a given range of income, their standard errors, and confidence intervals.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Recall that we examine uncertainties around a point estimate due to sampling variation. For this proposal, sampling variation come from three sources: (i) variation in the number of exemptions across tax units, (ii) variation in tax units\u2019 tax rates and (iii) variation in the amount of the exemption each tax unit can claim. For (ii), a tax reduction for a full $4,000 per person exemption reduces tax by only $480 for a single tax unit with no dependents in the 12 percent tax bracket but $1,280 for a similar tax unit in the 32 percent bracket. For (iii), low income tax units whose taxable income is less than the available exemptions under the proposal ($4,000 multiplied by the number of personal exemptions) will only be able to claim an exemption amount up to their taxable income while high income tax units may face a phase-out and can only use part or none of the available exemptions.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "To conserve space, we present our results for a small number of ECI groups. Here we use three: a low-income group of $75,000 to $100,000; a middle-income group of $200,000 to $500,000; and a high-income group of more than $1 million. The results for all income groups are available in the online appendix. Because ECI accounts for components of income that are not part of AGI and tax proposals generally depend on AGI, a proposal may affect tax units in an ECI group that at first glance seems counterintuitive. For example, a small number of tax units with ECIs in excess of $1 million have AGI below the phase-out limits of the personal exemption and, as a result, may receive a tax cut under this proposal.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The point estimates in the last column of <a href=\"#table2\">Table 2</a> indicate that restoring the personal exemption at $4,000 would reduce the average tax burden of tax units in the low-income group by $1,023, in the middle-income group by $2,459, and in the high-income group by $8.<sup><a href=\"#fn15\">15</a></sup> The middle-income group get the largest average tax cut. The corresponding width of each point estimate\u2019s confidence interval is $23, $43, and $10, respectively.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "footnotes": [
+                                        {
+                                            "text": [
+                                                {
+                                                    "text": "Source: Urban-Brookings Tax Policy Center Microsimulation Model (version 0319-1).",
+                                                    "type": "paragraph"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "text": [
+                                                {
+                                                    "text": "Notes: Proposal would partially restore the personal exemption of $4,000 in 2019.",
+                                                    "type": "paragraph"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "text": [
+                                                {
+                                                    "text": "Numbers in parentheses are bootstrapped standard errors (BSE). Numbers in brackets are confidence intervals.",
+                                                    "type": "paragraph"
+                                                }
+                                            ]
+                                        }
+                                    ],
+                                    "id": "table2",
+                                    "label": "Table 2",
+                                    "tables": [
+                                        "<table>\n<thead>\n<tr>\n<th align=\"left\" colspan=\"2\" rowspan=\"2\" valign=\"bottom\">Expanded Cash Income Level (thousands of 2019 dollars)</th>\n<th align=\"left\" colspan=\"2\">Tax Units with Tax Cut</th>\n<th align=\"left\" rowspan=\"2\" valign=\"bottom\">Percent Change in After-Tax Income</th>\n<th align=\"left\" rowspan=\"2\" valign=\"bottom\">Average Federal Tax Change ($)</th>\n</tr>\n<tr>\n<th align=\"left\">Percent of Tax Units</th>\n<th align=\"left\">Average Tax Change ($)</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td align=\"left\" rowspan=\"2\" valign=\"bottom\">75\u2013100</td>\n<td align=\"left\">\u2003</td>\n<td align=\"left\">94.239 (0.314)</td>\n<td align=\"left\">\u22121,085.1 (4.5)</td>\n<td align=\"left\">1.370 (0.008)</td>\n<td align=\"left\">\u22121,022.6 (5.7)</td>\n</tr>\n<tr>\n<td align=\"left\">\u2003</td>\n<td align=\"left\">[93.599, 94.843]</td>\n<td align=\"left\">[\u22121,094.0, \u22121,076.8]</td>\n<td align=\"left\">[1.351, 1.383]</td>\n<td align=\"left\">[\u22121,032.4, \u22121,009.9]</td>\n</tr>\n<tr>\n<td align=\"left\" rowspan=\"2\" valign=\"bottom\">200\u2013500</td>\n<td align=\"left\">\u2003</td>\n<td align=\"left\">98.470 (0.080)</td>\n<td align=\"left\">\u22122,496.9 (10.7)</td>\n<td align=\"left\">1.077 (0.006)</td>\n<td align=\"left\">\u22122,458.6 (10.9)</td>\n</tr>\n<tr>\n<td align=\"left\">\u2003</td>\n<td align=\"left\">[98.296, 98.615]</td>\n<td align=\"left\">[\u22122,515.1, \u22122,475.3]</td>\n<td align=\"left\">[1.065, 1.088]</td>\n<td align=\"left\">[\u22122,479.3, \u22122,435.9]</td>\n</tr>\n<tr>\n<td align=\"left\" rowspan=\"2\" valign=\"bottom\">More than 1,000</td>\n<td align=\"left\">\u2003</td>\n<td align=\"left\">0.620 (0.176)</td>\n<td align=\"left\">\u22121,214.3 (242.8)</td>\n<td align=\"left\">0.000 (0.000)</td>\n<td align=\"left\">\u22127.5 (2.6)</td>\n</tr>\n<tr>\n<td align=\"left\">\u2003</td>\n<td align=\"left\">[0.334, 1.054]</td>\n<td align=\"left\">[\u22121,680.9, \u2212789.1]</td>\n<td align=\"left\">[0.000, 0.001]</td>\n<td align=\"left\">[\u221213.2, \u22122.9]</td>\n</tr>\n<tr>\n<td align=\"left\" rowspan=\"2\">All</td>\n<td align=\"left\">\u2003</td>\n<td align=\"left\">62.332 (0.131)</td>\n<td align=\"left\">\u22121,216.4 (2.8)</td>\n<td align=\"left\">0.933 (0.004)</td>\n<td align=\"left\">\u2212758.2 (1.7)</td>\n</tr>\n<tr>\n<td align=\"left\">\u2003</td>\n<td align=\"left\">[62.033, 62.542]</td>\n<td align=\"left\">[\u22121,220.9, \u22121,210.7]</td>\n<td align=\"left\">[0.927, 0.943]</td>\n<td align=\"left\">[\u2212761.6, \u2212754.6]</td>\n</tr>\n<tr>\n<td align=\"left\" colspan=\"6\">Addendum: Confidence Intervals Calculated Using Bootstrap and Using Normal Approximation of BSE</td>\n</tr>\n<tr>\n<td align=\"left\" rowspan=\"2\" valign=\"bottom\">75\u2013100</td>\n<td align=\"left\">Bootstrap</td>\n<td align=\"left\">[93.599, 94.843]</td>\n<td align=\"left\">[\u22121,094.0, \u22121,076.8]</td>\n<td align=\"left\">[1.351, 1.383]</td>\n<td align=\"left\">[\u22121,032.4, \u22121,009.9]</td>\n</tr>\n<tr>\n<td align=\"left\">Normal with BSE</td>\n<td align=\"left\">[93.624, 94.854]</td>\n<td align=\"left\">[\u22121,093.9, \u22121,076.2]</td>\n<td align=\"left\">[1.354, 1.386]</td>\n<td align=\"left\">[\u22121,033.7, \u22121,011.4]</td>\n</tr>\n<tr>\n<td align=\"left\" rowspan=\"2\" valign=\"bottom\">200\u2013500</td>\n<td align=\"left\">Bootstrap</td>\n<td align=\"left\">[98.296, 98.615]</td>\n<td align=\"left\">[\u22122,515.1, \u22122,475.3]</td>\n<td align=\"left\">[1.065, 1.088]</td>\n<td align=\"left\">[\u22122,479.3, \u22122,435.9]</td>\n</tr>\n<tr>\n<td align=\"left\">Normal with BSE</td>\n<td align=\"left\">[98.313, 98.628]</td>\n<td align=\"left\">[\u22122,517.9, \u22122,475.9]</td>\n<td align=\"left\">[1.065, 1.089]</td>\n<td align=\"left\">[\u22122,479.9, \u22122,437.4]</td>\n</tr>\n<tr>\n<td align=\"left\" rowspan=\"2\" valign=\"bottom\">More than 1,000</td>\n<td align=\"left\">Bootstrap</td>\n<td align=\"left\">[0.334, 1.054]</td>\n<td align=\"left\">[\u22121,680.9, \u2212789.1]</td>\n<td align=\"left\">[0.000, 0.001]</td>\n<td align=\"left\">[\u221213.2, \u22122.9]</td>\n</tr>\n<tr>\n<td align=\"left\">Normal with BSE</td>\n<td align=\"left\">[0.275, 0.966]</td>\n<td align=\"left\">[\u22121,690.2, \u2212738.4]</td>\n<td align=\"left\">[0.000, 0.001]</td>\n<td align=\"left\">[\u221212.6, \u22122.4]</td>\n</tr>\n<tr>\n<td align=\"left\" rowspan=\"2\">All</td>\n<td align=\"left\">Bootstrap</td>\n<td align=\"left\">[62.033, 62.542]</td>\n<td align=\"left\">[\u22121,220.9, \u22121,210.7]</td>\n<td align=\"left\">[0.927, 0.943]</td>\n<td align=\"left\">[\u2212761.6, \u2212754.6]</td>\n</tr>\n<tr>\n<td align=\"left\">Normal with BSE</td>\n<td align=\"left\">[62.075, 62.589]</td>\n<td align=\"left\">[\u22121,221.8, \u22121,210.9]</td>\n<td align=\"left\">[0.926, 0.941]</td>\n<td align=\"left\">[\u2212761.6, \u2212754.8]</td>\n</tr>\n</tbody>\n</table>"
+                                    ],
+                                    "title": "Partially Restore the Personal Exemption to $4,000, Selected Income Groups, 2019",
+                                    "type": "table"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "text": "But the first column of <a href=\"#table2\">Table 2</a> shows that only a very small number of tax units in the high-income group (0.6 percent) receives a tax cut. High-income tax units whose AGI are larger than their phase-out limits do not benefit from the proposal because their available personal exemptions are completely phased out.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "As the second column of <a href=\"#table2\">Table 2</a> shows, the average tax cut among tax units receiving a tax cut under the proposal are $1,085, $2,497 and $1,214 for the low, middle, and high-income group, respectively. The average tax cut for the middle-income group is more than twice the size of the cut for the low-income group mainly because the middle-income group faces a higher income tax rate and a greater share of tax units in the middle-income group file as married-filing-jointly, allowing them one more exemption than those filing as single or as head of household. In contrast, the smaller benefit for high-income tax units -- even with the large average tax rate -- occurs because some of them are in the phase-out range. As a result, their tax cut is only half of the middle-income group\u2019s average based on the point estimates.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Below the point estimates and standard errors in <a href=\"#table2\">Table 2</a> are the confidence intervals around these point estimates of average tax changes among tax units receiving a tax cut. The confidence interval around the low-income group\u2019s tax cut of $1,085 is [$1,077, $1,094], the confidence interval around the middle-income group\u2019s tax cut of $2,497 is [$2,475, $2,515], while the confidence interval around the high-income group\u2019s tax cut of $1,214 is [$789, $1,681]. Note that the point estimate for the low-income group is within the confidence interval of the high-income group. That is, the estimated effects of the high and low groups are not statistically different. In the addendum, we compare confidence intervals using a normal approximation with BSE to the confidence intervals created with the bootstrap. Overall, the normal approximation works well, although its confidence interval of the high-income group is not as wide as the bootstrap interval.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The high-income tax units\u2019 point estimate is much less precise because the proposal only affects a very small number of sample observations in this income group and the change among the few observations is large. <a href=\"#table3\">Table 3</a> shows that 40,100 tax unit observations represent 836,500 tax units in the top-income group. However, only 71 observations represent 5,190 tax units that receive a tax cut under the $4,000 personal exemption proposal. In other words, the proposal affects 0.62% of tax units in the high-income population but only 0.18% of those in the sample. Tax units\u2019 tax cuts vary from $15 to $3,840 so the weighted average tax cuts from different mixes of observations can be quite different. In contrast, <a href=\"#table3\">Table 3</a> shows that out of 35,400 tax unit observations representing 14.0 million tax units in the middle-income group, 32,220 observations representing 13.8 million tax units would receive a tax cut under the $4,000 personal exemption proposal. Their tax cuts vary from $14 to $11,000 but because most of the sampled tax units in the middle-income group receive a tax cut, the weighted average tax cuts from different mixes of observations should be quite similar.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "footnotes": [
+                                        {
+                                            "text": [
+                                                {
+                                                    "text": "Source: Urban-Brookings Tax Policy Center Microsimulation Model (version 0319-1).",
+                                                    "type": "paragraph"
+                                                }
+                                            ]
+                                        }
+                                    ],
+                                    "id": "table3",
+                                    "label": "Table 3",
+                                    "tables": [
+                                        "<table>\n<thead>\n<tr>\n<th align=\"left\" rowspan=\"3\">Expanded Cash Income Level (thousands of 2019 dollars)</th>\n<th align=\"left\" colspan=\"2\">All Tax Units</th>\n<th align=\"left\" colspan=\"4\">Tax Units with Tax Change</th>\n<th align=\"left\" colspan=\"2\">Tax Change ($)</th>\n</tr>\n<tr>\n<th align=\"left\" rowspan=\"2\" valign=\"bottom\">Population Number</th>\n<th align=\"left\" rowspan=\"2\" valign=\"bottom\">Sample Number</th>\n<th align=\"left\" colspan=\"2\">Population</th>\n<th align=\"left\" colspan=\"2\">Sample</th>\n<th align=\"left\" rowspan=\"2\" valign=\"bottom\">Minimum</th>\n<th align=\"left\" rowspan=\"2\" valign=\"bottom\">Maximum</th>\n</tr>\n<tr>\n<th align=\"left\">Number</th>\n<th align=\"left\">Share within Income Group</th>\n<th align=\"left\">Number</th>\n<th align=\"left\">Share within Income Group</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td align=\"left\">200\u2013500</td>\n<td align=\"left\">14,026,200</td>\n<td align=\"left\">35,400</td>\n<td align=\"left\">13,815,800</td>\n<td align=\"left\">98.50%</td>\n<td align=\"left\">32,220</td>\n<td align=\"left\">91.00%</td>\n<td align=\"left\">14</td>\n<td align=\"left\">11,000</td>\n</tr>\n<tr>\n<td align=\"left\">More than 1,000</td>\n<td align=\"left\">836,500</td>\n<td align=\"left\">40,100</td>\n<td align=\"left\">5,190</td>\n<td align=\"left\">0.62%</td>\n<td align=\"left\">71</td>\n<td align=\"left\">0.18%</td>\n<td align=\"left\">15</td>\n<td align=\"left\">3,840</td>\n</tr>\n</tbody>\n</table>"
+                                    ],
+                                    "title": "Comparison of Population and Sample Size Affected by Partially Restoring the Personal Exemption to $4,000, Selected Income Groups, 2019",
+                                    "type": "table"
+                                }
+                            ],
+                            "type": "figure"
+                        }
+                    ],
+                    "id": "s5-1",
+                    "title": "5.1. Partially restore the personal exemption",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "We next consider a more complicated change in tax liability. When filing tax returns, tax units can reduce their taxable income using either itemized deductions or the standard deduction. Because tax units with the same taxable income and filing status may have different amounts of expenses eligible for itemized deductions, some will choose to itemize and others will not.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "In 2019, the current law standard deduction amounts are $12,200 for single filers and married couples filing separately, $18,350 for heads of household and $24,400 for married couples filing jointly. We consider scenarios that would increase the standard deduction amounts by $4,000, $2,000 and $1,000.<sup><a href=\"#fn16\">16</a></sup> In each scenario we compare the itemized deductions to the standard deduction for each tax unit and select the deduction that results in the lowest tax liability. We describe the effects on tax units with incomes between $50,000 and $75,000 (low-income group), between $200,000 and $500,000 (middle-income group), and greater than $1 million (high-income group).",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Sampling variation in estimating the effects of this change comes from three sources: (i) variation in the amount of the increased standard deduction that can be used (ii) variation in the amount of itemized deductions and, (iii) variation in the tax rates. The first occurs because married couples filing jointly receive twice the amount of single filers but they may not be able to deduct the full additional amount available if the increase makes the total deduction greater than their taxable income. The second comes from variation in the amount of expenses that can be deducted. Tax units who were originally claiming the standard deduction before the increase will continue to do so. Tax units with itemized deductions greater than the increased standard deduction will still itemize. Those with itemized deductions greater than the old level of standard deductions but less than the new level will stop itemizing.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Because there are more potential sources of variation from raising the standard deduction than from the partial restoration of the personal exemption, this proposal may generate more variation in average benefits for each income group, and possibly wider confidence intervals. In particular, there may be more variation among tax units with similar incomes.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The variation across income groups can be seen in <a href=\"#table4\">Table 4</a>. Under the high scenario in which the standard deduction is increased by $4,000, tax units in the low-income group see an average tax cut of $501, those in the middle-income group see a tax cut of a $1,286, and those high-income group see an average tax cut of $491.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "footnotes": [
+                                        {
+                                            "text": [
+                                                {
+                                                    "text": "Source: Urban-Brookings Tax Policy Center Microsimulation Model (version 0319-1).",
+                                                    "type": "paragraph"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "text": [
+                                                {
+                                                    "text": "Notes: Proposal would increase the standard deduction by $4,000 for single filers and married couples filing separately, $8,000 for married couples filing jointly, and $6,000 for heads of household in 2019.",
+                                                    "type": "paragraph"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "text": [
+                                                {
+                                                    "text": "Numbers in parentheses are bootstrapped standard errors (BSE). Numbers in brackets are confidence intervals.",
+                                                    "type": "paragraph"
+                                                }
+                                            ]
+                                        }
+                                    ],
+                                    "id": "table4",
+                                    "label": "Table 4",
+                                    "tables": [
+                                        "<table>\n<thead>\n<tr>\n<th align=\"left\" colspan=\"2\" rowspan=\"2\" valign=\"bottom\">Expanded Cash Income Level (thousands of 2019 dollars)</th>\n<th align=\"left\" colspan=\"2\">Tax Units with Tax Cut</th>\n<th align=\"left\" rowspan=\"2\" valign=\"bottom\">Percent Change in After-Tax Income</th>\n<th align=\"left\" rowspan=\"2\" valign=\"bottom\">Average Federal Tax Change ($)</th>\n</tr>\n<tr>\n<th align=\"left\">Percent of Tax Units</th>\n<th align=\"left\">Average Tax Change ($)</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td align=\"left\" rowspan=\"2\" valign=\"bottom\">50\u201375</td>\n<td align=\"left\">\u2003</td>\n<td align=\"left\">79.993 (0.399)</td>\n<td align=\"left\">\u2212625.8 (2.4)</td>\n<td align=\"left\">0.921 (0.006)</td>\n<td align=\"left\">\u2212500.6 (2.9)</td>\n</tr>\n<tr>\n<td align=\"left\">\u2003</td>\n<td align=\"left\">[79.140, 80.676]</td>\n<td align=\"left\">[\u2212629.7, \u2212620.9]</td>\n<td align=\"left\">[0.909, 0.931]</td>\n<td align=\"left\">[\u2212505.9, \u2212494.4]</td>\n</tr>\n<tr>\n<td align=\"left\" rowspan=\"2\" valign=\"bottom\">200\u2013500</td>\n<td align=\"left\">\u2003</td>\n<td align=\"left\">79.289 (0.329)</td>\n<td align=\"left\">\u22121,621.6 (5.3)</td>\n<td align=\"left\">0.563 (0.003)</td>\n<td align=\"left\">\u22121,285.7 (7.0)</td>\n</tr>\n<tr>\n<td align=\"left\">\u2003</td>\n<td align=\"left\">[78.622, 79.919]</td>\n<td align=\"left\">[\u22121,631.7, \u22121,612.3]</td>\n<td align=\"left\">[0.556, 0.569]</td>\n<td align=\"left\">[\u22121,296.7, \u22121,268.5]</td>\n</tr>\n<tr>\n<td align=\"left\" rowspan=\"2\" valign=\"bottom\">More than 1,000</td>\n<td align=\"left\">\u2003</td>\n<td align=\"left\">23.048 (0.548)</td>\n<td align=\"left\">\u22122,130.7 (26.4)</td>\n<td align=\"left\">0.023 (0.001)</td>\n<td align=\"left\">\u2212491.1 (13.4)</td>\n</tr>\n<tr>\n<td align=\"left\">\u2003</td>\n<td align=\"left\">[22.019, 24.250]</td>\n<td align=\"left\">[\u22122,180.3, \u22122,077.4]</td>\n<td align=\"left\">[0.021, 0.025]</td>\n<td align=\"left\">[\u2212521.0, \u2212466.6]</td>\n</tr>\n<tr>\n<td align=\"left\" rowspan=\"2\">All</td>\n<td align=\"left\">\u2003</td>\n<td align=\"left\">58.636 (0.141)</td>\n<td align=\"left\">\u2212889.3 (1.8)</td>\n<td align=\"left\">0.642 (0.003)</td>\n<td align=\"left\">\u2212521.4 (1.2)</td>\n</tr>\n<tr>\n<td align=\"left\">\u2003</td>\n<td align=\"left\">[58.391, 58.910]</td>\n<td align=\"left\">[\u2212893.3, \u2212886.0]</td>\n<td align=\"left\">[0.638, 0.648]</td>\n<td align=\"left\">[\u2212523.8, \u2212519.0]</td>\n</tr>\n<tr>\n<td align=\"left\" colspan=\"6\">Addendum: Confidence Intervals Calculated Using Bootstrap and Using Normal Approximation of BSE</td>\n</tr>\n<tr>\n<td align=\"left\" rowspan=\"2\" valign=\"bottom\">50\u201375</td>\n<td align=\"left\">Bootstrap</td>\n<td align=\"left\">[79.140, 80.676]</td>\n<td align=\"left\">[\u2212629.7, \u2212620.9]</td>\n<td align=\"left\">[0.909, 0.931]</td>\n<td align=\"left\">[\u2212505.9, \u2212494.4]</td>\n</tr>\n<tr>\n<td align=\"left\">Normal with BSE</td>\n<td align=\"left\">[79.211, 80.775]</td>\n<td align=\"left\">[\u2212630.4, \u2212621.2]</td>\n<td align=\"left\">[0.910, 0.932]</td>\n<td align=\"left\">[\u2212506.3, \u2212494.9]</td>\n</tr>\n<tr>\n<td align=\"left\" rowspan=\"2\" valign=\"bottom\">200\u2013500</td>\n<td align=\"left\">Bootstrap</td>\n<td align=\"left\">[78.622, 79.919]</td>\n<td align=\"left\">[\u22121,631.7, \u22121,612.3]</td>\n<td align=\"left\">[0.556, 0.569]</td>\n<td align=\"left\">[\u22121,296.7, \u22121,268.5]</td>\n</tr>\n<tr>\n<td align=\"left\">Normal with BSE</td>\n<td align=\"left\">[78.645, 79.934]</td>\n<td align=\"left\">[\u22121,632.0, \u22121,611.1]</td>\n<td align=\"left\">[0.556, 0.570]</td>\n<td align=\"left\">[\u22121,299.5, \u22121,271.9]</td>\n</tr>\n<tr>\n<td align=\"left\" rowspan=\"2\" valign=\"bottom\">More than 1,000</td>\n<td align=\"left\">Bootstrap</td>\n<td align=\"left\">[22.019, 24.250]</td>\n<td align=\"left\">[\u22122,180.3, \u22122,077.4]</td>\n<td align=\"left\">[0.021, 0.025]</td>\n<td align=\"left\">[\u2212521.0, \u2212466.6]</td>\n</tr>\n<tr>\n<td align=\"left\">Normal with BSE</td>\n<td align=\"left\">[21.974, 24.122]</td>\n<td align=\"left\">[\u22122,182.5, \u22122,079.0]</td>\n<td align=\"left\">[0.021, 0.024]</td>\n<td align=\"left\">[\u2212517.3, \u2212464.9]</td>\n</tr>\n<tr>\n<td align=\"left\" rowspan=\"2\">All</td>\n<td align=\"left\">Bootstrap</td>\n<td align=\"left\">[58.391, 58.910]</td>\n<td align=\"left\">[\u2212893.3, \u2212886.0]</td>\n<td align=\"left\">[0.638, 0.648]</td>\n<td align=\"left\">[\u2212523.8, \u2212519.0]</td>\n</tr>\n<tr>\n<td align=\"left\">Normal with BSE</td>\n<td align=\"left\">[58.361, 58.912]</td>\n<td align=\"left\">[\u2212892.7, \u2212885.8]</td>\n<td align=\"left\">[0.637, 0.647]</td>\n<td align=\"left\">[\u2212523.8, \u2212519.1]</td>\n</tr>\n</tbody>\n</table>"
+                                    ],
+                                    "title": "Increase the Standard Deduction to $4,000, Selected Income Groups, 2019",
+                                    "type": "table"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "text": "This pattern reflects two offsetting factors. On the one hand, high-income tax units are more likely to have a sufficient amount of deductions to itemize even when the standard deduction is increased. As shown in the first column in <a href=\"#table4\">Table 4</a>, nearly 80 percent of tax units in low and middle-income groups benefit from a higher standard deduction, but only 23 percent for those tax units with incomes greater than $1 million benefit.<sup><a href=\"#fn17\">17</a></sup> On the other hand, among those units that take the standard deduction, higher-income tax units face higher marginal rates, so an increased deduction would reduce tax liabilities more for higher-income tax units than for lower-income tax units. This is shown in the second column in <a href=\"#table4\">Table 4</a>, in which those in the low-income group that use the standard deduction see an average tax reduction of $626 while those in the middle-income group see an average tax reduction of $1,622. Those in the high-income group see an average reduction of $2,131.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Unlike the personal exemption, a sizable share of each income group receives a benefit and the confidence intervals are small for all groups, although the confidence interval is larger in the high-income group, similar to the personal exemption proposal. The confidence interval for the average tax cut ranges from $494 to $506 for the low-income group, from $1,269 to $1,297 for the middle-income group and from $467 to $521 for the high-income group. Overall, the confidence intervals using normal approximation with BSE are similar to the bootstrapped confidence intervals.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s5-2",
+                    "title": "5.2. Increase the standard deduction",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "TCJA lowered the top rate from 39.6 to 37 percent starting in 2018. The top tax rate applies to taxable income over $500,000 for single filers and over $600,000 for married couples filing jointly. Tax brackets are adjusted annually for inflation. We consider an increase in the top rate to 41, 39 or 38 percent. Increasing the top rate to 41 percent would only affect about 0.6 percent of all tax units, almost exclusively those with expanded cash income of over $500,000. We therefore describe the effects on tax units with incomes between $200,000 and $500,000 (low-income group), between $500,000 and $1 million (middle-income group), and with incomes greater than $1 million (high-income group).",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Sampling variation comes from four sources: (i) from the mix of single tax filers and married couples filing jointly in an income group, (ii) from the share of tax units in each income group to which the top rate applies, (iii) from the amount of income above the threshold, which determines the amount of the tax increase, and (iv) from the small number of tax units that will be affected by the complex interaction of the regular income tax system and the Individual Alternative Minimum Tax (AMT).<sup><a href=\"#fn18\">18</a></sup>",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Successively higher income groups have greater shares of affected tax units and higher average changes among those affected, as shown in <a href=\"#table5\">Table 5</a>. Only 0.06 percent of tax units in the low-income group would see a tax increase while about 18 percent of the tax units in the middle-income group and more than three quarters of those in the high-income group would pay more taxes. The average increase among units with a tax change in the low-income group is just over $2,000. This increases to over $4,000 for the middle-income group and to more than $52,000 in the high-income group.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "footnotes": [
+                                        {
+                                            "text": [
+                                                {
+                                                    "text": "Source: Urban-Brookings Tax Policy Center Microsimulation Model (version 0319-1).",
+                                                    "type": "paragraph"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "text": [
+                                                {
+                                                    "text": "Notes: Proposal would increase the top income tax rate to 41 percent in 2019.",
+                                                    "type": "paragraph"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "text": [
+                                                {
+                                                    "text": "Numbers in parentheses are bootstrapped standard errors (BSE). Numbers in brackets are confidence intervals.",
+                                                    "type": "paragraph"
+                                                }
+                                            ]
+                                        }
+                                    ],
+                                    "id": "table5",
+                                    "label": "Table 5",
+                                    "tables": [
+                                        "<table>\n<thead>\n<tr>\n<th align=\"left\" colspan=\"2\" rowspan=\"2\" valign=\"bottom\">Expanded Cash Income Level (thousands of 2019 dollars)</th>\n<th align=\"left\" colspan=\"2\">Tax Units with Tax Increase</th>\n<th align=\"left\" rowspan=\"2\" valign=\"bottom\">Percent Change in After-Tax Income</th>\n<th align=\"left\" rowspan=\"2\" valign=\"bottom\">Average Federal Tax Change ($)</th>\n</tr>\n<tr>\n<th align=\"left\">Percent of Tax Units</th>\n<th align=\"left\">Average Tax Change ($)</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td align=\"left\" rowspan=\"2\" valign=\"bottom\">200\u2013500</td>\n<td align=\"left\">\u2003</td>\n<td align=\"left\">0.062 (0.014)</td>\n<td align=\"left\">2,044.6 (444.8)</td>\n<td align=\"left\">\u22120.001 (0.000)</td>\n<td align=\"left\">1.3 (0.3)</td>\n</tr>\n<tr>\n<td align=\"left\">\u2003</td>\n<td align=\"left\">[0.038, 0.091]</td>\n<td align=\"left\">[1,349.4, 2,956.2]</td>\n<td align=\"left\">[\u22120.001, 0.000]</td>\n<td align=\"left\">[0.8, 1.9]</td>\n</tr>\n<tr>\n<td align=\"left\" rowspan=\"2\" valign=\"bottom\">500\u20131,000</td>\n<td align=\"left\">\u2003</td>\n<td align=\"left\">18.225 (0.530)</td>\n<td align=\"left\">4,127.8 (111.2)</td>\n<td align=\"left\">\u22120.147 (0.006)</td>\n<td align=\"left\">752.3 (29.8)</td>\n</tr>\n<tr>\n<td align=\"left\">\u2003</td>\n<td align=\"left\">[17.236, 19.150]</td>\n<td align=\"left\">[3,909.4, 4,363.9]</td>\n<td align=\"left\">[\u22120.156, \u22120.135]</td>\n<td align=\"left\">[691.6, 800.8]</td>\n</tr>\n<tr>\n<td align=\"left\" rowspan=\"2\" valign=\"bottom\">More than 1,000</td>\n<td align=\"left\">\u2003</td>\n<td align=\"left\">77.965 (0.571)</td>\n<td align=\"left\">52,878.8 (1,006.8)</td>\n<td align=\"left\">\u22121.917 (0.049)</td>\n<td align=\"left\">41,226.8 (808.0)</td>\n</tr>\n<tr>\n<td align=\"left\">\u2003</td>\n<td align=\"left\">[76.552, 78.925]</td>\n<td align=\"left\">[51,126.9, 54,963.1]</td>\n<td align=\"left\">[\u22121.996, \u22121.827]</td>\n<td align=\"left\">[39,944.2, 43,177.1]</td>\n</tr>\n<tr>\n<td align=\"left\" rowspan=\"2\" valign=\"bottom\">All</td>\n<td align=\"left\">\u2003</td>\n<td align=\"left\">0.569 (0.006)</td>\n<td align=\"left\">36,127.7 (759.5)</td>\n<td align=\"left\">\u22120.253 (0.005)</td>\n<td align=\"left\">205.7 (3.9)</td>\n</tr>\n<tr>\n<td align=\"left\">\u2003</td>\n<td align=\"left\">[0.555, 0.581]</td>\n<td align=\"left\">[34,865.4, 37,852.8]</td>\n<td align=\"left\">[\u22120.264, \u22120.246]</td>\n<td align=\"left\">[199.5, 214.6]</td>\n</tr>\n<tr>\n<td align=\"left\" colspan=\"6\">Addendum: Confidence Intervals Calculated Using Bootstrap and Using Normal Approximation of BSE</td>\n</tr>\n<tr>\n<td align=\"left\" rowspan=\"2\" valign=\"bottom\">200\u2013500</td>\n<td align=\"left\">Bootstrap</td>\n<td align=\"left\">[0.038, 0.091]</td>\n<td align=\"left\">[1,349.4, 2,956.2]</td>\n<td align=\"left\">[\u22120.001, 0.000]</td>\n<td align=\"left\">[0.8, 1.9]</td>\n</tr>\n<tr>\n<td align=\"left\">Normal with BSE</td>\n<td align=\"left\">[0.034, 0.089]</td>\n<td align=\"left\">[1,172.8, 2,916.3]</td>\n<td align=\"left\">[\u22120.001, 0.000]</td>\n<td align=\"left\">[0.7, 1.9]</td>\n</tr>\n<tr>\n<td align=\"left\" rowspan=\"2\" valign=\"bottom\">500\u20131,000</td>\n<td align=\"left\">Bootstrap</td>\n<td align=\"left\">[17.236, 19.150]</td>\n<td align=\"left\">[3,909.4, 4,363.9]</td>\n<td align=\"left\">[\u22120.156, \u22120.135]</td>\n<td align=\"left\">[691.6, 800.8]</td>\n</tr>\n<tr>\n<td align=\"left\">Normal with BSE</td>\n<td align=\"left\">[17.186, 19.264]</td>\n<td align=\"left\">[3,909.9, 4,345.6]</td>\n<td align=\"left\">[\u22120.158, \u22120.135]</td>\n<td align=\"left\">[693.9, 810.6]</td>\n</tr>\n<tr>\n<td align=\"left\" rowspan=\"2\" valign=\"bottom\">More than 1,000</td>\n<td align=\"left\">Bootstrap</td>\n<td align=\"left\">[76.552, 78.925]</td>\n<td align=\"left\">[51,126.9, 54,963.1]</td>\n<td align=\"left\">[\u22121.996, \u22121.827]</td>\n<td align=\"left\">[39,944.2, 43,177.1]</td>\n</tr>\n<tr>\n<td align=\"left\">Normal with BSE</td>\n<td align=\"left\">[76.846, 79.084]</td>\n<td align=\"left\">[50,905.5, 54,852.0]</td>\n<td align=\"left\">[\u22122.013, \u22121.822]</td>\n<td align=\"left\">[39,643.2, 42,810.5]</td>\n</tr>\n<tr>\n<td align=\"left\" rowspan=\"2\">All</td>\n<td align=\"left\">Bootstrap</td>\n<td align=\"left\">[0.555, 0.581]</td>\n<td align=\"left\">[34,865.4, 37,852.8]</td>\n<td align=\"left\">[\u22120.264, \u22120.246]</td>\n<td align=\"left\">[199.5, 214.6]</td>\n</tr>\n<tr>\n<td align=\"left\">Normal with BSE</td>\n<td align=\"left\">[0.557, 0.582]</td>\n<td align=\"left\">[34,639.1, 37,616.4]</td>\n<td align=\"left\">[\u22120.262, \u22120.244]</td>\n<td align=\"left\">[198.1, 213.2]</td>\n</tr>\n</tbody>\n</table>"
+                                    ],
+                                    "title": "Increase the Top Income Tax Rate to 41 Percent, Selected Income Groups, 2019",
+                                    "type": "table"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "text": "The small number of affected records in the low-income group results in relatively large confidence intervals. The interval around the share of affected tax units ranges from 0.038 to 0.091, while the interval around the average tax cut among those affected ranges from $1,349 to $2,956. The confidence interval calculated from the normal approximation with BSE, ranging from $1,173 to $2,916, is slightly wider than the bootstrapped interval. The other income groups have much smaller confidence intervals and the normal approximation is much closer to the bootstrapped confidence intervals. Overall, the confidence intervals using normal approximation with BSE are similar to the bootstrapped confidence intervals.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s5-3",
+                    "title": "5.3. Increase in the top tax rate",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "Having found generally small confidence intervals in the above three cases, we examine two additional cases in which the confidence intervals might be more sensitive to policy changes. In this section, we estimate a revenue-neutral change of replacing the current-law farm loss deduction with a refundable tax credit based on the total farm losses in 2019. Under the current law, tax units with a farm loss can deduct the loss up to a limit.<sup><a href=\"#fn19\">19</a></sup> The proposal would repeal this farm loss deduction but allow tax units to claim a refundable tax credit equal to 82.5% of the product of tax units\u2019 statutory income tax rates and their total, i.e. unlimited, farm losses (the 82.5% factor brings about the proposal\u2019s revenue neutrality.) Because the proposal is revenue-neutral, it would generate both winners and losers. Specifically, this proposal would help tax units with large farm losses at the expense of those with small losses. However, it is not clear how it would affect tax units in different income groups.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "We examine a proposal with farm losses because of the large sampling variation due to: (i) few tax units report a farm loss; (ii) there is wide variation in farm losses across observations; and (iii) the tax rate will have a tangible impact on those with a farm loss.<sup><a href=\"#fn20\">20</a></sup>",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "As shown in <a href=\"#table6\">Table 6</a>, this proposal would on average minimally reduce tax burden of tax units with income between $40,000 and $50,000, slightly increase tax burden of tax units with income between $500,000 and $1 million, and slightly reduce tax burden of tax units with income more than $1 million. By construction, the proposal would not change tax burden of tax units overall. Although the bootstrapped confidence intervals and the interval based on normal approximation are quite close in most cases, there are several exceptions.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "footnotes": [
+                                        {
+                                            "text": [
+                                                {
+                                                    "text": "Source: Urban-Brookings Tax Policy Center Microsimulation Model (version 0319-1).",
+                                                    "type": "paragraph"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "text": [
+                                                {
+                                                    "text": "Notes: Proposal would replace current-law farm loss deduction with a refundable tax credit equal to 82.5% of total farm loss times the statutory income tax rate in 2019.",
+                                                    "type": "paragraph"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "text": [
+                                                {
+                                                    "text": "Numbers in parentheses are bootstrapped standard errors (BSE). Numbers in brackets are confidence intervals.",
+                                                    "type": "paragraph"
+                                                }
+                                            ]
+                                        }
+                                    ],
+                                    "id": "table6",
+                                    "label": "Table 6",
+                                    "tables": [
+                                        "<table>\n<thead>\n<tr>\n<th align=\"left\" colspan=\"2\" rowspan=\"2\" valign=\"bottom\">Expanded Cash Income Level (thousands of 2019 dollars)</th>\n<th align=\"left\" colspan=\"2\">Tax Units with Tax Cut</th>\n<th align=\"left\" colspan=\"2\" valign=\"bottom\">Tax Units with Tax Increase</th>\n<th align=\"left\" rowspan=\"2\" valign=\"bottom\">Average Federal Tax Change ($)</th>\n</tr>\n<tr>\n<th align=\"left\">Percent of Tax Units</th>\n<th align=\"left\">Average Tax Change ($)</th>\n<th align=\"left\">Percent of Tax Units</th>\n<th align=\"left\">Average Tax Change ($)</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td align=\"left\" rowspan=\"2\" valign=\"bottom\">40\u201350</td>\n<td align=\"left\">\u2003</td>\n<td align=\"left\">0.109 (0.029)</td>\n<td align=\"left\">\u22121,368.9 (537.1)</td>\n<td align=\"left\">0.267 (0.065)</td>\n<td align=\"left\">404.1 (101.8)</td>\n<td align=\"left\">\u22120.4 (0.7)</td>\n</tr>\n<tr>\n<td align=\"left\">\u2003</td>\n<td align=\"left\">[0.062, 0.180]</td>\n<td align=\"left\">[\u22122,743.8, \u2212685.0]</td>\n<td align=\"left\">[0.166, 0.462]</td>\n<td align=\"left\">[234.1, 614.2]</td>\n<td align=\"left\">[\u22122.0, 1.0]</td>\n</tr>\n<tr>\n<td align=\"left\" rowspan=\"2\" valign=\"bottom\">500\u20131,000</td>\n<td align=\"left\">\u2003</td>\n<td align=\"left\">0.531 (0.109)</td>\n<td align=\"left\">\u22123,465.7 (1,568.9)</td>\n<td align=\"left\">1.338 (0.170)</td>\n<td align=\"left\">2,779.1 (400.8)</td>\n<td align=\"left\">18.8 (9.1)</td>\n</tr>\n<tr>\n<td align=\"left\">\u2003</td>\n<td align=\"left\">[0.386, 0.812]</td>\n<td align=\"left\">[\u22128,022.0, \u22121,416.6]</td>\n<td align=\"left\">[0.990, 1.652]</td>\n<td align=\"left\">[2,082.2, 3,748.6]</td>\n<td align=\"left\">[\u22122.7, 32.6]</td>\n</tr>\n<tr>\n<td align=\"left\" rowspan=\"2\" valign=\"bottom\">More than 1,000</td>\n<td align=\"left\">\u2003</td>\n<td align=\"left\">0.994 (0.077)</td>\n<td align=\"left\">\u221215,499.8 (4,948.4)</td>\n<td align=\"left\">0.922 (0.078)</td>\n<td align=\"left\">7,473.2 (787.6)</td>\n<td align=\"left\">\u221285.1 (50.9)</td>\n</tr>\n<tr>\n<td align=\"left\">\u2003</td>\n<td align=\"left\">[0.852, 1.171]</td>\n<td align=\"left\">[\u221226,531.3, \u22127,571.9]</td>\n<td align=\"left\">[0.781, 1.073]</td>\n<td align=\"left\">[6,012.7, 9,182.7]</td>\n<td align=\"left\">[\u2212176.3, \u22123.0]</td>\n</tr>\n<tr>\n<td align=\"left\" rowspan=\"2\" valign=\"bottom\">All</td>\n<td align=\"left\">\u2003</td>\n<td align=\"left\">0.207 (0.013)</td>\n<td align=\"left\">\u22121,909.9 (221.3)</td>\n<td align=\"left\">0.485 (0.020)</td>\n<td align=\"left\">770.2 (47.8)</td>\n<td align=\"left\">\u22120.2 (0.5)</td>\n</tr>\n<tr>\n<td align=\"left\">\u2003</td>\n<td align=\"left\">[0.186, 0.230]</td>\n<td align=\"left\">[\u22122,420.9, \u22121,566.6]</td>\n<td align=\"left\">[0.450, 0.522]</td>\n<td align=\"left\">[700.7, 884.2]</td>\n<td align=\"left\">[\u22121.3, 0.8]</td>\n</tr>\n<tr>\n<td align=\"left\" colspan=\"6\">Addendum: Confidence Intervals Calculated Using Bootstrap and Using Normal Approximation of BSE</td>\n</tr>\n<tr>\n<td align=\"left\" rowspan=\"2\" valign=\"bottom\">40\u201350</td>\n<td align=\"left\">Bootstrap</td>\n<td align=\"left\">[0.062, 0.180]</td>\n<td align=\"left\">[\u22122,743.8, \u2212685.0]</td>\n<td align=\"left\">[0.166, 0.462]</td>\n<td align=\"left\">[234.1, 614.2]</td>\n<td align=\"left\">[\u22122.0, 1.0]</td>\n</tr>\n<tr>\n<td align=\"left\">Normal with BSE</td>\n<td align=\"left\">[0.052, 0.166]</td>\n<td align=\"left\">[\u22122,421.6, \u2212316.2]</td>\n<td align=\"left\">[0.140, 0.394]</td>\n<td align=\"left\">[204.6, 603.6]</td>\n<td align=\"left\">[\u22121.8, 1.0]</td>\n</tr>\n<tr>\n<td align=\"left\" rowspan=\"2\" valign=\"bottom\">500\u20131,000</td>\n<td align=\"left\">Bootstrap</td>\n<td align=\"left\">[0.386, 0.812]</td>\n<td align=\"left\">[\u22128,022.0, \u22121,416.6]</td>\n<td align=\"left\">[0.990, 1.652]</td>\n<td align=\"left\">[2,082.2, 3,748.6]</td>\n<td align=\"left\">[\u22122.7, 32.6]</td>\n</tr>\n<tr>\n<td align=\"left\">Normal with BSE</td>\n<td align=\"left\">[0.318, 0.744]</td>\n<td align=\"left\">[\u22126,540.8, \u2212390.7]</td>\n<td align=\"left\">[1.005, 1.670]</td>\n<td align=\"left\">[1,993.5, 3,564.6]</td>\n<td align=\"left\">[1.0, 36.5]</td>\n</tr>\n<tr>\n<td align=\"left\" rowspan=\"2\" valign=\"bottom\">More than 1,000</td>\n<td align=\"left\">Bootstrap</td>\n<td align=\"left\">[0.852, 1.171]</td>\n<td align=\"left\">[\u221226,531.3, \u22127,571.9]</td>\n<td align=\"left\">[0.781, 1.073]</td>\n<td align=\"left\">[6,012.7, 9,182.7]</td>\n<td align=\"left\">[\u2212176.3, \u22123.0]</td>\n</tr>\n<tr>\n<td align=\"left\">Normal with BSE</td>\n<td align=\"left\">[0.843, 1.145]</td>\n<td align=\"left\">[\u221225,198.5, \u22125,801.0]</td>\n<td align=\"left\">[0.769, 1.076]</td>\n<td align=\"left\">[5,929.6, 9,016.9]</td>\n<td align=\"left\">[\u2212184.8, 14.6]</td>\n</tr>\n<tr>\n<td align=\"left\" rowspan=\"2\" valign=\"bottom\">All</td>\n<td align=\"left\">Bootstrap</td>\n<td align=\"left\">[0.186, 0.230]</td>\n<td align=\"left\">[\u22122,420.9, \u22121,566.6]</td>\n<td align=\"left\">[0.450, 0.522]</td>\n<td align=\"left\">[700.7, 884.2]</td>\n<td align=\"left\">[\u22121.3, 0.8]</td>\n</tr>\n<tr>\n<td align=\"left\">Normal with BSE</td>\n<td align=\"left\">[0.182, 0.232]</td>\n<td align=\"left\">[\u22122,343.6, \u22121,476.2]</td>\n<td align=\"left\">[0.445, 0.524]</td>\n<td align=\"left\">[676.5, 863.9]</td>\n<td align=\"left\">[\u22121.3, 0.8]</td>\n</tr>\n</tbody>\n</table>"
+                                    ],
+                                    "title": "Replace Farm Loss Deduction with a Revenue-Neutral Refundable Tax Credit, Selected Income Groups, 2019",
+                                    "type": "table"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "text": "Based on the bootstrapped confidence intervals, it is inconclusive whether the average change in the tax burden was positive or negative for tax units with incomes between $40,000 and $50,000 or between $500,000 and $1 million. In each of these income groups, some tax units would see an increase in their tax burden and others would see a decrease, leading to confidence intervals for the average tax change that include zero. On the other hand, the confidence interval for the average change in the tax burden for tax units with incomes of $1 million or more is strictly less than zero.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "In contrast, the confidence interval assuming a normal distribution with BSE is strictly greater than zero while the bootstrapped confidence interval for tax units with incomes between $500,000 and $1 million straddles zero. Although the bootstrapped and normal confidence intervals are similar for average tax increases, they diverge for tax units facing a tax cut. For example, the bootstrapped confidence interval for tax units in the $500,000 to $1 million income group is [\u22128,022, \u22121,417] but [\u22126,541, \u2212391] for the normal confidence interval. This leads to a bootstrapped confidence interval for the overall change of [\u22122.7, 32.6] which includes zero but a normal confidence interval of [1.0, 36.5] which omits zero.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s5-4",
+                    "title": "5.4. Revenue neutral replacement of a deduction for farm losses with a refundable tax credit",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "Finally, we estimate the effect of rescinding the tax-exempt status of interest from government bonds. Sampling variation in this case comes from three sources: (i) few tax units have tax-exempt interest; (ii) there is wide variation in interest income across observations; and (iii) the tax rate will have a tangible impact on those with tax-exempt interest income.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Municipal (i.e. state and local) bond interest is exempted from federal income tax. In 2018, there were $3.8 trillion in municipal bonds outstanding.<sup><a href=\"#fn21\">21</a></sup> The exemption primarily benefits higher-income individuals. In our dataset, 17% out of approximately 256,000 records receive tax exempt interest, representing 3% out of 175 million tax units in the population.<sup><a href=\"#fn22\">22</a></sup> The unweighted distribution of tax-exempt interest income is extremely wide and asymmetric, with a median of $1,647 and a mean of $12,605.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "As shown in <a href=\"#table7\">Table 7</a>, rescinding the tax-exempt status of interest from government bonds would increase tax liabilities of the top income group the most \u2013 an average of $13,545 for those with ECI more than $1 million. We find that the confidence intervals are tightly wrapped around the point estimates for most income groups and that the normal approximation with BSE is very similar to the bootstrapped confidence interval.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "footnotes": [
+                                        {
+                                            "text": [
+                                                {
+                                                    "text": "Source: Urban-Brookings Tax Policy Center Microsimulation Model (version 0319-1).",
+                                                    "type": "paragraph"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "text": [
+                                                {
+                                                    "text": "Notes: Proposal would rescind the tax-free treatment of interest accruing from certain municipal bonds in 2019.",
+                                                    "type": "paragraph"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "text": [
+                                                {
+                                                    "text": "Numbers in parentheses are bootstrapped standard errors (BSE). Numbers in brackets are confidence intervals.",
+                                                    "type": "paragraph"
+                                                }
+                                            ]
+                                        }
+                                    ],
+                                    "id": "table7",
+                                    "label": "Table 7",
+                                    "tables": [
+                                        "<table>\n<thead>\n<tr>\n<th align=\"left\" colspan=\"2\" rowspan=\"2\" valign=\"bottom\">Expanded Cash Income Level (thousands of 2019 dollars)</th>\n<th align=\"left\" colspan=\"2\">Tax Units with Tax Increase</th>\n<th align=\"left\" rowspan=\"2\" valign=\"bottom\">Percent Change in After-Tax Income</th>\n<th align=\"left\" rowspan=\"2\" valign=\"bottom\">Average Federal Tax Change ($)</th>\n</tr>\n<tr>\n<th align=\"left\">Percent of Tax Units</th>\n<th align=\"left\">Average Tax Change ($)</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td align=\"left\" rowspan=\"2\" valign=\"bottom\">40\u201350</td>\n<td align=\"left\">\u2003</td>\n<td align=\"left\">0.598 (0.105)</td>\n<td align=\"left\">382.8 (142.4)</td>\n<td align=\"left\">\u22120.006 (0.002)</td>\n<td align=\"left\">2.3 (0.9)</td>\n</tr>\n<tr>\n<td align=\"left\">\u2003</td>\n<td align=\"left\">[0.412, 0.830]</td>\n<td align=\"left\">[174.3, 815.8]</td>\n<td align=\"left\">[\u22120.011, \u22120.002]</td>\n<td align=\"left\">[1.0, 4.5]</td>\n</tr>\n<tr>\n<td align=\"left\" rowspan=\"2\" valign=\"bottom\">200\u2013500</td>\n<td align=\"left\">\u2003</td>\n<td align=\"left\">10.871 (0.289)</td>\n<td align=\"left\">2,693.2 (124.2)</td>\n<td align=\"left\">\u22120.128 (0.006)</td>\n<td align=\"left\">292.8 (14.4)</td>\n</tr>\n<tr>\n<td align=\"left\">\u2003</td>\n<td align=\"left\">[10.348, 11.518]</td>\n<td align=\"left\">[2,442.2, 2,965.2]</td>\n<td align=\"left\">[\u22120.141, \u22120.116]</td>\n<td align=\"left\">[263.7, 323.0]</td>\n</tr>\n<tr>\n<td align=\"left\" rowspan=\"2\" valign=\"bottom\">More than 1,000</td>\n<td align=\"left\">\u2003</td>\n<td align=\"left\">50.162 (0.535)</td>\n<td align=\"left\">27,001.5 (1,425.9)</td>\n<td align=\"left\">\u22120.630 (0.033)</td>\n<td align=\"left\">13,544.6 (729.8)</td>\n</tr>\n<tr>\n<td align=\"left\">\u2003</td>\n<td align=\"left\">[49.325, 51.238]</td>\n<td align=\"left\">[24,610.9, 30,036.2]</td>\n<td align=\"left\">[\u22120.697, \u22120.576]</td>\n<td align=\"left\">[12,302.0, 15,143.7]</td>\n</tr>\n<tr>\n<td align=\"left\" rowspan=\"2\" valign=\"bottom\">All</td>\n<td align=\"left\">\u2003</td>\n<td align=\"left\">2.924 (0.050)</td>\n<td align=\"left\">4,272.1 (140.4)</td>\n<td align=\"left\">\u22120.154 (0.005)</td>\n<td align=\"left\">124.9 (3.9)</td>\n</tr>\n<tr>\n<td align=\"left\">\u2003</td>\n<td align=\"left\">[2.826, 3.014]</td>\n<td align=\"left\">[4,021.8, 4,613.3]</td>\n<td align=\"left\">[\u22120.164, \u22120.145]</td>\n<td align=\"left\">[118.0, 133.8]</td>\n</tr>\n<tr>\n<td align=\"left\" colspan=\"6\">Addendum: Confidence Intervals Calculated Using Bootstrap and Using Normal Approximation of BSE</td>\n</tr>\n<tr>\n<td align=\"left\" rowspan=\"2\" valign=\"bottom\">40\u201350</td>\n<td align=\"left\">Bootstrap</td>\n<td align=\"left\">[0.412, 0.830]</td>\n<td align=\"left\">[174.3, 815.8]</td>\n<td align=\"left\">[\u22120.011, \u22120.002]</td>\n<td align=\"left\">[1.0, 4.5]</td>\n</tr>\n<tr>\n<td align=\"left\">Normal with BSE</td>\n<td align=\"left\">[0.393, 0.803]</td>\n<td align=\"left\">[103.8, 661.9]</td>\n<td align=\"left\">[\u22120.010, \u22120.001]</td>\n<td align=\"left\">[0.6, 4.0]</td>\n</tr>\n<tr>\n<td align=\"left\" rowspan=\"2\" valign=\"bottom\">200\u2013500</td>\n<td align=\"left\">Bootstrap</td>\n<td align=\"left\">[10.348, 11.518]</td>\n<td align=\"left\">[2,442.2, 2,965.2]</td>\n<td align=\"left\">[\u22120.141, \u22120.116]</td>\n<td align=\"left\">[263.7, 323.0]</td>\n</tr>\n<tr>\n<td align=\"left\">Normal with BSE</td>\n<td align=\"left\">[10.305, 11.437]</td>\n<td align=\"left\">[2,449.8, 2,936.6]</td>\n<td align=\"left\">[\u22120.141, \u22120.116]</td>\n<td align=\"left\">[264.6, 321.1]</td>\n</tr>\n<tr>\n<td align=\"left\" rowspan=\"2\" valign=\"bottom\">More than 1,000</td>\n<td align=\"left\">Bootstrap</td>\n<td align=\"left\">[49.325, 51.238]</td>\n<td align=\"left\">[24,610.9, 30,036.2]</td>\n<td align=\"left\">[\u22120.697, \u22120.576]</td>\n<td align=\"left\">[12,302.0, 15,143.7]</td>\n</tr>\n<tr>\n<td align=\"left\">Normal with BSE</td>\n<td align=\"left\">[49.113, 51.212]</td>\n<td align=\"left\">[24,206.9, 29,796.1]</td>\n<td align=\"left\">[\u22120.695, \u22120.565]</td>\n<td align=\"left\">[12,114.2, 14,975.1]</td>\n</tr>\n<tr>\n<td align=\"left\" rowspan=\"2\" valign=\"bottom\">All</td>\n<td align=\"left\">Bootstrap</td>\n<td align=\"left\">[2.826, 3.014]</td>\n<td align=\"left\">[4,021.8, 4,613.3]</td>\n<td align=\"left\">[\u22120.164, \u22120.145]</td>\n<td align=\"left\">[118.0, 133.8]</td>\n</tr>\n<tr>\n<td align=\"left\">Normal with BSE</td>\n<td align=\"left\">[2.825, 3.022]</td>\n<td align=\"left\">[3,996.9, 4,547.4]</td>\n<td align=\"left\">[\u22120.163, \u22120.144]</td>\n<td align=\"left\">[117.3, 132.5]</td>\n</tr>\n</tbody>\n</table>"
+                                    ],
+                                    "title": "Rescind the Tax-free Treatment of Interest Accruing from Certain Municipal Bonds, Selected Income Groups, 2019",
+                                    "type": "table"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "text": "However, for the group with income between $40,000 and $50,000, the confidence interval is not as tight, and the results are asymmetric, with the average tax increase among tax units with a tax increase being $383, and a confidence interval ranging from $174 to $816. In the addendum, the confidence interval calculated with the normal approximation is noticeably different, ranging from $104 to $662. The asymmetry of the bootstrapped confidence interval is caused by the small number of affected records and the skewness of the underlying distribution of interest income from tax-exempt bonds. While more than 95 percent of records in this group have no tax-exempt interest income, several records have substantial amounts of tax-exempt interest income. If these records are included in the bootstrapped samples, then the resulting tax changes of the policy are extremely large and the normal approximation may not be accurate.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s5-5",
+                    "title": "5.5. Rescind the tax-free treatment of interest accruing from certain government bonds",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "Although the bootstrapped confidence intervals show that most point estimates of our analyses of the distributional impact of policy alternatives are precisely estimated, it also indicates that the model more precisely estimates some policy analyses than the others. For example, for tax units with income between $200,000 and $500,000, two policy alternatives would have almost the same magnitude of impact: rescinding tax-exempt interest would increase average taxes by $2,693 among those with tax-exempt interest income, and restoring the personal exemption by $4,000 would decrease average taxes by $2,497. However, with bootstrapped standard errors of 124 and 11, respectively, the confidence interval of the former is much wider than the latter.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Differences in the number of tax units affected in each income group only explains some of the differences in confidence intervals among the proposals. Differences in the source of income facing a change in tax treatment also plays a role, as do differences in demographic characteristics, such as the number of dependents, and interactions with other parts of the tax system, such as the Alternative Minimum Tax.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "In most cases, the confidence interval constructed using the normal approximation with BSE is close to the bootstrapped confidence interval. However, it is not clear whether this finding holds if we calculate the standard error using a formula rather than a bootstrap. To explore this issue, <a href=\"#table8\">Table 8</a> shows the bootstrapped confidence intervals and the confidence intervals calculated using GSSE for each proposal\u2019s average tax change of all tax units, as well as both the BSE and the GSSE. The GSSE is comparable to BSE for proposals that affect many tax units, such as restoring the personal exemption and increasing the standard deduction. The GSSE is noticeably larger than the BSE for proposals that affect few tax units, such as increasing the top tax rate, rescinding tax-free treatment of certain bonds and replacing the farm loss deduction with a credit. In a similar fashion, confidence intervals calculated from the GSSE are comparable to the bootstrapped confidence intervals for proposals that affect many tax units and noticeably wider for proposals that affect few tax units.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "footnotes": [
+                                        {
+                                            "text": [
+                                                {
+                                                    "text": "Source: Urban-Brookings Tax Policy Center Microsimulation Model (version 0319-1).",
+                                                    "type": "paragraph"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "text": [
+                                                {
+                                                    "text": "Notes: The BSE column shows bootstrapped standard errors. The GSSE columns shows the Gatz and Smith formula for calculating standard errors. The Bootstrap Confidence Interval column shows the bias-corrected bootstrap confidence intervals. Finally, the Normal Approximation with GSSE Confidence Interval column shows confidence intervals derived as the means plus or minus the GSSE multiplied by 1.96. Due to rounding, that interval differs slightly from an interval calculated using the values in the table.",
+                                                    "type": "paragraph"
+                                                }
+                                            ]
+                                        }
+                                    ],
+                                    "id": "table8",
+                                    "label": "Table 8",
+                                    "tables": [
+                                        "<table>\n<thead>\n<tr>\n<th align=\"left\" rowspan=\"3\" valign=\"bottom\">Proposal</th>\n<th align=\"left\" colspan=\"5\">Average Tax Change for All Tax Units ($)</th>\n</tr>\n<tr>\n<th align=\"left\" rowspan=\"2\" valign=\"bottom\">Mean</th>\n<th align=\"left\" colspan=\"2\">Standard Error</th>\n<th align=\"left\" colspan=\"2\">Confidence Interval</th>\n</tr>\n<tr>\n<th align=\"left\">BSE</th>\n<th align=\"left\">GSSE</th>\n<th align=\"left\">Bootstrap</th>\n<th align=\"left\">Normal Approximation with GSSE</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td align=\"left\">Restore Personal Exemption</td>\n<td align=\"left\">\u2212758.2</td>\n<td align=\"left\">1.7</td>\n<td align=\"left\">1.9</td>\n<td align=\"left\">[\u2212761.6, \u2212754.6]</td>\n<td align=\"left\">[\u2212761.9, \u2212754.4]</td>\n</tr>\n<tr>\n<td align=\"left\">Increase Standard Deduction</td>\n<td align=\"left\">\u2212521.4</td>\n<td align=\"left\">1.2</td>\n<td align=\"left\">1.2</td>\n<td align=\"left\">[\u2212523.8, \u2212519.0]</td>\n<td align=\"left\">[\u2212523.8, \u2212519.1]</td>\n</tr>\n<tr>\n<td align=\"left\">Increase Tax Rate</td>\n<td align=\"left\">205.7</td>\n<td align=\"left\">3.9</td>\n<td align=\"left\">19.3</td>\n<td align=\"left\">[199.5, 214.6]</td>\n<td align=\"left\">[167.9, 243.4]</td>\n</tr>\n<tr>\n<td align=\"left\">Rescind Tax-free Treatment of Certain Bonds</td>\n<td align=\"left\">124.9</td>\n<td align=\"left\">3.9</td>\n<td align=\"left\">11.2</td>\n<td align=\"left\">[118.0, 133.8]</td>\n<td align=\"left\">[102.9, 146.9]</td>\n</tr>\n<tr>\n<td align=\"left\">Farm Loss Deduction Replaced with Credit</td>\n<td align=\"left\">\u22120.2</td>\n<td align=\"left\">0.5</td>\n<td align=\"left\">2.2</td>\n<td align=\"left\">[\u22121.3, 0.8]</td>\n<td align=\"left\">[\u22124.5, 4.1]</td>\n</tr>\n</tbody>\n</table>"
+                                    ],
+                                    "title": "Comparison of Confidence Intervals with Standard Errors Calculated from Bootstrapping and the Gatz and Smith Formula",
+                                    "type": "table"
+                                }
+                            ],
+                            "type": "figure"
+                        }
+                    ],
+                    "id": "s5-6",
+                    "title": "5.6. Discussion",
+                    "type": "section"
+                }
+            ],
+            "id": "s5",
+            "title": "5. Results",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "The need for measuring the uncertainty of estimates from microsimulation modeling has been understood since its inception, yet there exists little research on the topic. In this article, we use a bootstrap technique to estimate the sampling variation from TPC\u2019s microsimulation model of the U.S. individual income tax system. The bootstrapped exercises show that point estimates produced by the model are generally very precise. This supports the standard practice of not reporting associated standard errors and confidence intervals of point estimates. However, there are exceptions, and the methodology demonstrated in this paper can be used to address uncertainties of the point estimates, with the goal of providing adequate information for better policy formation.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Calculating confidence intervals using a normal approximation works best when many tax units are affected and the point estimates are precisely estimated. When calculating confidence intervals for income categories with a small number of impacted tax units, the normal approximation may differ from the bootstrapped confidence intervals.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Sampling variation is not the only source of uncertainty in microsimulation modeling. <a href=\"#bib2\">Cohen (1991)</a> discusses other sources of uncertainty, such as the use of \u201cvarious control totals and regression equations, from the use of imputation and statistical matching, from the use of demographic and macroeconomic projections, and from the use of aging modules.\u201d Estimating the uncertainty arising from some of these sources is substantially more difficult than from sampling variation, and is a subject for future research.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s6",
+            "title": "6. Conclusion",
+            "type": "section"
+        }
+    ],
+    "references": [
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Citro, CF",
+                        "preferred": "CF Citro"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Hanushek, EA",
+                        "preferred": "EA Hanushek"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Citro, CF",
+                        "preferred": "CF Citro"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Hanushek, EA",
+                        "preferred": "EA Hanushek"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1991",
+            "details": "Improving information for social policy decisions: the uses of microsimulation modeling, In:, Improving Information for Social Policy Decisions -- The Uses of Microsimulation Modeling: Volume I, Review and Recommendations, Washington, DC, The National Academies Press, 10.17226/1835",
+            "id": "bib1",
+            "title": "Improving Information for Social Policy Decisions -- The Uses of Microsimulation Modeling: Volume I, Review and Recommendations",
+            "type": "unknown"
+        },
+        {
+            "articleTitle": "Variance estimation of microsimulation models through sample reuse",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Cohen, M",
+                        "preferred": "M Cohen"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1991",
+            "id": "bib2",
+            "journal": "Improving information for social policy decisions: the uses of microsimulation modeling",
+            "pages": {
+                "first": "237",
+                "last": "254",
+                "range": "237\u2013254"
+            },
+            "type": "journal",
+            "volume": "2"
+        },
+        {
+            "articleTitle": "Confidence intervals for policy reforms in behavioral tax microsimulation modelling",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Creedy, J",
+                        "preferred": "J Creedy"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Kalb, G",
+                        "preferred": "G Kalb"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Kew, H",
+                        "preferred": "H Kew"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2007",
+            "id": "bib3",
+            "journal": "Bulletin of Economic Research",
+            "pages": {
+                "first": "37",
+                "last": "65",
+                "range": "37\u201365"
+            },
+            "type": "journal",
+            "volume": "59"
+        },
+        {
+            "articleTitle": "Assessing the reliability of microsimulation models using the bootstrap: an analysis of the sampling error when population is not infinite",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Fiorio, C, V",
+                        "preferred": "C Fiorio V"
+                    },
+                    "type": "person"
+                }
+            ],
+            "conference": {
+                "name": [
+                    "European Economic Association and Econometric Society European Meeting, London"
+                ]
+            },
+            "date": "2003",
+            "id": "bib4",
+            "type": "conference-proceeding"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Galper, H",
+                        "preferred": "H Galper"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Rosenberg, J",
+                        "preferred": "J Rosenberg"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Rueben, K",
+                        "preferred": "K Rueben"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Toder, E",
+                        "preferred": "E Toder"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2013",
+            "id": "bib5",
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "Washington, DC"
+                        ]
+                    },
+                    "formatted": [
+                        "Washington, DC"
+                    ]
+                },
+                "name": [
+                    "Urban-Brookings Tax Policy Center"
+                ]
+            },
+            "source": "Who Benefits From Tax-Exempt Bonds?: An Application of the Theory of Tax Incidence. Working Paper",
+            "title": "Who Benefits From Tax-Exempt Bonds?: An Application of the Theory of Tax Incidence. Working Paper",
+            "type": "report"
+        },
+        {
+            "articleTitle": "The standard error of a weighted mean concentration\u2014I. bootstrapping vs other methods",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Gatz, DF",
+                        "preferred": "DF Gatz"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Smith, L",
+                        "preferred": "L Smith"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1995",
+            "doi": "10.1016/1352-2310(94)00210-C",
+            "id": "bib6",
+            "journal": "Atmospheric Environment",
+            "pages": {
+                "first": "1185",
+                "last": "1193",
+                "range": "1185\u20131193"
+            },
+            "type": "journal",
+            "volume": "29"
+        },
+        {
+            "articleTitle": "Testing the statistical significance of microsimulation results: a plea",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Goedem\u00e9, T",
+                        "preferred": "T Goedem\u00e9"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Van den Bosch, K",
+                        "preferred": "K Van den Bosch"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Salanauskaite, L",
+                        "preferred": "L Salanauskaite"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Verbist, G",
+                        "preferred": "G Verbist"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2013",
+            "id": "bib7",
+            "journal": "International Journal of Microsimulation",
+            "pages": {
+                "first": "50",
+                "last": "77",
+                "range": "50\u201377"
+            },
+            "type": "journal",
+            "volume": "6"
+        },
+        {
+            "articleTitle": "Resampling variance estimation for complex survey data",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Kolenikov, S",
+                        "preferred": "S Kolenikov"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2010",
+            "doi": "10.1177/1536867X1001000201",
+            "id": "bib9",
+            "journal": "The Stata Journal: Promoting communications on statistics and Stata",
+            "pages": {
+                "first": "165",
+                "last": "199",
+                "range": "165\u2013199"
+            },
+            "type": "journal",
+            "volume": "10"
+        },
+        {
+            "articleTitle": "A new type of socio-economic system",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Orcutt, GH",
+                        "preferred": "GH Orcutt"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1957",
+            "doi": "10.2307/1928528",
+            "id": "bib11",
+            "journal": "The Review of Economics and Statistics",
+            "pages": {
+                "first": "116",
+                "last": "123",
+                "range": "116\u2013123"
+            },
+            "type": "journal",
+            "volume": "39"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Paulus, A",
+                        "preferred": "A Paulus"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Sutherland, H",
+                        "preferred": "H Sutherland"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Tasseva, I",
+                        "preferred": "I Tasseva"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2019",
+            "details": "EUROMOD Working Paper Series EM 3/19, Indexing out of poverty? Fiscal drag and benefit erosion in cross-national perspective, https://www.euromod.ac.uk/sites/default/files/working-papers/em3-19.pdf",
+            "id": "bib12",
+            "title": "Indexing out of poverty? Fiscal drag and benefit erosion in cross-national perspective",
+            "type": "unknown",
+            "uri": "https://www.euromod.ac.uk/sites/default/files/working-papers/em3-19.pdf"
+        },
+        {
+            "articleTitle": "How reliable are microsimulation results? an analysis of the role of sampling error in a UK tax-benefit model",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Pudney, S",
+                        "preferred": "S Pudney"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Sutherland, H",
+                        "preferred": "H Sutherland"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1994",
+            "id": "bib13",
+            "journal": "Journal of public economics",
+            "pages": {
+                "first": "327",
+                "last": "365",
+                "range": "327\u2013365"
+            },
+            "type": "journal",
+            "volume": "53"
+        },
+        {
+            "articleTitle": "Resampling inference with complex survey data",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Rao, JNK",
+                        "preferred": "JNK Rao"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Wu, CFJ",
+                        "preferred": "CFJ Wu"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1988",
+            "doi": "10.1080/01621459.1988.10478591",
+            "id": "bib14",
+            "journal": "Journal of the American Statistical Association",
+            "pages": {
+                "first": "231",
+                "last": "241",
+                "range": "231\u2013241"
+            },
+            "type": "journal",
+            "volume": "83"
+        }
+    ],
+    "acknowledgements": [
+        {
+            "text": "We would like to thank Mark Mazur, Eric Toder and other staff at the Tax Policy Center for their help in this research.",
+            "type": "paragraph"
+        }
+    ],
+    "-meta": {
+        "patched": true
+    },
+    "stage": "published"
+}

@@ -1,0 +1,2061 @@
+{
+    "status": "vor",
+    "id": "00218",
+    "version": 1,
+    "type": "research-article",
+    "doi": "10.34196/ijm.00218",
+    "authorLine": "Janne Salonen et al.",
+    "title": "Using sequence analysis to visualize and validate model transitions",
+    "published": "2020-08-31T00:00:00Z",
+    "versionDate": "2020-08-31T00:00:00Z",
+    "statusDate": "2020-08-31T00:00:00Z",
+    "volume": 13,
+    "issue": 2,
+    "fpage": 61,
+    "lpage": 78,
+    "elocationId": "61-78",
+    "pdf": "http://web:8082/00218/ijm-00218.pdf",
+    "subjects": [
+        {
+            "id": "methodology",
+            "name": "Methodology"
+        },
+        {
+            "id": "health",
+            "name": "Health"
+        },
+        {
+            "id": "dynamic-microsimulation",
+            "name": "Dynamic microsimulation"
+        }
+    ],
+    "abstract": {
+        "content": [
+            {
+                "text": "We illustrate a novel data-driven way of visualizing paths of labor market transitions. The proposed technique is used in many fields of science when analyzing transitions longitudinally. The statistical method applied in this study is based on sequence analysis (SA) used to identify similar and dissimilar individual transition patterns over longitudinal measurements. We briefly introduce the statistical basis of SA and discuss its use in the dynamic microsimulation context. We also report our results from the Finnish ELSI model to illustrate labor market transitions near retirement. SA is available in many popular statistical software packages such as R and Stata. The programming code for SA and data simulations are also given. Our conclusion is that SA is a useful tool also in a microsimulation context, in visualizing and validating simulated model transitions when statistically more sophisticated mixture modeling are not applicable.",
+                "type": "paragraph"
+            }
+        ]
+    },
+    "copyright": {
+        "license": "CC-BY-4.0",
+        "holder": "Salonen, M\u00f6tt\u00f6nen, Tikanm\u00e4kiNummi ",
+        "statement": "This article is distributed under the terms of the <a href=\"http://creativecommons.org/licenses/by/4.0/\">Creative Commons Attribution License</a>, which permits unrestricted use and redistribution provided that the original author and source are credited."
+    },
+    "authors": [
+        {
+            "affiliations": [
+                {
+                    "address": {
+                        "components": {
+                            "country": "Finland",
+                            "locality": [
+                                "Helsinki"
+                            ]
+                        },
+                        "formatted": [
+                            "Helsinki",
+                            "Finland"
+                        ]
+                    },
+                    "name": [
+                        "Finnish Centre for Pensions"
+                    ]
+                }
+            ],
+            "emailAddresses": [
+                "janne.salonen@etk.fi"
+            ],
+            "name": {
+                "index": "Salonen, Janne",
+                "preferred": "Janne Salonen"
+            },
+            "orcid": "0000-0002-0595-6226",
+            "type": "person"
+        },
+        {
+            "affiliations": [
+                {
+                    "address": {
+                        "components": {
+                            "country": "Finland",
+                            "locality": [
+                                "Helsinki"
+                            ]
+                        },
+                        "formatted": [
+                            "Helsinki",
+                            "Finland"
+                        ]
+                    },
+                    "name": [
+                        "University of Helsinki"
+                    ]
+                }
+            ],
+            "name": {
+                "index": "M\u00f6tt\u00f6nen, Jyrki",
+                "preferred": "Jyrki M\u00f6tt\u00f6nen"
+            },
+            "type": "person"
+        },
+        {
+            "affiliations": [
+                {
+                    "address": {
+                        "components": {
+                            "country": "Finland",
+                            "locality": [
+                                "Helsinki"
+                            ]
+                        },
+                        "formatted": [
+                            "Helsinki",
+                            "Finland"
+                        ]
+                    },
+                    "name": [
+                        "Finnish Centre for Pensions"
+                    ]
+                }
+            ],
+            "name": {
+                "index": "Tikanm\u00e4ki, Heikki",
+                "preferred": "Heikki Tikanm\u00e4ki"
+            },
+            "type": "person"
+        },
+        {
+            "affiliations": [
+                {
+                    "address": {
+                        "components": {
+                            "country": "Finland",
+                            "locality": [
+                                "Tampere"
+                            ]
+                        },
+                        "formatted": [
+                            "Tampere",
+                            "Finland"
+                        ]
+                    },
+                    "name": [
+                        "Tampere University"
+                    ]
+                }
+            ],
+            "name": {
+                "index": "Nummi, Tapio",
+                "preferred": "Tapio Nummi"
+            },
+            "orcid": "0000-0001-8682-6951",
+            "type": "person"
+        }
+    ],
+    "funding": {
+        "statement": "No specific funding for this article is reported."
+    },
+    "additionalFiles": [
+        {
+            "filename": "ijm-00218-code1.zip",
+            "id": "scode1",
+            "label": "Source code 1",
+            "mediaType": "application/zip",
+            "uri": "http://web:8082/00218/ijm-00218-code1.zip"
+        }
+    ],
+    "dataSets": {
+        "availability": [
+            {
+                "text": "Data and code have been provided to the journal and is available from its website.",
+                "type": "paragraph"
+            }
+        ]
+    },
+    "keywords": [
+        "optimal matching analysis",
+        "sequence analysis",
+        "dynamic microsimulation",
+        "labor market",
+        "retirement"
+    ],
+    "body": [
+        {
+            "content": [
+                {
+                    "text": "This study is a continuum to the study by <a href=\"#bib27\">Salonen et al. (2019)</a> and aims to introduce established statistical techniques from other fields of science, such as empirical life course analysis, to a microsimulation context. This paper has two goals. First, we present a statistical technique called sequence analysis (SA) and demonstrate its use in microsimulation modeling. We use SA to visualize transitions, which can yield valuable new information that may not be easily accessible by other means. Second, we use SA to show how this technique, among others, can validate models and reveal possible misspecification of the microsimulation model.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "SA was first introduced in computer science (<a href=\"#bib16\">Levenshtein, 1966</a>), then in molecular biology to study DNA and RNA sequences (<a href=\"#bib18\">Levitt, 1969</a>). Years later it was further developed by sociologist Andrew Abbott (<a href=\"#bib1\">Abbott, 1983</a>; <a href=\"#bib2\">Abbott, 1984</a>; <a href=\"#bib3\">Abbott and Forrest, 1986</a>) to study the social processes occurring in sequences over a long time period (see <a href=\"#bib10\">Courgeau, 2018</a>, p. 19). Since then, the analysis has been extensively used also in sociology and in a number of fields of science, including life course studies (e.g., <a href=\"#bib24\">Riekhoff, 2018</a>; <a href=\"#bib23\">Piccarreta and Studer, 2019</a>). There is a long tradition of using SA also in the fields of medicine, history and cultural analysis. However, to our knowledge, SA has rarely been used in the context of microsimulation.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "SA is somewhat sensitive to underlying philosophical assumptions about the life course in general. In fact, there is an ongoing discussion among sociologists of how to aggregate transition sequences using optimal matching techniques. The discussion stems from critical papers by <a href=\"#bib34\">Wu (2000)</a> and <a href=\"#bib17\">Levine (2000)</a>. However, in a microsimulation context, the usefulness of any statistical technique is evaluated in practical conditions of a given simulation model: does the technique make sense? Sociological theories of the life course are important in empirical research, but microsimulation practitioners can also benefit from practical approach to useful statistical techniques.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The backbone of SA is in optimal matching analysis (OMA), which is the statistical background of aggregating individual transition sequences into more general groups (e.g., <a href=\"#bib25\">Ritschard and Studer, 2018</a>). Different approaches to aggregation have been discussed in for example, <a href=\"#bib14\">Gabadinho et al. (2011)</a>. In a nutshell, the four approaches of SA are: (1) an approach-based on duration models, (2) an event sequences approach, (3) a level-based approach, and (4) a network-based approach. All these techniques are useful and relate to specific study-designs and measurements in empirical research. In a microsimulation context, however, approach (2), also defined as the state sequence technique, is the most promising. This study demonstrates the state sequence approach. Related to different applications of SA, microsimulation practitioners could also benefit from materials of the international organization promoting the use of SA (sequenceanalysis.org).",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Credible enough of heterogeneity in a simulated population is a desired property of any microsimulation model. In dynamic microsimulation, heterogeneity in labor market transitions and in other population transitions is an important topic to study and validate. SA is a powerful technique for visualizing this heterogeneity in more detail. The method is especially useful in cohort-based analysis, but it can also handle several cohorts or other classes simultaneously. Another important feature is that the method works with rather modest background assumptions, for example, the variables under consideration may be categorical and the actual assumption of a probability distribution is not needed.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "SA has at least three clear advantages in microsimulation context. First, it has the potential to reveal, in detail, the prevailing labor market transition patterns and individuals realizing them. Second, it can be further extended to take account for a clustering of the sample. Finally, there are readily available software packages (e.g., in R and Stata), which are stable, well documented and easy to use by microsimulation practitioners.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "By nature, SA is a descriptive analysis. However, it is possible to use covariates and factors, and these extensions can also provide interesting possibilities for microsimulation data exploration. However, these kind of analyzes are beyond the scope of our study.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "There are some limitations to SA, mainly because it is applied to categorical variables (model states) which are measured longitudinally. There is a range of statistical techniques to analyze these variables, but in this context, there is one available complementary technique; latent class analysis (LCA; see discussion in <a href=\"#bib5\">Barban and Billari, 2012</a>). The fact is that SA does not accept continuous measurements or variables (e.g., wages or pension), indicating the nature of the analysis, which is not centering around on modeling the mean. There are other options for mean modeling, for example, trajectory analysis (see <a href=\"#bib20\">Nagin, 2005</a>; <a href=\"#bib27\">Salonen et al., 2019</a>).",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "In this paper, we introduce the key properties of SA and present some examples using dynamic microsimulation data. We also provide the programming code and a simulated dataset for those interested in experimenting with this technique in a freely available R environment.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s1",
+            "title": "1. Introduction",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "content": [
+                        {
+                            "text": "In SA, OMA is applied to longitudinal data. It can be used for modeling the heterogeneity of individual transitions measured longitudinally. The idea is to represent each individual longitudinal measurement by a sequence string. The string indicates the duration and order of states that an individual occupies. The measures can be, for example, months or years. Because there are numerous possible individual sequences, aggregation is needed. OMA is a technique often used to reduce the number of sequences.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "According to <a href=\"#bib19\">Mikolai and Lyons-Amos (2017)</a> OMA measures the dissimilarity between individual sequences by identifying similar pairs of sequences. Similarity is defined in terms of the number, order, and duration of states within sequences. The OMA algorithm calculates the similarity/dissimilarity between two sequences by taking into account three possible operations: replacement (one state is replaced by another), insertion (an additional state is added to the sequence), and deletion (a state is deleted from the sequence). The fewer operations needed to turn one sequence into the other, the more similar the two sequences are, and vice versa. Furthermore, a certain cost can be attached to each operation. Therefore, identifying the relative cost of all operations is critical in determining the similarity or dissimilarity between individual sequences. These steps of OMA require an ex ante definition by the researcher, with little objective measures of the correct specification. The results can be highly sensitive to these specifications (see <a href=\"#bib8\">Brzinsky-Fay and Kohler, 2010</a>). Finally, the distance between two sequences is defined by the minimum cost of the operations that are necessary to transform one sequence into the other (<a href=\"#bib4\">Abbott and Tsay, 2000</a>). The distances are recorded in a dissimilarity matrix. A more technical discussion on the details of SA and OMA are found in <a href=\"#bib28\">Studer and Ritschard (2014)</a>.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "<a href=\"#bib19\">Mikolai and Lyons-Amos (2017)</a> further define that, in order to find existing patterns in the data, hierarchical cluster analysis (HCA), or hierarchical clustering, is performed on the dissimilarity matrix. The main aim of the HCA is to minimize the within-cluster cluster distance by combining clusters hierarchically. The researcher needs to specify the number of clusters to be extracted from the data either heuristically (e.g., visually inspecting) or by using fit statistics. Once the clusters are determined, they can be described with respect to the variables (model states) required to create the clusters. The clusters can be used both as independent and dependent variables in further analyses. However, they should be used with caution, since there is no generally accepted definition of a cluster and therefore also a different clustering technique can easily yield to a completely different clustering structure.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "After performing OMA with equal, user-defined costs assigned to indel operations (i.e., insertion and deletion), individuals are allocated to clusters based on a distance measure (such as Ward\u2019s distance). Because the results can be sensitive to the chosen indel and substitution costs, it is good practice to perform sensitivity analyses with various indel costs (e.g., 0.5, 1.0 and 1.5), and to use both a constant substitution matrix as well as a matrix based on the frequency of transitions. The number of clusters can be assessed by two measures of average cluster linkage: the Calinski\u2013Harabasz pseudo-F index (<a href=\"#bib9\">Cali\u0144ski and Harabasz, 1974</a>) and the Duda\u2013Hart index (<a href=\"#bib12\">Duda et al., 2001</a>). These statistics help determine the optimal number of clusters by comparing the ratio of the within-cluster distances to the between-cluster distances. The Duda-Hart index could be preferred as it also produces a pseudo T-statistics. Once the optimal number of clusters is established, cluster assignment can be further applied as the response variable in a multinomial logistic regression model. For further discussion on clustering, see <a href=\"#bib7\">Brzinsky-Fay et al. (2006)</a>.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "This study demonstrates most of the above steps of SA. We analyze labor market transition sequences over a period of 16 years, from age 55 to 70. As an example, the sequence EEEEEEEUPPPPPOOO means that the individual was working and employed (E) for seven years, unemployed (U) for one year, drawing a partial old-age pension (P) for five years and, finally, on a full old-age pension (O) for three years. With a detailed microsimulation model, it is easy to see that there are several possible transition sequences, and few individuals experience identical ones. OMA is applied to aggregate sequences and to reduce the number of possible sequences. Clustering is also demonstrated, but without a detailed focus on the exact number of clusters.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s2-1",
+                    "title": "2.1. Modeling sequences",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "content": [
+                                {
+                                    "text": "SA is available in certain statistical software packages, such as R (<a href=\"#bib14\">Gabadinho et al., 2011</a>). Similar analysis possibilities are also found in Stata (<a href=\"#bib7\">Brzinsky-Fay et al., 2006</a>; <a href=\"#bib15\">Halpin, 2014</a>) and CHESA (<a href=\"#bib13\">Elzinga, 2007</a>).",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "In this study, the computations were carried out using the R software with an accompanying TraMineR application, a user-friendly and stable package for analyzing and visualizing life course sequences (see <a href=\"#bib14\">Gabadinho et al., 2011</a>). We also used another R package TraMineRextras by <a href=\"#bib26\">Ritschard et al. (2019)</a>, which provides some additional functions. The auxiliary package includes several functions that can be useful for microsimulation practitioners. Both R packages offer analysis and visualization tools for either state or event sequences. <a href=\"#appendix-1\">Appendix A.1</a> gives an example of the R programming code.",
+                                    "type": "paragraph"
+                                }
+                            ],
+                            "id": "s2-2-1",
+                            "title": "2.2.1. Statistical software",
+                            "type": "section"
+                        },
+                        {
+                            "content": [
+                                {
+                                    "text": "Due to individual visualizations of the sequences, like the sequence index plot (<a href=\"#fig1\">Figure 1</a>), there are limits to the number of observations that can be graphically displayed on a computer screen without blurring. It is possible to render thousands of individual transition sequences, but detailed information can get distorted. Therefore, it is good practice to take a small sample of the possibly high-frequency simulated dataset. <a href=\"#bib6\">Brzinsky-Fay (2014, p. <span class=\"page-number\">270</span>)</a> advises that, to show full information, the sequence index plot should contain 400 individuals at most. With a high-frequency sample, the TraMineR package automatically displays the most common sequences.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "assets": [
+                                        {
+                                            "id": "fig1",
+                                            "image": {
+                                                "alt": "",
+                                                "uri": "%iiif_uri%/00218%2Fijm-00218-fig001.tif",
+                                                "size": {
+                                                    "width": 1791,
+                                                    "height": 1149
+                                                },
+                                                "source": {
+                                                    "mediaType": "image/jpeg",
+                                                    "uri": "%iiif_uri%/00218%2Fijm-00218-fig001.tif/full/full/0/default.jpg",
+                                                    "filename": "ijm-00218-fig001.jpg"
+                                                }
+                                            },
+                                            "label": "Figure 1",
+                                            "title": "Sequence index plot of cohort born in 1970, individuals.",
+                                            "type": "image"
+                                        }
+                                    ],
+                                    "type": "figure"
+                                }
+                            ],
+                            "id": "s2-2-2",
+                            "title": "2.2.2. Overplotting",
+                            "type": "section"
+                        },
+                        {
+                            "content": [
+                                {
+                                    "text": "The sample can be clustered by using an optimal matching technique that is employed to compute the optimal matching distances, using substitution costs based on transition rates observed in the data. The clustering is done with the R package WeightedCluster, which includes some further options for clustering. There are six clustering methods for different applications. In this study we have used <a href=\"#bib33\">Ward (1963)</a> method to illustrate this functionality.",
+                                    "type": "paragraph"
+                                }
+                            ],
+                            "id": "s2-2-3",
+                            "title": "2.2.3. Clustering the sample",
+                            "type": "section"
+                        }
+                    ],
+                    "id": "s2-2",
+                    "title": "2.2. User choices",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "As was demonstrated in <a href=\"#bib27\">Salonen et al. (2019)</a>, trajectory analysis (TA) can be useful in illustrating dynamic microsimulation outcomes. Which technique \u2013 SA or TA \u2013 is preferred if both give similar possibilities in visualizing simulation model transitions and testing results? Although both techniques can be used to study similar questions, they differ in many respects.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "TA has its roots in finite mixture modeling, which gives a sound statistical foundation for dividing the sample into sub-populations. Since finite mixture modeling is based on well-established statistical theory, statistical inferential tools such as information criteria BIC can be used to select the correct number of latent sub-populations. SA on the other hand uses a hierarchical clustering approach to subset the sample. The technique does not include exact objective criteria to select the correct number of sub-populations. In fact, selecting the number of sub-populations in SA is slightly more heuristic.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The range of possible probability distributions is wide in TA. It can handle many kinds of distributions: normal distribution, but also other members of the exponential family are in frequent use, among others. In SA, the analytical focus is on nominal outcomes. In order to use it, the outcome of interest must be a specifically nominal variable or transformed into such. Another issue related to the nature of the outcomes is related to the interleaving of states. In typical univariate TA, one outcome (e.g. employed) is analyzed at a time. However, multivariate TA modeling allows several outcomes to be analyzed simultaneously (e.g. employed, studying, unemployed, on sick leave). In SA, the question of interleaving states is more complicated. The obvious practical approach then is to define an exact unambiguous state for every relevant labor market state that an individual can have (employed, studying, employed while studying, etc.) during a single observation period or time point. This can potentially lead to a range of classes.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "In essence, TA is about modeling the mean, where a regression mean model is fitted into sub-populations. All the common statistical properties of the regression model are available for further analysis, such as model estimates and confidence limits. There are also further possibilities in analyzing the group probabilities using multinomial logistic regression. SA on the other hand focuses on grouping the similar individual transition sequences, without concepts of mean modeling.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Dynamic microsimulation sets the landscape for longitudinal study-designs. The two techniques differ in this respect. TA grouping and mean trajectories are influenced by the number of longitudinal measurements and number of individuals in the sample. For example, the information content of a short follow-up is different compared to in a long follow-up (e.g. working life), affecting the trajectory solution. SA shows the individual transition sequences in detail regardless of follow-up time. It is further noted that in SA, the clustering is made hierarchically, that is, if the number of clusters is increased from k to k+1, one of the k clusters is split into two parts. In TA, when increasing the number of clusters a new solution is calculated and the solution is not strictly hierarchical.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Due to visualization of results, SA is in practice limited to a relatively small sample of hundreds of observations. TA on the other hand can easily handle large datasets, though a high-frequency dataset including millions of individuals is not recommended due to model solving issues and processing time. The precondition for using both methods is good sample design, for example simple random sampling.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Regarding the model validation or model testing, both techniques can reveal possible misspecification of the microsimulation model. TA gives overall developmental information even in small sub-groups, while SA gives information that is much more visually detailed.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s2-3",
+                    "title": "2.3. Sequence analysis compared to trajectory analysis",
+                    "type": "section"
+                }
+            ],
+            "id": "s2",
+            "title": "2. Sequence analysis",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "ELSI is a dynamic microsimulation model (<a href=\"#bib29\">Tikanm\u00e4ki et al., 2014</a>; <a href=\"#bib32\">Tikanm\u00e4ki and Lappo, 2020</a>; <a href=\"#bib11\">Dekkers and Van den Bosch, 2016</a>) that is used to assess the development of the statutory pensions in Finland over years 2012\u20132085. The dynamic ageing model has been developed and maintained at the Finnish Centre for Pensions.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The ELSI model has been designed to assess future earnings-related and national pensions. An example of its use is found in <a href=\"#bib31\">Tikanm\u00e4ki et al. (2019)</a>. The model can also be used to analyze changes in a pension system and in the underlying demographic or macroeconomic conditions. Among other things, the ELSI model has been applied to assess the distributional effects of the Finnish pension reform in 2017 (<a href=\"#bib30\">Tikanm\u00e4ki et al., 2015</a>).",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The Finnish pension system is mainly based on pension rights accrued on the basis of life-time earnings. The ELSI model is based on individual-level information and calculations of pensions received in one\u2019s own right. The model comprises both retirees and those still working. It simulates each individual\u2019s adult working life, that is, labor market transitions before retirement.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Most of the material is drawn from administrative records maintained by the Finnish Centre for Pensions and the Social Insurance Institution of Finland. Information on educational level from Statistics Finland is also added to the model. The ELSI model runs total Finnish adult population. Deceased people remain in the model and a new cohort as well as new immigrants enter the model each year. Consequently, the population increases over the course of the simulation.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The ELSI model has a modular structure. There are no feedback loops from later to earlier modules. The simulation starts from the population module, followed by the earnings module, the pension module, and the taxation module. The final module (the results module) brings the results together.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The population module has several functions. It simulates population and labor market transitions as well as changes in education. The population module is based on transition probabilities that are estimated from historical data for 2010\u20132017. The module also uses Statistics Finland\u2019s official population projection to replicate general trends in the sample population. Transition probabilities, with one-year time intervals, are by and large deterministic, that is, based on exogenous information.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "In the population module, we simulate a new population or labor market state for each individual based on transition probabilities. There are 21 states in the model.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The labor market transitions are of the Markovian type, which means that the transition probabilities are based on the current state rather than former history. However, it is possible to add memory to a Markov process by extending the state space. For instance, there are three different active states in ELSI: one for those employed in the first year, another for those employed in the second year and a third one for the rest. Hence, unemployment risks may be higher for those who do not yet have an established labor market position. Other exceptions to the Markov principle are described in detail in <a href=\"#bib32\">Tikanm\u00e4ki and Lappo (2020)</a>.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Education is also simulated in the population module. Post-basic education dynamics is based on age and gender-specific transition probabilities. Changes in education level are possible at any age, although they are not very common after the age of 35.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The transition probabilities are updated each simulation year using the population level information produced by the semi-aggregated long-term projection (LTP) model (see <a href=\"#bib31\">Tikanm\u00e4ki et al., 2019</a>). There is thus a simple alignment of microsimulation outcomes to macro level aggregates (see <a href=\"#bib32\">Tikanm\u00e4ki and Lappo, 2020</a>).",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "In a typical simulation, the population module is followed by the earnings module, the earnings-related pension module, the national pension module and the income taxation module. In this study, we use the results of the population module only. Subsequent modules are described in detail in <a href=\"#bib32\">Tikanm\u00e4ki and Lappo (2020)</a>.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "After the simulation run, the results are analyzed in the results module, which calculates the aggregate results over the course of the simulation, based on individual-level outcomes. Measures of the distribution (mean, percentage points, Gini coefficient) of pensions can be produced by ex ante classifiers such as gender, level of education and year of birth. Aggregate measures on the duration of working life and partition of the life course into active and inactive stages are also calculated in the results module. The module collects individual-level output data containing information on, for example, labor market state, wage earnings, residence, education level, pension earnings, pension benefits, working life and pension accrual. Therefore, the material is also available for the statistical analysis illustrated in this study. The proposed statistical technique can be used with many other outcomes, as well.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "In the following analysis we use simulated individual-level data and illustrate the labor market transitions near retirement. With SA, it would be possible to analyze several cohorts at the same time, as long as the data is longitudinal. As similar longitudinal panel data is produced in many other dynamic microsimulation models, the proposed technique could be interesting also for other microsimulation practitioners.",
+                    "type": "paragraph"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "The individual labor market transitions over the simulation period 2012\u20132085 are stored in the output data. This data can be used to construct the life course for a range of cohorts. Initially the model included 21 labor market states, which were aggregated to 12 states for this study. <a href=\"#table1\">Table 1</a> shows the states included in the subsequent analysis.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "footnotes": [
+                                        {
+                                            "text": [
+                                                {
+                                                    "text": "<img src=\"http://web:8082/00218/ijm-00218-inline001.jpg\"/>",
+                                                    "type": "paragraph"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "text": [
+                                                {
+                                                    "text": "Notes. The Non-aggregated model states are given in the <a href=\"#appendix-1\">Appendix A.2</a>.",
+                                                    "type": "paragraph"
+                                                }
+                                            ]
+                                        }
+                                    ],
+                                    "id": "table1",
+                                    "label": "Table 1",
+                                    "tables": [
+                                        "<table>\n<thead>\n<tr>\n<th align=\"left\">Labor market state</th>\n<th align=\"left\">ELSI state(s)</th>\n<th align=\"left\">Abb.</th>\n<th align=\"left\">Substantial contents</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td align=\"left\">Basic pension</td>\n<td align=\"left\">21,22</td>\n<td align=\"left\">bap</td>\n<td align=\"left\">National pension only</td>\n</tr>\n<tr>\n<td align=\"left\">Deceased</td>\n<td align=\"left\">12</td>\n<td align=\"left\">DEC</td>\n<td align=\"left\">Deceased people remain in the model population until the end of the simulation period</td>\n</tr>\n<tr>\n<td align=\"left\">Early OA Pension</td>\n<td align=\"left\">7</td>\n<td align=\"left\">eop</td>\n<td align=\"left\">Early old-age pension, retirement age adjusted for life-expectancy</td>\n</tr>\n<tr>\n<td align=\"left\">Employed</td>\n<td align=\"left\">1,10,11,15,16</td>\n<td align=\"left\">EMP</td>\n<td align=\"left\">Full or part time employed</td>\n</tr>\n<tr>\n<td align=\"left\">Full D Pension</td>\n<td align=\"left\">9,5,17</td>\n<td align=\"left\">fdp</td>\n<td align=\"left\">Full disability pension, leading to old-age pension</td>\n</tr>\n<tr>\n<td align=\"left\">Inactive</td>\n<td align=\"left\">4,13,19</td>\n<td align=\"left\">INA</td>\n<td align=\"left\">Outside the labor force</td>\n</tr>\n<tr>\n<td align=\"left\">Misfits</td>\n<td align=\"left\">20</td>\n<td align=\"left\">MIS</td>\n<td align=\"left\">Permanently outside the labor force</td>\n</tr>\n<tr>\n<td align=\"left\">NA</td>\n<td align=\"left\">\u2018\u2019</td>\n<td align=\"left\">NA</td>\n<td align=\"left\">Technical state for sequence analysis, not a labor market state in ELSI</td>\n</tr>\n<tr>\n<td align=\"left\">OA Pension</td>\n<td align=\"left\">8</td>\n<td align=\"left\">oap</td>\n<td align=\"left\">Old-age pension, retirement age adjusted for life-expectancy</td>\n</tr>\n<tr>\n<td align=\"left\">Part D Pension</td>\n<td align=\"left\">18</td>\n<td align=\"left\">pdp</td>\n<td align=\"left\">Partial disability pension</td>\n</tr>\n<tr>\n<td align=\"left\">Unemployed</td>\n<td align=\"left\">2,3</td>\n<td align=\"left\">UNE</td>\n<td align=\"left\">Unemployed</td>\n</tr>\n<tr>\n<td align=\"left\">YoS Pension</td>\n<td align=\"left\">6</td>\n<td align=\"left\">yos</td>\n<td align=\"left\">Years-of-service pension. Available for individuals aged 63 who have had a long and strenuous working life. No subjective choice.</td>\n</tr>\n</tbody>\n</table>"
+                                    ],
+                                    "title": "Labor market states and corresponding color codes in figures.",
+                                    "type": "table"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "text": "In this study, we focus on cohorts born in 1970, 1980, 1990 and 2000. For illustrative purposes we have obtained a subset of around 400 individuals per birth cohort by simple random sampling. We could illustrate various different phenomena over the life course, such as early career labor market attachment by gender and level of education, or labor market integration of simulated new individuals, such as immigrants. However, in this study we focus on the life stages near retirement. This late stage of a lifespan is modeled in detail in ELSI and is thus a natural and substantially interesting example.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The usual way to study model transitions is to count and inspect the distribution of cases in different model states at a certain age. A typical labor market state distribution by age, which is usually used to visually validate model transitions, is given in <a href=\"#appendix-1\">Appendix A.3</a>. Such tables are laborious to work with, especially with several cohorts. In addition, the tables do not illustrate sub-populations within a cohort in detail.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s3-1",
+                    "title": "3.1. Labor market transitions in ELSI",
+                    "type": "section"
+                }
+            ],
+            "id": "s3",
+            "title": "3. The ELSI microsimulation MODEL",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "This section shows how to illustrate labor market transitions near retirement in simulated data. Earlier stages of the life course could be visualized, as well, but retirement is the most carefully modeled stage in ELSI, and thus an interesting case to demonstrate the proposed technique. SA can be visualized using several measures. For microsimulation practitioners interested in visualizing labor market transitions and validating model transitions in general, some useful functionalities are available. The programming statements yielding the following illustrations are given in <a href=\"#appendix-1\">Appendix A.1</a>.",
+                    "type": "paragraph"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "The first analysis shows the individual transitions (the tiny horizontal line in <a href=\"#fig1\">Figure 1</a>). <a href=\"#fig1\">Figure 1</a> has three dimensions: individual, age and labor market status. The sequence index plot shows every individual as long as the total number of individuals (vertical axis) does not exceed 400. In this example, the number of individuals is 376, for whom the plot visualizes the true transitions from age 55 to 70 (horizontal axis). The individuals are sorted according to their labor market state at age 55. It would also be possible to sort individuals at age 70, which would yield a slightly different, retrospective view of the transition patterns.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "<a href=\"#fig1\">Figure 1</a> shows several things. First, the flexible retirement age for the cohort born in 1970 is 66 years; working is possible until age 69. We see that retirement at the earliest possible age is common, yet we also see some individuals postponing retirement because of positive economic incentives. Second, full employment is the mainstream state at age 55, but after that, there are several possible transition paths. Unemployment, sickness spells and other career breaks become more common before retirement. Retirement on a disability pension also increases after age 55. Along with disability, the share of the deceased increases by age. Finally, <a href=\"#fig1\">Figure 1</a> also reveals careers ending in unemployment some years before retirement (a persistent feature of the Finnish labor market.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "For microsimulation practitioners, <a href=\"#fig1\">Figure 1</a> provides a quick overview of the actual transitions. It can be used to visually validate model assumptions and parameters. In validating ELSI, the share of the inactives after reaching the retirement age was discussed. However, the proportion is due to the handling of the model population and of the people living outside the country for whom the earnings-related old-age pension is paid at the latest possible age. This is partly a technical assumption and partly an empirical fact, as illustrated by SA.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s4-1",
+                    "title": "4.1. Sequence index plot",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "The maximum number of sequences is defined by the number of individuals in a given cohort. The optimal matching technique uses aggregates and joins individuals into typical sequences. For example, the transition sequences of the cohort born in 1970 can be classified into 24 groups with more than two cases in each group. <a href=\"#table2\">Table 2</a> shows the five most common sequences and their shares in the sample. The interpretation of the sequences requires clarification. The most frequent sequence (15.4%) for the 1970 cohort is that the individuals (58 cases) are employed for 11 years before retiring on an old-age pension for 5 years, so technically, the sequence is EEEEEEEEEEEOOOOO.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "table2",
+                                    "label": "Table 2",
+                                    "tables": [
+                                        "<table>\n<thead>\n<tr>\n<th align=\"left\">Transition sequence</th>\n<th align=\"left\">Count</th>\n<th align=\"left\">%</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td align=\"left\" colspan=\"3\">1970</td>\n</tr>\n<tr>\n<td align=\"left\">\u2003EMP/11 - oap/5</td>\n<td align=\"left\">58</td>\n<td align=\"left\">15.4</td>\n</tr>\n<tr>\n<td align=\"left\">\u2003INA/15 - oap/1</td>\n<td align=\"left\">23</td>\n<td align=\"left\">6.1</td>\n</tr>\n<tr>\n<td align=\"left\">\u2003EMP/12 - oap/4</td>\n<td align=\"left\">22</td>\n<td align=\"left\">5.9</td>\n</tr>\n<tr>\n<td align=\"left\">\u2003DEC/16</td>\n<td align=\"left\">13</td>\n<td align=\"left\">3.5</td>\n</tr>\n<tr>\n<td align=\"left\">\u2003EMP/13 - oap/3</td>\n<td align=\"left\">13</td>\n<td align=\"left\">3.5</td>\n</tr>\n<tr>\n<td align=\"left\" colspan=\"3\">1980</td>\n</tr>\n<tr>\n<td align=\"left\">\u2003EMP/12 - oap/4</td>\n<td align=\"left\">57</td>\n<td align=\"left\">15.4</td>\n</tr>\n<tr>\n<td align=\"left\">\u2003INA/15 - oap/1</td>\n<td align=\"left\">25</td>\n<td align=\"left\">6.8</td>\n</tr>\n<tr>\n<td align=\"left\">\u2003DEC/16</td>\n<td align=\"left\">16</td>\n<td align=\"left\">4.3</td>\n</tr>\n<tr>\n<td align=\"left\">\u2003EMP/13 - oap/3</td>\n<td align=\"left\">14</td>\n<td align=\"left\">3.8</td>\n</tr>\n<tr>\n<td align=\"left\">\u2003fdp/12 - oap/4</td>\n<td align=\"left\">11</td>\n<td align=\"left\">3.0</td>\n</tr>\n<tr>\n<td align=\"left\" colspan=\"3\">1990</td>\n</tr>\n<tr>\n<td align=\"left\">\u2003EMP/13 - oap/3</td>\n<td align=\"left\">71</td>\n<td align=\"left\">15.5</td>\n</tr>\n<tr>\n<td align=\"left\">\u2003INA/15 - oap/1</td>\n<td align=\"left\">35</td>\n<td align=\"left\">7.6</td>\n</tr>\n<tr>\n<td align=\"left\">\u2003EMP/14 - oap/2</td>\n<td align=\"left\">28</td>\n<td align=\"left\">6.1</td>\n</tr>\n<tr>\n<td align=\"left\">\u2003EMP/15 - oap/1</td>\n<td align=\"left\">14</td>\n<td align=\"left\">3.1</td>\n</tr>\n<tr>\n<td align=\"left\">\u2003fdp/13 - oap/3</td>\n<td align=\"left\">13</td>\n<td align=\"left\">2.8</td>\n</tr>\n<tr>\n<td align=\"left\" colspan=\"3\">2000</td>\n</tr>\n<tr>\n<td align=\"left\">\u2003EMP/13 - oap/3</td>\n<td align=\"left\">54</td>\n<td align=\"left\">14.0</td>\n</tr>\n<tr>\n<td align=\"left\">\u2003INA/15 - oap/1</td>\n<td align=\"left\">26</td>\n<td align=\"left\">6.7</td>\n</tr>\n<tr>\n<td align=\"left\">\u2003EMP/14 - oap/2</td>\n<td align=\"left\">18</td>\n<td align=\"left\">4.7</td>\n</tr>\n<tr>\n<td align=\"left\">\u2003EMP/15 - oap/1</td>\n<td align=\"left\">18</td>\n<td align=\"left\">4.7</td>\n</tr>\n<tr>\n<td align=\"left\">\u2003fdp/13 - oap/3</td>\n<td align=\"left\">10</td>\n<td align=\"left\">2.6</td>\n</tr>\n</tbody>\n</table>"
+                                    ],
+                                    "title": "Five most common transition sequences of cohorts born in 1970, 1980, 1990 and 2000, individuals and shares.",
+                                    "type": "table"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "text": "<a href=\"#table2\">Table 2</a> illuminates a number of substantial things. First, a transition from employment into old-age retirement is by far the most common sequence for the selected cohorts. State counts further indicate that the 1970 cohort will retire on an old-age pension at age 66, and subsequent cohorts one to two years later, as it should be according to the assumptions of the ELSI model. Second, the second most common sequence among the selected cohorts collects the inactive-to-old-age pension transitions. Finally, the sequences of later old-age retirement are also becoming more common among younger cohorts.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "For microsimulation practitioners, <a href=\"#table2\">Table 2</a> offers a more aggregated view of the model transition classes. A good way to validate simulated model transitions would be to look at a broader list of transition sequences of selected cohorts (or other classes) in order to check the shares and, thus, the logic of the model transitions.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s4-2",
+                    "title": "4.2. Most common transitions",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "Transition rates between states give numerical estimates of model transitions. <a href=\"#table3\">Table 3</a> shows a matrix where each row gives a transition distribution from the associated original state in t to the states in t+1 (the figures add up to one in each row). The alphabets are explained in <a href=\"#table1\">Table 1</a>.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "table3",
+                                    "label": "Table 3",
+                                    "tables": [
+                                        "<table>\n<thead>\n<tr>\n<th align=\"left\"/>\n<th align=\"left\" colspan=\"12\">To</th>\n</tr>\n<tr>\n<th align=\"left\">From</th>\n<th align=\"left\">bap</th>\n<th align=\"left\">DEC</th>\n<th align=\"left\">eop</th>\n<th align=\"left\">EMP</th>\n<th align=\"left\">fdp</th>\n<th align=\"left\">INA</th>\n<th align=\"left\">MIS</th>\n<th align=\"left\">NA</th>\n<th align=\"left\">oap</th>\n<th align=\"left\">pdp</th>\n<th align=\"left\">UNE</th>\n<th align=\"left\">yos</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td align=\"left\">bap</td>\n<td align=\"left\">97.0</td>\n<td align=\"left\">1.5</td>\n<td align=\"left\">0.0</td>\n<td align=\"left\">0.0</td>\n<td align=\"left\">0.0</td>\n<td align=\"left\">0.0</td>\n<td align=\"left\">1.5</td>\n<td align=\"left\">0.0</td>\n<td align=\"left\">0.0</td>\n<td align=\"left\">0.0</td>\n<td align=\"left\">0.0</td>\n<td align=\"left\">0.0</td>\n</tr>\n<tr>\n<td align=\"left\">DEC</td>\n<td align=\"left\">0.0</td>\n<td align=\"left\">100.0</td>\n<td align=\"left\">0.0</td>\n<td align=\"left\">0.0</td>\n<td align=\"left\">0.0</td>\n<td align=\"left\">0.0</td>\n<td align=\"left\">0.0</td>\n<td align=\"left\">0.0</td>\n<td align=\"left\">0.0</td>\n<td align=\"left\">0.0</td>\n<td align=\"left\">0.0</td>\n<td align=\"left\">0.0</td>\n</tr>\n<tr>\n<td align=\"left\">eop</td>\n<td align=\"left\">0.0</td>\n<td align=\"left\">0.0</td>\n<td align=\"left\">72.7</td>\n<td align=\"left\">0.0</td>\n<td align=\"left\">0.0</td>\n<td align=\"left\">0.0</td>\n<td align=\"left\">0.0</td>\n<td align=\"left\">0.0</td>\n<td align=\"left\">27.3</td>\n<td align=\"left\">0.0</td>\n<td align=\"left\">0.0</td>\n<td align=\"left\">0.0</td>\n</tr>\n<tr>\n<td align=\"left\">EMP</td>\n<td align=\"left\">0.0</td>\n<td align=\"left\">0.3</td>\n<td align=\"left\">0.2</td>\n<td align=\"left\">87.0</td>\n<td align=\"left\">0.4</td>\n<td align=\"left\">4.0</td>\n<td align=\"left\">0.0</td>\n<td align=\"left\">0.0</td>\n<td align=\"left\">5.2</td>\n<td align=\"left\">0.2</td>\n<td align=\"left\">2.4</td>\n<td align=\"left\">0.3</td>\n</tr>\n<tr>\n<td align=\"left\">fdp</td>\n<td align=\"left\">0.0</td>\n<td align=\"left\">1.1</td>\n<td align=\"left\">0.0</td>\n<td align=\"left\">0.8</td>\n<td align=\"left\">82.1</td>\n<td align=\"left\">0.3</td>\n<td align=\"left\">0.0</td>\n<td align=\"left\">0.0</td>\n<td align=\"left\">15.4</td>\n<td align=\"left\">0.3</td>\n<td align=\"left\">0.0</td>\n<td align=\"left\">0.0</td>\n</tr>\n<tr>\n<td align=\"left\">INA</td>\n<td align=\"left\">0.0</td>\n<td align=\"left\">0.5</td>\n<td align=\"left\">0.1</td>\n<td align=\"left\">1.2</td>\n<td align=\"left\">5.3</td>\n<td align=\"left\">77.9</td>\n<td align=\"left\">0.0</td>\n<td align=\"left\">0.0</td>\n<td align=\"left\">11.9</td>\n<td align=\"left\">0.1</td>\n<td align=\"left\">2.8</td>\n<td align=\"left\">0.0</td>\n</tr>\n<tr>\n<td align=\"left\">MIS</td>\n<td align=\"left\">16.7</td>\n<td align=\"left\">6.7</td>\n<td align=\"left\">0.0</td>\n<td align=\"left\">0.0</td>\n<td align=\"left\">0.0</td>\n<td align=\"left\">0.0</td>\n<td align=\"left\">73.3</td>\n<td align=\"left\">0.0</td>\n<td align=\"left\">0.0</td>\n<td align=\"left\">0.0</td>\n<td align=\"left\">3.3</td>\n<td align=\"left\">0.0</td>\n</tr>\n<tr>\n<td align=\"left\">NA</td>\n<td align=\"left\">0.0</td>\n<td align=\"left\">2.6</td>\n<td align=\"left\">0.0</td>\n<td align=\"left\">5.1</td>\n<td align=\"left\">0.0</td>\n<td align=\"left\">0.0</td>\n<td align=\"left\">10.3</td>\n<td align=\"left\">82.1</td>\n<td align=\"left\">0.0</td>\n<td align=\"left\">0.0</td>\n<td align=\"left\">0.0</td>\n<td align=\"left\">0.0</td>\n</tr>\n<tr>\n<td align=\"left\">oap</td>\n<td align=\"left\">0.0</td>\n<td align=\"left\">0.5</td>\n<td align=\"left\">0.0</td>\n<td align=\"left\">0.0</td>\n<td align=\"left\">0.0</td>\n<td align=\"left\">0.0</td>\n<td align=\"left\">0.0</td>\n<td align=\"left\">0.0</td>\n<td align=\"left\">99.5</td>\n<td align=\"left\">0.0</td>\n<td align=\"left\">0.0</td>\n<td align=\"left\">0.0</td>\n</tr>\n<tr>\n<td align=\"left\">pdp</td>\n<td align=\"left\">0.0</td>\n<td align=\"left\">0.0</td>\n<td align=\"left\">0.0</td>\n<td align=\"left\">0.0</td>\n<td align=\"left\">4.8</td>\n<td align=\"left\">2.4</td>\n<td align=\"left\">0.0</td>\n<td align=\"left\">0.0</td>\n<td align=\"left\">16.7</td>\n<td align=\"left\">76.2</td>\n<td align=\"left\">0.0</td>\n<td align=\"left\">0.0</td>\n</tr>\n<tr>\n<td align=\"left\">UNE</td>\n<td align=\"left\">0.0</td>\n<td align=\"left\">0.6</td>\n<td align=\"left\">1.6</td>\n<td align=\"left\">14.9</td>\n<td align=\"left\">0.0</td>\n<td align=\"left\">6.3</td>\n<td align=\"left\">0.3</td>\n<td align=\"left\">0.0</td>\n<td align=\"left\">10.8</td>\n<td align=\"left\">0.0</td>\n<td align=\"left\">65.4</td>\n<td align=\"left\">0.0</td>\n</tr>\n<tr>\n<td align=\"left\">yos</td>\n<td align=\"left\">0.0</td>\n<td align=\"left\">0.0</td>\n<td align=\"left\">0.0</td>\n<td align=\"left\">0.0</td>\n<td align=\"left\">0.0</td>\n<td align=\"left\">0.0</td>\n<td align=\"left\">0.0</td>\n<td align=\"left\">0.0</td>\n<td align=\"left\">50.0</td>\n<td align=\"left\">0.0</td>\n<td align=\"left\">0.0</td>\n<td align=\"left\">50.0</td>\n</tr>\n</tbody>\n</table>"
+                                    ],
+                                    "title": "Transition rates of cohort born in 1970, per cent.",
+                                    "type": "table"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "text": "First, <a href=\"#table3\">Table 3</a> implies that transition probabilities within the labor market state (diagonal elements) have values close to one, meaning that an individual in a given state at time t has a great probability to remain in the same state at time t+1. For example, transitions from bap to bap (drawing basic pension) over study ages are highly stable (97.0%), whereas transitions from UNE to UNE (staying unemployed) indicate higher instability (65.4%). The instability of transitions from EMP to EMP (staying employed) is 87.0%, indicating the various risks around the employed. Second, transition probabilities between states are also displayed in <a href=\"#table3\">Table 3</a>. Although a transition from UNE to UNE is the most likely one, there are also other possible transitions, such as from UNE to EMP (14.9%), from UNE to oap (10.8%) and from UNE to INA (6.3%). The probability of staying employed is high, yet there are notable transition probabilities from EMP to oap (5.2%), from EMP to INA (4.0%) and from EMP to UNE (2.4%).",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "In validating microsimulation model transitions, similar tables could be useful in comparing simulated cohorts.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s4-3",
+                    "title": "4.3. Transition rates",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "The state distribution plot (or status proportion plot) offers another perspective on model states. The plot can be drawn by any interesting ex ante classification rule to make substantial comparisons within a cohort. <a href=\"#fig2\">Figure 2</a> show the shares of men (44.9%) and women (55.1%) in the sample. In essence, the plot shows the state distribution, that is, the share of statuses by time points (age). Age is shown on the horizontal axis, whereas the vertical axis is defined by a percentage scale. <a href=\"#fig2\">Figure 2</a> shows the same cohort and individuals as <a href=\"#fig1\">Figure 1</a>, but by gender. Beside gender, <a href=\"#fig2\">Figure 2</a> has two additional dimensions: age and labor market status. Here are not clustered and transition sequences are not part of this perspective.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "fig2",
+                                    "image": {
+                                        "alt": "",
+                                        "uri": "%iiif_uri%/00218%2Fijm-00218-fig002.tif",
+                                        "size": {
+                                            "width": 1791,
+                                            "height": 1324
+                                        },
+                                        "source": {
+                                            "mediaType": "image/jpeg",
+                                            "uri": "%iiif_uri%/00218%2Fijm-00218-fig002.tif/full/full/0/default.jpg",
+                                            "filename": "ijm-00218-fig002.jpg"
+                                        }
+                                    },
+                                    "label": "Figure 2",
+                                    "title": "State distribution plot for the 1970 cohort by gender, per cent.",
+                                    "type": "image"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "text": "<a href=\"#fig2\">Figure 2</a> shows that the share of employed at age 55 is relatively high. The share is approximately 80 per cent for women and slightly smaller, about 65 per cent, for men. At age 66 (the retirement age), about 60 per cent of the men and women retire. At age 70, about 80 per cent of the men draw an old-age pension, 16 per cent are deceased and 4 per cent draw a national pension. For women, the shares are different. About 92 per cent draw an old-age pension, 7 per cent are deceased and about one per cent draw a national pension. The gender difference in the mortality assumption is visible here as the share of the deceased is greater already at age 55. <a href=\"#fig2\">Figure 2</a> also shows the increasing shares of disability pensioners with rising age.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "For microsimulation practitioners the state distribution plot offers similar possibilities to validate model transitions as does <a href=\"#tableA3\">Appendix table A.3</a>. The share of cases in different model states at a given age can be compared to auxiliary information sources.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s4-4",
+                    "title": "4.4. State distribution plot",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "A useful measure in comparing classes such as gender or level of education is the mean time spent in each state. <a href=\"#fig3\">Figure 3</a> shows the mean estimates by education. The dataset is split by the level of education. One group consists of individuals with at least a secondary education (Basic or Secondary ed.), and another group consists of people with a higher-level education (Low or High univ.). There are slightly more people with a lower-level education (54.5%) than a higher-level education (45.5%).",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "fig3",
+                                    "image": {
+                                        "alt": "",
+                                        "uri": "%iiif_uri%/00218%2Fijm-00218-fig003.tif",
+                                        "size": {
+                                            "width": 1791,
+                                            "height": 1416
+                                        },
+                                        "source": {
+                                            "mediaType": "image/jpeg",
+                                            "uri": "%iiif_uri%/00218%2Fijm-00218-fig003.tif/full/full/0/default.jpg",
+                                            "filename": "ijm-00218-fig003.jpg"
+                                        }
+                                    },
+                                    "label": "Figure 3",
+                                    "title": "Mean time in state for 1970 cohort by education, years.",
+                                    "type": "image"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "text": "As expected, the employment attachment is stronger among the highly educated who have more than eight years of employed time (EMP). For those with a lower-level education the employed time is under six years. As a result, those with a lower-level education spend more time on a full disability pension (fdp) and as inactive (INA).",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s4-5",
+                    "title": "4.5. Mean time in state",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "The aforementioned sequence aggregation is preliminary clustering. The sample can be divided into sub-groups. To make a typology of the transition sequences, a Ward hierarchical clustering of the sequences from the optimal matching distances are made and for each individual sequence, the cluster membership of the four-group solution is retrieved. Naturally other groupings are possible, as well as a different number of clusters.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The clustering makes it possible to focus on the possible latent groups within the sample. The clustering could also be useful in illustrating substantial topics. In the following, we have named the clusters heuristically. <a href=\"#fig4\">Figure 4</a> shows that the largest cluster (Employed 72.3%) consists mainly of those whose employment is strong when approaching retirement. There are two clusters of equals sizes. One consists of the deceased and individuals drawing a basic pension only (Deceased 10.9%) and another of the inactives (Inactives 10.1%). The smallest cluster (Disabled 6.6%) consists of cases with a disability pension before the old-age pension.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "fig4",
+                                    "image": {
+                                        "alt": "",
+                                        "uri": "%iiif_uri%/00218%2Fijm-00218-fig004.tif",
+                                        "size": {
+                                            "width": 1791,
+                                            "height": 1046
+                                        },
+                                        "source": {
+                                            "mediaType": "image/jpeg",
+                                            "uri": "%iiif_uri%/00218%2Fijm-00218-fig004.tif/full/full/0/default.jpg",
+                                            "filename": "ijm-00218-fig004.jpg"
+                                        }
+                                    },
+                                    "label": "Figure 4",
+                                    "title": "Clustering transition sequences of cohort born 1970.",
+                                    "type": "image"
+                                }
+                            ],
+                            "type": "figure"
+                        }
+                    ],
+                    "id": "s4-6",
+                    "title": "4.6. Clustering of the sample",
+                    "type": "section"
+                }
+            ],
+            "id": "s4",
+            "title": "4. Transition sequences in microsimulation",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "Trajectory analysis is a natural statistical reference point for sequence analysis, but what added value does SA provide compared to TA? As was shown in chapter 4, SA is a technique that can illuminate data contents such as model transitions in great detail. On the other hand, TA is commonly used in identifying latent sub-groups in sample and visualizing mean developments in outcome(s). Next, we will show how TA can be used to analyze the same labor market transition data.",
+                    "type": "paragraph"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "Following the practices in <a href=\"#bib27\">Salonen et al. (2019)</a>, a TA was done for analyzing employment near old-age retirement for a cohort born in 2000. Using the example data (findata) and transforming the outcome variable (EMP transformed into binary variable: 1=Employed, 0=Not employed) and independent variables slightly, a univariate TA can be done. Selecting the number of sub-groups using BIC criterion (k=2 to 6: -2316.8, -1980.4, 1888.8, 1832.7 and -<span class=\"underline\">1819.2</span>) indicates that a six-group solution yields the best statistical model fit. By subjective evaluation of the solution, the results are reasonable. <a href=\"#fig5\">Figure 5</a> shows the employment trajectories, that is, the group averages of six sub-groups. We can see that there are two groups with sizes 27% and 7% with relatively high and stable probabilities of employment until old-age retirement. There are also two groups with sizes 11% and 24% with gradually decreasing probability of employment with age. Finally, there are groups with sizes 25% and 7% with persistently low probability of employment.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "fig5",
+                                    "image": {
+                                        "alt": "",
+                                        "uri": "%iiif_uri%/00218%2Fijm-00218-fig005.tif",
+                                        "size": {
+                                            "width": 1102,
+                                            "height": 644
+                                        },
+                                        "source": {
+                                            "mediaType": "image/jpeg",
+                                            "uri": "%iiif_uri%/00218%2Fijm-00218-fig005.tif/full/full/0/default.jpg",
+                                            "filename": "ijm-00218-fig005.jpg"
+                                        }
+                                    },
+                                    "label": "Figure 5",
+                                    "title": "Employment trajectories of cohort born in 2000 (k=6). Dotted line indicates old-age retirement age.",
+                                    "type": "image"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "text": "TA is most useful in this kind of analysis, focusing on one or just a couple of analysis variables. The analysis reveals the latent groups and associated developmental trajectories. It is possible to formulate a multivariate TA (e.g. <a href=\"#bib21\">Nagin et al., 2018</a>; <a href=\"#bib22\">Nummi et al., 2017</a>) to analyze several outcomes simultaneously. However, this kind of analysis was not successful with the available measures. Furthermore, with TA it would be possible to analyze the group composition and even model factors affecting group membership.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "In analyzing model transitions, SA gives more detailed information (at individual level) compared to TA. SA also captures a range of model states in the figures (12 in the above examples). SA also provides interesting additional measures, as was shown in chapter 4, which are lacking in TA. If detailed individual-level information is not necessary, TA could be more useful with certain outcomes. For example, focusing on monetary measures, such as wages and pensions, could better be analyzed with TA. In addition to monetary measures, the TA can also be used to illuminate developmental trajectories in nominal variables such as level of education.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s5-1",
+                    "title": "5.1. Modeling developmental trajectories",
+                    "type": "section"
+                }
+            ],
+            "id": "s5",
+            "title": "5. Trajectory analysis of employment",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "The results of dynamic microsimulation oftentimes include simulated dataset(s), which entail individual level information about labor market or population transitions over a simulated time-period. For example, the data contents could include labor market patterns related to employment, unemployment, sickness spells or retirement. Population patterns such as level of education, occupation selection, or family configurations are also common elements in dynamic microsimulation. All the information contents of simulation must be modeled sensibly and consciously, yielding credible heterogeneity within the simulated population. In fact, microsimulation is a controlled framework in which to create biographical trajectories.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Sequence analysis (SA) can be an interesting tool for microsimulation practitioners when investigating simulated heterogeneity and revealing possible latent transformation patterns. In a nutshell, SA includes three steps. First, the data is coded, divided into subsets, and formatted for the core program (e.g., R). Second, the sequences are counted and usually compared by means of optimal matching analysis. Finally, typologies of transformation sequences are obtained by clustering analysis. These steps were presented in this study.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "This study showed, in detail, how to use SA with simulated data from the Finnish ELSI model. The examples given were based on transitions near retirement. Beside retirement modeling or labor market modeling in general, SA could also be applied with other dynamic models such as firm or farm models as long as the models simulate states in discrete time steps.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "There is another statistical technique called trajectory analysis (TA), which can be used together with SA to analyze microsimulation outcomes. SA gives a detailed overview of individual model transitions, whereas TA is applicable in visualizing sub-population mean developmental trajectories. For microsimulation practitioners, the simulated outcomes determine which statistical technique is most useful. Certainly, SA and TA complement each other.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "In practice SA can be used to visualize microsimulation results, and to validate simulation. The sequence index plots are a powerful tool in visualizing transition patterns. The model validation can also benefit from visual inspection of sequences, but more from the subsetting and grouping options, which allow for a study of the coherence of simulated groups.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "SA did not reveal any serious misspecification in the ELSI model. The labor market transitions in ELSI are driven by ex ante defined transition probabilities. This kind of modeling is sensitive to misspecification. Therefore, a clustering technique like SA is useful in model validation.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "This study showed certain possibilities and one practical application of the TraMineR and TraMineRextras packages in a microsimulation context. There are further useful functions, but they are beyond the scope of this study.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s6",
+            "title": "6. Conclusion",
+            "type": "section"
+        }
+    ],
+    "references": [
+        {
+            "articleTitle": "Sequences of social events: Concepts and methods for the analysis of order in social processes",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Abbott, A",
+                        "preferred": "A Abbott"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1983",
+            "doi": "10.1080/01615440.1983.10594107",
+            "id": "bib1",
+            "journal": "Historical Methods: A Journal of Quantitative and Interdisciplinary History",
+            "pages": {
+                "first": "129",
+                "last": "147",
+                "range": "129\u2013147"
+            },
+            "type": "journal",
+            "volume": "16"
+        },
+        {
+            "articleTitle": "Event sequence and event duration: Colligation and measurement",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Abbott, A",
+                        "preferred": "A Abbott"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1984",
+            "doi": "10.1080/01615440.1984.10594134",
+            "id": "bib2",
+            "journal": "Historical Methods: A Journal of Quantitative and Interdisciplinary History",
+            "pages": {
+                "first": "192",
+                "last": "204",
+                "range": "192\u2013204"
+            },
+            "type": "journal",
+            "volume": "17"
+        },
+        {
+            "articleTitle": "Optimal matching methods for historical sequences",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Abbott, A",
+                        "preferred": "A Abbott"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Forrest, J",
+                        "preferred": "J Forrest"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1986",
+            "doi": "10.2307/204500",
+            "id": "bib3",
+            "journal": "Journal of Interdisciplinary History",
+            "pages": {
+                "first": "471",
+                "last": "494",
+                "range": "471\u2013494"
+            },
+            "type": "journal",
+            "volume": "16"
+        },
+        {
+            "articleTitle": "Sequence analysis and optimal matching methods in sociology: Review and prospect",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Abbott, A",
+                        "preferred": "A Abbott"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Tsay, A",
+                        "preferred": "A Tsay"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2000",
+            "id": "bib4",
+            "journal": "Sociological Methods & Research",
+            "pages": {
+                "first": "3",
+                "last": "33",
+                "range": "3\u201333"
+            },
+            "type": "journal",
+            "volume": "29"
+        },
+        {
+            "articleTitle": "Classifying life course trajectories: A comparison of latent class and sequence analysis",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Barban, N",
+                        "preferred": "N Barban"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Billari, FC",
+                        "preferred": "FC Billari"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2012",
+            "doi": "10.1111/j.1467-9876.2012.01047.x",
+            "id": "bib5",
+            "journal": "Journal of the Royal Statistical Society: Series C",
+            "pages": {
+                "first": "765",
+                "last": "784",
+                "range": "765\u2013784"
+            },
+            "type": "journal",
+            "volume": "61"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Brzinsky-Fay, C",
+                        "preferred": "C Brzinsky-Fay"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2014",
+            "details": "Graphical representation of transition and sequences, In:, Sequence analysis and related approaches innovative methods and applications, Life Course Research and Social Policies 10, Springer",
+            "id": "bib6",
+            "title": "Sequence analysis and related approaches innovative methods and applications",
+            "type": "unknown"
+        },
+        {
+            "articleTitle": "New developments in sequence analysis",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Brzinsky-Fay, C",
+                        "preferred": "C Brzinsky-Fay"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Kohler, U",
+                        "preferred": "U Kohler"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2010",
+            "doi": "10.1177/0049124110363371",
+            "id": "bib8",
+            "journal": "Sociological Methods & Research",
+            "pages": {
+                "first": "359",
+                "last": "364",
+                "range": "359\u2013364"
+            },
+            "type": "journal",
+            "volume": "38"
+        },
+        {
+            "articleTitle": "Sequence analysis with Stata",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Brzinsky-Fay, C",
+                        "preferred": "C Brzinsky-Fay"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Kohler, U",
+                        "preferred": "U Kohler"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Luniak, M",
+                        "preferred": "M Luniak"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2006",
+            "doi": "10.1177/1536867X0600600401",
+            "id": "bib7",
+            "journal": "The Stata Journal: Promoting communications on statistics and Stata",
+            "pages": {
+                "first": "435",
+                "last": "460",
+                "range": "435\u2013460"
+            },
+            "type": "journal",
+            "volume": "6"
+        },
+        {
+            "articleTitle": "A dendrite method for cluster analysis",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Cali\u0144ski, T",
+                        "preferred": "T Cali\u0144ski"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Harabasz, J",
+                        "preferred": "J Harabasz"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1974",
+            "id": "bib9",
+            "journal": "Communications in Statistics",
+            "pages": {
+                "first": "1",
+                "last": "27",
+                "range": "1\u201327"
+            },
+            "type": "journal",
+            "volume": "3"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Courgeau, D",
+                        "preferred": "D Courgeau"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2018",
+            "details": "Do different approaches in population science lead to divergent or convergent models?, In:, Sequence analysis and related approaches innovative methods and applications, Life Course Research and Social Policies 10, Springer",
+            "id": "bib10",
+            "title": "Sequence analysis and related approaches innovative methods and applications",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Dekkers, G",
+                        "preferred": "G Dekkers"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Van den Bosch, K",
+                        "preferred": "K Van den Bosch"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2016",
+            "details": "Prospective microsimulation of pensions in European Member States, In:, Applications of microsimulation modelling, Hungary, T\u00e1rsadalombiztos\u00edt\u00e1si K\u00f6nyvt\u00e1r",
+            "id": "bib11",
+            "title": "Applications of microsimulation modelling",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Duda, R",
+                        "preferred": "R Duda"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Hart, P",
+                        "preferred": "P Hart"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Stork, D",
+                        "preferred": "D Stork"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "Pattern Classification",
+            "date": "2001",
+            "edition": "2nd",
+            "id": "bib12",
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "United States"
+                        ]
+                    },
+                    "formatted": [
+                        "United States"
+                    ]
+                },
+                "name": [
+                    "John Wiley & Sons"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Elzinga, C",
+                        "preferred": "C Elzinga"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2007",
+            "id": "bib13",
+            "title": "\n<i>CHESA 2.1 User Manual</i>. Amsterdam: Vrije Universiteit",
+            "type": "web",
+            "uri": "http://home.fsw.vu.nl/ch.elzinga/"
+        },
+        {
+            "articleTitle": "Analyzing and visualizing state sequences in R with TraMineR",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Gabadinho, A",
+                        "preferred": "A Gabadinho"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Ritschard, G",
+                        "preferred": "G Ritschard"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "M\u00fcller, N",
+                        "preferred": "N M\u00fcller"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Studer, M",
+                        "preferred": "M Studer"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2011",
+            "id": "bib14",
+            "journal": "Journal of statistical software",
+            "pages": {
+                "first": "1",
+                "last": "37",
+                "range": "1\u201337"
+            },
+            "type": "journal",
+            "volume": "404"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Halpin, B",
+                        "preferred": "B Halpin"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "SADI: sequence analysis tools for Stata",
+            "date": "2014",
+            "id": "bib15",
+            "publisher": {
+                "name": [
+                    "Department of sociology working paper series WP2014-03, University of Limerick"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "articleTitle": "Binary codes capable of correcting deletions, insertions, and reversals",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Levenshtein, V",
+                        "preferred": "V Levenshtein"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1966",
+            "id": "bib16",
+            "journal": "Soviet Physics Doklady",
+            "pages": {
+                "first": "707",
+                "last": "710",
+                "range": "707\u2013710"
+            },
+            "type": "journal",
+            "volume": "10"
+        },
+        {
+            "articleTitle": "But what have you done for us lately? Commentary on Abbott and Tsay",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Levine, J",
+                        "preferred": "J Levine"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2000",
+            "id": "bib17",
+            "journal": "Sociological Methods & Research",
+            "pages": {
+                "first": "34",
+                "last": "40",
+                "range": "34\u201340"
+            },
+            "type": "journal",
+            "volume": "291"
+        },
+        {
+            "articleTitle": "Detailed molecular model for transfer ribonucleic acid",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Levitt, M",
+                        "preferred": "M Levitt"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1969",
+            "doi": "10.1038/224759a0",
+            "id": "bib18",
+            "journal": "Nature",
+            "pages": {
+                "first": "759",
+                "last": "763",
+                "range": "759\u2013763"
+            },
+            "pmid": 5361649,
+            "type": "journal",
+            "volume": "224"
+        },
+        {
+            "articleTitle": "Longitudinal methods for life course research: a comparison of sequence analysis, latent class growth models, and multi-state event history models for studying partnership transitions",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Mikolai, J",
+                        "preferred": "J Mikolai"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Lyons-Amos, M",
+                        "preferred": "M Lyons-Amos"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2017",
+            "doi": "10.14301/llcs.v8i2.415",
+            "id": "bib19",
+            "journal": "Longitudinal and Life Course Studies",
+            "pages": {
+                "first": "191",
+                "last": "208",
+                "range": "191\u2013208"
+            },
+            "type": "journal",
+            "volume": "8"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Nagin, D",
+                        "preferred": "D Nagin"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "Group-Based Modeling of Development",
+            "date": "2005",
+            "id": "bib20",
+            "publisher": {
+                "name": [
+                    "Harvard University Press"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "articleTitle": "Group-based multi-trajectory modeling",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Nagin, DS",
+                        "preferred": "DS Nagin"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Jones, BL",
+                        "preferred": "BL Jones"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Passos, VL",
+                        "preferred": "VL Passos"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Tremblay, RE",
+                        "preferred": "RE Tremblay"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2018",
+            "doi": "10.1177/0962280216673085",
+            "id": "bib21",
+            "journal": "Statistical Methods in Medical Research",
+            "pages": {
+                "first": "2015",
+                "last": "2023",
+                "range": "2015\u20132023"
+            },
+            "pmid": 29846144,
+            "type": "journal",
+            "volume": "27"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Nummi, T",
+                        "preferred": "T Nummi"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Salonen, J",
+                        "preferred": "J Salonen"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "O\u2019Brien, T",
+                        "preferred": "T O\u2019Brien"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2017",
+            "details": "Statistical analysis of labor market integration: A mixture regression approach, In:, New advances in statistics and data science, Springer, ICSA Book Series in Statistics",
+            "id": "bib22",
+            "title": "New advances in statistics and data science",
+            "type": "unknown"
+        },
+        {
+            "articleTitle": "Holistic analysis of the life course: methodological challenges and new perspectives",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Piccarreta, R",
+                        "preferred": "R Piccarreta"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Studer, M",
+                        "preferred": "M Studer"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2019",
+            "doi": "10.1016/j.alcr.2018.10.004",
+            "id": "bib23",
+            "journal": "Advances in Life Course Research",
+            "pages": "100251",
+            "type": "journal",
+            "volume": "41"
+        },
+        {
+            "articleTitle": "Extended working lives and late-career destabilisation: a longitudinal study of Finnish register data",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Riekhoff, A-J",
+                        "preferred": "A-J Riekhoff"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2018",
+            "doi": "10.1016/j.alcr.2018.01.007",
+            "id": "bib24",
+            "journal": "Advances in Life Course Research",
+            "pages": {
+                "first": "114",
+                "last": "125",
+                "range": "114\u2013125"
+            },
+            "type": "journal",
+            "volume": "35"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Ritschard, G",
+                        "preferred": "G Ritschard"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Studer, M",
+                        "preferred": "M Studer"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2018",
+            "details": "Sequence analysis: Where are we, where are we going?, In:, Sequence analysis and related approaches innovative methods and applications, Life Course Research and Social Policies 10, Springer",
+            "id": "bib25",
+            "title": "Sequence analysis and related approaches innovative methods and applications",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Ritschard, G",
+                        "preferred": "G Ritschard"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Studer, M",
+                        "preferred": "M Studer"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Buergin, R",
+                        "preferred": "R Buergin"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Gabadinho, A",
+                        "preferred": "A Gabadinho"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Fonta, P-A",
+                        "preferred": "P-A Fonta"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Muller, N",
+                        "preferred": "N Muller"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Rousset, P",
+                        "preferred": "P Rousset"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2019",
+            "id": "bib26",
+            "title": "Package \u2018TraMineRextras\u2019",
+            "type": "web",
+            "uri": "http://traminer.unige.ch/"
+        },
+        {
+            "articleTitle": "Using trajectory analysis to test and illustrate microsimulation outcomes",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Salonen, J",
+                        "preferred": "J Salonen"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Tikanm\u00e4ki, H",
+                        "preferred": "H Tikanm\u00e4ki"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Nummi, T",
+                        "preferred": "T Nummi"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2019",
+            "doi": "10.34196/ijm.00198",
+            "id": "bib27",
+            "journal": "International Journal of Microsimulation",
+            "pages": {
+                "first": "3",
+                "last": "17",
+                "range": "3\u201317"
+            },
+            "type": "journal",
+            "volume": "12"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Studer, M",
+                        "preferred": "M Studer"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Ritschard, G",
+                        "preferred": "G Ritschard"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2014",
+            "details": "NCCR LIVES working paper 33",
+            "id": "bib28",
+            "title": "A comparative review of sequence dissimilarity measures",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Tikanm\u00e4ki, H",
+                        "preferred": "H Tikanm\u00e4ki"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Lappo, S",
+                        "preferred": "S Lappo"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2020",
+            "details": "Finnish Centre for Pensions, Reports 08/2020., http://urn.fi/URN:ISBN:978-951-691-312-7",
+            "id": "bib32",
+            "title": "ELSI: The Finnish pension microsimulation model",
+            "type": "unknown",
+            "uri": "http://urn.fi/URN:ISBN:978-951-691-312-7"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Tikanm\u00e4ki, H",
+                        "preferred": "H Tikanm\u00e4ki"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Lappo, S",
+                        "preferred": "S Lappo"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Meril\u00e4, V",
+                        "preferred": "V Meril\u00e4"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Nopola, T",
+                        "preferred": "T Nopola"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Reipas, K",
+                        "preferred": "K Reipas"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Sankala, M",
+                        "preferred": "M Sankala"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2019",
+            "id": "bib31",
+            "title": "Statutory pensions in Finland: long-term projections 2019. <i>Finnish Centre for Pensions,</i> Reports 07",
+            "type": "web",
+            "uri": "http://urn.fi/URN:ISBN:978-951-691-302-8"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Tikanm\u00e4ki, H",
+                        "preferred": "H Tikanm\u00e4ki"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Sihvonen, H",
+                        "preferred": "H Sihvonen"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Salonen, J",
+                        "preferred": "J Salonen"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2014",
+            "id": "bib29",
+            "title": "Microsimulating Finnish earnings-related pensions. <i>Finnish Centre for Pensions</i> Working Papers 02",
+            "type": "web",
+            "uri": "http://urn.fi/URN:NBN:fi-fe2015112620030"
+        },
+        {
+            "articleTitle": "Distributional effects of forthcoming Finnish pension reform \u2013 a dynamic Microsimulation approach",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Tikanm\u00e4ki, H",
+                        "preferred": "H Tikanm\u00e4ki"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Sihvonen, H",
+                        "preferred": "H Sihvonen"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Salonen, J",
+                        "preferred": "J Salonen"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2015",
+            "id": "bib30",
+            "journal": "International Journal of Microsimulation",
+            "pages": {
+                "first": "75",
+                "last": "98",
+                "range": "75\u201398"
+            },
+            "type": "journal",
+            "volume": "83"
+        },
+        {
+            "articleTitle": "Hierarchical grouping to optimize an objective function",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Ward, JH",
+                        "preferred": "JH Ward"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1963",
+            "doi": "10.1080/01621459.1963.10500845",
+            "id": "bib33",
+            "journal": "Journal of the American Statistical Association",
+            "pages": {
+                "first": "236",
+                "last": "244",
+                "range": "236\u2013244"
+            },
+            "type": "journal",
+            "volume": "58"
+        },
+        {
+            "articleTitle": "Some comments on \u201cSequence analysis and optimal matching methods in sociology: Review and prospect\u201d",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Wu, LL",
+                        "preferred": "LL Wu"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2000",
+            "doi": "10.1177/0049124100029001003",
+            "id": "bib34",
+            "journal": "Sociological methods & research",
+            "pages": {
+                "first": "41",
+                "last": "64",
+                "range": "41\u201364"
+            },
+            "type": "journal",
+            "volume": "29"
+        }
+    ],
+    "appendices": [
+        {
+            "content": [
+                {
+                    "text": "The TraMineR and TraMineRextras packages count a number of measures to collate and visualize transition sequences. In this example we show some of their possibilities in microsimulation. The example data (findata.dat) are drawn from the model and consist of simulated individuals of a cohort born in 2000. The data focus on individuals aged 55 to 70.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The TraMineR library needs a distinct color for each microsimulation model state. A color palette is therefore attached to the sequence object. A default color palette is automatically selected according to ten number of model states. The library accepts both numerical and character measurements.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The first step of the analysis is to load the necessary libraries and retrieve the sample data. The sample (n=387) is from the simulated dataset. The view(findata) function gives an overview of the data. The data content is the following: case number, birth-year, education, gender and model statuses (16 longitudinal measurements). The par(mfrow = c(2 2)) function can be used, with different argument values when necessary to divide the graphic area. The arguments used divide the graphical area into two rows and two columns.",
+                    "type": "paragraph"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "1. library(TraMineR)",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "2. library(TraMineRextras)",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "3. library(cluster)",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "4. findata &lt;- read.table(\"findata.dat\", header = TRUE, na.strings = \"NAS\")",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "5. View(findata)",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "6. par(mfrow = c(1, 1))",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "B1",
+                    "label": "Algorithm 1",
+                    "title": "Initializing the session.",
+                    "type": "box"
+                },
+                {
+                    "text": "The labor market states are defined as in the actual dataset in function findata.alphabet. The model states are assigned abbreviations and labels in functions findata.labels and findata.scodes, which are user-definable. The abbreviations are a necessity to draw clear and informative figures.",
+                    "type": "paragraph"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "1. findata.alphabet &lt;- c(\"Basic pension\", \"Deceased\",\"Early OA pension\",\"Employed\",\"Full D pension\",\"Inactive\",\"Misfits\",\"NA\",\"OA pension\",\"Part D pension\",\"Unemployed\",\"YoS pension\")",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "2. findata.labels &lt;- c(\"Basic pension\",\"Deceased\",\"Early OA pension\",\"Employed\",\"Full D pension\",\"Inactive\",\"Misfits\",\"NA\",\"OA pension\",\"Part D pension\",\"Unemployed\",\"YoS pension\")",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "3. findata.scodes &lt;- c(\"bap\",\"DEC\",\"eop\",\"EMP\",\"fdp\",\"INA\",\"MIS\",\"NA\",\"oap\",\"pdp\",\"UNE\",\"yos\")",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "B2",
+                    "label": "Algorithm 2",
+                    "title": "Creating formats and abbreviations.",
+                    "type": "box"
+                },
+                {
+                    "text": "The data are read to create a state sequence object from the age specific status variables (columns 5 to 20). If there is no need to further subset the sample, the first line of the code is not completely necessary. However, because of some functions (see Algorithm 5), it is practical to subset the sample by, for example, gender or education. The subsets are defined as different sequence objects. The seqlegend(findata.seq) function illustrates the colors attached to the states.",
+                    "type": "paragraph"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "1. findata &lt;- findata[which(findata$Birth_year == 2000),]",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "2. findata.seq &lt;- seqdef(findata, 5:20, xtstep = 1, alphabet = findata.alphabet, states = findata.scodes, labels = findata.labels)",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "3. seqlegend(findata.seq)",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "B3",
+                    "label": "Algorithm 3",
+                    "title": "Selecting subsets of sample and analysis variables.",
+                    "type": "box"
+                },
+                {
+                    "text": "The next step initializes the actual SA. The individual labor market transition sequences in the sample are drawn by the function seqIplot. The essential argument is sortv, which defines the sorting order for different illustrations. In this example, the observations are sorted by the first model status (at age 55). A slightly different graph can be drawn with the option sortv = \"from.end\". The rest of the arguments are merely to adjust the graphics.",
+                    "type": "paragraph"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "1. seqIplot(findata.seq, sortv = \"from.start\", cex.lab = 0.8, cex.axis = 0.8, cex.legend = 1.3, with.legend = \"right\", xlab = \"Age\", xtstep = 1)",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "B4",
+                    "label": "Algorithm 4",
+                    "title": "Labor market transition sequences.",
+                    "type": "box"
+                },
+                {
+                    "text": "The function seqtab aggregates the transition sequences to some extent. The function prints the most common sequences into the console with frequencies and shares. This function can be used, for example, to compare classes in the sample. However, this would require subsetting the sample according to the interesting classes in Algorithm 3. The number (5) of the most common sequences is given in the argument idxs.",
+                    "type": "paragraph"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "1. seqtab(findata.seq, format = 'SPS', idxs = 1:5)",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "B5",
+                    "label": "Algorithm 5",
+                    "title": "Common transition sequences, five most common.",
+                    "type": "box"
+                },
+                {
+                    "text": "Microsimulation practitioners are familiar with transition probabilities between model states. They are counted by the seqtrate function, which prints the transition probabilities from one state to the next ones in the console.",
+                    "type": "paragraph"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "1. tr &lt;- seqtrate(findata.seq)*100",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "2. round(tr, 1)",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "B6",
+                    "label": "Algorithm 6",
+                    "title": "Transition probabilities.",
+                    "type": "box"
+                },
+                {
+                    "text": "The state distributions are calculated in the seqdplot function. This example shows the state distribution by gender, which is defined by the group argument. The rest of the arguments are merely to adjust the graphics.",
+                    "type": "paragraph"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "1. seqdplot(findata.seq, group = group.p(findata$Gender), cex.main = 0.9, cex.lab = 0.9, cex.axis = 0.9, with.legend = TRUE, border = NA, xlab = \"Age\", xtstep = 1)",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "B7",
+                    "label": "Algorithm 7",
+                    "title": "Labor market state distribution by gender.",
+                    "type": "box"
+                },
+                {
+                    "text": "The seqmtplot function provides a useful measure to compare different classes, namely mean time in state. This example shows the mean times by education group (level of education) which, in this function, is also defined by the group argument. The rest of the arguments are merely to adjust the graphics.",
+                    "type": "paragraph"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "1. seqmtplot(findata.seq, group.p(findata$Education), cex.lab = 0.8, cex.axis = 0.6, with.legend = FALSE, xtstep = 1, ylim = c(0, 10))",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "B8",
+                    "label": "Algorithm 8",
+                    "title": "Mean time in model state.",
+                    "type": "box"
+                },
+                {
+                    "text": "An essential addition to SA is clustering analysis, which is used to find latent sub-groups in the sample. The next step is to illustrate the clustering. Using OMA, a four-group partition of the sample is obtained with Algorithms 9 and 10. In the first stage, OMA is applied by computing pairwise optimal matching distances between transition sequences, using an insertion or deletion cost of 1, and a substitution cost matrix, which is based on observed transition rates. The Ward method is used in this example.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The second stage of the analysis is HCA. When proceeding to an agglomerative hierarchical clustering using the obtained distance matrix, we select the four-cluster solution and express it as a factor. The number of clusters (k=4) is user-defined. The group-assignment can be retrieved for further analysis via factors in object cl1.4fac, which is used in subsequent steps of SA.",
+                    "type": "paragraph"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "1. dist.om &lt;- seqdist(findata.seq, method = \"OM\", indel = 1, sm = \"TRATE\")",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "B9",
+                    "label": "Algorithm 9",
+                    "title": "Initializing optimal matching analysis.",
+                    "type": "box"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "1. clusterward &lt;- agnes(dist.om, diss = TRUE, method = \"ward\")",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "2. cl1.4 &lt;- cutree(clusterward, k = 4)",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "3. cl1.4fac &lt;- factor(cl1.4, labels = paste(\"Cluster\", 1:4))",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "B10",
+                    "label": "Algorithm 10",
+                    "title": "Initializing cluster analysis.",
+                    "type": "box"
+                },
+                {
+                    "text": "The clusters can be further illustrated, for example, by functions seqIplot and seqdplot. Algorithm 11 is similar to 7, with the difference that the grouping is done by the cluster assignments. The rest of the arguments are again merely to adjust the graphics.",
+                    "type": "paragraph"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "1. par(mfrow = c(2, 2))",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "2. seqdplot(findata.seq, group = group.p(cl1.4fac), border = NA, xlab = \"Age\", cex.main = 0.8, cex.lab = 0.8, cex.axis = 0.8, xtstep = 1)",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "B11",
+                    "label": "Algorithm 11",
+                    "title": "Labor market state distribution by cluster.",
+                    "type": "box"
+                },
+                {
+                    "text": "For further statistical analyzes it can be useful to merge the original dataset and clustering result (see Algorithm 12).",
+                    "type": "paragraph"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "1. findata.seq$cl1.4fac &lt;- cl1.4fac",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "B12",
+                    "label": "Algorithm 12",
+                    "title": "Adding the cluster variable to the dataset",
+                    "type": "box"
+                },
+                {
+                    "assets": [
+                        {
+                            "id": "tableA2",
+                            "label": "Table A2",
+                            "tables": [
+                                "<table>\n<thead>\n<tr>\n<th align=\"left\" valign=\"bottom\">No.</th>\n<th align=\"left\" valign=\"bottom\">Contents</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td align=\"left\" valign=\"bottom\">15</td>\n<td align=\"left\" valign=\"bottom\">Full-time employed for the first consecutive year</td>\n</tr>\n<tr>\n<td align=\"left\" valign=\"bottom\">16</td>\n<td align=\"left\" valign=\"bottom\">Full-time employed for the second consecutive year</td>\n</tr>\n<tr>\n<td align=\"left\" valign=\"bottom\">1</td>\n<td align=\"left\" valign=\"bottom\">Full-time employed for at least the third consecutive year</td>\n</tr>\n<tr>\n<td align=\"left\" valign=\"bottom\">2</td>\n<td align=\"left\" valign=\"bottom\">Unemployed (excluding those on an unemployment pathway to retirement)</td>\n</tr>\n<tr>\n<td align=\"left\" valign=\"bottom\">3</td>\n<td align=\"left\" valign=\"bottom\">On an unemployment pathway to retirement</td>\n</tr>\n<tr>\n<td align=\"left\" valign=\"bottom\">4</td>\n<td align=\"left\" valign=\"bottom\">Sickness benefits preceding full disability pension</td>\n</tr>\n<tr>\n<td align=\"left\" valign=\"bottom\">5</td>\n<td align=\"left\" valign=\"bottom\">Part-time pension</td>\n</tr>\n<tr>\n<td align=\"left\" valign=\"bottom\">11</td>\n<td align=\"left\" valign=\"bottom\">Partial old-age pension and employed</td>\n</tr>\n<tr>\n<td align=\"left\" valign=\"bottom\">10</td>\n<td align=\"left\" valign=\"bottom\">Partial disability pension and employed</td>\n</tr>\n<tr>\n<td align=\"left\" valign=\"bottom\">6</td>\n<td align=\"left\" valign=\"bottom\">Years-of-service pension</td>\n</tr>\n<tr>\n<td align=\"left\" valign=\"bottom\">7</td>\n<td align=\"left\" valign=\"bottom\">Partial old-age pension and not employed</td>\n</tr>\n<tr>\n<td align=\"left\" valign=\"bottom\">8</td>\n<td align=\"left\" valign=\"bottom\">Old-age pension</td>\n</tr>\n<tr>\n<td align=\"left\" valign=\"bottom\">17</td>\n<td align=\"left\" valign=\"bottom\">Full disability pension for the first consecutive year</td>\n</tr>\n<tr>\n<td align=\"left\" valign=\"bottom\">9</td>\n<td align=\"left\" valign=\"bottom\">Full disability pension for at least the second consecutive year</td>\n</tr>\n<tr>\n<td align=\"left\" valign=\"bottom\">18</td>\n<td align=\"left\" valign=\"bottom\">Partial disability pension and not employed</td>\n</tr>\n<tr>\n<td align=\"left\" valign=\"bottom\">21</td>\n<td align=\"left\" valign=\"bottom\">National old-age pension only</td>\n</tr>\n<tr>\n<td align=\"left\" valign=\"bottom\">22</td>\n<td align=\"left\" valign=\"bottom\">National disability pension only</td>\n</tr>\n<tr>\n<td align=\"left\" valign=\"bottom\">13</td>\n<td align=\"left\" valign=\"bottom\">Outside the labor force but has accrued earnings-related pension</td>\n</tr>\n<tr>\n<td align=\"left\" valign=\"bottom\">19</td>\n<td align=\"left\" valign=\"bottom\">Permanently outside the labor force but has accrued earnings-related pension</td>\n</tr>\n<tr>\n<td align=\"left\" valign=\"bottom\">20</td>\n<td align=\"left\" valign=\"bottom\">Outside the labor force and has not accrued earnings-related pension</td>\n</tr>\n<tr>\n<td align=\"left\" valign=\"bottom\">12</td>\n<td align=\"left\" valign=\"bottom\">Deceased</td>\n</tr>\n</tbody>\n</table>"
+                            ],
+                            "title": "ELSI model states.",
+                            "type": "table"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "assets": [
+                        {
+                            "id": "tableA3",
+                            "label": "Table A3",
+                            "tables": [
+                                "<table>\n<thead>\n<tr>\n<th align=\"left\" valign=\"bottom\">Labor market state</th>\n<th align=\"left\" valign=\"bottom\">55</th>\n<th align=\"left\" valign=\"bottom\">56</th>\n<th align=\"left\" valign=\"bottom\">57</th>\n<th align=\"left\" valign=\"bottom\">58</th>\n<th align=\"left\" valign=\"bottom\">59</th>\n<th align=\"left\" valign=\"bottom\">60</th>\n<th align=\"left\" valign=\"bottom\">61</th>\n<th align=\"left\" valign=\"bottom\">62</th>\n<th align=\"left\" valign=\"bottom\">63</th>\n<th align=\"left\" valign=\"bottom\">64</th>\n<th align=\"left\" valign=\"bottom\">65</th>\n<th align=\"left\" valign=\"bottom\">66</th>\n<th align=\"left\" valign=\"bottom\">67</th>\n<th align=\"left\" valign=\"bottom\">68</th>\n<th align=\"left\" valign=\"bottom\">69</th>\n<th align=\"left\" valign=\"bottom\">70</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td align=\"left\" valign=\"bottom\">Basic pension</td>\n<td align=\"left\" valign=\"bottom\">1</td>\n<td align=\"left\" valign=\"bottom\">1</td>\n<td align=\"left\" valign=\"bottom\">1</td>\n<td align=\"left\" valign=\"bottom\">1</td>\n<td align=\"left\" valign=\"bottom\">1</td>\n<td align=\"left\" valign=\"bottom\">1</td>\n<td align=\"left\" valign=\"bottom\">1</td>\n<td align=\"left\" valign=\"bottom\">1</td>\n<td align=\"left\" valign=\"bottom\">1</td>\n<td align=\"left\" valign=\"bottom\">1</td>\n<td align=\"left\" valign=\"bottom\">1</td>\n<td align=\"left\" valign=\"bottom\">1</td>\n<td align=\"left\" valign=\"bottom\">2</td>\n<td align=\"left\" valign=\"bottom\">2</td>\n<td align=\"left\" valign=\"bottom\">2</td>\n<td align=\"left\" valign=\"bottom\">2</td>\n</tr>\n<tr>\n<td align=\"left\" valign=\"bottom\">Deceased</td>\n<td align=\"left\" valign=\"bottom\">3</td>\n<td align=\"left\" valign=\"bottom\">3</td>\n<td align=\"left\" valign=\"bottom\">4</td>\n<td align=\"left\" valign=\"bottom\">4</td>\n<td align=\"left\" valign=\"bottom\">4</td>\n<td align=\"left\" valign=\"bottom\">5</td>\n<td align=\"left\" valign=\"bottom\">5</td>\n<td align=\"left\" valign=\"bottom\">6</td>\n<td align=\"left\" valign=\"bottom\">6</td>\n<td align=\"left\" valign=\"bottom\">7</td>\n<td align=\"left\" valign=\"bottom\">7</td>\n<td align=\"left\" valign=\"bottom\">8</td>\n<td align=\"left\" valign=\"bottom\">9</td>\n<td align=\"left\" valign=\"bottom\">9</td>\n<td align=\"left\" valign=\"bottom\">10</td>\n<td align=\"left\" valign=\"bottom\">11</td>\n</tr>\n<tr>\n<td align=\"left\" valign=\"bottom\">Early OA pension</td>\n<td align=\"left\" valign=\"bottom\">0</td>\n<td align=\"left\" valign=\"bottom\">0</td>\n<td align=\"left\" valign=\"bottom\">0</td>\n<td align=\"left\" valign=\"bottom\">0</td>\n<td align=\"left\" valign=\"bottom\">0</td>\n<td align=\"left\" valign=\"bottom\">0</td>\n<td align=\"left\" valign=\"bottom\">0</td>\n<td align=\"left\" valign=\"bottom\">0</td>\n<td align=\"left\" valign=\"bottom\">2</td>\n<td align=\"left\" valign=\"bottom\">3</td>\n<td align=\"left\" valign=\"bottom\">3</td>\n<td align=\"left\" valign=\"bottom\">2</td>\n<td align=\"left\" valign=\"bottom\">1</td>\n<td align=\"left\" valign=\"bottom\">0</td>\n<td align=\"left\" valign=\"bottom\">0</td>\n<td align=\"left\" valign=\"bottom\">0</td>\n</tr>\n<tr>\n<td align=\"left\" valign=\"bottom\">Employed</td>\n<td align=\"left\" valign=\"bottom\">69</td>\n<td align=\"left\" valign=\"bottom\">67</td>\n<td align=\"left\" valign=\"bottom\">67</td>\n<td align=\"left\" valign=\"bottom\">65</td>\n<td align=\"left\" valign=\"bottom\">64</td>\n<td align=\"left\" valign=\"bottom\">61</td>\n<td align=\"left\" valign=\"bottom\">59</td>\n<td align=\"left\" valign=\"bottom\">56</td>\n<td align=\"left\" valign=\"bottom\">44</td>\n<td align=\"left\" valign=\"bottom\">37</td>\n<td align=\"left\" valign=\"bottom\">35</td>\n<td align=\"left\" valign=\"bottom\">14</td>\n<td align=\"left\" valign=\"bottom\">5</td>\n<td align=\"left\" valign=\"bottom\">2</td>\n<td align=\"left\" valign=\"bottom\">1</td>\n<td align=\"left\" valign=\"bottom\">0</td>\n</tr>\n<tr>\n<td align=\"left\" valign=\"bottom\">Full D pension</td>\n<td align=\"left\" valign=\"bottom\">5</td>\n<td align=\"left\" valign=\"bottom\">5</td>\n<td align=\"left\" valign=\"bottom\">6</td>\n<td align=\"left\" valign=\"bottom\">6</td>\n<td align=\"left\" valign=\"bottom\">7</td>\n<td align=\"left\" valign=\"bottom\">8</td>\n<td align=\"left\" valign=\"bottom\">10</td>\n<td align=\"left\" valign=\"bottom\">11</td>\n<td align=\"left\" valign=\"bottom\">13</td>\n<td align=\"left\" valign=\"bottom\">15</td>\n<td align=\"left\" valign=\"bottom\">15</td>\n<td align=\"left\" valign=\"bottom\">0</td>\n<td align=\"left\" valign=\"bottom\">0</td>\n<td align=\"left\" valign=\"bottom\">0</td>\n<td align=\"left\" valign=\"bottom\">0</td>\n<td align=\"left\" valign=\"bottom\">0</td>\n</tr>\n<tr>\n<td align=\"left\" valign=\"bottom\">Inactive</td>\n<td align=\"left\" valign=\"bottom\">12</td>\n<td align=\"left\" valign=\"bottom\">12</td>\n<td align=\"left\" valign=\"bottom\">12</td>\n<td align=\"left\" valign=\"bottom\">12</td>\n<td align=\"left\" valign=\"bottom\">12</td>\n<td align=\"left\" valign=\"bottom\">12</td>\n<td align=\"left\" valign=\"bottom\">13</td>\n<td align=\"left\" valign=\"bottom\">13</td>\n<td align=\"left\" valign=\"bottom\">21</td>\n<td align=\"left\" valign=\"bottom\">24</td>\n<td align=\"left\" valign=\"bottom\">24</td>\n<td align=\"left\" valign=\"bottom\">13</td>\n<td align=\"left\" valign=\"bottom\">8</td>\n<td align=\"left\" valign=\"bottom\">5</td>\n<td align=\"left\" valign=\"bottom\">5</td>\n<td align=\"left\" valign=\"bottom\">0</td>\n</tr>\n<tr>\n<td align=\"left\" valign=\"bottom\">Misfits</td>\n<td align=\"left\" valign=\"bottom\">1</td>\n<td align=\"left\" valign=\"bottom\">1</td>\n<td align=\"left\" valign=\"bottom\">1</td>\n<td align=\"left\" valign=\"bottom\">1</td>\n<td align=\"left\" valign=\"bottom\">1</td>\n<td align=\"left\" valign=\"bottom\">1</td>\n<td align=\"left\" valign=\"bottom\">1</td>\n<td align=\"left\" valign=\"bottom\">1</td>\n<td align=\"left\" valign=\"bottom\">1</td>\n<td align=\"left\" valign=\"bottom\">1</td>\n<td align=\"left\" valign=\"bottom\">1</td>\n<td align=\"left\" valign=\"bottom\">0</td>\n<td align=\"left\" valign=\"bottom\">0</td>\n<td align=\"left\" valign=\"bottom\">0</td>\n<td align=\"left\" valign=\"bottom\">0</td>\n<td align=\"left\" valign=\"bottom\">0</td>\n</tr>\n<tr>\n<td align=\"left\" valign=\"bottom\">NA</td>\n<td align=\"left\" valign=\"bottom\">2</td>\n<td align=\"left\" valign=\"bottom\">2</td>\n<td align=\"left\" valign=\"bottom\">2</td>\n<td align=\"left\" valign=\"bottom\">2</td>\n<td align=\"left\" valign=\"bottom\">2</td>\n<td align=\"left\" valign=\"bottom\">2</td>\n<td align=\"left\" valign=\"bottom\">1</td>\n<td align=\"left\" valign=\"bottom\">1</td>\n<td align=\"left\" valign=\"bottom\">1</td>\n<td align=\"left\" valign=\"bottom\">1</td>\n<td align=\"left\" valign=\"bottom\">1</td>\n<td align=\"left\" valign=\"bottom\">1</td>\n<td align=\"left\" valign=\"bottom\">1</td>\n<td align=\"left\" valign=\"bottom\">1</td>\n<td align=\"left\" valign=\"bottom\">0</td>\n<td align=\"left\" valign=\"bottom\">0</td>\n</tr>\n<tr>\n<td align=\"left\" valign=\"bottom\">OA pension</td>\n<td align=\"left\" valign=\"bottom\">0</td>\n<td align=\"left\" valign=\"bottom\">0</td>\n<td align=\"left\" valign=\"bottom\">0</td>\n<td align=\"left\" valign=\"bottom\">0</td>\n<td align=\"left\" valign=\"bottom\">0</td>\n<td align=\"left\" valign=\"bottom\">0</td>\n<td align=\"left\" valign=\"bottom\">0</td>\n<td align=\"left\" valign=\"bottom\">0</td>\n<td align=\"left\" valign=\"bottom\">0</td>\n<td align=\"left\" valign=\"bottom\">0</td>\n<td align=\"left\" valign=\"bottom\">1</td>\n<td align=\"left\" valign=\"bottom\">61</td>\n<td align=\"left\" valign=\"bottom\">75</td>\n<td align=\"left\" valign=\"bottom\">81</td>\n<td align=\"left\" valign=\"bottom\">82</td>\n<td align=\"left\" valign=\"bottom\">87</td>\n</tr>\n<tr>\n<td align=\"left\" valign=\"bottom\">Part D pension</td>\n<td align=\"left\" valign=\"bottom\">0</td>\n<td align=\"left\" valign=\"bottom\">0</td>\n<td align=\"left\" valign=\"bottom\">0</td>\n<td align=\"left\" valign=\"bottom\">1</td>\n<td align=\"left\" valign=\"bottom\">1</td>\n<td align=\"left\" valign=\"bottom\">1</td>\n<td align=\"left\" valign=\"bottom\">1</td>\n<td align=\"left\" valign=\"bottom\">1</td>\n<td align=\"left\" valign=\"bottom\">1</td>\n<td align=\"left\" valign=\"bottom\">1</td>\n<td align=\"left\" valign=\"bottom\">1</td>\n<td align=\"left\" valign=\"bottom\">0</td>\n<td align=\"left\" valign=\"bottom\">0</td>\n<td align=\"left\" valign=\"bottom\">0</td>\n<td align=\"left\" valign=\"bottom\">0</td>\n<td align=\"left\" valign=\"bottom\">0</td>\n</tr>\n<tr>\n<td align=\"left\" valign=\"bottom\">Unemployed</td>\n<td align=\"left\" valign=\"bottom\">8</td>\n<td align=\"left\" valign=\"bottom\">8</td>\n<td align=\"left\" valign=\"bottom\">8</td>\n<td align=\"left\" valign=\"bottom\">8</td>\n<td align=\"left\" valign=\"bottom\">8</td>\n<td align=\"left\" valign=\"bottom\">9</td>\n<td align=\"left\" valign=\"bottom\">10</td>\n<td align=\"left\" valign=\"bottom\">10</td>\n<td align=\"left\" valign=\"bottom\">10</td>\n<td align=\"left\" valign=\"bottom\">10</td>\n<td align=\"left\" valign=\"bottom\">10</td>\n<td align=\"left\" valign=\"bottom\">0</td>\n<td align=\"left\" valign=\"bottom\">0</td>\n<td align=\"left\" valign=\"bottom\">0</td>\n<td align=\"left\" valign=\"bottom\">0</td>\n<td align=\"left\" valign=\"bottom\">0</td>\n</tr>\n<tr>\n<td align=\"left\" valign=\"bottom\">YoS pension</td>\n<td align=\"left\" valign=\"bottom\">0</td>\n<td align=\"left\" valign=\"bottom\">0</td>\n<td align=\"left\" valign=\"bottom\">0</td>\n<td align=\"left\" valign=\"bottom\">0</td>\n<td align=\"left\" valign=\"bottom\">0</td>\n<td align=\"left\" valign=\"bottom\">0</td>\n<td align=\"left\" valign=\"bottom\">0</td>\n<td align=\"left\" valign=\"bottom\">0</td>\n<td align=\"left\" valign=\"bottom\">0</td>\n<td align=\"left\" valign=\"bottom\">1</td>\n<td align=\"left\" valign=\"bottom\">1</td>\n<td align=\"left\" valign=\"bottom\">0</td>\n<td align=\"left\" valign=\"bottom\">0</td>\n<td align=\"left\" valign=\"bottom\">0</td>\n<td align=\"left\" valign=\"bottom\">0</td>\n<td align=\"left\" valign=\"bottom\">0</td>\n</tr>\n<tr>\n<td align=\"left\" valign=\"bottom\">Total</td>\n<td align=\"left\" valign=\"bottom\">100</td>\n<td align=\"left\" valign=\"bottom\">100</td>\n<td align=\"left\" valign=\"bottom\">100</td>\n<td align=\"left\" valign=\"bottom\">100</td>\n<td align=\"left\" valign=\"bottom\">100</td>\n<td align=\"left\" valign=\"bottom\">100</td>\n<td align=\"left\" valign=\"bottom\">100</td>\n<td align=\"left\" valign=\"bottom\">100</td>\n<td align=\"left\" valign=\"bottom\">100</td>\n<td align=\"left\" valign=\"bottom\">100</td>\n<td align=\"left\" valign=\"bottom\">100</td>\n<td align=\"left\" valign=\"bottom\">100</td>\n<td align=\"left\" valign=\"bottom\">100</td>\n<td align=\"left\" valign=\"bottom\">100</td>\n<td align=\"left\" valign=\"bottom\">100</td>\n<td align=\"left\" valign=\"bottom\">100</td>\n</tr>\n</tbody>\n</table>"
+                            ],
+                            "title": "Labor market states of the cohort born in 1970 at ages 55 to 70, per cent.",
+                            "type": "table"
+                        }
+                    ],
+                    "type": "figure"
+                }
+            ],
+            "id": "appendix-1",
+            "title": "A.1 An example R code"
+        }
+    ],
+    "acknowledgements": [
+        {
+            "text": "The authors wish to thank chief editor Matteo Richiardi for his many thoughtful comments that greatly improved this article.",
+            "type": "paragraph"
+        }
+    ],
+    "-meta": {
+        "patched": true
+    },
+    "stage": "published"
+}
