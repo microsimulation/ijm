@@ -46,7 +46,7 @@ final class AboutController extends Controller
         $arguments['contentHeader'] = new ContentHeader($arguments['title']);
 
         $arguments['body'] = [
-            new Paragraph('The International Journal of Microsimulation (IJM) is the official online peer-reviewed journal of the International Microsimulation Association (<a href="https://microsimulation.org/storage/ijm_flyer.pdf">see flyer</a>).'),
+            new Paragraph('The International Journal of Microsimulation (IJM) is the official online peer-reviewed journal of the <a href="https://microsimulation.org">International Microsimulation Association</a>.'),
             new Paragraph('The IJM covers research in all aspects of microsimulation modelling. It publishes high quality contributions making use of microsimulation models to address specific research questions in all scientific areas, as well as methodological and technical issues.'),
             new Paragraph('In particular, the IJM invites submission of five types of contributions: research articles, research notes, data watch, book reviews, and software reviews.'),
             new Paragraph('<strong>Research articles</strong> of interest to the IJM concern:'),
@@ -62,7 +62,7 @@ final class AboutController extends Controller
                 'short case-studies illustrating the application of microsimulation models and their impacts on policy-making;',
                 'examples of good practice in microsimulation modelling.',
             ], 'bullet'),
-            new Paragraph('<strong>Data watch</strong> refers to short research notes that describe (newly) available datasets in detail.'),
+            new Paragraph('<strong>Data watch</strong> refers to short research notes that describe (newly) available datasets and how they can be exploited for microsimulation studies.'),
             new Paragraph('<strong>Book reviews</strong> offer a discussion of recent books that might be of interest to the microsimulation community, or present a critical assessment in retrospect of the impact of "classic" contributions.'),
             new Paragraph('<strong>Software reviews</strong> are short contributions that describe advances in software development that are likely to be of interest to the journal readership, with a particular attention to open source software.'),
             new Paragraph('If in doubt concerning the suitability of a particular manuscript, or if interested in editing a Special thematic issue, please contact the editor for further advice.'),
@@ -135,7 +135,7 @@ final class AboutController extends Controller
     {
         $arguments = $this->aboutPageArguments($request);
 
-        $arguments['title'] = 'Submission Policy';
+        $arguments['title'] = 'Editorial Policy';
 
         $arguments['contentHeader'] = new ContentHeader($arguments['title']);
 
@@ -143,8 +143,7 @@ final class AboutController extends Controller
             ArticleSection::basic('Submissions', 2,
                 $this->render(
                     new Paragraph('Please see the <a href="'.$this->get('router')->generate('about').'">Aims and scope</a> page for information about the types of contributions of interest to the journal. If in doubt concerning the suitability of a particular manuscript, please contact the editor for further advice.'),
-                    new Paragraph('All submitted research notes and research articles will be subject to peer review by two independent referees appointed by the editor. Other items will be accepted for publication subject to review by at least two members of the editorial board.'),
-                    new Paragraph('The journal editors are responsible for ensuring that all submitted items are peer reviewed and published in a timely manner whilst maintaining the high standards expected of an academic journal.'),
+                    new Paragraph('All submitted research notes and research articles will be subject to peer review by at least two independent referees appointed by the Editor. Other items will be accepted for publication subject to review by at least two members of the Editorial board.'),
                     new Paragraph('Submission implies that the work described has not been published previously (except in the form of an abstract or as part of a published lecture or academic thesis or as an electronic preprint or working paper), that it is not under consideration for publication elsewhere, that its publication is approved by all authors and tacitly or explicitly by the responsible authorities where the work was carried out, and that, if accepted, it will not be published elsewhere in the same form, in English or in any other language, including electronically without the written consent of the copyright-holder.'),
                     new Paragraph('<strong>Submission guidelines</strong>'),
                     Listing::unordered([
@@ -156,6 +155,12 @@ final class AboutController extends Controller
                     ], 'bullet')       
                 )
             ),
+            ArticleSection::basic('Fees', 2,
+                $this->render(
+                    new Paragraph('The International Journal of Microsimulation is open access.'),
+                    new Paragraph('It is the current policy of the International Microsimulation Association to waive any submission or publication fees.')
+                    )
+                ),
             ArticleSection::basic('Ethics in publishing', 2,
                 $this->render(new Paragraph('The IJM supports the ethical principles set out by the <a href="http://publicationethics.org/resources/guidelines">Committee on Publication Ethics (COPE).</a>')
                 )
@@ -210,44 +215,6 @@ final class AboutController extends Controller
         return new Response($this->get('templating')->render('::about.html.twig', $arguments));
     }
 
-    public function authorNotesAction(Request $request) : Response
-    {
-        $arguments = $this->aboutPageArguments($request);
-
-        $arguments['title'] = 'Note for authors';
-
-        $arguments['contentHeader'] = new ContentHeader($arguments['title']);
-
-        $arguments['body'] = [
-            new Paragraph('Please see the <a href="'.$this->get('router')->generate('about').'">Aims and scope</a> page for information about the types of contributions of interest to the journal. If in doubt concerning the suitability of a particular manuscript, please contact the editor for further advice.'),
-            new Paragraph('<strong>Editorial policy</strong>'),
-            new Paragraph('It is the policy of the journal to accept for consideration only original items written in English that have not previously been published and are not currently being considered for publication elsewhere. Prior release of material online or in a working paper series is not classed as publication unless subject to an independent peer review or refereeing process.'),
-           
-            new Paragraph('All submitted research notes and research articles will be subject to peer review by two independent referees appointed by the editor. 
-            Other items will be accepted for publication subject to review by at least two members of the editorial board.'),
-            new Paragraph('The journal editors are responsible for ensuring that all submitted items are peer reviewed and published in a timely manner whilst maintaining the high standards expected of an academic journal.'),
-            new Paragraph('Where appropriate, authors are invited to take advantage of the online nature of the journal by supplementing their written submissions with additional relevant material, such as listings of excerpts from executable code; downloadable working executables; extended results tables etc.'),
-            new Paragraph('The International Journal of Microsimulation supports full transparency about data and code of published articles:'),
-            new Paragraph('Authors are required to report, for any data they use, which is the source and whether the data is:'),
-            Listing::ordered([
-                'publicly available (specifying how the data can be accessed);',
-                'available for scientific research only upon registration;',
-                'proprietary (specifying the nature of the data and the user agreement which they benefited from).',
-            ], 'number'),
-            new Paragraph('If the paper is model-based, authors are also required to specify whether the code is:'),
-            Listing::ordered([
-                'open-source;',
-                'proprietary, with executable available;',
-                'proprietary, with executable also not available.',
-            ], 'number'),
-            new Paragraph('The journal encourages the use of open-source software and the publication of the source code.'),
-            new Paragraph('For questions, please contact the Editor Matteo Richiardi at <a href="mailto:matteo.richiardi@essex.ac.uk">matteo.richiardi@essex.ac.uk</a>'),
-            
-        ];
-
-        return new Response($this->get('templating')->render('::about.html.twig', $arguments));
-    }
-
     public function reviewerNotesAction(Request $request) : Response
     {
         $arguments = $this->aboutPageArguments($request);
@@ -266,7 +233,7 @@ final class AboutController extends Controller
                 'Validity of methods, results and interpretations',
                 'Relevance to journal readership',
                 'Clarity and structure of narrative',
-                'Quality and appropriateness of any tables or <figures></figures>',
+                'Quality and appropriateness of any tables or figures'
             ], 'bullet'),
             new Paragraph('If revision prior to publication or resubmission is recommended, reviewers are asked to provide a list of points that the submitting author(s) should be asked to address.'),
             new Paragraph('In order to allow for timely publication, reviewers are asked to provide comments on submitted items within the agreed review deadline (normally four weeks after receipt of item).'),
@@ -275,7 +242,28 @@ final class AboutController extends Controller
 
         return new Response($this->get('templating')->render('::about.html.twig', $arguments));
     }
-
+    
+    public function authorNotesAction(Request $request) : Response
+    {
+        $arguments = $this->aboutPageArguments($request);
+        
+        $arguments['title'] = 'Special issues';
+        
+        $arguments['contentHeader'] = new ContentHeader($arguments['title']);
+        $arguments['body'] = [
+            ArticleSection::basic('Special issue on Covid-19 microsimulation research', 2, $this->render(
+                new Paragraph('A call for papers for a special issue of the journal on Covid-19 microsimulation research is now open.'), 
+                new Paragraph('This is based, but not limited to, the <a href="https://microsimulation.org/conferences-and-workshops/microsimulation-modelling-of-policy-responses-to-covid-19/">Microsimulation modelling of policy responses to COVID-19</a> workshop organised by the International Microsimulation Assocation on December 2-3, 2020.'), 
+                new Paragraph('The deadline for submitting a paper to the special Covid-19 issue is <b>28 February 2021</b>.'), 
+                new Paragraph('When submitting a paper for the special issue, please specify it in the submission cover letter.'), 
+                new Paragraph('For questions, please contact the Editor Matteo Richiardi at <a href="mailto:matteo.richiardi@essex.ac.uk">matteo.richiardi@essex.ac.uk</a>')
+                ))
+        ];
+       
+        
+        return new Response($this->get('templating')->render('::about.html.twig', $arguments));
+    }
+    
     private function aboutPageArguments(Request $request) : array
     {
         $arguments = $this->defaultPageArguments($request);
@@ -285,9 +273,9 @@ final class AboutController extends Controller
         $menuItems = [
             'Aims and scope' => $this->get('router')->generate('about'),
             'Editorial board' => $this->get('router')->generate('about-board'),
-            'Submission policy' => $this->get('router')->generate('about-submission'),
-            'Notes for authors' => $this->get('router')->generate('about-authors'),
+            'Editorial policy' => $this->get('router')->generate('about-submission'),
             'Notes for reviewers' => $this->get('router')->generate('about-reviewers'),
+            'Call for papers' => $this->get('router')->generate('about-authors'),
         ];
 
         $currentPath = $this->get('router')->generate($request->attributes->get('_route'), $request->attributes->get('_route_params'));
