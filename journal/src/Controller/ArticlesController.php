@@ -531,7 +531,7 @@ final class ArticlesController extends Controller
                 }
 
                 if ($all['data']->notEmpty()) {
-                    $parts[] = ArticleSection::collapsible('data', 'Data availability', 2, $this->render(...$all['data']), false, $first);
+                    $parts[] = ArticleSection::collapsible('data', 'Data and code availability', 2, $this->render(...$all['data']), false, $first);
                     $first = false;
                 }
 
