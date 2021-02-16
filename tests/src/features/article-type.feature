@@ -32,8 +32,8 @@ Feature: Article type page
     And user navigates to "<articleName>"
     Then "<pageName>" page is displayed
     Examples:
-      | articleName               | pageName         |
-      | scientific-correspondence | Book reviews     |
-      | tools-resources           | Data watch       |
-      | short-report              | Research notes   |
-      | registered-report         | Software reviews |
+      | articleName      | pageName         |
+      | book-reviews     | Book reviews     |
+      | data-watch       | Data watch       |
+      | research-notes   | Research notes   |
+      | software-reviews | Software reviews |
