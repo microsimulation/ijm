@@ -70,7 +70,7 @@ final class AboutController extends Controller
                 'The IJM is listed in EBSCOhost, EconLit, RePEc, Scopus.',
                 'The ISSN of the journal is 1747-5864.',
                 'The IDEAS/RePEc journal page can be accessed from <a href="https://ideas.repec.org/s/ijm/journl.html">here</a>.',
-                'The IDEAS/RePEc impact factor of the journal is 2.094 (March 2018).',
+                'The IDEAS/RePEc impact factor of the journal is 3.15 (December 2019).',
                 'The journal ranking page can be accessed from <a href="https://ideas.repec.org/top/top.series.simple.html#repec:ijm:journl">here</a>.',
             ], 'bullet'),
         ];
