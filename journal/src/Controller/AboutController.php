@@ -65,7 +65,8 @@ final class AboutController extends Controller
             new Paragraph('<strong>Data watch</strong> refers to short research notes that describe (newly) available datasets and how they can be exploited for microsimulation studies.'),
             new Paragraph('<strong>Book reviews</strong> offer a discussion of recent books that might be of interest to the microsimulation community, or present a critical assessment in retrospect of the impact of "classic" contributions.'),
             new Paragraph('<strong>Software reviews</strong> are short contributions that describe advances in software development that are likely to be of interest to the journal readership, with a particular attention to open source software.'),
-            new Paragraph('If in doubt concerning the suitability of a particular manuscript, or if interested in editing a Special thematic issue, please contact the editor for further advice.'),
+            new Paragraph('If in doubt concerning the suitability of a particular manuscript, or if interested in editing a Special thematic issue, please 
+            <a href="mailto:matteo.richiardi@essex.ac.uk">contact the editor</a> for further advice'),
             Listing::unordered([
                 'The IJM is listed in EBSCOhost, EconLit, RePEc, Scopus.',
                 'The ISSN of the journal is 1747-5864.',
