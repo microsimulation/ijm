@@ -92,10 +92,9 @@ final class AboutController extends Controller
             new Paragraph('<strong>Assistant Editors</strong>'),
             Listing::unordered([
                 'Patryk Bronka (University of Essex, UK)',
-                'Dr Ernesto Carrella (University of Oxford, UK)',
                 'Dr Melanie Tomintz (University of Canterbury, New Zealand)',
             ], 'bullet'),
-            new Paragraph('<strong>Book Review Editor</strong> - Dr Eveline van Leeuwen (VU University Amsterdam, the Netherlands)'),
+            new Paragraph('<strong>Book Review Editor</strong> - Dr Gijs Dekkers (Federal Planning Bureau, Belgium)'),
             new Paragraph('<strong>Associate Editors</strong>'),
             Listing::unordered([
                 'Prof Francesco Figari (Università dell\'Insubria, Italy)',
