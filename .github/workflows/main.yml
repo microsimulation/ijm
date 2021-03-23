@@ -5,25 +5,35 @@ on:
     paths-ignore:
       - assets/**
   pull_request:
+    types: [opened, synchronize, reopened]
+    paths-ignore:
+      - assets/**
     branches: [ master ]
   workflow_dispatch:
 
 jobs:
-  build:
+  main:
     runs-on: ubuntu-latest
     steps:
+    #-- SETUP
     - uses: actions/checkout@v2
+
     - name: Scan for secrets left
       uses: AlicanAkkus/pinder-action@1.0.0
+
     - name: Configure AWS Access
       uses: aws-actions/configure-aws-credentials@v1
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
+
     - name: ECR login
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v1
+
+
+    #-- BUILD
     - name: API image build
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
@@ -31,6 +41,7 @@ jobs:
         IMAGE_TAG: ${{ github.sha }}
       run: |
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -f api/Dockerfile ./api;
+
     - name: Journal image build
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
@@ -41,6 +52,9 @@ jobs:
           --build-arg api_url=${{ secrets.api_url }}} \
           --build-arg api_url_public=${{ secrets.API_URL_PUBLIC }} \
           --build-arg api_key=${{ secrets.api_key }} -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -f journal/Dockerfile ./journal;
+
+
+    #-- TEST
     - name: Prepare env for Automation tests to run
       run: |
         rm -rf docker-compose.overrirde.yml
@@ -49,11 +63,13 @@ jobs:
         echo "API_URL_PUBLIC=http://$APP_IP" >> .env
         docker-compose up -d
         docker build -t ijm-selenium-tests:latest --build-arg APP_HOSTNAME="http://"$APP_IP":8080/" -f tests/Dockerfile ./tests
+
     - name: Run Automation suite
       run: |
         CURR_PATH=$(pwd)
         mkdir -p $CURR_PATH/reports && chmod 777 -R $CURR_PATH/reports
         docker run -i --name ijm-selenium -v $CURR_PATH/reports:/app/reports ijm-selenium-tests:latest
+
     - name: Get test results
       if: always()
       id: test-res
@@ -61,19 +77,25 @@ jobs:
         RESULT=$(jq '[ .[].elements[].steps[].result.status ] | unique | tostring | test("failed")' reports/report.json)
         echo "::set-output name=TEST_RESULTS::$RESULT"
         echo "Test results - $RESULT"
+
     - name: Publish test results
       if: always()
       uses: actions/upload-artifact@v2
       with:
         name: selenium-test-report
         path: reports/
+
     - name: Examine test results
       if: ${{ steps.test-res.outputs.TEST_RESULTS == 'true' }}
       run: |
         echo "Test results output - ${{ steps.test-res.outputs.TEST_RESULTS }}"
         echo "Test failed - preventing pipeline from further deployment"
         exit 1
+
+
+    #-- PUSH AND DEPLOY
     - name: Update env file
+      if: github.ref == 'refs/heads/master'
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         IMAGE_TAG: ${{ github.sha }}
@@ -85,7 +107,9 @@ jobs:
         echo "${{ secrets.JKS_STORE }}" > cacerts_enc
         base64 -d cacerts_enc > cacerts
         rm -rf cacerts_enc
+
     - name: Push docker images
+      if: github.ref == 'refs/heads/master'
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         IMAGE_TAG: ${{ github.sha }}
@@ -93,7 +117,9 @@ jobs:
         echo "Test results output - ${{ steps.test-res.outputs.TEST_RESULTS }}"
         docker push $ECR_REGISTRY/ijm-api:$IMAGE_TAG
         docker push $ECR_REGISTRY/ijm-journal:$IMAGE_TAG
+
     - name: Publish env
+      if: github.ref == 'refs/heads/master'
       uses: nogsantos/ssh-scp-deploy@v1.2.1
       with:
         src: ./.env
@@ -102,7 +128,9 @@ jobs:
         port: ${{ secrets.SSH_PORT }}
         user: ${{ secrets.SSH_USER }}
         key: ${{ secrets.SSH_KEY }}
+
     - name: Publish compose
+      if: github.ref == 'refs/heads/master'
       uses: nogsantos/ssh-scp-deploy@v1.2.1
       with:
         src: ./docker-compose.prod.yml
@@ -111,7 +139,9 @@ jobs:
         port: ${{ secrets.SSH_PORT }}
         user: ${{ secrets.SSH_USER }}
         key: ${{ secrets.SSH_KEY }}
+
     - name: Publish config
+      if: github.ref == 'refs/heads/master'
       uses: nogsantos/ssh-scp-deploy@v1.2.1
       with:
         src: ./journal/.docker/nginx.conf
@@ -120,7 +150,9 @@ jobs:
         port: ${{ secrets.SSH_PORT }}
         user: ${{ secrets.SSH_USER }}
         key: ${{ secrets.SSH_KEY }}
+
     - name: Publish certs store
+      if: github.ref == 'refs/heads/master'
       uses: nogsantos/ssh-scp-deploy@v1.2.1
       with:
         src: ./cacerts
@@ -129,7 +161,9 @@ jobs:
         port: ${{ secrets.SSH_PORT }}
         user: ${{ secrets.SSH_USER }}
         key: ${{ secrets.SSH_KEY }}
+
     - name: Deploy application
+      if: github.ref == 'refs/heads/master'
       uses: alinz/ssh-scp-action@v0.1.1
       with:
         key: ${{ secrets.SSH_KEY }}
@@ -142,9 +176,13 @@ jobs:
           mkdir -p journal/.docker;
           mv nginx.conf journal/.docker;
           /bin/sh ${{ secrets.SSH_DIR }}/deploy.sh;
+
+
+    #-- CLEANUP
     - name: ECR logout
       if: always()
       run: docker logout ${{ steps.login-ecr.outputs.registry }}
+
     - name: Slack notify
       if: failure()
       env:
