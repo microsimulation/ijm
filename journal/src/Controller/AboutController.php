@@ -162,7 +162,7 @@ final class AboutController extends Controller
                 )
             ),
             ArticleSection::basic('Ethics in publishing', 2,
-                $this->render(new Paragraph('TEST The IJM supports the ethical principles set out by the <a href="http://publicationethics.org/resources/guidelines">Committee on Publication Ethics (COPE).</a>')
+                $this->render(new Paragraph('The IJM supports the ethical principles set out by the <a href="http://publicationethics.org/resources/guidelines">Committee on Publication Ethics (COPE).</a>')
                 )
             ),
             ArticleSection::basic('Conflict of interest', 2,
@@ -187,6 +187,12 @@ final class AboutController extends Controller
                     ], 'number'),
                     new Paragraph('If data or programs cannot be published in an openly accessible trusted data repository, authors must commit to preserving data and code for a period of no less than five years following publication of the manuscript, and to providing reasonable assistance to requests for clarification and replication.'),
                     new Paragraph('The journal encourages the use of open-source software and the publication of the source code.')
+                )
+            ),     
+            ArticleSection::basic('Participants and participant consent', 2,
+                $this->render(
+                    new Paragraph('All submitted manuscripts containing research which involves human participants and/or animal experimentation must include a statement confirming that it was carried out in accordance with the principles embodied in the <a href="https://www.wma.net/policies-post/wma-declaration-of-helsinki-ethical-principles-for-medical-research-involving-human-subjects/"> Declaration of Helsinki</a> and all relevant guidelines and institutional policies, giving the name of the institutional and/or national research ethics committee that approved the research, along with the approval number/ID.'),
+                    new Paragraph('All submitted manuscripts containing research which involves identifiable human subjects must include a statement confirming that consent was obtained for all identifiable individuals and that any identifiable individuals are aware of intended publication. In order to protect participant anonymity, authors do not need to send proof of this consent to hte IJM.')
                 )
             ),            
             ArticleSection::basic('Copyright', 2,
