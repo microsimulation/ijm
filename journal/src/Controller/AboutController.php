@@ -166,7 +166,7 @@ final class AboutController extends Controller
                     new Paragraph('The IJM supports the ethical principles set out by the <a href="http://publicationethics.org/resources/guidelines">Committee on Publication Ethics (COPE).</a>')
                 )
             ),
-            ArticleSection::basic('Ethical statement', 2,
+            ArticleSection::basic('Participants and participant consent', 2,
                 $this->render(
                     new Paragraph('All submitted manuscripts containing research which involves human participants and/or animal experimentation must include a statement confirming that it was carried out in accordance with the principles outlined above, giving the name of the institutional and/or national research ethics committee that approved the research, along with the approval number/ID.'),
                     new Paragraph('All submitted manuscripts containing research which involves identifiable human subjects must include a statement confirming that consent was obtained for all identifiable individuals and that any identifiable individuals are aware of intended publication. In order to protect participant anonymity, authors do not need to send proof of this consent to hte IJM.'),
