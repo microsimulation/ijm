@@ -162,7 +162,7 @@ final class AboutController extends Controller
                 )
             ),
             ArticleSection::basic('Ethics in publishing', 2,
-                $this->render(new Paragraph('The IJM supports the ethical principles set out by the <a href="http://publicationethics.org/resources/guidelines">Committee on Publication Ethics (COPE).</a>')
+                $this->render(new Paragraph('TEST The IJM supports the ethical principles set out by the <a href="http://publicationethics.org/resources/guidelines">Committee on Publication Ethics (COPE).</a>')
                 )
             ),
             ArticleSection::basic('Conflict of interest', 2,
