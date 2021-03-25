@@ -259,7 +259,7 @@ final class AboutController extends Controller
         $arguments['body'] = [
             ArticleSection::basic('Special issue on Covid-19 microsimulation research', 2, $this->render(
                 new Paragraph('The IJM will publish a special issue of the journal on Covid-19 microsimulation research, based on the <a href="https://www.microsimulation.org/events/2020_online_covid/">Microsimulation modelling of policy responses to COVID-19</a> workshop organised by the International Microsimulation Assocation on December 2-3, 2020.'), 
-                new Paragraph('For more information, please <a href="mailto:matteo.richiardi@essex.ac.uk">contact the editor</a>.')
+                new Paragraph('For more information, or if you are interested in editing a special issue, please <a href="mailto:matteo.richiardi@essex.ac.uk">contact the editor</a>.')
                 ))
         ];
        
