@@ -29,10 +29,10 @@ Feature: Article type page
   Scenario Outline: Access special type of articles
     Given user navigates to "Home" page
     When user is on the Home page
-    And user navigates to "<articleName>"
+    And user navigates to article type "<articleType>"
     Then "<pageName>" page is displayed
     Examples:
-      | articleName      | pageName         |
+      | articleType      | pageName         |
       | book-reviews     | Book reviews     |
       | data-watch       | Data watch       |
       | research-notes   | Research notes   |
