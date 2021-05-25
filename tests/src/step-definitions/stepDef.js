@@ -60,6 +60,12 @@ When(/^user navigates to "([^"]*)"$/, {timeout: 30 * 1000}, async function (arti
     this.attach(buffer, 'image/png');
 });
 
+When(/^user navigates to article type "([^"]*)"$/, {timeout: 30 * 1000}, async function (articleType) {
+    await this.state.driver.get(`${config.url}${articleType}`);
+    const buffer = await this.state.driver.takeScreenshot();
+    this.attach(buffer, 'image/png');
+});
+
 When(/^user navigates to subject "([^"]*)"$/, {timeout: 15 * 1000}, async function (subjectNumber) {
     await this.state.driver.get(`${config.url}subjects/${subjectNumber}`);
     const buffer = await this.state.driver.takeScreenshot();
