@@ -102,7 +102,7 @@ final class AboutController extends Controller
             Listing::unordered([
                 'Prof Francesco Figari (Università dell\'Insubria, Italy)',
                 'Dr Jakob Grazzini (Università di Pavia, Italy)',
-                'Dr Philipp Harting (Bielefeld University)',
+                'Dr Philipp Harting (Bielefeld University, Germany)',
                 'Dr Sophie Pennec (Institut National d\'Etudes Démographiques, France)',
                 'Dr Azizur Rahman (Charles Sturt University, Australia)',
                 'Prof Luc Savard (Universit&eacute de Sherbrooke, Canada)',
