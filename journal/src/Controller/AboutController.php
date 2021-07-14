@@ -93,6 +93,8 @@ final class AboutController extends Controller
             new Paragraph('<strong>Assistant Editors</strong>'),
             Listing::unordered([
                 'Patryk Bronka (University of Essex, UK)',
+                'Natasha Brooks (University of Essex, UK)',
+                'Mohsen Eshraghi (University of Essex, UK)',
                 'Dr Melanie Tomintz (University of Canterbury, New Zealand)',
             ], 'bullet'),
             new Paragraph('<strong>Book Review Editor</strong> - Dr Gijs Dekkers (Federal Planning Bureau, Belgium)'),
@@ -106,6 +108,7 @@ final class AboutController extends Controller
                 'Prof Luc Savard (Universit&eacute de Sherbrooke, Canada)',
                 'Prof Deborah Schofield (University of Sydney, Australia)',
                 'Dr Sven Stöwhase (FIT, Germany)',
+                'Prof Eveline van Leeuwen (Wageningen University, The Netherlands)',
                 'Dr Gerlinde Verbist (Antwerp University, Belgium)',
                 'Jürgen Wiemers (IAB, Germany)',
             ], 'bullet'),
