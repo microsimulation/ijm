@@ -13,36 +13,10 @@ jobs:
   main:
     runs-on: ubuntu-latest
     steps:
-      #-- SETUP
       - uses: actions/checkout@v2
 
-      #-- BUILD
-      - name: API image build
-        run: |
-          docker build -t ijm-api:$IMAGE_TAG -f api/Dockerfile ./api;
-
-      - name: Journal image build
-        run: |
-          docker build --build-arg app_env=${{ secrets.env }} \
-            --build-arg api_url=${{ secrets.api_url }}} \
-            --build-arg api_url_public=${{ secrets.API_URL_PUBLIC }} \
-            --build-arg api_key=${{ secrets.api_key }} -t ijm-journal:$IMAGE_TAG -f journal/Dockerfile ./journal;
-
-      #-- TEST
-      - name: Prepare env for Automation tests to run
-        run: |
-          rm -rf docker-compose.overrirde.yml
-          APP_IP=$(hostname -I | awk '{print $1}')
-          echo "IIIF_URI=http://$APP_IP:8081/iiif/2" > .env
-          echo "API_URL_PUBLIC=http://$APP_IP" >> .env
-          docker-compose up -d
-          docker build -t ijm-selenium-tests:latest --build-arg APP_HOSTNAME="http://"$APP_IP":8080/" -f tests/Dockerfile ./tests
-
-      - name: Run Automation suite
-        run: |
-          CURR_PATH=$(pwd)
-          mkdir -p $CURR_PATH/reports && chmod 777 -R $CURR_PATH/reports
-          docker run -i --name ijm-selenium -v $CURR_PATH/reports:/app/reports ijm-selenium-tests:latest
+      - name: Run tests
+        run: make test
 
       - name: Get test results
         if: always()
@@ -63,5 +37,5 @@ jobs:
         if: ${{ steps.test-res.outputs.TEST_RESULTS == 'true' }}
         run: |
           echo "Test results output - ${{ steps.test-res.outputs.TEST_RESULTS }}"
-          echo "Test failed - preventing pipeline from further deployment"
+          echo "Test failed"
           exit 1
