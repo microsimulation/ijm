@@ -16,13 +16,17 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Run tests
-        run: make test
+        run: |
+          pwd
+          ls -l
+          ls -l tests
+          make test
 
       - name: Get test results
         if: always()
         id: test-res
         run: |
-          RESULT=$(jq '[ .[].elements[].steps[].result.status ] | unique | tostring | test("failed")' reports/report.json)
+          RESULT=$(jq '[ .[].elements[].steps[].result.status ] | unique | tostring | test("failed")' tests/reports/report.json)
           echo "::set-output name=TEST_RESULTS::$RESULT"
           echo "Test results - $RESULT"
 
@@ -31,7 +35,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: selenium-test-report
-          path: reports/
+          path: tests/reports/
 
       - name: Examine test results
         if: ${{ steps.test-res.outputs.TEST_RESULTS == 'true' }}
