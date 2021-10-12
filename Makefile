@@ -12,6 +12,7 @@ dev: build
 test: build
 	docker build -t ijm-selenium-tests:latest ./tests
 	LOCAL_IP=$(local_ip) docker-compose -f docker-compose.yml -f docker-compose.test.yml up -d
+	chmod 777 tests/reports
 	docker run \
 		-i --rm \
 		-v $(PWD)/tests/reports:/app/reports \
