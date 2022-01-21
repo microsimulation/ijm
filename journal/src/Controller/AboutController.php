@@ -95,7 +95,7 @@ final class AboutController extends Controller
                 'Patryk Bronka (University of Essex, UK)',
                 'Natasha Brooks (University of Essex, UK)',
                 'Mohsen Eshraghi (University of Essex, UK)',
-                'Dr Melanie Tomintz (University of Canterbury, New Zealand)',
+                'Dr Jesse Wiki (University of Auckland, New Zealand)',
             ], 'bullet'),
             new Paragraph('<strong>Book Review Editor</strong> - Dr Gijs Dekkers (Federal Planning Bureau, Belgium)'),
             new Paragraph('<strong>Associate Editors</strong>'),
@@ -260,11 +260,8 @@ final class AboutController extends Controller
         
         $arguments['contentHeader'] = new ContentHeader($arguments['title']);
         $arguments['body'] = [
-            ArticleSection::basic('Special issue on Covid-19 microsimulation research', 2, $this->render(
-                new Paragraph('The IJM will publish a special issue of the journal on Covid-19 microsimulation research, based on the <a href="https://www.microsimulation.org/events/2020_online_covid/">Microsimulation modelling of policy responses to COVID-19</a> workshop organised by the International Microsimulation Association on December 2-3, 2020.')
-                )),
-            ArticleSection::basic('Special issue on WEHIA2021 - Workshop on Economics with Heterogeneous Interacting Agents', 2, $this->render(
-                new Paragraph('The IJM will also publish a special issue with selected articles presented at the <a href="https://centridiricerca.unicatt.it/complexity-the-complexity-lab-in-economics-cle-wehia-2017#content">WEHIA2021 workshops</a> (28-29 June 2021, 10 September 2021, 15 October 2021, 19 November 2021).'), 
+            ArticleSection::basic('Special issue on IMA2021 - 8th World Congress of the International Microsimulation Association', 2, $this->render(
+                new Paragraph('The IJM will publish a special issue with selected articles presented at the <a href="https://www.microsimulation.ac.uk/research-and-policy-analysis/events/2021/09/17/ima-2021/">IMA2021 workshops</a> (1-3 December 2021).'), 
                 new Paragraph('For more information, or if you are interested in editing a special issue, please <a href="mailto:matteo.richiardi@essex.ac.uk">contact the editor</a>.')
                 )),
         ];      
