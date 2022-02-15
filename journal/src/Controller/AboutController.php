@@ -90,9 +90,9 @@ final class AboutController extends Controller
         $arguments['body'] = [
             new Paragraph('The editors, associate editors and editorial board of the International Journal of Microsimulation are appointed through the auspices of the International Microsimulation Association. All are appointed to serve for a two-year period, during which they commit themselves to (i) seeking out and encouraging submission of work likely to be of interest to the journal readership; (ii) undertaking reviews of submitted manuscripts; (iii) providing guidance to the editor on future directions for the journal. In addition, Associate Editors take responsibility for facilitating the review and editing of submitted manuscripts falling within their area of subject specialism.  Nominations for all of these posts are sought in the run-up to the biennial IMA General Conference via the IMA-NEWS email discussion list.'),
             new Paragraph('<strong>Chief Editor</strong> - Prof Matteo Richiardi (University of Essex, UK), <a href="mailto:matteo.richiardi@essex.ac.uk">matteo.richiardi@essex.ac.uk</a>'),
+            new Paragraph('<strong>Managing Editor</strong> - Patryk Bronka (University of Essex, UK)'),
             new Paragraph('<strong>Assistant Editors</strong>'),
             Listing::unordered([
-                'Patryk Bronka (University of Essex, UK)',
                 'Natasha Brooks (University of Essex, UK)',
                 'Mohsen Eshraghi (University of Essex, UK)',
                 'Dr Jesse Wiki (University of Auckland, New Zealand)',
