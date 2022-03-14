@@ -1,0 +1,3228 @@
+{
+    "status": "vor",
+    "id": "00239",
+    "version": 1,
+    "type": "research-article",
+    "doi": "10.34196/ijm.00239",
+    "authorLine": "Luke Archer et al.",
+    "title": "A Dynamic Microsimulation Model for Ageing and Health in England: The English Future Elderly Model",
+    "published": "2021-12-31T00:00:00Z",
+    "versionDate": "2021-12-31T00:00:00Z",
+    "statusDate": "2021-12-31T00:00:00Z",
+    "volume": 14,
+    "issue": 3,
+    "fpage": 2,
+    "lpage": 26,
+    "elocationId": "2-26",
+    "pdf": "http://web:8082/00239/ijm-00239.pdf",
+    "subjects": [
+        {
+            "id": "health",
+            "name": "Health"
+        },
+        {
+            "id": "dynamic-microsimulation",
+            "name": "Dynamic microsimulation"
+        }
+    ],
+    "abstract": {
+        "content": [
+            {
+                "text": "Population ageing has the potential to disrupt every aspect of society, placing a great deal of stress in particular on our healthcare and welfare systems. To overcome these challenges will require effective policy interventions with effects that may not be truly seen for decades. Policy makers would therefore benefit from a tool that allows them to assess the long-term impact of their decisions on population health. We have developed such a tool by adapting the well-established Future Elderly Model (FEM) developed in the US to use the English Longitudinal Study of Ageing. The FEM is a Markov microsimulation model for people aged over 50 that generates input populations and transition probabilities using the English Longitudinal Study of Ageing, and can then project the population forward in time assessing the prevalence and incidence of a number of chronic diseases and related economic outputs. By modifying the input populations or transition probabilities, we can use the model to investigate counterfactual scenarios and assess the long-term effects of policy interventions on elderly health. In this paper we describe the model and its workings, provide evidence to validate its outputs, and outline possible applications.",
+                "type": "paragraph"
+            }
+        ]
+    },
+    "copyright": {
+        "license": "CC-BY-4.0",
+        "holder": "Archer",
+        "statement": "This article is distributed under the terms of the <a href=\"http://creativecommons.org/licenses/by/4.0/\">Creative Commons Attribution License</a>, which permits unrestricted use and redistribution provided that the original author and source are credited."
+    },
+    "authors": [
+        {
+            "affiliations": [
+                {
+                    "address": {
+                        "components": {
+                            "country": "UK",
+                            "locality": [
+                                "Leeds"
+                            ]
+                        },
+                        "formatted": [
+                            "Leeds",
+                            "UK"
+                        ]
+                    },
+                    "name": [
+                        "The University of Leeds"
+                    ]
+                }
+            ],
+            "competingInterests": "No competing interests reported.",
+            "emailAddresses": [
+                "l.archer@leeds.ac.uk"
+            ],
+            "name": {
+                "index": "Archer, Luke",
+                "preferred": "Luke Archer"
+            },
+            "type": "person"
+        },
+        {
+            "affiliations": [
+                {
+                    "address": {
+                        "components": {
+                            "country": "UK",
+                            "locality": [
+                                "Leeds"
+                            ]
+                        },
+                        "formatted": [
+                            "Leeds",
+                            "UK"
+                        ]
+                    },
+                    "name": [
+                        "The University of Leeds"
+                    ]
+                }
+            ],
+            "competingInterests": "No competing interests reported.",
+            "name": {
+                "index": "Lomax, Nik",
+                "preferred": "Nik Lomax"
+            },
+            "orcid": "0000-0001-9504-7570",
+            "type": "person"
+        },
+        {
+            "affiliations": [
+                {
+                    "address": {
+                        "components": {
+                            "country": "USA",
+                            "locality": [
+                                "Los Angeles"
+                            ]
+                        },
+                        "formatted": [
+                            "Los Angeles",
+                            "USA"
+                        ]
+                    },
+                    "name": [
+                        "University of Southern California"
+                    ]
+                }
+            ],
+            "competingInterests": "No competing interests reported.",
+            "name": {
+                "index": "Tysinger, Bryan",
+                "preferred": "Bryan Tysinger"
+            },
+            "orcid": "0000-0002-8497-3664",
+            "type": "person"
+        }
+    ],
+    "funding": {
+        "statement": "This work was supported by Wave 1 of The UKRI Strategic Priorities Fund under the EPSRC Grant EP/T001569/1, particularly the \u2018Digital Twins: Urban Analytics\u2019 theme within that grant and The Alan Turing Institute."
+    },
+    "dataSets": {
+        "availability": [
+            {
+                "text": "The English Longitudinal Study of Ageing is available at the UK Data Service website (www.ukdataservice.ac.uk). The data is available for scientific research only upon registration. The script to harmonise the data is publicly available from the Gateway to Global Aging Data (www.g2aging.org). Census data used for reweighting populations by sex, age, and educational attainment were freely obtained from both the Office of National Statistics (ONS) (www.ons.gov.uk) and nomisweb (www.nomisweb.co.uk) websites. To re-weight the initial populations by sex and age from 2002 to 2018, population estimate data was obtained from the nomisweb data query tool. For re-weighting from 2018 onwards, National Population Projections were used from the ONS, available at www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationprojections/datasets/z3zippedpopulationprojectionsdatafilesengland. Data used for re-weighting populations by highest level of education was again obtained from the ONS at www.ons.gov.uk/peoplepopulationandcommunity/educationandchildcare/adhocs/004283ct04692011censussexbyagebyhighestlevelofqualificationbynssecengland. The code used in the creation of this model is freely accessible on Github at the following link: github.com/ld-archer/E_FEM.",
+                "type": "paragraph"
+            }
+        ]
+    },
+    "keywords": [
+        "Ageing",
+        "Microsimulation",
+        "Policy"
+    ],
+    "body": [
+        {
+            "content": [
+                {
+                    "text": "In the United Kingdom (UK), life expectancy at birth has increased over the last 40 years. In 1981 male period life expectancy was 70.9 while for females this figure was 76.9. In 2018 this had risen to 79.3 and 82.9 respectively, with projected rises to 85.4 and 88 in 2061 (<a href=\"#bib1\">ONS, 2019a</a>). The potential impact and implications of an ageing population in the UK has received considerable attention, for example the UK Government <i>Foresight Future of an Ageing Population</i> project which took a wide-ranging and multi-method approach across multiple domains, including housing, health and the impacts of technology and design (<a href=\"#bib2\">G. O. for Science, 2016</a>).",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "These improvements in life expectancy are to be celebrated, however an ageing population will increase the strain on critical systems such as health and social care provision. This demographic shift will also have a wide-ranging impact on the rest of society. For example having a larger proportion of the population in retirement (relative to those in work) means lower tax revenue to fund the health and social care that some elderly people rely on, often referred to as the Potential Support Ratio (PSR) (<a href=\"#bib3\">Lomax et al., 2020</a>). These issues are not confined to just the UK (<a href=\"#bib4\">Balachandran et al., 2017</a>).",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "To adapt to these challenges, policy makers require robust evidence about current and future trends across a broad range of health and socio-economic outcomes. Having suitable modelling tools which are capable of assessing the multi-domain and inter-related outcomes for an ageing population and the ability to assess scenarios and trade-off in terms of policy development has the potential to inform this evidence base substantially. In this paper we discuss the development of one such model and its application to an ageing English population.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "A combination of factors contribute to the future heath and economic outcomes for individuals within the population. These can be demographic (age, sex, ethnicity), relate to educational attainment or past employment, and/or dependent on current health status or individual risk factors (for example smoking, drinking and exercise). This combination of unique attributes soon adds up to a complex picture and so is best handled by considering each individual rather than aggregating over groups or attributes. Interventions or policy experiments can then be applied to individuals to test how outcomes might differ in the future.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "We present a microsimulation model for the English population aged 50 and over. The English Future Elderly Model (E-FEM) accounts for demographic change, ageing, disability, and mortality, and has been adapted from the US FEM, initially created by a team at RAND and now developed at the Leonard P. Schaeffer Center for Health Policy and Economics at the University of Southern California (<a href=\"#bib5\">Goldman et al., 2004</a>). We utilise longitudinal survey data from the English Longitudinal Study of Ageing (ELSA) which enables detailed assessment of individual characteristics across a broad range of domains. The aim of this paper is to describe the development of this model and demonstrate its utility as a tool for understanding the potential future trajectories of the ageing English population. We are motivated by the following research questions: (i) How can we build and validate a model that reflects the complex and multi-faceted health and economic status of the English population aged over 50? (ii) How do policy intervention experiments impact on the outcomes for this population?",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "It is our intention to describe how the model works, provide validation of both inputs and outputs in an English context and demonstrate the model\u2019s utility with some example scenarios. We intend for this paper to act as a reference for further work which will be focused on specific policy questions and health outcomes.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The remainder of the paper is structured as follows: Section 2 provides context for the model and discusses previous FEM applications; Section 3 sets out the model design for the E-FEM; Section 4 deals with validation of outputs; Results are presented and discussed in Section 5; finally Section 6 offers some conclusions and avenues for further work.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s1",
+            "title": "1. Introduction",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "In this section we discuss two substantive themes: (i) a brief summary of a number of models which are designed for either assessing the elderly population or are focused on health; and (ii) discussion of the background to the FEM, including existing applications of the model.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "One of the earliest examples of a dynamic microsimulation model designed specifically for health policy analysis was POPREP, applied to the United States and later adapted to simulate the Egyptian population (<a href=\"#bib6\">Khalifa, 1972</a>). POPREP was used to assess the impact of different methods of family planning on the rate of conception (<a href=\"#bib7\">Mustafa, 1973</a>). Aside from POPREP, until the 1990s, health microsimulation models were typically static rather than dynamic owing to the computational cost of individual-level modelling compared with macromodels (<a href=\"#bib8\">Schofield et al., 2018</a>). These static microsimulation models rely on static ageing methods, where input microdata is transformed to fit expected demographic and health constraints at the next time step. Examples of these early static models include the evaluation of disease screening (<a href=\"#bib9\">Habbema et al., 1985</a>; <a href=\"#bib10\">Van Oortmarssen et al., 1981</a>), and assessing fertility (<a href=\"#bib11\">Santow, 1976</a>).",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "As the development of more complex dynamic microsimulation models to examine health policy questions became more prevalent, many of these were written for specific disease processes rather than to take in to account a wide range of outcomes (<a href=\"#bib12\">Rutter et al., 2011</a>). This is largely owing to the difficulty in creating microsimulation models in the first place - building a model from scratch requires a skilled programmer and a significant time investment. Examples include <a href=\"#bib13\">Meester et al. (2015)</a> for the screening of colorectal cancer, <a href=\"#bib14\">Mytton et al. (2018)</a> for evaluating cardiovascular disease prevention in the UK, and <a href=\"#bib15\">Su et al. (2015)</a> for assessing the clinical and economic impact of obesity.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "More recently, some research groups have moved to creating microsimulation frameworks to speed up the process of development, enabling much quicker development of models. Examples of large frameworks are LIAM2, () and Modgen developed by Statistics Canada (<a href=\"#bib16\">de Menten et al., 2014</a>; <a href=\"#bib17\">Canada, 2009</a>. These frameworks provide a generic toolkit to handle basic functions of microsimulation such as input/output, cross-sectional ageing, event management, and custom scenario generation, leaving researchers who use them to focus on developing models rather than software. Providing these functions in a user-friendly manner reduces the expertise and time needed to create new models from scratch and potentially opens up a range of new possibilities for using microsimulation to answer pertinent policy-relevant questions.",
+                    "type": "paragraph"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "The FEM is an example of a microsimulation framework, although not in the same way as LIAM2 or Modgen. The FEM uses the Health and Retirement Study (HRS) as the primary data source, which is a longitudinal survey of health and ageing for people over the age of 50 in the US. Many countries around the world have since developed their own longitudinal health surveys based on the HRS, which has enabled comparative research into ageing. These studies are all hosted on the Gateway to Global Aging platform (g2aging.org) which also provides code to harmonise the datasets, linking an individual respondent\u2019s information between waves and generating comparative variables. The comparative nature of these datasets means that the \u2018engine\u2019 on which the FEM runs can be adapted to different nations relatively easily, which not only vastly decreases the time required to develop a microsimulation but offers the potential for cross-national comparison of model outcomes. A key feature is that using harmonized data and a common simulation engine means that differences in projections can be interpreted as true differences between countries, rather than driven by modeling or data issues. An excellent example of this comes from a recent publication from <a href=\"#bib18\">Atella et al. (2021)</a> uses the FEM to compare disease prevalence, Life Expectancy, and inequalities in health outcomes in the future elderly across 12 OECD countries.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The FEM was originally conceived in 1997 by Dana Goldman as a dynamic microsimulation model designed to help policy analysts and firms understand future trends in healthcare spending, health, and population longevity. Originally built for an administrative database of Medicare beneficiaries aged 65 and over (<a href=\"#bib5\">Goldman et al., 2004</a>), it has, for example, been used to produce scenarios of the future cost of providing healthcare to the elderly population under a range of advances in medical technology (<a href=\"#bib19\">Goldman et al., 2005</a>). More recent applications of the FEM in the US include an assessment of longevity and public finances if health trends approximated those in Western Europe (<a href=\"#bib20\">Michaud et al., 2011</a>), predicting the quantity and quality of life (<a href=\"#bib21\">Leaf et al., 2021</a>), and assessing innovations in cancer treatment (<a href=\"#bib22\">Zhao et al., 2019</a>).",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The FEM has been used and adapted to analyse a wide range of topics in a number of different countries. <a href=\"#bib23\">Chen et al. (2016)</a> use an adaptation of the FEM to forecast disability and health for Japan\u2019s future elderly using the Japanese Study of Aging and Retirement. For Mexico, <a href=\"#bib24\">Gonzalez-Gonzalez et al. (2017)</a> use the FEM to estimate the future prevalence of diabetes, using as input the Mexican Health and Aging Study and a range of hypothetical interventions which would reduce diabetes prevalence. For Singapore, <a href=\"#bib25\">Chen et al. (2019)</a> adapt the FEM to take as an input the Singapore Chinese Health Study (SCHS). They use the model to assess the prevalence of ADLs and IADLs and the spending of elderly people on hospital care. A cross-country comparison of smoking, life expectancy and chronic disease in the US, South Korea and Singapore is undertaken by <a href=\"#bib26\">Kim et al. (2021)</a>. They find that the life gain for heavy smokers quitting vs light smokers quitting is apparent in all three countries but that the magnitude is higher in South Korea and Singapore than the US.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s2-1",
+                    "title": "2.1. The future elderly model",
+                    "type": "section"
+                }
+            ],
+            "id": "s2",
+            "title": "2. Rationale and context",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "In this section we discuss the development of the E-FEM, outlining the data used, model design, imputation of missing variables and the transition models estimated on the data.",
+                    "type": "paragraph"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "The primary source of input data for the E-FEM is the English Longitudinal Study of Ageing (ELSA) (<a href=\"#bib27\">Banks et al., 2019</a>). ELSA is a longitudinal survey conducted on a representative sample of the English population aged 50 and over, and contains a wealth of information including demographics, physical and mental health, risk behaviours (for instance smoking and drinking), functional limitations, work and income. The original sample was drawn from households that previously participated in the Health Survey for England (HSE) between 1998 and 2001. This same group of respondents were interviewed at intervals of two years (known as waves), and any change in state for those individuals was recorded. This allows us to observe the transitions between states over time at the individual level, and to estimate transition models based on related characteristics. In ELSA, the majority of binary response variables are in an absorbing state, which means that once entered, that state cannot be left. For example, when asking about chronic health conditions, the question posed is: \"Has a doctor ever told that you have (or had) any of the following conditions?\" Once a respondent answers \u2018\u2018yes\u2019\u2019 this state is carried forward to future waves. ELSA is jointly run by teams at University College London (UCL), the Institute for Fiscal Studies (IFS), National Centre for Social Research, and the University of Manchester.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The reliance on a single dataset in the E-FEM is in contrast to many other microsimulation models, where often multiple sources of input data are required. One example of this is the Population Health Model (POHEM) developed by Statistics Canada, which uses a host of both longitudinal and cross-sectional surveys to inform transition models and generate the starting population (<a href=\"#bib28\">Hennessy et al., 2015</a>). Using only ELSA in this way means that the populations we use for estimating transitions and running the model are equivalent in terms of bias and sampling frame, and the mechanisms driving change are the same throughout. ELSA data was accessed from the UK Data Service,<a href=\"#fn1\"> <sup>1</sup> </a> and the Stata harmonisation script for collating all waves of ELSA was downloaded from the Gateway to Global Ageing .<a href=\"#fn2\"> <sup>2</sup> </a>Harmonising the data collects all information into a single file, containing cleaned and processed variables with consistent and intuitive naming conventions, model-based imputations and imputation flags, and spousal counterparts of most individual-level variables.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Wave 1 of ELSA reports data for March 2002, where sample members were drawn from respondents to the Health Survey for England (HSE), and initial data collected for the HSE was linked to ongoing ELSA measurements. The initial sample included 11,050 respondents aged 50 and over, and refreshment samples selected from the HSE were included in waves 3, 4, 6, and 7. By wave 8 in 2016, the sample included 8375 respondents. <a href=\"#table1\">Table 1</a> shows all the outcome variables that are projected in the E-FEM model based on ELSA data.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "table1",
+                                    "label": "Table 1",
+                                    "tables": [
+                                        "<table>\n<thead>\n<tr>\n<th align=\"left\">Domain</th>\n<th align=\"left\">Variable</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td align=\"left\">Health</td>\n<td align=\"left\">Mortality, Alzheimers, Cancer, Dementia, Diabetes, Heart Disease, High Cholesterol, Hypertension, Lung Disease, Stroke</td>\n</tr>\n<tr>\n<td align=\"left\">Risk Factors</td>\n<td align=\"left\">BMI, Smoking Status, Alcohol Consumption, Exercise</td>\n</tr>\n<tr>\n<td align=\"left\">Functional Limitations</td>\n<td align=\"left\">Difficulties in Activities of Daily Living (ADLs), and Instrumental Activities of Daily Living (IADLs)</td>\n</tr>\n<tr>\n<td align=\"left\">Economic</td>\n<td align=\"left\">Employed, Unemployed, Retired/Disabled</td>\n</tr>\n</tbody>\n</table>"
+                                    ],
+                                    "title": "Variables tracked by the model",
+                                    "type": "table"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "text": "Whilst the E-FEM relies mostly on ELSA as a primary data source, some other data are required in model preparation. Additional data from the UK 2011 Census of Population is used to re-weight the stock and replenishing populations by sex, age, and educational attainment. This is to ensure the stock population is representative of the wider English population aged 50 plus at the start of the simulation, and any replenishing populations remain so into the future. Mid-year population estimates were used to re-weight by sex and age from 2012 to 2018, and beyond 2018 switched to national population projections. Both of these datasets are produced by the Office for National Statistics (ONS). For education, there is no widely available and reliable data projecting levels of attainment into the future. Instead, we used data on education levels reported in the 2011 Census, and assumed that the highest level of educational attainment for an individual did not change after the age of 30. Using this assumption, we re-weighted the replenishing populations by education for the first 20 years of simulation, and held the final distribution constant for any waves beyond that.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "content": [
+                                {
+                                    "text": "Whilst ELSA is an important source of data in the study of elderly health, there are some limitations that must be acknowledged in the scope of this work. Some of these we deal with in the imputation section of the paper. Firstly, there have been some changes to the survey over time that have significant implications in terms of bias. For example, a number of physical measurements including height and weight are carried out as part of a visit from a qualified nurse, which happens only every second wave. From wave 2, the nurse visit was only offered to \u2018core sample members\u2019 who had an interview in person, however in wave 8 eligibility for the nursing visit was further determined by sub-sampling. From this point, selection prioritised those who had responded to all previous nurse visits from cohorts 1-6, reducing the number of eligible respondents and introducing bias.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "Another limitation is the attrition rate of the ELSA sample, shown in <a href=\"#table2\">Table 2</a>. <a href=\"#bib29\">Banks et al. (2011)</a> investigated attrition rates in both ELSA and the US HRS from 2002 to 2006, finding that rates in ELSA were almost 4 times higher for ages 55-64 and 70-80 than in the HRS. They reported that this higher attrition could not be fully explained by differences in the survey design or sampling methodology, but were more likely due to cultural differences between North American and European populations when it comes to scientific surveys. Respondents in the lower education group were most likely to attrit in ELSA, and in particular those with low numeracy scores, suggesting a potential source of bias. <a href=\"#bib29\">Banks et al. (2011)</a> did however conclude that disease prevalences were not biased by attrition in either study, and that the small bias they did find was driven by mortality.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "assets": [
+                                        {
+                                            "id": "table2",
+                                            "label": "Table 2",
+                                            "tables": [
+                                                "<table>\n<thead>\n<tr>\n<th align=\"left\">Year</th>\n<th align=\"left\">Sample Size</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td align=\"left\">2002</td>\n<td align=\"left\">11391</td>\n</tr>\n<tr>\n<td align=\"left\">2004</td>\n<td align=\"left\">8780</td>\n</tr>\n<tr>\n<td align=\"left\">2006</td>\n<td align=\"left\">8655</td>\n</tr>\n<tr>\n<td align=\"left\">2008</td>\n<td align=\"left\">9805</td>\n</tr>\n<tr>\n<td align=\"left\">2010</td>\n<td align=\"left\">8988</td>\n</tr>\n<tr>\n<td align=\"left\">2012</td>\n<td align=\"left\">9068</td>\n</tr>\n<tr>\n<td align=\"left\">2014</td>\n<td align=\"left\">8152</td>\n</tr>\n<tr>\n<td align=\"left\">2016</td>\n<td align=\"left\">7133</td>\n</tr>\n</tbody>\n</table>"
+                                            ],
+                                            "title": "Sample attrition in the over 50s in ELSA. The sample was replenished in 2006, 2008, 2012, and 2014",
+                                            "type": "table"
+                                        }
+                                    ],
+                                    "type": "figure"
+                                },
+                                {
+                                    "text": "Finally, the way ELSA deals with nursing homes and institutional living leads to some specific sampling issues. For the first two waves, ELSA did not follow respondents into nursing homes so they were lost from the survey. Starting in wave 3, ELSA surveys respondents in institutions either by proxy or in person, but these individuals are assigned a cross-sectional analysis weight of zero. Respondents who move into a nursing home are likely to be more ill than the population average, and with a higher probability of mortality, so not including them in the full sample could bias the population towards a healthier state.",
+                                    "type": "paragraph"
+                                }
+                            ],
+                            "id": "s3-1-1",
+                            "title": "3.1.1. Data limitations",
+                            "type": "section"
+                        }
+                    ],
+                    "id": "s3-1",
+                    "title": "3.1. Data requirements",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "The E-FEM is a first-order Markov chain model competing risks model. The Markovian nature of the model means that characteristics that get assigned at time T (the present) only depend on characteristics at time T-1 (the previous timestep). As a result of this, the order that these changes are made in the simulation is inconsequential, as each characteristic is simply a function of several factors at time T-1. The order that is important in the E-FEM however is what we describe as the \u2019causal pathway\u2019. That is, risk behaviours lead to chronic disease and functional limitations, which in turn have an impact on economic outcomes. For example, BMI is a predictor of the incidence of stroke, which can lead to functional limitations, which in part predict a respondents working status. These pathways are determined individually in the transition models of each characteristic.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Running the E-FEM happens in two phases - preparation and simulation. In the preparation phase raw ELSA survey data are harmonised, cleaned, and variables of interest are extracted in order to create starting populations. Transition models are estimated from one of the starting populations, and all this information is written into configuration files for use in the simulation. Preparation is handled in Stata (<a href=\"#bib30\">StataCorp, 2021</a>). The simulation phase then takes the starting population and ages individuals, dynamically applying the transition probabilities between each wave to transform the state of simulants and project them into the future. We can think of these as projections of the future of the ELSA survey respondents, which we use to represent the future of the English population due to the representative nature of the survey and the re-weighting to 2011 Census and mid-year population estimates and projections.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The E-FEM can run both whole population and cohort simulations. The structure of both of these simulation types is shown in <a href=\"#fig1\">Figure 1</a>. Population level simulations begin with the stock population, which includes all ELSA core respondents aged 51 or over in wave 6 (2012). At each wave of the population simulation, the replenishing cohort is included, refreshing the stock population with people aged 51 and 52. This is to ensure the age distribution of the sample remains representative. The cohort simulation does not refresh the sample over time, and instead follows only people aged 51 and 52 from the replenishing cohort.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "fig1",
+                                    "image": {
+                                        "alt": "",
+                                        "uri": "%iiif_uri%/00239%2Fijm-00239-fig001.tif",
+                                        "size": {
+                                            "width": 2161,
+                                            "height": 1753
+                                        },
+                                        "source": {
+                                            "mediaType": "image/jpeg",
+                                            "uri": "%iiif_uri%/00239%2Fijm-00239-fig001.tif/full/full/0/default.jpg",
+                                            "filename": "ijm-00239-fig001.jpg"
+                                        }
+                                    },
+                                    "label": "Figure 1",
+                                    "title": "Structure of the FEM simulation.",
+                                    "type": "image"
+                                }
+                            ],
+                            "type": "figure"
+                        }
+                    ],
+                    "id": "s3-2",
+                    "title": "3.2. Model design",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "Three separate data files are required to run the E-FEM: the stock, replenishing, and transition populations, all of which are generated from harmonised ELSA data. The stock population is produced from the whole sample of core respondents aged over 50 at wave 6 of ELSA (2012), and is the starting point for the population simulation. The replenishing population is derived from the stock population, where respondents aged 51 and 52 are extracted. The replenishing population is included at each new wave of the population simulation, to maintain the age distribution, but is also the starting point of the cohort simulation. The transition population contains all respondents from wave 2 onwards, and is used to estimate all of the statistical models that are used for ageing the simulants. <a href=\"#table3\">Table 3</a> provides summary statistics on each population.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "table3",
+                                    "label": "Table 3",
+                                    "tables": [
+                                        "<table>\n<thead>\n<tr>\n<th align=\"left\">Characteristics</th>\n<th align=\"left\">Stock</th>\n<th align=\"left\">Replenishing</th>\n<th align=\"left\">Transition</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td align=\"left\">Year</td>\n<td align=\"left\">2012</td>\n<td align=\"left\">2012</td>\n<td align=\"left\">2004 - 2016</td>\n</tr>\n<tr>\n<td align=\"left\">Wave</td>\n<td align=\"left\">6</td>\n<td align=\"left\">6</td>\n<td align=\"left\">2 - 8</td>\n</tr>\n<tr>\n<td align=\"left\">Age, Mean (SD)</td>\n<td align=\"left\">66.2 (10.8)</td>\n<td align=\"left\">51.5 (0.5)</td>\n<td align=\"left\">66.1 (10.4)</td>\n</tr>\n<tr>\n<td align=\"left\">Female %</td>\n<td align=\"left\">52.9</td>\n<td align=\"left\">49.7</td>\n<td align=\"left\">53.0</td>\n</tr>\n<tr>\n<td align=\"left\">BMI, Mean (SD)</td>\n<td align=\"left\">28.4 (5.4)</td>\n<td align=\"left\">27.8 (5.4)</td>\n<td align=\"left\">28.3 (5.3)</td>\n</tr>\n<tr>\n<td align=\"left\" colspan=\"3\">BMI Category (%)</td>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n</tr>\n<tr>\n<td align=\"left\">&lt; 25</td>\n<td align=\"left\">28.3</td>\n<td align=\"left\">37.1</td>\n<td align=\"left\">28.0</td>\n</tr>\n<tr>\n<td align=\"left\">\u2265 25 &amp; &lt; 30</td>\n<td align=\"left\">38.8</td>\n<td align=\"left\">34.8</td>\n<td align=\"left\">39.9</td>\n</tr>\n<tr>\n<td align=\"left\">\u2265 30</td>\n<td align=\"left\">33.0</td>\n<td align=\"left\">28.1</td>\n<td align=\"left\">32.1</td>\n</tr>\n<tr>\n<td align=\"left\">Smoking Status %</td>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n</tr>\n<tr>\n<td align=\"left\">Ever Smoked</td>\n<td align=\"left\">62.3</td>\n<td align=\"left\">44.5</td>\n<td align=\"left\">62.3</td>\n</tr>\n<tr>\n<td align=\"left\">Current Smoker</td>\n<td align=\"left\">13.6</td>\n<td align=\"left\">13.7</td>\n<td align=\"left\">14.3</td>\n</tr>\n<tr>\n<td align=\"left\">Education Level %</td>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n</tr>\n<tr>\n<td align=\"left\">Less than Secondary</td>\n<td align=\"left\">29.7</td>\n<td align=\"left\">11.1</td>\n<td align=\"left\">33.1</td>\n</tr>\n<tr>\n<td align=\"left\">Upper Secondary and Vocational</td>\n<td align=\"left\">59.9</td>\n<td align=\"left\">64.1</td>\n<td align=\"left\">65.7</td>\n</tr>\n<tr>\n<td align=\"left\">Tertiary</td>\n<td align=\"left\">10.4</td>\n<td align=\"left\">24.8</td>\n<td align=\"left\">11.2</td>\n</tr>\n<tr>\n<td align=\"left\" colspan=\"3\">Disease Prevalence % (Incidence)</td>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n</tr>\n<tr>\n<td align=\"left\">Cancer</td>\n<td align=\"left\">9.8</td>\n<td align=\"left\">2.9</td>\n<td align=\"left\">9.0 (1.46)</td>\n</tr>\n<tr>\n<td align=\"left\">Diabetes</td>\n<td align=\"left\">11.1</td>\n<td align=\"left\">2.8</td>\n<td align=\"left\">10.4 (1.34)</td>\n</tr>\n<tr>\n<td align=\"left\">Heart Disease</td>\n<td align=\"left\">18.9</td>\n<td align=\"left\">7.7</td>\n<td align=\"left\">18.7 (2.57)</td>\n</tr>\n<tr>\n<td align=\"left\">Stroke</td>\n<td align=\"left\">4.7</td>\n<td align=\"left\">0.0</td>\n<td align=\"left\">4.7 (0.85)</td>\n</tr>\n<tr>\n<td align=\"left\">Lung Disease</td>\n<td align=\"left\">6.1</td>\n<td align=\"left\">0.3</td>\n<td align=\"left\">6.2 (0.87)</td>\n</tr>\n<tr>\n<td align=\"left\">Hypertension</td>\n<td align=\"left\">41.8</td>\n<td align=\"left\">20.4</td>\n<td align=\"left\">42.0 (3.08)</td>\n</tr>\n<tr>\n<td align=\"left\">Alzheimer\u2019s</td>\n<td align=\"left\">0.35</td>\n<td align=\"left\">0.0</td>\n<td align=\"left\">0.32 (0.21)</td>\n</tr>\n<tr>\n<td align=\"left\">Dementia</td>\n<td align=\"left\">1.25</td>\n<td align=\"left\">0.27</td>\n<td align=\"left\">1.12 (0.58)</td>\n</tr>\n<tr>\n<td align=\"left\">High Cholesterol</td>\n<td align=\"left\">37.0</td>\n<td align=\"left\">14.9</td>\n<td align=\"left\">32.5 (3.92)</td>\n</tr>\n</tbody>\n</table>"
+                                    ],
+                                    "title": "Summary statistics on key E-FEM populations.",
+                                    "type": "table"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "text": "The statistics for the replenishing population in <a href=\"#table3\">Table 3</a> are based on 2012 data after re-weighting. The re-weighting step produces a copy of the replenishing population for each wave of the simulation with the cross-sectional weights modified to reflect projected changes in the future. The populations are re-weighted by age, sex, and education, which are all significant predictors for most outcomes. For example, there is an inverse relationship between smoking and education level, where individuals with low educational attainment are more likely to smoke. As smoking is related to a number of chronic diseases in the elderly, the risk therefore of developing these diseases is slightly higher in less educated groups. Over time the proportion of people with higher levels of education is rising, while the proportion of people who are less educated is falling. This will have a diminishing effect on the population level prevalence of these chronic diseases in the near future.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s3-3",
+                    "title": "3.3. Starting populations",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "One of the more significant challenges faced in the development of the E-FEM involves dealing with missing data in ELSA. Some variables are missing data for a significant proportion of records, including some key predictor variables such as highest educational qualification (20.9%) and BMI (19.2%). Both education and BMI are important predictors for a variety of outcomes, and so these variables were imputed before estimating transition models.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "All other variables with missing data in the stock population undergo an imputation step during the preparation phase. This is because the model cannot run properly if input populations do not have complete data, as missing variables cannot be transitioned. As the replenishing population is derived from the stock, this imputation step ensures complete data in both starting populations. <a href=\"#A1-T1\">Table A1</a> in the appendix shows a comparison between the imputed and non-imputed stock populations, including the proportion of missing data for specific variables. No significant change in summary statistics is seen before and after imputation.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "content": [
+                                {
+                                    "text": "Education level has been linked to health through a number of pathways. Higher-educated people are more likely to work full time in fulfilling employment, have higher levels of personal control and social support, and be less likely to take part in risk behaviours such as smoking and heavy drinking which are all significantly correlated with improved health (<a href=\"#bib31\">Ross and Wu, 1995</a>). Education is therefore a key variable in the E-FEM, and imputed for respondents where it was missing.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "During the preparation phase, an ordered probit model for education was estimated and used for imputing missing values during initialisation of the model. As predictors, the education model included demographics, marriage status, parents\u2019 education, and spouse\u2019s education (where applicable).",
+                                    "type": "paragraph"
+                                }
+                            ],
+                            "id": "s3-4-1",
+                            "title": "3.4.1. Education",
+                            "type": "section"
+                        },
+                        {
+                            "content": [
+                                {
+                                    "text": "ELSA does not report BMI directly, but does report height and weight so that BMI can be calculated (which is handled by the harmonisation script from the Gateway to Global Aging). This information is collected as part of the nurse visit, which was originally only offered to \u2018core sample members\u2019 that were drawn from the Health Survey for England (HSE) and had an interview in person (that is not by proxy). They were also only carried out on odd numbered waves of the study, leaving missing data for even waves.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "BMI is a significant predictor of a number of chronic diseases and mortality, as well as non-health-related outcomes such as labour-force participation. In order to effectively estimate transition models including BMI, we need information for every wave and as many respondents as possible. We therefore generated values for missing even waves using linear interpolation in Stata. As linear interpolation simply fills in the midpoint between known data points, transition models estimated from interpolated data showed that current BMI was wholly predicted by previous BMI. This did not mirror reality, and so we tested adding random noise to the interpolated values to assess if this looked more like observed data. For each interpolated data point, we added a sample from a normal distribution with mean 0 and standard deviation 0.05. When testing values for normal distribution, we compared the RMSE term of the BMI transition model with that in the US FEM, and stopped when the terms were roughly equal. <a href=\"#A1-T2\">Table A2</a> in the appendix shows a comparison of mean population BMI between raw and imputed ELSA data at each wave.",
+                                    "type": "paragraph"
+                                }
+                            ],
+                            "id": "s3-4-2",
+                            "title": "3.4.2. BMI",
+                            "type": "section"
+                        }
+                    ],
+                    "id": "s3-4",
+                    "title": "3.4. Imputation",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "Transition probabilities were estimated from the transition panel dataset. <a href=\"#table4\">Table 4</a> provides detailed information about these transition models, including the type of each response variable, the type of regression model used, and all the predictor variables included in each model. Briefly, the models for binary outcomes (such as disease incidence or mortality) use probits, ordered outcomes use ordered probits, non-ordered categorical outcomes use multinomial logit, and continuous outcomes use ordinary least squares. The choice of predictor variables to include in each model was based initially on previous literature, which were then refined iteratively, with the aim of producing parsimonious but well-specified models. The key demographic variables of age, sex, and education were included in every model. Some models are estimated for sub-groups of the population. For example, all individuals are included in the mortality model, only current smokers are included in the model that predicts smoking cessation, and only those who do not and have never had incident heart disease (since it is an absorbing state) are included in the heart disease model.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "footnotes": [
+                                        {
+                                            "id": "T4_FN1",
+                                            "label": "*",
+                                            "text": [
+                                                {
+                                                    "text": "All predictor variables are 2 year lag.",
+                                                    "type": "paragraph"
+                                                }
+                                            ]
+                                        }
+                                    ],
+                                    "id": "table4",
+                                    "label": "Table 4",
+                                    "tables": [
+                                        "<table>\n<thead>\n<tr>\n<th align=\"left\" rowspan=\"2\">Outcome</th>\n<th align=\"left\" rowspan=\"2\">Variable Type</th>\n<th align=\"left\" rowspan=\"2\">Regression Model</th>\n<th align=\"left\" colspan=\"4\">Predictors<a href=\"#T4_FN1\">*</a>\n</th>\n</tr>\n<tr>\n<th align=\"left\">Health Status</th>\n<th align=\"left\">Risk Behaviours</th>\n<th align=\"left\">Economic Predictors</th>\n<th align=\"left\">Demographics</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td align=\"left\">Mortality incidence</td>\n<td align=\"left\">Binary Absorbing</td>\n<td align=\"left\">Probit</td>\n<td align=\"left\">Cancer<br/>Diabetes<br/>Heart Disease<br/>Lung Disease<br/>Stroke<br/>Dementia</td>\n<td align=\"left\">Smoking</td>\n<td align=\"left\"/>\n<td align=\"left\">Age<br/>Sex<br/>Education</td>\n</tr>\n<tr>\n<td align=\"left\">Cancer incidence</td>\n<td align=\"left\">Binary Absorbing</td>\n<td align=\"left\">Probit</td>\n<td align=\"left\"/>\n<td align=\"left\">BMI<br/>Smoking<br/>Alcohol Consumption</td>\n<td align=\"left\"/>\n<td align=\"left\">Age<br/>Sex<br/>Ethnicity<br/>Education</td>\n</tr>\n<tr>\n<td align=\"left\">Diabetes incidence</td>\n<td align=\"left\">Binary Absorbing</td>\n<td align=\"left\">Probit</td>\n<td align=\"left\">Hypertension<br/>High Cholesterol</td>\n<td align=\"left\">BMI<br/>Physical Activity<br/>Alcohol Consumption</td>\n<td align=\"left\"/>\n<td align=\"left\">Age<br/>Sex<br/>Ethnicity<br/>Education</td>\n</tr>\n<tr>\n<td align=\"left\">Heart Disease incidence</td>\n<td align=\"left\">Binary Absorbing</td>\n<td align=\"left\">Probit</td>\n<td align=\"left\">Diabetes<br/>Hypertension<br/>High Cholesterol</td>\n<td align=\"left\">BMI<br/>Smoking<br/>Physical Activity<br/>Alcohol Consumption</td>\n<td align=\"left\"/>\n<td align=\"left\">Age<br/>Sex<br/>Ethnicity<br/>Education</td>\n</tr>\n<tr>\n<td align=\"left\">Hypertension incidence</td>\n<td align=\"left\">Binary Absorbing</td>\n<td align=\"left\">Probit</td>\n<td align=\"left\">High Cholesterol</td>\n<td align=\"left\">BMI<br/>Smoking<br/>Alcohol Consumption<br/>Physical Activity</td>\n<td align=\"left\"/>\n<td align=\"left\">Age<br/>Sex<br/>Ethnicity<br/>Education</td>\n</tr>\n<tr>\n<td align=\"left\">Lung Disease incidence</td>\n<td align=\"left\">Binary Absorbing</td>\n<td align=\"left\">Probit</td>\n<td align=\"left\"/>\n<td align=\"left\">BMI<br/>Smoking</td>\n<td align=\"left\"/>\n<td align=\"left\">Age<br/>Sex<br/>Ethnicity<br/>Education</td>\n</tr>\n<tr>\n<td align=\"left\">Stroke incidence</td>\n<td align=\"left\">Binary Absorbing</td>\n<td align=\"left\">Probit</td>\n<td align=\"left\">Hypertension<br/>Diabetes<br/>High Cholesterol</td>\n<td align=\"left\">BMI<br/>Smoking<br/>Alcohol Consumption</td>\n<td align=\"left\"/>\n<td align=\"left\">Age<br/>Sex<br/>Ethnicity<br/>Education</td>\n</tr>\n<tr>\n<td align=\"left\">High Cholesterol incidence</td>\n<td align=\"left\">Binary Absorbing</td>\n<td align=\"left\">Probit</td>\n<td align=\"left\"/>\n<td align=\"left\">BMI<br/>Smoking<br/>Physical Activity</td>\n<td align=\"left\"/>\n<td align=\"left\">Age<br/>Sex<br/>Ethnicity<br/>Education</td>\n</tr>\n<tr>\n<td align=\"left\">Dementia incidence</td>\n<td align=\"left\">Binary Absorbing</td>\n<td align=\"left\">Probit</td>\n<td align=\"left\">Hypertension<br/>Stroke</td>\n<td align=\"left\">BMI<br/>Smoking</td>\n<td align=\"left\"/>\n<td align=\"left\">Age<br/>Sex<br/>Ethnicity<br/>Education</td>\n</tr>\n<tr>\n<td align=\"left\">Alzheimers incidence</td>\n<td align=\"left\">Binary Absorbing</td>\n<td align=\"left\">Probit</td>\n<td align=\"left\">Hypertension<br/>Stroke</td>\n<td align=\"left\">BMI<br/>Smoking<br/>Alcohol Consumption</td>\n<td align=\"left\"/>\n<td align=\"left\">Age<br/>Sex<br/>Ethnicity<br/>Education</td>\n</tr>\n<tr>\n<td align=\"left\">Start/Stop Smoking</td>\n<td align=\"left\">Binary</td>\n<td align=\"left\">Probit</td>\n<td align=\"left\"/>\n<td align=\"left\">BMI</td>\n<td align=\"left\"/>\n<td align=\"left\">Age<br/>Sex<br/>Ethnicity<br/>Education</td>\n</tr>\n<tr>\n<td align=\"left\">Alcohol Consumption</td>\n<td align=\"left\">Binary</td>\n<td align=\"left\">Probit</td>\n<td align=\"left\"/>\n<td align=\"left\">BMI<br/>Physical Activity</td>\n<td align=\"left\"/>\n<td align=\"left\">Age<br/>Sex<br/>Ethnicity<br/>Education</td>\n</tr>\n<tr>\n<td align=\"left\">BMI</td>\n<td align=\"left\">Continuous</td>\n<td align=\"left\">OLS</td>\n<td align=\"left\"/>\n<td align=\"left\">BMI<br/>Physical Activity</td>\n<td align=\"left\"/>\n<td align=\"left\">Age<br/>Sex<br/>Ethnicity<br/>Education</td>\n</tr>\n<tr>\n<td align=\"left\">Functional Limitations</td>\n<td align=\"left\">Ordered</td>\n<td align=\"left\">Oprobit</td>\n<td align=\"left\">Stroke<br/>Dementia<br/>Alzheimers</td>\n<td align=\"left\">BMI<br/>Smoking</td>\n<td align=\"left\"/>\n<td align=\"left\">Age<br/>Sex<br/>Ethnicity<br/>Education</td>\n</tr>\n<tr>\n<td align=\"left\">Physical Activity</td>\n<td align=\"left\">Ordered</td>\n<td align=\"left\">Oprobit</td>\n<td align=\"left\"/>\n<td align=\"left\">Functional Limitations<br/>Physical Activity</td>\n<td align=\"left\"/>\n<td align=\"left\">Age<br/>Sex<br/>Ethnicity<br/>Education</td>\n</tr>\n<tr>\n<td align=\"left\">Labour Force Participation</td>\n<td align=\"left\">Unordered</td>\n<td align=\"left\">Mlogit</td>\n<td align=\"left\">Functional Limitations</td>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\">Age<br/>Sex<br/>Ethnicity<br/>Education</td>\n</tr>\n</tbody>\n</table>"
+                                    ],
+                                    "title": "Information on transitioned variables in the model.",
+                                    "type": "table"
+                                }
+                            ],
+                            "type": "figure"
+                        }
+                    ],
+                    "id": "s3-5",
+                    "title": "3.5. Transition probabilities",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "The FEM can produce both summary and detailed outputs for each scenario we choose to run. For detailed outputs, the state of the population at individual level is written to a new file for each repetition at every wave. Summary outputs are generated by pooling the results of each repetition, and calculating a number of summary statistics. For binary variables, the model reports the number of cases of an observation in the population, as well as the incidence between waves and the total prevalence. For continuous and ordinal variables, the model reports average values, as well as the total number (count), the total value, and quintile distributions.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Alongside the many variables which are tracked and transitioned throughout the simulation, there are also some outputs that we derive from these variables. For example, the model can be used to investigate life expectancy, as well as many related variables such as disability-free or disease-free life years.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s3-6",
+                    "title": "3.6. Outcomes",
+                    "type": "section"
+                }
+            ],
+            "id": "s3",
+            "title": "3. The english future elderly model",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "In this section we validate a number of model outcomes. We focus on both internal validation (comparing predicted model outcomes with observed model inputs) and external validation by comparing model outputs with distributions seen in other datasets.",
+                    "type": "paragraph"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "Internal validation of a microsimulation amounts to comparing the distribution of attributes between simulated outputs and the original data. In this work we employ three methods of internal validation; cross-validation, handover plots and Receiver Operating Characteristic (ROC) curves.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "For cross-validation the original population was split in two, using only half of the population to estimate transition models. The remaining half was then simulated over the same time period as ELSA (2002 - 2016) using these models. We compared simulated outputs with ELSA data by performing t-tests, the results of which are provided in <a href=\"#A1-T3a\">Tables A3</a>. The handover plots and ROC curves will be presented in more detail below.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "content": [
+                                {
+                                    "text": "Handover plots are not a form of statistical validation, but rather a form of face validity. They give a quick visual indication that simulated outputs follow the same trend as the input data, and confirm that the model is behaving as expected. To generate these plots we estimated transitions using only data from waves 1-4 of ELSA, and produced a starting population based on respondents in wave 5 which was then simulated from wave 5 to 8. Combining these data, the plots in <a href=\"#fig2\">Figure 2</a> show the \u2019handover\u2019 of chronic disease prevalence from ELSA to the simulation. For each chronic disease, the simulation continues a reasonable pattern from the original data, the predicted values are not noisy and the direction and magnitude of the trend appears sensible and in-line with expectations. Additional handover plots are provided in <a href=\"#A2-F1\">Figure A1</a>.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "assets": [
+                                        {
+                                            "id": "fig2",
+                                            "image": {
+                                                "alt": "",
+                                                "uri": "%iiif_uri%/00239%2Fijm-00239-fig002.tif",
+                                                "size": {
+                                                    "width": 2161,
+                                                    "height": 2524
+                                                },
+                                                "source": {
+                                                    "mediaType": "image/jpeg",
+                                                    "uri": "%iiif_uri%/00239%2Fijm-00239-fig002.tif/full/full/0/default.jpg",
+                                                    "filename": "ijm-00239-fig002.jpg"
+                                                }
+                                            },
+                                            "label": "Figure 2",
+                                            "title": "Handover plots for Chronic diseases by sex.",
+                                            "type": "image"
+                                        }
+                                    ],
+                                    "type": "figure"
+                                }
+                            ],
+                            "id": "s4-1-1",
+                            "title": "4.1.1. Handover plots",
+                            "type": "section"
+                        },
+                        {
+                            "content": [
+                                {
+                                    "text": "In order to investigate the efficacy of binary transitions in the model, we used Receiver Operating Characteristic (ROC) curves. First proposed by (<a href=\"#bib32\">Pandya et al., 2017</a>) in a cardiovascular disease policy microsimulation, ROC curves are used to validate a binary classification, comparing the true-positive rate against the false-positive rate. The Area Under the Curve (AUC) relates to the accuracy of the prediction, with 1 being perfect classification when comparing simulated data to real, and 0.5 meaning the classification is no better than random.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "For this analysis, we used the cross-validation population described above, where one half was used to estimate transition models and the remaining half used in the simulation. We simulated this population 500 times from 2002 - 2012 before pooling the results of each run to create a summary output file, which was then compared with ELSA data. The results of this analysis for key binary response variables are shown in <a href=\"#fig3\">Figure 3</a>. In all cases the classification is better than random, and in some cases much better. For example, the AUC for predicting obesity (BMI &gt; 30) and mortality is 0.85 and 0.83 respectively. Predicting chronic disease incidence is not as effective however, with AUCs ranging from 0.55 to 0.70. Additional ROC curves are provided in <a href=\"#A2-F2\">Figure A2</a>.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "assets": [
+                                        {
+                                            "id": "fig3",
+                                            "image": {
+                                                "alt": "",
+                                                "uri": "%iiif_uri%/00239%2Fijm-00239-fig003.tif",
+                                                "size": {
+                                                    "width": 2161,
+                                                    "height": 2334
+                                                },
+                                                "source": {
+                                                    "mediaType": "image/jpeg",
+                                                    "uri": "%iiif_uri%/00239%2Fijm-00239-fig003.tif/full/full/0/default.jpg",
+                                                    "filename": "ijm-00239-fig003.jpg"
+                                                }
+                                            },
+                                            "label": "Figure 3",
+                                            "title": "ROC curves for key binary response variables with a 10-year simulation horizon, from 2002 - 2012.",
+                                            "type": "image"
+                                        }
+                                    ],
+                                    "type": "figure"
+                                }
+                            ],
+                            "id": "s4-1-2",
+                            "title": "4.1.2. Receiver operating characteristic",
+                            "type": "section"
+                        }
+                    ],
+                    "id": "s4-1",
+                    "title": "4.1. Internal validation",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "External validation involves comparing simulated outputs against independent external datasets. This is often more challenging than internal validation, as finding comparable datasets off the shelf is difficult since question wording and sample selection in surveys often differ. In the case of the E-FEM, chronic disease prevalence and incidence levels are projected into the future, starting in 2012. We can therefore use data published between 2012 and the present to validate the model over short time periods.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "content": [
+                                {
+                                    "text": "The Age UK almanac of disease profiles in later life (<a href=\"#bib33\">Melzer et al., 2015</a>) is a collection of statistics on the prevalence of chronic diseases in elderly people, reported by sex and 5 year age group (over 60).",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "We ran a cohort simulation of the E-FEM for a 12-year period between 2004 to 2016 and compared the prevalence of a number of chronic diseases at the end of the simulation with those reported in the Age UK data. The results of the comparison can be seen in <a href=\"#fig4\">Figure 4</a> where the comparison is broken down by age group and sex. The graphs provide a good indication that the E-FEM is, on the whole, predicting chronic disease prevalence well (at least over a 12-year projection period) when compared to the results reported in the Age UK data. Unusual results in the 100 plus population from the E-FEM are most likely caused by a small sample size, as not many simulants survive to that age in the model. We were not able to compare the prevalence of cancer or heart disease in this validation as the Age UK definitions did not match those from ELSA. In the Age UK data cancer diagnosis relates to the previous 5 years only, whereas ELSA asks if the respondent has ever been diagnosed. Heart disease in the Age UK data was defined as one or more of a limited number of conditions, compared with ELSA which reports any heart condition as heart disease.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "assets": [
+                                        {
+                                            "id": "fig4",
+                                            "image": {
+                                                "alt": "",
+                                                "uri": "%iiif_uri%/00239%2Fijm-00239-fig004.tif",
+                                                "size": {
+                                                    "width": 2161,
+                                                    "height": 2320
+                                                },
+                                                "source": {
+                                                    "mediaType": "image/jpeg",
+                                                    "uri": "%iiif_uri%/00239%2Fijm-00239-fig004.tif/full/full/0/default.jpg",
+                                                    "filename": "ijm-00239-fig004.jpg"
+                                                }
+                                            },
+                                            "label": "Figure 4",
+                                            "title": "Chronic Disease prevalence comparisons by age group between FEM and AgeUK almanac of chronic disease in 2014. AgeUK figures include 95% confidence intervals.",
+                                            "type": "image"
+                                        }
+                                    ],
+                                    "type": "figure"
+                                }
+                            ],
+                            "id": "s4-2-1",
+                            "title": "4.2.1. Comparison with age UK almanac reported disease prevalence",
+                            "type": "section"
+                        },
+                        {
+                            "content": [
+                                {
+                                    "text": "We ran the E-FEM model to 2018 and compared our estimates of smoking prevalence with data for the same year reported in a fact sheet published by Action on Smoking and Health (ASH) (<a href=\"#bib34\">ASH, 2020</a>), a public health charity in the UK that works to eliminate the harm caused by tobacco, and produces statistical reports on smoking habits broken down by sex and age group. <a href=\"#fig5\">Figure 5</a> shows the comparison between simulated (E-FEM) and observed (ASH) data in 2018. In both age groups, the E-FEM is under-predicting the prevalence of current smokers by approximately 1-2 percentage points.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "assets": [
+                                        {
+                                            "id": "fig5",
+                                            "image": {
+                                                "alt": "",
+                                                "uri": "%iiif_uri%/00239%2Fijm-00239-fig005.tif",
+                                                "size": {
+                                                    "width": 2024,
+                                                    "height": 1389
+                                                },
+                                                "source": {
+                                                    "mediaType": "image/jpeg",
+                                                    "uri": "%iiif_uri%/00239%2Fijm-00239-fig005.tif/full/full/0/default.jpg",
+                                                    "filename": "ijm-00239-fig005.jpg"
+                                                }
+                                            },
+                                            "label": "Figure 5",
+                                            "title": "Smoking prevalence comparison by age group in 2018. Simulated data (starting in 2012) compared with prevalence statistics generated by the Action on Smoking and Health charity.",
+                                            "type": "image"
+                                        }
+                                    ],
+                                    "type": "figure"
+                                }
+                            ],
+                            "id": "s4-2-2",
+                            "title": "4.2.2. Smoking",
+                            "type": "section"
+                        }
+                    ],
+                    "id": "s4-2",
+                    "title": "4.2. External validation",
+                    "type": "section"
+                }
+            ],
+            "id": "s4",
+            "title": "4. Validation",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "The E-FEM provides a model capable of undertaking policy experimentation across a wide range of health outcomes. To illustrate the utility of the model, we present results from the baseline projections alongside two counterfactual scenarios, focused on heart disease and smoking. Heart disease provides an opportunity to demonstrate a change in outcomes where a chronic disease is directly impacted by model scenarios. Smoking provides an example where an intervention on a behaviour has an impact on health outcomes and survival.",
+                    "type": "paragraph"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "For the baseline projections we ran both population and cohort simulations with no alterations. Both the stock and replenishing populations were included (where appropriate) without any modification, and ran for 56 years (28 waves) from 2012 to 2068. The scenario for heart disease was run as a whole population simulation in which nobody develops heart disease in the model. By removing heart disease completely, we can investigate its effect on mortality and disability and see how the removal of heart disease affects life expectancy and healthy life expectancy. The smoking scenario was run as a cohort simulation of people aged 51 and 52. In this scenario, smokers in the cohort immediately quit and do not start smoking again in the model. This way we can investigate the impact smoking has on chronic disease prevalence and mortality.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s5-1",
+                    "title": "5.1. Scenarios",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "Heart disease in ELSA is a catch-all term which encapsulates a range of conditions that affect the heart\u2019s structure and function and is part of a broader set of conditions which are known as Cardiovascular Disease (CVD). CVD is the leading cause of death worldwide, accounting for approximately 31% of all mortality (<a href=\"#bib35\">WHO, 5AD</a>). In England, it is also one of the largest causes of premature mortality, with 33,812 people under the age of 75 dying from CVD in 2016 alone (<a href=\"#bib36\">Public Health England, 2AD</a>). Mortality data from 2001 to 2016 in England has shown a long-term decline in the death rate from CVD, which is reported as one of the main reasons for the increase in life expectancy over this time period. Whilst mortality from CVD has decreased, morbidity has increased as people live longer with these conditions, which has increased the burden on health and social care. Public Health England (PHE) estimates that annual healthcare costs alone for CVD amount to an estimated \u00a37.4 billion, whilst non-healthcare costs are much higher, estimated at \u00a315.8 billion. CVD is one of the most significant targets for PHE, with numerous ongoing strategies for disease prevention. <a href=\"#table5\">Table 5</a> shows the regression model used to estimate Heart Disease transitions in the E-FEM.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "table5",
+                                    "label": "Table 5",
+                                    "tables": [
+                                        "<table>\n<thead>\n<tr>\n<th align=\"left\"/>\n<th align=\"left\">Heart Disease</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td align=\"left\">Male</td>\n<td align=\"left\">0.108***</td>\n</tr>\n<tr>\n<td align=\"left\">White</td>\n<td align=\"left\">-0.0729</td>\n</tr>\n<tr>\n<td align=\"left\">Less than Secondary Education</td>\n<td align=\"left\">-0.0642</td>\n</tr>\n<tr>\n<td align=\"left\">Higher or further education</td>\n<td align=\"left\">0.0194</td>\n</tr>\n<tr>\n<td align=\"left\">Lag of age spline, less than 65</td>\n<td align=\"left\">0.0103</td>\n</tr>\n<tr>\n<td align=\"left\">Lag of age spline, 65 to 74</td>\n<td align=\"left\">0.0262***</td>\n</tr>\n<tr>\n<td align=\"left\">Lag of age spline, more than 75</td>\n<td align=\"left\">0.0182***</td>\n</tr>\n<tr>\n<td align=\"left\">Lag of BMI spline, less than 30</td>\n<td align=\"left\">0.163</td>\n</tr>\n<tr>\n<td align=\"left\">Lag of BMI spline, more than 30</td>\n<td align=\"left\">0.218</td>\n</tr>\n<tr>\n<td align=\"left\">Lag of ever smoker</td>\n<td align=\"left\">0.0259</td>\n</tr>\n<tr>\n<td align=\"left\">Lag of current smoker</td>\n<td align=\"left\">0.0264</td>\n</tr>\n<tr>\n<td align=\"left\">Lag of heavy smoker (&gt;20 cigs/day)</td>\n<td align=\"left\">0.0836</td>\n</tr>\n<tr>\n<td align=\"left\">Lag of problem drinker (&gt;12 drinks/week)</td>\n<td align=\"left\">-0.0318</td>\n</tr>\n<tr>\n<td align=\"left\">Lag of doctor ever - Diabetes</td>\n<td align=\"left\">0.0520</td>\n</tr>\n<tr>\n<td align=\"left\">Lag of doctor ever - Hypertension</td>\n<td align=\"left\">0.163***</td>\n</tr>\n<tr>\n<td align=\"left\">Lag of doctor ever - High Cholesterol</td>\n<td align=\"left\">0.0659*</td>\n</tr>\n<tr>\n<td align=\"left\">Lag of activity level - Low</td>\n<td align=\"left\">0.174**</td>\n</tr>\n<tr>\n<td align=\"left\">Lag of activity level - Moderate</td>\n<td align=\"left\">0.0979*</td>\n</tr>\n<tr>\n<td align=\"left\">Constant</td>\n<td align=\"left\">-3.172***</td>\n</tr>\n<tr>\n<td align=\"left\">N</td>\n<td align=\"left\">22,333</td>\n</tr>\n<tr>\n<td align=\"left\">Pseudo R2</td>\n<td align=\"left\">0.0335</td>\n</tr>\n</tbody>\n</table>"
+                                    ],
+                                    "title": "Parameter estimates for probit model of heart disease incidence.",
+                                    "type": "table"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "text": "We used the E-FEM to investigate the total burden of disease in the elderly population by comparing the baseline projection to the counterfactual scenario in which nobody developed heart disease whilst in the model. The input populations were not modified in any way for this scenario, so any simulants in the stock or replenishing populations with heart disease were kept in the model. <a href=\"#fig6\">Figure 6</a> compares the average age at death between the baseline and intervention scenarios. There are improvements to overall survival in the intervention, with a significant difference emerging in 2028 of 0.5 years that increases to 1.2 years in 2050.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "fig6",
+                                    "image": {
+                                        "alt": "",
+                                        "uri": "%iiif_uri%/00239%2Fijm-00239-fig006.tif",
+                                        "size": {
+                                            "width": 1465,
+                                            "height": 896
+                                        },
+                                        "source": {
+                                            "mediaType": "image/jpeg",
+                                            "uri": "%iiif_uri%/00239%2Fijm-00239-fig006.tif/full/full/0/default.jpg",
+                                            "filename": "ijm-00239-fig006.jpg"
+                                        }
+                                    },
+                                    "label": "Figure 6",
+                                    "title": "Average age at death comparison between baseline and no heart disease intervention. The shaded bands represent Monte Carlo confidence intervals.",
+                                    "type": "image"
+                                }
+                            ],
+                            "type": "figure"
+                        }
+                    ],
+                    "id": "s5-2",
+                    "title": "5.2. Heart disease",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "The impact of smoking on public health has been studied extensively, and the link between tobacco smoke and chronic health conditions is well understood (<a href=\"#bib37\">Newcomb and Carbone, 1992</a>; <a href=\"#bib38\">Prasad et al., 2009</a>; <a href=\"#bib39\">Al-Bashaireh et al., 2018</a>). Various forms of tobacco control interventions have been attempted around the world, including mass media campaigns (<a href=\"#bib40\">Kuipers et al., 2018</a>), advertising bans (<a href=\"#bib41\">Harris et al., 2006</a>), price increases (<a href=\"#bib42\">Chaloupka et al., 2012</a>), workplace and school smoking bans (<a href=\"#bib43\">Brown et al., 2009</a>), and the addition of warning labels to packaging (<a href=\"#bib44\">Hammond et al., 2006</a>). The outcomes of interest are usually health-related, however some studies have focused on Socio-Economic Status (SES), which has strong links to health. <a href=\"#table6\">Table 6</a> shows the transition model for both starting and stopping smoking.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "table6",
+                                    "label": "Table 6",
+                                    "tables": [
+                                        "<table>\n<thead>\n<tr>\n<th align=\"left\"/>\n<th align=\"left\">Smoking</th>\n<th align=\"left\"/>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td align=\"left\"/>\n<td align=\"left\">Started</td>\n<td align=\"left\">Stopped</td>\n</tr>\n<tr>\n<td align=\"left\">Male</td>\n<td align=\"left\">0.112**</td>\n<td align=\"left\">0.0263</td>\n</tr>\n<tr>\n<td align=\"left\">White</td>\n<td align=\"left\">0.0228</td>\n<td align=\"left\">0.257</td>\n</tr>\n<tr>\n<td align=\"left\">Less than Secondary education</td>\n<td align=\"left\">0.188***</td>\n<td align=\"left\">-0.106*</td>\n</tr>\n<tr>\n<td align=\"left\">Higher or Further education</td>\n<td align=\"left\">-0.154**</td>\n<td align=\"left\">0.215**</td>\n</tr>\n<tr>\n<td align=\"left\">Lag of age spline, less than 65</td>\n<td align=\"left\">-0.00572</td>\n<td align=\"left\">0.0188***</td>\n</tr>\n<tr>\n<td align=\"left\">Lag of age spline, 65 to 74</td>\n<td align=\"left\">-0.0186**</td>\n<td align=\"left\">-0.00979</td>\n</tr>\n<tr>\n<td align=\"left\">Lag of age spline, more than 75</td>\n<td align=\"left\">-0.0289**</td>\n<td align=\"left\">0.0171</td>\n</tr>\n<tr>\n<td align=\"left\">Lag of BMI spline, less than 30</td>\n<td align=\"left\">-0.414*</td>\n<td align=\"left\">0.839***</td>\n</tr>\n<tr>\n<td align=\"left\">Lag of BMI spline, more than 30</td>\n<td align=\"left\">0.25</td>\n<td align=\"left\">0.0703</td>\n</tr>\n<tr>\n<td align=\"left\">Constant</td>\n<td align=\"left\">-0.649</td>\n<td align=\"left\">-5.060***</td>\n</tr>\n<tr>\n<td align=\"left\">N</td>\n<td align=\"left\">41951</td>\n<td align=\"left\">6157</td>\n</tr>\n<tr>\n<td align=\"left\">Pseudo R2</td>\n<td align=\"left\">0.019</td>\n<td align=\"left\">0.0129</td>\n</tr>\n</tbody>\n</table>"
+                                    ],
+                                    "title": "Parameter estimates for probit models of smoking initiation and cessation.",
+                                    "type": "table"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "text": "<a href=\"#fig7\">Figure 7</a> compares the average age at death in both the baseline and intervention case (where smokers in the cohort stop smoking and nobody starts smoking). This figure includes the whole population, including both smokers and non-smokers. Results show that average death age is only slightly higher in the no smoking scenario.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "fig7",
+                                    "image": {
+                                        "alt": "",
+                                        "uri": "%iiif_uri%/00239%2Fijm-00239-fig007.tif",
+                                        "size": {
+                                            "width": 2028,
+                                            "height": 1452
+                                        },
+                                        "source": {
+                                            "mediaType": "image/jpeg",
+                                            "uri": "%iiif_uri%/00239%2Fijm-00239-fig007.tif/full/full/0/default.jpg",
+                                            "filename": "ijm-00239-fig007.jpg"
+                                        }
+                                    },
+                                    "label": "Figure 7",
+                                    "title": "Whole population (including smokers and non-smokers) survival curve compared between the baseline and no smoking scenarios.",
+                                    "type": "image"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "text": "However, smoking does not just impact on mortality, but also has strong links to increased morbidity. This relationship is most obvious when looking at lung disease. <a href=\"#fig8\">Figure 8</a> plots the prevalence of lung disease in both the baseline and no smoking scenarios, once again including both smokers and non-smokers. There is a clear and significant difference between the scenarios, with prevalence of lung disease being approximately 1.5 percentage points lower after simulating both cohorts for 30 years. This difference is across the whole population, and not just smokers.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "fig8",
+                                    "image": {
+                                        "alt": "",
+                                        "uri": "%iiif_uri%/00239%2Fijm-00239-fig008.tif",
+                                        "size": {
+                                            "width": 2027,
+                                            "height": 1452
+                                        },
+                                        "source": {
+                                            "mediaType": "image/jpeg",
+                                            "uri": "%iiif_uri%/00239%2Fijm-00239-fig008.tif/full/full/0/default.jpg",
+                                            "filename": "ijm-00239-fig008.jpg"
+                                        }
+                                    },
+                                    "label": "Figure 8",
+                                    "title": "Whole population prevalence of lung disease comparison between the baseline and no smoking scenarios, with Monte Carlo confidence intervals.",
+                                    "type": "image"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "content": [
+                                {
+                                    "text": "To further illustrate this link, we looked at the difference in life years and disability-free life years for smokers between the two scenarios, this time in a \u2019treatment on the treated\u2019 analysis where only smokers are included. The results of this analysis are shown in <a href=\"#table7\">Table 7</a>. When looking at smokers only as opposed to the whole cohort, the improvement in life expectancy and healthy life expectancy is much more obvious. Smokers who quit at age 50 in this model live on average 7 years longer than if they did not. However, the improvement in disability-free life-expectancy is only approximately 4.5 years, suggesting that while those who quit live longer, only a proportion of this time equates to disability-free years.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "assets": [
+                                        {
+                                            "id": "table7",
+                                            "label": "Table 7",
+                                            "tables": [
+                                                "<table>\n<thead>\n<tr>\n<th align=\"left\">Scenario</th>\n<th align=\"left\">Life Years</th>\n<th align=\"left\">Disability-free Life Years</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td align=\"left\">Baseline</td>\n<td align=\"left\">24.4</td>\n<td align=\"left\">16.9</td>\n</tr>\n<tr>\n<td align=\"left\">Intervention</td>\n<td align=\"left\">31.4</td>\n<td align=\"left\">21.4</td>\n</tr>\n</tbody>\n</table>"
+                                            ],
+                                            "title": "Life year and disability-free life year comparison between baseline and no smoking scenario. This is a treatment on the treated analysis, so only including respondents that smoke.",
+                                            "type": "table"
+                                        }
+                                    ],
+                                    "type": "figure"
+                                },
+                                {
+                                    "text": "We can run analyses by sub-population using the E-FEM. In the case of smoking we investigate how the intervention affects smokers by different levels of education. <a href=\"#table8\">Table 8</a> shows the average increase in life years and disability-free life years by level of education. The largest overall improvement in life expectancy can be seen for the median educational level (level 2), with over eight years improvement. Those in the lowest education group (level 1) show the smallest average improvement in life years (5.5), as well as the lowest improvement in disability-free life years (3.4). These results suggest that other comorbidities disproportionately affect those with the lowest educational attainment, so even though intervention on a single attribute (smoking) delivers the substantial improvements in life expectancy, only a proportion of these extra years are disability free.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "assets": [
+                                        {
+                                            "id": "table8",
+                                            "label": "Table 8",
+                                            "tables": [
+                                                "<table>\n<thead>\n<tr>\n<th align=\"left\">Education Level</th>\n<th align=\"left\">Life Years Improvement</th>\n<th align=\"left\">Disability-free Life Years Improvement</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td align=\"left\">1</td>\n<td align=\"left\">5.5</td>\n<td align=\"left\">3.4</td>\n</tr>\n<tr>\n<td align=\"left\">2</td>\n<td align=\"left\">8.4</td>\n<td align=\"left\">5.3</td>\n</tr>\n<tr>\n<td align=\"left\">3</td>\n<td align=\"left\">7.7</td>\n<td align=\"left\">5.4</td>\n</tr>\n</tbody>\n</table>"
+                                            ],
+                                            "title": "Average improvement in life years and disability-free life years between scenarios by highest level of education.",
+                                            "type": "table"
+                                        }
+                                    ],
+                                    "type": "figure"
+                                }
+                            ],
+                            "id": "s5-3-1",
+                            "title": "5.3.1. Treatment on the treated",
+                            "type": "section"
+                        }
+                    ],
+                    "id": "s5-3",
+                    "title": "5.3. Smoking",
+                    "type": "section"
+                }
+            ],
+            "id": "s5",
+            "title": "5. Results and discussion",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "We set out with the aim of discussing the development of a dynamic microsimulation model for an ageing English population, the E-FEM. In this paper we have demonstrated how data from ELSA has been harmonised, cleaned and variables imputed to make it suitable for our model. Validation, both internal and external, demonstrates that the E-FEM is capable of accurately predicting health outcomes and disease states in to the future while results demonstrate that on a whole population and on a cohort the model can inform disease and mortality outcomes under counterfactual scenarios. We show results for a heart disease and a smoking intervention to demonstrate the type of experiments that can be run using the E-FEM but the model can be used to estimate a wide range of potential outcomes.",
+                    "type": "paragraph"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "Developing and using a dynamic microsimulation like the E-FEM requires that some pragmatic decisions are made so as not to be overwhelmed by the complexity of the data, the model itself, and when interpreting outcomes. This can be summed up by considering the sources of uncertainty and bias which come in to play. The first arises from the data used as input. Limitations with ELSA have been discussed in this paper but in brief relate to bias and the representativeness of the data, missing values and changing data collection methods. The first of these have been mitigated somewhat by scaling to other data (Census, mid-year estimates and projections) and through imputation.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "A second source of uncertainty arises from the estimation of the transition models. Further work to develop policy specific-models using the E-FEM could utilise non-parametric bootstrapping or other methods to improve these models. Third, that the E-FEM is a Monte Carlo simulation means that outputs are inherently uncertain. We have generally used the average result from 100 runs in our results, and have quantified this uncertainty using confidence intervals where possible.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Fourth, and most difficult to deal with, is that the future is inherently uncertain. Trends in predictors that are important for estimating transitions within the model, such as risk behaviours (smoking, drinking, etc.) are very difficult to predict. Future development of the model could deal with these in a similar way to how we currently deal with changes in educational attainment. Experimentation with trends in risk behaviours and demographic change could be used to modify future populations.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "content": [
+                                {
+                                    "text": "Special mention must be given to the prediction of cancer, which as shown in <a href=\"#fig3\">Figure 3</a> is not performing much better than chance when compared with original ELSA data. There are a couple of possible contributing factors at play that mean cancer prevalence and mortality may not wholly be captured by ELSA, as well as other reasons why cancer may be difficult to predict from this data. Firstly, the time between diagnosis and death is often short for cancer, which gets progressively worse with age. For example in lung cancer, the 1-year survival rate for someone diagnosed between ages 55-64 is 44.7%, whereas the same diagnosis between ages 75-99 has a 1-year survival rate of 32.0% (<a href=\"#bib45\">ONS, 2019b</a>). There is therefore a significant chance that a respondent diagnosed with cancer between waves may not survive to the next wave. Secondly, cancer is one of the leading reasons for the need for palliative care. As previously stated, respondents who move into assisted living facilities (including palliative care) are given an analysis weight of zero, effectively removing them from our analyses. Thirdly, current predictors taken from ELSA (for example BMI, smoking status) may not be adequate for the prediction of cancer in this case. Further information such as family history, pack-years for smokers, or other environmental exposures may be necessary to improve the model. Also given that different types of cancer can have very specific behavioural and genetic risks, it may be inadequate to predict incidence of all types of cancer with a single set of predictor variables. Finally, cancer could be more of a \u2019random shock\u2019 than other diseases, meaning prediction of it is more difficult than other diseases even with perfect data.",
+                                    "type": "paragraph"
+                                }
+                            ],
+                            "id": "s6-1-1",
+                            "title": "6.1.1. Prediction of cancer incidence",
+                            "type": "section"
+                        },
+                        {
+                            "content": [
+                                {
+                                    "text": "This paper has provided an overview of the development of the E-FEM and sought to demonstrate its utility and validity as a model for undertaking policy analysis related to an ageing English population. We set out the basis for further work which will address policy questions which are specifically pertinent to this ageing population. It also marks further expansion of the FEM model developed for the US which has subsequently been adapted and applied to other countries. This will provide an opportunity to undertake cross-country comparisons with the English population represented in our work.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "The potential applications of this model are broad, as evidenced by the history of FEM models in the United States and around the world. Moving forward, we intend to use the E-FEM to assess the burden of chronic disease, evaluate the impact of early life experiences on later-life health, investigate the relationship between socio-economic factors and the quality and quantity of life, and quantify the potential impact for interventions targeting key risk factors.",
+                                    "type": "paragraph"
+                                }
+                            ],
+                            "id": "s6-1-2",
+                            "title": "6.1.2. Summary",
+                            "type": "section"
+                        }
+                    ],
+                    "id": "s6-1",
+                    "title": "6.1. Limitations and future work",
+                    "type": "section"
+                }
+            ],
+            "id": "s6",
+            "title": "6. Conclusions",
+            "type": "section"
+        },
+        {
+            "id": "footnotes",
+            "title": "Footnotes",
+            "type": "section",
+            "content": [
+                {
+                    "content": [
+                        {
+                            "text": "<a href=\"http://ukdataservice.ac.uk/\">ukdataservice.ac.uk/</a>",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "fn1",
+                    "title": "1.",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "<a href=\"http://g2aging.org\">g2aging.org</a>",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "fn2",
+                    "title": "2.",
+                    "type": "section"
+                }
+            ]
+        }
+    ],
+    "references": [
+        {
+            "articleTitle": "The Effect of Tobacco Smoking on Musculoskeletal Health: A Systematic Review",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Al-Bashaireh, AM",
+                        "preferred": "AM Al-Bashaireh"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Haddad, LG",
+                        "preferred": "LG Haddad"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Weaver, M",
+                        "preferred": "M Weaver"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Kelly, DL",
+                        "preferred": "DL Kelly"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Chengguo, X",
+                        "preferred": "X Chengguo"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Yoon, S",
+                        "preferred": "S Yoon"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2018",
+            "doi": "10.1155/2018/4184190",
+            "id": "bib39",
+            "journal": "Journal of Environmental and Public Health",
+            "pages": "4184190",
+            "pmid": 30112011,
+            "type": "journal",
+            "volume": "\n2018\n"
+        },
+        {
+            "authors": [
+                {
+                    "name": "ASH",
+                    "type": "group"
+                }
+            ],
+            "date": "2020",
+            "details": "7",
+            "id": "bib34",
+            "title": "Fact Sheet: Smoking Statistics",
+            "type": "unknown"
+        },
+        {
+            "articleTitle": "The future of the elderly population health status: Filling a knowledge gap",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Atella, V",
+                        "preferred": "V Atella"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Belotti, F",
+                        "preferred": "F Belotti"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Kim, D",
+                        "preferred": "D Kim"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Goldman, D",
+                        "preferred": "D Goldman"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Gracner, T",
+                        "preferred": "T Gracner"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Piano Mortari, A",
+                        "preferred": "A Piano Mortari"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Tysinger, B",
+                        "preferred": "B Tysinger"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2021",
+            "doi": "10.1002/hec.4258",
+            "id": "bib18",
+            "journal": "Health Economics",
+            "pages": "1",
+            "pmid": 33772966,
+            "type": "journal",
+            "volume": "\n30 Suppl 1\n"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Balachandran, A",
+                        "preferred": "A Balachandran"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "de Beer, J",
+                        "preferred": "J de Beer"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "van Wissen, L",
+                        "preferred": "L van Wissen"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Janssen, F",
+                        "preferred": "F Janssen"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2017",
+            "details": "Comparison of Ageing in Europe and Asia: Refining the Prospective Age Approach with a Cross-Country Perspective, Netherlands Interdisciplinary Demographic Institute",
+            "id": "bib4",
+            "title": "Comparison of Ageing in Europe and Asia: Refining the Prospective Age Approach with a Cross-Country Perspective, Netherlands Interdisciplinary Demographic Institute",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Banks, J",
+                        "preferred": "J Banks"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Blake, M",
+                        "preferred": "M Blake"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Clemens, S",
+                        "preferred": "S Clemens"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Marmot, M",
+                        "preferred": "M Marmot"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Nazroo, J",
+                        "preferred": "J Nazroo"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Oldfield, Z",
+                        "preferred": "Z Oldfield"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Oskala, A",
+                        "preferred": "A Oskala"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Phelps, A",
+                        "preferred": "A Phelps"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Rogers, N",
+                        "preferred": "N Rogers"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Steptoe, A",
+                        "preferred": "A Steptoe"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2019",
+            "doi": "10.5255/UKDA-SN-5050-24",
+            "id": "bib27",
+            "pages": "SN-5050-24",
+            "source": "UK Data Service",
+            "title": "English Longitudinal Study of Ageing: Waves 0-9, 1998-2019",
+            "type": "data",
+            "uri": "https://doi.org/10.5255/UKDA-SN-5050-24"
+        },
+        {
+            "articleTitle": "Attrition and health in ageing studies: Evidence from ELSA and HRS",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Banks, J",
+                        "preferred": "J Banks"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Muriel, A",
+                        "preferred": "A Muriel"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Smith, JP",
+                        "preferred": "JP Smith"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2011",
+            "doi": "10.14301/llcs.v2i2.115",
+            "id": "bib29",
+            "journal": "Longitudinal and Life Course Studies",
+            "pages": "2",
+            "pmid": 24376472,
+            "type": "journal",
+            "volume": "\n2\n"
+        },
+        {
+            "articleTitle": "A longitudinal study of policy effect (smoke-free legislation) on smoking norms: ITC Scotland/United Kingdom",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Brown, A",
+                        "preferred": "A Brown"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Moodie, C",
+                        "preferred": "C Moodie"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Hastings, G",
+                        "preferred": "G Hastings"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2009",
+            "doi": "10.1093/ntr/ntp087",
+            "id": "bib43",
+            "journal": "Nicotine & Tobacco Research",
+            "pages": {
+                "first": "924",
+                "last": "932",
+                "range": "924\u2013932"
+            },
+            "type": "journal",
+            "volume": "\n11\n"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Canada, S",
+                        "preferred": "S Canada"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2009",
+            "id": "bib17",
+            "title": "The modgen microsimulation programming language",
+            "type": "web",
+            "uri": "https://www.statcan.gc.ca/eng/microsimulation/modgen/modgen"
+        },
+        {
+            "articleTitle": "Tobacco taxes as a tobacco control strategy",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Chaloupka, FJ",
+                        "preferred": "FJ Chaloupka"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Yurekli, A",
+                        "preferred": "A Yurekli"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Fong, GT",
+                        "preferred": "GT Fong"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2012",
+            "doi": "10.1136/tobaccocontrol-2011-050417",
+            "id": "bib42",
+            "journal": "Tobacco Control",
+            "pages": {
+                "first": "172",
+                "last": "180",
+                "range": "172\u2013180"
+            },
+            "pmid": 22345242,
+            "type": "journal",
+            "volume": "\n21\n"
+        },
+        {
+            "articleTitle": "Forecasting Trends in Disability in a Super-Aging Society: Adapting the Future Elderly Model to Japan",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Chen, BK",
+                        "preferred": "BK Chen"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Jalal, H",
+                        "preferred": "H Jalal"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Hashimoto, H",
+                        "preferred": "H Hashimoto"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Suen, S-. C",
+                        "preferred": "S-. C Suen"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Eggleston, K",
+                        "preferred": "K Eggleston"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Hurley, M",
+                        "preferred": "M Hurley"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Schoemaker, L",
+                        "preferred": "L Schoemaker"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Bhattacharya, J",
+                        "preferred": "J Bhattacharya"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2016",
+            "doi": "10.1016/j.jeoa.2016.06.001",
+            "id": "bib23",
+            "journal": "Journal of the Economics of Ageing",
+            "pages": {
+                "first": "42",
+                "last": "51",
+                "range": "42\u201351"
+            },
+            "pmid": 28580275,
+            "type": "journal",
+            "volume": "\n8\n"
+        },
+        {
+            "articleTitle": "The Long-Term Impact of Functional Disability on Hospitalization Spending in Singapore",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Chen, C",
+                        "preferred": "C Chen"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Lim, JT",
+                        "preferred": "JT Lim"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Chia, NC",
+                        "preferred": "NC Chia"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Wang, L",
+                        "preferred": "L Wang"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Tysinger, B",
+                        "preferred": "B Tysinger"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Zissimopolous, J",
+                        "preferred": "J Zissimopolous"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Chong, MZ",
+                        "preferred": "MZ Chong"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Wang, Z",
+                        "preferred": "Z Wang"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Koh, GC",
+                        "preferred": "GC Koh"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Yuan, JM",
+                        "preferred": "JM Yuan"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Tan, KB",
+                        "preferred": "KB Tan"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Chia, KS",
+                        "preferred": "KS Chia"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Cook, AR",
+                        "preferred": "AR Cook"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Malhotra, R",
+                        "preferred": "R Malhotra"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Chan, A",
+                        "preferred": "A Chan"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Ma, S",
+                        "preferred": "S Ma"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Ng, TP",
+                        "preferred": "TP Ng"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Koh, WP",
+                        "preferred": "WP Koh"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Goldman, DP",
+                        "preferred": "DP Goldman"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Yoong, J",
+                        "preferred": "J Yoong"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2019",
+            "doi": "10.1016/j.jeoa.2019.02.002",
+            "id": "bib25",
+            "journal": "Journal of the Economics of Ageing",
+            "pages": "100193",
+            "pmid": 31857943,
+            "type": "journal",
+            "volume": "\n14\n"
+        },
+        {
+            "articleTitle": "LIAM2: a New Open Source Development Tool for Discrete-Time Dynamic Microsimulation Models",
+            "authors": [
+                {
+                    "name": {
+                        "index": "de Menten, G",
+                        "preferred": "G de Menten"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Dekkers, G",
+                        "preferred": "G Dekkers"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Bryon, G",
+                        "preferred": "G Bryon"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Li\u00e9geois, P",
+                        "preferred": "P Li\u00e9geois"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "O\u2019Donoghue, C",
+                        "preferred": "C O\u2019Donoghue"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2014",
+            "doi": "10.18564/jasss.2574",
+            "id": "bib16",
+            "journal": "Journal of Artificial Societies and Social Simulation",
+            "pages": {
+                "first": "1",
+                "last": "9",
+                "range": "1\u20139"
+            },
+            "type": "journal",
+            "volume": "\n17\n"
+        },
+        {
+            "authors": [
+                {
+                    "name": "G. O. for Science",
+                    "type": "group"
+                }
+            ],
+            "date": "2016",
+            "id": "bib2",
+            "title": "Future of an ageing population",
+            "type": "web",
+            "uri": "http://web:8082/00239/hhttps://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/816458/future-of-an-ageing-population.pdf"
+        },
+        {
+            "articleTitle": "Consequences of health trends and medical innovation for the future elderly: When demographic trends temper the optimism of biomedical advances, how will tomorrow\u2019s elderly fare",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Goldman, DP",
+                        "preferred": "DP Goldman"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Shang, B",
+                        "preferred": "B Shang"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Bhattacharya, J",
+                        "preferred": "J Bhattacharya"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Garber, AM",
+                        "preferred": "AM Garber"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Hurd, M",
+                        "preferred": "M Hurd"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Joyce, GF",
+                        "preferred": "GF Joyce"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Lakdawalla, DN",
+                        "preferred": "DN Lakdawalla"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Panis, C",
+                        "preferred": "C Panis"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Shekelle, PG",
+                        "preferred": "PG Shekelle"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2005",
+            "id": "bib19",
+            "journal": "Health Affairs",
+            "pages": {
+                "first": "W5",
+                "last": "R5",
+                "range": "W5\u2013R5"
+            },
+            "type": "journal",
+            "volume": "\n24\n"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Goldman, DP",
+                        "preferred": "DP Goldman"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Shekelle, PG",
+                        "preferred": "PG Shekelle"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Bhattacharya, J",
+                        "preferred": "J Bhattacharya"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Hurd, M",
+                        "preferred": "M Hurd"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Joyce, GF",
+                        "preferred": "GF Joyce"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2004",
+            "id": "bib5",
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "Santa Monica, CA"
+                        ]
+                    },
+                    "formatted": [
+                        "Santa Monica, CA"
+                    ]
+                },
+                "name": [
+                    "RAND Corporatio"
+                ]
+            },
+            "source": "Health status and medical treatment of the future elderly",
+            "title": "Health status and medical treatment of the future elderly",
+            "type": "report",
+            "uri": "https://www.rand.org/pubs/technical_reports/TR169.html"
+        },
+        {
+            "articleTitle": "Projecting diabetes prevalence among Mexicans aged 50 years and older: the Future Elderly Model-Mexico (FEM-Mexico)",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Gonzalez-Gonzalez, C",
+                        "preferred": "C Gonzalez-Gonzalez"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Tysinger, B",
+                        "preferred": "B Tysinger"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Goldman, DP",
+                        "preferred": "DP Goldman"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Wong, R",
+                        "preferred": "R Wong"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2017",
+            "doi": "10.1136/bmjopen-2017-017330",
+            "id": "bib24",
+            "journal": "BMJ Open",
+            "pages": "e017330",
+            "pmid": 29074514,
+            "type": "journal",
+            "volume": "\n7\n"
+        },
+        {
+            "articleTitle": "The MISCAN simulation program for the evaluation of screening for disease",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Habbema, JD",
+                        "preferred": "JD Habbema"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "van Oortmarssen, GJ",
+                        "preferred": "GJ van Oortmarssen"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Lubbe, JT",
+                        "preferred": "JT Lubbe"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "van der Maas, PJ",
+                        "preferred": "PJ van der Maas"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1985",
+            "doi": "10.1016/0169-2607(85)90048-3",
+            "id": "bib9",
+            "journal": "Computer Methods and Programs in Biomedicine",
+            "pages": {
+                "first": "79",
+                "last": "93",
+                "range": "79\u201393"
+            },
+            "pmid": 3849380,
+            "type": "journal",
+            "volume": "\n20\n"
+        },
+        {
+            "articleTitle": "Effectiveness of cigarette warning labels in informing smokers about the risks of smoking: findings from the International Tobacco Control (ITC) Four Country Survey",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Hammond, D",
+                        "preferred": "D Hammond"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Fong, GT",
+                        "preferred": "GT Fong"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "McNeill, A",
+                        "preferred": "A McNeill"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Borland, R",
+                        "preferred": "R Borland"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Cummings, KM",
+                        "preferred": "KM Cummings"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2006",
+            "doi": "10.1136/tc.2005.012294",
+            "id": "bib44",
+            "journal": "Tobacco Control",
+            "pages": {
+                "first": "iii19",
+                "last": "25",
+                "range": "iii19\u201325"
+            },
+            "pmid": 16754942,
+            "type": "journal",
+            "volume": "\n15 Suppl 3\n"
+        },
+        {
+            "articleTitle": "Effects of the 2003 advertising/promotion ban in the United Kingdom on awareness of tobacco marketing: findings from the International Tobacco Control (ITC) Four Country Survey",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Harris, F",
+                        "preferred": "F Harris"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "MacKintosh, AM",
+                        "preferred": "AM MacKintosh"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Anderson, S",
+                        "preferred": "S Anderson"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Hastings, G",
+                        "preferred": "G Hastings"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Borland, R",
+                        "preferred": "R Borland"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Fong, GT",
+                        "preferred": "GT Fong"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Hammond, D",
+                        "preferred": "D Hammond"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Cummings, KM",
+                        "preferred": "KM Cummings"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": "ITC Collaboration",
+                    "type": "group"
+                }
+            ],
+            "date": "2006",
+            "doi": "10.1136/tc.2005.013110",
+            "id": "bib41",
+            "journal": "Tobacco Control",
+            "pages": {
+                "first": "iii26",
+                "last": "33",
+                "range": "iii26\u201333"
+            },
+            "pmid": 16754943,
+            "type": "journal",
+            "volume": "\n15 Suppl 3\n"
+        },
+        {
+            "articleTitle": "The Population Health Model (POHEM): an overview of rationale, methods and applications",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Hennessy, DA",
+                        "preferred": "DA Hennessy"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Flanagan, WM",
+                        "preferred": "WM Flanagan"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Tanuseputro, P",
+                        "preferred": "P Tanuseputro"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Bennett, C",
+                        "preferred": "C Bennett"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Tuna, M",
+                        "preferred": "M Tuna"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Kopec, J",
+                        "preferred": "J Kopec"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Wolfson, MC",
+                        "preferred": "MC Wolfson"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Manuel, DG",
+                        "preferred": "DG Manuel"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2015",
+            "doi": "10.1186/s12963-015-0057-x",
+            "id": "bib28",
+            "journal": "Population Health Metrics",
+            "pages": {
+                "first": "1",
+                "last": "12",
+                "range": "1\u201312"
+            },
+            "pmid": 26339201,
+            "type": "journal",
+            "volume": "\n13\n"
+        },
+        {
+            "articleTitle": "Towards a computerized demographic microsimulation model for Egypt: experimentation of POPSIM: 1",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Khalifa, AM",
+                        "preferred": "AM Khalifa"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1972",
+            "id": "bib6",
+            "journal": "The Egyptian Population and Family Planning Review",
+            "pages": {
+                "first": "153",
+                "last": "166",
+                "range": "153\u2013166"
+            },
+            "type": "journal",
+            "volume": "\n5\n"
+        },
+        {
+            "articleTitle": "Smoking, life expectancy, and chronic disease in South Korea, Singapore, and the United States: A microsimulation model",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Kim, D",
+                        "preferred": "D Kim"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Chen, C",
+                        "preferred": "C Chen"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Tysinger, B",
+                        "preferred": "B Tysinger"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Park, S",
+                        "preferred": "S Park"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Chong, MZ",
+                        "preferred": "MZ Chong"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Wang, L",
+                        "preferred": "L Wang"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Zhao, M",
+                        "preferred": "M Zhao"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Yuan, J-. M",
+                        "preferred": "J-. M Yuan"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Koh, W-. P",
+                        "preferred": "W-. P Koh"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Yoong, J",
+                        "preferred": "J Yoong"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Bhattacharya, J",
+                        "preferred": "J Bhattacharya"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Eggleston, K",
+                        "preferred": "K Eggleston"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2021",
+            "doi": "10.1002/hec.3978",
+            "id": "bib26",
+            "journal": "Health Economics",
+            "pages": "1",
+            "pmid": 31802569,
+            "type": "journal",
+            "volume": "\n30 Suppl 1\n"
+        },
+        {
+            "articleTitle": "Associations between tobacco control mass media campaign expenditure and smoking prevalence and quitting in england: a time series analysis",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Kuipers, MA",
+                        "preferred": "MA Kuipers"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Beard, E",
+                        "preferred": "E Beard"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "West, R",
+                        "preferred": "R West"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Brown, J",
+                        "preferred": "J Brown"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2018",
+            "doi": "10.1136/tobaccocontrol-2017-053662",
+            "id": "bib40",
+            "journal": "Tobacco Control",
+            "pages": {
+                "first": "455",
+                "last": "462",
+                "range": "455\u2013462"
+            },
+            "type": "journal",
+            "volume": "\n27\n"
+        },
+        {
+            "articleTitle": "Predicting quantity and quality of life with the future elderly model",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Leaf, DE",
+                        "preferred": "DE Leaf"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Tysinger, B",
+                        "preferred": "B Tysinger"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Goldman, DP",
+                        "preferred": "DP Goldman"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Lakdawalla, DN",
+                        "preferred": "DN Lakdawalla"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2021",
+            "doi": "10.1002/hec.4169",
+            "id": "bib21",
+            "journal": "Health Economics",
+            "pages": {
+                "first": "52",
+                "last": "79",
+                "range": "52\u201379"
+            },
+            "type": "journal",
+            "volume": "\n30\n"
+        },
+        {
+            "articleTitle": "The impacts of international migration on the uk\u2019s ethnic populations",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Lomax, N",
+                        "preferred": "N Lomax"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Wohland, P",
+                        "preferred": "P Wohland"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Rees, P",
+                        "preferred": "P Rees"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Norman, P",
+                        "preferred": "P Norman"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2020",
+            "doi": "10.1080/1369183X.2019.1577726",
+            "id": "bib3",
+            "journal": "Journal of Ethnic and Migration Studies",
+            "pages": {
+                "first": "177",
+                "last": "199",
+                "range": "177\u2013199"
+            },
+            "type": "journal",
+            "volume": "\n46\n"
+        },
+        {
+            "articleTitle": "Variation in adenoma detection rate and the lifetime benefits and cost of colorectal cancer screening: a microsimulation model",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Meester, RG",
+                        "preferred": "RG Meester"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Doubeni, CA",
+                        "preferred": "CA Doubeni"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Lansdorp-Vogelaar, I",
+                        "preferred": "I Lansdorp-Vogelaar"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Jensen, CD",
+                        "preferred": "CD Jensen"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "van der Meulen, MP",
+                        "preferred": "MP van der Meulen"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Levin, TR",
+                        "preferred": "TR Levin"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Quinn, VP",
+                        "preferred": "VP Quinn"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Schottinger, JE",
+                        "preferred": "JE Schottinger"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Zauber, AG",
+                        "preferred": "AG Zauber"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Corley, DA",
+                        "preferred": "DA Corley"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2015",
+            "id": "bib13",
+            "journal": "JAMA",
+            "pages": {
+                "first": "2349",
+                "last": "2358",
+                "range": "2349\u20132358"
+            },
+            "type": "journal",
+            "volume": "\n313\n"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Melzer, D",
+                        "preferred": "D Melzer"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Delgado, JC",
+                        "preferred": "JC Delgado"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Winder, R",
+                        "preferred": "R Winder"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Masoli, J",
+                        "preferred": "J Masoli"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Richards, S",
+                        "preferred": "S Richards"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Ble, A",
+                        "preferred": "A Ble"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2015",
+            "details": "The Ageuk Almanac of Disease Profiles in Later Life, UK, Ageing Research Group, University of Exeter",
+            "id": "bib33",
+            "title": "The Ageuk Almanac of Disease Profiles in Later Life, UK, Ageing Research Group, University of Exeter",
+            "type": "unknown"
+        },
+        {
+            "articleTitle": "Differences in health between americans and western europeans: Effects on longevity and public finance",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Michaud, P-. C",
+                        "preferred": "P-. C Michaud"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Goldman, D",
+                        "preferred": "D Goldman"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Lakdawalla, D",
+                        "preferred": "D Lakdawalla"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Gailey, A",
+                        "preferred": "A Gailey"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Zheng, Y",
+                        "preferred": "Y Zheng"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2011",
+            "id": "bib20",
+            "journal": "Social Science & Medicine",
+            "pages": {
+                "first": "254",
+                "last": "263",
+                "range": "254\u2013263"
+            },
+            "type": "journal",
+            "volume": "\n73\n"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Mustafa, AF",
+                        "preferred": "AF Mustafa"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1973",
+            "details": "Fecundability Differentials among Acceptors and Non-Acceptors of Family Planning: A Simulation Experiment,\u2019\u2019 Ph.D. Dissertation, Citeseer",
+            "id": "bib7",
+            "title": "Fecundability Differentials among Acceptors and Non-Acceptors of Family Planning: A Simulation Experiment,\u2019\u2019 Ph.D. Dissertation, Citeseer",
+            "type": "unknown"
+        },
+        {
+            "articleTitle": "The current and potential health benefits of the national health service health check cardiovascular disease prevention programme in england: a microsimulation study",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Mytton, OT",
+                        "preferred": "OT Mytton"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Jackson, C",
+                        "preferred": "C Jackson"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Steinacher, A",
+                        "preferred": "A Steinacher"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Goodman, A",
+                        "preferred": "A Goodman"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Langenberg, C",
+                        "preferred": "C Langenberg"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Griffin, S",
+                        "preferred": "S Griffin"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Wareham, N",
+                        "preferred": "N Wareham"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Woodcock, J",
+                        "preferred": "J Woodcock"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2018",
+            "id": "bib14",
+            "journal": "PLoS Medicine",
+            "pages": "e1002517",
+            "type": "journal",
+            "volume": "\n15\n"
+        },
+        {
+            "articleTitle": "The health consequences of smoking: cancer",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Newcomb, PA",
+                        "preferred": "PA Newcomb"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Carbone, PP",
+                        "preferred": "PP Carbone"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1992",
+            "doi": "10.1016/S0025-7125(16)30355-8",
+            "id": "bib37",
+            "journal": "Medical Clinics of North America",
+            "pages": {
+                "first": "305",
+                "last": "331",
+                "range": "305\u2013331"
+            },
+            "type": "journal",
+            "volume": "\n76\n"
+        },
+        {
+            "authors": [
+                {
+                    "name": "ONS",
+                    "type": "group"
+                }
+            ],
+            "date": "2019",
+            "discriminator": "a",
+            "id": "bib1",
+            "title": "Past and projected period and cohort life tables, 2018-based, uk: 1981 to 2068",
+            "type": "web",
+            "uri": "https://www.ons.gov.uk/peoplepopulationandcommunity/birthsdeathsandmarriages/lifeexpectancies/bulletins/pastandprojecteddatafromtheperiodandcohortlifetables/1981to2068"
+        },
+        {
+            "authors": [
+                {
+                    "name": "ONS",
+                    "type": "group"
+                }
+            ],
+            "date": "2019",
+            "discriminator": "b",
+            "id": "bib45",
+            "title": "Cancer survival in england - adults diagnosed",
+            "type": "web",
+            "uri": "https://www.ons.gov.uk/peoplepopulationandcommunity/healthandsocialcare/conditionsanddiseases/datasets/cancersurvivalratescancersurvivalinenglandadultsdiagnosed"
+        },
+        {
+            "articleTitle": "Validation of a cardiovascular disease policy microsimulation model using both survival and receiver operating characteristic curves",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Pandya, A",
+                        "preferred": "A Pandya"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Sy, S",
+                        "preferred": "S Sy"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Cho, S",
+                        "preferred": "S Cho"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Alam, S",
+                        "preferred": "S Alam"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Weinstein, MC",
+                        "preferred": "MC Weinstein"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Gaziano, TA",
+                        "preferred": "TA Gaziano"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2017",
+            "doi": "10.1177/0272989X17706081",
+            "id": "bib32",
+            "journal": "Medical Decision Making",
+            "pages": {
+                "first": "802",
+                "last": "814",
+                "range": "802\u2013814"
+            },
+            "type": "journal",
+            "volume": "\n37\n"
+        },
+        {
+            "articleTitle": "Smoking and cardiovascular health: a review of the epidemiology, pathogenesis, prevention and control of tobacco",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Prasad, D",
+                        "preferred": "D Prasad"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Kabir, Z",
+                        "preferred": "Z Kabir"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Dash, A",
+                        "preferred": "A Dash"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Das, B",
+                        "preferred": "B Das"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2009",
+            "id": "bib38",
+            "journal": "Dian Journal of Medical Sciences",
+            "pages": {
+                "first": "520",
+                "last": "533",
+                "range": "520\u2013533"
+            },
+            "type": "journal",
+            "volume": "\n63 11\n"
+        },
+        {
+            "authors": [
+                {
+                    "name": "Public Health England",
+                    "type": "group"
+                }
+            ],
+            "date": "1000",
+            "id": "bib36",
+            "title": "Health matters: preventing cardiovascular disease",
+            "type": "web",
+            "uri": "https://www.gov.uk/government/publications/health-matters-preventing-cardiovascular-disease/health-matters-preventing-cardiovascular-disease"
+        },
+        {
+            "articleTitle": "The links between education and health",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Ross, CE",
+                        "preferred": "CE Ross"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Wu, C -l",
+                        "preferred": "C -l Wu"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1995",
+            "id": "bib31",
+            "journal": "American Sociological Review",
+            "pages": {
+                "first": "719",
+                "last": "745",
+                "range": "719\u2013745"
+            },
+            "type": "journal"
+        },
+        {
+            "articleTitle": "Dynamic microsimulation models for health outcomes: a review",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Rutter, CM",
+                        "preferred": "CM Rutter"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Zaslavsky, AM",
+                        "preferred": "AM Zaslavsky"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Feuer, EJ",
+                        "preferred": "EJ Feuer"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2011",
+            "id": "bib12",
+            "journal": "Medical Decision Making",
+            "pages": {
+                "first": "10",
+                "last": "18",
+                "range": "10\u201318"
+            },
+            "type": "journal",
+            "volume": "\n31\n"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Santow, MG",
+                        "preferred": "MG Santow"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1976",
+            "details": "Thesis (PhD, A Microsimulation Model of Human Fertility: Theory and Applications to the Yoruba of Western Nigeria",
+            "id": "bib11",
+            "title": "Thesis (PhD",
+            "type": "unknown"
+        },
+        {
+            "articleTitle": "A brief, global history of microsimulation models in health: past applications, lessons learned and future directions",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Schofield, D",
+                        "preferred": "D Schofield"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Zeppel, MJ",
+                        "preferred": "MJ Zeppel"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Tan, O",
+                        "preferred": "O Tan"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Lymer, S",
+                        "preferred": "S Lymer"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Cunich, MM",
+                        "preferred": "MM Cunich"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Shrestha, RN",
+                        "preferred": "RN Shrestha"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2018",
+            "id": "bib8",
+            "journal": "T. J. Microsimulation",
+            "pages": {
+                "first": "97",
+                "last": "142",
+                "range": "97\u2013142"
+            },
+            "type": "journal",
+            "volume": "\n11\n"
+        },
+        {
+            "authors": [
+                {
+                    "name": "StataCorp",
+                    "type": "group"
+                }
+            ],
+            "date": "2021",
+            "details": "Stata Statistical Software: Release 17. College Station, Tx: Statacorp Llc",
+            "id": "bib30",
+            "title": "Stata Statistical Software: Release 17. College Station, Tx: Statacorp Llc",
+            "type": "unknown"
+        },
+        {
+            "articleTitle": "Modeling the clinical and economic implications of obesity using microsimulation",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Su, W",
+                        "preferred": "W Su"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Huang, J",
+                        "preferred": "J Huang"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Chen, F",
+                        "preferred": "F Chen"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Iacobucci, W",
+                        "preferred": "W Iacobucci"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Mocarski, M",
+                        "preferred": "M Mocarski"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Dall, T",
+                        "preferred": "T Dall"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Perreault, L",
+                        "preferred": "L Perreault"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2015",
+            "id": "bib15",
+            "journal": "Journal of Medical Economics",
+            "pages": {
+                "first": "886",
+                "last": "897",
+                "range": "886\u2013897"
+            },
+            "type": "journal",
+            "volume": "\n18\n"
+        },
+        {
+            "articleTitle": "Predicting the effects of mass-screening for disease\u2014a simulation approach",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Van Oortmarssen, G",
+                        "preferred": "G Van Oortmarssen"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Habbema, J",
+                        "preferred": "J Habbema"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Lubbe, JTN",
+                        "preferred": "JTN Lubbe"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "de Jong, G",
+                        "preferred": "G de Jong"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "van der Maas, P",
+                        "preferred": "P van der Maas"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1981",
+            "id": "bib10",
+            "journal": "European Journal of Operational Research",
+            "pages": {
+                "first": "399",
+                "last": "409",
+                "range": "399\u2013409"
+            },
+            "type": "journal",
+            "volume": "\n6\n"
+        },
+        {
+            "authors": [
+                {
+                    "name": "WHO",
+                    "type": "group"
+                }
+            ],
+            "date": "1000",
+            "id": "bib35",
+            "title": "Cardiovascular diseases (cvds)",
+            "type": "web",
+            "uri": "https://www.who.int/news-room/fact-sheets/detail/cardiovascular-diseases-(cvds"
+        },
+        {
+            "articleTitle": "Valuing Innovations in Cancer Treatment",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Zhao, H",
+                        "preferred": "H Zhao"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Tysinger, B",
+                        "preferred": "B Tysinger"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Goldman, DP",
+                        "preferred": "DP Goldman"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2019",
+            "id": "bib22",
+            "journal": "Journal of Clinical Oncology",
+            "pages": {
+                "first": "e18176",
+                "last": "e18176",
+                "range": "e18176\u2013e18176"
+            },
+            "type": "journal",
+            "volume": "\n37\n"
+        }
+    ],
+    "appendices": [
+        {
+            "content": [
+                {
+                    "content": [
+                        {
+                            "assets": [
+                                {
+                                    "id": "A2-F1",
+                                    "image": {
+                                        "alt": "",
+                                        "uri": "%iiif_uri%/00239%2Fijm-00239-fig009.tif",
+                                        "size": {
+                                            "width": 2161,
+                                            "height": 3205
+                                        },
+                                        "source": {
+                                            "mediaType": "image/jpeg",
+                                            "uri": "%iiif_uri%/00239%2Fijm-00239-fig009.tif/full/full/0/default.jpg",
+                                            "filename": "ijm-00239-fig009.jpg"
+                                        }
+                                    },
+                                    "label": "Figure A1",
+                                    "title": "Handover plots for ADLs and IADLs.",
+                                    "type": "image"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "A2-F2",
+                                    "image": {
+                                        "alt": "",
+                                        "uri": "%iiif_uri%/00239%2Fijm-00239-fig010.tif",
+                                        "size": {
+                                            "width": 2047,
+                                            "height": 1448
+                                        },
+                                        "source": {
+                                            "mediaType": "image/jpeg",
+                                            "uri": "%iiif_uri%/00239%2Fijm-00239-fig010.tif/full/full/0/default.jpg",
+                                            "filename": "ijm-00239-fig010.jpg"
+                                        }
+                                    },
+                                    "label": "Figure A2",
+                                    "title": "Receiver Operating Characteristic curves.",
+                                    "type": "image"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "A1-T1",
+                                    "label": "Table A1",
+                                    "tables": [
+                                        "<table>\n<thead>\n<tr>\n<th align=\"left\">Characteristics</th>\n<th align=\"left\">Raw Stock</th>\n<th align=\"left\">Imputed</th>\n<th align=\"left\">Missing (%)</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td align=\"left\">Age, Mean (SD)</td>\n<td align=\"left\">66.5 (10.8)</td>\n<td align=\"left\">66.2 (10.8)</td>\n<td align=\"left\">0</td>\n</tr>\n<tr>\n<td align=\"left\">Female (%)</td>\n<td align=\"left\">52.9</td>\n<td align=\"left\">52.9</td>\n<td align=\"left\">0</td>\n</tr>\n<tr>\n<td align=\"left\">BMI, Mean (SD)</td>\n<td align=\"left\">28.4 (5.4)</td>\n<td align=\"left\">28.4 (5.4)</td>\n<td align=\"left\">19.2</td>\n</tr>\n<tr>\n<td align=\"left\">BMI Category (%)</td>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n</tr>\n<tr>\n<td align=\"left\">&lt; 25</td>\n<td align=\"left\">28.3</td>\n<td align=\"left\">28.3</td>\n<td align=\"left\">-</td>\n</tr>\n<tr>\n<td align=\"left\">\u2265 25 &amp; &lt; 30</td>\n<td align=\"left\">42.2</td>\n<td align=\"left\">42.2</td>\n<td align=\"left\">-</td>\n</tr>\n<tr>\n<td align=\"left\">\u2265 30</td>\n<td align=\"left\">29.5</td>\n<td align=\"left\">29.5</td>\n<td align=\"left\">-</td>\n</tr>\n<tr>\n<td align=\"left\">Smoking Status (%)</td>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n</tr>\n<tr>\n<td align=\"left\">Ever Smoked</td>\n<td align=\"left\">62.5</td>\n<td align=\"left\">62.3</td>\n<td align=\"left\">1.83</td>\n</tr>\n<tr>\n<td align=\"left\">Current Smoker</td>\n<td align=\"left\">12.2</td>\n<td align=\"left\">13.6</td>\n<td align=\"left\">0.05</td>\n</tr>\n<tr>\n<td align=\"left\">Education Level (%)</td>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\">20.9</td>\n</tr>\n<tr>\n<td align=\"left\">Less than Secondary</td>\n<td align=\"left\">38.6</td>\n<td align=\"left\">38.6</td>\n<td align=\"left\">-</td>\n</tr>\n<tr>\n<td align=\"left\">Upper Secondary and Vocational</td>\n<td align=\"left\">48.0</td>\n<td align=\"left\">47.9</td>\n<td align=\"left\">-</td>\n</tr>\n<tr>\n<td align=\"left\">Some University or more</td>\n<td align=\"left\">13.5</td>\n<td align=\"left\">13.5</td>\n<td align=\"left\">-</td>\n</tr>\n<tr>\n<td align=\"left\">Initial Disease Prevalence (%)</td>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n</tr>\n<tr>\n<td align=\"left\">Cancer</td>\n<td align=\"left\">9.8</td>\n<td align=\"left\">9.8</td>\n<td align=\"left\">0.009</td>\n</tr>\n<tr>\n<td align=\"left\">Diabetes</td>\n<td align=\"left\">11.1</td>\n<td align=\"left\">11.1</td>\n<td align=\"left\">0.009</td>\n</tr>\n<tr>\n<td align=\"left\">Heart Disease</td>\n<td align=\"left\">18.9</td>\n<td align=\"left\">18.9</td>\n<td align=\"left\">0.009</td>\n</tr>\n</tbody>\n</table>"
+                                    ],
+                                    "title": "Summary statistics for raw and imputed stock populations, including the percentage of missing data where applicable.",
+                                    "type": "table"
+                                }
+                            ],
+                            "type": "figure"
+                        }
+                    ],
+                    "id": "s9",
+                    "title": "Imputation",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "assets": [
+                                {
+                                    "id": "A1-T2",
+                                    "label": "Table A2",
+                                    "tables": [
+                                        "<table>\n<thead>\n<tr>\n<th align=\"left\">Wave</th>\n<th align=\"left\">Raw BMI</th>\n<th align=\"left\">Imputed BMI</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td align=\"left\">1</td>\n<td align=\"left\">-</td>\n<td align=\"left\">28.0 (5.3)</td>\n</tr>\n<tr>\n<td align=\"left\">2</td>\n<td align=\"left\">28.0 (4.9)</td>\n<td align=\"left\">28.0 (5.0)</td>\n</tr>\n<tr>\n<td align=\"left\">3</td>\n<td align=\"left\">-</td>\n<td align=\"left\">28.2 (5.2)</td>\n</tr>\n<tr>\n<td align=\"left\">4</td>\n<td align=\"left\">28.3 (5.4)</td>\n<td align=\"left\">28.4 (5.4)</td>\n</tr>\n<tr>\n<td align=\"left\">5</td>\n<td align=\"left\">-</td>\n<td align=\"left\">28.4 (5.4)</td>\n</tr>\n<tr>\n<td align=\"left\">6</td>\n<td align=\"left\">28.4 (5.3)</td>\n<td align=\"left\">28.4 (5.4)</td>\n</tr>\n<tr>\n<td align=\"left\">7</td>\n<td align=\"left\">-</td>\n<td align=\"left\">28.4 (5.4)</td>\n</tr>\n<tr>\n<td align=\"left\">8</td>\n<td align=\"left\">28.3 (5.5)</td>\n<td align=\"left\">28.3 (5.5)</td>\n</tr>\n</tbody>\n</table>"
+                                    ],
+                                    "title": "Raw vs imputed BMI mean and standard deviation at each wave of ELSA.",
+                                    "type": "table"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "A1-T3a",
+                                    "label": "Table A3",
+                                    "tables": [
+                                        "<table>\n<thead>\n<tr>\n<th align=\"left\">Variable</th>\n<th align=\"left\">FEM 3</th>\n<th align=\"left\">ELSA 3</th>\n<th align=\"left\">P value 3</th>\n<th align=\"left\">FEM 5</th>\n<th align=\"left\">ELSA 5</th>\n<th align=\"left\">P value 5</th>\n<th align=\"left\">FEM 8</th>\n<th align=\"left\">ELSA 8</th>\n<th align=\"left\">P value 8</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td align=\"left\">Alzheimers</td>\n<td align=\"left\">0.0067</td>\n<td align=\"left\">0.00325</td>\n<td align=\"left\">0.00076</td>\n<td align=\"left\">0.0103</td>\n<td align=\"left\">0.00404</td>\n<td align=\"left\">0</td>\n<td align=\"left\">0.0178</td>\n<td align=\"left\">0.0119</td>\n<td align=\"left\">0.0204</td>\n</tr>\n<tr>\n<td align=\"left\">Any ADLs</td>\n<td align=\"left\">0.184</td>\n<td align=\"left\">0.213</td>\n<td align=\"left\">0</td>\n<td align=\"left\">0.199</td>\n<td align=\"left\">0.234</td>\n<td align=\"left\">0</td>\n<td align=\"left\">0.241</td>\n<td align=\"left\">0.225</td>\n<td align=\"left\">0.0938</td>\n</tr>\n<tr>\n<td align=\"left\">Any IADLs</td>\n<td align=\"left\">0.204</td>\n<td align=\"left\">0.222</td>\n<td align=\"left\">0.012</td>\n<td align=\"left\">0.230</td>\n<td align=\"left\">0.255</td>\n<td align=\"left\">0.00292</td>\n<td align=\"left\">0.268</td>\n<td align=\"left\">0.266</td>\n<td align=\"left\">0.839</td>\n</tr>\n<tr>\n<td align=\"left\">Cancer</td>\n<td align=\"left\">0.1</td>\n<td align=\"left\">0.0863</td>\n<td align=\"left\">0.00448</td>\n<td align=\"left\">0.130</td>\n<td align=\"left\">0.119</td>\n<td align=\"left\">0.0836</td>\n<td align=\"left\">0.176</td>\n<td align=\"left\">0.164</td>\n<td align=\"left\">0.182</td>\n</tr>\n<tr>\n<td align=\"left\">Dementia</td>\n<td align=\"left\">0.0159</td>\n<td align=\"left\">0.0102</td>\n<td align=\"left\">0.00156</td>\n<td align=\"left\">0.0226</td>\n<td align=\"left\">0.0194</td>\n<td align=\"left\">0.24</td>\n<td align=\"left\">0.0324</td>\n<td align=\"left\">0.164</td>\n<td align=\"left\">0.0214</td>\n</tr>\n<tr>\n<td align=\"left\">Diabetes</td>\n<td align=\"left\">0.109</td>\n<td align=\"left\">0.0937</td>\n<td align=\"left\">0.00275</td>\n<td align=\"left\">0.132</td>\n<td align=\"left\">0.128</td>\n<td align=\"left\">0.571</td>\n<td align=\"left\">0.164</td>\n<td align=\"left\">0.151</td>\n<td align=\"left\">0.125</td>\n</tr>\n<tr>\n<td align=\"left\">Heart disease</td>\n<td align=\"left\">0.220</td>\n<td align=\"left\">0.175</td>\n<td align=\"left\">0</td>\n<td align=\"left\">0.26</td>\n<td align=\"left\">0.222</td>\n<td align=\"left\">0</td>\n<td align=\"left\">0.328</td>\n<td align=\"left\">0.29</td>\n<td align=\"left\">0.00031</td>\n</tr>\n<tr>\n<td align=\"left\">Hypertension</td>\n<td align=\"left\">0.453</td>\n<td align=\"left\">0.448</td>\n<td align=\"left\">0.555</td>\n<td align=\"left\">0.491</td>\n<td align=\"left\">0.506</td>\n<td align=\"left\">0.115</td>\n<td align=\"left\">0.549</td>\n<td align=\"left\">0.538</td>\n<td align=\"left\">0.381</td>\n</tr>\n<tr>\n<td align=\"left\">Lung disease</td>\n<td align=\"left\">0.0836</td>\n<td align=\"left\">0.0719</td>\n<td align=\"left\">0.00989</td>\n<td align=\"left\">0.0957</td>\n<td align=\"left\">0.0863</td>\n<td align=\"left\">0.0857</td>\n<td align=\"left\">0.111</td>\n<td align=\"left\">0.0898</td>\n<td align=\"left\">0.00167</td>\n</tr>\n<tr>\n<td align=\"left\">Stroke</td>\n<td align=\"left\">0.0558</td>\n<td align=\"left\">0.0504</td>\n<td align=\"left\">0.156</td>\n<td align=\"left\">0.0667</td>\n<td align=\"left\">0.06743</td>\n<td align=\"left\">0.875</td>\n<td align=\"left\">0.082</td>\n<td align=\"left\">0.089</td>\n<td align=\"left\">0.289</td>\n</tr>\n</tbody>\n</table>"
+                                    ],
+                                    "title": "T-test results for health outcomes.",
+                                    "type": "table"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "A1-T3b",
+                                    "label": "Table A3",
+                                    "tables": [
+                                        "<table>\n<thead>\n<tr>\n<th align=\"left\">Variable</th>\n<th align=\"left\">FEM 3</th>\n<th align=\"left\">ELSA 3</th>\n<th align=\"left\">P value 3</th>\n<th align=\"left\">FEM 5</th>\n<th align=\"left\">ELSA 5</th>\n<th align=\"left\">P value 5</th>\n<th align=\"left\">FEM 8</th>\n<th align=\"left\">ELSA 8</th>\n<th align=\"left\">P value 8</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td align=\"left\">Employed</td>\n<td align=\"left\">0.284</td>\n<td align=\"left\">0.285</td>\n<td align=\"left\">0.906</td>\n<td align=\"left\">0.194</td>\n<td align=\"left\">0.179</td>\n<td align=\"left\">0.0412</td>\n<td align=\"left\">0.0809</td>\n<td align=\"left\">0.0842</td>\n<td align=\"left\">0.606</td>\n</tr>\n<tr>\n<td align=\"left\">Unemployed</td>\n<td align=\"left\">0.00102</td>\n<td align=\"left\">0.00662</td>\n<td align=\"left\">0.0132</td>\n<td align=\"left\">0.00519</td>\n<td align=\"left\">0.00675</td>\n<td align=\"left\">0.321</td>\n<td align=\"left\">0.00137</td>\n<td align=\"left\">0.00092</td>\n<td align=\"left\">0.529</td>\n</tr>\n<tr>\n<td align=\"left\">Retired/Disabled</td>\n<td align=\"left\">0.706</td>\n<td align=\"left\">0.707</td>\n<td align=\"left\">0.0.84</td>\n<td align=\"left\">0.801</td>\n<td align=\"left\">0.811</td>\n<td align=\"left\">0.167</td>\n<td align=\"left\">0.918</td>\n<td align=\"left\">0.912</td>\n<td align=\"left\">0.411</td>\n</tr>\n</tbody>\n</table>"
+                                    ],
+                                    "title": "t-test results for economic outcomes.",
+                                    "type": "table"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "footnotes": [
+                                        {
+                                            "id": "A1-T3e_FN1",
+                                            "label": "*",
+                                            "text": [
+                                                {
+                                                    "text": "ELSA only reports BMI information for even waves.",
+                                                    "type": "paragraph"
+                                                }
+                                            ]
+                                        }
+                                    ],
+                                    "id": "A1-T3c",
+                                    "label": "Table A3",
+                                    "tables": [
+                                        "<table>\n<thead>\n<tr>\n<th align=\"left\">Variable</th>\n<th align=\"left\">FEM 3</th>\n<th align=\"left\">ELSA 3</th>\n<th align=\"left\">P value 3</th>\n<th align=\"left\">FEM 5</th>\n<th align=\"left\">ELSA 5</th>\n<th align=\"left\">P value 5</th>\n<th align=\"left\">FEM 8</th>\n<th align=\"left\">ELSA 8</th>\n<th align=\"left\">P value 8</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td align=\"left\">BMI<a href=\"#A1-T3e_FN1\">*</a>\n</td>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\">28.4</td>\n<td align=\"left\">28.0</td>\n<td align=\"left\">0.0014</td>\n</tr>\n<tr>\n<td align=\"left\">Drinks Alcohol</td>\n<td align=\"left\">0.866</td>\n<td align=\"left\">0.874</td>\n<td align=\"left\">0.205</td>\n<td align=\"left\">0.859</td>\n<td align=\"left\">0.851</td>\n<td align=\"left\">0.239</td>\n<td align=\"left\">0.844</td>\n<td align=\"left\">0.839</td>\n<td align=\"left\">0.552</td>\n</tr>\n<tr>\n<td align=\"left\">Problem Drinker</td>\n<td align=\"left\">0.12</td>\n<td align=\"left\">0</td>\n<td align=\"left\">0</td>\n<td align=\"left\">0.122</td>\n<td align=\"left\">0.127</td>\n<td align=\"left\">0.487</td>\n<td align=\"left\">0.109</td>\n<td align=\"left\">0.113</td>\n<td align=\"left\">0.567</td>\n</tr>\n<tr>\n<td align=\"left\">Activity - Low</td>\n<td align=\"left\">0.0907</td>\n<td align=\"left\">0.101</td>\n<td align=\"left\">0.0426</td>\n<td align=\"left\">0.099</td>\n<td align=\"left\">0.13</td>\n<td align=\"left\">0</td>\n<td align=\"left\">0.112</td>\n<td align=\"left\">0.129</td>\n<td align=\"left\">0.0304</td>\n</tr>\n<tr>\n<td align=\"left\">Activity - Moderate</td>\n<td align=\"left\">0.164</td>\n<td align=\"left\">0.162</td>\n<td align=\"left\">0.739</td>\n<td align=\"left\">0.168</td>\n<td align=\"left\">0.181</td>\n<td align=\"left\">0.0775</td>\n<td align=\"left\">0.183</td>\n<td align=\"left\">0.201</td>\n<td align=\"left\">0.0508</td>\n</tr>\n<tr>\n<td align=\"left\">Activity - High</td>\n<td align=\"left\">0.745</td>\n<td align=\"left\">0.736</td>\n<td align=\"left\">0.231</td>\n<td align=\"left\">0.733</td>\n<td align=\"left\">0.689</td>\n<td align=\"left\">0</td>\n<td align=\"left\">0.706</td>\n<td align=\"left\">0.669</td>\n<td align=\"left\">0.00097</td>\n</tr>\n<tr>\n<td align=\"left\">Smoke Now</td>\n<td align=\"left\">0.132</td>\n<td align=\"left\">0.143</td>\n<td align=\"left\">0.0678</td>\n<td align=\"left\">0.106</td>\n<td align=\"left\">0.116</td>\n<td align=\"left\">0.106</td>\n<td align=\"left\">0.076</td>\n<td align=\"left\">0.0708</td>\n<td align=\"left\">0.391</td>\n</tr>\n<tr>\n<td align=\"left\">Smoke Ever</td>\n<td align=\"left\">0.637</td>\n<td align=\"left\">0.628</td>\n<td align=\"left\">0.279</td>\n<td align=\"left\">0.639</td>\n<td align=\"left\">0.648</td>\n<td align=\"left\">0.322</td>\n<td align=\"left\">0.638</td>\n<td align=\"left\">0.658</td>\n<td align=\"left\">0.0646</td>\n</tr>\n<tr>\n<td align=\"left\">Heavy Smoker</td>\n<td align=\"left\">0.0234</td>\n<td align=\"left\">0.0297</td>\n<td align=\"left\">0.906</td>\n<td align=\"left\">0.0214</td>\n<td align=\"left\">0.0229</td>\n<td align=\"left\">0.595</td>\n<td align=\"left\">0.0128</td>\n<td align=\"left\">0.0136</td>\n<td align=\"left\">0.761</td>\n</tr>\n</tbody>\n</table>"
+                                    ],
+                                    "title": "t-test results for risk behaviours.",
+                                    "type": "table"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "footnotes": [
+                                        {
+                                            "id": "A1-T3f_FN1",
+                                            "label": "*",
+                                            "text": [
+                                                {
+                                                    "text": "End of life interviews are only reporte for waves 2-6 (excluding wave 5). There is therefore no mortality informationfor waves 7 or 8.",
+                                                    "type": "paragraph"
+                                                }
+                                            ]
+                                        }
+                                    ],
+                                    "id": "A1-T3d",
+                                    "label": "Table A3",
+                                    "tables": [
+                                        "<table>\n<thead>\n<tr>\n<th align=\"left\">Variable</th>\n<th align=\"left\">FEM 3</th>\n<th align=\"left\">ELSA 3</th>\n<th align=\"left\">P value 3</th>\n<th align=\"left\">FEM 5</th>\n<th align=\"left\">ELSA 5</th>\n<th align=\"left\">P value 5</th>\n<th align=\"left\">FEM 8</th>\n<th align=\"left\">ELSA 8<a href=\"#A1-T3f_FN1\">*</a>\n</th>\n<th align=\"left\">P value 8</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td align=\"left\">Died</td>\n<td align=\"left\">0.0294</td>\n<td align=\"left\">0.0412</td>\n<td align=\"left\">0.00033</td>\n<td align=\"left\">0.0435</td>\n<td align=\"left\">0.0602</td>\n<td align=\"left\">0</td>\n<td align=\"left\">0.0596</td>\n<td align=\"left\">0</td>\n<td align=\"left\">0</td>\n</tr>\n</tbody>\n</table>"
+                                    ],
+                                    "title": "t-test results for mortality.",
+                                    "type": "table"
+                                }
+                            ],
+                            "type": "figure"
+                        }
+                    ],
+                    "id": "s10",
+                    "title": "BMI",
+                    "type": "section"
+                }
+            ],
+            "id": "A1",
+            "title": "Appendix"
+        }
+    ],
+    "acknowledgements": [
+        {
+            "text": "The English Longitudinal Study of Ageing was developed by a team of researchers based at University College London, NatCen Social Research, the Institute for Fiscal Studies, the University of Manchester and the University of East Anglia. The data were collected by NatCen Social Research. The funding is currently provided by the National Institute on Aging in the US, and a consortium of UK government departments coordinated by the National Institute for Health Research. Funding has also been received by the Economic and Social Research Council. This analysis uses data or information from the Harmonized English Longitudinal Study of Ageing dataset and Codebook, Version E as of April 2017 developed by the Gateway to Global Aging Data. The development of the Harmonized English Longitudinal Study of Ageing was funded by the National Institute on Aging (R01 AG030153, RC2 AG036619, 1R03AG043052). For more information, please refer to <a href=\"http://wwwg2agingorg\">www.g2aging.org</a>.",
+            "type": "paragraph"
+        }
+    ],
+    "-meta": {
+        "patched": true
+    },
+    "stage": "published"
+}
