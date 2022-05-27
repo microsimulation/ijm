@@ -1,0 +1,1241 @@
+{
+    "status": "vor",
+    "id": "00248",
+    "version": 1,
+    "type": "research-article",
+    "doi": "10.34196/ijm.00248",
+    "authorLine": "Anders Klevmarken",
+    "title": "Pooling Incomplete Data Sets",
+    "published": "2022-04-30T00:00:00Z",
+    "versionDate": "2022-04-30T00:00:00Z",
+    "statusDate": "2022-04-30T00:00:00Z",
+    "volume": 15,
+    "issue": 1,
+    "fpage": 31,
+    "lpage": 42,
+    "elocationId": "31-42",
+    "pdf": "http://web:8082/00248/ijm-00248.pdf",
+    "subjects": [
+        {
+            "id": "methodology",
+            "name": "Methodology"
+        }
+    ],
+    "abstract": {
+        "content": [
+            {
+                "text": "Data needed in micro studies are not always available from just a single source. In such cases it might be possible to combine two or more independent samples. The problem studied in this paper is to estimate a linear function between <i>y</i> and <i>x</i> from one sample of y-observations and another of x-observations. This is feasible if there are common variables <i>z</i> which can be used to predict <i>x</i>. A two-stage least squares estimator is propounded, which, for the model considered, is also an ML estimator. Simulation experiments show that it has a good relative efficiency and virtually no small sample bias.",
+                "type": "paragraph"
+            }
+        ]
+    },
+    "copyright": {
+        "license": "CC-BY-4.0",
+        "holder": "Anders Klevmarken",
+        "statement": "This article is distributed under the terms of the <a href=\"http://creativecommons.org/licenses/by/4.0/\">Creative Commons Attribution License</a>, which permits unrestricted use and redistribution provided that the original author and source are credited."
+    },
+    "authors": [
+        {
+            "affiliations": [
+                {
+                    "address": {
+                        "components": {
+                            "country": "Sweden",
+                            "locality": [
+                                "Gothenburg"
+                            ]
+                        },
+                        "formatted": [
+                            "Gothenburg",
+                            "Sweden"
+                        ]
+                    },
+                    "name": [
+                        "University of Gothenburg"
+                    ]
+                }
+            ],
+            "competingInterests": "No competing interests reported",
+            "emailAddresses": [
+                "anders@klevmarken.nu"
+            ],
+            "name": {
+                "index": "Klevmarken, Anders",
+                "preferred": "Anders Klevmarken"
+            },
+            "type": "person"
+        }
+    ],
+    "funding": {
+        "statement": "A grant from The Bank of Sweden Tercentenary Foundation is greatfully acknowledged."
+    },
+    "dataSets": {
+        "availability": [
+            {
+                "text": "Not applicable.",
+                "type": "paragraph"
+            }
+        ]
+    },
+    "body": [
+        {
+            "content": [
+                {
+                    "text": "Data needed in micro studies are not always available from just a single source. In such cases it might be possible to combine two or more independent samples. The problem studied in this paper is to estimate a linear function between <i>y</i> and <i>x</i> from one sample of y-observations and another of x-observations. This is feasible if there are common variables <i>z</i> which can be used to predict <i>x</i>. A two-stage least squares estimator is propounded, which, for the model considered, is also an ML estimator. Simulation experiments show that it has a good relative efficiency and virtually no small sample bias.",
+                    "type": "paragraph"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "Microdata, i.e. data on individuals, households or firms, have long been used in social science research, and their importance is increasing. Since human behavior sometimes calls for very complex explanations and since social experimentation is rarely a feasible approach, social scientists frequently work with complex models involving many variables in efforts to control for confounding effects. To estimate these models we do not only need large samples of microdata, but ideally we would also need to observe many aspects of behavior for <i>each</i> individual, household or firm.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Surveys are the primary source of microdata, but survey research is very expensive, and few researchers can afford new surveys. Contributing to the high costs are the increasing difficulties in many countries to gain the cooperation of the respondents. In particular, when many questions are asked and there is a heavy respondent burden, the respondents tend to economize their time. They have also become aware of the privacy issues. The public debate about the use of computers and the risks for invasion of privacy, which in some countries have resulted in data legislation, have made it even more difficult to make the respondents cooperate.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "As pointed out in <a href=\"#bib3\">Dalenius (1982)</a>, matrix sampling is a class of sampling schemes which may cope with these problems. Since with such a design only a sample of all variables is observed for each selected unit, the respondent burden and the risk for invasion of privacy are reduced. It is, however, obvious that multivariate analysis from such a sample might meet with difficulties.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "High costs and nonresponse problems also make us look for alternative data sources, i.e. already existing data files and administrative records. Frequently, however, we are unable to find all the variables needed in those files and records. If feasible, matching of two or more data sets might give us what we need. Matching is also much less expensive than a new survey. However, in most cases exact matching is not possible, either because there is no overlap, i.e. no individual, household or firm can be found in more than one data set, or there is no unique identification term, or the use of this term is prohibited in order to protect personal privacy. In Sweden, for instance, matching data on individuals falls under the Data Act and requires a permit from the National Data Inspection Board.<sup><a href=\"#fn1\">1</a></sup>",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "If neither a new complete data collection nor an exact matching of existing files are feasible solutions, to what extent is it then possible to use non-overlapping datasets? The answer to this question will in the general case depend on the intended analysis and in what sense the data are incomplete. This paper treats the problem of estimating a linear relation from two independent data sets, none of which includes all the relevant variables. Suppose, for instance, that we want to estimate a model according to which <i>y</i> depends on <i>x. y</i> and <i>x</i> are, however, not observed for the same units, but <i>y-</i> and x-observations are found in two independent samples.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "This is a hopeless situation unless something more is known about <i>y</i> and <i>x,</i> and there is some common information in both samples. Suppose a third variable, <i>z,</i> which could be used as a predictor of <i>x,</i> is observed in both samples. It is then possible to estimate the predictive relationship between <i>x</i> and <i>z</i> from one sample and use the estimates in the other sample to predict <i>x</i>. The relation between <i>y</i> and <i>x</i> is finally estimated on the basis of these predictions and observed y-values. This procedure requires model assumptions which make it possible to pool two (or more) samples. The properties of the estimates, of course, depend on the assumptions made, and the whole approach is useful only if these are not too constraining. As we shall see, it is possible to work within quite a general class of linear models.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "When invasion of privacy is a real issue or nonresponse a severe problem, a complete data collection might not be permissible or feasible. However, if good predictors can be found, each individual, household or firm would only need to contribute partial information, which would be less sensitive, and an analysis would still be feasible with the methods suggested in this paper.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Missing variables is not a new problem. In most textbooks of regression analysis and econometrics it is discussed as a specification error. In the applied literature various <i>ad hoc</i> approaches can be found. For instance, in the economic literature on compensating wage differentials, aggregate data on occupational characteristics such as accident rates and aggregate work environment data are matched with individuals on the basis of their occupation and industry. One example is given in <a href=\"#bib2\">Brown (1980)</a>. As we shall find, this is a special application of the prediction approach discussed below.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "An alternative approach is statistical matching (<a href=\"#bib10\">U.S. Department of Commerce, 1980</a>). The theoretical basis for statistical matching is still undeveloped, and it is also a very expensive approach (<a href=\"#bib1\">Barr et al. (1982)</a>, <a href=\"#bib8\">Paass (1982)</a>, <a href=\"#bib9\">Rodgers and DeVol, 1982</a>). The approach discussed in this paper has the advantages of being based on conventional statistical theory and of requiring no expensive matching of microdata.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "In Section 2 of the paper we review some results for a model with stochastically dependent equations. Since interdependent systems have mostly been used in connection with aggregate time-series, while microdata applications are less frequent, it might erroneously be believed that the approach suggested in this paper is only of minor interest in microstudies. However, the importance of this type of model is likely to increase in microstudies as well, when more longitudinal data become available and when ample data make it feasible to analyze joint decisions of microunits, e.g. joint household decisions about work, leisure, consumption and savings. Also, and more important, the estimation approach suggested is not only applicable to interdependent systems but to a much wider class of models. In Section 3 this approach will be used to estimate a linear regression model. One reason to discuss its application to an interdependent system first is that the \"predictors\" of the unobserved variables are in a natural way given by theory, which is not obviously the case with a regression model.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Section 4 presents some findings from a simulation study of the small sample properties of the estimator, and Section 5 gives some concluding remarks.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s2",
+                    "title": "1. Introduction",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "The estimation of one equation in an interdependent system of equations from two independent samples with missing variables was discussed in <a href=\"#bib5\">Klevmarken (1982)</a>. This equation was specified as",
+                            "type": "paragraph"
+                        },
+                        {
+                            "id": "E1",
+                            "label": "(1)",
+                            "mathml": "<math>\n<mstyle displaystyle=\"true\" scriptlevel=\"0\">\n<mrow>\n<mi>y</mi>\n<mo>=</mo>\n<msub>\n<mi>Y</mi>\n<mn>1</mn>\n</msub>\n<mi>\u03b2</mi>\n<mo>+</mo>\n<msub>\n<mi>X</mi>\n<mn>1</mn>\n</msub>\n<mi>\u03b3</mi>\n<mo>+</mo>\n<mi>u</mi>\n<mo>;</mo>\n</mrow>\n</mstyle>\n</math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "and it was part of the interdependent system,",
+                            "type": "paragraph"
+                        },
+                        {
+                            "id": "E2",
+                            "label": "(2a)",
+                            "mathml": "<math>\n<mstyle displaystyle=\"true\" scriptlevel=\"0\">\n<mrow>\n<mstyle displaystyle=\"true\" scriptlevel=\"0\">\n<mrow>\n<mrow>\n<mi mathvariant=\"normal\">Y</mi>\n<msup>\n<mi mathvariant=\"normal\">B</mi>\n<mo>\u2032</mo>\n</msup>\n<mo>+</mo>\n<mi mathvariant=\"normal\">X</mi>\n</mrow>\n<msup>\n<mi mathvariant=\"normal\">\u0393</mi>\n<mo>\u2032</mo>\n</msup>\n<mo>=</mo>\n<mrow>\n<mi mathvariant=\"normal\">U</mi>\n</mrow>\n<mo>;</mo>\n</mrow>\n</mstyle>\n</mrow>\n</mstyle>\n</math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "id": "E3",
+                            "label": "(2b,c)",
+                            "mathml": "<math>\n<mstyle displaystyle=\"true\" scriptlevel=\"0\">\n<mrow>\n<mi>E</mi>\n<mo stretchy=\"false\">(</mo>\n<mi>U</mi>\n<mo stretchy=\"false\">)</mo>\n<mo>=</mo>\n<mrow>\n<mi mathvariant=\"normal\">O</mi>\n</mrow>\n<mo>;</mo>\n<mtext>\u00a0</mtext>\n<mi>E</mi>\n<mo stretchy=\"false\">(</mo>\n<mrow>\n<msup>\n<mi mathvariant=\"normal\">U</mi>\n<mo>\u2032</mo>\n</msup>\n<mtext>\u00a0</mtext>\n<mi mathvariant=\"normal\">U</mi>\n</mrow>\n<mo stretchy=\"false\">)</mo>\n<mo>=</mo>\n<mrow>\n<mi>n</mi>\n</mrow>\n<mrow>\n<mi mathvariant=\"normal\">\u03a3</mi>\n</mrow>\n<mo>,</mo>\n</mrow>\n</mstyle>\n</math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "where <i>Yn\u00b7G</i> is a matrix of <i>n</i> observations on G endogenous variables,",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "<math id=\"inf1\"> <msub> <mrow> <mi>y</mi> </mrow> <mrow> <mi>n</mi> <mo>.</mo> <mn>1</mn> </mrow> </msub> </math> \u2009is a vector of the <i>n</i> observations on the endogenous variable explained by <a href=\"#E1\">(1)</a>,",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "<math id=\"inf2\"> <msub> <mrow> <mi>Y</mi> </mrow> <mrow> <mn>1</mn> <mo>,</mo> <mi>n</mi> <mo>.</mo> <mi>g</mi> </mrow> </msub> </math> \u2009is a matrix of the <i>n</i> observations on the g explanatory endogenous variables in <a href=\"#E1\">(1)</a>,",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "<math id=\"inf3\"> <msub> <mrow> <mi>X</mi> </mrow> <mrow> <mi>n</mi> <mo>.</mo> <mi>K</mi> </mrow> </msub> </math> \u2009is a matrix which includes all K exogenous variables, ,",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "<math id=\"inf4\"> <msub> <mrow> <mi>X</mi> </mrow> <mrow> <mn>1</mn> <mo>,</mo> <mi>n</mi> <mo>.</mo> <mi>k</mi> </mrow> </msub> </math> is a submatrix of X which includes the k exogenous variables in <a href=\"#E1\">(1)</a>,",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "<math id=\"inf5\"> <msub> <mrow> <mi mathvariant=\"normal\">U</mi> </mrow> <mrow> <mi mathvariant=\"normal\">n</mi> <mo>.</mo> <mi mathvariant=\"normal\">G</mi> </mrow> </msub> </math> \u2009is a matrix of stochastic disturbances,",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "<math id=\"inf6\"> <msub> <mrow> <mi> </mi> <mi> </mi> <mi>u</mi> </mrow> <mrow> <mi>n</mi> <mo>.</mo> <mn>1</mn> </mrow> </msub> </math> \u2009is the vector of stochastic disturbances of <a href=\"#E1\">(1)</a>, one of the columns of <i>U,</i>",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "<math id=\"inf7\"> <mstyle displaystyle=\"true\" scriptlevel=\"0\"> <mrow> <msub> <mi>B</mi> <mrow> <mi>G</mi> <mo>.</mo> <mi>G</mi> </mrow> </msub> </mrow> </mstyle> </math> \u2009and \u0393<i> <sub>G.K</sub> </i> are parameter matrices,",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "<math id=\"inf8\"> <msub> <mrow> <mi>\u03b2</mi> </mrow> <mrow> <mi>g</mi> <mo>.</mo> <mn>1</mn> </mrow> </msub> </math> \u2009and  <math id=\"inf9\"> <msub> <mrow> <mi>\u03b3</mi> </mrow> <mrow> <mi>k</mi> <mo>.</mo> <mn>1</mn> </mrow> </msub> </math>  are vectors of the nonzero parameters in <a href=\"#E1\">(1)</a>,",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "<math id=\"inf10\"> <msub> <mrow> <mi mathvariant=\"normal\">\u03a3</mi> </mrow> <mrow> <mi>G</mi> <mo>.</mo> <mi>G</mi> </mrow> </msub> </math> \u2009is an unknown positive definite moment matrix.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "It is assumed that <a href=\"#E1\">(1)</a> is identified. The reduced form of the complete system is,",
+                            "type": "paragraph"
+                        },
+                        {
+                            "id": "E4",
+                            "label": "(3a)",
+                            "mathml": "<math>\n<mstyle displaystyle=\"true\" scriptlevel=\"0\">\n<mrow>\n<mi>Y</mi>\n<mo>=</mo>\n<mi>X</mi>\n<msup>\n<mi>\u03c0</mi>\n<mo>\u2032</mo>\n</msup>\n<mo>+</mo>\n<mi>V</mi>\n<mo>;</mo>\n</mrow>\n</mstyle>\n</math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "id": "E5",
+                            "label": "(3b)",
+                            "mathml": "<math>\n<mstyle displaystyle=\"true\" scriptlevel=\"0\">\n<mrow>\n<mrow>\n<mi mathvariant=\"normal\">w</mi>\n<mi mathvariant=\"normal\">h</mi>\n<mi mathvariant=\"normal\">e</mi>\n<mi mathvariant=\"normal\">r</mi>\n<mi mathvariant=\"normal\">e</mi>\n</mrow>\n<mtext>\u00a0</mtext>\n<mi>\u03c0</mi>\n<mo>=</mo>\n<mo>\u2212</mo>\n<msup>\n<mi>B</mi>\n<mrow>\n<mo>\u2212</mo>\n<mn>1</mn>\n</mrow>\n</msup>\n<mi mathvariant=\"normal\">\u0393</mi>\n<mo>;</mo>\n</mrow>\n</mstyle>\n</math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "id": "E6",
+                            "label": "(3c)",
+                            "mathml": "<math>\n<mstyle displaystyle=\"true\" scriptlevel=\"0\">\n<mrow>\n<mrow>\n<mi mathvariant=\"normal\">a</mi>\n<mi mathvariant=\"normal\">n</mi>\n<mi mathvariant=\"normal\">d</mi>\n</mrow>\n<mtext>\u00a0</mtext>\n<mi>V</mi>\n<mo>=</mo>\n<mi>U</mi>\n<mo stretchy=\"false\">(</mo>\n<msup>\n<mi>B</mi>\n<mo>\u2032</mo>\n</msup>\n<msup>\n<mo stretchy=\"false\">)</mo>\n<mrow>\n<mo>\u2212</mo>\n<mn>1</mn>\n</mrow>\n</msup>\n</mrow>\n</mstyle>\n</math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "The part of the reduced form corresponding to the endogenous variables to the right in <a href=\"#E1\">equation (1)</a> is,",
+                            "type": "paragraph"
+                        },
+                        {
+                            "id": "E7",
+                            "label": "(4)",
+                            "mathml": "<math>\n<mstyle displaystyle=\"true\" scriptlevel=\"0\">\n<mrow>\n<msub>\n<mi>Y</mi>\n<mn>1</mn>\n</msub>\n<mo>=</mo>\n<mi>X</mi>\n<msup>\n<mrow>\n<msub>\n<mi>\u03c0</mi>\n<mn>1</mn>\n</msub>\n</mrow>\n<mo>\u2032</mo>\n</msup>\n<mo>+</mo>\n<msub>\n<mi>V</mi>\n<mn>1</mn>\n</msub>\n<mo>;</mo>\n</mrow>\n</mstyle>\n</math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "where  <math id=\"inf11\"> <mi>\u03c0</mi> </math>  <sub>1</sub> and <i>V<sub>1</sub> </i> are the corresponding <i>g\u00b7 K</i> and <i>n\u00b7g</i> submatrices of  <math id=\"inf12\"> <mi>\u03c0</mi> </math>  and <i>V,</i> respectively.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "For later use it is also convenient to introduce an <i>n\u00b7(K-k</i>) matrix X<sub>2</sub> defined by,",
+                            "type": "paragraph"
+                        },
+                        {
+                            "id": "E8",
+                            "label": "(5)",
+                            "mathml": "<math>\n<mstyle displaystyle=\"true\" scriptlevel=\"0\">\n<mrow>\n<mi>X</mi>\n<mo>=</mo>\n<mrow>\n<mo>{</mo>\n<mrow>\n<msub>\n<mi>X</mi>\n<mn>1</mn>\n</msub>\n<mrow>\n<mo stretchy=\"false\">|</mo>\n</mrow>\n<msub>\n<mi>X</mi>\n<mn>2</mn>\n</msub>\n</mrow>\n<mo>}</mo>\n</mrow>\n<mo>.</mo>\n</mrow>\n</mstyle>\n</math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "Suppose now that data are not available in the form of one complete sample, but that there are two samples, <i>A</i> and <i>B,</i> none of which contains all the variables. Assume that the data come in the following form,",
+                            "type": "paragraph"
+                        },
+                        {
+                            "mathml": "<math>\n<mstyle displaystyle=\"true\" scriptlevel=\"0\">\n<mrow>\n<mrow>\n<mi mathvariant=\"normal\">S</mi>\n<mi mathvariant=\"normal\">a</mi>\n<mi mathvariant=\"normal\">m</mi>\n<mi mathvariant=\"normal\">p</mi>\n<mi mathvariant=\"normal\">l</mi>\n<mi mathvariant=\"normal\">e</mi>\n<mtext>\u00a0</mtext>\n<mi mathvariant=\"normal\">A</mi>\n<mo>:</mo>\n</mrow>\n<mtext>\u00a0</mtext>\n<msubsup>\n<mi>y</mi>\n<mrow>\n<msub>\n<mi>n</mi>\n<mrow>\n<mi>A</mi>\n<mn>.1</mn>\n</mrow>\n</msub>\n</mrow>\n<mrow>\n<mi>A</mi>\n</mrow>\n</msubsup>\n<mo>;</mo>\n<msubsup>\n<mi>X</mi>\n<mrow>\n<msub>\n<mi>n</mi>\n<mrow>\n<mi>A</mi>\n<mo>.</mo>\n<mi>K</mi>\n</mrow>\n</msub>\n</mrow>\n<mrow>\n<mi>A</mi>\n</mrow>\n</msubsup>\n</mrow>\n</mstyle>\n</math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "mathml": "<math>\n<mstyle displaystyle=\"true\" scriptlevel=\"0\">\n<mrow>\n<mrow>\n<mi mathvariant=\"normal\">S</mi>\n<mi mathvariant=\"normal\">a</mi>\n<mi mathvariant=\"normal\">m</mi>\n<mi mathvariant=\"normal\">p</mi>\n<mi mathvariant=\"normal\">l</mi>\n<mi mathvariant=\"normal\">e</mi>\n<mtext>\u00a0</mtext>\n<mi mathvariant=\"normal\">B</mi>\n<mo>:</mo>\n</mrow>\n<mtext>\u00a0</mtext>\n<msubsup>\n<mi>Y</mi>\n<mrow>\n<mn>1</mn>\n<mo>,</mo>\n<mo stretchy=\"false\">(</mo>\n<msub>\n<mi>n</mi>\n<mrow>\n<mi>B</mi>\n<mo>.</mo>\n<mi>K</mi>\n</mrow>\n</msub>\n<mo stretchy=\"false\">)</mo>\n</mrow>\n<mrow>\n<mi>B</mi>\n</mrow>\n</msubsup>\n<mo>;</mo>\n<msubsup>\n<mi>X</mi>\n<mrow>\n<msub>\n<mi>n</mi>\n<mrow>\n<mi>B</mi>\n<mo>.</mo>\n<mi>K</mi>\n</mrow>\n</msub>\n</mrow>\n<mrow>\n<mi>B</mi>\n</mrow>\n</msubsup>\n</mrow>\n</mstyle>\n</math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "<math id=\"inf13\"> <msub> <mrow> <mi>n</mi> </mrow> <mrow> <mi>A</mi> </mrow> </msub> </math> \u2009and  <math id=\"inf14\"> <msub> <mrow> <mi>n</mi> </mrow> <mrow> <mi>B</mi> </mrow> </msub> </math>  are the two sample sizes. They are not necessarily equal. Since <a href=\"#E3\">(2c)</a> implies that there is no residual correlation between observational units, the two samples can be treated as independent random samples.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "An example to which this problem specification might be applicable is the joint estimation of demand functions for consumer goods and household time-use functions, both derived from a household production type of model. Consumer expenditure data could be obtained from a household expenditure study, while time-use data would have to be taken from a separate time-use survey. There are at present practically no surveys which include both kinds of data. Both kinds of surveys would, however, give income data and other characteristics of the household.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "<a href=\"#E1\">Eq. (1)</a> cannot be estimated from sample <i>A</i> alone, since the Y<sub>1</sub>-variables are missing, but, if <i>g</i>  <math id=\"inf15\"> <mo>\u2264</mo> </math>  <i>K-k,</i> the two samples can be combined in the following two-stage procedure:",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "I. Estimate the reduced form <a href=\"#E7\">equations (4)</a> from sample <i>B</i> by OLS, which gives the estimates  <math id=\"inf16\"> <mstyle displaystyle=\"true\" scriptlevel=\"0\"> <mrow> <mover> <msubsup> <mi>\u03c0</mi> <mrow> <mn>1</mn> </mrow> <mrow> <mi>B</mi> </mrow> </msubsup> <mo>\u2322</mo> </mover> </mrow> </mstyle> </math> . Use these estimates to predict Y<sub>1</sub> in sample <i>A,</i> i.e.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "id": "E11",
+                            "label": "(6)",
+                            "mathml": "<math>\n<mstyle displaystyle=\"true\" scriptlevel=\"0\">\n<mrow>\n<msubsup>\n<mrow>\n<mover>\n<mi>Y</mi>\n<mo stretchy=\"false\">^</mo>\n</mover>\n</mrow>\n<mrow>\n<mn>1</mn>\n</mrow>\n<mrow>\n<mi>A</mi>\n</mrow>\n</msubsup>\n<mo>=</mo>\n<msup>\n<mi>X</mi>\n<mrow>\n<mi>A</mi>\n</mrow>\n</msup>\n<mo stretchy=\"false\">(</mo>\n<msubsup>\n<mrow>\n<mover>\n<mi>\u03c0</mi>\n<mo stretchy=\"false\">^</mo>\n</mover>\n</mrow>\n<mrow>\n<mn>1</mn>\n</mrow>\n<mrow>\n<mi>B</mi>\n</mrow>\n</msubsup>\n<msup>\n<mo stretchy=\"false\">)</mo>\n<mo>\u2032</mo>\n</msup>\n<mo>;</mo>\n</mrow>\n</mstyle>\n</math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "II. Estimate by OLS from sample <i>A</i>",
+                            "type": "paragraph"
+                        },
+                        {
+                            "id": "E12",
+                            "label": "(7)",
+                            "mathml": "<math>\n<mstyle displaystyle=\"true\" scriptlevel=\"0\">\n<mrow>\n<msup>\n<mi>y</mi>\n<mrow>\n<mi>A</mi>\n</mrow>\n</msup>\n<mo>=</mo>\n<msubsup>\n<mrow>\n<mover>\n<mi>Y</mi>\n<mo stretchy=\"false\">^</mo>\n</mover>\n</mrow>\n<mrow>\n<mn>1</mn>\n</mrow>\n<mrow>\n<mi>A</mi>\n</mrow>\n</msubsup>\n<mi>\u03b2</mi>\n<mo>+</mo>\n<msubsup>\n<mi>X</mi>\n<mrow>\n<mn>1</mn>\n</mrow>\n<mrow>\n<mi>A</mi>\n</mrow>\n</msubsup>\n<mi>\u03b3</mi>\n<mo>+</mo>\n<mo stretchy=\"false\">(</mo>\n<msup>\n<mi>u</mi>\n<mi>A</mi>\n</msup>\n<mo>+</mo>\n<msubsup>\n<mrow>\n<mover>\n<mi>V</mi>\n<mo stretchy=\"false\">~</mo>\n</mover>\n</mrow>\n<mn>1</mn>\n<mi>A</mi>\n</msubsup>\n<mi>\u03b2</mi>\n<mo stretchy=\"false\">)</mo>\n<mo>;</mo>\n</mrow>\n</mstyle>\n</math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "where  <math id=\"inf17\"> <mstyle displaystyle=\"true\" scriptlevel=\"0\"> <mrow> <msubsup> <mrow> <mover> <mi>V</mi> <mo stretchy=\"false\">~</mo> </mover> </mrow> <mrow> <mn>1</mn> </mrow> <mrow> <mi>A</mi> </mrow> </msubsup> <mo>=</mo> <msubsup> <mi>Y</mi> <mrow> <mn>1</mn> </mrow> <mrow> <mi>A</mi> </mrow> </msubsup> <mo>\u2212</mo> <msubsup> <mrow> <mover> <mi>Y</mi> <mo stretchy=\"false\">^</mo> </mover> </mrow> <mrow> <mn>1</mn> </mrow> <mrow> <mi>A</mi> </mrow> </msubsup> </mrow> </mstyle> </math> .",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Note that  <math id=\"inf18\"> <mstyle displaystyle=\"true\" scriptlevel=\"0\"> <mrow> <msubsup> <mrow> <mover> <mi>V</mi> <mo stretchy=\"false\">~</mo> </mover> </mrow> <mrow> <mn>1</mn> </mrow> <mrow> <mi>A</mi> </mrow> </msubsup> </mrow> </mstyle> </math>  is not the vector of least squares prediction errors from sample <i>A</i> and thus not necessarily orthogonal to <i>X<sup>A</sup> </i>.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "With the following notation",
+                            "type": "paragraph"
+                        },
+                        {
+                            "mathml": "<math>\n<mstyle displaystyle=\"true\" scriptlevel=\"0\">\n<mrow>\n<msup>\n<mi mathvariant=\"normal\">\u2202</mi>\n<mo>\u2032</mo>\n</msup>\n<mo>=</mo>\n<msub>\n<mrow>\n<mo>{</mo>\n<mrow>\n<msup>\n<mi>\u03b2</mi>\n<mo>\u2032</mo>\n</msup>\n<mrow>\n<mo stretchy=\"false\">|</mo>\n</mrow>\n<msup>\n<mi>\u03b3</mi>\n<mo>\u2032</mo>\n</msup>\n</mrow>\n<mo>}</mo>\n</mrow>\n<mrow>\n<mn>1.</mn>\n<mo stretchy=\"false\">(</mo>\n<mi>g</mi>\n<mo>+</mo>\n<mi>k</mi>\n<mo stretchy=\"false\">)</mo>\n</mrow>\n</msub>\n</mrow>\n</mstyle>\n</math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "mathml": "<math>\n<mstyle displaystyle=\"true\" scriptlevel=\"0\">\n<mrow>\n<mi>Z</mi>\n<mo>=</mo>\n<msub>\n<mrow>\n<mo>{</mo>\n<mrow>\n<mrow>\n<mover>\n<msubsup>\n<mi>Y</mi>\n<mn>1</mn>\n<mi>A</mi>\n</msubsup>\n<mo stretchy=\"false\">^</mo>\n</mover>\n</mrow>\n<mrow>\n<mo stretchy=\"false\">|</mo>\n</mrow>\n<msubsup>\n<mi>X</mi>\n<mn>1</mn>\n<mi>A</mi>\n</msubsup>\n</mrow>\n<mo>}</mo>\n</mrow>\n<mrow>\n<msub>\n<mi>n</mi>\n<mrow>\n<mi>A</mi>\n</mrow>\n</msub>\n<mo>.</mo>\n<mo stretchy=\"false\">(</mo>\n<mi>g</mi>\n<mo>+</mo>\n<mi>k</mi>\n<mo stretchy=\"false\">)</mo>\n</mrow>\n</msub>\n<mo>;</mo>\n</mrow>\n</mstyle>\n</math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "<a href=\"#E12\">(7)</a> becomes",
+                            "type": "paragraph"
+                        },
+                        {
+                            "id": "E15",
+                            "label": "(8)",
+                            "mathml": "<math>\n<mstyle displaystyle=\"true\" scriptlevel=\"0\">\n<mrow>\n<msup>\n<mi>y</mi>\n<mi>A</mi>\n</msup>\n<mo>=</mo>\n<mi>Z</mi>\n<mi>\u03b4</mi>\n<mo>+</mo>\n<mo stretchy=\"false\">(</mo>\n<msup>\n<mi>u</mi>\n<mi>A</mi>\n</msup>\n<mo>+</mo>\n<msubsup>\n<mrow>\n<mover>\n<mi>V</mi>\n<mo stretchy=\"false\">~</mo>\n</mover>\n</mrow>\n<mn>1</mn>\n<mi>A</mi>\n</msubsup>\n<mi>\u03b2</mi>\n<mo stretchy=\"false\">)</mo>\n<mo>;</mo>\n</mrow>\n</mstyle>\n</math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "and the estimator of  <math id=\"inf19\"> <mi>\u03b4</mi> </math>  is,",
+                            "type": "paragraph"
+                        },
+                        {
+                            "id": "E16",
+                            "label": "(9)",
+                            "mathml": "<math>\n<mstyle displaystyle=\"true\" scriptlevel=\"0\">\n<mrow>\n<mrow>\n<mover>\n<mi>\u03b4</mi>\n<mo stretchy=\"false\">^</mo>\n</mover>\n</mrow>\n<mo>=</mo>\n<mo stretchy=\"false\">(</mo>\n<msup>\n<mi>Z</mi>\n<mo>\u2032</mo>\n</msup>\n<mi>Z</mi>\n<msup>\n<mo stretchy=\"false\">)</mo>\n<mrow>\n<mo>\u2212</mo>\n<mn>1</mn>\n</mrow>\n</msup>\n<msup>\n<mi>Z</mi>\n<mo>\u2032</mo>\n</msup>\n<msup>\n<mi>y</mi>\n<mi>A</mi>\n</msup>\n<mo>;</mo>\n</mrow>\n</mstyle>\n</math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "If the two samples would coincide,  <math id=\"inf20\"> <mover accent=\"true\"> <mrow> <mi>\u03b4</mi> </mrow> <mo>^</mo> </mover> </math>  would be the usual TSLS estimator. In <a href=\"#bib5\">Klevmarken (1982)</a> it was shown that the estimator  <math id=\"inf21\"> <mover accent=\"true\"> <mrow> <mi>\u03b4</mi> </mrow> <mo>^</mo> </mover> </math>  is biased but consistent. The following asymptotic properties can also be proved.<sup><a href=\"#fn2\">2</a></sup>",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "If <i>n<sub>8</sub>=cn<sub>A</sub> ,</i> where c&gt;0 is an arbitrary finite constant, and if (<i>1/n<sub>A</sub>) (X<sup>A</sup>\u2019X<sup>A</sup> </i>) and (<i>1/n<sub>B</sub>) (X<sup>B</sup>\u2019X<sup>B</sup> </i>) both tend to finite non-singular limits when <i>n<sub>A</sub> </i> and <i>n<sub>B</sub> </i> tend to infinity, and if the rows of the error matrix <i>U</i> are stochastically independent, then  <math id=\"inf22\"> <mstyle displaystyle=\"true\" scriptlevel=\"0\"> <mrow> <msqrt> <msub> <mi>n</mi> <mrow> <mi>A</mi> </mrow> </msub> <mtext>\u00a0</mtext> <mo stretchy=\"false\">(</mo> <mrow> <mover> <mi>\u03b4</mi> <mo stretchy=\"false\">^</mo> </mover> </mrow> <mo>\u2212</mo> <mi>\u03b4</mi> <mo stretchy=\"false\">)</mo> </msqrt> </mrow> </mstyle> </math>  asymptotically follows a normal distribution with zero mean vector and co\u00ad-variance matrix.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "mathml": "<math>\n<mstyle displaystyle=\"true\" scriptlevel=\"0\">\n<mrow>\n<mo stretchy=\"false\">(</mo>\n<msub>\n<mi>\u03c3</mi>\n<mrow>\n<mn>11</mn>\n</mrow>\n</msub>\n<mo>+</mo>\n<mn>2</mn>\n<msubsup>\n<mi>\u03c3</mi>\n<mn>1</mn>\n<mo>\u2032</mo>\n</msubsup>\n<msup>\n<mi>B</mi>\n<mo>\u2217</mo>\n</msup>\n<mi>\u03b2</mi>\n<mo>+</mo>\n<mn>2</mn>\n<msup>\n<mi>\u03b2</mi>\n<mo>\u2032</mo>\n</msup>\n<msup>\n<mi>B</mi>\n<mrow>\n<mo>\u2217</mo>\n</mrow>\n</msup>\n<mrow>\n<mo>\u2032</mo>\n</mrow>\n<mi mathvariant=\"normal\">\u03a3</mi>\n<msup>\n<mi>B</mi>\n<mrow>\n<mo>\u2217</mo>\n</mrow>\n</msup>\n<mi>\u03b2</mi>\n<mo stretchy=\"false\">)</mo>\n<msup>\n<mi>Q</mi>\n<mrow>\n<mo>\u2212</mo>\n<mn>1</mn>\n</mrow>\n</msup>\n</mrow>\n</mstyle>\n</math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "<math id=\"inf23\"> <msub> <mrow> <mi>\u03c3</mi> </mrow> <mrow> <mn>1</mn> </mrow> </msub> </math> is the first column of the matrix  <math id=\"inf24\"> <mi mathvariant=\"normal\">\u03a3</mi> </math> . The first element of this vector is  <math id=\"inf25\"> <msub> <mrow> <mi>\u03c3</mi> </mrow> <mrow> <mn>11</mn> </mrow> </msub> </math>  and the other elements are the covariances between the error term in the first equation and those in the other equations. <i>B*</i> is a matrix of <i>g</i> columns from (<i>B\u2019)<sup>-1</sup> </i> such that",
+                            "type": "paragraph"
+                        },
+                        {
+                            "mathml": "<math>\n<mstyle displaystyle=\"true\" scriptlevel=\"0\">\n<mrow>\n<msub>\n<mi>V</mi>\n<mn>1</mn>\n</msub>\n<mo>=</mo>\n<mi>U</mi>\n<msup>\n<mi>B</mi>\n<mo>\u2217</mo>\n</msup>\n<mo>.</mo>\n</mrow>\n</mstyle>\n</math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "<i>Q,</i> a finite non-singular matrix, is the limit to which (1/n<sub>A</sub>)(Z\u2019Z) tends in probability when <i>n<sub>A</sub> </i> tends to infinity.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The asymptotic moment matrix of the ordinary TSLS estimator based on a complete <i>A-</i> sample is  <math id=\"inf26\"> <msub> <mrow> <mi>\u03c3</mi> </mrow> <mrow> <mn>11</mn> </mrow> </msub> <msup> <mrow> <mi>Q</mi> </mrow> <mrow> <mo>-</mo> <mn>1</mn> </mrow> </msup> </math> . As shown in <a href=\"#bib5\">Klevmarken (1982)</a>, it is possible to find cases for which the asymptotic variance of  <math id=\"inf27\"> <mover accent=\"true\"> <mrow> <mi>\u03b4</mi> </mrow> <mo>^</mo> </mover> </math>  is smaller than the asymptotic variance of the ordinary TSLS estimator.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "As a preliminary to the next section, suppose that sample <i>A</i> does not only lack the Y<sub>1</sub>-observations but also all observations on one or more of the X<sub>1</sub>-variables. Could we then use the information in sample <i>B</i> to predict X<sub>1</sub> in <i>A?</i> Since X<sub>1</sub> by definition is exogenous, there is no theoretical justification for predicting X<sub>1</sub> within the present model. Additional assumptions about X<sub>1</sub> are needed. This problem and the nature of the new assumptions are, however, not particular to a model of interdependent equations, and could more conveniently be discussed within the framework of an ordinary regression model.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s3",
+                    "title": "2. Estimation of an interdependent linear model",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "As above, we assume that there are two independently drawn samples, <i>A</i> and <i>B</i>. These now include the following variables and observations,",
+                            "type": "paragraph"
+                        },
+                        {
+                            "mathml": "<math>\n<mstyle displaystyle=\"true\" scriptlevel=\"0\">\n<mrow>\n<mrow>\n<mi mathvariant=\"normal\">S</mi>\n<mi mathvariant=\"normal\">a</mi>\n<mi mathvariant=\"normal\">m</mi>\n<mi mathvariant=\"normal\">p</mi>\n<mi mathvariant=\"normal\">l</mi>\n<mi mathvariant=\"normal\">e</mi>\n<mtext>\u00a0</mtext>\n<mi mathvariant=\"normal\">A</mi>\n<mo>:</mo>\n</mrow>\n<msubsup>\n<mi>y</mi>\n<mrow>\n<mo stretchy=\"false\">(</mo>\n<msub>\n<mi>n</mi>\n<mi>A</mi>\n</msub>\n<mn>.1</mn>\n<mo stretchy=\"false\">)</mo>\n</mrow>\n<mi>A</mi>\n</msubsup>\n<mtext>\u00a0\u00a0</mtext>\n<msubsup>\n<mi>X</mi>\n<mrow>\n<mn>2</mn>\n<mrow>\n<mo stretchy=\"false\">(</mo>\n<msub>\n<mi>n</mi>\n<mi>A</mi>\n</msub>\n<mo>.</mo>\n<msub>\n<mi>k</mi>\n<mn>2</mn>\n</msub>\n<mo stretchy=\"false\">)</mo>\n</mrow>\n</mrow>\n<mrow>\n<mi>A</mi>\n</mrow>\n</msubsup>\n</mrow>\n</mstyle>\n</math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "mathml": "<math>\n<mstyle displaystyle=\"true\" scriptlevel=\"0\">\n<mrow>\n<mrow>\n<mi mathvariant=\"normal\">S</mi>\n<mi mathvariant=\"normal\">a</mi>\n<mi mathvariant=\"normal\">m</mi>\n<mi mathvariant=\"normal\">p</mi>\n<mi mathvariant=\"normal\">l</mi>\n<mi mathvariant=\"normal\">e</mi>\n<mtext>\u00a0</mtext>\n<mi mathvariant=\"normal\">B</mi>\n<mo>:</mo>\n</mrow>\n<mtext>\u00a0</mtext>\n<msubsup>\n<mi>X</mi>\n<mrow>\n<mn>1</mn>\n<mrow>\n<mo stretchy=\"false\">(</mo>\n<msub>\n<mi>n</mi>\n<mi>B</mi>\n</msub>\n<mo>.</mo>\n<msub>\n<mi>k</mi>\n<mn>1</mn>\n</msub>\n<mo stretchy=\"false\">)</mo>\n</mrow>\n</mrow>\n<mi>B</mi>\n</msubsup>\n<mtext>\u00a0</mtext>\n<msubsup>\n<mi>X</mi>\n<mrow>\n<mn>2</mn>\n<mrow>\n<mo stretchy=\"false\">(</mo>\n<msub>\n<mi>n</mi>\n<mi>B</mi>\n</msub>\n<mo>.</mo>\n<msub>\n<mi>k</mi>\n<mn>2</mn>\n</msub>\n<mo stretchy=\"false\">)</mo>\n</mrow>\n</mrow>\n<mi>B</mi>\n</msubsup>\n<mo>.</mo>\n</mrow>\n</mstyle>\n</math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "The two samples will be used to estimate the model,",
+                            "type": "paragraph"
+                        },
+                        {
+                            "id": "E21",
+                            "label": "(3.1a,b)",
+                            "mathml": "<math>\n<mstyle displaystyle=\"true\" scriptlevel=\"0\">\n<mrow>\n<mi>y</mi>\n<mo>=</mo>\n<msub>\n<mi>X</mi>\n<mn>1</mn>\n</msub>\n<mi>\u03b3</mi>\n<mo>+</mo>\n<mi>u</mi>\n<mo>;</mo>\n<mtext>\u00a0</mtext>\n<mi>u</mi>\n<mo>\u223c</mo>\n<mi>N</mi>\n<mo stretchy=\"false\">(</mo>\n<mn>0</mn>\n<mo>,</mo>\n<msubsup>\n<mi>\u03c3</mi>\n<mi>u</mi>\n<mn>2</mn>\n</msubsup>\n<mi>I</mi>\n<mo stretchy=\"false\">)</mo>\n<mo>;</mo>\n</mrow>\n</mstyle>\n</math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "where  <math id=\"inf28\"> <mi>\u03b3</mi> </math>  is an unknown parameter vector, and  <math id=\"inf29\"> <msub> <mrow> <mi>X</mi> </mrow> <mrow> <mn>1</mn> </mrow> </msub> </math>  is assumed to be a matrix of k<sub>1</sub> stochastic variables, which depends linearly on X<sub>2</sub>.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "id": "E22",
+                            "label": "(3.2a)",
+                            "mathml": "<math>\n<mstyle displaystyle=\"true\" scriptlevel=\"0\">\n<mrow>\n<mrow>\n<msub>\n<mi mathvariant=\"normal\">X</mi>\n<mn>1</mn>\n</msub>\n<mo>=</mo>\n<msub>\n<mi mathvariant=\"normal\">X</mi>\n<mn>2</mn>\n</msub>\n<mi mathvariant=\"normal\">R</mi>\n<mo>+</mo>\n</mrow>\n<mi>\u03f5</mi>\n<mo>;</mo>\n</mrow>\n</mstyle>\n</math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "id": "E23",
+                            "label": "(3.2b)",
+                            "mathml": "<math>\n<mstyle displaystyle=\"true\" scriptlevel=\"0\">\n<mrow>\n<mi>\u03f5</mi>\n<mo>=</mo>\n<mrow>\n<mo>{</mo>\n<mrow>\n<msub>\n<mi>\u03f5</mi>\n<mn>1</mn>\n</msub>\n<mo>,</mo>\n<mo>.</mo>\n<mo>.</mo>\n<mo>.</mo>\n<mo>.</mo>\n<mo>,</mo>\n<msub>\n<mi>\u03f5</mi>\n<mrow>\n<msub>\n<mi>k</mi>\n<mn>1</mn>\n</msub>\n</mrow>\n</msub>\n</mrow>\n<mo>}</mo>\n</mrow>\n</mrow>\n</mstyle>\n</math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "id": "E24",
+                            "label": "(3.2c)",
+                            "mathml": "<math>\n<mstyle displaystyle=\"true\" scriptlevel=\"0\">\n<mrow>\n<msub>\n<mi>\u03f5</mi>\n<mi>j</mi>\n</msub>\n<mo>\u223c</mo>\n<mi>N</mi>\n<mo stretchy=\"false\">(</mo>\n<mn>0</mn>\n<mo>,</mo>\n<msubsup>\n<mi>\u03c3</mi>\n<mi>j</mi>\n<mn>2</mn>\n</msubsup>\n<mi>I</mi>\n<mo stretchy=\"false\">)</mo>\n<mo>;</mo>\n</mrow>\n</mstyle>\n</math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "id": "E25",
+                            "label": "(3.2d)",
+                            "mathml": "<math>\n<mstyle displaystyle=\"true\" scriptlevel=\"0\">\n<mrow>\n<mi>E</mi>\n<mo stretchy=\"false\">(</mo>\n<msub>\n<mi>\u03f5</mi>\n<mi>i</mi>\n</msub>\n<msub>\n<mi>\u03f5</mi>\n<mi>j</mi>\n</msub>\n<mo stretchy=\"false\">)</mo>\n<mo>=</mo>\n<mn>0</mn>\n<mtext>\u00a0</mtext>\n<mi mathvariant=\"normal\">\u2200</mi>\n<mtext>\u00a0</mtext>\n<mi>i</mi>\n<mo>\u2260</mo>\n<mi>j</mi>\n<mo>;</mo>\n</mrow>\n</mstyle>\n</math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "<i>R</i> is a parameter matrix. <i>X<sub>2</sub> </i> is treated as a matrix of non-stochastic variables. It is also assumed that there are at least as many predictors as predictands, i.e.  <math id=\"inf30\"> <mstyle displaystyle=\"true\" scriptlevel=\"0\"> <mrow> <msub> <mi>k</mi> <mn>2</mn> </msub> <mo>\u2265</mo> <msub> <mi>k</mi> <mn>1</mn> </msub> </mrow> </mstyle> </math> . For the two samples we thus obtain the following three relations,",
+                            "type": "paragraph"
+                        },
+                        {
+                            "id": "E26",
+                            "label": "(3.3a)",
+                            "mathml": "<math>\n<mstyle displaystyle=\"true\" scriptlevel=\"0\">\n<mrow>\n<msup>\n<mi>y</mi>\n<mi>A</mi>\n</msup>\n<mo>=</mo>\n<msubsup>\n<mi>X</mi>\n<mn>1</mn>\n<mi>A</mi>\n</msubsup>\n<mi>\u03b3</mi>\n<mo>+</mo>\n<msup>\n<mi>u</mi>\n<mi>A</mi>\n</msup>\n</mrow>\n</mstyle>\n</math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "id": "E27",
+                            "label": "(3.3b)",
+                            "mathml": "<math>\n<mstyle displaystyle=\"true\" scriptlevel=\"0\">\n<mrow>\n<msubsup>\n<mi>X</mi>\n<mn>1</mn>\n<mi>A</mi>\n</msubsup>\n<mo>=</mo>\n<msubsup>\n<mi>X</mi>\n<mn>2</mn>\n<mi>A</mi>\n</msubsup>\n<mi>R</mi>\n<mo>+</mo>\n<msup>\n<mi>\u03f5</mi>\n<mi>A</mi>\n</msup>\n</mrow>\n</mstyle>\n</math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "id": "E28",
+                            "label": "(3.3c)",
+                            "mathml": "<math>\n<mstyle displaystyle=\"true\" scriptlevel=\"0\">\n<mrow>\n<msubsup>\n<mi>X</mi>\n<mn>1</mn>\n<mi>B</mi>\n</msubsup>\n<mo>=</mo>\n<msubsup>\n<mi>X</mi>\n<mn>2</mn>\n<mi>B</mi>\n</msubsup>\n<mi>R</mi>\n<mo>+</mo>\n<msup>\n<mi>\u03f5</mi>\n<mi>B</mi>\n</msup>\n</mrow>\n</mstyle>\n</math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "Since  <math id=\"inf31\"> <msubsup> <mrow> <mi>X</mi> </mrow> <mrow> <mn>1</mn> </mrow> <mrow> <mi>A</mi> </mrow> </msubsup> </math>  is not observed, (<a href=\"#E27\">3.3 b</a>) is inserted into (<a href=\"#E26\">3.3 a</a>) to give the following reduced system of observed variables",
+                            "type": "paragraph"
+                        },
+                        {
+                            "id": "E29",
+                            "label": "(3.4a)",
+                            "mathml": "<math>\n<mstyle displaystyle=\"true\" scriptlevel=\"0\">\n<mrow>\n<msup>\n<mi>y</mi>\n<mi>A</mi>\n</msup>\n<mo>=</mo>\n<msubsup>\n<mi>X</mi>\n<mn>2</mn>\n<mi>A</mi>\n</msubsup>\n<mi>R</mi>\n<mi>\u03b3</mi>\n<mo>+</mo>\n<msup>\n<mi>\u03f5</mi>\n<mrow>\n<mi>A</mi>\n</mrow>\n</msup>\n<mi>\u03b3</mi>\n<mo>+</mo>\n<msup>\n<mi>u</mi>\n<mi>A</mi>\n</msup>\n</mrow>\n</mstyle>\n</math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "id": "E30",
+                            "label": "(3.4b)",
+                            "mathml": "<math>\n<mstyle displaystyle=\"true\" scriptlevel=\"0\">\n<mrow>\n<msubsup>\n<mi>X</mi>\n<mn>1</mn>\n<mi>B</mi>\n</msubsup>\n<mo>=</mo>\n<msubsup>\n<mi>X</mi>\n<mn>2</mn>\n<mi>B</mi>\n</msubsup>\n<mi>R</mi>\n<mo>+</mo>\n<msup>\n<mi>\u03f5</mi>\n<mi>B</mi>\n</msup>\n<mo>;</mo>\n</mrow>\n</mstyle>\n</math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "This model shows great similarities with an errors-in-variables model analysed in <a href=\"#bib4\">Goldberger (1972)</a>. Goldberger\u2019s starting point was a regression model containing a single explanatory variable observed with a random error. This model also assumed that the true unobserved variable was a non-stochastic linear function of a number of independent variables. <a href=\"#bib11\">Zellner (1970)</a> has previously considered this model and developed a generalized least-squares estimator and also presented a Bayesian analysis of the model. Goldberger developed the corresponding maximum likelihood theory and extended it to a model in which the true unobserved variable is a stochastic function of the independent variables rather than an exact function. The observable equivalent of Goldberger\u2019s model has the same form as eq:s (<a href=\"#E29\">3.4 a</a>, <a href=\"#E30\">b</a>). The only difference is that the two equations refer to two different samples, while Goldberger\u2019s observations were assumed to come from a single sample.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "It is convenient to rewrite eq:s (<a href=\"#E29\">3.4 a</a>, <a href=\"#E30\">b</a>) in the following way,",
+                            "type": "paragraph"
+                        },
+                        {
+                            "id": "E31",
+                            "label": "(3.5a)",
+                            "mathml": "<math>\n<mstyle displaystyle=\"true\" scriptlevel=\"0\">\n<mrow>\n<msup>\n<mi>y</mi>\n<mi>A</mi>\n</msup>\n<mo>=</mo>\n<msubsup>\n<mi>X</mi>\n<mn>2</mn>\n<mi>A</mi>\n</msubsup>\n<mi>\u03c0</mi>\n<mo>+</mo>\n<mi>\u03bd</mi>\n<mo>,</mo>\n</mrow>\n</mstyle>\n</math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "id": "E32",
+                            "label": "(3.5b)",
+                            "mathml": "<math>\n<mstyle displaystyle=\"true\" scriptlevel=\"0\">\n<mrow>\n<msubsup>\n<mi>x</mi>\n<mrow>\n<mn>1</mn>\n<mi>j</mi>\n</mrow>\n<mi>B</mi>\n</msubsup>\n<mo>=</mo>\n<msubsup>\n<mi>X</mi>\n<mn>2</mn>\n<mi>B</mi>\n</msubsup>\n<msub>\n<mi>r</mi>\n<mi>j</mi>\n</msub>\n<mo>+</mo>\n<msubsup>\n<mi>\u03f5</mi>\n<mi>j</mi>\n<mi>B</mi>\n</msubsup>\n<mo>;</mo>\n<mtext>\u00a0</mtext>\n<mi>j</mi>\n<mo>=</mo>\n<mn>1</mn>\n<mo>,</mo>\n<mo>.</mo>\n<mo>.</mo>\n<mo>.</mo>\n<mo>.</mo>\n<mo>,</mo>\n<msub>\n<mi>k</mi>\n<mn>1</mn>\n</msub>\n<mo>,</mo>\n</mrow>\n</mstyle>\n</math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "where  <math id=\"inf32\"> <msubsup> <mrow> <mi>X</mi> </mrow> <mrow> <mn>1</mn> <mi>j</mi> </mrow> <mrow> <mi>B</mi> </mrow> </msubsup> </math>  is the j:th column of  <math id=\"inf33\"> <msubsup> <mrow> <mi>X</mi> </mrow> <mrow> <mn>1</mn> </mrow> <mrow> <mi>B</mi> </mrow> </msubsup> </math>  <i>, r<sub>j</sub> </i> is the j:th column of <i>R,</i> and",
+                            "type": "paragraph"
+                        },
+                        {
+                            "id": "E33",
+                            "label": "(3.5c)",
+                            "mathml": "<math>\n<mstyle displaystyle=\"true\" scriptlevel=\"0\">\n<mrow>\n<mi>\u03c0</mi>\n<mo>=</mo>\n<mi>R</mi>\n<mi>\u03b3</mi>\n<mo>;</mo>\n</mrow>\n</mstyle>\n</math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "id": "E34",
+                            "label": "(3.5d)",
+                            "mathml": "<math>\n<mstyle displaystyle=\"true\" scriptlevel=\"0\">\n<mrow>\n<mi>v</mi>\n<mo>=</mo>\n<mi>\u03f5</mi>\n<mi>\u03b3</mi>\n<mo>+</mo>\n<mi>u</mi>\n<mo>;</mo>\n</mrow>\n</mstyle>\n</math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "It is assumed that u and  <math id=\"inf34\"> <msub> <mrow> <mi>\u03f5</mi> </mrow> <mrow> <mi>j</mi> </mrow> </msub> </math>  are uncorrelated for all j. It follows that,",
+                            "type": "paragraph"
+                        },
+                        {
+                            "id": "E35",
+                            "label": "(3.6a)",
+                            "mathml": "<math>\n<mstyle displaystyle=\"true\" scriptlevel=\"0\">\n<mrow>\n<mi>E</mi>\n<mo stretchy=\"false\">(</mo>\n<mi>V</mi>\n<msup>\n<mi>V</mi>\n<mo>\u2032</mo>\n</msup>\n<mo stretchy=\"false\">)</mo>\n<mo>=</mo>\n<mo stretchy=\"false\">(</mo>\n<msup>\n<mi>\u03b3</mi>\n<mo>\u2032</mo>\n</msup>\n<mi mathvariant=\"normal\">\u03a3</mi>\n<mi>\u03b3</mi>\n<mo>+</mo>\n<msubsup>\n<mi>\u03c3</mi>\n<mi>u</mi>\n<mn>2</mn>\n</msubsup>\n<mo stretchy=\"false\">)</mo>\n<mi>I</mi>\n<mo>;</mo>\n</mrow>\n</mstyle>\n</math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "where",
+                            "type": "paragraph"
+                        },
+                        {
+                            "id": "E36",
+                            "label": "(3.6b)",
+                            "mathml": "<math>\n<mstyle displaystyle=\"true\" scriptlevel=\"0\">\n<mrow>\n<mi mathvariant=\"normal\">\u03a3</mi>\n<mo>=</mo>\n<mi>d</mi>\n<mi>i</mi>\n<mi>a</mi>\n<mi>g</mi>\n<mtext>\u00a0</mtext>\n<mrow>\n<mo>{</mo>\n<mrow>\n<msubsup>\n<mi>\u03c3</mi>\n<mn>1</mn>\n<mn>2</mn>\n</msubsup>\n<mo>,</mo>\n<mo>.</mo>\n<mo>.</mo>\n<mo>.</mo>\n<mo>,</mo>\n<msubsup>\n<mi>\u03c3</mi>\n<mrow>\n<msub>\n<mi>k</mi>\n<mn>1</mn>\n</msub>\n</mrow>\n<mn>2</mn>\n</msubsup>\n</mrow>\n<mo>}</mo>\n</mrow>\n<mo>;</mo>\n</mrow>\n</mstyle>\n</math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "Since the two samples are independent, the joint distribution of the observable variables is,",
+                            "type": "paragraph"
+                        },
+                        {
+                            "id": "E37",
+                            "label": "(3.7)",
+                            "mathml": "<math>\n<mstyle displaystyle=\"true\" scriptlevel=\"0\">\n<mrow>\n<mi>F</mi>\n<mo stretchy=\"false\">(</mo>\n<msup>\n<mi>y</mi>\n<mi>A</mi>\n</msup>\n<mo>,</mo>\n<mtext>\u00a0</mtext>\n<msubsup>\n<mi>X</mi>\n<mn>1</mn>\n<mrow>\n<mi>B</mi>\n</mrow>\n</msubsup>\n<mo stretchy=\"false\">)</mo>\n<mo>=</mo>\n<msub>\n<mi>F</mi>\n<mi>y</mi>\n</msub>\n<mo stretchy=\"false\">(</mo>\n<msup>\n<mi>y</mi>\n<mi>A</mi>\n</msup>\n<mo stretchy=\"false\">)</mo>\n<msub>\n<mi>F</mi>\n<mrow>\n<mi>X</mi>\n<mn>1</mn>\n</mrow>\n</msub>\n<mo stretchy=\"false\">(</mo>\n<msubsup>\n<mi>X</mi>\n<mn>1</mn>\n<mi>B</mi>\n</msubsup>\n<mo stretchy=\"false\">)</mo>\n<mo>;</mo>\n</mrow>\n</mstyle>\n</math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "The likelihood function becomes (disregarding irrelevant constants),",
+                            "type": "paragraph"
+                        },
+                        {
+                            "id": "E38",
+                            "label": "(3.8)",
+                            "mathml": "<math>\n<mstyle displaystyle=\"true\" scriptlevel=\"0\">\n<mrow>\n<mi>L</mi>\n<mo stretchy=\"false\">(</mo>\n<mi>\u03b3</mi>\n<mo>,</mo>\n<mtext>\u00a0</mtext>\n<mi>R</mi>\n<mo>,</mo>\n<mtext>\u00a0</mtext>\n<msubsup>\n<mi>\u03c3</mi>\n<mi>u</mi>\n<mn>2</mn>\n</msubsup>\n<mo>,</mo>\n<mtext>\u00a0</mtext>\n<mi mathvariant=\"normal\">\u03a3</mi>\n<mo stretchy=\"false\">)</mo>\n<mo>=</mo>\n<mo>\u2212</mo>\n<msub>\n<mi>n</mi>\n<mi>A</mi>\n</msub>\n<mi>l</mi>\n<mi>o</mi>\n<mi>g</mi>\n<mo stretchy=\"false\">(</mo>\n<msup>\n<mi>\u03b3</mi>\n<mo>\u2032</mo>\n</msup>\n<mi mathvariant=\"normal\">\u03a3</mi>\n<mi>\u03b3</mi>\n<mo>+</mo>\n<msubsup>\n<mi>\u03c3</mi>\n<mi>u</mi>\n<mn>2</mn>\n</msubsup>\n<mo stretchy=\"false\">)</mo>\n<mo>\u2212</mo>\n<mo stretchy=\"false\">(</mo>\n<msup>\n<mi>\u03b3</mi>\n<mo>\u2032</mo>\n</msup>\n<mi mathvariant=\"normal\">\u03a3</mi>\n<mi>\u03b3</mi>\n<mo>+</mo>\n<msubsup>\n<mi>\u03c3</mi>\n<mi>u</mi>\n<mn>2</mn>\n</msubsup>\n<msup>\n<mo stretchy=\"false\">)</mo>\n<mrow>\n<mo>\u2212</mo>\n<mn>1</mn>\n</mrow>\n</msup>\n<mo stretchy=\"false\">(</mo>\n<mi>y</mi>\n<mo>\u2212</mo>\n<msubsup>\n<mi>X</mi>\n<mn>2</mn>\n<mi>A</mi>\n</msubsup>\n<mi>R</mi>\n<mi>y</mi>\n<msup>\n<mo stretchy=\"false\">)</mo>\n<mo>\u2032</mo>\n</msup>\n<mo stretchy=\"false\">(</mo>\n<mi>y</mi>\n<mo>\u2212</mo>\n<msubsup>\n<mi>X</mi>\n<mn>2</mn>\n<mi>A</mi>\n</msubsup>\n<mi>R</mi>\n<mi>y</mi>\n<mo stretchy=\"false\">)</mo>\n<mo>\u2212</mo>\n<msub>\n<mi>n</mi>\n<mi>B</mi>\n</msub>\n<msub>\n<mi mathvariant=\"normal\">\u03a3</mi>\n<mi>j</mi>\n</msub>\n<mi>l</mi>\n<mi>o</mi>\n<mi>g</mi>\n<mo stretchy=\"false\">(</mo>\n<msubsup>\n<mi>\u03c3</mi>\n<mi>j</mi>\n<mn>2</mn>\n</msubsup>\n<mo stretchy=\"false\">)</mo>\n<mo>\u2212</mo>\n<msub>\n<mi mathvariant=\"normal\">\u03a3</mi>\n<mi>j</mi>\n</msub>\n<mo stretchy=\"false\">(</mo>\n<msubsup>\n<mi>\u03c3</mi>\n<mi>j</mi>\n<mn>2</mn>\n</msubsup>\n<msup>\n<mo stretchy=\"false\">)</mo>\n<mrow>\n<mo>\u2212</mo>\n<mn>1</mn>\n</mrow>\n</msup>\n<mo stretchy=\"false\">(</mo>\n<msubsup>\n<mi>X</mi>\n<mrow>\n<mn>1</mn>\n<mi>j</mi>\n</mrow>\n<mi>B</mi>\n</msubsup>\n<mo>\u2212</mo>\n<msubsup>\n<mi>X</mi>\n<mn>2</mn>\n<mi>B</mi>\n</msubsup>\n<msub>\n<mi>r</mi>\n<mi>j</mi>\n</msub>\n<msup>\n<mo stretchy=\"false\">)</mo>\n<mo>\u2032</mo>\n</msup>\n<mo stretchy=\"false\">(</mo>\n<msubsup>\n<mi>X</mi>\n<mrow>\n<mn>1</mn>\n<mi>j</mi>\n</mrow>\n<mi>B</mi>\n</msubsup>\n<mo>\u2212</mo>\n<msubsup>\n<mi>X</mi>\n<mn>2</mn>\n<mi>B</mi>\n</msubsup>\n<msub>\n<mi>r</mi>\n<mi>j</mi>\n</msub>\n<mo stretchy=\"false\">)</mo>\n<mo>;</mo>\n</mrow>\n</mstyle>\n</math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "Differentiating with respect to the unknown parameters and putting the derivatives equal to zero gives,",
+                            "type": "paragraph"
+                        },
+                        {
+                            "id": "E39",
+                            "label": "(3.9)",
+                            "mathml": "<math>\n<mstyle displaystyle=\"true\" scriptlevel=\"0\">\n<mrow>\n<mfrac>\n<mrow>\n<mi>\u03b4</mi>\n<mi>L</mi>\n</mrow>\n<mrow>\n<mi mathvariant=\"normal\">\u2202</mi>\n<msubsup>\n<mi>\u03c3</mi>\n<mi>u</mi>\n<mn>2</mn>\n</msubsup>\n</mrow>\n</mfrac>\n<mo>=</mo>\n<mo>\u2212</mo>\n<msub>\n<mi>n</mi>\n<mi>A</mi>\n</msub>\n<mo stretchy=\"false\">(</mo>\n<msup>\n<mi>\u03b3</mi>\n<mo>\u2032</mo>\n</msup>\n<mi mathvariant=\"normal\">\u03a3</mi>\n<mi>\u03b3</mi>\n<mo>+</mo>\n<msubsup>\n<mi>\u03c3</mi>\n<mi>u</mi>\n<mn>2</mn>\n</msubsup>\n<msup>\n<mo stretchy=\"false\">)</mo>\n<mrow>\n<mo>\u2212</mo>\n<mn>1</mn>\n</mrow>\n</msup>\n<mo>+</mo>\n<mo stretchy=\"false\">(</mo>\n<msup>\n<mi>\u03b3</mi>\n<mo>\u2032</mo>\n</msup>\n<mi mathvariant=\"normal\">\u03a3</mi>\n<mi>\u03b3</mi>\n<mo>+</mo>\n<msubsup>\n<mi>\u03c3</mi>\n<mi>u</mi>\n<mn>2</mn>\n</msubsup>\n<msup>\n<mo stretchy=\"false\">)</mo>\n<mrow>\n<mo>\u2212</mo>\n<mn>2</mn>\n</mrow>\n</msup>\n<mo stretchy=\"false\">(</mo>\n<mi>y</mi>\n<mo>\u2212</mo>\n<msubsup>\n<mi>X</mi>\n<mn>2</mn>\n<mi>A</mi>\n</msubsup>\n<mi>R</mi>\n<mi>y</mi>\n<msup>\n<mo stretchy=\"false\">)</mo>\n<mo>\u2032</mo>\n</msup>\n<mo stretchy=\"false\">(</mo>\n<mi>y</mi>\n<mo>\u2212</mo>\n<msubsup>\n<mi>X</mi>\n<mn>2</mn>\n<mi>A</mi>\n</msubsup>\n<mi>R</mi>\n<mi>y</mi>\n<mo stretchy=\"false\">)</mo>\n<mo>=</mo>\n<mn>0</mn>\n<mo>;</mo>\n</mrow>\n</mstyle>\n</math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "If we define  <math id=\"inf35\"> <mstyle displaystyle=\"true\" scriptlevel=\"0\"> <mrow> <mi>\u03be</mi> <mo>=</mo> <mo stretchy=\"false\">(</mo> <msup> <mi>\u03b3</mi> <mrow> <mo>\u2032</mo> </mrow> </msup> <mrow> <mi mathvariant=\"normal\">\u03a3</mi> </mrow> <mrow> <mi>\u03b3</mi> </mrow> <mo>+</mo> <msubsup> <mi>\u03c3</mi> <mrow> <mi>u</mi> </mrow> <mrow> <mn>2</mn> </mrow> </msubsup> <mo stretchy=\"false\">)</mo> </mrow> </mstyle> </math>  it thus follows that,",
+                            "type": "paragraph"
+                        },
+                        {
+                            "id": "E40",
+                            "label": "(3.10)",
+                            "mathml": "<math>\n<mstyle displaystyle=\"true\" scriptlevel=\"0\">\n<mrow>\n<mrow>\n<mover>\n<mi>\u03be</mi>\n<mo stretchy=\"false\">^</mo>\n</mover>\n</mrow>\n<mo>=</mo>\n<msubsup>\n<mi>n</mi>\n<mi>A</mi>\n<mrow>\n<mo>\u2212</mo>\n<mn>1</mn>\n</mrow>\n</msubsup>\n<mo stretchy=\"false\">(</mo>\n<mi>y</mi>\n<mo>\u2212</mo>\n<msubsup>\n<mi>X</mi>\n<mn>2</mn>\n<mi>A</mi>\n</msubsup>\n<mi>R</mi>\n<mi>y</mi>\n<msup>\n<mo stretchy=\"false\">)</mo>\n<mo>\u2032</mo>\n</msup>\n<mo stretchy=\"false\">(</mo>\n<mi>y</mi>\n<mo>\u2212</mo>\n<msubsup>\n<mi>X</mi>\n<mn>2</mn>\n<mi>A</mi>\n</msubsup>\n<mi>R</mi>\n<mi>y</mi>\n<mo stretchy=\"false\">)</mo>\n<mo>;</mo>\n</mrow>\n</mstyle>\n</math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "id": "E41",
+                            "label": "(3.11)",
+                            "mathml": "<math>\n<mstyle displaystyle=\"true\" scriptlevel=\"0\">\n<mrow>\n<mfrac>\n<mrow>\n<mi>\u03b4</mi>\n<mi>L</mi>\n</mrow>\n<mrow>\n<mi mathvariant=\"normal\">\u2202</mi>\n<msubsup>\n<mi>\u03c3</mi>\n<mi>j</mi>\n<mn>2</mn>\n</msubsup>\n</mrow>\n</mfrac>\n<mo>=</mo>\n<mo>\u2212</mo>\n<msub>\n<mi>n</mi>\n<mi>A</mi>\n</msub>\n<mo stretchy=\"false\">(</mo>\n<msup>\n<mi>\u03b3</mi>\n<mo>\u2032</mo>\n</msup>\n<mi mathvariant=\"normal\">\u03a3</mi>\n<mi>\u03b3</mi>\n<mo>+</mo>\n<msubsup>\n<mi>\u03c3</mi>\n<mi>u</mi>\n<mn>2</mn>\n</msubsup>\n<msup>\n<mo stretchy=\"false\">)</mo>\n<mrow>\n<mo>\u2212</mo>\n<mn>1</mn>\n</mrow>\n</msup>\n<msubsup>\n<mi>\u03b3</mi>\n<mi>j</mi>\n<mn>2</mn>\n</msubsup>\n<mo>+</mo>\n<msubsup>\n<mi>\u03b3</mi>\n<mi>j</mi>\n<mn>2</mn>\n</msubsup>\n<mo stretchy=\"false\">(</mo>\n<msup>\n<mi>\u03b3</mi>\n<mo>\u2032</mo>\n</msup>\n<mi mathvariant=\"normal\">\u03a3</mi>\n<mi>\u03b3</mi>\n<mo>+</mo>\n<msubsup>\n<mi>\u03c3</mi>\n<mi>u</mi>\n<mn>2</mn>\n</msubsup>\n<msup>\n<mo stretchy=\"false\">)</mo>\n<mrow>\n<mo>\u2212</mo>\n<mn>2</mn>\n</mrow>\n</msup>\n<mo stretchy=\"false\">(</mo>\n<mi>y</mi>\n<mo>\u2212</mo>\n<msubsup>\n<mi>X</mi>\n<mn>2</mn>\n<mi>A</mi>\n</msubsup>\n<mi>R</mi>\n<mi>\u03b3</mi>\n<msup>\n<mo stretchy=\"false\">)</mo>\n<mo>\u2032</mo>\n</msup>\n<mo stretchy=\"false\">(</mo>\n<mi>y</mi>\n<mo>\u2212</mo>\n<msubsup>\n<mi>X</mi>\n<mn>2</mn>\n<mi>A</mi>\n</msubsup>\n<mi>R</mi>\n<mi>\u03b3</mi>\n<mo stretchy=\"false\">)</mo>\n<mo>\u2212</mo>\n<msub>\n<mi>n</mi>\n<mi>B</mi>\n</msub>\n<mo stretchy=\"false\">(</mo>\n<msubsup>\n<mi>\u03c3</mi>\n<mi>j</mi>\n<mn>2</mn>\n</msubsup>\n<msup>\n<mo stretchy=\"false\">)</mo>\n<mrow>\n<mo>\u2212</mo>\n<mn>1</mn>\n</mrow>\n</msup>\n<mo>+</mo>\n<mo stretchy=\"false\">(</mo>\n<msubsup>\n<mi>\u03c3</mi>\n<mi>j</mi>\n<mn>2</mn>\n</msubsup>\n<msup>\n<mo stretchy=\"false\">)</mo>\n<mrow>\n<mo>\u2212</mo>\n<mn>2</mn>\n</mrow>\n</msup>\n<mo stretchy=\"false\">(</mo>\n<msubsup>\n<mi>x</mi>\n<mrow>\n<mn>1</mn>\n<mi>j</mi>\n</mrow>\n<mi>B</mi>\n</msubsup>\n<mo>\u2212</mo>\n<msubsup>\n<mi>X</mi>\n<mn>2</mn>\n<mi>B</mi>\n</msubsup>\n<msub>\n<mi>r</mi>\n<mi>j</mi>\n</msub>\n<msup>\n<mo stretchy=\"false\">)</mo>\n<mo>\u2032</mo>\n</msup>\n<mo stretchy=\"false\">(</mo>\n<msubsup>\n<mi>x</mi>\n<mrow>\n<mn>1</mn>\n<mi>j</mi>\n</mrow>\n<mi>B</mi>\n</msubsup>\n<mo>\u2212</mo>\n<msubsup>\n<mi>X</mi>\n<mn>2</mn>\n<mi>B</mi>\n</msubsup>\n<msub>\n<mi>r</mi>\n<mi>j</mi>\n</msub>\n<mo stretchy=\"false\">)</mo>\n<mo>=</mo>\n<mn>0</mn>\n<mo>;</mo>\n</mrow>\n</mstyle>\n</math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "From eq:s (<a href=\"#E39\">3.9</a>) and (<a href=\"#E41\">3.11</a>) it follows that,",
+                            "type": "paragraph"
+                        },
+                        {
+                            "id": "E42",
+                            "label": "(3.12)",
+                            "mathml": "<math>\n<mstyle displaystyle=\"true\" scriptlevel=\"0\">\n<mrow>\n<msubsup>\n<mover>\n<mi>\u03c3</mi>\n<mo>\u2322</mo>\n</mover>\n<mi>j</mi>\n<mn>2</mn>\n</msubsup>\n<mo>=</mo>\n<msubsup>\n<mi>n</mi>\n<mi>B</mi>\n<mrow>\n<mo>\u2212</mo>\n<mn>1</mn>\n</mrow>\n</msubsup>\n<mo stretchy=\"false\">(</mo>\n<msubsup>\n<mi>X</mi>\n<mrow>\n<mn>1</mn>\n<mi>j</mi>\n</mrow>\n<mi>B</mi>\n</msubsup>\n<mo>\u2212</mo>\n<msubsup>\n<mi>X</mi>\n<mn>2</mn>\n<mi>B</mi>\n</msubsup>\n<msub>\n<mi>r</mi>\n<mi>j</mi>\n</msub>\n<msup>\n<mo stretchy=\"false\">)</mo>\n<mo>\u2032</mo>\n</msup>\n<mo stretchy=\"false\">(</mo>\n<msubsup>\n<mi>X</mi>\n<mrow>\n<mn>1</mn>\n<mi>j</mi>\n</mrow>\n<mi>B</mi>\n</msubsup>\n<mo>\u2212</mo>\n<msubsup>\n<mi>X</mi>\n<mn>2</mn>\n<mi>B</mi>\n</msubsup>\n<msub>\n<mi>r</mi>\n<mi>j</mi>\n</msub>\n<mo stretchy=\"false\">)</mo>\n<mo>;</mo>\n</mrow>\n</mstyle>\n</math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "The concentrated likelihood function then becomes,",
+                            "type": "paragraph"
+                        },
+                        {
+                            "id": "E43",
+                            "label": "(3.13)",
+                            "mathml": "<math>\n<mstyle displaystyle=\"true\" scriptlevel=\"0\">\n<mrow>\n<msup>\n<mi>L</mi>\n<mrow>\n<mo>\u2217</mo>\n</mrow>\n</msup>\n<mo>=</mo>\n<mo>\u2212</mo>\n<msub>\n<mi>n</mi>\n<mi>A</mi>\n</msub>\n<mi>l</mi>\n<mi>o</mi>\n<mi>g</mi>\n<mrow>\n<mo>{</mo>\n<mrow>\n<mo stretchy=\"false\">(</mo>\n<msup>\n<mi>y</mi>\n<mi>A</mi>\n</msup>\n<mo>\u2212</mo>\n<msubsup>\n<mi>X</mi>\n<mn>2</mn>\n<mi>A</mi>\n</msubsup>\n<mi>R</mi>\n<mi>\u03b3</mi>\n<msup>\n<mo stretchy=\"false\">)</mo>\n<mo>\u2032</mo>\n</msup>\n<mo stretchy=\"false\">(</mo>\n<msup>\n<mi>y</mi>\n<mi>A</mi>\n</msup>\n<mo>\u2212</mo>\n<msubsup>\n<mi>X</mi>\n<mn>2</mn>\n<mi>A</mi>\n</msubsup>\n<mi>R</mi>\n<mi>\u03b3</mi>\n<mo stretchy=\"false\">)</mo>\n</mrow>\n<mo>}</mo>\n</mrow>\n<mo>\u2212</mo>\n<msub>\n<mi>n</mi>\n<mi>B</mi>\n</msub>\n<msub>\n<mi mathvariant=\"normal\">\u03a3</mi>\n<mi>j</mi>\n</msub>\n<mi>l</mi>\n<mi>o</mi>\n<mi>g</mi>\n<mrow>\n<mo>{</mo>\n<mrow>\n<mo stretchy=\"false\">(</mo>\n<msubsup>\n<mi>x</mi>\n<mrow>\n<mn>1</mn>\n<mi>j</mi>\n</mrow>\n<mi>B</mi>\n</msubsup>\n<mo>\u2212</mo>\n<msubsup>\n<mi>X</mi>\n<mn>2</mn>\n<mi>B</mi>\n</msubsup>\n<msub>\n<mi>r</mi>\n<mi>j</mi>\n</msub>\n<msup>\n<mo stretchy=\"false\">)</mo>\n<mo>\u2032</mo>\n</msup>\n<mo stretchy=\"false\">(</mo>\n<msubsup>\n<mi>x</mi>\n<mrow>\n<mn>1</mn>\n<mi>j</mi>\n</mrow>\n<mi>B</mi>\n</msubsup>\n<mo>\u2212</mo>\n<msubsup>\n<mi>X</mi>\n<mn>2</mn>\n<mi>B</mi>\n</msubsup>\n<msub>\n<mi>r</mi>\n<mi>j</mi>\n</msub>\n<mo stretchy=\"false\">)</mo>\n</mrow>\n<mo>}</mo>\n</mrow>\n<mo>;</mo>\n</mrow>\n</mstyle>\n</math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "id": "E44",
+                            "label": "(3.14)",
+                            "mathml": "<math>\n<mstyle displaystyle=\"true\" scriptlevel=\"0\">\n<mrow>\n<mfrac>\n<mrow>\n<mi mathvariant=\"normal\">\u2202</mi>\n<mi>L</mi>\n<mo>\u2217</mo>\n</mrow>\n<mrow>\n<mi mathvariant=\"normal\">\u2202</mi>\n<mi>\u03b3</mi>\n</mrow>\n</mfrac>\n<mo>=</mo>\n<mo>\u2212</mo>\n<msub>\n<mi>n</mi>\n<mi>A</mi>\n</msub>\n<msup>\n<mrow>\n<mo>{</mo>\n<mrow>\n<mo stretchy=\"false\">(</mo>\n<msup>\n<mi>y</mi>\n<mi>A</mi>\n</msup>\n<mo>\u2212</mo>\n<msubsup>\n<mi>X</mi>\n<mn>2</mn>\n<mi>A</mi>\n</msubsup>\n<mi>R</mi>\n<mi>\u03b3</mi>\n<msup>\n<mo stretchy=\"false\">)</mo>\n<mo>\u2032</mo>\n</msup>\n<mo stretchy=\"false\">(</mo>\n<msup>\n<mi>y</mi>\n<mi>A</mi>\n</msup>\n<mo>\u2212</mo>\n<msubsup>\n<mi>X</mi>\n<mn>2</mn>\n<mi>A</mi>\n</msubsup>\n<mi>R</mi>\n<mi>\u03b3</mi>\n<mo stretchy=\"false\">)</mo>\n</mrow>\n<mo>}</mo>\n</mrow>\n<mrow>\n<mo>\u2212</mo>\n<mn>1</mn>\n</mrow>\n</msup>\n<msup>\n<mi>R</mi>\n<mo>\u2032</mo>\n</msup>\n<msubsup>\n<mi>X</mi>\n<mn>2</mn>\n<mi>A</mi>\n</msubsup>\n<mrow>\n<mo>\u2032</mo>\n</mrow>\n<mo stretchy=\"false\">(</mo>\n<msup>\n<mi>y</mi>\n<mi>A</mi>\n</msup>\n<mo>\u2212</mo>\n<msubsup>\n<mi>X</mi>\n<mn>2</mn>\n<mi>A</mi>\n</msubsup>\n<mi>R</mi>\n<mi>\u03b3</mi>\n<mo stretchy=\"false\">)</mo>\n<mo>=</mo>\n<mn>0</mn>\n</mrow>\n</mstyle>\n</math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "id": "E45",
+                            "label": "(3.15)",
+                            "mathml": "<math>\n<mstyle displaystyle=\"true\" scriptlevel=\"0\">\n<mrow>\n<mo>\u2235</mo>\n<mrow>\n<mover>\n<mi>\u03b3</mi>\n<mo stretchy=\"false\">^</mo>\n</mover>\n</mrow>\n<mo>=</mo>\n<mo stretchy=\"false\">(</mo>\n<msup>\n<mi>R</mi>\n<mo>\u2032</mo>\n</msup>\n<msubsup>\n<mi>X</mi>\n<mn>2</mn>\n<mi>A</mi>\n</msubsup>\n<mrow>\n<mo>\u2032</mo>\n</mrow>\n<msubsup>\n<mi>X</mi>\n<mn>2</mn>\n<mi>A</mi>\n</msubsup>\n<mi>R</mi>\n<msup>\n<mo stretchy=\"false\">)</mo>\n<mrow>\n<mo>\u2212</mo>\n<mn>1</mn>\n</mrow>\n</msup>\n<msup>\n<mi>R</mi>\n<mo>\u2032</mo>\n</msup>\n<msubsup>\n<mi>X</mi>\n<mn>2</mn>\n<mi>A</mi>\n</msubsup>\n<mrow>\n<mo>\u2032</mo>\n</mrow>\n<msup>\n<mi>y</mi>\n<mi>A</mi>\n</msup>\n<mo>;</mo>\n</mrow>\n</mstyle>\n</math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "If eq. (<a href=\"#E45\">3.15</a>) is premultiplied by  <math id=\"inf36\"> <msup> <mrow> <mi>R</mi> </mrow> <mrow> <mi>`</mi> </mrow> </msup> <msubsup> <mrow> <mi>X</mi> </mrow> <mrow> <mn>2</mn> </mrow> <mrow> <mi>A</mi> </mrow> </msubsup> <mi>`</mi> <msubsup> <mrow> <mi>X</mi> </mrow> <mrow> <mn>2</mn> </mrow> <mrow> <mi>A</mi> </mrow> </msubsup> <mi>R</mi> </math>  one easily sees that,",
+                            "type": "paragraph"
+                        },
+                        {
+                            "id": "E46",
+                            "label": "(3.16)",
+                            "mathml": "<math>\n<mstyle displaystyle=\"true\" scriptlevel=\"0\">\n<mrow>\n<mrow>\n<mover>\n<mi>\u03c0</mi>\n<mo stretchy=\"false\">^</mo>\n</mover>\n</mrow>\n<mo>=</mo>\n<mi>R</mi>\n<mrow>\n<mover>\n<mi>\u03b3</mi>\n<mo stretchy=\"false\">^</mo>\n</mover>\n</mrow>\n<mo>=</mo>\n<mo stretchy=\"false\">(</mo>\n<msubsup>\n<mi>X</mi>\n<mn>2</mn>\n<mi>A</mi>\n</msubsup>\n<mrow>\n<mo>\u2032</mo>\n</mrow>\n<msubsup>\n<mi>X</mi>\n<mn>2</mn>\n<mi>A</mi>\n</msubsup>\n<msup>\n<mo stretchy=\"false\">)</mo>\n<mrow>\n<mo>\u2212</mo>\n<mn>1</mn>\n</mrow>\n</msup>\n<msubsup>\n<mi>X</mi>\n<mn>2</mn>\n<mi>A</mi>\n</msubsup>\n<mrow>\n<mo>\u2032</mo>\n</mrow>\n<msup>\n<mi>y</mi>\n<mi>A</mi>\n</msup>\n<mo>;</mo>\n</mrow>\n</mstyle>\n</math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "Eq. (<a href=\"#E46\">3.16</a>) inserted into eq. (<a href=\"#E43\">3.13</a>) gives a new concentrated likelihood function,",
+                            "type": "paragraph"
+                        },
+                        {
+                            "id": "E47",
+                            "label": "(3.17)",
+                            "mathml": "<math>\n<mstyle displaystyle=\"true\" scriptlevel=\"0\">\n<mrow>\n<msup>\n<mi>L</mi>\n<mrow>\n<mo>\u2217</mo>\n<mo>\u2217</mo>\n</mrow>\n</msup>\n<mo>=</mo>\n<mo>\u2212</mo>\n<msub>\n<mi>n</mi>\n<mi>B</mi>\n</msub>\n<msub>\n<mi mathvariant=\"normal\">\u03a3</mi>\n<mi>j</mi>\n</msub>\n<mi>l</mi>\n<mi>o</mi>\n<mi>g</mi>\n<mrow>\n<mo>{</mo>\n<mrow>\n<mo stretchy=\"false\">(</mo>\n<msubsup>\n<mi>X</mi>\n<mrow>\n<mn>1</mn>\n<mi>j</mi>\n</mrow>\n<mi>B</mi>\n</msubsup>\n<mo>\u2212</mo>\n<msubsup>\n<mi>X</mi>\n<mn>2</mn>\n<mi>B</mi>\n</msubsup>\n<msub>\n<mi>r</mi>\n<mi>j</mi>\n</msub>\n<msup>\n<mo stretchy=\"false\">)</mo>\n<mo>\u2032</mo>\n</msup>\n<mo stretchy=\"false\">(</mo>\n<msubsup>\n<mi>X</mi>\n<mrow>\n<mn>1</mn>\n<mi>j</mi>\n</mrow>\n<mi>B</mi>\n</msubsup>\n<mo>\u2212</mo>\n<msubsup>\n<mi>X</mi>\n<mn>2</mn>\n<mi>B</mi>\n</msubsup>\n<msub>\n<mi>r</mi>\n<mi>j</mi>\n</msub>\n<mo stretchy=\"false\">)</mo>\n</mrow>\n<mo>}</mo>\n</mrow>\n<mo>;</mo>\n</mrow>\n</mstyle>\n</math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "If the derivative of this function is put equal to zero, we obtain the ordinary least-squares solution,",
+                            "type": "paragraph"
+                        },
+                        {
+                            "id": "E48",
+                            "label": "(3.18a)",
+                            "mathml": "<math>\n<mstyle displaystyle=\"true\" scriptlevel=\"0\">\n<mrow>\n<mrow>\n<mover>\n<msub>\n<mi>r</mi>\n<mi>j</mi>\n</msub>\n<mo stretchy=\"false\">^</mo>\n</mover>\n</mrow>\n<mo>=</mo>\n<mo stretchy=\"false\">(</mo>\n<msubsup>\n<mi>X</mi>\n<mn>2</mn>\n<mi>B</mi>\n</msubsup>\n<mrow>\n<mo>\u2032</mo>\n</mrow>\n<msubsup>\n<mi>X</mi>\n<mn>2</mn>\n<mi>B</mi>\n</msubsup>\n<msup>\n<mo stretchy=\"false\">)</mo>\n<mrow>\n<mo>\u2212</mo>\n<mn>1</mn>\n</mrow>\n</msup>\n<msubsup>\n<mi>X</mi>\n<mn>2</mn>\n<mi>B</mi>\n</msubsup>\n<mrow>\n<mo>\u2032</mo>\n</mrow>\n<msub>\n<mi>x</mi>\n<mrow>\n<mn>1</mn>\n<mi>j</mi>\n</mrow>\n</msub>\n<mo>;</mo>\n</mrow>\n</mstyle>\n</math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "or in matrix form,",
+                            "type": "paragraph"
+                        },
+                        {
+                            "id": "E49",
+                            "label": "(3.18b)",
+                            "mathml": "<math>\n<mstyle displaystyle=\"true\" scriptlevel=\"0\">\n<mrow>\n<mrow>\n<mover>\n<mi>R</mi>\n<mo stretchy=\"false\">^</mo>\n</mover>\n</mrow>\n<mo>=</mo>\n<mo stretchy=\"false\">(</mo>\n<msubsup>\n<mi>X</mi>\n<mn>2</mn>\n<mi>B</mi>\n</msubsup>\n<mrow>\n<mo>\u2032</mo>\n</mrow>\n<msubsup>\n<mi>X</mi>\n<mn>2</mn>\n<mi>B</mi>\n</msubsup>\n<msup>\n<mo stretchy=\"false\">)</mo>\n<mrow>\n<mo>\u2212</mo>\n<mn>1</mn>\n</mrow>\n</msup>\n<msubsup>\n<mi>X</mi>\n<mn>2</mn>\n<mi>B</mi>\n</msubsup>\n<mrow>\n<mo>\u2032</mo>\n</mrow>\n<msubsup>\n<mi>X</mi>\n<mn>1</mn>\n<mi>B</mi>\n</msubsup>\n<mo>;</mo>\n</mrow>\n</mstyle>\n</math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "From (<a href=\"#E45\">3.15</a>) and (<a href=\"#E49\">3.18b</a>) we thus find that the maximum-likelihood solution is equivalent to the TSLS procedure analogous to the estimation method suggested for the interdependent model in the previous section.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "This result no longer holds if the X1-variables are correlated, i.e. if  <math id=\"inf37\"> <mi mathvariant=\"normal\">\u03a3</mi> </math>  is not diagonal, or if the errors are heteroscedastic. With such changes in the model specification we would have to find the maximum likelihood estimates by numerical maximization of the likelihood function.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "If we allow both for contemporaneously correlated errors and for heteroscedasticity, the model can be written in the following way,",
+                            "type": "paragraph"
+                        },
+                        {
+                            "id": "E50",
+                            "label": "(3.19)",
+                            "mathml": "<math>\n<mstyle displaystyle=\"true\" scriptlevel=\"0\">\n<mrow>\n<msup>\n<mi>y</mi>\n<mi>A</mi>\n</msup>\n<mo>=</mo>\n<msubsup>\n<mi>X</mi>\n<mn>2</mn>\n<mi>A</mi>\n</msubsup>\n<mi>R</mi>\n<mi>\u03b3</mi>\n<mo>+</mo>\n<msubsup>\n<mi>\u03f5</mi>\n<mrow>\n<mi>\u03b3</mi>\n</mrow>\n<mi>A</mi>\n</msubsup>\n<mo>+</mo>\n<msup>\n<mi>u</mi>\n<mi>A</mi>\n</msup>\n<mo>;</mo>\n</mrow>\n</mstyle>\n</math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "id": "E51",
+                            "label": "(3.20)",
+                            "mathml": "<math>\n<mstyle displaystyle=\"true\" scriptlevel=\"0\">\n<mrow>\n<msup>\n<mi>X</mi>\n<mi>B</mi>\n</msup>\n<mo>=</mo>\n<mo stretchy=\"false\">(</mo>\n<mi>I</mi>\n<mo>\u2297</mo>\n<msubsup>\n<mi>X</mi>\n<mn>2</mn>\n<mi>B</mi>\n</msubsup>\n<mo stretchy=\"false\">)</mo>\n<mi>r</mi>\n<mo>+</mo>\n<msup>\n<mi>\u03f5</mi>\n<mi>B</mi>\n</msup>\n<mo>;</mo>\n</mrow>\n</mstyle>\n</math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "<span class=\"indent\">\u2003</span> <span class=\"indent\">\u2003</span> <span class=\"indent\">\u2003</span> <span class=\"indent\">\u2003</span> <span class=\"indent\">\u2003</span> <span class=\"indent\">\u2003</span> <span class=\"indent\">\u2003</span> <span class=\"indent\">\u2003</span> <span class=\"indent\">\u2003</span> <span class=\"indent\">\u2003</span> <span class=\"indent\">\u2003</span> <span class=\"indent\">\u2003</span>where  <math id=\"inf38\"> <mstyle displaystyle=\"true\" scriptlevel=\"0\"> <mrow> <msup> <mi>X</mi> <mi>B</mi> </msup> <mrow> <mo>\u2032</mo> </mrow> <mo>=</mo> <mrow> <mo>{</mo> <mrow> <msub> <mi>x</mi> <mrow> <mn>11</mn> </mrow> </msub> <mrow> <mo>\u2032</mo> </mrow> <mo>,</mo> <msub> <mi>x</mi> <mrow> <mn>12</mn> </mrow> </msub> <mrow> <mo>\u2032</mo> </mrow> <mo>,</mo> <mo>.</mo> <mo>.</mo> <mo>.</mo> <mo>,</mo> <msub> <mi>x</mi> <mrow> <msub> <mn>1</mn> <mrow> <mi>k</mi> <mn>1</mn> </mrow> </msub> </mrow> </msub> <mrow> <mo>\u2032</mo> </mrow> </mrow> <mo>}</mo> </mrow> </mrow> </mstyle> </math> ,",
+                            "type": "paragraph"
+                        },
+                        {
+                            "mathml": "<math>\n<mstyle displaystyle=\"true\" scriptlevel=\"0\">\n<mrow>\n<msup>\n<mi>r</mi>\n<mo>\u2032</mo>\n</msup>\n<mo>=</mo>\n<mrow>\n<mo>{</mo>\n<mrow>\n<msub>\n<mi>r</mi>\n<mn>1</mn>\n</msub>\n<mrow>\n<mo>\u2032</mo>\n</mrow>\n<mo>,</mo>\n<msub>\n<mi>r</mi>\n<mn>2</mn>\n</msub>\n<mrow>\n<mo>\u2032</mo>\n</mrow>\n<mo>,</mo>\n<mo>.</mo>\n<mo>.</mo>\n<mo>.</mo>\n<mo>,</mo>\n<msub>\n<mi>r</mi>\n<mrow>\n<msub>\n<mi>k</mi>\n<mi>l</mi>\n</msub>\n</mrow>\n</msub>\n<mrow>\n<mo>\u2032</mo>\n</mrow>\n</mrow>\n<mo>}</mo>\n</mrow>\n<mo>,</mo>\n</mrow>\n</mstyle>\n</math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "mathml": "<math>\n<mstyle displaystyle=\"true\" scriptlevel=\"0\">\n<mrow>\n<msup>\n<mi>\u03f5</mi>\n<mi>B</mi>\n</msup>\n<mrow>\n<mo>\u2032</mo>\n</mrow>\n<mo>=</mo>\n<mrow>\n<mo>{</mo>\n<mrow>\n<msubsup>\n<mi>\u03f5</mi>\n<mn>1</mn>\n<mrow>\n<mo>\u2032</mo>\n</mrow>\n</msubsup>\n<mo>,</mo>\n<msubsup>\n<mi>\u03f5</mi>\n<mn>2</mn>\n<mrow>\n<mo>\u2032</mo>\n</mrow>\n</msubsup>\n<mo>,</mo>\n<mo>.</mo>\n<mo>.</mo>\n<mo>.</mo>\n<mo>,</mo>\n<msubsup>\n<mi>\u03f5</mi>\n<mrow>\n<msub>\n<mi>k</mi>\n<mi>l</mi>\n</msub>\n</mrow>\n<mrow>\n<mo>\u2032</mo>\n</mrow>\n</msubsup>\n</mrow>\n<mo>}</mo>\n</mrow>\n<mo>,</mo>\n</mrow>\n</mstyle>\n</math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "mathml": "<math>\n<mstyle displaystyle=\"true\" scriptlevel=\"0\">\n<mrow>\n<msub>\n<mo>\u2208</mo>\n<mi>j</mi>\n</msub>\n<mrow>\n<mo>\u2032</mo>\n</mrow>\n<mo>=</mo>\n<mrow>\n<mo>{</mo>\n<mrow>\n<msub>\n<mo>\u2208</mo>\n<mrow>\n<mi>j</mi>\n<mn>1</mn>\n</mrow>\n</msub>\n<mo>,</mo>\n<msub>\n<mo>\u2208</mo>\n<mrow>\n<mi>j</mi>\n<mn>2</mn>\n</mrow>\n</msub>\n<mo>,</mo>\n<mo>.</mo>\n<mo>.</mo>\n<mo>.</mo>\n<mo>,</mo>\n<msub>\n<mo>\u2208</mo>\n<mrow>\n<mi>j</mi>\n<msub>\n<mi>n</mi>\n<mi>B</mi>\n</msub>\n</mrow>\n</msub>\n</mrow>\n<mo>}</mo>\n</mrow>\n</mrow>\n</mstyle>\n</math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "Now let",
+                            "type": "paragraph"
+                        },
+                        {
+                            "id": "E55",
+                            "label": "(3.21)",
+                            "mathml": "<math>\n<mstyle displaystyle=\"true\" scriptlevel=\"0\">\n<mrow>\n<mi>E</mi>\n<mo stretchy=\"false\">(</mo>\n<msub>\n<mo>\u2208</mo>\n<mrow>\n<mi>i</mi>\n<mi>s</mi>\n</mrow>\n</msub>\n<msub>\n<mo>\u2208</mo>\n<mrow>\n<mi>j</mi>\n<mi>t</mi>\n</mrow>\n</msub>\n<mo stretchy=\"false\">)</mo>\n<mo>=</mo>\n<mrow>\n<mo>{</mo>\n<mtable columnspacing=\"1em\" rowspacing=\"4pt\">\n<mtr>\n<mtd>\n<msub>\n<mi>\u03c3</mi>\n<mrow>\n<mi>i</mi>\n<mi>j</mi>\n<mo stretchy=\"false\">(</mo>\n<mi>t</mi>\n<mo stretchy=\"false\">)</mo>\n</mrow>\n</msub>\n<mtext>\u00a0</mtext>\n<mi>i</mi>\n<mi>f</mi>\n<mtext>\u00a0</mtext>\n<mi>s</mi>\n<mo>=</mo>\n<mi>t</mi>\n</mtd>\n</mtr>\n<mtr>\n<mtd>\n<mn>0</mn>\n<mtext>\u00a0</mtext>\n<mi>i</mi>\n<mi>f</mi>\n<mtext>\u00a0</mtext>\n<mi>s</mi>\n<mo>\u2260</mo>\n<mi>t</mi>\n</mtd>\n</mtr>\n</mtable>\n<mo>}</mo>\n</mrow>\n</mrow>\n</mstyle>\n</math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "We define the contemporaneous moment matrices for observation t,",
+                            "type": "paragraph"
+                        },
+                        {
+                            "id": "E56",
+                            "label": "(3.22)",
+                            "mathml": "<math>\n<mstyle displaystyle=\"true\" scriptlevel=\"0\">\n<mrow>\n<mi>E</mi>\n<mo stretchy=\"false\">(</mo>\n<msub>\n<mo>\u2208</mo>\n<mrow>\n<mn>1</mn>\n<mi>t</mi>\n</mrow>\n</msub>\n<mo>,</mo>\n<msub>\n<mo>\u2208</mo>\n<mrow>\n<mn>2</mn>\n<mi>t</mi>\n</mrow>\n</msub>\n<mo>,</mo>\n<mo>.</mo>\n<mo>.</mo>\n<mo>.</mo>\n<msub>\n<mo>\u2208</mo>\n<mrow>\n<msub>\n<mi>k</mi>\n<mn>1</mn>\n</msub>\n<mi>t</mi>\n</mrow>\n</msub>\n<mo stretchy=\"false\">)</mo>\n<mo stretchy=\"false\">(</mo>\n<msub>\n<mo>\u2208</mo>\n<mrow>\n<mn>1</mn>\n<mi>t</mi>\n</mrow>\n</msub>\n<mo>,</mo>\n<msub>\n<mo>\u2208</mo>\n<mrow>\n<mn>2</mn>\n<mi>t</mi>\n</mrow>\n</msub>\n<mo>,</mo>\n<mo>.</mo>\n<mo>.</mo>\n<mo>.</mo>\n<msub>\n<mo>\u2208</mo>\n<mrow>\n<msub>\n<mi>k</mi>\n<mn>1</mn>\n</msub>\n<mi>t</mi>\n</mrow>\n</msub>\n<mo stretchy=\"false\">)</mo>\n<mrow>\n<mo>\u2032</mo>\n</mrow>\n<mo>=</mo>\n<mi mathvariant=\"normal\">\u03a3</mi>\n<mo stretchy=\"false\">(</mo>\n<mi>t</mi>\n<mo stretchy=\"false\">)</mo>\n<mo>=</mo>\n<msub>\n<mrow>\n<mo>{</mo>\n<msub>\n<mi>\u03c3</mi>\n<mrow>\n<mi>i</mi>\n<mi>j</mi>\n<mo stretchy=\"false\">(</mo>\n<mi>t</mi>\n<mo stretchy=\"false\">)</mo>\n</mrow>\n</msub>\n<mo>}</mo>\n</mrow>\n<mrow>\n<msub>\n<mi>k</mi>\n<mrow>\n<mn>1</mn>\n</mrow>\n</msub>\n<mo>.</mo>\n<mrow>\n<msub>\n<mi>k</mi>\n<mn>1</mn>\n</msub>\n</mrow>\n</mrow>\n</msub>\n<mo>;</mo>\n</mrow>\n</mstyle>\n</math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "and the individual specific moment matrices,",
+                            "type": "paragraph"
+                        },
+                        {
+                            "id": "E57",
+                            "label": "(3.23)",
+                            "mathml": "<math>\n<mstyle displaystyle=\"true\" scriptlevel=\"0\">\n<mrow>\n<mi>E</mi>\n<mo stretchy=\"false\">(</mo>\n<msub>\n<mo>\u2208</mo>\n<mi>i</mi>\n</msub>\n<msubsup>\n<mo>\u2208</mo>\n<mrow>\n<mi>j</mi>\n</mrow>\n<mo>\u2032</mo>\n</msubsup>\n<mo stretchy=\"false\">)</mo>\n<mo>=</mo>\n<msub>\n<mi mathvariant=\"normal\">\u03a9</mi>\n<mrow>\n<mi>i</mi>\n<mi>j</mi>\n</mrow>\n</msub>\n<mo>=</mo>\n<mi>d</mi>\n<mi>i</mi>\n<mi>a</mi>\n<mi>g</mi>\n<mrow>\n<mo>{</mo>\n<mrow>\n<msub>\n<mi>\u03c3</mi>\n<mrow>\n<mi>i</mi>\n<mi>j</mi>\n<mo stretchy=\"false\">(</mo>\n<mn>1</mn>\n<mo stretchy=\"false\">)</mo>\n</mrow>\n</msub>\n<mo>,</mo>\n<msub>\n<mi>\u03c3</mi>\n<mrow>\n<mi>i</mi>\n<mi>j</mi>\n<mo stretchy=\"false\">(</mo>\n<mn>2</mn>\n<mo stretchy=\"false\">)</mo>\n</mrow>\n</msub>\n<mo>.</mo>\n<mo>.</mo>\n<mo>.</mo>\n<msub>\n<mi>\u03c3</mi>\n<mrow>\n<mi>i</mi>\n<mi>j</mi>\n<mo stretchy=\"false\">(</mo>\n<msub>\n<mi>n</mi>\n<mi>B</mi>\n</msub>\n<mo stretchy=\"false\">)</mo>\n</mrow>\n</msub>\n</mrow>\n<mo>}</mo>\n</mrow>\n<mo>;</mo>\n</mrow>\n</mstyle>\n</math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "These two types of matrices are thus functions of the same parameters. We also allow u<sup>A</sup> to be heteroscedastic, i.e.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "id": "E58",
+                            "label": "(3.24)",
+                            "mathml": "<math>\n<mstyle displaystyle=\"true\" scriptlevel=\"0\">\n<mrow>\n<mi>E</mi>\n<mo stretchy=\"false\">(</mo>\n<mi>u</mi>\n<msup>\n<mi>u</mi>\n<mo>\u2032</mo>\n</msup>\n<mo stretchy=\"false\">)</mo>\n<mo>=</mo>\n<msub>\n<mi mathvariant=\"normal\">\u03a9</mi>\n<mi>u</mi>\n</msub>\n<mo>=</mo>\n<mi>d</mi>\n<mi>i</mi>\n<mi>a</mi>\n<mi>g</mi>\n<mrow>\n<mo>{</mo>\n<mrow>\n<msubsup>\n<mi>\u03c3</mi>\n<mrow>\n<mi>u</mi>\n<mo stretchy=\"false\">(</mo>\n<mn>1</mn>\n<mo stretchy=\"false\">)</mo>\n</mrow>\n<mn>2</mn>\n</msubsup>\n<msubsup>\n<mi>\u03c3</mi>\n<mrow>\n<mi>u</mi>\n<mo stretchy=\"false\">(</mo>\n<mn>2</mn>\n<mo stretchy=\"false\">)</mo>\n</mrow>\n<mn>2</mn>\n</msubsup>\n<mo>.</mo>\n<mo>.</mo>\n<mo>.</mo>\n<msubsup>\n<mi>\u03c3</mi>\n<mrow>\n<mi>u</mi>\n<mo stretchy=\"false\">(</mo>\n<msub>\n<mi>n</mi>\n<mi>A</mi>\n</msub>\n<mo stretchy=\"false\">)</mo>\n</mrow>\n<mn>2</mn>\n</msubsup>\n</mrow>\n<mo>}</mo>\n</mrow>\n<mo>;</mo>\n</mrow>\n</mstyle>\n</math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "With these assumptions it follows that,",
+                            "type": "paragraph"
+                        },
+                        {
+                            "id": "E59",
+                            "label": "(3.25)",
+                            "mathml": "<math>\n<mstyle displaystyle=\"true\" scriptlevel=\"0\">\n<mrow>\n<mi>E</mi>\n<mo stretchy=\"false\">(</mo>\n<mi>\u03f5</mi>\n<mi>\u03b3</mi>\n<mo>+</mo>\n<mi>u</mi>\n<mo stretchy=\"false\">)</mo>\n<mo stretchy=\"false\">(</mo>\n<mi>\u03f5</mi>\n<mi>\u03b3</mi>\n<mo>+</mo>\n<mi>u</mi>\n<msup>\n<mo stretchy=\"false\">)</mo>\n<mo>\u2032</mo>\n</msup>\n<mo>=</mo>\n<mi>E</mi>\n<mo stretchy=\"false\">(</mo>\n<mi>\u03f5</mi>\n<mi>\u03b3</mi>\n<msup>\n<mi>\u03b3</mi>\n<mo>\u2032</mo>\n</msup>\n<mi>\u03f5</mi>\n<mo>+</mo>\n<mi>u</mi>\n<msup>\n<mi>u</mi>\n<mo>\u2032</mo>\n</msup>\n<mo stretchy=\"false\">)</mo>\n<mo>=</mo>\n<mrow>\n<mo>[</mo>\n<mtable columnspacing=\"1em\" rowspacing=\"4pt\">\n<mtr>\n<mtd>\n<msup>\n<mi>\u03b3</mi>\n<mo>\u2032</mo>\n</msup>\n<munder>\n<mo>\u2211</mo>\n<mrow>\n<mo stretchy=\"false\">(</mo>\n<mn>1</mn>\n<mo stretchy=\"false\">)</mo>\n</mrow>\n</munder>\n<mi>\u03b3</mi>\n</mtd>\n<mtd>\n<mn>0</mn>\n</mtd>\n<mtd/>\n<mtd>\n<mn>0</mn>\n</mtd>\n<mtd/>\n</mtr>\n<mtr>\n<mtd>\n<mn>0</mn>\n</mtd>\n<mtd/>\n<mtd>\n<msup>\n<mi>\u03b3</mi>\n<mo>\u2032</mo>\n</msup>\n<munder>\n<mo>\u2211</mo>\n<mrow>\n<mo stretchy=\"false\">(</mo>\n<mn>2</mn>\n<mo stretchy=\"false\">)</mo>\n</mrow>\n</munder>\n<mi>\u03b3</mi>\n</mtd>\n<mtd>\n<mn>0</mn>\n</mtd>\n</mtr>\n<mtr>\n<mtd/>\n<mtd>\n<mo>\u22ee</mo>\n</mtd>\n<mtd>\n<mo>\u22f1</mo>\n</mtd>\n<mtd>\n<mo>\u22ee</mo>\n</mtd>\n<mtd/>\n</mtr>\n<mtr>\n<mtd>\n<mn>0</mn>\n</mtd>\n<mtd>\n<mn>0</mn>\n</mtd>\n<mtd>\n<mo>\u2026</mo>\n</mtd>\n<mtd>\n<msup>\n<mi>\u03b3</mi>\n<mo>\u2032</mo>\n</msup>\n<munder>\n<mo>\u2211</mo>\n<mrow>\n<mo stretchy=\"false\">(</mo>\n<msub>\n<mi>n</mi>\n<mrow>\n<mi>A</mi>\n</mrow>\n</msub>\n<mo stretchy=\"false\">)</mo>\n</mrow>\n</munder>\n<mi>\u03b3</mi>\n</mtd>\n</mtr>\n</mtable>\n<mo>]</mo>\n</mrow>\n<mo>+</mo>\n<msub>\n<mi mathvariant=\"normal\">\u03a9</mi>\n<mrow>\n<mi>u</mi>\n</mrow>\n</msub>\n<mo>;</mo>\n</mrow>\n</mstyle>\n</math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "and,",
+                            "type": "paragraph"
+                        },
+                        {
+                            "id": "E60",
+                            "label": "(3.26)",
+                            "mathml": "<math>\n<mstyle displaystyle=\"true\" scriptlevel=\"0\">\n<mrow>\n<mi>E</mi>\n<mo stretchy=\"false\">(</mo>\n<mrow>\n<msup>\n<mo>\u2208</mo>\n<mi>B</mi>\n</msup>\n</mrow>\n<msup>\n<mrow>\n<msup>\n<mo>\u2208</mo>\n<mi>B</mi>\n</msup>\n</mrow>\n<mo>\u2032</mo>\n</msup>\n<mo stretchy=\"false\">)</mo>\n<mo>=</mo>\n<mrow>\n<mo>[</mo>\n<mtable columnspacing=\"1em\" rowspacing=\"4pt\">\n<mtr>\n<mtd>\n<msub>\n<mi mathvariant=\"normal\">\u03a9</mi>\n<mrow>\n<mn>11</mn>\n</mrow>\n</msub>\n</mtd>\n<mtd>\n<msub>\n<mi mathvariant=\"normal\">\u03a9</mi>\n<mrow>\n<mn>12</mn>\n</mrow>\n</msub>\n</mtd>\n<mtd>\n<mo>\u2026</mo>\n</mtd>\n<mtd>\n<msub>\n<mi mathvariant=\"normal\">\u03a9</mi>\n<mrow>\n<mn>1</mn>\n<msub>\n<mi>K</mi>\n<mrow>\n<mn>1</mn>\n</mrow>\n</msub>\n</mrow>\n</msub>\n</mtd>\n</mtr>\n<mtr>\n<mtd>\n<msub>\n<mi mathvariant=\"normal\">\u03a9</mi>\n<mrow>\n<mn>21</mn>\n</mrow>\n</msub>\n</mtd>\n<mtd>\n<msub>\n<mi mathvariant=\"normal\">\u03a9</mi>\n<mrow>\n<mn>22</mn>\n</mrow>\n</msub>\n</mtd>\n<mtd/>\n<mtd>\n<msub>\n<mi mathvariant=\"normal\">\u03a9</mi>\n<mrow>\n<mn>2</mn>\n<msub>\n<mi>K</mi>\n<mrow>\n<mn>1</mn>\n</mrow>\n</msub>\n</mrow>\n</msub>\n</mtd>\n</mtr>\n<mtr>\n<mtd/>\n<mtd>\n<mo>\u22ee</mo>\n</mtd>\n<mtd>\n<mo>\u22f1</mo>\n</mtd>\n<mtd>\n<mo>\u22ee</mo>\n</mtd>\n<mtd/>\n</mtr>\n<mtr>\n<mtd>\n<msub>\n<mi mathvariant=\"normal\">\u03a9</mi>\n<mrow>\n<msub>\n<mi>K</mi>\n<mrow>\n<mn>1</mn>\n</mrow>\n</msub>\n<mn>1</mn>\n</mrow>\n</msub>\n</mtd>\n<mtd>\n<msub>\n<mi mathvariant=\"normal\">\u03a9</mi>\n<mrow>\n<msub>\n<mi>K</mi>\n<mrow>\n<mn>1</mn>\n</mrow>\n</msub>\n<mn>2</mn>\n</mrow>\n</msub>\n</mtd>\n<mtd>\n<mo>\u2026</mo>\n</mtd>\n<mtd>\n<msub>\n<mi mathvariant=\"normal\">\u03a9</mi>\n<mrow>\n<msub>\n<mi>K</mi>\n<mrow>\n<mn>1</mn>\n</mrow>\n</msub>\n<msub>\n<mi>K</mi>\n<mrow>\n<mn>1</mn>\n</mrow>\n</msub>\n</mrow>\n</msub>\n</mtd>\n</mtr>\n</mtable>\n<mo>]</mo>\n</mrow>\n<mo>;</mo>\n</mrow>\n</mstyle>\n</math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "The matrix (<a href=\"#E59\">3.25</a>) is denoted V and the matrix (<a href=\"#E60\">3.26</a>)  <math id=\"inf39\"> <mi mathvariant=\"normal\">\u03a9</mi> <mo>.</mo> </math>  Disregarding irrelevant constants the likelihood function then becomes,",
+                            "type": "paragraph"
+                        },
+                        {
+                            "label": "(3.27)",
+                            "mathml": "<math>\n<mstyle displaystyle=\"true\" scriptlevel=\"0\">\n<mrow>\n<mi>L</mi>\n<mo>=</mo>\n<mo>\u2212</mo>\n<mi>l</mi>\n<mi>o</mi>\n<mi>g</mi>\n<mtext>\u00a0</mtext>\n<mi>d</mi>\n<mi>e</mi>\n<mi>t</mi>\n<mo stretchy=\"false\">(</mo>\n<mi>V</mi>\n<mo stretchy=\"false\">)</mo>\n<mo>+</mo>\n<mi>t</mi>\n<mi>r</mi>\n<mrow>\n<mo>{</mo>\n<mrow>\n<msup>\n<mi>V</mi>\n<mrow>\n<mo>\u2212</mo>\n<mn>1</mn>\n</mrow>\n</msup>\n<mo stretchy=\"false\">(</mo>\n<msup>\n<mi>y</mi>\n<mi>A</mi>\n</msup>\n<mo>\u2212</mo>\n<msubsup>\n<mi>X</mi>\n<mn>2</mn>\n<mi>A</mi>\n</msubsup>\n<mi>R</mi>\n<mi>\u03b3</mi>\n<mo stretchy=\"false\">)</mo>\n<mo stretchy=\"false\">(</mo>\n<msup>\n<mi>y</mi>\n<mi>A</mi>\n</msup>\n<mo>\u2212</mo>\n<msubsup>\n<mi>X</mi>\n<mn>2</mn>\n<mi>A</mi>\n</msubsup>\n<mi>R</mi>\n<mi>\u03b3</mi>\n<mo stretchy=\"false\">)</mo>\n<mrow>\n<mo>\u2032</mo>\n</mrow>\n</mrow>\n<mo>}</mo>\n</mrow>\n<mo>\u2212</mo>\n<mi>l</mi>\n<mi>o</mi>\n<mi>g</mi>\n<mtext>\u00a0</mtext>\n<mi>d</mi>\n<mi>e</mi>\n<mi>t</mi>\n<mo stretchy=\"false\">(</mo>\n<mi mathvariant=\"normal\">\u03a9</mi>\n<mo stretchy=\"false\">)</mo>\n<mo>+</mo>\n<mi>t</mi>\n<mi>r</mi>\n<mrow>\n<mo>{</mo>\n<mrow>\n<msup>\n<mi mathvariant=\"normal\">\u03a9</mi>\n<mrow>\n<mo>\u2212</mo>\n<mn>1</mn>\n</mrow>\n</msup>\n<mo stretchy=\"false\">(</mo>\n<mi>x</mi>\n<mo>\u2212</mo>\n<mo stretchy=\"false\">(</mo>\n<mi>I</mi>\n<mo>\u2297</mo>\n<msubsup>\n<mi>X</mi>\n<mn>2</mn>\n<mi>B</mi>\n</msubsup>\n<mo stretchy=\"false\">)</mo>\n<mi>r</mi>\n<mo stretchy=\"false\">)</mo>\n<mo stretchy=\"false\">(</mo>\n<mi>x</mi>\n<mo>\u2212</mo>\n<mo stretchy=\"false\">(</mo>\n<mi>I</mi>\n<mo>\u2297</mo>\n<msubsup>\n<mi>X</mi>\n<mn>2</mn>\n<mi>B</mi>\n</msubsup>\n<mo stretchy=\"false\">)</mo>\n<mi>r</mi>\n<mo stretchy=\"false\">)</mo>\n<mrow>\n<mo>\u2032</mo>\n</mrow>\n</mrow>\n<mo>}</mo>\n</mrow>\n<mo>;</mo>\n</mrow>\n</mstyle>\n</math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "The model will not be identified unless additional assumptions are made about the nature of the heteroscedasticity.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The TSLS estimate of  <math id=\"inf40\"> <mi>\u03b3</mi> </math>  is consistent. This result follows, because it is a function of consistent estimates of the parameters R of the auxiliary relations and it is in itself consistent conditional on R. This is true also for non-normal errors.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "<math id=\"inf41\"> <mi> </mi> <mi> </mi> <mi> </mi> <mi> </mi> <mi> </mi> <mi> </mi> <mi> </mi> <mi> </mi> <mi> </mi> <mi> </mi> <mi> </mi> <mi> </mi> <mi> </mi> <mover accent=\"true\"> <mrow> <mi>\u03b3</mi> </mrow> <mo>^</mo> </mover> </math> , however, is not unbiased. This is easily seen from the simple model with  <math id=\"inf42\"> <msub> <mrow> <mi>k</mi> </mrow> <mrow> <mn>1</mn> </mrow> </msub> <mo>=</mo> <msub> <mrow> <mi>k</mi> </mrow> <mrow> <mn>2</mn> </mrow> </msub> <mo>=</mo> <mn>1</mn> </math>  and only one  <math id=\"inf43\"> <mi>\u03b3</mi> </math> -parameter:",
+                            "type": "paragraph"
+                        },
+                        {
+                            "mathml": "<math>\n<mstyle displaystyle=\"true\" scriptlevel=\"0\">\n<mrow>\n<mrow>\n<mover>\n<mi>\u03b3</mi>\n<mo stretchy=\"false\">^</mo>\n</mover>\n</mrow>\n<mo>=</mo>\n<msup>\n<mrow>\n<mo>(</mo>\n<mfrac>\n<mrow>\n<mi mathvariant=\"normal\">\u03a3</mi>\n<msubsup>\n<mi>x</mi>\n<mn>1</mn>\n<mi>B</mi>\n</msubsup>\n<msubsup>\n<mi>x</mi>\n<mn>2</mn>\n<mi>B</mi>\n</msubsup>\n</mrow>\n<mrow>\n<mi mathvariant=\"normal\">\u03a3</mi>\n<mo stretchy=\"false\">(</mo>\n<msubsup>\n<mi>x</mi>\n<mn>2</mn>\n<mi>B</mi>\n</msubsup>\n<msup>\n<mo stretchy=\"false\">)</mo>\n<mn>2</mn>\n</msup>\n</mrow>\n</mfrac>\n<mo>)</mo>\n</mrow>\n<mrow>\n<mo>\u2212</mo>\n<mn>1</mn>\n</mrow>\n</msup>\n<mrow>\n<mo>(</mo>\n<mfrac>\n<mrow>\n<mi mathvariant=\"normal\">\u03a3</mi>\n<msubsup>\n<mi>x</mi>\n<mn>2</mn>\n<mi>A</mi>\n</msubsup>\n<mi>y</mi>\n</mrow>\n<mrow>\n<mi mathvariant=\"normal\">\u03a3</mi>\n<mo stretchy=\"false\">(</mo>\n<msubsup>\n<mi>x</mi>\n<mn>2</mn>\n<mi>A</mi>\n</msubsup>\n<msup>\n<mo stretchy=\"false\">)</mo>\n<mn>2</mn>\n</msup>\n</mrow>\n</mfrac>\n<mo>)</mo>\n</mrow>\n</mrow>\n</mstyle>\n</math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "mathml": "<math>\n<mstyle displaystyle=\"true\" scriptlevel=\"0\">\n<mrow>\n<mi>E</mi>\n<mo stretchy=\"false\">(</mo>\n<mrow>\n<mover>\n<mi>\u03b3</mi>\n<mo stretchy=\"false\">^</mo>\n</mover>\n</mrow>\n<mo stretchy=\"false\">)</mo>\n<mo>=</mo>\n<msub>\n<mi>E</mi>\n<mrow>\n<msub>\n<mi>X</mi>\n<mn>1</mn>\n</msub>\n</mrow>\n</msub>\n<mo stretchy=\"false\">(</mo>\n<mi>E</mi>\n<mo stretchy=\"false\">(</mo>\n<mrow>\n<mover>\n<mi>\u03b3</mi>\n<mo stretchy=\"false\">^</mo>\n</mover>\n</mrow>\n<mrow>\n<mo stretchy=\"false\">|</mo>\n</mrow>\n<msub>\n<mi>x</mi>\n<mn>1</mn>\n</msub>\n<mo stretchy=\"false\">)</mo>\n<mo stretchy=\"false\">)</mo>\n<mo>=</mo>\n<msub>\n<mi>E</mi>\n<mrow>\n<msub>\n<mi>X</mi>\n<mn>1</mn>\n</msub>\n</mrow>\n</msub>\n<mrow>\n<mo>{</mo>\n<mrow>\n<msup>\n<mrow>\n<mo>(</mo>\n<mfrac>\n<mrow>\n<mi mathvariant=\"normal\">\u03a3</mi>\n<msubsup>\n<mi>x</mi>\n<mn>1</mn>\n<mi>B</mi>\n</msubsup>\n<msubsup>\n<mi>x</mi>\n<mn>2</mn>\n<mi>B</mi>\n</msubsup>\n</mrow>\n<mrow>\n<mi mathvariant=\"normal\">\u03a3</mi>\n<mo stretchy=\"false\">(</mo>\n<msubsup>\n<mi>x</mi>\n<mn>2</mn>\n<mi>B</mi>\n</msubsup>\n<msup>\n<mo stretchy=\"false\">)</mo>\n<mn>2</mn>\n</msup>\n</mrow>\n</mfrac>\n<mo>)</mo>\n</mrow>\n<mrow>\n<mo>\u2212</mo>\n<mn>1</mn>\n</mrow>\n</msup>\n<mi>\u03b3</mi>\n<mi>r</mi>\n</mrow>\n<mo>}</mo>\n</mrow>\n<mo>\u2260</mo>\n<msup>\n<mi>r</mi>\n<mrow>\n<mo>\u2212</mo>\n<mn>1</mn>\n</mrow>\n</msup>\n<mi>\u03b3</mi>\n<mi>r</mi>\n<mo>;</mo>\n</mrow>\n</mstyle>\n</math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "The critical assumptions of the present model and of the whole approach are those about the auxiliary relations (<a href=\"#E27\">3.3b</a>) and (<a href=\"#E28\">3.3c</a>). It might at first seem very constraining to assume that there exist linear relations which explain the unobserved variables and that these relations are the same for both samples. However, we do not necessarily have to give them a causal interpretation but could rather look upon them as predictive relations. In practical applications of this approach, we will the face the problem of finding good predictors. Linearity is not a binding restriction. At the minor cost of discontinuities, non-linear relations can be transformed into linear relations with dummy variables.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "If the samples are sufficiently large, we could use dummy variables only and still obtain a good precision of the estimates. That would be equivalent to grouping the two samples by the same groups, merging them at the group level and then estimating the relation between y and X<sub>1</sub> from group means.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The auxiliary relations must be formulated in such a way that no parameters are needed to predict X<sub>1</sub> in sample A, which cannot be estimated from sample B. This means that the two samples cannot differ to much with respect to observational units, variable definitions etc. However, the two samples do not have to be of the same size, and the number of observations with a particular configuration of X<sub>2</sub>-values can differ between the samples. Other differences might also be acceptable. For instance, if the model explains household behavior and sample A includes household data, it might be possible to use data on individual persons in sample B, viz. if household behavior (data) can be predicted from individual behavior (data).",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s4",
+                    "title": "3. Estimation of a linear regression model",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "A simulation experiment was made to illustrate the estimation procedure numerically and to get an idea about its small sample properties. The experiment was based on a demand equation, which relates expenditures on food, beverages and other every day commodities to household disposable income, age of household head and household size. The parameters of this function were estimated from two samples of household data. The first sample included all variables except disposable income. There was, however, in this sample information about tax assessed income for each household member. The second sample included both household disposable income and assessed income, as well as additional variables which could be used to predict disposable income, the most important one being the ownership of owner-occupied houses.<sup><a href=\"#fn3\">3</a></sup> The model was specified as follows,",
+                            "type": "paragraph"
+                        },
+                        {
+                            "mathml": "<math>\n<mstyle displaystyle=\"true\" scriptlevel=\"0\">\n<mrow>\n<mi mathvariant=\"normal\">L</mi>\n<mi mathvariant=\"normal\">E</mi>\n<mi mathvariant=\"normal\">X</mi>\n<mi mathvariant=\"normal\">P</mi>\n<mo>=</mo>\n<mn>3.594</mn>\n<mo>+</mo>\n<mn>.4</mn>\n<mi mathvariant=\"normal\">L</mi>\n<mi mathvariant=\"normal\">D</mi>\n<mi mathvariant=\"normal\">I</mi>\n<mi mathvariant=\"normal\">S</mi>\n<mi mathvariant=\"normal\">P</mi>\n<mo>+</mo>\n<mn>.04</mn>\n<mi mathvariant=\"normal\">A</mi>\n<mi mathvariant=\"normal\">G</mi>\n<mi mathvariant=\"normal\">E</mi>\n<mo>\u2212</mo>\n<mn>.00043</mn>\n<mi mathvariant=\"normal\">A</mi>\n<mi mathvariant=\"normal\">G</mi>\n<msup>\n<mi mathvariant=\"normal\">E</mi>\n<mn>2</mn>\n</msup>\n<mo>+</mo>\n<mn>.644</mn>\n<mi mathvariant=\"normal\">H</mi>\n<mi mathvariant=\"normal\">S</mi>\n<mo>\u2212</mo>\n<mn>.0723</mn>\n<mi mathvariant=\"normal\">H</mi>\n<msup>\n<mi mathvariant=\"normal\">S</mi>\n<mn>2</mn>\n</msup>\n<mo>+</mo>\n<mi mathvariant=\"normal\">u</mi>\n<mo>;</mo>\n</mrow>\n</mstyle>\n</math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "mathml": "<math>\n<mstyle displaystyle=\"true\" scriptlevel=\"0\">\n<mrow>\n<mi>u</mi>\n<mo>\u223c</mo>\n<mi>N</mi>\n<mo stretchy=\"false\">(</mo>\n<mn>0</mn>\n<mo>,</mo>\n<msqrt>\n<mn>.45</mn>\n</msqrt>\n<mo stretchy=\"false\">)</mo>\n<mo>;</mo>\n</mrow>\n</mstyle>\n</math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "mathml": "<math>\n<mstyle displaystyle=\"true\" scriptlevel=\"0\">\n<mrow>\n<mi mathvariant=\"normal\">L</mi>\n<mi mathvariant=\"normal\">D</mi>\n<mi mathvariant=\"normal\">I</mi>\n<mi mathvariant=\"normal\">S</mi>\n<mi mathvariant=\"normal\">P</mi>\n<mo>=</mo>\n<mn>2.665</mn>\n<mo>+</mo>\n<mn>.7445</mn>\n<mi mathvariant=\"normal\">L</mi>\n<mi mathvariant=\"normal\">T</mi>\n<mi mathvariant=\"normal\">A</mi>\n<mi mathvariant=\"normal\">X</mi>\n<mi mathvariant=\"normal\">I</mi>\n<mi mathvariant=\"normal\">N</mi>\n<mi mathvariant=\"normal\">C</mi>\n<mo>+</mo>\n<mn>.5626</mn>\n<mi mathvariant=\"normal\">D</mi>\n<mi mathvariant=\"normal\">H</mi>\n<mo>\u2212</mo>\n<mn>.00000176</mn>\n<mi mathvariant=\"normal\">D</mi>\n<mi mathvariant=\"normal\">H</mi>\n<mi mathvariant=\"normal\">T</mi>\n<mi mathvariant=\"normal\">A</mi>\n<mi mathvariant=\"normal\">X</mi>\n<mi mathvariant=\"normal\">I</mi>\n<mi mathvariant=\"normal\">N</mi>\n<mi mathvariant=\"normal\">C</mi>\n<mo>+</mo>\n<mo>\u2208</mo>\n<mo>;</mo>\n</mrow>\n</mstyle>\n</math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "mathml": "<math>\n<mstyle displaystyle=\"true\" scriptlevel=\"0\">\n<mrow>\n<mo>\u2208\u223c</mo>\n<mi>N</mi>\n<mo stretchy=\"false\">(</mo>\n<mn>0</mn>\n<mo>,</mo>\n<msqrt>\n<mn>.053</mn>\n</msqrt>\n<mo stretchy=\"false\">)</mo>\n<mo>;</mo>\n</mrow>\n</mstyle>\n</math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "mathml": "<math>\n<mstyle displaystyle=\"true\" scriptlevel=\"0\">\n<mrow>\n<mi>E</mi>\n<mo stretchy=\"false\">(</mo>\n<mi>u</mi>\n<mo>\u2208</mo>\n<mo stretchy=\"false\">)</mo>\n<mo>=</mo>\n<mn>0</mn>\n<mo>;</mo>\n</mrow>\n</mstyle>\n</math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "where",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "LEXP = The logarithm of expenditures on food, beverages and other everyday commodities,",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "LDISP= The logarithm of disposable income,",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "AGE= The age of the household head,",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "HS = Household size,",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "LTAXINC = The logarithm of the total of the assessed incomes of all household members,",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "DH = A dummy variable for owners of owner-occupied houses, and DHTAXINC = Assessed income for owners of owner-occupied houses; zero for non-owners.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "With minor adjustments the parameter values were obtained as the least squares estimates of the model from a small sample of 144 households, which included survey and register information of all variables. The observations on the exogenous variables of this sample were then used in the simulations. First, the sample was randomly divided into two samples, <i>A</i> and <i>B</i>. Then for each observation, LDISP was simulated either four times or ten times. In sample <i>A</i> the simulated LDISP values were used to simulate LEXP values. In this way we obtained a simulated sample four or ten times larger than the original sample but with the same covariance structure of the exogenous variables. Finally, the parameters of the demand function were estimated by the TSLS procedure using the two subsamples. The whole simulation and estimation procedure was then replicated.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "There are altogether seven simulations. In all but the last two of these, the two subsamples were of the same size, 288 in simulation 1 and 2 and 788 in 3 and 5. In simulations 7 and 8 sample A included 360 observations, while sample B was three times as large.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The results are shown in <a href=\"#table1\">Table 1</a>. They indicate that, when the true predictive relation is used, there is virtually no bias. The bias estimates given in the table are so small that they are dominated by the random fluctuations of the simulation experiment. In simulation 5 the predictive relation used in the estimation was misspecified. The house-owner variable and the interaction variable were both deleted, and the logarithm of assessed income was thus the only predictor.<sup><a href=\"#fn4\">4</a></sup> The result is a small bias. The income elasticity is underestimated by 5 per cent, and there is also an 8-9 per cent bias in the estimates of the household size parameters.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "table1",
+                                    "label": "Table 1",
+                                    "tables": [
+                                        "<table>\n<thead>\n<tr>\n<th align=\"left\"/>\n<th align=\"left\"/>\n<th align=\"left\">\u03b3<sub>1</sub>\n</th>\n<th align=\"left\">\u03b3<sub>2</sub>\n</th>\n<th align=\"left\">\u03b3<sub>3</sub>\n</th>\n<th align=\"left\">\u03b3<sub>4</sub>\n</th>\n<th align=\"left\">\u03b3<sub>5</sub>\n</th>\n<th align=\"left\">\u03b3<sub>6</sub>\n</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td align=\"left\" colspan=\"2\">Parameter values</td>\n<td align=\"left\">3.594</td>\n<td align=\"left\">0.400</td>\n<td align=\"left\">0.040</td>\n<td align=\"left\">-0.00043</td>\n<td align=\"left\">0.644</td>\n<td align=\"left\">-0.0723</td>\n</tr>\n<tr>\n<td align=\"left\">\n<i>Simulation 1:</i>\n</td>\n<td align=\"left\">TSLS</td>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n</tr>\n<tr>\n<td align=\"left\">n<sub>A</sub>\n</td>\n<td align=\"left\">288</td>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n</tr>\n<tr>\n<td align=\"left\">n<sub>B</sub>\n</td>\n<td align=\"left\">288</td>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n</tr>\n<tr>\n<td align=\"left\">Replications</td>\n<td align=\"left\">800</td>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n</tr>\n<tr>\n<td align=\"left\">Relative bias(%)</td>\n<td align=\"left\"/>\n<td align=\"left\">0.42</td>\n<td align=\"left\">-0.82</td>\n<td align=\"left\">2.42</td>\n<td align=\"left\">1.72</td>\n<td align=\"left\">0.79</td>\n<td align=\"left\">1.36</td>\n</tr>\n<tr>\n<td align=\"left\">Relative</td>\n<td align=\"left\"/>\n<td align=\"left\">32.82</td>\n<td align=\"left\">29.55</td>\n<td align=\"left\">57.50</td>\n<td align=\"left\">53.49</td>\n<td align=\"left\">27.00</td>\n<td align=\"left\">36.66</td>\n</tr>\n<tr>\n<td align=\"left\">Relative sq. root mean</td>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n</tr>\n<tr>\n<td align=\"left\">variance estimate (%)</td>\n<td align=\"left\"/>\n<td align=\"left\">33.46</td>\n<td align=\"left\">30.30</td>\n<td align=\"left\">56.00</td>\n<td align=\"left\">53.49</td>\n<td align=\"left\">27.83</td>\n<td align=\"left\">38.59</td>\n</tr>\n<tr>\n<td align=\"left\">\n<i>Simulation 2</i>:</td>\n<td align=\"left\">LS, X<sub>2</sub>=LDISP known</td>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n</tr>\n<tr>\n<td align=\"left\">n<sub>A</sub>\n</td>\n<td align=\"left\">288</td>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n</tr>\n<tr>\n<td align=\"left\">Replications</td>\n<td align=\"left\">400</td>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n</tr>\n<tr>\n<td align=\"left\">Relative</td>\n<td align=\"left\"/>\n<td align=\"left\">29.54</td>\n<td align=\"left\">24.60</td>\n<td align=\"left\">56.25</td>\n<td align=\"left\">53.49</td>\n<td align=\"left\">24.78</td>\n<td align=\"left\">34.16</td>\n</tr>\n<tr>\n<td align=\"left\">Relative sq. root mean</td>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n</tr>\n<tr>\n<td align=\"left\">variance estimate (%)</td>\n<td align=\"left\"/>\n<td align=\"left\">28.54</td>\n<td align=\"left\">24.75</td>\n<td align=\"left\">54.75</td>\n<td align=\"left\">51.16</td>\n<td align=\"left\">26.89</td>\n<td align=\"left\">37.48</td>\n</tr>\n<tr>\n<td align=\"left\">\n<i>Simulation 3</i>:</td>\n<td align=\"left\">TSLS</td>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n</tr>\n<tr>\n<td align=\"left\">n<sub>A</sub>\n</td>\n<td align=\"left\">720</td>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n</tr>\n<tr>\n<td align=\"left\">n<sub>B</sub>\n</td>\n<td align=\"left\">720</td>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n</tr>\n<tr>\n<td align=\"left\">Replications</td>\n<td align=\"left\">600</td>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n</tr>\n<tr>\n<td align=\"left\">Relative bias (%)</td>\n<td align=\"left\"/>\n<td align=\"left\">-1.00</td>\n<td align=\"left\">0.61</td>\n<td align=\"left\">1.83</td>\n<td align=\"left\">0.28</td>\n<td align=\"left\">-0.14</td>\n<td align=\"left\">-1.14</td>\n</tr>\n<tr>\n<td align=\"left\">Relative</td>\n<td align=\"left\"/>\n<td align=\"left\">21.82</td>\n<td align=\"left\">19.16</td>\n<td align=\"left\">35.30</td>\n<td align=\"left\">33.23</td>\n<td align=\"left\">17.23</td>\n<td align=\"left\">24.17</td>\n</tr>\n<tr>\n<td align=\"left\">Relative sq. root mean</td>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n</tr>\n<tr>\n<td align=\"left\">variance estimate (%)</td>\n<td align=\"left\"/>\n<td align=\"left\">21.22</td>\n<td align=\"left\">19.21</td>\n<td align=\"left\">35.54</td>\n<td align=\"left\">33.53</td>\n<td align=\"left\">17.64</td>\n<td align=\"left\">24.45</td>\n</tr>\n<tr>\n<td align=\"left\">\n<i>Simulation 4</i>:</td>\n<td align=\"left\">LS, X<sub>2</sub>=LDISP known</td>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n</tr>\n<tr>\n<td align=\"left\">n<sub>A</sub>\n</td>\n<td align=\"left\">720</td>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n</tr>\n<tr>\n<td align=\"left\">Replications</td>\n<td align=\"left\">1000</td>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n</tr>\n<tr>\n<td align=\"left\">Relative</td>\n<td align=\"left\"/>\n<td align=\"left\">17.57</td>\n<td align=\"left\">15.05</td>\n<td align=\"left\">34.83</td>\n<td align=\"left\">32.94</td>\n<td align=\"left\">16.62</td>\n<td align=\"left\">23.49</td>\n</tr>\n<tr>\n<td align=\"left\">Relative sq. root mean</td>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n</tr>\n<tr>\n<td align=\"left\">variance estimate (%)</td>\n<td align=\"left\"/>\n<td align=\"left\">17.99</td>\n<td align=\"left\">15.61</td>\n<td align=\"left\">34.57</td>\n<td align=\"left\">32.66</td>\n<td align=\"left\">16.99</td>\n<td align=\"left\">23.69</td>\n</tr>\n<tr>\n<td align=\"left\">\n<i>Simulation 5:</i>\n</td>\n<td align=\"left\">TSLS, wrong predictors</td>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n</tr>\n<tr>\n<td align=\"left\">n<sub>A</sub>\n</td>\n<td align=\"left\">720</td>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n</tr>\n<tr>\n<td align=\"left\">n<sub>B</sub>\n</td>\n<td align=\"left\">720</td>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n</tr>\n<tr>\n<td align=\"left\">Replications</td>\n<td align=\"left\">600</td>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n</tr>\n<tr>\n<td align=\"left\">Relative bias (%)</td>\n<td align=\"left\"/>\n<td align=\"left\">1.62</td>\n<td align=\"left\">-4.86</td>\n<td align=\"left\">2.18</td>\n<td align=\"left\">-0.22</td>\n<td align=\"left\">9.13</td>\n<td align=\"left\">-7.70</td>\n</tr>\n<tr>\n<td align=\"left\">Relative</td>\n<td align=\"left\"/>\n<td align=\"left\">24.16</td>\n<td align=\"left\">22.57</td>\n<td align=\"left\">37.55</td>\n<td align=\"left\">35.52</td>\n<td align=\"left\">19.66</td>\n<td align=\"left\">25.84</td>\n</tr>\n<tr>\n<td align=\"left\">Relative sq. root mean</td>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n</tr>\n<tr>\n<td align=\"left\">variance estimate (%)</td>\n<td align=\"left\"/>\n<td align=\"left\">24.02</td>\n<td align=\"left\">21.56</td>\n<td align=\"left\">36.22</td>\n<td align=\"left\">34.28</td>\n<td align=\"left\">17.38</td>\n<td align=\"left\">24.51</td>\n</tr>\n<tr>\n<td align=\"left\">\n<i>Simulation 6:</i>\n</td>\n<td align=\"left\">TSLS</td>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n</tr>\n<tr>\n<td align=\"left\">n<sub>A</sub>\n</td>\n<td align=\"left\">360</td>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n</tr>\n<tr>\n<td align=\"left\">n<sub>B</sub>\n</td>\n<td align=\"left\">1080</td>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n</tr>\n<tr>\n<td align=\"left\">Replications</td>\n<td align=\"left\">400</td>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n</tr>\n<tr>\n<td align=\"left\">Relative bias (%)</td>\n<td align=\"left\"/>\n<td align=\"left\">-1.37</td>\n<td align=\"left\">2.24</td>\n<td align=\"left\">-5.30</td>\n<td align=\"left\">5.47</td>\n<td align=\"left\">-1.65</td>\n<td align=\"left\">3.02</td>\n</tr>\n<tr>\n<td align=\"left\">Relative</td>\n<td align=\"left\"/>\n<td align=\"left\">31.11</td>\n<td align=\"left\">31.31</td>\n<td align=\"left\">59.01</td>\n<td align=\"left\">56.01</td>\n<td align=\"left\">28.78</td>\n<td align=\"left\">42.99</td>\n</tr>\n<tr>\n<td align=\"left\">Relative sq. root mean</td>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n</tr>\n<tr>\n<td align=\"left\">variance estimate (%)</td>\n<td align=\"left\"/>\n<td align=\"left\">29.74</td>\n<td align=\"left\">29.85</td>\n<td align=\"left\">60.06</td>\n<td align=\"left\">57.20</td>\n<td align=\"left\">27.48</td>\n<td align=\"left\">40.72</td>\n</tr>\n<tr>\n<td align=\"left\">\n<i>Simulation 7:</i>\n</td>\n<td align=\"left\">LS, X<sub>2</sub>=LDISP known</td>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n</tr>\n<tr>\n<td align=\"left\">n<sub>A</sub>\n</td>\n<td align=\"left\">360</td>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n</tr>\n<tr>\n<td align=\"left\">Replications</td>\n<td align=\"left\">400</td>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n</tr>\n<tr>\n<td align=\"left\">Relative bias (%)</td>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n</tr>\n<tr>\n<td align=\"left\">Relative</td>\n<td align=\"left\"/>\n<td align=\"left\">25.37</td>\n<td align=\"left\">23.90</td>\n<td align=\"left\">54.13</td>\n<td align=\"left\">51.74</td>\n<td align=\"left\">27.62</td>\n<td align=\"left\">41.92</td>\n</tr>\n<tr>\n<td align=\"left\">Relative sq. root mean</td>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n<td align=\"left\"/>\n</tr>\n<tr>\n<td align=\"left\">variance estimate (%)</td>\n<td align=\"left\"/>\n<td align=\"left\">24.91</td>\n<td align=\"left\">23.56</td>\n<td align=\"left\">56.28</td>\n<td align=\"left\">53.79</td>\n<td align=\"left\">26.59</td>\n<td align=\"left\">39.77</td>\n</tr>\n</tbody>\n</table>"
+                                    ],
+                                    "title": "Results from seven simulation experiments",
+                                    "type": "table"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "text": "Since the LDISP variable is predicted with an error, it might be expected that the efficiency of the TSLS estimator would be less than for the LS estimator based on a complete sample. In <a href=\"#table1\">Table 1</a> we can compare the relative root mean-square errors for these two cases.<sup><a href=\"#fn5\">5</a></sup> In both cases this measure includes the variability caused by the drawing of a new LDISP vector for each sample. We find that the estimated relative efficiency, defined as the ratio of the two root mean-square errors, is approximately 80 per cent for the income elasticity, i.e. for parameter  <math id=\"inf44\"> <msub> <mrow> <mi>\u03b3</mi> </mrow> <mrow> <mn>2</mn> </mrow> </msub> </math> . It is between 80 and 90 per cent for the intercept and above 90 per cent for the other parameters. The number of replications is not large enough to justify any conclusions about the dependence of the efficiency on the sample size. When the predictor relation is incorrectly specified there is an additional, but in this particular case, modest loss in efficiency. This is at least partly caused by the bias component.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Finally, <a href=\"#table1\">Table 1</a> also shows that the variance formula for the ordinary least-squares estimates applied to the second step of the TSLS procedure, i.e. the diagonal elements of  <math id=\"inf45\"> <mstyle displaystyle=\"true\" scriptlevel=\"0\"> <mrow> <msup> <mi>S</mi> <mn>2</mn> </msup> <mo stretchy=\"false\">(</mo> <mrow> <mover> <msub> <mi>X</mi> <mn>1</mn> </msub> <mo stretchy=\"false\">^</mo> </mover> </mrow> <mrow> <mo>\u2032</mo> </mrow> <mrow> <mover> <msub> <mi>X</mi> <mn>1</mn> </msub> <mo stretchy=\"false\">^</mo> </mover> </mrow> <msup> <mo stretchy=\"false\">)</mo> <mrow> <mo>\u2212</mo> <mn>1</mn> </mrow> </msup> <mo>,</mo> </mrow> </mstyle> </math>  gives good estimates of the true variance of  <math id=\"inf46\"> <mstyle displaystyle=\"true\" scriptlevel=\"0\"> <mrow> <mrow> <mover> <mi>\u03b3</mi> <mo stretchy=\"false\">^</mo> </mover> </mrow> </mrow> </mstyle> </math> . S<sup>2</sup> is the residual variance in the second estimation step. The last row of each panel of <a href=\"#table1\">Table 1</a> shows the square-root of the mean of the replications of each diagonal element relative to the true parameter value. They differ very little from their corresponding relative root mean-square errors.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s5",
+                    "title": "4. A simulation experiment",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "It is not unusual in nonexperimental studies that variables are missing or replaced by proxies. Even when a new survey is to be made it might not be feasible to collect all items of information from every respondent, either because of the risk for invasion of privacy or because the respondent burden might become so high that the response rate would drop below an acceptable level. One approach to solve this problem has been suggested in this paper. When the statistical problem is to estimate a linear relation between <i>y</i> and <i>x</i> or an equation in an interdependent linear system, one sample including all variables is not necessarily needed, but two or more samples, each with missing variables, can be used instead. A sampling scheme like matrix sampling could thus be used in combination with the estimation method suggested. A condition is that it is possible to predict the missing variables.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "If \"true\" predictors are used, the two-stage least-squares estimator suggested has good properties. It is consistent asymptotically normal. For a proof see <a href=\"#bib7\">Klevmarken (1983b)</a>. What has been shown here is that the estimator is a maximum-likelihood estimator, if the moment matrices of the regression model and the predictive relations are scalar. When they are not scalar matrices, the maximum-likelihood estimates can be obtained by numerical optimization of the likelihood function.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "A sampling experiment has indicated that the two-stage least-squares estimator also has favorable small sample properties. We found virtually no bias, and the decrease in efficiency, relative to the case with one complete sample, was small.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "In practice it might be difficult to know the \"true\" predictors. In the case of the interdependent model, the predictors are given by the model. If all of them cannot be used, e.g. because of a shortage of data, the estimates will no longer be consistent (see <a href=\"#bib5\">Klevmarken (1982)</a>). For the regression model the same conclusion does not necessarily follow. In this case the predictive relations do not necessarily have the same status of theory. To some extent we can choose these relations at our convenience. If <i>x<sub>1</sub> </i> is a stochastic variable, it is always possible to define distributions conditional on some <i>x<sub>2</sub> </i>. If these distributions do not have the same mean,  <math id=\"inf47\"> <mi>E</mi> <mfenced separators=\"|\"> <mrow> <msub> <mrow> <mi>x</mi> </mrow> <mrow> <mn>1</mn> </mrow> </msub> </mrow> <mrow> <msub> <mrow> <mi>x</mi> </mrow> <mrow> <mn>2</mn> </mrow> </msub> </mrow> </mfenced> </math>  could, in principle, be used as a predictive relation. The efficiency of the resulting estimate would, however, depend on how well this relation predicts <i>x<sub>1</sub> </i>. If the residual variance is high, the estimates are likely to have a high variance as well. In practical applications it would thus be desirable to use at least part of sample <i>B</i> to find good predictors. This search process is stochastic, and the variability introduced by the search should, in principle, be taken into account when the properties of the estimator are evaluated.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "With  <math id=\"inf48\"> <msub> <mrow> <mi>X</mi> </mrow> <mrow> <mn>1</mn> </mrow> </msub> </math>  unobserved and with no supplementary information, the regression model is unidentified. The identification is achieved by the predictive relation, which adds the necessary <i>a priori</i> information and bridges the two samples. <i>A priori</i> information might also come in other forms. For instance, if the unobserved <i>X<sub>1</sub> </i> variables do not only explain one y-variable but two or more variables, we could look upon the y-variables as indicators of <i>X<sub>1</sub> </i> and arrive at a model which is similar to a factor analysis model. All these indicators do not necessarily have to come from the same sample. Although the details have to be worked out, it should be possible to combine two or more independent samples in this case as well.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "There are common features of the approach suggested in this paper and the general principles of statistical matching. In statistical matching similar observations in the two samples are matched. Similarity is defined either by a grouping principle or by a distance measure defined on a set of variables. These variables basically serve the same purpose as the predictor variables in the TSLS approach. There are, however, also important differences. In most applications of statistical matching there is the implicit assumption of independence between <i>y</i> and <i>X<sub>1</sub> </i> conditional on <i>X<sub>2</sub> </i>. The models discussed in this paper do not involve this assumption. The conditional covariance between <i>y</i> and <i>X<sub>1</sub> </i> in the regression model is a function of the structural parameters  <math id=\"inf49\"> <mi>\u03b3</mi> </math>  and the moment matrix of the errors in the predictor relations.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Finally, a remark on functional form. Linear models have been assumed throughout this paper. Extending the same approach to non-linear models would be quite conceivable, and there is no reason why this would not be feasible. The properties of the estimates would, however, be more difficult to derive, and this remains to be done.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s6",
+                    "title": "5. Concluding remarks",
+                    "type": "section"
+                }
+            ],
+            "id": "s0",
+            "title": "Main text",
+            "type": "section"
+        },
+        {
+            "id": "footnotes",
+            "title": "Footnotes",
+            "type": "section",
+            "content": [
+                {
+                    "content": [
+                        {
+                            "text": "For a discussion of the need for microdata in economics, see <a href=\"#bib6\">Klevmarken (1983a)</a>.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "fn1",
+                    "title": "1.",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "This corrects results given in <a href=\"#bib5\">Klevmarken (1982)</a>. A proof is parallel to that given in <a href=\"#bib7\">Klevmarken (1983b)</a>.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "fn2",
+                    "title": "2.",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "Deduction of interest payments reduces the assessed income for owners of owner-occupied houses, as compared with non-owners",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "fn3",
+                    "title": "3.",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "The full model was, of course, used to simulate data.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "fn4",
+                    "title": "4.",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "The relative root mean-square error for the estimator  <math id=\"inf50\"> <mstyle displaystyle=\"true\" scriptlevel=\"0\"> <mrow> <msub> <mrow> <mover> <mi>\u03b3</mi> <mo stretchy=\"false\">^</mo> </mover> </mrow> <mi>i</mi> </msub> </mrow> </mstyle> </math> \u2009is defined as <math id=\"inf51\"> <mstyle displaystyle=\"true\" scriptlevel=\"0\"> <mrow> <msqrt> <mi>M</mi> <mi>S</mi> <msub> <mi>E</mi> <mrow> <mi>i</mi> </mrow> </msub> </msqrt> <mrow> <mo>/</mo> </mrow> <msub> <mi>\u03b3</mi> <mrow> <mi>i</mi> </mrow> </msub> <mo>.</mo> </mrow> </mstyle> </math>",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "fn5",
+                    "title": "5.",
+                    "type": "section"
+                }
+            ]
+        }
+    ],
+    "references": [
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Barr, RS",
+                        "preferred": "RS Barr"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Stewart, WH",
+                        "preferred": "WH Stewart"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Turner, JS",
+                        "preferred": "JS Turner"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "An Empirical Evaluation of Statistical Matching Methodologies. Report Prepared for the Office of Assistant Secretary for Planning and Evaluation",
+            "date": "1982",
+            "id": "bib1",
+            "publisher": {
+                "name": [
+                    "U.S. Department of Health and Human Resources"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "articleTitle": "Equalizing Differences in the Labor Market",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Brown, C",
+                        "preferred": "C Brown"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1980",
+            "doi": "10.2307/1884607",
+            "id": "bib2",
+            "journal": "The Quarterly Journal of Economics",
+            "pages": "113",
+            "type": "journal",
+            "volume": "\n94\n"
+        },
+        {
+            "articleTitle": "A Sample of Ideas for Research and Development in the Theory and Methods of Sample Surveys",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Dalenius, T",
+                        "preferred": "T Dalenius"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1982",
+            "id": "bib3",
+            "journal": "Utilitas Mathematica",
+            "pages": {
+                "first": "59",
+                "last": "74",
+                "range": "59\u201374"
+            },
+            "type": "journal",
+            "volume": "\n21 A\n"
+        },
+        {
+            "articleTitle": "Maximum-Likelihood Estimation of Regressions Containing Unobservable Independent Variables",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Goldberger, AS",
+                        "preferred": "AS Goldberger"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1972",
+            "doi": "10.2307/2525901",
+            "id": "bib4",
+            "journal": "International Economic Review",
+            "pages": "1",
+            "type": "journal",
+            "volume": "\n13\n"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Klevmarken, NA",
+                        "preferred": "NA Klevmarken"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1982",
+            "details": "156\u2013161, \n, \n, \n, Missing Variables and Two-Stage Least-Squares. Estimation from More than One Data Set. American Statistical Association, Proceedings of the Business and Economic Statistics Section, \n, p, \n, \n",
+            "id": "bib5",
+            "title": "Missing Variables and Two-Stage Least-Squares. Estimation from More than One Data Set. American Statistical Association, Proceedings of the Business and Economic Statistics Section",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Klevmarken, NA",
+                        "preferred": "NA Klevmarken"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1983",
+            "details": "\n, \n, \n, Micro Econometrics, the IUI Yearbook 1982/83, The Industrial Institute for Economics and Social Research, \n, Stockholm, Sweden, \n",
+            "id": "bib6",
+            "title": "Micro Econometrics, the IUI Yearbook 1982/83, The Industrial Institute for Economics and Social Research",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Klevmarken, NA",
+                        "preferred": "NA Klevmarken"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "Asymptotic Properties of a Least-Squares Estimator Using Incomplete Data. Research Report 1983:3",
+            "date": "1983",
+            "discriminator": "b",
+            "id": "bib7",
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "Sweden"
+                        ]
+                    },
+                    "formatted": [
+                        "Sweden"
+                    ]
+                },
+                "name": [
+                    "Department of Statistics, University of Gothenburg"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Paass, G",
+                        "preferred": "G Paass"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "Statistical Match with Additional Information. Report IPES.82.0204",
+            "date": "1982",
+            "id": "bib8",
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "Bonn"
+                        ]
+                    },
+                    "formatted": [
+                        "Bonn"
+                    ]
+                },
+                "name": [
+                    "Gesellschaft fur Matematik und Datenverarbeitung MBH"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Rodgers, WL",
+                        "preferred": "WL Rodgers"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "DeVol, EB",
+                        "preferred": "EB DeVol"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "An Evaluation of Statistical Matching. Report from ISR",
+            "date": "1982",
+            "id": "bib9",
+            "publisher": {
+                "name": [
+                    "University of Michigan"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "authors": [
+                {
+                    "name": "U.S. Department of Commerce",
+                    "type": "group"
+                }
+            ],
+            "date": "1980",
+            "details": "\n, \n, \n, Report on Exact and Statistical Matching Techniques. Statistical Policy Working Paper 5, \n",
+            "id": "bib10",
+            "title": "Report on Exact and Statistical Matching Techniques. Statistical Policy Working Paper 5",
+            "type": "unknown"
+        },
+        {
+            "articleTitle": "Estimation of Regression Relationships Containing Unobservable Variables",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Zellner, A",
+                        "preferred": "A Zellner"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1970",
+            "doi": "10.2307/2525323",
+            "id": "bib11",
+            "journal": "International Economic Review",
+            "pages": "441",
+            "type": "journal",
+            "volume": "\n11\n"
+        }
+    ],
+    "acknowledgements": [
+        {
+            "text": "This article was orginally published as \"Statistical Review 1983:5, pp 67-79, Essays in Honour of Tore Dalenius, SCB (Statistics Sweden), Stockholm.",
+            "type": "paragraph"
+        },
+        {
+            "text": "Paul Olovsson very efficiently helped with the programming, and Claes Cassel contributed useful comments on a previous draft.",
+            "type": "paragraph"
+        }
+    ],
+    "-meta": {
+        "patched": true
+    },
+    "stage": "published"
+}

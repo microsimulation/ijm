@@ -1,0 +1,928 @@
+{
+    "status": "vor",
+    "id": "00255",
+    "version": 1,
+    "type": "research-article",
+    "doi": "10.34196/ijm.00255",
+    "authorLine": "Anders Klevmarken",
+    "title": "Statistical Inference in Micro-simulation Models: Incorporating External Information",
+    "published": "2022-04-30T00:00:00Z",
+    "versionDate": "2022-04-30T00:00:00Z",
+    "statusDate": "2022-04-30T00:00:00Z",
+    "volume": 15,
+    "issue": 1,
+    "fpage": 111,
+    "lpage": 120,
+    "elocationId": "111-120",
+    "pdf": "http://web:8082/00255/ijm-00255.pdf",
+    "subjects": [
+        {
+            "id": "taxes-benefits",
+            "name": "Taxes and benefits"
+        },
+        {
+            "id": "methodology",
+            "name": "Methodology"
+        }
+    ],
+    "abstract": {
+        "content": [
+            {
+                "text": "In practical applications of Micro-Simulation Models (MSMs), very little is usually known about the properties of the simulated values. This paper argues that we need to apply the same rigorous standards for inference in micro-simulation work as in scientific work generally. If not, then MSMs will loose in credibility. Differences between inference in static and dynamic models are noted and then the paper focuses on the estimation of behavioral parameters. There are four themes: calibration viewed as estimation subject to external constraints, piece wise versus system-wide estimation, simulation-based estimation and validation. \u00a9 2002 IMACS. Published by Elsevier Science",
+                "type": "paragraph"
+            }
+        ]
+    },
+    "copyright": {
+        "license": "CC-BY-4.0",
+        "holder": "Anders Klevmarken",
+        "statement": "This article is distributed under the terms of the <a href=\"http://creativecommons.org/licenses/by/4.0/\">Creative Commons Attribution License</a>, which permits unrestricted use and redistribution provided that the original author and source are credited."
+    },
+    "authors": [
+        {
+            "affiliations": [
+                {
+                    "address": {
+                        "components": {
+                            "country": "Sweden",
+                            "locality": [
+                                "Uppsala"
+                            ]
+                        },
+                        "formatted": [
+                            "Uppsala",
+                            "Sweden"
+                        ]
+                    },
+                    "name": [
+                        "Department of Economics"
+                    ]
+                }
+            ],
+            "competingInterests": "No competing interests reported",
+            "emailAddresses": [
+                "anders@klevmarken.nu"
+            ],
+            "name": {
+                "index": "Klevmarken, Anders",
+                "preferred": "Anders Klevmarken"
+            },
+            "type": "person"
+        }
+    ],
+    "funding": {
+        "statement": "No specific funding for this article is reported."
+    },
+    "dataSets": {
+        "availability": [
+            {
+                "text": "Please contact the authors for information on data and code availability.",
+                "type": "paragraph"
+            }
+        ]
+    },
+    "body": [
+        {
+            "content": [
+                {
+                    "text": "Micro-simulation has been used, for instance, in \u2018economics\u2019, \u2018economic geography\u2019 and \u2018sociology\u2019 to assess the impact of changes in economic and social policy on individuals, households and firms. In a rather detailed way these models usually include legislative rules as they apply at the micro level such as those for taxes and benefits, and sometimes also behavioral models to capture individual adjustments to legislative changes. They are applied to a sample of individuals (households, firms), which provide the starting values for a simulation. As the simulation proceeds the status of each individual is updated, for instance, whether alive, in work, eligible for benefits, etc., and what incomes are received and what taxes paid. The object of simulation could, for instance, be to estimate the change in government revenues following a tax change. The reason not to use a more aggregate approach is then that the highly nonlinear tax system interacts with the income distribution and with the composition of the population of tax payers in terms of their eligibility for deductions, and the applicability of thresholds and tax rates, such that a micro analysis is needed. Another object of simulation could be to analyze the distribution of incomes after tax. For instance, does a reduction in the tax rates at low incomes reduce the population share in poverty taking any consequential reductions in benefits and changes in work incentives into account?",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "One usually distinguishes between static models, in which the size and composition of the simulated population is not changed, and dynamic models, which include mechanisms that simulate changes in the population of individuals.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Inference in micro-simulation models (MSMs) is in principle no different from statistical inference generally, but in current practice the inference aspects have been neglected. Unknown parameters have not always been estimated using estimation methods with known properties, but values have been assigned by some calibration method. One has been satisfied if the model runs and approximately tracks observed data. The large size of a typical MSM and the difficulties to get coherent data has made many researchers and practitioners accept ad hoc methods.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "There are thus practical problems with inference in MSM related to the large number of relations and conditions, the frequent use of nonstandard functional forms often including discontinuities, and the fact that data typically are obtained from many different sources.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Micro-simulation aims at statements about the distribution of some endogenous variables (for instance, the distribution of incomes) defined on a population (for instance, the population of Swedes in a particular year), given certain policy assumptions (for instance, assumptions about tax rates) and initial conditions. These initial conditions are usually given by a sample of individuals on which the MSM operates. In the simulation sample values are changed or updated, and the new sample values are used to estimate properties of the distribution of interest (for instance, a total, a mean or a Gini coefficient).",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "A proper inference usually involves several random experiments. One is drawing the sample of initial conditions, another is the random experiment or process assumed to generate population data, and third is the generation of random numbers in the simulation experiment. The choice of methods is also determined by the mode of inference, whether there is an inference to a finite population or a \"super population\".",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Because the random experiments involved and the mode of inference in static micro-simulation, in general, is different from that of dynamic micro-simulation it is useful first to discuss inference in static models and then turn to dynamic models. Then follows a section on the estimation of behavioral models. Although primarily based on the \"super population\" thinking of dynamic models much of what is to be said about incorporating external information and simulation estimation also applies to static models. The paper ends with a few concluding remarks.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s1",
+            "title": "1. Introduction",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "The simplest case of a static model is one without behavioral response relations. It only includes a set of deterministic rules, for instance, tax and benefit rules translated into computer code. The FASIT model of Statistics Sweden and the LAW model of Statistics Denmark are two examples. There is also currently work on a European model EUROMOD for all EU countries. Given a sample of pretax incomes it computes taxes, benefits and disposable incomes for each individual in the sample. In this case, there is no model-based inference but only an inference from the sample of initial conditions (pretax incomes) to the population from which this sample was drawn. In this case an inference to the finite population is meaningful and usually also desired.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "If the sample of initial conditions is a probability sample this would seem to be a standard application of sampling theory. But usually, the sample was drawn from a population dated a few years ago while an inference is desired to a population, which is present today, and in general, these two populations differ.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "This problem is usually handled by reweighting. The sample weights are adjusted such that a standard inference will reproduce the observed distribution of certain variables in the present population. One might, for instance, know that the age distribution and the distribution of schooling have changed and then seek to adjust the sampling weights accordingly. A technical approach to achieve this is calibration, see (<a href=\"#bib9\">Lindstr\u00f6m, 1997</a>; <a href=\"#bib10\">Lundstr\u00f6m, 1997</a>; <a href=\"#bib11\">Merz, 1993</a>). The idea is to obtain new weights, which are so close to the old ones as possible, but make the simulated values aggregate to know totals. Closeness is defined by some measure of distance. The choice of distance measure is rather arbitrary but is has been shown that certain distance functions give estimators which are well-known in the sampling literature (<a href=\"#bib5\">Deville and S\u00e4rndal, 1992</a>; <a href=\"#bib10\">Lundstr\u00f6m, 1997</a>). Although calibration estimators aggregate to known totals this is no guarantee one obtains an inference to the desired population. The problem might remain if the knowledge of totals does not include the key variables of interest, or if not only the center of location but also the dispersion of key variables have changed. Without a thorough analysis of the causes to population changes any reweighting becomes ad hoc. Formulating a model, which captures causal relations, on the other hand leads into a dynamic MSM.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Static MSMs can also include behavioral relations, for instance, labor supply as a function of the budget set (incomes, taxes and benefits). A static model (in the usual economic sense) has no time dimension, but, in practice, a micro-simulation analyst wants to say something about a population in real time. It follows from the tax and benefit rules that a static tax-benefit model without behavioral relations gives the immediate, first-order effects of tax and benefit changes, but if behavioral relations are included, there is an issue about their interpretation. Does a labor supply relation, for instance, give the behavioral response which materialize within a year, or does it give the total accumulated effect until some steady state is reached? Most economists probably think of static models in the latter sense, but this raises new issues. To test and estimate such a model one needs a sample of individuals who have all reached a steady state. Is the adjustment process so quick that a random cross-section of individuals is suitable for inference?",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "There is no general and simple answer to this question, but let us assume that the adjustment process is almost immediate. An inference would then have to account both for the random uncertainty, which arises because the model is simulated on a sample of initial conditions, and the uncertainty which is generated by the estimated behavioral model. The latter will include two components. The first arises because the unknown parameters are estimated. The properties of these estimates depend on the properties of the model, how data were obtained and on what estimation method was used. The second component arises because invoking a random number generator simulates the estimated model. The properties of simulations from a static model and how to estimate various variance components is discussed in some detail in <a href=\"#bib8\">Klevmarken (1998)</a>. It is a problem that we do not know and cannot simulate the values of the exogenous variables of the observations not included in the sample. An inference has to be conditioned on the observed exogenous variables in the sample. If estimators can be written as sums of individual contributions then Horvitz-Thompson estimators are consistent, but for more general parameters there might not be any finite sample estimator (see <a href=\"#bib13\">Pudney and Sutherland, 1996</a>).",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s2",
+            "title": "2. Inference in static MSM",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "In a dynamic MSM, there is no constant population to which an inference can be drawn, because the model defines how the population changes both in size and in composition. Only an inference to the super-population defined by the model would seem meaningful. Let\u2019s write the model in the following way:",
+                    "type": "paragraph"
+                },
+                {
+                    "id": "E1",
+                    "label": "(1)",
+                    "mathml": "<math>\n<mstyle displaystyle=\"true\" scriptlevel=\"0\">\n<mrow>\n<msub>\n<mi>y</mi>\n<mi>t</mi>\n</msub>\n<mo>=</mo>\n<mi>g</mi>\n<mo stretchy=\"false\">(</mo>\n<msub>\n<mi>y</mi>\n<mrow>\n<mi>t</mi>\n<mo>\u2212</mo>\n<mn>1</mn>\n</mrow>\n</msub>\n<mo>,</mo>\n<mo>\u2219</mo>\n<mo>\u2219</mo>\n<mo>\u2219</mo>\n<mo>,</mo>\n<msub>\n<mi>y</mi>\n<mrow>\n<mi>t</mi>\n<mo>\u2212</mo>\n<mi>s</mi>\n</mrow>\n</msub>\n<mo>\u2223</mo>\n<msub>\n<mi>y</mi>\n<mn>0</mn>\n</msub>\n<mo>,</mo>\n<msub>\n<mi>\u03f5</mi>\n<mi>t</mi>\n</msub>\n<mo>,</mo>\n<mi>\u03b8</mi>\n<mo stretchy=\"false\">)</mo>\n</mrow>\n</mstyle>\n</math>",
+                    "type": "mathml"
+                },
+                {
+                    "text": "where <i>y<sub>0</sub> </i> is a vector of initial conditions, in practice set by the sample on which the simulations are done.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Suppose we are interested in estimating",
+                    "type": "paragraph"
+                },
+                {
+                    "id": "E2",
+                    "label": "(2)",
+                    "mathml": "<math>\n<mstyle displaystyle=\"true\" scriptlevel=\"0\">\n<mrow>\n<msub>\n<mi>E</mi>\n<mrow>\n<msub>\n<mi>\u03b5</mi>\n<mn>1</mn>\n</msub>\n<mo>,</mo>\n<mo>.</mo>\n<mo>.</mo>\n<mo>.</mo>\n<mo>,</mo>\n<msub>\n<mi>\u03b5</mi>\n<mi>t</mi>\n</msub>\n<mo>,</mo>\n<msub>\n<mi>y</mi>\n<mn>0</mn>\n</msub>\n</mrow>\n</msub>\n<mo stretchy=\"false\">(</mo>\n<mi>\u03bc</mi>\n<mo stretchy=\"false\">(</mo>\n<msub>\n<mi>y</mi>\n<mi>t</mi>\n</msub>\n<mo stretchy=\"false\">)</mo>\n<mo stretchy=\"false\">)</mo>\n<mo>=</mo>\n<mo>\u222b</mo>\n<mrow>\n<mo>.</mo>\n<mo>.</mo>\n<mo>.</mo>\n</mrow>\n<mo>\u222c</mo>\n<mi>\u03bc</mi>\n<mo stretchy=\"false\">(</mo>\n<msub>\n<mi>y</mi>\n<mi>t</mi>\n</msub>\n<mo stretchy=\"false\">)</mo>\n<mtext>\u00a0</mtext>\n<mi>f</mi>\n<mo stretchy=\"false\">(</mo>\n<msub>\n<mi>\u03b5</mi>\n<mn>1</mn>\n</msub>\n<mo stretchy=\"false\">)</mo>\n<mo>.</mo>\n<mo>.</mo>\n<mo>.</mo>\n<mtext>\u00a0</mtext>\n<mi>f</mi>\n<mo stretchy=\"false\">(</mo>\n<msub>\n<mi>\u03b5</mi>\n<mi>t</mi>\n</msub>\n<mo stretchy=\"false\">)</mo>\n<mtext>\u00a0</mtext>\n<mi>f</mi>\n<mo stretchy=\"false\">(</mo>\n<msub>\n<mi>y</mi>\n<mn>0</mn>\n</msub>\n<mo stretchy=\"false\">)</mo>\n<mtext>\u00a0</mtext>\n<mi>d</mi>\n<msub>\n<mi>\u03b5</mi>\n<mn>1</mn>\n</msub>\n<mo>.</mo>\n<mo>.</mo>\n<mo>.</mo>\n<mtext>\u00a0</mtext>\n<mi>d</mi>\n<msub>\n<mi>\u03b5</mi>\n<mi>t</mi>\n</msub>\n<mtext>\u00a0</mtext>\n<mi>d</mi>\n<msub>\n<mi>y</mi>\n<mn>0</mn>\n</msub>\n<mo>;</mo>\n</mrow>\n</mstyle>\n</math>",
+                    "type": "mathml"
+                },
+                {
+                    "text": "it is assumed that  <math id=\"inf1\"> <msub> <mrow> <mi>\u03f5</mi> </mrow> <mrow> <mi>s</mi> </mrow> </msub> <mo>,</mo> <mo>,</mo> <mi> </mi> <msub> <mrow> <mi>\u03f5</mi> </mrow> <mrow> <mi>t</mi> </mrow> </msub> </math>  and <i>y<sub>0</sub> </i> are independent for all s  <math id=\"inf2\"> <mo>\u2260</mo> </math>  t and that <i>f</i> is known. <i>\u00b5(y<sub>t</sub> </i>) is a statistic of interest. The distribution of <i>y<sub>0</sub> </i> will, in practice, become estimated by the corresponding empirical distribution function obtained through the sample of initial conditions. One could either condition on the sample of initial conditions, if <i>t</i> is large and the model has some ergodic properties the influence of <i>y<sub>0</sub> </i> becomes small, or one could use the bootstrap technique to evaluate the random influence from the choice of initial conditions sample.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "In general, it will not be possible to evaluate expression (<a href=\"#E2\">2</a>) analytically, but by replicated drawings from the distribution of  <math id=\"inf3\"> <mi>\u03f5</mi> </math>  a number of replications <i>of \u00b5</i> is obtained, and the mean of these \u00b5-values is an unbiased estimate of expression (<a href=\"#E2\">2</a>). This procedure assumes that the parameters  <math id=\"inf4\"> <mi>\u03b8</mi> </math>  are known. In practice, they are not and have to be replaced by some estimates  <math id=\"inf5\"> <mstyle displaystyle=\"true\" scriptlevel=\"0\"> <mrow> <mrow> <mover> <mi>\u03b8</mi> <mo stretchy=\"false\">^</mo> </mover> </mrow> </mrow> </mstyle> </math> . This implies that the simulated estimate of (<a href=\"#E2\">2</a>) is a random function of  <math id=\"inf6\"> <mstyle displaystyle=\"true\" scriptlevel=\"0\"> <mrow> <mrow> <mover> <mi>\u03b8</mi> <mo stretchy=\"false\">^</mo> </mover> </mrow> </mrow> </mstyle> </math> . <i>If \u00b5</i> and <i>g</i> satisfy certain regularity conditions<sup><a href=\"#fn1\">1</a></sup> and if  <math id=\"inf7\"> <mstyle displaystyle=\"true\" scriptlevel=\"0\"> <mrow> <mrow> <mover> <mi>\u03b8</mi> <mo stretchy=\"false\">^</mo> </mover> </mrow> </mrow> </mstyle> </math>  is a consistent estimate of  <math id=\"inf8\"> <mi>\u03b8</mi> </math>  <i>,</i> then the estimate of <i>E(\u00b5</i>) is consistent too. But even if  <math id=\"inf9\"> <mstyle displaystyle=\"true\" scriptlevel=\"0\"> <mrow> <mrow> <mover> <mi>\u03b8</mi> <mo stretchy=\"false\">^</mo> </mover> </mrow> </mrow> </mstyle> </math>  is unbiased, the estimate of <i>E(\u00b5</i>) is, in general, not unbiased, because \u00b5 and <i>g</i> are nonlinear functions. By replicating also over the domain of  <math id=\"inf10\"> <mstyle displaystyle=\"true\" scriptlevel=\"0\"> <mrow> <mrow> <mover> <mi>\u03b8</mi> <mo stretchy=\"false\">^</mo> </mover> </mrow> </mrow> </mstyle> </math>  we might thus like to estimate  <math id=\"inf11\"> <mstyle displaystyle=\"true\" scriptlevel=\"0\"> <mrow> <msub> <mi>E</mi> <mrow> <mrow> <mover> <mi>\u03b8</mi> <mo stretchy=\"false\">^</mo> </mover> </mrow> </mrow> </msub> <msub> <mi>E</mi> <mrow> <msub> <mi>\u03f5</mi> <mrow> <mn>1</mn> <mo>,</mo> <mtext>\u00a0</mtext> <mo>\u2026</mo> <mo>,</mo> <mtext>\u00a0</mtext> <msub> <mi>\u03f5</mi> <mrow> <mi>t</mi> </mrow> </msub> <mo>,</mo> <mtext>\u00a0</mtext> <msub> <mi>y</mi> <mrow> <mn>0</mn> </mrow> </msub> </mrow> </msub> </mrow> </msub> <mrow> <mo>(</mo> <mrow> <mi>\u03bc</mi> <mrow> <mo>(</mo> <mrow> <msub> <mi>y</mi> <mrow> <mi>t</mi> </mrow> </msub> <mrow> <mo stretchy=\"false\">|</mo> </mrow> <mrow> <mover> <mi>\u03b8</mi> <mo stretchy=\"false\">^</mo> </mover> </mrow> </mrow> <mo>)</mo> </mrow> <mtext>\u00a0</mtext> </mrow> <mo>)</mo> </mrow> </mrow> </mstyle> </math> . These replicated simulations will also give an estimate of the corresponding variance.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s3",
+            "title": "3. Inference in dynamic MSM",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "content": [
+                        {
+                            "text": "Our limited capacity as model builders, the difficulties to get good comprehensive data from which the model parameters can be estimated, and the piece wise approach usually adopted, in practice, to estimate the model sub-model by sub-model, all contribute to deviations of simulated values and distributions from observed data. To make the model \"stay on track\" some model builders have aligned their models to external benchmark data. Population totals and means from official statistics or estimates from surveys not used to estimate the model are sometimes used as benchmarks. If a model is to gain credibility with users they often require that the model is able to reproduce the basic demographic structure of the population and predict well-known benchmarks like for instance, the labor force participation rate, the unemployment rate, the mean and dispersion of disposable income, etc. For this reason, model builders have forced their models to predict these numbers without error. In the US model, CORESIM, for instance, adjusting the simulated values (and not the parameter estimates) does this alignment (see <a href=\"#bib1\">Caldwell, 1988</a>; <a href=\"#bib2\">Caldwell, 1993</a>; <a href=\"#bib3\">Caldwell, 1996</a>).",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Alignment is usually done by simple proportional adjustments, but there are also more sophisticated procedures. The ADJUST procedure developed by Merz (<a href=\"#bib11\">Merz, 1993</a>; <a href=\"#bib12\">Merz, 1994</a>) and originally designed for reweighting in static models (cf. above) might also be used for alignment. However, in this context the whole approach appears even more ad hoe than when it is used for reweighting. It does not consider the stochastic properties of the model at all.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "A natural way to incorporate this kind of externally given information is to look upon the estimation problem as one of constrained estimation. For linear models, this approach is discussed in many textbooks of statistics and econometrics. Assume the following simple model:",
+                            "type": "paragraph"
+                        },
+                        {
+                            "id": "E3",
+                            "label": "(3)",
+                            "mathml": "<math>\n<mstyle displaystyle=\"true\" scriptlevel=\"0\">\n<mrow>\n<msub>\n<mi>Y</mi>\n<mi>t</mi>\n</msub>\n<mo>=</mo>\n<msub>\n<mi>Z</mi>\n<mi>t</mi>\n</msub>\n<mi>\u03b8</mi>\n<mo>+</mo>\n<msub>\n<mi>\u03b5</mi>\n<mi>t</mi>\n</msub>\n<mo>,</mo>\n<mtext>\u00a0</mtext>\n<mi>E</mi>\n<mo stretchy=\"false\">(</mo>\n<msub>\n<mi>\u03b5</mi>\n<mi>t</mi>\n</msub>\n<mo>\u2223</mo>\n<msub>\n<mi>Z</mi>\n<mi>t</mi>\n</msub>\n<mo stretchy=\"false\">)</mo>\n<mo>=</mo>\n<mn>0</mn>\n<mo>,</mo>\n</mrow>\n</mstyle>\n</math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "where <i>Y</i> <sub>t</sub> and Z<sub>t</sub> are <i>n</i> x 1 and <i>n</i> x <i>k</i> matrices. Also, assume a total  <math id=\"inf12\"> <msub> <mrow> <mover accent=\"true\"> <mrow> <mi>y</mi> </mrow> <mo>-</mo> </mover> </mrow> <mrow> <msub> <mrow> <mi>t</mi> </mrow> <mrow> <mn>0</mn> </mrow> </msub> </mrow> </msub> </math>  is known for period  <math id=\"inf13\"> <msub> <mrow> <mi>t</mi> </mrow> <mrow> <mn>0</mn> </mrow> </msub> <mo>\u2264</mo> <mi> </mi> <mi>T</mi> </math> . This information can be used as a constraint on the least-squares estimates of  <math id=\"inf14\"> <mi>\u03b8</mi> </math> . The constraint then becomes",
+                            "type": "paragraph"
+                        },
+                        {
+                            "id": "E4",
+                            "label": "(4)",
+                            "mathml": "<math>\n<mstyle displaystyle=\"true\" scriptlevel=\"0\">\n<mrow>\n<mi>R</mi>\n<mi>\u03b8</mi>\n<mo>=</mo>\n<msub>\n<mrow>\n<mover>\n<mi>y</mi>\n<mo stretchy=\"false\">\u00af</mo>\n</mover>\n</mrow>\n<mrow>\n<msub>\n<mi>t</mi>\n<mrow>\n<mn>0</mn>\n</mrow>\n</msub>\n</mrow>\n</msub>\n<mo>,</mo>\n<mi>w</mi>\n<mi>h</mi>\n<mi>e</mi>\n<mi>r</mi>\n<mi>e</mi>\n<mtext>\u00a0</mtext>\n<mi>R</mi>\n<mo>=</mo>\n<mfrac>\n<mi>N</mi>\n<mi>n</mi>\n</mfrac>\n<msup>\n<mi>J</mi>\n<mo>\u2032</mo>\n</msup>\n<mrow>\n<msub>\n<mi>Z</mi>\n<mrow>\n<msub>\n<mi>t</mi>\n<mrow>\n<mn>0</mn>\n</mrow>\n</msub>\n</mrow>\n</msub>\n</mrow>\n<mo>;</mo>\n</mrow>\n</mstyle>\n</math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "<i>J</i> is a unit vector, and <i>N</i> the size of the population for which the total applies. When the constrained least-squares estimator is used for prediction, the predictions can be written on the following form:",
+                            "type": "paragraph"
+                        },
+                        {
+                            "id": "E5",
+                            "label": "(5)",
+                            "mathml": "<math>\n<mstyle displaystyle=\"true\" scriptlevel=\"0\">\n<mrow>\n<msub>\n<mrow>\n<mover>\n<mi>Y</mi>\n<mo stretchy=\"false\">~</mo>\n</mover>\n</mrow>\n<mi>\u03c4</mi>\n</msub>\n<mo>=</mo>\n<mo fence=\"false\" stretchy=\"false\">{</mo>\n<mrow>\n<mi>I</mi>\n<mo>+</mo>\n<msub>\n<mi>Z</mi>\n<mi>\u03c4</mi>\n</msub>\n<mo stretchy=\"false\">(</mo>\n<msup>\n<mi>Z</mi>\n<mo>\u2032</mo>\n</msup>\n<mi>Z</mi>\n<msup>\n<mo stretchy=\"false\">)</mo>\n<mrow>\n<mo>\u2212</mo>\n<mn>1</mn>\n</mrow>\n</msup>\n<mtext>\u00a0</mtext>\n<msup>\n<mi>R</mi>\n<mo>\u2032</mo>\n</msup>\n<mo stretchy=\"false\">[</mo>\n<mi>R</mi>\n<mo stretchy=\"false\">(</mo>\n<msup>\n<mi>Z</mi>\n<mo>\u2032</mo>\n</msup>\n<mi>Z</mi>\n<msup>\n<mo stretchy=\"false\">)</mo>\n<mrow>\n<mo>\u2212</mo>\n<mn>1</mn>\n</mrow>\n</msup>\n<mtext>\u00a0</mtext>\n<msup>\n<mi>R</mi>\n<mo>\u2032</mo>\n</msup>\n<msup>\n<mo stretchy=\"false\">]</mo>\n<mrow>\n<mo>\u2212</mo>\n<mn>1</mn>\n</mrow>\n</msup>\n<mo stretchy=\"false\">(</mo>\n<msub>\n<mrow>\n<mover>\n<mi>y</mi>\n<mo stretchy=\"false\">\u00af</mo>\n</mover>\n</mrow>\n<mrow>\n<msub>\n<mi/>\n<mrow>\n<msub>\n<mi>t</mi>\n<mrow>\n<mn>0</mn>\n</mrow>\n</msub>\n</mrow>\n</msub>\n</mrow>\n</msub>\n<mo>\u2212</mo>\n<mi>R</mi>\n<mrow>\n<mover>\n<mi>\u03b8</mi>\n<mo stretchy=\"false\">^</mo>\n</mover>\n</mrow>\n<mo stretchy=\"false\">)</mo>\n<mo stretchy=\"false\">[</mo>\n<mo stretchy=\"false\">(</mo>\n<msub>\n<mi>Z</mi>\n<mi>\u03c4</mi>\n</msub>\n<mrow>\n<mover>\n<mi>\u03b8</mi>\n<mo stretchy=\"false\">^</mo>\n</mover>\n</mrow>\n<msup>\n<mo stretchy=\"false\">)</mo>\n<mo>\u2032</mo>\n</msup>\n<mo stretchy=\"false\">(</mo>\n<msub>\n<mi>Z</mi>\n<mi>\u03c4</mi>\n</msub>\n<mrow>\n<mover>\n<mi>\u03b8</mi>\n<mo stretchy=\"false\">^</mo>\n</mover>\n</mrow>\n<mo stretchy=\"false\">)</mo>\n<msup>\n<mo stretchy=\"false\">]</mo>\n<mrow>\n<mo>\u2212</mo>\n<mn>1</mn>\n</mrow>\n</msup>\n</mrow>\n<mo stretchy=\"false\">(</mo>\n<msub>\n<mi>Z</mi>\n<mi>\u03c4</mi>\n</msub>\n<mrow>\n<mover>\n<mi>\u03b8</mi>\n<mo stretchy=\"false\">^</mo>\n</mover>\n</mrow>\n<msup>\n<mo stretchy=\"false\">)</mo>\n<mo>\u2032</mo>\n</msup>\n<mo fence=\"false\" stretchy=\"false\">}</mo>\n<mo stretchy=\"false\">(</mo>\n<msub>\n<mi>Z</mi>\n<mi>\u03c4</mi>\n</msub>\n<mrow>\n<mover>\n<mi>\u03b8</mi>\n<mo stretchy=\"false\">^</mo>\n</mover>\n</mrow>\n<mo stretchy=\"false\">)</mo>\n<mo>.</mo>\n</mrow>\n</mstyle>\n</math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "They are BLUP within the class that satisfies the constraint. Simulated values are obtained by adding random errors with mean zero drawn from an appropriate probability distribution. The matrix in curly brackets is a matrix of alignment factors. The simulated Y-values will give a total for the period  <math id=\"inf15\"> <msub> <mrow> <mi>t</mi> </mrow> <mrow> <mn>0</mn> </mrow> </msub> </math>  equal to the known total  <math id=\"inf16\"> <msub> <mrow> <mover accent=\"true\"> <mrow> <mi>y</mi> </mrow> <mo>-</mo> </mover> </mrow> <mrow> <msub> <mrow> <mi>t</mi> </mrow> <mrow> <mn>0</mn> </mrow> </msub> </mrow> </msub> </math>  except for a small simulation error with mean zero, which is <i>N</i> times the mean of the simulation errors. The following conclusions can be drawn: alignment should, in general, not be done with simple proportional alignment factors, but each individual gets its own alignment factor. Also, in a model with more than one endogenous variable a constraint which applies to one variable will, in general, not only imply an alignment of that particular variable but also of all other variables. Furthermore, in nonlinear models there will, in general, not exist as simple alignment factors as in the linear case.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "One might also note that it is possible to have an alignment, which simulates the known total exactly. Practitioners seem to prefer this kind of alignment. The alignment matrix would then become a function of the randomly drawn simulation errors. Let the simulation error be  <math id=\"inf17\"> <mstyle displaystyle=\"true\" scriptlevel=\"0\"> <mrow> <msubsup> <mi>\u03f5</mi> <mrow> <mi>t</mi> </mrow> <mrow> <mi>s</mi> </mrow> </msubsup> <mo>,</mo> </mrow> </mstyle> </math>  then the new alignment matrix obtains if <i>Y</i> <sub>t</sub> is replaced by  <math id=\"inf18\"> <msub> <mrow> <mi>Y</mi> </mrow> <mrow> <mi>t</mi> </mrow> </msub> <mo>-</mo> <msubsup> <mrow> <mi>\u03f5</mi> </mrow> <mrow> <mi>t</mi> </mrow> <mrow> <mi>s</mi> </mrow> </msubsup> </math>  in the least-squares estimate of  <math id=\"inf19\"> <mi>\u03b8</mi> </math>  <i>,</i> and  <math id=\"inf20\"> <msub> <mrow> <mover accent=\"true\"> <mrow> <mi>y</mi> </mrow> <mo>-</mo> </mover> </mrow> <mrow> <msub> <mrow> <mi>t</mi> </mrow> <mrow> <mn>0</mn> </mrow> </msub> </mrow> </msub> </math>  by  <math id=\"inf21\"> <msub> <mrow> <mover accent=\"true\"> <mrow> <mi>y</mi> </mrow> <mo>-</mo> </mover> </mrow> <mrow> <msub> <mrow> <mi>t</mi> </mrow> <mrow> <mn>0</mn> </mrow> </msub> </mrow> </msub> <mo>-</mo> <msubsup> <mrow> <mi>\u03f5</mi> </mrow> <mrow> <msub> <mrow> <mi>t</mi> </mrow> <mrow> <mn>0</mn> </mrow> </msub> </mrow> <mrow> <mi>s</mi> </mrow> </msubsup> </math> . One would thus have to re-estimate the parameters for every new simulation. However, given the random specification of the model it is not clear why one would like to use the external information in this way. The model is not set up such that it should replicate the same total every time.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "If the external data are estimates rather than population parameters that is a reason not to enforce an exact equality even in the mean. A natural approach to incorporate uncertain external information is that of mixed estimation, a technique, which is well developed for linear models in many textbooks, but less developed for nonlinear models.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s4-1",
+                    "title": "4.1. Model alignment using external information - an estimation problem",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "Given the complexity and mixture of model types and functional forms in a large MSM its parameters are usually estimated in a piecemeal way, sub-model by sub-model. This is sometimes necessary because one does not always have access to one large sample including all variables, but have to use several samples collected from different sources. Nonetheless, the piece wise approach may be inappropriate. It depends on the model structure. If the model has an hierarchical or a recursive structure and if the stochastic structure impose independence or lack of correlation between model blocks or sub-models, then a piece wise approach can be justified (cf. the discussion in <a href=\"#bib7\">Klevmarken, 1997</a>).",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "By way of an example consider the following simple two-equation model:",
+                            "type": "paragraph"
+                        },
+                        {
+                            "id": "E6",
+                            "label": "(6)",
+                            "mathml": "<math>\n<mstyle displaystyle=\"true\" scriptlevel=\"0\">\n<mrow>\n<msub>\n<mi>y</mi>\n<mrow>\n<mn>1</mn>\n<mi>t</mi>\n</mrow>\n</msub>\n<mo>=</mo>\n<msub>\n<mi>\u03b2</mi>\n<mn>1</mn>\n</msub>\n<msub>\n<mi>x</mi>\n<mi>t</mi>\n</msub>\n<mo>+</mo>\n<msub>\n<mi>\u03b5</mi>\n<mrow>\n<mn>1</mn>\n<mi>t</mi>\n</mrow>\n</msub>\n<mo>,</mo>\n<mtext>\u00a0\u00a0\u00a0</mtext>\n<msub>\n<mi>y</mi>\n<mrow>\n<mn>2</mn>\n<mi>t</mi>\n</mrow>\n</msub>\n<mo>=</mo>\n<msub>\n<mi>\u03b2</mi>\n<mn>2</mn>\n</msub>\n<msub>\n<mi>y</mi>\n<mrow>\n<mn>1</mn>\n<mi>t</mi>\n</mrow>\n</msub>\n<mo>+</mo>\n<msub>\n<mi>\u03b5</mi>\n<mrow>\n<mn>2</mn>\n<mi>t</mi>\n</mrow>\n</msub>\n<mo>,</mo>\n<mtext>\u00a0\u00a0</mtext>\n<mi>E</mi>\n<mo stretchy=\"false\">(</mo>\n<mrow>\n<msub>\n<mi>\u03b5</mi>\n<mi>i</mi>\n</msub>\n<mo>,</mo>\n<msub>\n<mi>\u03b5</mi>\n<mi>j</mi>\n</msub>\n<mo stretchy=\"false\">)</mo>\n</mrow>\n<mo>=</mo>\n<mrow>\n<mo>{</mo>\n<mtable columnspacing=\"1em\" rowspacing=\"4pt\">\n<mtr>\n<mtd>\n<mi>\u03c3</mi>\n<mrow>\n<msubsup>\n<mi/>\n<mrow>\n<mn>1</mn>\n</mrow>\n<mrow>\n<mn>2</mn>\n</mrow>\n</msubsup>\n</mrow>\n</mtd>\n<mtd>\n<mrow>\n<mi mathvariant=\"normal\">i</mi>\n<mi mathvariant=\"normal\">f</mi>\n<mtext>\u00a0</mtext>\n<mi mathvariant=\"normal\">i</mi>\n<mo>=</mo>\n<mi mathvariant=\"normal\">j</mi>\n<mo>=</mo>\n<mn>1</mn>\n<mo>,</mo>\n</mrow>\n</mtd>\n</mtr>\n<mtr>\n<mtd>\n<mi>\u03c3</mi>\n<mrow>\n<msubsup>\n<mi/>\n<mrow>\n<mn>2</mn>\n</mrow>\n<mrow>\n<mn>2</mn>\n</mrow>\n</msubsup>\n</mrow>\n</mtd>\n<mtd>\n<mrow>\n<mi mathvariant=\"normal\">i</mi>\n<mi mathvariant=\"normal\">f</mi>\n<mtext>\u00a0</mtext>\n<mi mathvariant=\"normal\">i</mi>\n<mo>=</mo>\n<mi mathvariant=\"normal\">j</mi>\n<mo>=</mo>\n<mn>2</mn>\n<mo>,</mo>\n</mrow>\n</mtd>\n</mtr>\n<mtr>\n<mtd>\n<mn>0</mn>\n</mtd>\n<mtd>\n<mrow>\n<mi mathvariant=\"normal\">i</mi>\n<mi mathvariant=\"normal\">f</mi>\n<mtext>\u00a0</mtext>\n<mi mathvariant=\"normal\">i</mi>\n<mo>\u2260</mo>\n<mi mathvariant=\"normal\">j</mi>\n<mo>,</mo>\n</mrow>\n</mtd>\n</mtr>\n</mtable>\n</mrow>\n</mrow>\n</mstyle>\n</math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "This is a recursive model, and it is well-known that OLS applied to each equation separately will give consistent estimates of  <math id=\"inf22\"> <mstyle displaystyle=\"true\" scriptlevel=\"0\"> <mrow> <msub> <mi>\u03b2</mi> <mn>1</mn> </msub> </mrow> </mstyle> </math> , and  <math id=\"inf23\"> <mstyle displaystyle=\"true\" scriptlevel=\"0\"> <mrow> <msub> <mi>\u03b2</mi> <mn>2</mn> </msub> </mrow> </mstyle> </math> . The estimate of  <math id=\"inf24\"> <mstyle displaystyle=\"true\" scriptlevel=\"0\"> <mrow> <msub> <mi>\u03b2</mi> <mn>1</mn> </msub> </mrow> </mstyle> </math>  gives the BLUP  <math id=\"inf25\"> <mstyle displaystyle=\"true\" scriptlevel=\"0\"> <mrow> <msub> <mrow> <mover> <mi>y</mi> <mo stretchy=\"false\">^</mo> </mover> </mrow> <mrow> <mn>1</mn> <mi>t</mi> </mrow> </msub> <mo>=</mo> <msub> <mrow> <mover> <mi>\u03b2</mi> <mo stretchy=\"false\">^</mo> </mover> </mrow> <mn>1</mn> </msub> <msub> <mi>x</mi> <mi>t</mi> </msub> </mrow> </mstyle> </math>  while predictions of y<sub>2</sub> outside the sample range are  <math id=\"inf26\"> <mstyle displaystyle=\"true\" scriptlevel=\"0\"> <mrow> <mrow> <mover> <msub> <mi>\u03b2</mi> <mn>2</mn> </msub> <mo stretchy=\"false\">^</mo> </mover> </mrow> <msub> <mrow> <mover> <mi>y</mi> <mo stretchy=\"false\">^</mo> </mover> </mrow> <mn>1</mn> </msub> </mrow> </mstyle> </math> . However, this suggests the folloing model-wide criterion:",
+                            "type": "paragraph"
+                        },
+                        {
+                            "id": "E7",
+                            "label": "(7)",
+                            "mathml": "<math>\n<mstyle displaystyle=\"true\" scriptlevel=\"0\">\n<mrow>\n<mfrac>\n<mn>1</mn>\n<msubsup>\n<mi>\u03c3</mi>\n<mrow>\n<mn>1</mn>\n</mrow>\n<mrow>\n<mn>2</mn>\n</mrow>\n</msubsup>\n</mfrac>\n<munder>\n<mo movablelimits=\"false\">\u2211</mo>\n<mrow>\n<mi>t</mi>\n</mrow>\n</munder>\n<mo stretchy=\"false\">(</mo>\n<msub>\n<mi>y</mi>\n<mrow>\n<mn>1</mn>\n<mi>t</mi>\n</mrow>\n</msub>\n<mo>\u2212</mo>\n<msub>\n<mrow>\n<mover>\n<mi>y</mi>\n<mo stretchy=\"false\">^</mo>\n</mover>\n</mrow>\n<mrow>\n<mn>1</mn>\n<mi>t</mi>\n</mrow>\n</msub>\n<msup>\n<mo stretchy=\"false\">)</mo>\n<mn>2</mn>\n</msup>\n<mo>+</mo>\n<mfrac>\n<mn>1</mn>\n<msubsup>\n<mi>\u03c3</mi>\n<mrow>\n<mn>2</mn>\n</mrow>\n<mrow>\n<mn>2</mn>\n</mrow>\n</msubsup>\n</mfrac>\n<munder>\n<mo movablelimits=\"false\">\u2211</mo>\n<mrow>\n<mi>t</mi>\n</mrow>\n</munder>\n<mo stretchy=\"false\">(</mo>\n<msub>\n<mi>y</mi>\n<mrow>\n<mn>2</mn>\n<mi>t</mi>\n</mrow>\n</msub>\n<mo>\u2212</mo>\n<msub>\n<mrow>\n<mover>\n<mi>\u03b2</mi>\n<mo stretchy=\"false\">^</mo>\n</mover>\n</mrow>\n<mrow>\n<mn>2</mn>\n</mrow>\n</msub>\n<msub>\n<mrow>\n<mover>\n<mi>y</mi>\n<mo stretchy=\"false\">^</mo>\n</mover>\n</mrow>\n<mrow>\n<mn>1</mn>\n<mi>t</mi>\n</mrow>\n</msub>\n<msup>\n<mo stretchy=\"false\">)</mo>\n<mn>2</mn>\n</msup>\n</mrow>\n</mstyle>\n</math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "Minimizing this criterion with respect to  <math id=\"inf27\"> <mstyle displaystyle=\"true\" scriptlevel=\"0\"> <mrow> <msub> <mrow> <mover> <mi>\u03b2</mi> <mo stretchy=\"false\">^</mo> </mover> </mrow> <mrow> <mn>1</mn> </mrow> </msub> </mrow> </mstyle> </math>  and  <math id=\"inf28\"> <mstyle displaystyle=\"true\" scriptlevel=\"0\"> <mrow> <msub> <mrow> <mover> <mi>\u03b2</mi> <mo stretchy=\"false\">^</mo> </mover> </mrow> <mrow> <mn>2</mn> </mrow> </msub> </mrow> </mstyle> </math>  yields the OLS estimator for  <math id=\"inf29\"> <msub> <mrow> <mi>\u03b2</mi> </mrow> <mrow> <mn>1</mn> </mrow> </msub> </math>  but the following estimator for  <math id=\"inf30\"> <msub> <mrow> <mi>\u03b2</mi> </mrow> <mrow> <mn>2</mn> </mrow> </msub> </math>  :",
+                            "type": "paragraph"
+                        },
+                        {
+                            "id": "E8",
+                            "label": "(8)",
+                            "mathml": "<math>\n<mstyle displaystyle=\"true\" scriptlevel=\"0\">\n<mrow>\n<msub>\n<mrow>\n<mover>\n<mi>\u03b2</mi>\n<mo stretchy=\"false\">^</mo>\n</mover>\n</mrow>\n<mrow>\n<mn>2</mn>\n</mrow>\n</msub>\n<mo>=</mo>\n<mfrac>\n<mrow>\n<munder>\n<mo>\u2211</mo>\n<mi>t</mi>\n</munder>\n<msub>\n<mi>y</mi>\n<mrow>\n<mn>2</mn>\n<mi>t</mi>\n</mrow>\n</msub>\n<msub>\n<mi>x</mi>\n<mrow>\n<mi>t</mi>\n</mrow>\n</msub>\n</mrow>\n<mrow>\n<munder>\n<mo>\u2211</mo>\n<mi>t</mi>\n</munder>\n<msub>\n<mi>y</mi>\n<mrow>\n<mn>1</mn>\n<mi>t</mi>\n</mrow>\n</msub>\n<msub>\n<mi>x</mi>\n<mrow>\n<mi>t</mi>\n</mrow>\n</msub>\n</mrow>\n</mfrac>\n<mo>;</mo>\n</mrow>\n</mstyle>\n</math>",
+                            "type": "mathml"
+                        },
+                        {
+                            "text": "In this case, both the \"piece wise\" OLS estimator of  <math id=\"inf31\"> <msub> <mrow> <mi>\u03b2</mi> </mrow> <mrow> <mn>2</mn> </mrow> </msub> </math>  and the \"system-wide\" instrumental variable estimator (<a href=\"#E8\">8</a>) are consistent but the OLS estimator does not minimize the prediction errors as defined by (<a href=\"#E7\">7</a>). In fact, under the additional assumption of normal errors the estimator (<a href=\"#E8\">8</a>) is a maximum likelihood estimator and thus asymptotically efficient.<sup><a href=\"#fn2\">2</a></sup>",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "If we would add the assumption that  <math id=\"inf32\"> <msub> <mrow> <mi>\u03f5</mi> </mrow> <mrow> <mn>1</mn> </mrow> </msub> </math>  and  <math id=\"inf33\"> <msub> <mrow> <mi>\u03f5</mi> </mrow> <mrow> <mn>2</mn> </mrow> </msub> </math>  are correlated the recursive property of the model is lost and OLS is no longer a consistent estimator of  <math id=\"inf34\"> <msub> <mrow> <mi>\u03b2</mi> </mrow> <mrow> <mn>2</mn> </mrow> </msub> </math> . The estimator (<a href=\"#E8\">8</a>) is, however, still consistent and under the assumption of normality an ML estimator. In this example we would thus prefer the \"system-wide\" estimator (<a href=\"#E8\">8</a>) whether the model is recursive or not.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "In applied micro-simulation work it might not always be necessary to insist on efficient estimators. Usually, large micro-data sets are used for estimation and then also the variance of less efficient estimators might become acceptable. In the above example we could perhaps do with the piece wise OLS estimator if the sample is large, but only if the model is recursive.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Finally, a more general comment on the choice of estimation criterion is in place. The least-squares criteria commonly used assume that we seek parameters estimates such that the <i>mean</i> predictions give the smallest possible prediction errors, <a href=\"#E7\">Eq. (7)</a> is an example. However, in micro-simulation we are not only interested in mean predictions, but we want to simulate well the whole distribution of the target variables. This difference in focus between micro-simulation and a more conventional econometric analysis might suggest a different estimation criterion. We will return to this topic in Section 4.3.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s4-2",
+                    "title": "4.2. Model-wide or piece wise estimation",
+                    "type": "section"
+                }
+            ],
+            "id": "s4",
+            "title": "4. Estimation of parameters in behavioral models",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "The complexity and nonlinear character of MSM and the fact that they are designed to simulate suggest that simulation-based estimation is a feasible approach to obtain system-wide estimates. A discussion of simulation-based estimation does not only lead to new estimators but also highlight the need to change the conventional estimation criteria to one, which is compatible with the simulation context. Assume the following simple model:",
+                    "type": "paragraph"
+                },
+                {
+                    "id": "E9",
+                    "label": "(9)",
+                    "mathml": "<math>\n<mstyle displaystyle=\"true\" scriptlevel=\"0\">\n<mrow>\n<msub>\n<mi>y</mi>\n<mi>t</mi>\n</msub>\n<mo>=</mo>\n<mi>g</mi>\n<mo stretchy=\"false\">(</mo>\n<msub>\n<mi>x</mi>\n<mi>t</mi>\n</msub>\n<mo>,</mo>\n<msub>\n<mi>\u03f5</mi>\n<mi>t</mi>\n</msub>\n<mo>,</mo>\n<mi>\u03b8</mi>\n<mo stretchy=\"false\">)</mo>\n</mrow>\n</mstyle>\n</math>",
+                    "type": "mathml"
+                },
+                {
+                    "text": "where <i>x</i> <sub>t</sub> is an exogenous variable,  <math id=\"inf35\"> <msub> <mrow> <mi>\u03f5</mi> </mrow> <mrow> <mi>t</mi> </mrow> </msub> </math>  a random variable with known p.d.f. and  <math id=\"inf36\"> <mi>\u03b8</mi> </math>  an unknown parameter.",
+                    "type": "paragraph"
+                },
+                {
+                    "id": "E10",
+                    "label": "(10)",
+                    "mathml": "<math>\n<mstyle displaystyle=\"true\" scriptlevel=\"0\">\n<mrow>\n<mi>E</mi>\n<mo stretchy=\"false\">(</mo>\n<msub>\n<mi>y</mi>\n<mi>t</mi>\n</msub>\n<mo>\u2223</mo>\n<msub>\n<mi>x</mi>\n<mi>t</mi>\n</msub>\n<mo stretchy=\"false\">)</mo>\n<mo>=</mo>\n<mi>E</mi>\n<mo stretchy=\"false\">(</mo>\n<mi>g</mi>\n<mo stretchy=\"false\">(</mo>\n<msub>\n<mi>x</mi>\n<mi>t</mi>\n</msub>\n<mo>,</mo>\n<msub>\n<mi>\u03b5</mi>\n<mi>t</mi>\n</msub>\n<mo>,</mo>\n<msub>\n<mi>\u03b8</mi>\n<mn>0</mn>\n</msub>\n<mo stretchy=\"false\">)</mo>\n<mo>\u2223</mo>\n<msub>\n<mi>x</mi>\n<mi>t</mi>\n</msub>\n<mo stretchy=\"false\">)</mo>\n<mo>=</mo>\n<mi>k</mi>\n<mo stretchy=\"false\">(</mo>\n<msub>\n<mi>x</mi>\n<mi>t</mi>\n</msub>\n<mo>,</mo>\n<msub>\n<mi>\u03b8</mi>\n<mn>0</mn>\n</msub>\n<mo stretchy=\"false\">)</mo>\n</mrow>\n</mstyle>\n</math>",
+                    "type": "mathml"
+                },
+                {
+                    "text": "We assume that  <math id=\"inf37\"> <mi>k</mi> <mfenced separators=\"|\"> <mrow> <msub> <mrow> <mi>x</mi> </mrow> <mrow> <mi>t</mi> </mrow> </msub> <mo>,</mo> <mi> </mi> <mi>\u03b8</mi> </mrow> </mfenced> </math>  does not have a closed form.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The basic idea of estimating  <math id=\"inf38\"> <mi>\u03b8</mi> </math>  is to obtain a distribution of simulated y-values,  <math id=\"inf39\"> <msubsup> <mrow> <mi>y</mi> </mrow> <mrow> <mi>t</mi> </mrow> <mrow> <mi>s</mi> </mrow> </msubsup> </math>  with properties which as closely as possible agree with those of the p.d.f. of y<sub>t</sub>. It would appear to be a natural approach to choose  <math id=\"inf40\"> <mstyle displaystyle=\"true\" scriptlevel=\"0\"> <mrow> <mrow> <mover> <mi>\u03b8</mi> <mo stretchy=\"false\">^</mo> </mover> </mrow> </mrow> </mstyle> </math>  such that it minimizes",
+                    "type": "paragraph"
+                },
+                {
+                    "id": "E11",
+                    "label": "(11)",
+                    "mathml": "<math>\n<mstyle displaystyle=\"true\" scriptlevel=\"0\">\n<mrow>\n<msubsup>\n<mo movablelimits=\"false\">\u2211</mo>\n<mrow>\n<mi>t</mi>\n<mo>=</mo>\n<mn>1</mn>\n</mrow>\n<mrow>\n<mi>n</mi>\n</mrow>\n</msubsup>\n<mo stretchy=\"false\">(</mo>\n<msub>\n<mi>y</mi>\n<mrow>\n<mi>t</mi>\n</mrow>\n</msub>\n<mo>\u2212</mo>\n<msubsup>\n<mi>y</mi>\n<mrow>\n<mi>t</mi>\n</mrow>\n<mrow>\n<mi>s</mi>\n</mrow>\n</msubsup>\n<mo stretchy=\"false\">(</mo>\n<mrow>\n<mrow>\n<mover>\n<mi>\u03b8</mi>\n<mo stretchy=\"false\">^</mo>\n</mover>\n</mrow>\n</mrow>\n<mo stretchy=\"false\">)</mo>\n<msup>\n<mo stretchy=\"false\">)</mo>\n<mrow>\n<mn>2</mn>\n</mrow>\n</msup>\n</mrow>\n</mstyle>\n</math>",
+                    "type": "mathml"
+                },
+                {
+                    "text": "However, as shown in <a href=\"#bib6\">Gouri\u00e9roux and Monfort (1996)</a> (p. 20), this \"path calibrated\" estimator is not necessarily consistent. To see this, consider an example, which differs a little from the one, used in <a href=\"#bib6\">Gouri\u00e9roux and Monfort (1996)</a>. Assume the following simple model:",
+                    "type": "paragraph"
+                },
+                {
+                    "id": "E12",
+                    "label": "(12)",
+                    "mathml": "<math>\n<mstyle displaystyle=\"true\" scriptlevel=\"0\">\n<mrow>\n<mi>y</mi>\n<mo>=</mo>\n<mi>\u03b2</mi>\n<mi>x</mi>\n<mo>+</mo>\n<mi>\u03c3</mi>\n<mi>\u03f5</mi>\n<mo>,</mo>\n<mtext>\u00a0</mtext>\n<mrow>\n<mi mathvariant=\"normal\">w</mi>\n<mi mathvariant=\"normal\">h</mi>\n<mi mathvariant=\"normal\">e</mi>\n<mi mathvariant=\"normal\">r</mi>\n<mi mathvariant=\"normal\">e</mi>\n</mrow>\n<mtext>\u00a0</mtext>\n<mi>\u03f5</mi>\n<mo>\u223c</mo>\n<mi>I</mi>\n<mi>I</mi>\n<mi>D</mi>\n<mo stretchy=\"false\">(</mo>\n<mn>0</mn>\n<mo>,</mo>\n<mn>1</mn>\n<mo stretchy=\"false\">)</mo>\n</mrow>\n</mstyle>\n</math>",
+                    "type": "mathml"
+                },
+                {
+                    "text": "We seek parameter estimates  <math id=\"inf41\"> <mover accent=\"true\"> <mrow> <mi>\u03b2</mi> </mrow> <mo>~</mo> </mover> </math>  and  <math id=\"inf42\"> <mover accent=\"true\"> <mrow> <mi>\u03c3</mi> </mrow> <mo>~</mo> </mover> </math>  such that the model can be simulated,",
+                    "type": "paragraph"
+                },
+                {
+                    "id": "E13",
+                    "label": "(13)",
+                    "mathml": "<math>\n<msup>\n<mrow>\n<mi>y</mi>\n</mrow>\n<mrow>\n<mi>s</mi>\n</mrow>\n</msup>\n<mo>=</mo>\n<mover accent=\"true\">\n<mrow>\n<mi>\u03b2</mi>\n</mrow>\n<mo>~</mo>\n</mover>\n<mi>x</mi>\n<mo>+</mo>\n<mover accent=\"true\">\n<mrow>\n<mi>\u03c3</mi>\n</mrow>\n<mo>~</mo>\n</mover>\n<msup>\n<mrow>\n<mi>\u03f5</mi>\n</mrow>\n<mrow>\n<mi>s</mi>\n</mrow>\n</msup>\n</math>",
+                    "type": "mathml"
+                },
+                {
+                    "text": "where  <math id=\"inf43\"> <msup> <mrow> <mi>\u03f5</mi> </mrow> <mrow> <mi>s</mi> </mrow> </msup> </math>  are draws independently of  <math id=\"inf44\"> <mi>\u03f5</mi> </math>  but from the same (known) distribution. Inserting (<a href=\"#E13\">13</a>) into (<a href=\"#E11\">11</a>) and solving the first-order conditions gives the following estimators:",
+                    "type": "paragraph"
+                },
+                {
+                    "id": "E14",
+                    "label": "(14)",
+                    "mathml": "<math>\n<mover accent=\"true\">\n<mrow>\n<mi>\u03b2</mi>\n</mrow>\n<mo>~</mo>\n</mover>\n<mo>=</mo>\n<mfrac>\n<mrow>\n<mrow>\n<mo>\u2211</mo>\n<mrow>\n<mi>x</mi>\n<mi>y</mi>\n<mo>-</mo>\n<mover accent=\"true\">\n<mrow>\n<mi>\u03c3</mi>\n</mrow>\n<mo>~</mo>\n</mover>\n<mrow>\n<mo>\u2211</mo>\n<mrow>\n<mi>x</mi>\n<msup>\n<mrow>\n<mi>\u03f5</mi>\n</mrow>\n<mrow>\n<mi>s</mi>\n</mrow>\n</msup>\n</mrow>\n</mrow>\n</mrow>\n</mrow>\n</mrow>\n<mrow>\n<mrow>\n<mo>\u2211</mo>\n<mrow>\n<msup>\n<mrow>\n<mi>x</mi>\n</mrow>\n<mrow>\n<mn>2</mn>\n<mo>,</mo>\n</mrow>\n</msup>\n</mrow>\n</mrow>\n</mrow>\n</mfrac>\n</math>",
+                    "type": "mathml"
+                },
+                {
+                    "id": "E15",
+                    "label": "(15)",
+                    "mathml": "<math>\n<mover accent=\"true\">\n<mrow>\n<mi>\u03c3</mi>\n</mrow>\n<mo>~</mo>\n</mover>\n<mo>=</mo>\n<mfrac>\n<mrow>\n<mrow>\n<mo>\u2211</mo>\n<mrow>\n<mfenced separators=\"|\">\n<mrow>\n<mi>\u03b2</mi>\n<mi>x</mi>\n<mo>+</mo>\n<mi>\u03c3</mi>\n<mi>\u03f5</mi>\n</mrow>\n</mfenced>\n<mi>x</mi>\n</mrow>\n</mrow>\n<mrow>\n<mo>\u2211</mo>\n<mrow>\n<mi>x</mi>\n<msup>\n<mrow>\n<mi>\u03f5</mi>\n</mrow>\n<mrow>\n<mi>s</mi>\n</mrow>\n</msup>\n</mrow>\n</mrow>\n<mo>-</mo>\n<mrow>\n<mo>\u2211</mo>\n<mrow>\n<mo>(</mo>\n<mi>\u03b2</mi>\n<mi>x</mi>\n<mo>+</mo>\n<mi>\u03c3</mi>\n<mi>\u03f5</mi>\n<mo>)</mo>\n<msup>\n<mrow>\n<mi>\u03f5</mi>\n</mrow>\n<mrow>\n<mi>s</mi>\n</mrow>\n</msup>\n<mrow>\n<mo>\u2211</mo>\n<mrow>\n<msup>\n<mrow>\n<mi>x</mi>\n</mrow>\n<mrow>\n<mn>2</mn>\n</mrow>\n</msup>\n</mrow>\n</mrow>\n</mrow>\n</mrow>\n</mrow>\n<mrow>\n<msup>\n<mrow>\n<mo>(</mo>\n<mrow>\n<mo>\u2211</mo>\n<mrow>\n<mi>x</mi>\n<msup>\n<mrow>\n<mi>\u03f5</mi>\n</mrow>\n<mrow>\n<mi>s</mi>\n</mrow>\n</msup>\n<mo>)</mo>\n</mrow>\n</mrow>\n</mrow>\n<mrow>\n<mn>2</mn>\n</mrow>\n</msup>\n<mo>-</mo>\n<mrow>\n<mo>\u2211</mo>\n<mrow>\n<msup>\n<mrow>\n<mo>(</mo>\n<msup>\n<mrow>\n<mi>\u03f5</mi>\n</mrow>\n<mrow>\n<mi>s</mi>\n</mrow>\n</msup>\n<mo>)</mo>\n</mrow>\n<mrow>\n<mn>2</mn>\n</mrow>\n</msup>\n<mrow>\n<mo>\u2211</mo>\n<mrow>\n<msup>\n<mrow>\n<mi>x</mi>\n</mrow>\n<mrow>\n<mn>2</mn>\n</mrow>\n</msup>\n</mrow>\n</mrow>\n</mrow>\n</mrow>\n</mrow>\n</mfrac>\n</math>",
+                    "type": "mathml"
+                },
+                {
+                    "text": "From the assumptions made and the additional assumption that (1 / n)  <math id=\"inf45\"> <mrow> <mo>\u2211</mo> <mrow> <msup> <mrow> <mi mathvariant=\"normal\">x</mi> </mrow> <mrow> <mn>2</mn> </mrow> </msup> </mrow> </mrow> </math>  converges to a finite limit when <i>n</i> tends towards infinity, it follows that",
+                    "type": "paragraph"
+                },
+                {
+                    "id": "E16",
+                    "label": "(16)",
+                    "mathml": "<math>\n<mstyle displaystyle=\"true\" scriptlevel=\"0\">\n<mrow>\n<msub>\n<mrow>\n<mi mathvariant=\"normal\">p</mi>\n<mi mathvariant=\"normal\">l</mi>\n<mi mathvariant=\"normal\">i</mi>\n<mi mathvariant=\"normal\">m</mi>\n</mrow>\n<mrow>\n<mi>n</mi>\n<mo stretchy=\"false\">\u2192</mo>\n<mi mathvariant=\"normal\">\u221e</mi>\n</mrow>\n</msub>\n<mtext>\u00a0</mtext>\n<mrow>\n<mover>\n<mi>\u03c3</mi>\n<mo stretchy=\"false\">~</mo>\n</mover>\n</mrow>\n<mo>=</mo>\n<mn>0</mn>\n<mtext>\u00a0</mtext>\n<mrow>\n<mi mathvariant=\"normal\">a</mi>\n<mi mathvariant=\"normal\">n</mi>\n<mi mathvariant=\"normal\">d</mi>\n</mrow>\n<mtext>\u00a0</mtext>\n<msub>\n<mrow>\n<mi mathvariant=\"normal\">p</mi>\n<mi mathvariant=\"normal\">l</mi>\n<mi mathvariant=\"normal\">i</mi>\n<mi mathvariant=\"normal\">m</mi>\n</mrow>\n<mrow>\n<mi>n</mi>\n<mo stretchy=\"false\">\u2192</mo>\n<mi mathvariant=\"normal\">\u221e</mi>\n</mrow>\n</msub>\n<mtext>\u00a0</mtext>\n<mrow>\n<mover>\n<mi>\u03b2</mi>\n<mo stretchy=\"false\">~</mo>\n</mover>\n</mrow>\n<mo>=</mo>\n<mi>\u03b2</mi>\n</mrow>\n</mstyle>\n</math>",
+                    "type": "mathml"
+                },
+                {
+                    "text": "Using this criterion, we thus get an inconsistent estimate of  <math id=\"inf46\"> <mi>\u03c3</mi> </math>  but a consistent estimate of  <math id=\"inf47\"> <mi>\u03b2</mi> </math> . Essentially, this estimator tells us to ignore the random drawings of  <math id=\"inf48\"> <msup> <mrow> <mi>\u03f5</mi> </mrow> <mrow> <mi>s</mi> </mrow> </msup> </math>  when we simulate, i.e. only to use mean predictions. As already noted, such a procedure does not agree with the objective of micro-simulation. In this particular model, the estimate of  <math id=\"inf49\"> <mi>\u03b2</mi> </math>  is consistent, but if there was a functional relation between  <math id=\"inf50\"> <mi>\u03b2</mi> </math>  and  <math id=\"inf51\"> <mi>\u03c3</mi> </math>  then the slope would also become inconsistently estimated. It is perhaps possible to generalize this result and suggest that if there is any functional relation between the parameters, which determine the mean path and those determining the dispersion around this path in an MSM, then one cannot use a path-calibrated estimator.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "An alternative approach is to use a \"moment calibrated\" estimator, which minimizes the distance between observed and simulated moments. This approach does not only permit calibration to moments in cross-sectional distributions, but also to transition frequencies and intertemporal correlations, which become important in dynamic models.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Let  <math id=\"inf52\"> <mi>\u03b8</mi> </math>  be a vector of size <i>p</i> and X<sub>t</sub> a vector of size <i>r</i>. Furthermore, let <i>K(y<sub>t</sub>,</i> X<sub>t</sub>) be a vector function of size <i>q,</i> and",
+                    "type": "paragraph"
+                },
+                {
+                    "id": "E17",
+                    "label": "(17)",
+                    "mathml": "<math>\n<mstyle displaystyle=\"true\" scriptlevel=\"0\">\n<mrow>\n<mi>E</mi>\n<mo stretchy=\"false\">(</mo>\n<mi>K</mi>\n<mo stretchy=\"false\">(</mo>\n<msub>\n<mi>y</mi>\n<mi>t</mi>\n</msub>\n<mo>,</mo>\n<msub>\n<mi>x</mi>\n<mi>t</mi>\n</msub>\n<mo stretchy=\"false\">)</mo>\n<mo>\u2223</mo>\n<msub>\n<mi>x</mi>\n<mi>t</mi>\n</msub>\n<mo>,</mo>\n<msub>\n<mi>\u03b8</mi>\n<mn>0</mn>\n</msub>\n<mo stretchy=\"false\">)</mo>\n<mo>=</mo>\n<mi>k</mi>\n<mo stretchy=\"false\">(</mo>\n<msub>\n<mi>x</mi>\n<mi>t</mi>\n</msub>\n<mo>,</mo>\n<msub>\n<mi>\u03b8</mi>\n<mn>0</mn>\n</msub>\n<mo stretchy=\"false\">)</mo>\n</mrow>\n</mstyle>\n</math>",
+                    "type": "mathml"
+                },
+                {
+                    "text": "<i>K</i> could, for instance, be the identity function and the square of y<sub>t</sub>. Also, define a <i>r</i> x <i>q</i> matrix Z<sub>t</sub> = <i>I<sub>q q</sub> </i>  <math id=\"inf53\"> <mo>\u2a02</mo> </math> x<sub>t</sub>. From the exogeneity of <i>x<sub>t</sub> </i> it follows that",
+                    "type": "paragraph"
+                },
+                {
+                    "id": "E18",
+                    "label": "(18)",
+                    "mathml": "<math>\n<mstyle displaystyle=\"true\" scriptlevel=\"0\">\n<mrow>\n<mi>E</mi>\n<mo stretchy=\"false\">[</mo>\n<msub>\n<mi>Z</mi>\n<mi>t</mi>\n</msub>\n<mo stretchy=\"false\">(</mo>\n<mi>K</mi>\n<mo stretchy=\"false\">(</mo>\n<msub>\n<mi>y</mi>\n<mi>t</mi>\n</msub>\n<mo>,</mo>\n<msub>\n<mi>x</mi>\n<mi>t</mi>\n</msub>\n<mo stretchy=\"false\">)</mo>\n<mo>\u2212</mo>\n<mi>k</mi>\n<mo stretchy=\"false\">(</mo>\n<msub>\n<mi>x</mi>\n<mi>t</mi>\n</msub>\n<mo>,</mo>\n<msub>\n<mi>\u03b8</mi>\n<mn>0</mn>\n</msub>\n<mo stretchy=\"false\">)</mo>\n<mo stretchy=\"false\">)</mo>\n<mo stretchy=\"false\">]</mo>\n<mo>=</mo>\n<mn>0</mn>\n</mrow>\n</mstyle>\n</math>",
+                    "type": "mathml"
+                },
+                {
+                    "text": "Because there is no closed form of k(x<sub>t</sub>,  <math id=\"inf54\"> <msub> <mrow> <mi>\u03b8</mi> </mrow> <mrow> <mn>0</mn> </mrow> </msub> </math> ), we will define an unbiased simulator of <i>k,</i>",
+                    "type": "paragraph"
+                },
+                {
+                    "id": "E19",
+                    "label": "(19)",
+                    "mathml": "<math>\n<mstyle displaystyle=\"true\" scriptlevel=\"0\">\n<mrow>\n<mover>\n<mrow>\n<mi>k</mi>\n<mo stretchy=\"false\">(</mo>\n</mrow>\n<mo>\u223c</mo>\n</mover>\n<msub>\n<mi>x</mi>\n<mrow>\n<mi>t</mi>\n</mrow>\n</msub>\n<mo>,</mo>\n<msup>\n<mi>\u03f5</mi>\n<mrow>\n<mi>s</mi>\n</mrow>\n</msup>\n<mo>,</mo>\n<mtext>\u00a0</mtext>\n<mi>\u03b8</mi>\n<mo stretchy=\"false\">)</mo>\n<mo>=</mo>\n<mfrac>\n<mn>1</mn>\n<mi>s</mi>\n</mfrac>\n<msubsup>\n<mo movablelimits=\"false\">\u2211</mo>\n<mrow>\n<mi>s</mi>\n<mo>=</mo>\n<mn>1</mn>\n</mrow>\n<mrow>\n<mi>s</mi>\n</mrow>\n</msubsup>\n<mi>K</mi>\n<mrow>\n<mo>(</mo>\n<mrow>\n<mi>g</mi>\n<mrow>\n<mo>(</mo>\n<mrow>\n<msub>\n<mi>x</mi>\n<mrow>\n<mi>t</mi>\n</mrow>\n</msub>\n<mo>,</mo>\n<mtext>\u00a0</mtext>\n<msubsup>\n<mi>\u03f5</mi>\n<mrow>\n<mi>t</mi>\n</mrow>\n<mrow>\n<mi>s</mi>\n</mrow>\n</msubsup>\n<mo>,</mo>\n<mtext>\u00a0</mtext>\n<mi>\u03b8</mi>\n</mrow>\n<mo>)</mo>\n</mrow>\n<mo>,</mo>\n<mtext>\u00a0</mtext>\n<msub>\n<mi>x</mi>\n<mrow>\n<mi>t</mi>\n</mrow>\n</msub>\n</mrow>\n<mo>)</mo>\n</mrow>\n<mo>;</mo>\n</mrow>\n</mstyle>\n</math>",
+                    "type": "mathml"
+                },
+                {
+                    "text": "where  <math id=\"inf55\"> <msup> <mrow> <mi>\u03f5</mi> </mrow> <mrow> <mi>s</mi> </mrow> </msup> </math>  is a vector of <i>s</i> independent random errors  <math id=\"inf56\"> <msubsup> <mrow> <mi>\u03f5</mi> </mrow> <mrow> <mi>t</mi> </mrow> <mrow> <mi>s</mi> </mrow> </msubsup> </math>  drawn from the p.d.f. of  <math id=\"inf57\"> <msub> <mrow> <mi>\u03f5</mi> </mrow> <mrow> <mi>t</mi> </mrow> </msub> </math> .",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "A simulated GMM estimator is then obtained as",
+                    "type": "paragraph"
+                },
+                {
+                    "id": "E20",
+                    "label": "(20)",
+                    "mathml": "<math>\n<mstyle displaystyle=\"true\" scriptlevel=\"0\">\n<mrow>\n<mrow>\n<mover>\n<mi>\u03b8</mi>\n<mo stretchy=\"false\">^</mo>\n</mover>\n</mrow>\n<mo>=</mo>\n<munder>\n<mrow>\n<mi>a</mi>\n<mi>r</mi>\n<mi>g</mi>\n<mi>m</mi>\n<mi>i</mi>\n<mi>n</mi>\n</mrow>\n<mi>\u03b8</mi>\n</munder>\n<mo stretchy=\"false\">(</mo>\n<msubsup>\n<mo movablelimits=\"false\">\u2211</mo>\n<mrow>\n<mi>t</mi>\n<mo>=</mo>\n<mn>1</mn>\n</mrow>\n<mrow>\n<mi>n</mi>\n</mrow>\n</msubsup>\n<msub>\n<mi>Z</mi>\n<mrow>\n<mi>t</mi>\n</mrow>\n</msub>\n<mo stretchy=\"false\">[</mo>\n<mi>K</mi>\n<mo stretchy=\"false\">(</mo>\n<msub>\n<mi>y</mi>\n<mrow>\n<mi>t</mi>\n</mrow>\n</msub>\n<mo>,</mo>\n<msub>\n<mi>x</mi>\n<mrow>\n<mi>t</mi>\n<mo stretchy=\"false\">)</mo>\n</mrow>\n</msub>\n<mo>\u2212</mo>\n<mover>\n<mi>k</mi>\n<mo>\u223c</mo>\n</mover>\n<mo stretchy=\"false\">(</mo>\n<msub>\n<mi>x</mi>\n<mrow>\n<mi>t</mi>\n</mrow>\n</msub>\n<mo>,</mo>\n<msup>\n<mi>\u03b5</mi>\n<mrow>\n<mi>s</mi>\n</mrow>\n</msup>\n<mo>,</mo>\n<mi>\u03b8</mi>\n<mo stretchy=\"false\">)</mo>\n<mo stretchy=\"false\">]</mo>\n<mrow>\n<mi mathvariant=\"normal\">\u03a9</mi>\n</mrow>\n<mo stretchy=\"false\">(</mo>\n<munderover>\n<mo movablelimits=\"false\">\u2211</mo>\n<mrow>\n<mi>t</mi>\n<mo>=</mo>\n<mn>1</mn>\n</mrow>\n<mrow>\n<mi>n</mi>\n</mrow>\n</munderover>\n<msub>\n<mi>Z</mi>\n<mrow>\n<mi>t</mi>\n</mrow>\n</msub>\n<mo stretchy=\"false\">[</mo>\n<mi>K</mi>\n<mo stretchy=\"false\">(</mo>\n<msub>\n<mi>y</mi>\n<mrow>\n<mi>t</mi>\n</mrow>\n</msub>\n<mo>,</mo>\n<msub>\n<mi>x</mi>\n<mrow>\n<mi>t</mi>\n</mrow>\n</msub>\n<mo stretchy=\"false\">)</mo>\n<mo>\u2212</mo>\n<mover>\n<mi>k</mi>\n<mo>\u223c</mo>\n</mover>\n<mo stretchy=\"false\">(</mo>\n<msub>\n<mi>x</mi>\n<mrow>\n<mi>t</mi>\n</mrow>\n</msub>\n<mo>,</mo>\n<msup>\n<mi>\u03b5</mi>\n<mrow>\n<mi>s</mi>\n</mrow>\n</msup>\n<mo>,</mo>\n<mi>\u03b8</mi>\n<mo stretchy=\"false\">)</mo>\n<mo stretchy=\"false\">]</mo>\n<mo stretchy=\"false\">)</mo>\n</mrow>\n</mstyle>\n</math>",
+                    "type": "mathml"
+                },
+                {
+                    "text": "where  <math id=\"inf58\"> <mi mathvariant=\"normal\">\u03a9</mi> </math>  is a <i>r</i> x <i>r</i> symmetric positive semi-definite matrix. As shown in <a href=\"#bib6\">Gouri\u00e9roux and Monfort (1996)</a>, this is a consistent estimator. The covariance matrix of the estimator has two components, one which is the covariance matrix of the ordinary GMM estimator, and one, which depends on how well <i>k</i> is simulated. An optimal choice of  <math id=\"inf59\"> <mi mathvariant=\"normal\">\u03a9</mi> </math>  depends on the unknown distribution of <i>y<sub>t</sub> </i>. A simulation estimator of the optimal  <math id=\"inf60\"> <mi mathvariant=\"normal\">\u03a9</mi> </math>  is given in <a href=\"#bib6\">Gouri\u00e9roux and Monfort (1996)</a> (p. 32). Two observations are in place.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The number of moment conditions (<a href=\"#E18\">18</a>) invoked must be no less than the number of unknown parameters, otherwise the model becomes unidentified.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The quadratic expression in (<a href=\"#E20\">20</a>) can be minimized using the usual gradient-based methods if first and second-order derivatives with respect to  <math id=\"inf61\"> <mi>\u03b8</mi> </math>  exist. If the model includes discontinuities in  <math id=\"inf62\"> <mi>\u03b8</mi> </math>  one would have to rely on methods not using gradients. MSM which include tax and benefit legislation typically have discontinuities in variables, which may or may not imply discontinuities with respect to behavioral parameters.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "It should be possible to include constraints of the kind discussed in a previous section in the simulation\u00ad based approach. Suppose <i>K</i> is the identity function in y<sub>t</sub>, so the moment condition becomes",
+                    "type": "paragraph"
+                },
+                {
+                    "id": "E21",
+                    "label": "(21)",
+                    "mathml": "<math>\n<mstyle displaystyle=\"true\" scriptlevel=\"0\">\n<mrow>\n<mi>E</mi>\n<mo stretchy=\"false\">(</mo>\n<msub>\n<mi>y</mi>\n<mi>t</mi>\n</msub>\n<mo>\u2212</mo>\n<mi>E</mi>\n<mo stretchy=\"false\">(</mo>\n<mi>g</mi>\n<mo stretchy=\"false\">(</mo>\n<msub>\n<mi>x</mi>\n<mi>t</mi>\n</msub>\n<mo>,</mo>\n<msub>\n<mi>\u03b5</mi>\n<mi>t</mi>\n</msub>\n<mo>,</mo>\n<msub>\n<mi>\u03b8</mi>\n<mn>0</mn>\n</msub>\n<mo stretchy=\"false\">)</mo>\n<mo stretchy=\"false\">)</mo>\n<mo stretchy=\"false\">)</mo>\n<mo>=</mo>\n<mn>0</mn>\n</mrow>\n</mstyle>\n</math>",
+                    "type": "mathml"
+                },
+                {
+                    "text": "The empirical correspondence to the expression to the left of the equality sign is",
+                    "type": "paragraph"
+                },
+                {
+                    "id": "E22",
+                    "label": "(22)",
+                    "mathml": "<math>\n<mstyle displaystyle=\"true\" scriptlevel=\"0\">\n<mrow>\n<mrow>\n<mover>\n<mrow>\n<mover>\n<mi>y</mi>\n<mo stretchy=\"false\">~</mo>\n</mover>\n</mrow>\n<mo stretchy=\"false\">\u00af</mo>\n</mover>\n</mrow>\n<mo>\u2212</mo>\n<mfrac>\n<mn>1</mn>\n<mi>n</mi>\n</mfrac>\n<munderover>\n<mo movablelimits=\"false\">\u2211</mo>\n<mrow>\n<mi>t</mi>\n<mo>=</mo>\n<mn>1</mn>\n</mrow>\n<mrow>\n<mi>n</mi>\n</mrow>\n</munderover>\n<mrow>\n<mrow>\n<mover>\n<mi>k</mi>\n<mo stretchy=\"false\">~</mo>\n</mover>\n</mrow>\n<mo stretchy=\"false\">(</mo>\n<msub>\n<mi>x</mi>\n<mi>t</mi>\n</msub>\n<mo>,</mo>\n<msup>\n<mi>\u03b5</mi>\n<mi>s</mi>\n</msup>\n<mo>,</mo>\n<msub>\n<mi>\u03b8</mi>\n<mn>0</mn>\n</msub>\n<mo stretchy=\"false\">)</mo>\n</mrow>\n<mo>.</mo>\n</mrow>\n</mstyle>\n</math>",
+                    "type": "mathml"
+                },
+                {
+                    "text": "Suppose now that we know the finite sample mean  <math id=\"inf63\"> <mover accent=\"true\"> <mrow> <mi>Y</mi> </mrow> <mo>-</mo> </mover> </math> . How could we use this information? If we also knew the <i>Xt</i> values for all individuals in the finite sample, we could substitute  <math id=\"inf64\"> <mover accent=\"true\"> <mrow> <mi>y</mi> </mrow> <mo>-</mo> </mover> </math>  in (<a href=\"#E22\">22</a>) for  <math id=\"inf65\"> <mover accent=\"true\"> <mrow> <mi>Y</mi> </mrow> <mo>-</mo> </mover> </math>  and extend the summation in the second term of (<a href=\"#E22\">22</a>) to <i>N,</i> and thus get an empirical correspondence to (<a href=\"#E21\">21</a>) for the whole finite population. In practice, this is of course not possible. One only knows the x-observations of the sample, but with known selection probabilities <i>p<sub>t</sub> </i> they can be used to compute the following estimate:",
+                    "type": "paragraph"
+                },
+                {
+                    "id": "E23",
+                    "label": "(23)",
+                    "mathml": "<math>\n<mstyle displaystyle=\"true\" scriptlevel=\"0\">\n<mrow>\n<mover>\n<mi>Y</mi>\n<mo>\u2212</mo>\n</mover>\n<mo>\u2212</mo>\n<mfrac>\n<mn>1</mn>\n<mi>N</mi>\n</mfrac>\n<msubsup>\n<mo movablelimits=\"false\">\u2211</mo>\n<mrow>\n<mi>t</mi>\n<mo>=</mo>\n<mn>1</mn>\n</mrow>\n<mrow>\n<mi>n</mi>\n</mrow>\n</msubsup>\n<mfrac>\n<mn>1</mn>\n<msub>\n<mi>p</mi>\n<mrow>\n<mi>t</mi>\n</mrow>\n</msub>\n</mfrac>\n<mover>\n<mi>k</mi>\n<mo>\u223c</mo>\n</mover>\n<mrow>\n<mo>(</mo>\n<mrow>\n<msub>\n<mi>x</mi>\n<mrow>\n<mi>t</mi>\n</mrow>\n</msub>\n<mo>,</mo>\n<msup>\n<mi>\u03f5</mi>\n<mrow>\n<mi>s</mi>\n</mrow>\n</msup>\n<mo>,</mo>\n<msub>\n<mi>\u03b8</mi>\n<mrow>\n<mn>0</mn>\n</mrow>\n</msub>\n</mrow>\n<mo>)</mo>\n</mrow>\n<mo>.</mo>\n</mrow>\n</mstyle>\n</math>",
+                    "type": "mathml"
+                },
+                {
+                    "text": "The covariance matrix of the resulting estimate  <math id=\"inf66\"> <mover accent=\"true\"> <mrow> <mi>\u03b8</mi> </mrow> <mo>^</mo> </mover> </math>  should now have a third component, which reflects the sampling from the finite population. (A simple numerical example is provided in <a href=\"#bib8\">Klevmarken (1998)</a>.)",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s5",
+            "title": "4.3. Simulation-based estimation<sup><a href=\"#fn3\">3</a></sup>\n",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "Lacking measures of the quality of an MSM most practitioners validate their models by analyzing how closely they track observed data and known benchmarks.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "If the tax and benefit legislation has been translated into computer code with sufficient detail and care and the data are detailed and accurate enough, there is no need to validate a conventional static tax-benefit model without behavioral adjustments, because there is nothing to validate. However, if the simulation model includes behavioral adjustments, there is a validation problem. But how would one go about validating a static model? Is it at all possible? The problem with the comparative statics of a static MSM is that it does not give predictions for any specific point in time or time interval, and thus, it is hard to know to what the simulations should be compared. Suppose for instance, that a labor force participation equation is estimated from a cross-section at the end of a long period of unchanged tax and benefit systems and a stable labor market. Then a major tax reform takes place. Is it a good idea to validate the predictions from this model by comparing with observed participation rates from the first, second or third year after the reform?",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Validation of a dynamic and dated model does not suffer from the same problem. In this case simulated values have a correspondence in the real world. Validation involves two major issues. First the choice of criterion and validation measure, and second the derivation of the stochastic properties of this measure taking all sources of uncertainty into account. The choice of criterion for validation is of course closely related to that for estimation. As already mentioned, in dynamic micro-simulation we are not only inter\u00adested in good mean predictions, but also in good representations of cross-sectional distributions and of transitions between states. When an event occurs becomes important. A MSM is likely to have a number of simplifying assumptions about lack of correlation and independence, both between individuals and over time. For this reason, one might expect too much random noise in the simulations and too quickly decaying correlations compared to real data. In addition to model wide criteria, one might thus be interested in criteria that focus on these particular properties. Work is needed to develop such measures with known properties.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "For a model not too big and complex in structure it might be feasible to derive an analytic expression for the variance-covariance matrix of the simulations, which takes all sources of uncertainty into account: random sampling, estimation and simulation errors (for an example, see <a href=\"#bib13\">Pudney and Sutherland (1996)</a>). In general, MSMs are so complex that analytical solutions are unlikely. Given the parameter estimates the simulation uncertainty can be evaluated if simulations are replicated with new random number generator seeds for each replication. There is a trade-off between the number of replications needed and the sample size. The bigger sample the fewer replications.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "To evaluate the uncertainty which arises through the parameter estimates one approach is to approximate the distribution of the estimates with a multivariate normal distribution with mean vector and covariance matrix equal to that of the estimated parameters. By repeated draws from this normal distribution and new model simulations for each draw of parameter values an estimate of the variability in the simulation due to uncertainty about the true parameter values can be obtained.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "To avoid the normal approximation, one might use sample re-use methods. For instance, by boot strapping one can obtain a set of replicated estimates of the model parameters. Each replication can be used in one or more simulation runs, and the variance of these simulations will capture both the variability in parameter estimates and the variability due to simulation (model) errors. If the boot strap samples are used not only to estimate the parameters but also as replicated bases (initial conditions) for the simulations, then one would also be able to capture the random sampling errors.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Much of the total error in simulated values will come from the choice of a particular model structure. Sensitivity analysis is an approach to assess the importance of this source of error. As pointed out in <a href=\"#bib4\">Citro and Hanushek (1997)</a> (p. 155) \"sensitivity analysis is a diagnostic tool for ascertaining which parts of an overall model could have the largest impact on results and, therefore, are the most important to scrutinize for potential errors that could be reduced or eliminated\". If simple measures of the impact on key variables from marginal changes in parameters and exogenous entities could be computed they would potentially become very useful.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s6",
+            "title": "5. Model validation",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "The credibility of MSMs with the research community as well as with users will in the long run depend on the application of sound principles of inference in the estimation, testing and validation of these models. This paper has reviewed a few issues of inference in static and dynamic MSMs.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The application of a model-wide estimation criterion will, in general, suggest an estimator, which does not permit a piece wise estimation of sub-model by sub-model. Only if the model has a hierarchical or recursive structure it is possible to use a piece wise approach.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "It was also suggested that the alignment procedures now used in practical work could be seen as part of the estimation procedure. It followed that one should, in general, not use simple proportional alignment. It is important to note that the constraints imposed by alignment must be tested if accepted by data. If they are not that is a clear indication that something is wrong with the model, and it should be reformulated rather than forced \"on track\" by alignment.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "It was also suggested that the simulation approach to estimation could be useful in micro-simulation work. These models are designed to simulate, and they also frequently include nonlinear and complex rela\u00adtions, which suggests that simulation-based estimation has a relative advantage. However, path-calibrated estimates are, in general, inconsistent and should be avoided, in particular in a micro-simulation context which does not only focus on mean relations. A better alternative is moment-calibrated estimates.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The maximum likelihood approach was never mentioned in the discussion of estimation issues above. Usually, one has very little reason to choose a particular family of distributions a priori, and an unrealistic but convenient choice might seriously distort the simulated distributions. Please remember that this is an important issue in micro-simulation. To preserve the distributional properties of data when simulating one sometimes chooses not to draw random errors from a specified distribution like the normal, but from empirical distributions of residuals. The maximum likelihood approach then becomes impossible.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Finally, there is the issue of whether it is practically feasible to use the suggestions given above. The pro\u00adgrams of some of the MSMs now used, in practice, need so much computer time for one single simulation that any method that needs repeated simulations would seem unpractical. However, programming code, programming skills and computers become ever faster, and more recent models tend to run much faster than old models. Depending on model structure it might also become possible to apply the approaches suggested to smaller sub-models.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s7",
+            "title": "6. Concluding remarks",
+            "type": "section"
+        },
+        {
+            "id": "footnotes",
+            "title": "Footnotes",
+            "type": "section",
+            "content": [
+                {
+                    "content": [
+                        {
+                            "text": "MSM often include discontinuities which could imply that these regularity conditions do not hold, but models are more likely to be continuous in the behavioral parameters  <math id=\"inf67\"> <mstyle displaystyle=\"true\" scriptlevel=\"0\"> <mrow> <mi>\u03b8</mi> </mrow> </mstyle> </math>  than in variables, the values of which are determined by legislation and government rules.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "fn1",
+                    "title": "1.",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "The estimator (<a href=\"#E8\">8</a>) is an ML estimator because there is no additional x-regressor in the second relation. The reduced form becomes a SURE system with the same explanatory variable in both equations. In general, the ML estimator will depend on the structure of the covariance matrix of the errors.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "fn2",
+                    "title": "2.",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "This section relies to a large extent on the book by <a href=\"#bib6\">Gouri\u00e9roux and Monfort (1996)</a>.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "fn3",
+                    "title": "3.",
+                    "type": "section"
+                }
+            ]
+        }
+    ],
+    "references": [
+        {
+            "articleTitle": "Micro/macro-simulation of socioeconomic population processes",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Caldwell, S",
+                        "preferred": "S Caldwell"
+                    },
+                    "type": "person"
+                }
+            ],
+            "conference": {
+                "name": [
+                    "IBM Computing Conference"
+                ]
+            },
+            "date": "1988",
+            "id": "bib1",
+            "type": "conference-proceeding"
+        },
+        {
+            "articleTitle": "Content, validation and uses of CORSIM 2.0, a dynamic microanalytic model of the United States. Paper presented at the",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Caldwell, S",
+                        "preferred": "S Caldwell"
+                    },
+                    "type": "person"
+                }
+            ],
+            "conference": {
+                "name": [
+                    "IARIW Conference on Micro-simulation and Public Policy"
+                ]
+            },
+            "date": "1993",
+            "id": "bib2",
+            "type": "conference-proceeding"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Caldwell, S",
+                        "preferred": "S Caldwell"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "Microsimulation and Public Policy",
+            "date": "1996",
+            "id": "bib3",
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "Amsterdam"
+                        ]
+                    },
+                    "formatted": [
+                        "Amsterdam"
+                    ]
+                },
+                "name": [
+                    "North-Holland"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "bookTitle": "Assessing Policies for Retirement Income. Needs for Data, Research and Models. National Research Council",
+            "date": "1997",
+            "editors": [
+                {
+                    "name": {
+                        "index": "Citro, CF",
+                        "preferred": "CF Citro"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Hanushek, EA",
+                        "preferred": "EA Hanushek"
+                    },
+                    "type": "person"
+                }
+            ],
+            "id": "bib4",
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "Washington, DC"
+                        ]
+                    },
+                    "formatted": [
+                        "Washington, DC"
+                    ]
+                },
+                "name": [
+                    "National Academy Press"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "articleTitle": "Calibration estimators in survey sampling",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Deville, J-C",
+                        "preferred": "J-C Deville"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "S\u00e4rndal, C-E",
+                        "preferred": "C-E S\u00e4rndal"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1992",
+            "doi": "10.1080/01621459.1992.10475217",
+            "id": "bib5",
+            "journal": "Journal of the American Statistical Association",
+            "pages": {
+                "first": "376",
+                "last": "382",
+                "range": "376\u2013382"
+            },
+            "type": "journal",
+            "volume": "\n87\n"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Gouri\u00e9roux, C",
+                        "preferred": "C Gouri\u00e9roux"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Monfort, A",
+                        "preferred": "A Monfort"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "Simulation-Based Econometric Methods",
+            "date": "1996",
+            "id": "bib6",
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "Oxford"
+                        ]
+                    },
+                    "formatted": [
+                        "Oxford"
+                    ]
+                },
+                "name": [
+                    "Oxford University Press"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Klevmarken, NA",
+                        "preferred": "NA Klevmarken"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "Behavioral Modeling in Micro-Simulation Models. A Survey. Working Paper, No. 31",
+            "date": "1997",
+            "id": "bib7",
+            "publisher": {
+                "name": [
+                    "Department of Economics, Uppsala University, Uppsala, Sweden"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Klevmarken, NA",
+                        "preferred": "NA Klevmarken"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "Statistical Inference in Micro-Simulation Models: Incorporating External Information. Working Paper. No. 20",
+            "date": "1998",
+            "id": "bib8",
+            "publisher": {
+                "name": [
+                    "Department of Economics, Uppsala University,Uppsala, Sweden"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Lindstr\u00f6m, K",
+                        "preferred": "K Lindstr\u00f6m"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "Utv\u00e4rdering Av Framskrivningstekniken i FASIT-Modellen (Evaluation of the Calibration Technique Used in the FASIT Model",
+            "date": "1997",
+            "id": "bib9",
+            "publisher": {
+                "name": [
+                    "Memo Statistics Sweden"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Lundstr\u00f6m, S",
+                        "preferred": "S Lundstr\u00f6m"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "Calibration as a Standard Method for Treatment of Nonresponse",
+            "date": "1997",
+            "id": "bib10",
+            "publisher": {
+                "name": [
+                    "Department of Statistics (diss.). Stockholm University"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Merz, J",
+                        "preferred": "J Merz"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "ADJUST-A Program Package for Adjustment of Micro Data by Minimum Information Loss Principle. Program Manual, FFB-Documentation No. 1",
+            "date": "1993",
+            "id": "bib11",
+            "publisher": {
+                "name": [
+                    "University of Luneburg"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Merz, J",
+                        "preferred": "J Merz"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "Microdata Adjustment Using the Minimum Information Loss Principle. Discussion Paper No. 10. Forschungsinstitut Freie Berufe",
+            "date": "1994",
+            "id": "bib12",
+            "publisher": {
+                "name": [
+                    "Universitat Luneburg"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Pudney, S",
+                        "preferred": "S Pudney"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Sutherland, H",
+                        "preferred": "H Sutherland"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1996",
+            "details": "\n, \n, \n, Statistical reliability in microsimulation models with econometrically estimated behavioral responses, \n, \n, Microsimulation and Public Policy, \n, Amsterdam, \n, Elsevier, \n",
+            "id": "bib13",
+            "title": "Microsimulation and Public Policy",
+            "type": "unknown"
+        }
+    ],
+    "acknowledgements": [
+        {
+            "text": "This article has been previously published in Mathematics and Computers in Simulation 59 (2002) 255-265.",
+            "type": "paragraph"
+        }
+    ],
+    "-meta": {
+        "patched": true
+    },
+    "stage": "published"
+}

@@ -1,0 +1,1403 @@
+{
+    "status": "vor",
+    "id": "00246",
+    "version": 1,
+    "type": "research-article",
+    "doi": "10.34196/ijm.00246",
+    "authorLine": "Anders Klevmarken",
+    "title": "Microsimulation. A Tool for Economic Analysis",
+    "published": "2022-04-30T00:00:00Z",
+    "versionDate": "2022-04-30T00:00:00Z",
+    "statusDate": "2022-04-30T00:00:00Z",
+    "volume": 15,
+    "issue": 1,
+    "fpage": 6,
+    "lpage": 14,
+    "elocationId": "6-14",
+    "pdf": "http://web:8082/00246/ijm-00246.pdf",
+    "subjects": [
+        {
+            "id": "methodology",
+            "name": "Methodology"
+        }
+    ],
+    "abstract": {
+        "content": [
+            {
+                "text": "Micro simulation involves modeling the behavior of individuals and other decision units taking into account the effects of policy parameters such as tax rates, eligibility rules for benefits and subsidies and compensation rates in the social security system. The model is simulated to analyze the impact of policy changes not only on mean behavior but also on the entire distribution of target variables. Micro simulation models have thus, for instance, been used to analyze how changes in the income taxes influence the tails of the income distribution (the incidence of poverty). Micro simulation complements a more traditional economic analysis. It is demanding in terms of modeling effort, data requirements and computer capacity. The issues of statistical inference related to micro simulation are in principle no different from those in econometric modeling generally. In practice the large scale and complex structure of a typical micro simulation model and the shortage of good micro data raise inference issues of particular relevance for micro simulation such as the choice of estimation criteria, calibration to benchmarks and model validation. Much in current practice does not meet high scientific standards, but there is a potential for a promising research program.",
+                "type": "paragraph"
+            }
+        ]
+    },
+    "copyright": {
+        "license": "CC-BY-4.0",
+        "holder": "Anders Klevmarken",
+        "statement": "This article is distributed under the terms of the <a href=\"http://creativecommons.org/licenses/by/4.0/\">Creative Commons Attribution License</a>, which permits unrestricted use and redistribution provided that the original author and source are credited."
+    },
+    "authors": [
+        {
+            "affiliations": [
+                {
+                    "address": {
+                        "components": {
+                            "country": "Sweden",
+                            "locality": [
+                                "Uppsala"
+                            ]
+                        },
+                        "formatted": [
+                            "Uppsala",
+                            "Sweden"
+                        ]
+                    },
+                    "name": [
+                        "Department of Economics"
+                    ]
+                }
+            ],
+            "competingInterests": "No competing interests reported",
+            "emailAddresses": [
+                "anders@klevmarken.nu"
+            ],
+            "name": {
+                "index": "Klevmarken, Anders",
+                "preferred": "Anders Klevmarken"
+            },
+            "type": "person"
+        }
+    ],
+    "funding": {
+        "statement": "No specific funding for this article is reported."
+    },
+    "dataSets": {
+        "availability": [
+            {
+                "text": "Not applicable",
+                "type": "paragraph"
+            }
+        ]
+    },
+    "keywords": [
+        "calibration",
+        "ceteris paribus assumption",
+        "constrained estimation",
+        "large scale modeling",
+        "method of simulated moments",
+        "micro simulation",
+        "validation"
+    ],
+    "body": [
+        {
+            "content": [
+                {
+                    "text": "In the empirical verification of economic models economists almost always have to rely on observational studies while controlled experiments are difficult to implement, sometimes even considered unethical and thus very rare. This has the important implication that confounding factors must become controlled by careful modeling and the application of sound econometric methods.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "In their theoretical work economists usually abstract from these confounding factors and concentrate on the mechanism of key interest \u2013 the so called <i>ceteris paribus</i> assumption. To convey a new idea and to demonstrate the key implication of this idea this is an efficient and useful approach. But in empirical testing and in using the new theory for policy recommendations this substitute in mind for a controlled experiment is in general not applicable. Only under rather special circumstances there is an econometric correspondence to the <i>ceteris paribus</i> assumption, i.e., no confounding factors other than random noise.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Even a first-year student of Econometrics knows that in regression analysis omitted variables will in general result in biased and inconsistent estimates of the partial effects of the included variables. In fact, this result generalizes to almost all mis specified models. Policy recommendations based on models using an erroneous <i>ceteris paribus</i> assumption will thus in general simply be wrong.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "When is it then possible to model potentially confounding factors as residual white noise and when is it necessary to explicitly include them as part of the economic model? What is important enough not to be seen as a random residual? There is no straight answer to these questions. This is the art of model building and of using \u201crhetoric\u201d to convince fellow economists and policy makers of the benefits of a particular model<sup><a href=\"#fn1\">1</a></sup>. The only advice the econometrician can give is to put the model to the test of data using our battery of diagnostic tests. There is, however, no foolproof procedure to follow to the \u201ctrue\u201d model. For a given finite sample many models will pass the diagnostic tests and with very large samples almost every model would become rejected. The existence of a true data generating process is a useful assumption made by the econometrician to be able to discuss properties of econometric methods, but it is not really needed in economic analysis. What is important is to find a model that is useful for a particular purpose. In the search for such a model one might be willing to neglect less important deviations between model and data and accept certain properties of the model even if diagnostic tests would reject them. The economist must, however, be able to show that these properties are of no consequence or at least \u201cless important\u201d for his purpose. Some analysts take this kind of argument as an excuse to fit very simple structures to data and to neglect the diagnostic testing. This is not well advised. Diagnostic tests that signal likely specification errors are always warnings to be taken seriously and we usually prefer an economic model, which fits data better than a model that does not fit as well.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "A modern economy is a complex interaction of many economic agents and one would think that a realistic model in general would have to be almost as complex as the reality it is thought to mirror. Our experiences of large-scale modeling are, however, not entirely good. The large macro models of the 1960s and 1970s did not keep what they promised. The computable general equilibrium models have their advocates, but this line of research have also been heavily criticized, see for instance <a href=\"#bib14\">Hansen and Heckman (1996)</a> and <a href=\"#bib33\">Sims (1996)</a>. It is hard to convince fellow economists and policy makers about the merits of a large-scale model, the functioning of which they have difficulties in understanding. They don\u2019t trust a black box!",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Macroeconomics is about understanding the relations between the aggregates of the national accounts and macro economic modeling involves attempts to formalize these relations. In doing so microeconomic arguments are frequently used but dressed in the language of the average economic man. The link between micro and macro is, however, weak. Usually, we cannot derive the macro relations from micro entities. In the 1950s and 1960s this was a concern for economists. There was a literature on the \u201caggregation problem\u201d, see for instance, <a href=\"#bib36\">Theil (1954)</a>, <a href=\"#bib8\">Fisher (1969)</a> and <a href=\"#bib22\">L\u00fctjohann (1974)</a>, which now appears almost forgotten. Under the influence of time-series modeling, macro modeling has become a more or less independent branch of economics. In their critique of research using computable general equilibrium models <a href=\"#bib14\">Hansen and Heckman (1996, p. <span class=\"page-number\">100</span>)</a> note:",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "\u201cIt is simply not true that there is a large shelf of micro estimates already constructed for different economic environments that can be plugged without modification into a new macro model. In many cases estimators that are valid in one economic environment are not well suited for another. Given the less-than idyllic state of affairs, it seems foolish to look to micro data as the primary source for many macro parameters required to do simulation analysis.\u201d",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "In researching a problem area, it is frequently fruitful to use different approaches, but still, will we ever be able to understand the movements in the macro aggregates unless we are able to derive them from micro entities? We do recognize that there is heterogeneity in the behavior of micro units, and we know from the early aggregation literature that simply adding micro relations can derive no stable macro relations. Aggregation is thus no simple adding up but involves the interaction of micro units on markets and under institutional constraints. To set up a research program which permits not only random but also nonrandom heterogeneity in the behavior of economic agents, that allow them to interact in various ways and that also allow the explicit introduction of institutional constraints and policy parameters, a new framework is needed. It is possible that the micro simulation technique could provide it.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s1",
+            "title": "1. The <i>ceteris paribus</i> assumption in economic analysis",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "Micro simulation is a technique that uses the capacity of modern computers to make micro units act and interact in such a way that it is possible to aggregate to the level of interest. A micro simulation model can be seen as a set of rules, which operates on a sample of micro units such as individuals, households, and firms. Each micro unit is defined and characterized by a set of properties (variables) and as the model is simulated these properties are updated for each and every micro unit. The model might simply be a set of deterministic rules such as the income tax rules of a country operating on a sample of taxpayers and used to compute the distribution of after-tax income, the aggregate income tax revenue or other fiscal entities of interest. But the model could also include behavioral assumptions usually formulated as stochastic models. Examples are fertility models, models for household formation and dissolution, labor supply and mobility.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "In micro simulation modeling there is no need to make assumptions about the average economic man. Although unpractical, we can in principle model every man. It is no simple task to model the behavior of single consumers and firms, but it is an advantage to model the decisions of those who actually make them and not the make-believe decisions of some aggregate. It stimulates the researcher to pay attention to the institutional circumstances that constrain the behavior of consumers and firms. It also in a straightforward way suggests what data should be collected and from whom. Similarly, in a micro simulation model it is possible to include the true policy parameters and the rules which govern their use, such as the tax rate scales, eligibility rules, tax thresholds, etc. One is not confined to using average tax rates applied to everyone. This makes micro simulation especially useful for policy analysis.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The development of micro simulation can be traced to two different sources. One is Guy Orcutt\u2019s idea about mimicking natural experiments also in economics and his development of the behavioral dynamic micro simulation model DYNASIM<sup><a href=\"#fn2\">2</a></sup> that later was further developed by Steven Caldwell into the CORSIM model (<a href=\"#bib1\">Caldwell, 1993</a>; <a href=\"#bib2\">Caldwell, 1996</a>). Another source is the increased interest among policy makers for distributional studies. Changes in the tax systems of many Western economies has developed a need for a tool to analyze who will win and who will loose from changes in the tax and benefit systems. As a result, many governments now have so called tax-benefit models. Examples are the Danish LAW model, the UK model POLIMOD<sup><a href=\"#fn3\">3</a></sup> , STINMOD<sup><a href=\"#fn4\">4</a></sup> in Australia, SWITCH<sup><a href=\"#fn5\">5</a></sup> in Ireland, and FASIT<sup><a href=\"#fn6\">6</a></sup> in Sweden. At the European level EUROMOD is an ambitious attempt to build a tax-benefit model for all of EU<sup><a href=\"#fn7\">7</a></sup> These models usually do not include behavioral relations but only all the details of the tax and benefit rules. These rules are then applied to a sample of individuals for which one knows all gross incomes and everything else needed to compute taxes and benefits. For every individual in the sample one is thus able to compute the sum of all (income) taxes due and the disposable income for each household. The output becomes, for instance, the distribution of the disposable income. It is then possible to change the tax rates or anything else in the tax code and run the model once again and compare to the previous result. In this way one can analyze who will gain and who will loose from a tax change and estimate the aggregate budget effects of tax and benefit changes. The simulation model will, however, only give the first-order effect of a tax change, because household composition, work hours and incomes are assumed unchanged and not influenced by the taxes. This is both a strength and a weakness of the tax-benefit models. It is a strength because it is easy to understand what the model does, and no controversial assumptions are needed. There is also no difficult inference problem. All the analyst needs to do is to draw an inference from the random sample of taxpayers to the population of taxpayers, which is something we know from sampling theory. The weakness is of course that we do not know the relative size of any adjustments of behavior to the tax and benefit changes. Many tax reforms aim at changing the behavior of taxpayers. The first-order effect might then become a bad approximation. As a result, attempts have been made to enlarge the tax-benefit models with behavioral models to capture these adjustments. <a href=\"#bib5\">Duncan and Weeks (1997)</a> gives an example of a tax-benefit model amended with a labor supply model. Additional examples can be found in <a href=\"#bib18\">Klevmarken (1997)</a> Table 3. In this way the tax-benefit models approach Orcutt\u2019s DYNASIM and its successors.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Large scale dynamic microsimulation models with behavioral adjustments typically include demographic models that move the population forward, models that simulate earnings and labor supply and sometimes also models for geographical mobility, demand for housing etc. Most models of this kind have been developed in academic environments and have rarely been used to advice governments on policy issues. Examples are the Swedish MICROHUS<sup><a href=\"#fn8\">8</a></sup> , the Dutch NEDYMAS<sup><a href=\"#fn9\">9</a></sup> and the German Sfb3-MSM<sup><a href=\"#fn10\">10</a></sup> Among the few models of this kind that have been used for policy purposes are CORESIM, the Swedish Ministry of Finance model SESIM<sup><a href=\"#fn11\">11</a></sup> and the microsimulation model used by the Swedish National Insurance Board (RFV) to simulate the future of the Swedish public pension system. The latter model is probably one of the oldest policy driven microsimulation models that are still in operation. It was developed in the beginning of the 1970s (<a href=\"#bib6\">Eriksen, 1973</a>; <a href=\"#bib17\">Klevmarken, 1973</a>).",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "A number of conference volumes give good surveys of the microsimulation territory, for instance <a href=\"#bib29\">Orcutt et al. (1986)</a>, <a href=\"#bib15\">Harding (1996)</a> and <a href=\"#bib24\">Mitton et al. (2000)</a>.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s2",
+            "title": "2. What is micro simulation?",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "Most of these models are designed to focus on distributional issues in particular on the income distribution. This is a characteristic feature of micro simulation models. They are useful tools for analyses of distributions not only mean relations. This is something we should bear in mind when we discuss statistical inference in micro simulation models.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Tax rules and rules that determine who is eligible for various benefits are usually highly nonlinear and sometimes have discontinuous jumps. Micro simulation models have the advantage of relatively easily accommodating such functional forms. One is thus not confined to functions with nice properties. In such cases approaches based on aggregate group data might be impossible and microsimulation the only adequate approach. For instance, in the Swedish ATP pension system pensions were based on the 15 best years of earnings and studies of the properties of this pension system required simulations of individual earnings profiles. Another example is s study of the cost for old age care in the United Kingdom (<a href=\"#bib13\">Hancock, 2000</a>).",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "There are also disadvantages and problems with micro simulation models. One is that the size and complexity of a typical model makes it hard to understand its properties intuitively. This is one reason why micro simulation has not become fully accepted by the Economics profession. Given the main tradition of working with small, stylized models and the relative failure of the large macro models of the 1960s and 1970s many economists are now skeptical about the usefulness of large models. In order to change this, micro simulation modeling has to rely on good economic theory and use sound econometric inference methods, but economist also have to learn what scientists in other disciplines already know namely, how to examine the properties of large simulation models.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Contributing to the skeptics of the Economics profession is also the view that the science of Economics has not yet given us knowledge such that it is meaningful to build large micro simulation models for policy analysis and policy advice. For instance, in their assessment of the needs for data, research and models the Panel of Retirement Income Modeling of the U.S. National Research Council concluded (<a href=\"#bib4\">Citro and Hanushek, 1997</a>):",
+                    "type": "paragraph"
+                },
+                {
+                    "text": [
+                        {
+                            "text": "\u201cTo respond to immediate policy needs, agencies should use limited, special-purpose models with the best available data and research findings to answer specific policy questions. Although such models may not provide very accurate estimates, the alternative of developing complex new individual-level microsimulation or employer models in advance of needed improvements in data and research knowledge has little prospect of producing better results and will likely represent, in the immediate future, a misuse of scarce resources.\u201d",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "type": "quote"
+                },
+                {
+                    "text": "This was a recommendation to government agencies as policy makers concerned with retirement behavior. It should not be interpreted as general recommendation against microsimulation. On the contrary they also suggested (p. 153):",
+                    "type": "paragraph"
+                },
+                {
+                    "text": [
+                        {
+                            "text": "\u201cThe relevant federal agencies should consider the development of a new integrated individual-level microsimulation model for retirement-income-related policy analysis as an important long-term goal, but construction of such a model would be premature until advances are made in data, research knowledge, and computational methods.\u201d",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "type": "quote"
+                },
+                {
+                    "text": "As pointed out by the panel one of the major problems in microsimulation work is the shortage of good micro data. Although the supply of micro data has increased very much in the last 20-30 years it is still hardly possible to find one data source or one sample which will contribute all the information needed for a typical microsimulation model. In fact, many model builders have found it necessary to use guestimates of model parameters and then try to calibrate the model against known benchmarks. Calibration is nothing but an attempt to tune the unknown parameters such that the model is able to simulate reasonably well the distributions of key variables. In this respect there is a similarity between microsimulation modeling and general equilibrium modeling. Both rely too often on the calibration technique. <a href=\"#bib14\">Hansen and Heckman (1996)</a> criticized this approach because they found too little emphasis on assessing the quality of the resulting estimates. In fact, the properties of the estimates are usually unknown and <i>mutatis mutandis</i> the same is true for the simulated entities. The calibration techniques also tend to hide a more serious problem, namely that typically calibration involves only one year\u2019s data or a single average or total. Because this reliance on a single or just a few points of benchmark data they do not always identify a unique set of values for the model parameters.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Even if the parameter estimates are not calibrated guestimates but true estimates, the absence of comprehensive data has typically induced people to a piece wise estimation procedure. Each submodel is estimated from its own data set and there is no model-wide estimation criterion. If the model has a hierarchical or a recursive structure and if the stochastic structure imposes independence or lack of correlation between model blocks or sub-models, then a piece wise approach can be justified, but in general it cannot.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "By way of an example consider the following simple two-equation model:",
+                    "type": "paragraph"
+                },
+                {
+                    "id": "E1",
+                    "label": "(1)",
+                    "mathml": "<math>\n<mstyle displaystyle=\"true\" scriptlevel=\"0\">\n<mrow>\n<mtable columnspacing=\"1em\" rowspacing=\"4pt\">\n<mtr>\n<mtd>\n<msub>\n<mi>y</mi>\n<mrow>\n<mn>1</mn>\n<mi>t</mi>\n</mrow>\n</msub>\n<mo>=</mo>\n<msub>\n<mi>\u03b2</mi>\n<mrow>\n<mn>1</mn>\n</mrow>\n</msub>\n<msub>\n<mi>x</mi>\n<mrow>\n<mi>t</mi>\n</mrow>\n</msub>\n<mo>+</mo>\n<msub>\n<mi>\u03f5</mi>\n<mrow>\n<mn>1</mn>\n<mi>t</mi>\n</mrow>\n</msub>\n<mo>;</mo>\n</mtd>\n</mtr>\n<mtr>\n<mtd/>\n</mtr>\n<mtr>\n<mtd>\n<msub>\n<mi>y</mi>\n<mrow>\n<mn>2</mn>\n<mi>t</mi>\n</mrow>\n</msub>\n<mo>=</mo>\n<mrow>\n<msub>\n<mi>\u03b2</mi>\n<mn>2</mn>\n</msub>\n</mrow>\n<msub>\n<mi>y</mi>\n<mrow>\n<mn>1</mn>\n<mi>t</mi>\n</mrow>\n</msub>\n<mo>+</mo>\n<msub>\n<mi>\u03f5</mi>\n<mrow>\n<mn>2</mn>\n<mi>t</mi>\n</mrow>\n</msub>\n<mo>;</mo>\n</mtd>\n</mtr>\n</mtable>\n<mi>E</mi>\n<mo stretchy=\"false\">(</mo>\n<msub>\n<mi>\u03f5</mi>\n<mi>i</mi>\n</msub>\n<msub>\n<mi>\u03f5</mi>\n<mi>j</mi>\n</msub>\n<mo stretchy=\"false\">)</mo>\n<mo>=</mo>\n<mtext>\u00a0</mtext>\n<mrow>\n<mo>{</mo>\n<mtable columnalign=\"left left\" columnspacing=\"1em\" displaystyle=\"false\" rowspacing=\".2em\">\n<mtr>\n<mtd>\n<msubsup>\n<mi>\u03c3</mi>\n<mrow>\n<mn>1</mn>\n</mrow>\n<mrow>\n<mn>2</mn>\n</mrow>\n</msubsup>\n</mtd>\n<mtd>\n<mrow>\n<mi mathvariant=\"normal\">i</mi>\n<mi mathvariant=\"normal\">f</mi>\n<mtext>\u00a0</mtext>\n<mi mathvariant=\"normal\">i</mi>\n<mo>=</mo>\n<mi mathvariant=\"normal\">j</mi>\n<mo>=</mo>\n<mn>2.</mn>\n</mrow>\n</mtd>\n</mtr>\n<mtr>\n<mtd>\n<msubsup>\n<mi>\u03c3</mi>\n<mrow>\n<mn>2</mn>\n</mrow>\n<mrow>\n<mn>2</mn>\n</mrow>\n</msubsup>\n</mtd>\n<mtd>\n<mrow>\n<mi mathvariant=\"normal\">i</mi>\n<mi mathvariant=\"normal\">f</mi>\n<mtext>\u00a0</mtext>\n<mi mathvariant=\"normal\">i</mi>\n<mo>=</mo>\n<mi mathvariant=\"normal\">j</mi>\n<mo>=</mo>\n<mn>2.</mn>\n</mrow>\n</mtd>\n</mtr>\n<mtr>\n<mtd>\n<mn>0</mn>\n</mtd>\n<mtd>\n<mrow>\n<mi mathvariant=\"normal\">i</mi>\n<mi mathvariant=\"normal\">f</mi>\n<mtext>\u00a0</mtext>\n<mi mathvariant=\"normal\">i</mi>\n<mo>\u2260</mo>\n<mi mathvariant=\"normal\">j</mi>\n</mrow>\n</mtd>\n</mtr>\n</mtable>\n</mrow>\n</mrow>\n</mstyle>\n</math>",
+                    "type": "mathml"
+                },
+                {
+                    "text": "This is a recursive model and it is well-known that OLS applied to each equation separately will give consistent estimates of \u03b2<sub>1</sub> and \u03b2<sub>2</sub>. The estimate of \u03b2<sub>1</sub> gives the BLUP  <math id=\"inf1\"> <mstyle displaystyle=\"true\" scriptlevel=\"0\"> <mrow> <mrow> <mover> <mi>y</mi> <mo stretchy=\"false\">^</mo> </mover> </mrow> </mrow> </mstyle> </math>  <sub>1</sub> =  <math id=\"inf2\"> <mstyle displaystyle=\"true\" scriptlevel=\"0\"> <mrow> <mrow> <mover> <mi>\u03b2</mi> <mo stretchy=\"false\">^</mo> </mover> </mrow> </mrow> </mstyle> </math>  <sub>1</sub>x<sub>t</sub> while predictions of y<sub>2</sub> outside the sample range are  <math id=\"inf3\"> <mstyle displaystyle=\"true\" scriptlevel=\"0\"> <mrow> <mrow> <mover> <msub> <mi>\u03b2</mi> <mn>2</mn> </msub> <mo stretchy=\"false\">^</mo> </mover> </mrow> <mrow> <mover> <msub> <mi>y</mi> <mn>1</mn> </msub> <mo stretchy=\"false\">^</mo> </mover> </mrow> </mrow> </mstyle> </math> . However, this suggests the following model-wide criterion,",
+                    "type": "paragraph"
+                },
+                {
+                    "id": "E2",
+                    "label": "(2)",
+                    "mathml": "<math>\n<mstyle displaystyle=\"true\" scriptlevel=\"0\">\n<mrow>\n<mfrac>\n<mn>1</mn>\n<msubsup>\n<mi>\u03c3</mi>\n<mrow>\n<mn>1</mn>\n</mrow>\n<mrow>\n<mn>2</mn>\n</mrow>\n</msubsup>\n</mfrac>\n<munder>\n<mo>\u2211</mo>\n<mrow>\n<mi>t</mi>\n</mrow>\n</munder>\n<mo stretchy=\"false\">(</mo>\n<msub>\n<mi>y</mi>\n<mrow>\n<mn>1</mn>\n<mi>t</mi>\n</mrow>\n</msub>\n<mo>\u2212</mo>\n<msub>\n<mrow>\n<mover>\n<mi>y</mi>\n<mo stretchy=\"false\">^</mo>\n</mover>\n</mrow>\n<mrow>\n<mn>1</mn>\n<mi>t</mi>\n</mrow>\n</msub>\n<msup>\n<mo stretchy=\"false\">)</mo>\n<mn>2</mn>\n</msup>\n<mo>+</mo>\n<mfrac>\n<mn>1</mn>\n<msubsup>\n<mi>\u03c3</mi>\n<mrow>\n<mn>2</mn>\n</mrow>\n<mrow>\n<mn>2</mn>\n</mrow>\n</msubsup>\n</mfrac>\n<munder>\n<mo>\u2211</mo>\n<mrow>\n<mi>t</mi>\n</mrow>\n</munder>\n<mo stretchy=\"false\">(</mo>\n<msub>\n<mi>y</mi>\n<mrow>\n<mn>2</mn>\n<mi>t</mi>\n</mrow>\n</msub>\n<mo>\u2212</mo>\n<msub>\n<mrow>\n<mover>\n<mi>\u03b2</mi>\n<mo stretchy=\"false\">^</mo>\n</mover>\n</mrow>\n<mrow>\n<mn>2</mn>\n</mrow>\n</msub>\n<msub>\n<mrow>\n<mover>\n<mi>y</mi>\n<mo stretchy=\"false\">^</mo>\n</mover>\n</mrow>\n<mrow>\n<mn>1</mn>\n<mi>t</mi>\n</mrow>\n</msub>\n<msup>\n<mo stretchy=\"false\">)</mo>\n<mn>2</mn>\n</msup>\n<mo>;</mo>\n</mrow>\n</mstyle>\n</math>",
+                    "type": "mathml"
+                },
+                {
+                    "text": "Minimizing this criterion with respect to  <math id=\"inf4\"> <mstyle displaystyle=\"true\" scriptlevel=\"0\"> <mrow> <mstyle displaystyle=\"true\" scriptlevel=\"0\"> <mrow> <msub> <mrow> <mover> <mi>\u03b2</mi> <mo stretchy=\"false\">^</mo> </mover> </mrow> <mn>1</mn> </msub> </mrow> </mstyle> </mrow> </mstyle> </math>  and  <math id=\"inf5\"> <mstyle displaystyle=\"true\" scriptlevel=\"0\"> <mrow> <msub> <mrow> <mover> <mi>\u03b2</mi> <mo stretchy=\"false\">^</mo> </mover> </mrow> <mn>2</mn> </msub> </mrow> </mstyle> </math>  yields the OLS estimator for  <math id=\"inf6\"> <mstyle displaystyle=\"true\" scriptlevel=\"0\"> <mrow> <msub> <mrow> <mover> <mi>\u03b2</mi> <mo stretchy=\"false\">^</mo> </mover> </mrow> <mn>1</mn> </msub> </mrow> </mstyle> </math>  but the following estimator for  <math id=\"inf7\"> <mstyle displaystyle=\"true\" scriptlevel=\"0\"> <mrow> <msub> <mrow> <mover> <mi>\u03b2</mi> <mo stretchy=\"false\">^</mo> </mover> </mrow> <mn>2</mn> </msub> </mrow> </mstyle> </math> ,",
+                    "type": "paragraph"
+                },
+                {
+                    "id": "E3",
+                    "label": "(3)",
+                    "mathml": "<math>\n<mstyle displaystyle=\"true\" scriptlevel=\"0\">\n<mrow>\n<msub>\n<mrow>\n<mover>\n<mi>\u03b2</mi>\n<mo stretchy=\"false\">^</mo>\n</mover>\n</mrow>\n<mrow>\n<mn>2</mn>\n</mrow>\n</msub>\n<mo>=</mo>\n<mfrac>\n<mrow>\n<munder>\n<mo>\u2211</mo>\n<mi>t</mi>\n</munder>\n<msub>\n<mi>y</mi>\n<mrow>\n<mn>2</mn>\n<mi>t</mi>\n</mrow>\n</msub>\n<msub>\n<mi>x</mi>\n<mrow>\n<mi>t</mi>\n</mrow>\n</msub>\n</mrow>\n<mrow>\n<munder>\n<mo>\u2211</mo>\n<mi>t</mi>\n</munder>\n<msub>\n<mi>y</mi>\n<mrow>\n<mn>1</mn>\n<mi>t</mi>\n</mrow>\n</msub>\n<msub>\n<mi>x</mi>\n<mrow>\n<mi>t</mi>\n</mrow>\n</msub>\n</mrow>\n</mfrac>\n<mo>;</mo>\n</mrow>\n</mstyle>\n</math>",
+                    "type": "mathml"
+                },
+                {
+                    "text": "In this case both the \u201cpiece wise\u201d OLS estimator of \u03b2<sub>2</sub> and the \u201csystem-wide\u201d instrumental variable estimator <a href=\"#E3\">(3)</a> are consistent but the OLS estimator does not minimize the prediction errors as defined by <a href=\"#E2\">(2)</a>. In fact, under the additional assumption of normal errors the estimator <a href=\"#E3\">(3)</a> is a maximum likelihood estimator and thus asymptotically efficient.<sup><a href=\"#fn12\">12</a></sup>",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "If we would add the assumption that  <math id=\"inf8\"> <semantics> <mrow> <msub> <mi>\u03b5</mi> <mn>1</mn> </msub> </mrow> </semantics> </math>  and  <math id=\"inf9\"> <semantics> <mrow> <msub> <mi>\u03b5</mi> <mn>2</mn> </msub> </mrow> </semantics> </math>  are correlated the recursive property of the model is lost and OLS is no longer a consistent estimator of  <math id=\"inf10\"> <semantics> <mrow> <msub> <mi>\u03b2</mi> <mn>2</mn> </msub> </mrow> </semantics> </math> . The estimator <a href=\"#E3\">(3)</a> is, however, still consistent and under the assumption of normality a ML estimator. In this example we would thus prefer the \u201csystem-wide\u201d estimator <a href=\"#E3\">(3)</a> whether the model is recursive or not.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "This was only a small illustrative example, but it demonstrates both that a piece wise approach might give inconsistent and biased estimates and that a choice of estimation criterion in line with the objective of microsimulation matters.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s3",
+            "title": "3. Pros and cons of microsimulation",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "Let us now turn to the choice of model-wide estimation criterion. The least-squares criteria commonly used assume that we seek parameters estimates such that the <i>mean</i> predictions give the smallest possible prediction errors, <a href=\"#E2\">eq. (2)</a> is an example. However, in micro-simulation we are not only interested in mean predictions, but we want to simulate well the whole distribution of the target variables. This difference in focus between micro simulation and a more conventional econometric analysis might suggest a different estimation criterion.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "If the stochastic properties of the microsimulation model were fully specified including families of distribution functions, then the maximum likelihood method would use all the information in model and data to obtain efficient estimates. In practice, however, ML estimation will in general not become feasible. There are several reasons for this: a) For many submodels economic theory does not suggest any parametric family of distributions and we are usually unwilling to make strong assumptions which are not firmly based in theory or in previous research. Instead, we might prefer to get a representation of the distributions of \u201cresiduals\u201d by resampling from the empirical residual distributions. b) In some cases, for instance when the distributions of income and wealth are simulated, we have to work with strongly skewed and highly non-normal distributions. c) A typical microsimulation model includes a rather complex mixture of different submodels, functional forms and dependence assumptions, such that it might become difficult to set up a likelihood function.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Given the general purpose of microsimulation the estimation criterion should not only penalize deviations from the mean but also deviations in terms of higher order moments. A natural candidate estimation principle then becomes the Generalized Method of Moments. The complexity and nonlinearity of a microsimulation model, however, cause difficulties in evaluating the moment conditions. A potential solution to this problem is to use the fact that the model is built to simulate and thus replace GMM by the Simulated Method of Moments.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s4",
+            "title": "4. Choice of estimation criterion and estimator",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "An important part of any model building effort is testing and validation. Validation involves two major issues. First the choice of criterion and validation measure, and second the derivation of the stochastic properties of this measure taking all sources of uncertainty into account. The choice of criterion for validation is of course closely related to that for estimation. As already mentioned, we are not only interested in good mean predictions, but also in good representations of cross-sectional distributions and of transitions between states. When an event occurs becomes important in any dynamic microsimulation exercise. A micro-simulation model is likely to have a number of simplifying assumptions about lack of correlation and independence, both between individuals and over time. For this reason, one might expect too much random noise in the simulations and too quickly decaying correlations compared to real data. In addition to model wide criteria, one might thus be interested in criteria that focus on these particular properties. Work is needed to develop such measures with known properties.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "For a model not to big and complex in structure it might be feasible to derive an analytic expression for the variance-covariance matrix of the simulations, which takes all sources of uncertainty into account: random sampling, estimation and simulation errors (<a href=\"#bib30\">Pudney and Sutherland, 1996</a>). In general micro-simulation models are so complex that analytical solutions are unlikely. Given the parameter estimates the simulation uncertainty can be evaluated if simulations are replicated with new random number generator seeds for each replication. There is a trade off between the number of replications needed and the sample size. The bigger sample the fewer replications.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "To evaluate the uncertainty which arises through the parameter estimates one approach is to approximate the distribution of the estimates with a multivariate normal distribution with mean vector and covariance matrix equal to that of the estimated parameters. By repeated draws from this normal distribution and new model simulations for each draw of parameter values an estimate of the variability in the simulation due to uncertainty about the true parameter values can be obtained.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "To avoid the normal approximation, one might use sample re-use methods. For instance, by boot strapping one can obtain a set of replicated estimates of the model parameters. Each replication can be used in one or more simulation runs, and the variance of these simulations will capture both the variability in parameter estimates and the variability due to simulation (model) errors. If the boot strap samples are used not only to estimate the parameters but also as replicated bases (initial conditions) for the simulations, then one would also be able to capture the random sampling errors.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Much of the total error in simulated values will come from the choice of a particular model structure. Sensitivity analysis is an approach to assess the importance of this source of error. As pointed out in <a href=\"#bib4\">Citro and Hanushek (1997)</a> p. 155 \u201csensitivity analysis is a diagnostic tool for ascertaining which parts of an overall model could have the largest impact on results and therefore are the most important to scrutinize for potential errors that could be reduced or eliminated\u201d. If simple measures of the impact on key variables from marginal changes in parameters and exogenous entities could be computed they would potentially become very useful.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Most models will almost always show deviations between simulated and observed values. If these deviations are within the bounds suggested by the stochastic properties of the simulation exercise, then one might like to constrain the model to simulate these known benchmarks with certainty. The model is aligned or calibrated to the benchmarks. If they were not used when the parameters of the model were estimated, this is a way to include new information. Alignment can thus be seen as a form of constrained estimation. Policy analysts also have another reason to force the model to simulate benchmarks. They think that the whole simulation exercise becomes more credible if the model reproduces what most people recognize as statistical facts.<sup><a href=\"#fn13\">13</a></sup> The idea seems to be that if the model is aligned to known benchmarks it will also do a better job in simulating other variables. This may be true, but it will not be true in general! If the benchmarks are tested against the model and rejected, then the model should be revised rather than aligned.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s5",
+            "title": "5. Model validation",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "Microsimulation has the potential of linking micro and macro and enhancing our understanding of fundamental macro relations. It also has the potential to answer questions related to heterogeneity in behavior and differences in outcome of economic and social policy. Microsimulation is particularly well suited for analysis of the <i>distribution</i> of well-being.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "In principle inference in microsimulation models is no different from inference in other applications of Economics, but there are practical difficulties due to the large scale and complex structure of a typical simulation model. This and a general caution for too strong assumptions about the stochastic properties of a model suggested that simulation-based estimation and sample re-use methods might be a good approach to the inference problems. These methods are, however, very demanding in terms of computations, and it remains to see if we currently have the computing power needed.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Future development of micro simulation will depend on ambitious research programs involving new collections of micro data that will permit studies of how micro units interact in markets and make decisions. We also need to develop our inference methods and computational skills.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s6",
+            "title": "6. Conclusions",
+            "type": "section"
+        },
+        {
+            "id": "footnotes",
+            "title": "Footnotes",
+            "type": "section",
+            "content": [
+                {
+                    "content": [
+                        {
+                            "text": "<a href=\"#bib23\">McCloskey (1983)</a> and <a href=\"#bib33\">Sims (1996)</a>",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "fn1",
+                    "title": "1.",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "See <a href=\"#bib26\">Orcutt (1957)</a> and <a href=\"#bib27\">Orcutt et al. (1961)</a>; <a href=\"#bib28\">Orcutt et al. (1976)</a>",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "fn2",
+                    "title": "2.",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "<a href=\"#bib31\">Redmond et al. (1996)</a>",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "fn3",
+                    "title": "3.",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "<a href=\"#bib21\">Lambert et al. (1994)</a> and <a href=\"#bib32\">Schofield and Polette (1996)</a>",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "fn4",
+                    "title": "4.",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "<a href=\"#bib3\">Callan et al. (1996)</a>",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "fn5",
+                    "title": "5.",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "FASIT Anv\u00e4ndarhandledning, see the web page of Statistics Sweden, <a href=\"http://www.scb.se\">www.scb.se</a>",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "fn6",
+                    "title": "6.",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "<a href=\"#bib34\">Sutherland (1996)</a> and <a href=\"#bib35\">Sutherland (2001)</a>",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "fn7",
+                    "title": "7.",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "<a href=\"#bib20\">Klevmarken and Olovsson (1996)</a>, <a href=\"#bib19\">Klevmarken (2001)</a> Appendix",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "fn8",
+                    "title": "8.",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "<a href=\"#bib25\">Nelissen (1994)</a>",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "fn9",
+                    "title": "9.",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "<a href=\"#bib16\">Helberger (1982)</a>, <a href=\"#bib12\">Hain and Helberger (1986)</a>, <a href=\"#bib9\">Galler and Wagner (1986)</a> and <a href=\"#bib10\">Galler (1989)</a>, <a href=\"#bib11\">Galler (1994)</a>",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "fn10",
+                    "title": "10.",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "<a href=\"#bib7\">Eriksson and Huss\u00e9nius (1999)</a> and the webb address <a href=\"http://www.sesim.org/\">http://www.sesim.org/</a>",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "fn11",
+                    "title": "11.",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "The estimator <a href=\"#E3\">(3)</a> is a ML estimator because there is no additional x-regressor in the second relation. The reduced form becomes a SURE system with the same explanatory variable in both equations. In general the ML estimator will depend on the structure of the covariance matrix of the errors.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "fn12",
+                    "title": "12.",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "For similar reasons policy analysts sometimes want to align to \u201cofficial\u201d demographic projections and macro economic forecasts of labor force participation rates, unemployment rates, etc.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "fn13",
+                    "title": "13.",
+                    "type": "section"
+                }
+            ]
+        }
+    ],
+    "references": [
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Caldwell, S",
+                        "preferred": "S Caldwell"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1993",
+            "details": "\n, \n, \n, Content, Validation and Uses of CORSIM 2.0, a Dynamic Microanalytic Model of the United States Paper Presented at the IARIW Conference on Micro-Simulation and Public Policy, \n, Canberra, Australia, \n",
+            "id": "bib1",
+            "title": "Content, Validation and Uses of CORSIM 2.0, a Dynamic Microanalytic Model of the United States Paper Presented at the IARIW Conference on Micro-Simulation and Public Policy",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Caldwell, S",
+                        "preferred": "S Caldwell"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1996",
+            "details": "\n, \n, \n, \u201cHealth, Wealth, Pensions and Life Paths: The CORSIM Dynamic Microsimulation Model\u201d, Ch 22 in A. Harding (Ed.) Microsimulation and Public Policy, \n, North-Holland, \n",
+            "id": "bib2",
+            "title": "\u201cHealth, Wealth, Pensions and Life Paths: The CORSIM Dynamic Microsimulation Model\u201d, Ch 22 in A. Harding (Ed.) Microsimulation and Public Policy",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Callan, T",
+                        "preferred": "T Callan"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "O\u2019Donoghue, C",
+                        "preferred": "C O\u2019Donoghue"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Wilson, M",
+                        "preferred": "M Wilson"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1996",
+            "details": "\n, \n, \n, Simulating Welfare and Income Tax Changes: The ESRI Tax-Benefit Model, ESRI Dublin, \n",
+            "id": "bib3",
+            "title": "Simulating Welfare and Income Tax Changes: The ESRI Tax-Benefit Model, ESRI Dublin",
+            "type": "unknown"
+        },
+        {
+            "bookTitle": "Assessing Policies for Retirement Income. Needs for Data, Research, and Models. National Research Council",
+            "date": "1997",
+            "editors": [
+                {
+                    "name": {
+                        "index": "Citro, CF",
+                        "preferred": "CF Citro"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Hanushek, EA",
+                        "preferred": "EA Hanushek"
+                    },
+                    "type": "person"
+                }
+            ],
+            "id": "bib4",
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "Washington, D.C"
+                        ]
+                    },
+                    "formatted": [
+                        "Washington, D.C"
+                    ]
+                },
+                "name": [
+                    "National Academy Press"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "articleTitle": "Behavioral tax microsimulation with finite hours choices",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Duncan, A",
+                        "preferred": "A Duncan"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Weeks, M",
+                        "preferred": "M Weeks"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1997",
+            "doi": "10.1016/S0014-2921(97)00005-6",
+            "id": "bib5",
+            "journal": "European Economic Review",
+            "pages": {
+                "first": "619",
+                "last": "626",
+                "range": "619\u2013626"
+            },
+            "type": "journal",
+            "volume": "\n41\n"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Eriksen, T",
+                        "preferred": "T Eriksen"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1973",
+            "details": "\n, \n, \n, En Prognosmodell F\u00f6r Den Allm\u00e4nna Till\u00e4ggspensioneringen, Riksf\u00f6rs\u00e4kringsverket, \n, Stockholm, \n",
+            "id": "bib6",
+            "title": "En Prognosmodell F\u00f6r Den Allm\u00e4nna Till\u00e4ggspensioneringen, Riksf\u00f6rs\u00e4kringsverket",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Eriksson, P",
+                        "preferred": "P Eriksson"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Huss\u00e9nius, J",
+                        "preferred": "J Huss\u00e9nius"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "SESIM \u2013 A Short Documentation",
+            "date": "1999",
+            "id": "bib7",
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "Stockholm"
+                        ]
+                    },
+                    "formatted": [
+                        "Stockholm"
+                    ]
+                },
+                "name": [
+                    "Ministry of Finance"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "articleTitle": "The Existence of Aggregate Production Functions",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Fisher, FM",
+                        "preferred": "FM Fisher"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1969",
+            "doi": "10.2307/1910434",
+            "id": "bib8",
+            "journal": "Econometrica: Journal of the Econometric Society",
+            "pages": "553",
+            "type": "journal",
+            "volume": "\n37\n"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Galler, H",
+                        "preferred": "H Galler"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1989",
+            "details": "\n, \n, \n, \"Policy Evaluation by Microsimulation - the Frankfurt Model\u201d, 21st General Conference of the International Association for Research in Income and Wealth at Lahnstein, \n",
+            "id": "bib10",
+            "title": "\"Policy Evaluation by Microsimulation - the Frankfurt Model\u201d, 21st General Conference of the International Association for Research in Income and Wealth at Lahnstein",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Galler, H",
+                        "preferred": "H Galler"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1994",
+            "details": "369\u2013379, \n, \n, \n, Mikrosimulationsmodelle in der Forschungsstrategie des Sonderforschungsbereich 3, \n, \n, Mikroanalytischer Grundlagen Der Gesellschaftspolitik, \n, Vol, \n, 2, \n, Berlin, \n, Akademie Verlag, \n, p, \n, \n",
+            "id": "bib11",
+            "title": "Mikroanalytischer Grundlagen Der Gesellschaftspolitik",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Galler, HP",
+                        "preferred": "HP Galler"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Wagner, G",
+                        "preferred": "G Wagner"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1986",
+            "details": "\n, \n, \n, The microsimulation model of the Sfb 3 for the analysis of economic and social policies, pp 227-247 in, \n, \n, Microanalytic Simulation Models to Support Social and Financial Policy, North-Holland, Amsterdam, \n",
+            "id": "bib9",
+            "title": "Microanalytic Simulation Models to Support Social and Financial Policy, North-Holland, Amsterdam",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Hain, W",
+                        "preferred": "W Hain"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Helberger, C",
+                        "preferred": "C Helberger"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1986",
+            "details": "\n, \n, \n, Longitudinal microsimulation of life income, \n, \n, Microanalytic Simulation Models to Support Social and Financial Policy, North-Holland, \n, Amsterdam, \n",
+            "id": "bib12",
+            "title": "Microanalytic Simulation Models to Support Social and Financial Policy, North-Holland",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Hancock, R",
+                        "preferred": "R Hancock"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2000",
+            "details": "\n, \n, \n, Charging for care in later life: an exercise in dynamic microsimulation\u201d chapter 10 in, \n, \n, Microsimulation Modelling for Policy Analysis, \n, Cambridge, \n, Cambridge University Press, \n",
+            "id": "bib13",
+            "title": "Microsimulation Modelling for Policy Analysis",
+            "type": "unknown"
+        },
+        {
+            "articleTitle": "The Empirical foundations of Calibration",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Hansen, LP",
+                        "preferred": "LP Hansen"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Heckman, JJ",
+                        "preferred": "JJ Heckman"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1996",
+            "doi": "10.1257/jep.10.1.87",
+            "id": "bib14",
+            "journal": "Journal of Economic Perspectives",
+            "pages": {
+                "first": "87",
+                "last": "104",
+                "range": "87\u2013104"
+            },
+            "type": "journal",
+            "volume": "\n10\n"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Harding, A",
+                        "preferred": "A Harding"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "Microsimulation and Public Policy",
+            "date": "1996",
+            "id": "bib15",
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "Amsterdam"
+                        ]
+                    },
+                    "formatted": [
+                        "Amsterdam"
+                    ]
+                },
+                "name": [
+                    "North-Holland, Elsevier Science B.V"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Helberger, Chr",
+                        "preferred": "Chr Helberger"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "Auswirkungen \u00f6ffentlicher Bildungsausgaben in der BRD auf die Einkomensverteilung der Ausbildungsgeneration",
+            "date": "1982",
+            "id": "bib16",
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "Stuttgart"
+                        ]
+                    },
+                    "formatted": [
+                        "Stuttgart"
+                    ]
+                },
+                "name": [
+                    "Gutachten im Auftrag der Transfer-Enquete-Kommission, Kohlhammer"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "articleTitle": "En ny modell f\u00f6r ATP-systemet",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Klevmarken, NA",
+                        "preferred": "NA Klevmarken"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1973",
+            "id": "bib17",
+            "journal": "Statistical Review",
+            "pages": {
+                "first": "403",
+                "last": "443",
+                "range": "403\u2013443"
+            },
+            "type": "journal",
+            "volume": "\n1973\n"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Klevmarken, NA",
+                        "preferred": "NA Klevmarken"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1997",
+            "details": "\n, \n, \n, Behavioral Modeling in Micro Simulation Models. A Survey. Working Paper 1997:31, Department of Economics, Uppsala University, \n",
+            "id": "bib18",
+            "title": "Behavioral Modeling in Micro Simulation Models. A Survey. Working Paper 1997:31, Department of Economics, Uppsala University",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Klevmarken, NA",
+                        "preferred": "NA Klevmarken"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2001",
+            "details": "\n, \n, \n, \u201cMicrosimulation \u2013 A Tool for Economic Analysis\u201d, Working Paper 2001:13, Department of Economics, Uppsala University, \n",
+            "id": "bib19",
+            "title": "\u201cMicrosimulation \u2013 A Tool for Economic Analysis\u201d, Working Paper 2001:13, Department of Economics, Uppsala University",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Klevmarken, NA",
+                        "preferred": "NA Klevmarken"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Olovsson, P",
+                        "preferred": "P Olovsson"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1996",
+            "details": "\n, \n, \n, Direct and behavioral effects of income tax changes - simulations with the Swedish model MICROHUS, \n, \n, Microsimulation and Public Policy, \n, Amsterdam, \n, Elsevier Science Publishers, \n",
+            "id": "bib20",
+            "title": "Microsimulation and Public Policy",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Lambert, SRP",
+                        "preferred": "SRP Lambert"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Percival, D",
+                        "preferred": "D Percival"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Schofield, D",
+                        "preferred": "D Schofield"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Paul, S",
+                        "preferred": "S Paul"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1994",
+            "details": "\n, \n, \n, An Introduction to STINMOD: A Static Microsimulation Model. NATSEM Technical Paper No 1, University of Canberra, \n, Australia, \n",
+            "id": "bib21",
+            "title": "An Introduction to STINMOD: A Static Microsimulation Model. NATSEM Technical Paper No 1, University of Canberra",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "L\u00fctjohann, H",
+                        "preferred": "H L\u00fctjohann"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "Linear Aggregation in Linear Regression",
+            "date": "1974",
+            "id": "bib22",
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "Stockholm"
+                        ]
+                    },
+                    "formatted": [
+                        "Stockholm"
+                    ]
+                },
+                "name": [
+                    "Stockholm University"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "articleTitle": "The Rhetoric of Economics",
+            "authors": [
+                {
+                    "name": {
+                        "index": "McCloskey, D",
+                        "preferred": "D McCloskey"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1983",
+            "id": "bib23",
+            "journal": "Journal of Economic Literature",
+            "pages": {
+                "first": "481",
+                "last": "517",
+                "range": "481\u2013517"
+            },
+            "type": "journal",
+            "volume": "\n21\n"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Mitton, L",
+                        "preferred": "L Mitton"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Sutherland, H",
+                        "preferred": "H Sutherland"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Weeks, M",
+                        "preferred": "M Weeks"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "Microsimulation Modelling for Policy Analysis",
+            "date": "2000",
+            "id": "bib24",
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "Cambridge"
+                        ]
+                    },
+                    "formatted": [
+                        "Cambridge"
+                    ]
+                },
+                "name": [
+                    "Cambridge University Press"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Nelissen, JHM",
+                        "preferred": "JHM Nelissen"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "Towards a Payable Pension System. Costs and Redistributive Impact of the Current Dutch Pension System and Three Alternatives",
+            "date": "1994",
+            "id": "bib25",
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "The Netherlands"
+                        ]
+                    },
+                    "formatted": [
+                        "The Netherlands"
+                    ]
+                },
+                "name": [
+                    "TISSER, Tilburg Institute for Social Security Research, Department of Social Security Studies, Tilburg University"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "articleTitle": "A new type of socio-economic system",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Orcutt, GH",
+                        "preferred": "GH Orcutt"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1957",
+            "doi": "10.2307/1928528",
+            "id": "bib26",
+            "journal": "The Review of Economics and Statistics",
+            "pages": {
+                "first": "116",
+                "last": "123",
+                "range": "116\u2013123"
+            },
+            "type": "journal",
+            "volume": "\n39\n"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Orcutt, GH",
+                        "preferred": "GH Orcutt"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Caldwell, S",
+                        "preferred": "S Caldwell"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Wertheimer, R",
+                        "preferred": "R Wertheimer"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1976",
+            "details": "\n, \n, \n, Policy Explorations Through Microanalytic Simulation, The Urban Institute, \n, Washington D.C, \n",
+            "id": "bib28",
+            "title": "Policy Explorations Through Microanalytic Simulation, The Urban Institute",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Orcutt, GH",
+                        "preferred": "GH Orcutt"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Greenberger, M",
+                        "preferred": "M Greenberger"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Korbel, J",
+                        "preferred": "J Korbel"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Rivlin, A",
+                        "preferred": "A Rivlin"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "Microanalysis of Socioeconomic Systems: A Simulation Study",
+            "date": "1961",
+            "id": "bib27",
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "New York"
+                        ]
+                    },
+                    "formatted": [
+                        "New York"
+                    ]
+                },
+                "name": [
+                    "Harper and Row"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "bookTitle": "Micronalytic Simulation Models to Support Social and Financial Policy",
+            "date": "1986",
+            "editors": [
+                {
+                    "name": {
+                        "index": "Orcutt, GH",
+                        "preferred": "GH Orcutt"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Merz, J",
+                        "preferred": "J Merz"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Quinke, H",
+                        "preferred": "H Quinke"
+                    },
+                    "type": "person"
+                }
+            ],
+            "id": "bib29",
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "Amsterdam"
+                        ]
+                    },
+                    "formatted": [
+                        "Amsterdam"
+                    ]
+                },
+                "name": [
+                    "North-Holland, Elsevier Science Publishers B.V"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Pudney, S",
+                        "preferred": "S Pudney"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Sutherland, H",
+                        "preferred": "H Sutherland"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1996",
+            "details": "\n, \n, \n, Statistical Reliability in Microsimulation Models With Econometrically-Estimated Behavioural Responses, Chapt. 21 in, \n, \n, Microsimulation and Public Policy, \n, North-Holland Elsevier, \n",
+            "id": "bib30",
+            "title": "Microsimulation and Public Policy",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Redmond, G",
+                        "preferred": "G Redmond"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Sutherland, H",
+                        "preferred": "H Sutherland"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Wilson, M",
+                        "preferred": "M Wilson"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1996",
+            "details": "\n, \n, \n, POLIMOD: An Outline, \n, Microsimulation Unit MU/RN/19, \n, 2nd Edition, \n, Cambridge, \n, DAE, University of Cambridge, \n",
+            "id": "bib31",
+            "title": "Microsimulation Unit MU/RN/19",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Schofield, D",
+                        "preferred": "D Schofield"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Polette, J",
+                        "preferred": "J Polette"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1996",
+            "details": "\n, \n, \n, A Comparison of Data Merging Methodologies for Extending A Microsimulation Model. NATSEM Technical Paper No 11, University of Canberra, \n, Australia, \n",
+            "id": "bib32",
+            "title": "A Comparison of Data Merging Methodologies for Extending A Microsimulation Model. NATSEM Technical Paper No 11, University of Canberra",
+            "type": "unknown"
+        },
+        {
+            "articleTitle": "Macroeconomics and Methodology",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Sims, CA",
+                        "preferred": "CA Sims"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1996",
+            "doi": "10.1257/jep.10.1.105",
+            "id": "bib33",
+            "journal": "Journal of Economic Perspectives",
+            "pages": {
+                "first": "105",
+                "last": "120",
+                "range": "105\u2013120"
+            },
+            "type": "journal",
+            "volume": "\n10\n"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Sutherland, H",
+                        "preferred": "H Sutherland"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1996",
+            "details": "\n, \n, \n, EUROMOD: A European Benfit-tax Model, \n, Microsimulation Unit MU/RN/20, \n, Cambridge, \n, DAE, University of Cambridge, \n",
+            "id": "bib34",
+            "title": "Microsimulation Unit MU/RN/20",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Sutherland, H",
+                        "preferred": "H Sutherland"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2001",
+            "details": "\n, \n, \n, EUROMOD: An Integrated European Benefit-Tax Model. Final Report, \n, EUROMOD Working Paper No EM9/01, \n, Cambridge, \n, DAE University of Cambridge, \n",
+            "id": "bib35",
+            "title": "EUROMOD Working Paper No EM9/01",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Theil, H",
+                        "preferred": "H Theil"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1954",
+            "details": "\n, \n, \n, Linear Aggregation of Economic Relations, \n, North-Holland, Amsterdam, \n",
+            "id": "bib36",
+            "title": "Linear Aggregation of Economic Relations",
+            "type": "unknown"
+        }
+    ],
+    "acknowledgements": [
+        {
+            "text": "This article is part of a lecture presented at the International School on Mathematical and Statistical Applications in Economics, January 15-19 2001, V\u00e4ster\u00e5s, Sweden. It was previously published as Working Paper 2001:13, Department of Economics, Uppsala University.",
+            "type": "paragraph"
+        }
+    ],
+    "-meta": {
+        "patched": true
+    },
+    "stage": "published"
+}
