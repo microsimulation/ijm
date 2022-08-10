@@ -260,11 +260,13 @@ final class AboutController extends Controller
         
         $arguments['contentHeader'] = new ContentHeader($arguments['title']);
         $arguments['body'] = [
-            ArticleSection::basic('Special issue on IMA2021 - 8th World Congress of the International Microsimulation Association', 2, $this->render(
-                new Paragraph('The IJM will publish a special issue with selected articles presented at the <a href="https://www.microsimulation.ac.uk/research-and-policy-analysis/events/2021/09/17/ima-2021/">IMA2021 workshops</a> (1-3 December 2021).'), 
+            ArticleSection::basic('Special issue on IMA2022 - European Meeting of the International Microsimulation Association', 2, $this->render(
+                new Paragraph('The IJM will publish a special issue with selected articles presented at the <a href="https://www.iab.de/en/veranstaltungen/konferenzen-und-workshops/european-meeting-of-the-international-microsimulation-association_2022.aspx">IMA2022 workshop</a> (18-19 July 2022).'), 
+                new Paragraph('The deadline for submission of manuscripts is 31 December 2022.')
+                )),                
                 new Paragraph('For more information, or if you are interested in editing a special issue, please <a href="mailto:matteo.richiardi@essex.ac.uk">contact the editor</a>.')
                 )),
-        ];      
+        ];          
         
         return new Response($this->get('templating')->render('::about.html.twig', $arguments));
     }
