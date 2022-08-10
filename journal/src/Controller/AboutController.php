@@ -265,7 +265,7 @@ final class AboutController extends Controller
                 new Paragraph('The deadline for submission of manuscripts is 31 December 2022.'),
                 )),                
                 new Paragraph('For more information, or if you are interested in editing a special issue, please <a href="mailto:matteo.richiardi@essex.ac.uk">contact the editor</a>.')
-                )),
+                ))
         ];          
         
         return new Response($this->get('templating')->render('::about.html.twig', $arguments));
