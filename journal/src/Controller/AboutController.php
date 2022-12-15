@@ -116,7 +116,7 @@ final class AboutController extends Controller
             Listing::unordered([
                 'Prof Rolf Aaberge (Statistics Norway)',
                 'Prof Jakub Bijak (Univesity of Southampton, UK)',
-                'Prof Francesco Billari (University of Oxford, UK)',
+                'Prof Francesco Billari (Bocconi University, IT)',
                 'Prof Ugo Colombino (University of Torino, Italy)',
                 'Prof John Creedy (University of Melbourne, Australia)',
                 'Prof André Decoster (University of Leuven, Belgium)',
