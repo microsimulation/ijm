@@ -38,5 +38,3 @@ Redirects for doi urls pointing at microsimulation.org
   - most have per manuscript redirect using an `url_map`
   - some issues redirect using a rewrite regex as they follow a consistent pattern
 - test the deployed rules for a subset of doi's with `./tests/redirects.sh`
-
-
