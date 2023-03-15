@@ -105,7 +105,7 @@ final class AboutController extends Controller
                 'Dr Jakob Grazzini (Università di Pavia, Italy)',
                 'Dr Philipp Harting (Bielefeld University, Germany)',
                 'Prof Nicolas Hérault (Bordeaux School of Economics, France)',
-                'Dr Jaon Hilton (University of Southampton, United Kingdom)',
+                'Dr Jason Hilton (University of Southampton, United Kingdom)',
                 'Prof Giulia Iori (City University, United Kingdom)',
                 'Dr Daniel Kopasker (Glasgow University, United Kingdom)',
                 'Prof Nik Lomax (University of Leeds, United Kingdom)',
