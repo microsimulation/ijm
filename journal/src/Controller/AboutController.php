@@ -101,7 +101,7 @@ final class AboutController extends Controller
             Listing::unordered([
                 'Prof Federico Belotti (University of Rome Tor Vergata, Italy)',
                 'Prof Francesco Figari (Università dell\'Insubria, Italy)',
-                'Prof Amadeio Fuenmayor (University of Valencia, Spain)',
+                'Prof Amadeo Fuenmayor (University of Valencia, Spain)',
                 'Dr Jakob Grazzini (Università di Pavia, Italy)',
                 'Dr Philipp Harting (Bielefeld University, Germany)',
                 'Prof Nicolas Hérault (Bordeaux School of Economics, France)',
