@@ -108,6 +108,7 @@ final class AboutController extends Controller
                 'Dr Jaon Hilton (University of Southampton, United Kingdom)',
                 'Prof Giulia Iori (City University, United Kingdom)',
                 'Dr Daniel Kopasker (Glasgow University, United Kingdom)',
+                'Prof Nik Lomax (University of Leeds, United Kingdom)',
                 'Dr Sophie Pennec (Institut National d\'Etudes Démographiques, France)',
                 'Dr Azizur Rahman (Charles Sturt University, Australia)',
                 'Prof Luc Savard (Universit&eacute de Sherbrooke, Canada)',
