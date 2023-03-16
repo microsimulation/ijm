@@ -74,6 +74,7 @@ final class AboutController extends Controller
                 'The IDEAS/RePEc impact factor of the journal is 3.15 (August 2022).',
                 'The journal ranking page can be accessed from <a href="https://ideas.repec.org/top/top.series.simple.html#repec:ijm:journl">here</a>.',
             ], 'bullet'),
+            new Paragraph('The address of the Publisher, the International Microsimulation Association is: Asbl - 11 Porte Des Sciences, Esch-Sur-Alzette L-4366, Luxembourg.')
         ];
 
         return new Response($this->get('templating')->render('::about.html.twig', $arguments));
@@ -154,30 +155,74 @@ final class AboutController extends Controller
             ArticleSection::basic('Submissions', 2,
                 $this->render(
                     new Paragraph('Information about the types of contributions of interest to the journal is contained in the <a href="'.$this->get('router')->generate('about').'">Aims and scope</a> page. If in doubt concerning the suitability of a particular manuscript, please contact the editor for further advice.'),
-                    new Paragraph('All submitted research notes and research articles will be subject to peer review by at least two independent referees appointed by the Editor. Other items will be accepted for publication subject to review by at least two members of the Editorial board.'),
+                    new Paragraph('We strongly encourage recent PhD graduates to submit their work to the International Journal of Microsimulation. Our policy is to take into account the fact that recent graduates are less experienced in the process of writing and submitting papers.'),
                     new Paragraph('Submission implies that the work described has not been published previously (except in the form of an abstract or as part of a published lecture or academic thesis or as an electronic preprint or working paper), that it is not under consideration for publication elsewhere, that its publication is approved by all authors and tacitly or explicitly by the responsible authorities where the work was carried out, and that, if accepted, it will not be published elsewhere in the same form, in English or in any other language, including electronically without the written consent of the copyright-holder.'),
                     new Paragraph('<strong>Submission guidelines</strong>'),
                     Listing::unordered([
-                        'Submissions must be in English',
-                        'We strongly recommend that research articles do not exceed 15,000 words, and that research notes do not exceed 5,000 words. The suggested length includes reference lists, figures, and tables. Excessively long submissions may be summarily rejected, or authors requested to cut them down to the suggested length.',
-                        'All manuscript should be 1.5 spaced and use 12-point Times New Roman or similar font. Margins should be 1.5 inches on the top, bottom, and sides.',
-                        'Research articles should containt an abstract of no more than 250 words, while the abstract for research notes should not exceed 100 words.',
-                        'All manuscripts should be submitted in PDF format.', 
-                    ], 'bullet')       
+                        '<strong>Language and style.</strong> Submissions must be in English, with a style adequate to a scientific journal. A submission may be rejected solely because typographical errors and imprecise definitions make it hard to understand.',
+                        '<strong>Length.</strong> Article types are listed in the <a href="'.$this->get('router')->generate('about').'">Aims and scope</a> page. We strongly recommend that research articles do not exceed 15,000 words, and that research notes do not exceed 5,000 words, excluding tables, figures, algorithms, and references, but including appendixes. Excessively long submissions may be summarily rejected, or authors requested to adjust them to the suggested length.',
+                        '<strong>Abstract.</strong> Research articles should contain an abstract of no more than 250 words, while the abstract for research notes should not exceed 100 words.',
+                        '<strong>Keywords.</strong> A maximum of four keywords, separated by comma, should be presented below the abstract, preceded by one blank line (or equivalent spacing).',
+                        '<strong>Font, spacing, margins.</strong> All manuscript should be 1.5 spaced and use Times New Roman font. Font size should be either 11 or 12 points. Margins should be 1.5 inches on the top, bottom, and sides. ',
+                        '<strong>Structure.</strong> A standard structure for research articles is suggested but not enforced, with sections covering introduction, methods, data, results, discussion, and conclusions.',
+                        '<strong>Sections.</strong> Use a maximum of three orders of headings, consecutively numbered, with levels separated by dots (e.g. ‘1’, ‘1.1’, and 1.1.1’). Sections should be referred to in the text with a capital letter and the section number.',
+                        '<strong>Appendixes.</strong> Appendixes should be numbered as sections, but preceded by an "A" (e.g. A.1, A.2). Format title and text should as standard sections; continue page numbering; place at the end of the paper, after the section “References”.',
+                        '<strong>Footnotes.</strong> Footnotes should use the same font as the text, size 10. Endnotes should be avoided.',
+                        '<strong>Equations.</strong> Equations should be centre-aligned, consecutively numbered and referred to in the text as “Equation” with capital letter, followed by the equation number. Numbers should appear in parenthesis (brackets) on the right-hand margin.',
+                        '<strong>References.</strong> References should follow the APA refence style.',
+                        '<strong>Format.</strong> All manuscripts should be submitted in PDF format. Source code will be requested should the article be accepted for publication.',
+                    ], 'bullet'),
+                    new Paragraph('<strong>Tables, Figures and Algorithms</strong>'),
+                    Listing::unordered([
+                        'Submissions must be in English, with a style adequate to a scientific journal. A submission may be rejected solely because typographical errors and imprecise definitions make it hard to understand.',
+                        'Tables, figures and algorithms are the only accepted floats, to be referred as such in the text, with capital letter.',
+                        'Tables, figures and algorithms should be preceded by one blank line (or equivalent spacing).',
+                        'Labels should commence with word "Table/Figure/Algorithm", followed by a sequential number (separate for the three floats), a colon, and the title. Labels should be placed on the line immediately preceding the float.',
+                        'Text and numbers in tables, figures, and algorithms - including axes labels and axes titles in figures - should use font Arial or similar, size 10.',
+                        'Tables, figures and algorithms should fit within specified page margins; if extra width required, present landscape.',
+                        'Avoid borders around tables, figures and algorithms.',
+                        'Colours can be used in figures and algorithms, but check before how they look like when printed in black-and-white or greyscale. Colours should be avoided for tables.',
+                        'Sources and notes for tables, figures and algorithms should be placed immediately below the float, using font Times New Roman or similar, size 10.  The notes should make the float self-explanatory, without need to refer to the text.',
+                        'Tables, figures and algorithms should be followed by one blank line (or equivalent spacing).',
+                    ], 'bullet')
                 )
             ),
             ArticleSection::basic('Fees', 2,
                 $this->render(
-                    new Paragraph('The International Journal of Microsimulation is open access.'),
-                    new Paragraph('It is the current policy of the International Microsimulation Association to waive any submission or publication fees.')
+                    new Paragraph('The International Journal of Microsimulation is open access. It is the current policy of the International Microsimulation Association to waive any submission or publication fees.')
+                )
+            ),
+            ArticleSection::basic('Review process', 2,
+                $this->render(
+                    new Paragraph('Submissions should be made using the <a href="https://www.epress.ac.uk/ijm/webforms/author.php">online submission management system</a>. Authors will receive an acknowledgement of their submission.'),
+                    new Paragraph('As a general rule, submitted research notes and research articles will be subject to peer review by at least two independent reviewers appointed by the Editor. Other items will be accepted for publication subject to review by at least two members of the editorial board. The identity of the reviewers and the handling editors will not be communicated to authors. On the other hand, reviewers will be communicated the names and affiliations of the authors (single-blind review process).'),
+                    new Paragraph('However, some contributions might be desk-rejected by the Editor without providing detailed reports. This is intended to save authors from waiting for an extended period, especially when it is apparent that the contribution is unsuitable, and to conserve the scarce resource of reviewers. Desk-rejection may occur when the contribution has evident errors or is too poorly written to assess its accuracy. Additionally, it may happen when the contribution falls outside the scope of the journal.'),
+                    new Paragraph('In addition to guaranteeing the novelty, significance, and accuracy of the published work, the editorial team endeavours to minimize the time taken to publish it. Usually, we aim to send a first decision to authors within 2-3 months from submission, although some papers may take longer. Desk rejections are generally communicated to authors in a matter of days from submission.'),
+                    new Paragraph('Manuscripts may be rejected, returned for revisions (major or minor), or accepted. Articles rarely go beyond three rounds of revisions. Unless otherwise stated by the Editor, conditional acceptance should not be presumed. An invitation to revise a paper remains valid for 12 months following the decision. The Editor may grant extensions to authors, but such requests must be made within the initial 12-month period. The decision letter sent to authors regarding revisions contains as much information as the Editor can provide. It is advisable for authors to refrain from contacting the Editor for additional guidance, except if seeking clarification on the decision letter.'),
+                    new Paragraph('It is a policy of the International Journal of Microsimulation to always give authors detailed advice when providing feedback. We are grateful to our international board of editors and the many reviewers who support the journal for their constructive and timely reviews, thereby helping authors to improve their work and encouraging submissions of the highest quality.')
+                )
+            ),
+            ArticleSection::basic('Accessibility of editorial files', 2,
+                $this->render(
+                    new Paragraph('Reviewers’ reports and cover letters will be retained in the editorial system, and any future Associate Editor will have access to them for six years. On the other hand, Editors could access them for up to ten years. Editors and Associate Editors are obligated to keep all reports and cover letters confidential. The names of reviewers and cover letters are never shared with anyone, including authors, other reviewers, or non-handling Associate Editors. Additionally, any submission and related records are inaccessible to Editors or Associate Editors who have a conflict of interest.')
                 )
             ),
             ArticleSection::basic('Ethics in publishing', 2,
-                $this->render(new Paragraph('The IJM supports the ethical principles set out by the <a href="http://publicationethics.org/resources/guidelines">Committee on Publication Ethics (COPE).</a>')
+                $this->render(
+                    new Paragraph('The IJM supports the ethical principles set out by the <a href="http://publicationethics.org/resources/guidelines">Committee on Publication Ethics (COPE)</a> and the <a href="https://www.icmje.org/index.html">International Committee of Medical Journal Editors (ICMJE)</a>.'),
+                    new Paragraph('<strong>Authorship:</strong> The journal adheres to the principles of responsible authorship as outlined by COPE. All authors are expected to have made substantial contributions to the research presented in their manuscript and to have approved the final version of the manuscript prior to submission. In addition, all authors must disclose any conflicts of interest and financial support related to the research presented in their manuscript. Anyone who made major contributions to the writing of the manuscript should be listed as an author (e.g. "ghost writing" is prohibited by the Journal). Any other individuals who made less substantive contributions to the experiment or the writing of the manuscript should be listed in the acknowledgement section. Any change in authorship (including author order) after the initial manuscript submission must be approved in writing by all authors.'),
+                    new Paragraph('<strong>Authorship and "Umbrella" groups:</strong> Collaborative studies sometimes use a group name to represent all participants, and it is mandatory for each article to have at least one named author. If the authors want to acknowledge the umbrella group from which the work originate, they should first list the author(s) of the article and then add "on behalf of the GROUP NAME." If required, the names of the participants can be included in the Acknowledgements section.'),
+                    new Paragraph('<strong>Plagiarism:</strong> The journal takes plagiarism very seriously and follows the guidelines for handling plagiarism outlined by COPE. All submitted manuscripts will be screened for plagiarism using appropriate software. If plagiarism is detected during the review process, the manuscript may be rejected. If plagiarism is detected in published work, a formal correction or retraction may be required.'),
+                    new Paragraph('<strong>Post-Publication Corrections:</strong> The journal recognizes the importance of ensuring the accuracy and integrity of the scientific record. If errors or inaccuracies are discovered after publication, the journal will issue a correction or clarification, as appropriate. Authors are encouraged to notify the journal of any errors or inaccuracies as soon as possible.'),
+                    new Paragraph('<strong>Retractions:</strong> In case of evidence of scientific misconduct or fraudulent behaviour, violation of ethical guidelines, copyright infringement, or significant errors that cannot be resolved through correction or clarification, the International Microsimulation Association holds the authority to retract articles. A panel consisting of the Editor, two Associate Editors, and the current President of the Association will be formed to evaluate and decide on the proposed retraction. Additional details regarding COPE retraction guidelines can be obtained <a href="https://publicationethics.org/files/retraction-guidelines-cope.pdf">here</a>. Any retracted articles will be prominently marked and removed from the journal`s website and other databases.'),
+                    new Paragraph('Overall, the journal is committed to upholding high ethical standards and promoting responsible scientific conduct.')
                 )
             ),
             ArticleSection::basic('Conflict of interest', 2,
-                $this->render(new Paragraph('All Authors are requested to disclose any actual or potential conflict of interest. Further information and can be found in COPE author guidelines.')
+                $this->render(
+                    new Paragraph('All authors are requested to disclose any actual or potential conflict of interest. In particular, every author must disclose any financial interests or support, any in kind support – such as providing access to data – and any connection, - direct or indirect - that could potentially create bias in the reported work or the stated opinions, conclusions, or implications. This includes relevant commercial or funding sources for the authors, their associated departments or organizations, personal relationships, or direct academic competition. This also includes support or pressures of any kind by any interested party, defined as any individual, group, or organization that has a financial, ideological, or political stake related to the article. If the support in question comes with a non-disclosure obligation, that fact should be stated, along with as much information as the obligation permits.'),
+                    new Paragraph('In order to determine whether or not a conflict of interest should be declared, authors should apply the following test: “Is there any arrangement that would be embarrassing for any of the authors if it were to come to light after publication and had not been disclosed?”'),
+                    new Paragraph('<strong>Implementation:</strong> A disclosure statement for each of the authors should be added at the end of the submitted manuscript. If authors fail to disclose pertinent information during the submission process, the acceptance decision may be reversed. In the event that the article has already been published, the journal retains the right to publish a notice on their website informing readers that the authors have violated the journal`s policy regarding disclosure. Further information and can be found in the <a href="https://publicationethics.org/guidance/Guidelines">COPE author guidelines</a>.')
                 )
             ),
             ArticleSection::basic('Data and code availability', 2,
