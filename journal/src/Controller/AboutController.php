@@ -314,10 +314,23 @@ final class AboutController extends Controller
         
         $arguments['contentHeader'] = new ContentHeader($arguments['title']);
         $arguments['body'] = [
-            ArticleSection::basic('Special issue on IMA2022 - European Meeting of the International Microsimulation Association', 2, $this->render(
-                new Paragraph('The IJM will publish a special issue with selected articles presented at the <a href="https://www.iab.de/en/veranstaltungen/konferenzen-und-workshops/european-meeting-of-the-international-microsimulation-association_2022.aspx">IMA2022 workshop</a> (18-19 July 2022).'),
-                new Paragraph('The deadline for submission of manuscripts is 31 December 2022.'),
-                new Paragraph('For more information, or if you are interested in editing a special issue, please <a href="mailto:matteo.richiardi@essex.ac.uk">contact the editor</a>.')
+            ArticleSection::basic('Workshop "Tax and Benefit Microsimulation in an Inflationary Environment: Applications and Methodological Issues", Bank of Italy, Rome, 16 June, 2023', 2, $this->render(
+                new Paragraph('Guest editors: Marco Sevegnago and Nicola Curci'),
+                new Paragraph('The deadline for submission of manuscripts for this special issue is 30 September 2022.'),
+                )),
+            ArticleSection::basic('Workshop "Celebrating tax-benefit modeling: 50 years with LOTTE", Statistics Norway, Oslo, 15-16 June 2023', 2, $this->render(
+                new Paragraph('Guest editors: Thor Olav Thoresen'),
+                new Paragraph('The deadline for submission of manuscripts to this special issue is 30 September 2022.'),
+                )),
+            ArticleSection::basic('Tribute to the life and work of Ann Harding', 2, $this->render(
+                new Paragraph('Guest editor: Deborah Schofield'),
+                  new Paragraph('This special issue will be comprised by solicited submissions only'),
+                )),
+            ArticleSection::basic('Gunnar Eliasson: My life through microsimulation and economic theory', 2, $this->render(
+                new Paragraph('Guest editor: Gunnar Eliasson'),
+                )),
+            ArticleSection::basic('', 2, $this->render(
+                new Paragraph('For more information, or if you are interested in editing a special issue, please <a href="mailto:matteo.richiardi@essex.ac.uk">contact the Editor</a>.')
                 )),
         ];      
         
