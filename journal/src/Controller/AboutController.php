@@ -321,15 +321,15 @@ final class AboutController extends Controller
                 )),
             ArticleSection::basic('Workshop "Tax and Benefit Microsimulation in an Inflationary Environment: Applications and Methodological Issues", Bank of Italy, Rome, 16 June, 2023', 2, $this->render(
                 new Paragraph('Guest editors: Marco Sevegnago and Nicola Curci'),
-                new Paragraph('The deadline for submission of manuscripts for this special issue is 30 September 2022.'),
+                new Paragraph('The deadline for submission of manuscripts for this special issue is 30 September 2022.')
                 )),
             ArticleSection::basic('Workshop "Celebrating tax-benefit modeling: 50 years with LOTTE", Statistics Norway, Oslo, 15-16 June 2023', 2, $this->render(
                 new Paragraph('Guest editors: Thor Olav Thoresen'),
-                new Paragraph('The deadline for submission of manuscripts to this special issue is 30 September 2022.'),
+                new Paragraph('The deadline for submission of manuscripts to this special issue is 30 September 2022.')
                 )),
             ArticleSection::basic('Tribute to the life and work of Ann Harding', 2, $this->render(
                 new Paragraph('Guest editor: Deborah Schofield'),
-                new Paragraph('This special issue will be comprised by solicited submissions only'),
+                new Paragraph('This special issue will be comprised by solicited submissions only')
                 )),
             ArticleSection::basic('Gunnar Eliasson: "My life through microsimulation and economic theory"', 2, $this->render(
                 new Paragraph('Guest editor: Gunnar Eliasson'),
