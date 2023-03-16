@@ -329,7 +329,7 @@ final class AboutController extends Controller
             ArticleSection::basic('Gunnar Eliasson: My life through microsimulation and economic theory', 2, $this->render(
                 new Paragraph('Guest editor: Gunnar Eliasson'),
                 )),
-            ArticleSection::basic('', 2, $this->render(
+            ArticleSection::basic('For more information', 2, $this->render(
                 new Paragraph('For more information, or if you are interested in editing a special issue, please <a href="mailto:matteo.richiardi@essex.ac.uk">contact the Editor</a>.')
                 )),
         ];      
