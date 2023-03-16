@@ -74,7 +74,9 @@ final class AboutController extends Controller
                 'The IDEAS/RePEc impact factor of the journal is 3.15 (August 2022).',
                 'The journal ranking page can be accessed from <a href="https://ideas.repec.org/top/top.series.simple.html#repec:ijm:journl">here</a>.',
             ], 'bullet'),
-            new Paragraph('The address of the Publisher, the International Microsimulation Association is: Asbl - 11 Porte Des Sciences, Esch-Sur-Alzette L-4366, Luxembourg.')
+            new Paragraph('---'),
+            new Paragraph('International Microsimulation Association'),
+            new Paragraph('11 Porte Des Sciences, Esch-Sur-Alzette L-4366, Luxembourg.')
         ];
 
         return new Response($this->get('templating')->render('::about.html.twig', $arguments));
