@@ -333,7 +333,7 @@ final class AboutController extends Controller
                 )),
             ArticleSection::basic('Gunnar Eliasson: "My life through microsimulation and economic theory"', 2, $this->render(
                 new Paragraph('Guest editor: Gunnar Eliasson'),
-                )),
+                ))
         ];      
         
         return new Response($this->get('templating')->render('::about.html.twig', $arguments));
