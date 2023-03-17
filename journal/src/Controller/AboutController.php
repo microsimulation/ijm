@@ -71,10 +71,12 @@ final class AboutController extends Controller
                 'The IJM is listed in EBSCOhost, EconLit, RePEc, Scopus.',
                 'The ISSN of the journal is 1747-5864.',
                 'The IDEAS/RePEc journal page can be accessed from <a href="https://ideas.repec.org/s/ijm/journl.html">here</a>.',
-                'The IDEAS/RePEc impact factor of the journal is 3.15 (August 2022).',
+                'The IDEAS/RePEc impact factor of the journal is 3.52 (March 2023).',
                 'The journal ranking page can be accessed from <a href="https://ideas.repec.org/top/top.series.simple.html#repec:ijm:journl">here</a>.',
             ], 'bullet'),
-            new Paragraph('The address of the Publisher, the International Microsimulation Association is: Asbl - 11 Porte Des Sciences, Esch-Sur-Alzette L-4366, Luxembourg.')
+            new Paragraph('---'),
+            new Paragraph('International Microsimulation Association'),
+            new Paragraph('11 Porte Des Sciences, Esch-Sur-Alzette L-4366, Luxembourg.'),
         ];
 
         return new Response($this->get('templating')->render('::about.html.twig', $arguments));
@@ -103,6 +105,7 @@ final class AboutController extends Controller
                 'Prof Federico Belotti (University of Rome Tor Vergata, Italy)',
                 'Prof Francesco Figari (Università dell\'Insubria, Italy)',
                 'Prof Amadeo Fuenmayor (University of Valencia, Spain)',
+                'Dr Benedikt Goderis (SCP - Netherlands Institute for Social Research, The Netherlands)',
                 'Dr Jakob Grazzini (Università di Pavia, Italy)',
                 'Dr Philipp Harting (Bielefeld University, Germany)',
                 'Prof Nicolas Hérault (Bordeaux School of Economics, France)',
@@ -113,12 +116,12 @@ final class AboutController extends Controller
                 'Dr Sophie Pennec (Institut National d\'Etudes Démographiques, France)',
                 'Dr Azizur Rahman (Charles Sturt University, Australia)',
                 'Prof Luc Savard (Universit&eacute de Sherbrooke, Canada)',
-                'Dr Agathe Simon (Economic and Social Research Institute, Ireland)',
+                'Dr Agathe Simon (ESRI - Economic and Social Research Institute, Ireland)',
                 'Prof Deborah Schofield (University of Sydney, Australia)',
-                'Dr Sven Stöwhase (FIT, Germany)',
+                'Dr Sven Stöwhase (Fraunhofer FIT, Germany)',
                 'Prof Eveline van Leeuwen (Wageningen University, The Netherlands)',
                 'Dr Gerlinde Verbist (Antwerp University, Belgium)',
-                'Jürgen Wiemers (IAB, Germany)',
+                'Jürgen Wiemers (IAB - Institute for Employment Research, Germany)',
                 'Dr Jesse Wiki (University of Auckland, New Zeland)',
             ], 'bullet'),
             new Paragraph('<strong>Scientific Committee</strong>'),
@@ -163,7 +166,7 @@ final class AboutController extends Controller
                         '<strong>Length.</strong> Article types are listed in the <a href="'.$this->get('router')->generate('about').'">Aims and scope</a> page. We strongly recommend that research articles do not exceed 15,000 words, and that research notes do not exceed 5,000 words, excluding tables, figures, algorithms, and references, but including appendixes. Excessively long submissions may be summarily rejected, or authors requested to adjust them to the suggested length.',
                         '<strong>Abstract.</strong> Research articles should contain an abstract of no more than 250 words, while the abstract for research notes should not exceed 100 words.',
                         '<strong>Keywords.</strong> A maximum of four keywords, separated by comma, should be presented below the abstract, preceded by one blank line (or equivalent spacing).',
-                        '<strong>Font, spacing, margins.</strong> All manuscript should be 1.5 spaced and use Times New Roman font. Font size should be either 11 or 12 points. Margins should be 1.5 inches on the top, bottom, and sides. ',
+                        '<strong>Font, spacing, margins.</strong> All manuscript should be 1.5 spaced and use Times New Roman font. Font size should be either 11 or 12 points. Margins should be 1.5 inches on the top, bottom, and sides.',
                         '<strong>Structure.</strong> A standard structure for research articles is suggested but not enforced, with sections covering introduction, methods, data, results, discussion, and conclusions.',
                         '<strong>Sections.</strong> Use a maximum of three orders of headings, consecutively numbered, with levels separated by dots (e.g. ‘1’, ‘1.1’, and 1.1.1’). Sections should be referred to in the text with a capital letter and the section number.',
                         '<strong>Appendixes.</strong> Appendixes should be numbered as sections, but preceded by an "A" (e.g. A.1, A.2). Format title and text should as standard sections; continue page numbering; place at the end of the paper, after the section “References”.',
@@ -199,12 +202,12 @@ final class AboutController extends Controller
                     new Paragraph('However, some contributions might be desk-rejected by the Editor without providing detailed reports. This is intended to save authors from waiting for an extended period, especially when it is apparent that the contribution is unsuitable, and to conserve the scarce resource of reviewers. Desk-rejection may occur when the contribution has evident errors or is too poorly written to assess its accuracy. Additionally, it may happen when the contribution falls outside the scope of the journal.'),
                     new Paragraph('In addition to guaranteeing the novelty, significance, and accuracy of the published work, the editorial team endeavours to minimize the time taken to publish it. Usually, we aim to send a first decision to authors within 2-3 months from submission, although some papers may take longer. Desk rejections are generally communicated to authors in a matter of days from submission.'),
                     new Paragraph('Manuscripts may be rejected, returned for revisions (major or minor), or accepted. Articles rarely go beyond three rounds of revisions. Unless otherwise stated by the Editor, conditional acceptance should not be presumed. An invitation to revise a paper remains valid for 12 months following the decision. The Editor may grant extensions to authors, but such requests must be made within the initial 12-month period. The decision letter sent to authors regarding revisions contains as much information as the Editor can provide. It is advisable for authors to refrain from contacting the Editor for additional guidance, except if seeking clarification on the decision letter.'),
-                    new Paragraph('It is a policy of the International Journal of Microsimulation to always give authors detailed advice when providing feedback. We are grateful to our international board of editors and the many reviewers who support the journal for their constructive and timely reviews, thereby helping authors to improve their work and encouraging submissions of the highest quality.')
+                    new Paragraph('It is a policy of the International Journal of Microsimulation to always give authors detailed advice when providing feedback. We are grateful to our <a href="https://microsimulation.pub/about/editorial-board">international board of editors </a> and the many reviewers who support the journal for their constructive and timely reviews, thereby helping authors to improve their work and encouraging submissions of the highest quality.')
                 )
             ),
             ArticleSection::basic('Accessibility of editorial files', 2,
                 $this->render(
-                    new Paragraph('Reviewers’ reports and cover letters will be retained in the editorial system, and any future Associate Editor will have access to them for six years. On the other hand, Editors could access them for up to ten years. Editors and Associate Editors are obligated to keep all reports and cover letters confidential. The names of reviewers and cover letters are never shared with anyone, including authors, other reviewers, or non-handling Associate Editors. Additionally, any submission and related records are inaccessible to Editors or Associate Editors who have a conflict of interest.')
+                    new Paragraph('Reviewers’ reports and cover letters will be retained in the editorial system, but non-handling Associate Editors will not have access to them. Editors and Associate Editors are obligated to keep all reports and cover letters confidential. The names of reviewers and cover letters are never shared with anyone, including authors, other reviewers, or non-handling Associate Editors. Additionally, any submission and related records are inaccessible to Editors or Associate Editors who have a conflict of interest.')
                 )
             ),
             ArticleSection::basic('Ethics in publishing', 2,
@@ -252,11 +255,11 @@ final class AboutController extends Controller
                 )
             ),            
             ArticleSection::basic('Copyright', 2,
-                $this->render(new Paragraph('All IJM articles, unless otherwise stated, are published under the terms of the Creative Commons Attribution (CC BY) License which permits use, distribution and reproduction in any medium, provided the work is properly attributed back to the original author and publisher. Copyright on any research article in the International Journal ofMicrosimulation(IJM) is retained by the Authors. Authors grant IJM a license to publish the article and identify itself as the original publisher. Authors cannot revoke these freedoms as long as the Journal follows the license terms. Authors should not submit any paper unless they agree with this policy. The full text of the CC BY 4.0 license can be found here. Special exemptions and other licensing arrangement can be made on a case by case basis, by writing a motivated request to the Editor.')
+                $this->render(new Paragraph('All IJM articles, unless otherwise stated, are published under the terms of the Creative Commons Attribution (CC BY) License which permits use, distribution and reproduction in any medium, provided the work is properly attributed back to the original author and publisher. Copyright on any research article in the International Journal ofMicrosimulation(IJM) is retained by the Authors. Authors grant IJM a license to publish the article and identify itself as the original publisher. Authors cannot revoke these freedoms as long as the Journal follows the license terms. Authors should not submit any paper unless they agree with this policy. The full text of the CC BY 4.0 license can be found <a href="https://creativecommons.org/licenses/by/4.0/">here</a>. Special exemptions and other licensing arrangement can be made on a case by case basis, by writing a motivated request to the Editor.')
                 )
             ),
             ArticleSection::basic('Authors rights <div id="authors_rights"></div>', 2,
-                $this->render(new Paragraph('Upon publication, contributors will retain the rights including but not limited to the following, as permitted by the CC BY license:')
+                $this->render(new Paragraph('Upon publication, Authors will retain the rights to their Contribution, including but not limited to the following, as permitted by the CC BY license:')
                 )
             ),
             Listing::unordered([
@@ -313,11 +316,24 @@ final class AboutController extends Controller
         
         $arguments['contentHeader'] = new ContentHeader($arguments['title']);
         $arguments['body'] = [
-            ArticleSection::basic('Special issue on IMA2022 - European Meeting of the International Microsimulation Association', 2, $this->render(
-                new Paragraph('The IJM will publish a special issue with selected articles presented at the <a href="https://www.iab.de/en/veranstaltungen/konferenzen-und-workshops/european-meeting-of-the-international-microsimulation-association_2022.aspx">IMA2022 workshop</a> (18-19 July 2022).'),
-                new Paragraph('The deadline for submission of manuscripts is 31 December 2022.'),
-                new Paragraph('For more information, or if you are interested in editing a special issue, please <a href="mailto:matteo.richiardi@essex.ac.uk">contact the editor</a>.')
+            ArticleSection::basic('Forthcoming special issues', 2, $this->render(
+                new Paragraph('For more information, or if you are interested in editing a special issue, please <a href="mailto:matteo.richiardi@essex.ac.uk">contact the Editor</a>.')
                 )),
+            ArticleSection::basic('Workshop "Tax and Benefit Microsimulation in an Inflationary Environment: Applications and Methodological Issues", Bank of Italy, Rome, 16 June, 2023', 2, $this->render(
+                new Paragraph('Guest editors: Marco Sevegnago and Nicola Curci'),
+                new Paragraph('The deadline for submission of manuscripts for this special issue is 30 September 2023.')
+                )),
+            ArticleSection::basic('Workshop "Celebrating tax-benefit modeling: 50 years with LOTTE", Statistics Norway, Oslo, 15-16 June 2023', 2, $this->render(
+                new Paragraph('Guest editor: Thor Olav Thoresen'),
+                new Paragraph('The deadline for submission of manuscripts to this special issue is 30 September 2023.')
+                )),
+            ArticleSection::basic('Tribute to the life and work of Ann Harding', 2, $this->render(
+                new Paragraph('Guest editor: Deborah Schofield'),
+                new Paragraph('This special issue will be comprised by solicited submissions only')
+                )),
+            ArticleSection::basic('Gunnar Eliasson: "My life through microsimulation and economic theory"', 2, $this->render(
+                new Paragraph('Guest editor: Gunnar Eliasson')
+            )),
         ];      
         
         return new Response($this->get('templating')->render('::about.html.twig', $arguments));
