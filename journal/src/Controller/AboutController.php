@@ -316,8 +316,8 @@ final class AboutController extends Controller
         
         $arguments['contentHeader'] = new ContentHeader($arguments['title']);
         $arguments['body'] = [
-            ArticleSection::basic('', 2, $this->render(
-                new Paragraph('Forthcoming special issues - For more information, or if you are interested in editing a special issue, please <a href="mailto:matteo.richiardi@essex.ac.uk">contact the Editor</a>.')
+            ArticleSection::basic('Forthcoming special issues', 2, $this->render(
+                new Paragraph('For more information, or if you are interested in editing a special issue, please <a href="mailto:matteo.richiardi@essex.ac.uk">contact the Editor</a>.')
                 )),
             ArticleSection::basic('Workshop "Tax and Benefit Microsimulation in an Inflationary Environment: Applications and Methodological Issues", Bank of Italy, Rome, 16 June, 2023', 2, $this->render(
                 new Paragraph('Guest editors: Marco Sevegnago and Nicola Curci'),
