@@ -308,7 +308,7 @@ final class AboutController extends Controller
         return new Response($this->get('templating')->render('::about.html.twig', $arguments));
     }
     
-    public function authorNotesAction(Request $request) : Response
+    public function callForPapersAction(Request $request) : Response
     {
         $arguments = $this->aboutPageArguments($request);
         
@@ -350,7 +350,7 @@ final class AboutController extends Controller
             'Editorial board' => $this->get('router')->generate('about-board'),
             'Editorial policy' => $this->get('router')->generate('about-submission'),
             'Notes for reviewers' => $this->get('router')->generate('about-reviewers'),
-            'Call for papers' => $this->get('router')->generate('about-authors'),
+            'Call for papers' => $this->get('router')->generate('call-for-papers'),
         ];
 
         $currentPath = $this->get('router')->generate($request->attributes->get('_route'), $request->attributes->get('_route_params'));
