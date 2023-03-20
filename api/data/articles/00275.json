@@ -1,0 +1,2557 @@
+{
+    "status": "vor",
+    "id": "00275",
+    "version": 1,
+    "type": "research-article",
+    "doi": "10.34196/ijm.00275",
+    "authorLine": "Claire Keane et al.",
+    "title": "SWITCH: A Tax-Benefit Model for Ireland Linked to Survey and Register Data",
+    "published": "2023-04-30T00:00:00Z",
+    "versionDate": "2023-04-30T00:00:00Z",
+    "statusDate": "2023-04-30T00:00:00Z",
+    "volume": 16,
+    "issue": 1,
+    "fpage": 65,
+    "lpage": 88,
+    "elocationId": "65-88",
+    "pdf": "http://web:8082/00275/ijm-00275.pdf",
+    "subjects": [
+        {
+            "id": "taxes-benefits",
+            "name": "Taxes and benefits"
+        }
+    ],
+    "abstract": {
+        "content": [
+            {
+                "text": "This paper describes the development and operation of the SWITCH model, a tax-benefit microsimulation model for Ireland which is linked to survey and register data. SWITCH is based on the EUROMOD platform but has important advantages over the Irish component of EUROMOD, including a \u201ccurrent income\u201d concept, detailed information on benefit receipt in the underlying data and the modelling of non-cash benefits. We discuss the process of creating an input dataset, including reweighting and uprating. We validate the model\u2019s simulation of the income distribution with respect to a range of external sources and suggest future improvements.",
+                "type": "paragraph"
+            }
+        ]
+    },
+    "copyright": {
+        "license": "CC-BY-4.0",
+        "holder": "Keane et al.",
+        "statement": "This article is distributed under the terms of the <a href=\"http://creativecommons.org/licenses/by/4.0/\">Creative Commons Attribution License</a>, which permits unrestricted use and redistribution provided that the original author and source are credited."
+    },
+    "authors": [
+        {
+            "name": {
+                "index": "Keane, Claire",
+                "preferred": "Claire Keane"
+            },
+            "type": "person"
+        },
+        {
+            "name": {
+                "index": "Doorley, Karina",
+                "preferred": "Karina Doorley"
+            },
+            "type": "person"
+        },
+        {
+            "emailAddresses": [
+                "theano.kakoulidou@esri.ie"
+            ],
+            "name": {
+                "index": "Kakoulidou, Theano",
+                "preferred": "Theano Kakoulidou"
+            },
+            "type": "person"
+        },
+        {
+            "affiliations": [
+                {
+                    "address": {
+                        "components": {
+                            "country": "Ireland",
+                            "locality": [
+                                "Dublin"
+                            ]
+                        },
+                        "formatted": [
+                            "Dublin",
+                            "Ireland"
+                        ]
+                    },
+                    "name": [
+                        "Economic and Social Research Institute"
+                    ]
+                }
+            ],
+            "name": {
+                "index": "O\u2019Malley, Seamus",
+                "preferred": "Seamus O\u2019Malley"
+            },
+            "type": "person"
+        }
+    ],
+    "funding": {
+        "statement": "Funding from the ESRI\u2019s Tax, Welfare and Pensions Research Programme (supported by the Departments of Public Expenditure and Reform, Employment Affairs and Social Protection, Health, Children and Youth Affairs and Finance) is gratefully acknowledged."
+    },
+    "keywords": [
+        "tax benefit models",
+        "income tax",
+        "databases",
+        "policy analysis"
+    ],
+    "body": [
+        {
+            "content": [
+                {
+                    "text": "Changes to the income tax and social welfare system have the potential to impact upon the incomes of most, if not all of the population. Policy changes are often considered in terms of their effects on a number of \u201chypothetical families\u201d. For example, in Ireland, analysis of the annual Budget often looks at specific types of people (e.g., a single person on the minimum wage, a lone parent with two children, one and two-earner couples on the average wage etc.). This approach has strong limitations as families within this category differ in terms of income, housing tenure, number of children and other characteristics that affect their tax-benefit position. More fundamentally, analysis of hypothetical families - no matter how well chosen - simply cannot give an overall picture of the impact of a policy change on incomes and work incentives at the population level. The use of tax-benefit microsimulation models, which are based on large-scale, nationally representative samples of households or rich administrative data, can provide a more representative picture of the impact of policy changes.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Microsimulation modelling has been used in the measurement of poverty and inequality for decades. This framework allows the simulation of income distributions for a given population, income structure and tax-benefit system. These income distributions are often also recoverable from the survey or administrative datasets underlying microsimulation models. However, linking these data to a microsimulation model allows the computation of counterfactual or \u201cwhat-if\u201d scenarios which is not possible using the underlying data alone. The ability to create counterfactual income distributions is critical to policy-makers and researchers who wish to estimate, for example, how the distribution of income will change due to population ageing (<a href=\"#bib18\">Dolls et al., 2019</a>), if unemployment increases (<a href=\"#bib17\">Dolls et al., 2012</a>) or if the parameters of the tax-benefit system change (<a href=\"#bib32\">Paulus and Tasseva, 2017</a>). Well known microsimulation models include EUROMOD (<a href=\"#bib36\">Sutherland and Figari, 2013</a>) for Europe; TRIM (<a href=\"#bib21\">Giannarelli et al., 2007</a>) for North America and TaxBEN (<a href=\"#bib23\">Immervoll and Barber, 2006</a>) for OECD countries.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The European Commission develops and maintains the harmonised European microsimulation model, EUROMOD. The first Irish policy system to be included in the EUROMOD model dated from 1998. Since then, the Irish component of the EUROMOD model has been used mainly for academic work in single country studies (<a href=\"#bib4\">Bargain and Doorley, 2011</a>; <a href=\"#bib29\">McQuade et al., 2017</a>) or comparative European work (<a href=\"#bib31\">Paulus et al., 2020</a>; <a href=\"#bib35\">Sologon et al., 2021</a>; <a href=\"#bib19\">Doorley et al., 2021</a>). While an invaluable tool, there are some drawbacks to the EUROMOD model from a policy-maker perspective and these mainly stem from the limitations of the underlying data.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Broadly speaking, three types of data source can be linked to a microsimulation model. Survey data, such as the EU Statistics on Income and Living Conditions (EU-SILC), tend to be most straightforward to access and are widely used. Alternatively, administrative or register data can be linked to either EUROMOD or to a national model but these tend to be subject to strict access rules and do not always contain rich demographic information. A third option combines survey data with some administrative data to allow a more accurate simulation of income, benefit eligibility and tax liabilities.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The data underlying the Irish component of the EUROMOD model is EU-SILC in which the data reference period is the year prior to the data collection period. This results in a mismatch between the income reference period and policy rules/employment information. This coupled with the fact that the data underlying the EUROMOD model is not reweighted/nowcasted to match detailed employment or income control totals for the year of collection or, indeed, the current year, means that the simulated distributions of income, benefit receipt and tax revenue can be difficult to validate against external benchmarks. Additionally, EU-SILC contains aggregated rather than detailed information on benefit receipt. This makes the modelling of contributory and non-contributory benefits difficult as, without information on which particular benefit an individual is in receipt of, the researcher cannot determine this independently as social security contribution history is not available in EU-SILC. It is for these reasons that the Economic and Social Research Institute (ESRI) develops and maintains a separate microsimulation model of the Irish tax and benefit system. The model is used internally at the ESRI and is also provided to civil servants and the staff of the Parliamentary Budget Office (PBO).<a href=\"#fn1\"><sup>1</sup></a>",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The ESRI\u2019s microsimulation model, SWITCH (<span class=\"underline\">S</span>imulating <span class=\"underline\">W</span>elfare, <span class=\"underline\">I</span>ncome <span class=\"underline\">T</span>ax <span class=\"underline\">C</span>hildcare and <span class=\"underline\">H</span>ealth policies) is based on data drawn from the Survey on Income and Living Conditions (SILC) which is carried out by the Irish national statistical agency \u2013 the Central Statistics Office (CSO). This dataset falls into the third category described above \u2013 it is primarily a survey dataset but is linked to administrative information on current income and welfare. Using this dataset, rather than EU-SILC allows us to use a \u201ccurrent\u201d concept for income and to model contributory and non-contributory benefits more precisely. Due to the more extensive set of variables provided in the national version of SILC, we can also model non-cash benefits, which is not possible with EUROMOD. This allows us to create a model that is more precise and easily validated against external benchmarks. Further advantages of the model include nowcasting of the underlying data and detailed automated results tailored to policy-makers.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The SWITCH model has been in operation for three decades and both policy makers and researchers have published extensively using the model (see, for example, <a href=\"#bib19\">Doorley et al., 2021</a>; <a href=\"#bib6\">Boyle, 2018</a>; <a href=\"#bib14\">Department of Social Protection, 2021</a>, <a href=\"#bib15\">2022</a>; <a href=\"#bib3\">Bargain et al., 2017</a>; <a href=\"#bib26\">Keane, 2015</a>; <a href=\"#bib8\">Callan et al., 2006</a>; <a href=\"#bib10\">2014a</a>; <a href=\"#bib9\">Callan et al., 2014b</a>; <a href=\"#bib2\">Baicker et al., 2013</a>; <a href=\"#bib11\">Callan and Sutherland, 1997</a>; <a href=\"#bib38\">Bargain and Callan, 2010</a>). A recent European Commission report indicates that policy makers in Ireland perform systematically more Distributional Impact Analysis than most other member states around Budget time and the SWITCH model underpins much of this analysis (<a href=\"#bib20\">Fiorio, 2021</a>).",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "In 2020, the ESRI undertook a project to redesign the model and the underlying software to keep pace with international developments and provide more model flexibility. The updated SWITCH model, while retaining its advantages over the Irish component of EUROMOD, is now based on the EUROMOD platform, facilitating cross-country comparison, and uses the most recent pre-pandemic data available, SILC 2019. This paper describes the development and operation of the SWITCH model. The EUROMOD platform and the process of creating an input database for the model is discussed. Ensuring the model runs on a representative sample of the Irish population is essential to model accuracy and we discuss adjustments made to the underlying data to improve representativeness, such as reweighting and uprating. The simulation process is discussed along with the capabilities of the model in terms of results produced. We also present a model validation and show how the reweighting process helps improve the accuracy of the model.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s1",
+            "title": "1. Introduction",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "EUROMOD is the tax-benefit microsimulation model for the European Union. It is maintained by the Joint Research Centre (JRC) of the European Commission, in collaboration with Eurostat and national teams from the EU countries. The Taxation, Welfare and Pensions team at the ESRI operate as the national team for the Irish component of EUROMOD. The model is open-source and consists of three main components \u2013 the software, the coded policy rules and the input data. The model consists of a set of xml files which contain the coded policy rules. The input data of the model is mainly based on the EU-SILC User Database (UDB).<a href=\"#fn2\"><sup>2</sup></a><sup>,</sup> The EU SILC survey is coordinated by EUROSTAT with CSO Ireland carrying out the survey in Ireland and supplying the data to EUROSTAT. The survey focusses on the income and living conditions of households in Ireland with a focus on poverty, deprivation and social exclusion. While the model itself is open-source, access to the input data (based on the EU SILC UDB) must first be authorised by EUROSTAT. The model has a flexible user interface that allows users to adjust tax-benefit parameters.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The model is also flexible in terms of input data \u2013 the data simply needs to be created in a harmonised manner to run with the EUROMOD platform. In some countries researchers have used alternative datasets to create an alternative input dataset for use with the EUROMOD model \u2013 for example, the use of administrative data in Greece.<a href=\"#fn3\"><sup>3</sup></a>",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Simplified online tax-benefit calculators which use the EUROMOD platform exist for some countries such as the SORESI model for Austria or the EUROMOD-JRC Interface which allows users to simulate non-complex tax and benefit reforms without prior knowledge of the EUROMOD model and without the need to apply for data access.<a href=\"#fn4\"><sup>4</sup></a><sup>,</sup>",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "While the EUROMOD model covers Ireland, the SWITCH model, which is the focus of this paper, uses the EUROMOD platform along with a more detailed dataset to analyse tax-benefit changes. The key differences between the EUROMOD and SWITCH model are discussed throughout the paper and briefly summarised in Box 1 of the Appendix.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Ideally tax-benefit models would be based on administrative data capturing the entire population but this is not always possible. Administrative data, which is often subject to more restrictive access rules, may provide more accurate and timely information on income. Some drawbacks to administrative data include the limited demographic information they contain and the fact that observations are sometimes limited to taxpayers. This sometimes means an under-representation of the lower end of the income distribution (who may not pay tax) and difficulty in simulating the effect of policies on non-taxpayers. The use of administrative data may be further complicated by national statistical agency\u2019s rules on data usage and reporting. Sometimes, the data must be used on the Virtual Desktop Interface of a statistical agency with a statistician charged with checking that statistical disclosure rules are not violated before results are transferred to the user\u2019s own PC. The TAXIPP model used at the <i>Institut des Politiques Publiques</i> in France is an example of a national microsimulation model based on administrative data (<a href=\"#bib5\">Ben Jelloul et al., 2017</a>).<a href=\"#fn5\"><sup>5</sup></a>",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "In Ireland, while administrative data on market incomes and social welfare income is available from the Revenue Commissioners and the Department of Social Protection (DSP),<a href=\"#fn6\"><sup>6</sup></a> respectively, two main issues prevent the usage of such administrative data for microsimulation modelling in Ireland. Simulating tax and welfare entitlements depends on factors such as the number and ages of all household members. Those not in receipt of income (such as children, inactive adults) do not appear in these administrative records and Ireland does not have a population register as exists in many other countries. Benefit entitlements often also depend on other factors. For example, couples with children whose incomes are below the relevant income limit for the in-work income support, the Working Family Payment, must work at least 38 hours per fortnight combined and hours of work information is not available in income tax data. Simulating entitlements to additional benefits such as Medical Cards (the Irish public health insurance scheme) and to subsidies under the National Childcare Scheme is also only possible based on information not recorded in administrative data, such as hours of childcare used, housing costs paid etc.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "For these reasons, the SWITCH model uses data from the CSO Ireland\u2019s Survey of Income and Living Conditions (SILC). SILC is part of an EU-wide programme and surveys a sample of Irish households. The survey covers a wide range of issues, with a focus on income and living conditions, and is the official source of poverty indicators. The survey is carried out annually (since 2004) and normally covers around 4,000 private households/10,000 individuals each year. The most recent pre-COVID19 data year available, 2019, is the current dataset used in SWITCH. The survey captures information on all household members, and their relationships along with their types and levels of incomes, labour force status and work hours. This information is essential to accurately model income tax liabilities and entitlements to benefits. The majority of income information is captured from administrative sources such as Revenue and the Department of Social Protection which improves the accuracy of the data. For more information on the SILC data, see <a href=\"#bib12\">CSO (2020)</a>.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "While the EU-SILC UDB data (provided to EUROSTAT by the CSO Ireland) is based on the same survey, the CSO Ireland provide a more detailed version of the SILC data that is only available under strict access conditions \u2013 the Researcher Microdata File (RMF). This contains more detailed information than the UDB version \u2013 for example in the UDB some benefits are aggregated together such as contributory and non-contributory pensions. This is an important difference between SWITCH and EUROMOD as information on the type of benefit received in reality is sometimes used in identifying eligibility to a particular payment (see Section 4.1 for more detail on this). Additional variables are also provided in the RMF compared to the UDB that improve the accuracy of the SWITCH model compared to EUROMOD \u2013 for example month of birth is provided in the RMF but not the UDB \u2013 this information can be used to identify a child\u2019s entitlement to publicly funded pre-school, the Early Childhood Care and Education (ECCE) scheme, eligibility for which depends on the precise age of the child in months.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Another important distinction between SWITCH and EUROMOD is the income reference period. The input data prepared for SWITCH focusses on current income, most of which is drawn from administrative sources.<a href=\"#fn7\"><sup>7</sup></a> The focus of EUROMOD and, more generally, of SILC and EU-SILC data is annual income, where the income reference period is the previous year. Poverty rates calculated by CSO Ireland and Eurostat are based on annual employment and benefit income. While this makes sense in examining changes in income levels and calculating poverty rates, tax liabilities and welfare entitlements depend on current income and labour market status. For example, an individual who was unemployed at some point during the previous year and received an unemployment benefit at that time might be employed at the date of interview, with no current entitlement to unemployment benefits. Likewise an unemployed individual eligible for Jobseeker\u2019s Allowance, the means tested unemployment benefit, will be means tested based on their current income as opposed to their annual income.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The SILC questionnaire asks about receipt of social welfare payments over the course of the previous year. However, the CSO Ireland also links the survey data to administrative information from the DSP which indicates what (if any) benefits are currently received by the respondent. The last (usually weekly) amount is also provided. This allows us to identify a person\u2019s current benefit entitlement which may be used in identifying an individual\u2019s eligibility for a particular benefit scheme in the model. For example, knowing if an individual is currently unemployed does not provide sufficient information to determine the type of unemployment benefit they may be eligible for, as the SILC data does not contain social security (PRSI) contribution histories which determine which kind of Jobseeker\u2019s support is granted.<a href=\"#fn8\"><sup>8</sup></a>",
+                    "type": "paragraph"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "Research using data such as SILC may involve dropping observations if certain important variables are missing. Given the importance of family relationships and income levels in simulating tax liabilities or benefit entitlements (e.g., a person\u2019s benefit amount may be means tested and therefore depend on their partners income level), dropping one individual due to missing values would necessitate dropping the entire household. Given that more than 100 variables from the RMF are used in the SWITCH input database, dropping observations with missing information could shrink the sample significantly and would have significant implications for the representativeness of the data. Therefore, we use imputation rather than dropping observations wherever possible.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "For most of the variables, the process of preparing them for use in the SWITCH database is straightforward and usually involves replacing the name of the variable in the RMF with a new name which follows the EUROMOD variable naming protocols and therefore allows the SWITCH model to run. Some initial checks are performed when first creating the data, particularly for ID\u2019s. For example, corrections for duplicate ID\u2019s, non-respondents and inconsistent weights between members of a household are performed. Occasionally, a variable may have a value that is deemed implausible or an extreme outlier.<a href=\"#fn9\"><sup>9</sup></a> These are dealt with on a case-by-case basis and are either top-coded or replaced as missing values and imputed in a sensible manner.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "It is also necessary to check the logical consistency of variables. Examples include:",
+                            "type": "paragraph"
+                        },
+                        {
+                            "items": [
+                                [
+                                    {
+                                        "text": "Ensuring employment income is positive if the labour market status is employed.",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "Checking the partner\u2019s ID exists if an individual is married, and that this ID does indeed correspond to the partner.",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "If an individual\u2019s current education status is post-graduate, their highest education level attained is undergraduate.",
+                                        "type": "paragraph"
+                                    }
+                                ]
+                            ],
+                            "prefix": "bullet",
+                            "type": "list"
+                        },
+                        {
+                            "text": "Corrections for inconsistencies are possible given the granularity of the data at hand, both for cases where the information is inconsistent or missing. Imputations are commonly used to replace missing values in such cases. For instance, in the first example, a predicted wage is calculated using data on age, industry, gender, education, etc. Other variables which are imputed when missing include education status, hours worked and property market values.<a href=\"#fn10\"><sup>10</sup></a>",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The method for imputing missing observations changes from variable to variable. A common solution is to replace the missing value with the mode of the variable, as is done in the case of citizenship (replaced as Irish) or month of birth (replaced with February as the first quarter is the most frequent). Others can be imputed using information contained in closely related variables. For example, individuals whose disability status is missing is imputed to \u201cyes\u201d if the data indicates that this individual is in receipt of any disability benefit or similarly relevant payment. The imputation method for education variables requires careful consideration of multiple variables, thus making it one of the more problematic to impute.<a href=\"#fn11\"><sup>11</sup></a> This is particularly true as the imputation of subsequent education variables (e.g. highest education level attained) rely on the successful imputation of related variables that precede (current education).",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "While most variables can be brought into SWITCH without great modification, some require further steps for construction and more precise simulation. For example, due to a lack of information regarding a person\u2019s social security contribution history, receipt of a particular benefit as captured in the data provided by DSP may not be sufficient to accurately model benefit entitlements. The State Pension (Contributory) has different rates depending on social security contribution history. The administrative information on the last amount received of this benefit allows us to construct a flag indicating which level of payment an individual is entitled to and is used in the model to assign the correct rate.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s2-1",
+                    "title": "2.1. Data Checks and Imputations",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "As the data for the model is taken from the most recent year of SILC available, 2019, monetary amounts such as incomes must be adjusted to current levels. Monetary values are adjusted to the current year by using relevant \u2018uprating factors\u2019 in the model. The uprating factors used in SWITCH and EUROMOD are identical.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "A variety of sources are used to adjust income (<a href=\"#table1\">Table 1</a>). Employment income and self-employment income are likely to grow at different rates over time, so an appropriate uprating factor is used for each. In the case of an uprating index not being available \u2013 as is often the case when the policy system relates to the following year \u2013 forecasts for GDP/GNP growth are used for employment and self-employment income respectively.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "table1",
+                                    "label": "Table 1",
+                                    "tables": [
+                                        "<table><thead><tr><th align=\"left\">Index</th><th align=\"left\">Source</th><th align=\"left\">Income components uprated</th></tr></thead><tbody><tr><td align=\"left\">Average earnings per week, \u20ac</td><td align=\"left\"><a href=\"https://cso.ie/px/pxeirestat/Statire/SelectVarVal/Define.asp?maintable=EHQ03&amp;PLanguage=0\">https://cso.ie/px/pxeirestat/Statire/SelectVarVal/Define.asp?maintable=EHQ03&amp;PLanguage=0</a></td><td align=\"left\">Employment income</td></tr><tr><td align=\"left\">Self-employed income (2006=1)</td><td align=\"left\"><a href=\"https://www.cso.ie/px/pxeirestat/Statire/SelectVarVal/Define.asp?maintable=RVA01&amp;PLanguage=0\">https://www.cso.ie/px/pxeirestat/Statire/SelectVarVal/Define.asp?maintable=RVA01&amp;PLanguage=0</a> up to 2018, GNP per capita after 2018</td><td align=\"left\">Self-employed income</td></tr><tr><td align=\"left\">GDP per capita (2007=1)</td><td align=\"left\"><a href=\"https://statbank.cso.ie/px/pxeirestat/Statire/SelectVarVal/Define.asp?maintable=NQQ40&amp;PLanguage=0\">https://statbank.cso.ie/px/pxeirestat/Statire/SelectVarVal/Define.asp?maintable=NQQ40&amp;PLanguage=0</a></td><td align=\"left\">Investment income</td></tr><tr><td align=\"left\"/><td align=\"left\"><a href=\"https://cso.ie/px/pxeirestat/Statire/SelectVarVal/Define.asp?maintable=PEA01&amp;PLanguage=0\">https://cso.ie/px/pxeirestat/Statire/SelectVarVal/Define.asp?maintable=PEA01&amp;PLanguage=0</a></td><td align=\"left\"/></tr><tr><td align=\"left\">Consumer price index (2007=1)</td><td align=\"left\"><a href=\"https://www.cso.ie/px/pxeirestat/Statire/SelectVarVal/Define.asp?maintable=CPA01&amp;PLanguage=0\">https://www.cso.ie/px/pxeirestat/Statire/SelectVarVal/Define.asp?maintable=CPA01&amp;PLanguage=0</a></td><td align=\"left\">Non-simulated benefits, asset income, benefit-in-kind, expenditure.</td></tr></tbody></table>"
+                                    ],
+                                    "title": "Uprating Factors",
+                                    "type": "table"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "text": "Uprating incomes in a homogenous manner like this may be flawed if income grows at a different rate for low and high earners (<a href=\"#bib25\">Jenkins and Van Kerm, 2006</a>; <a href=\"#bib24\">Jenkins and Van Kerm, 2016</a>; <a href=\"#bib13\">Darvas, 2021</a>). During the pandemic, there was heterogeneity in how industries and occupations fared so this is certainly likely to be the case recently. Unfortunately, there is no series of income currently available which would allow us to uprate incomes in bands to the current period.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s2-2",
+                    "title": "2.2. Uprating",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "While incomes in the SWITCH model are uprated to current levels, the SWITCH model usually assumes a \u2018constant\u2019 population i.e., the demographic and economic characteristics of the population (such as the age and employment profile) are assumed to remain constant at the year the SILC data was collected. The model does, however, allow for the implementation of changed economic conditions. Given the substantial impact of the COVID 19 pandemic on employment rates, the 2019 data must be adjusted in order to be representative of the 2021 population in terms of unemployment rates. <a href=\"#bib30\">O\u2019Donoghue et al. (2020)</a> does this via a sophisticated nowcasting approach using the NUI Galway microsimulation model. <a href=\"#bib1\">Almeida et al. (2021)</a> employ a reweighting method linked to macroeconomic scenarios in the EUROMOD model. In the SWITCH model, we opt for an \u2018unemployment shock\u2019 whereby a certain proportion of workers in an industry are assumed to have either lost their job or to have been placed on the wage subsidy scheme put in place to retain jobs \u2013 the Temporary COVID-19 Wage Subsidy Scheme (TWSS). The number of individuals to either lose their job or receive the TWSS (or its successor, the EWSS) is calibrated from publicly available CSO Ireland data on the number of people in receipt of the Pandemic Unemployment Payment (PUP),<a href=\"#fn12\"><sup>12</sup></a> the additional unemployment benefit introduced in response to the pandemic, and from Revenue data on the number of recipients of the EWSS.<a href=\"#fn13\"><sup>13</sup></a> Both account for the industry breakdown of recipients of either scheme. Extra weight is given to workers under 25 in the employment shock simulations as administrative data shows that this group was hardest hit by pandemic related unemployment. The proportion of workers simulated in each age and gender category to be receiving the PUP and TWSS is compared to CSO Ireland statistics in August 2020 in <a href=\"#fig1\">Figure 1</a>. Overall, we can see that the simulation of those in receipt of the PUP and wage subsidies compares well with official estimates along gender and age grounds.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "fig1",
+                                    "image": {
+                                        "alt": "",
+                                        "uri": "%iiif_uri%/00275%2Fijm-00275-fig001.tif",
+                                        "size": {
+                                            "width": 1501,
+                                            "height": 1808
+                                        },
+                                        "source": {
+                                            "mediaType": "image/jpeg",
+                                            "uri": "%iiif_uri%/00275%2Fijm-00275-fig001.tif/full/full/0/default.jpg",
+                                            "filename": "ijm-00275-fig001.jpg"
+                                        }
+                                    },
+                                    "label": "Figure 1",
+                                    "title": "The proportion of workers receiving the PUP and the wage subsidy by gender and age category in August 2020. Note: SWITCH simulations are based on v2.1 F indicates female, M indicates male.",
+                                    "type": "image"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "text": "These calibrations can be changed by users of the model to reflect PUP and TWSS numbers at the time of analysis or estimated future numbers. Likewise, the unemployment shock can be omitted so that unemployment rates remain at 2019 levels if users wish to simulate the forecast income distribution when unemployment is back to pre-pandemic levels.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s2-3",
+                    "title": "2.3. COVID employment shock",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "The CSO Ireland weighting process creates household cross-section weights for use with the SILC data.<a href=\"#fn14\"><sup>14</sup></a> First, a design weight is assigned to each household, which is the inverse proportion to the probability with which the household was sampled. These weights are further adjusted depending on when the household was first interviewed as there is a panel element to the SILC survey and households are included for four years. The aim of the approach is that the weighted estimates reproduce the control totals of certain benchmarks. The benchmark estimates that CSO Ireland uses are:",
+                            "type": "paragraph"
+                        },
+                        {
+                            "items": [
+                                [
+                                    {
+                                        "text": "Population estimates by sex and age group (0-14, 15-34, 35-64, 65 and over) based on population projections from Census data.",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "Household population estimates at regional level using the eight NUTS3 regions. These are generated using the Labour Force Survey (LFS).",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "Household composition estimates (6 categories, depending on number of adults and children) which are also drawn from the LFS.",
+                                        "type": "paragraph"
+                                    }
+                                ]
+                            ],
+                            "prefix": "bullet",
+                            "type": "list"
+                        },
+                        {
+                            "text": "Although these controls ensure that SILC is representative of the key demographics of the Irish household population, the representativeness of the social welfare population and the income tax base are not guaranteed. Once the CSO Ireland original 2019 weights are applied to the data, a larger number of unemployed individuals are present in the data compared to administrative statistics. A similar problem occurs when examining the income distribution whereby the distribution of taxpayers differs to the distribution of taxpayers shown in administrative records from Revenue. The same is true, to a lesser extent, for the numbers receiving certain benefits \u2013 these can differ compared to administrative information from the Department of Social Protection. More detail on these differences is provided in Section 5 which discusses how the model is validated.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The more precise the depiction of the labour force, benefit recipients and the income distribution is in the input data, the more accurate the SWITCH model will be in terms of income tax estimates, benefit recipient numbers etc. For this reason, we reweight the data by adding controls based on administrative data concerning the tax and welfare system as well as official statistics based on the CSO Ireland\u2019s LFS.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Our approach is similar to <a href=\"#bib1\">Almeida et al. (2021)</a> who analysed the impact of the pandemic on EU households\u2019 income. The problem that they faced was that available input data did not capture the labour market changes that occurred during the pandemic. To overcome this, they modified the population structure of SILC to mimic the aggregate employment, unemployment and total wage compensation. In our case, we are not interested in a more exact capture of the labour market (as we implement the COVID employment shock in a different manner) but of the recipients and the distribution of the tax and welfare system in the year in which the data is collected.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Compared to the more detailed LFS, which is used to produce the official measure of employment and unemployment in Ireland, SILC 2019 (using the original 2019 weight) has a lower number of employees and higher number of unemployed persons \u2013 specifically SILC has 10% fewer employees and 12% more unemployed persons than the LFS.<a href=\"#fn15\"><sup>15</sup></a> The issue of higher numbers of people not in work in SILC (using the CSO Ireland weight) was also identified in <a href=\"#bib37\">Watson et al. (2015)</a> \u2013 they find a gap in the number of adults in employment when compared with the main labour force data for Ireland (at the time the Quarterly National Household Survey, since replaced by the LFS). This gap also exists with the Census, which is not based on a sample of the population but captures the entire Irish population \u2013 they therefore concluded that \u2018the SILC survey was under-estimating the percentage of people at work\u2019. In order to better capture the labour market situation, we control for the number of employed and unemployed individuals using statistics from the LFS.<a href=\"#fn16\"><sup>16</sup></a> Even when the numbers of employed and unemployed are controlled for, the breakdown of those eligible for non-means-tested and means tested unemployment benefits (i.e., Jobseeker\u2019s Benefit (JSB) and Jobseeker\u2019s Assistance (JSA)) cannot be guaranteed. The same issue arises with pension receipt \u2013 those with sufficient lifetime PRSI contributions receive the non-means-tested State Pension (Contributory) while those without sufficient contributions receive the means-tested State Pension (Non-Contributory). For this reason, we also control in the input data for benefit recipients for the main benefit schemes.<a href=\"#fn17\"><sup>17</sup></a> Benefit recipient numbers are taken from administrative data \u2013 namely the DSP who report the annual recipient numbers in receipt of each benefit. We also reweight the data to match administrative data about the income distribution (specifically from Revenue\u2019s income distribution statistics which report the number of tax units in income bands) to improve the precision of tax liability simulation. As data for the 2019 income distribution were not available, we use previous income distributions (year 2015 to 2018) for employees (Schedule E income) and self-employed (Schedule D income) and constructed the forecasted income distributions for the two categories for 2019.<a href=\"#fn18\"><sup>18</sup></a>",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Lastly, to capture the demographic profile of the Irish population, we applied the demographic controls that CSO Ireland use in their weighting process, but with some additions. While the CSO Ireland weight ensured the data captured wider age bands by gender as reported in population level statistics taken from the Census (specifically the number of males and females aged 0-14, 15-34, 35-64 and 65 and over) differences occurred within those age bands \u2013 for example the 35-64 age band is relatively large so differences emerged between the numbers in narrower 5-year age bands within this group when compared to the Census.<a href=\"#fn19\"><sup>19</sup></a> This may have implications for tax liabilities and benefit entitlement (for example, earnings tend to rise with age, maternity benefit entitlement is concentrated in certain female age ranges, etc.). Larger differences emerged for the number of females in narrower age bands. Therefore, to better capture the female population, we controlled for smaller five-year age group bands for female individuals based on projected Census data from the CSO Ireland. The wider male age bands used already matched more closely when examined at narrower age bands so no additional controls were used for males.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "A summary of the elements controlled for in the weighting process is shown in <a href=\"#table2\">Table 2</a> below.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "table2",
+                                    "label": "Table 2",
+                                    "tables": [
+                                        "<table><thead><tr><th align=\"left\">SILC control totals</th><th align=\"left\">SWITCH control totals</th><th align=\"left\">Source for controls</th></tr></thead><tbody><tr><td align=\"left\">Household location (8 NUTS3 regions)</td><td align=\"left\">Household location (8 NUTS3 regions)</td><td align=\"left\">LFS (CSO Ireland)</td></tr><tr><td align=\"left\">Household composition</td><td align=\"left\">Household composition</td><td align=\"left\">LFS (CSO Ireland)</td></tr><tr><td align=\"left\">Demographics: 4 age groups by sex</td><td align=\"left\">Male demographics: 4 age groups</td><td align=\"left\">Projected Census (CSO Ireland)</td></tr><tr><td align=\"left\"/><td align=\"left\">Female demographics: 5 year-band age groups up to 64 and one for all above 65 years old</td><td align=\"left\">Projected Census (CSO Ireland)</td></tr><tr><td align=\"left\"/><td align=\"left\">Employment and unemployment levels</td><td align=\"left\">LFS (CSO Ireland)</td></tr><tr><td align=\"left\"/><td align=\"left\">Forecasted income distribution for employees and self-employed</td><td align=\"left\">Office of the Revenue Commissioners</td></tr><tr><td align=\"left\"/><td align=\"left\">Number of recipients of key benefits</td><td align=\"left\">Annual Statistics Report of the Department of Social protection</td></tr></tbody></table>"
+                                    ],
+                                    "title": "Control Totals Used in Weighting Process",
+                                    "type": "table"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "text": "For the reweighting process, similar to <a href=\"#bib1\">Almeida et al. (2021)</a>, we used the <i>sreweight</i> command in Stata, created by <a href=\"#bib33\">Pacifico (2014)</a>, together with the distance function proposed by <a href=\"#bib16\">Deville and Sarndal (1992)</a> which keeps the calibrated weights within a known range set. The command is used to adjust survey weights so that the data matches known control totals for given variables.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "For the current version of the model (SWITCH v.4.5), we opt to reweight the input data to match the collection year i.e., we use information on the income distribution, benefit recipiency and demographics in 2019. Past versions of the model have used forecasts of these characteristics to create a dataset for the model that is representative of a future point in time e.g., the 2021 population. This would complement the uprating factors applied that allows model users to adjust incomes to 2021 or 2022 levels. However, given the uncertainty surrounding how the employment situation, income distribution and benefit recipiency population will look in the coming months and years due to the impact of the pandemic, forecasts of such characteristics are likely to be unreliable. We therefore feel it is more prudent to reweight the data to the collection year. The simulation of a pandemic-related employment shock can then be used in conjunction with the reweighted data to create a more realistic \u2018future\u2019 profile of the population. This approach also allows users to look at different pandemic-related employment scenarios.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s2-4",
+                    "title": "2.4. Reweighting",
+                    "type": "section"
+                }
+            ],
+            "id": "s2",
+            "title": "2. The EUROMOD Platform",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "content": [
+                        {
+                            "text": "The <i>SWITCH</i> model simulates the disposable income each family would obtain under a set of income tax and social welfare policies, and under an alternative policy of interest. The policy change under consideration could be a simple change to one tax rate or a complex programme of tax and welfare reform. Income tax, Universal Social Charge (USC), Pay Related Social Insurance (PRSI) and property tax are all simulated in the model. Other taxes, such as indirect taxes on consumption, are not included in the model as the SILC data does not contain information on expenditure.<a href=\"#fn20\"><sup>20</sup></a>",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Regarding social welfare schemes, benefits can be either fully simulated, part-simulated or non-simulated as indicated in <a href=\"#table3\">Table 3</a>. Benefits are fully simulated if all the information needed to identify entitlement is known in the underlying input data. For example, Child Benefit receipt is dependent only on child age, so it is fully simulated. One-Parent Family Payment entitlement is related to the household arrangement of an individual with children (non-partnered), their age (under 66) and their weekly means. As all this information is present in the data, benefit entitlement and amount can therefore be fully simulated.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "footnotes": [
+                                        {
+                                            "id": "T3_FN1",
+                                            "label": "*",
+                                            "text": [
+                                                {
+                                                    "text": "This aggregate benefit is composed of monies received from charities and local government",
+                                                    "type": "paragraph"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "id": "T3_FN2",
+                                            "label": "\u2020",
+                                            "text": [
+                                                {
+                                                    "text": "This aggregate benefit is composed of Back to School Clothing & Footwear Allowance, Carer\u2019s Benefit, Deserted Wife\u2019s Allowance, Deserted Wife\u2019s Benefit, Guardian\u2019s Payment Contributory, Guardian\u2019s Payment Non-Contributory, Special Diet Supplement",
+                                                    "type": "paragraph"
+                                                }
+                                            ]
+                                        }
+                                    ],
+                                    "id": "table3",
+                                    "label": "Table 3",
+                                    "tables": [
+                                        "<table><thead><tr><th align=\"left\">Scheme</th><th align=\"left\">Simulation Status</th></tr></thead><tbody><tr><td align=\"left\">Child Benefit</td><td align=\"left\">Fully Simulated</td></tr><tr><td align=\"left\">Early Childhood Care &amp; Education Scheme</td><td align=\"left\">Fully Simulated</td></tr><tr><td align=\"left\">Job Seekers Allowance</td><td align=\"left\">Fully Simulated</td></tr><tr><td align=\"left\">Job Seekers Benefit</td><td align=\"left\">Fully Simulated</td></tr><tr><td align=\"left\">Jobseekers Transitional Payment</td><td align=\"left\">Fully Simulated</td></tr><tr><td align=\"left\">Maternity Benefit</td><td align=\"left\">Fully Simulated</td></tr><tr><td align=\"left\">National Childcare Scheme</td><td align=\"left\">Fully Simulated</td></tr><tr><td align=\"left\">One-Parent Family Payment</td><td align=\"left\">Fully Simulated</td></tr><tr><td align=\"left\">Pandemic Unemployment Payment</td><td align=\"left\">Fully Simulated</td></tr><tr><td align=\"left\">Rent or Mortgage Supplement</td><td align=\"left\">Fully Simulated</td></tr><tr><td align=\"left\">State Pension (Non-Contributory)</td><td align=\"left\">Fully Simulated</td></tr><tr><td align=\"left\">Temporary Wage Subsidy Scheme</td><td align=\"left\">Fully Simulated</td></tr><tr><td align=\"left\">Widow\u2019s Non-Contributory Pension</td><td align=\"left\">Fully Simulated</td></tr><tr><td align=\"left\">Working Family Payment</td><td align=\"left\">Fully Simulated</td></tr><tr><td align=\"left\">National Childcare Scheme</td><td align=\"left\">Fully Simulated</td></tr><tr><td align=\"left\">Early Childhood Care and Education Scheme</td><td align=\"left\">Fully Simulated</td></tr><tr><td align=\"left\">Medical and GP visit card</td><td align=\"left\">Fully Simulated</td></tr><tr><td align=\"left\">Employment Wage Subsidy Scheme</td><td align=\"left\">Fully Simulated</td></tr><tr><td align=\"left\">Pandemic Unemployment Payment</td><td align=\"left\">Fully Simulated</td></tr><tr><td align=\"left\">Carer\u2019s Allowance</td><td align=\"left\">Part-simulated</td></tr><tr><td align=\"left\">Disability Allowance</td><td align=\"left\">Part-simulated</td></tr><tr><td align=\"left\">Fuel Allowance</td><td align=\"left\">Part-simulated</td></tr><tr><td align=\"left\">Illness Benefit</td><td align=\"left\">Part-simulated</td></tr><tr><td align=\"left\">Injury Benefit</td><td align=\"left\">Part-simulated</td></tr><tr><td align=\"left\">Invalidity Pension</td><td align=\"left\">Part-simulated</td></tr><tr><td align=\"left\">State Pension (Contributory)</td><td align=\"left\">Part-simulated</td></tr><tr><td align=\"left\">State Pension (Transition)</td><td align=\"left\">Part-simulated</td></tr><tr><td align=\"left\">Supplementary Welfare Allowance</td><td align=\"left\">Part-simulated</td></tr><tr><td align=\"left\">Widow\u2019s Contributory Pension</td><td align=\"left\">Part-simulated</td></tr><tr><td align=\"left\">Education Grant (from FAS)</td><td align=\"left\">Non-simulated</td></tr><tr><td align=\"left\">Grants/Education (Training) Allowances</td><td align=\"left\">Non-simulated</td></tr><tr><td align=\"left\">Household Benefits Package</td><td align=\"left\">Non-simulated</td></tr><tr><td align=\"left\">Minor Social Assistance Benefits<a href=\"#T3_FN1\">*</a></td><td align=\"left\">Non-simulated</td></tr><tr><td align=\"left\">Non-Irish Social Welfare Payments</td><td align=\"left\">Non-simulated</td></tr><tr><td align=\"left\">Residual Family Allowances<a href=\"#T3_FN2\">\u2020</a></td><td align=\"left\">Non-simulated</td></tr></tbody></table>"
+                                    ],
+                                    "title": "Simulated and non-simulated social welfare schemes",
+                                    "type": "table"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "text": "Part-simulated schemes are those for which eligibility is taken from the underlying data as it is not fully possible to simulate eligibility using SILC data. For example, the input data does not have sufficient information regarding someone\u2019s disability status or illness duration. Entitlement to Disability Allowance and Illness Benefit are therefore taken from the underlying data i.e., they are simulated to be entitled to the benefit if the linked register benefit information in SILC indicates that they are currently in receipt of these payments. Another example is the part-simulation of the State Pension (Contributory) and State Pension (non-contributory). PRSI contribution history over a person\u2019s lifetime is not captured in the data rendering it impossible to distinguish between eligibility for these two payments. Eligibility is therefore taken from the underlying data. In part-simulated schemes, the amount received by those eligible is modelled - this allows model users to simulate a change in rates if desired.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "A small number of schemes are non-simulated. Non-simulated schemes are those for which eligibility and the amount received is taken from the underlying data. This is usually due to the fact that the underlying data does not contain sufficient information to simulate entitlement, nor does the DSP register information capture receipt \u2013 for example those getting a maintenance grant under the Student Grant Scheme or those receiving welfare benefits from abroad. For these schemes, usually smaller ones, some are aggregated together in order to facilitate the reporting of results.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "As well as the standard cash benefits, the SWITCH model also calculates entitlement to two main categories of non-cash benefits. The first are forms of public health insurance - Medical and GP-Visit Cards. Medical Cards provide free primary, community, and hospital care, as well as heavily subsidised prescriptions drugs, for those below specific income means-test threshold.<a href=\"#fn21\"><sup>21</sup></a> GP-Visit Cards cover the cost of attending a GP only and are also generally granted based on a means test (with the income limit being higher than that of a Medical Card). Certain age groups automatically qualify for a GP-Visit Card also (those under 6 and over 70). The second type of non-cash benefits simulated in SWITCH are related to childcare subsidies (payable directly to childcare providers) under the Early Childhood Care and Education (ECCE) scheme and the National Childcare Scheme (NCS). The simulation of these non-cash benefits is mainly of interest to be able to examine the impact of changes to the tax-benefit system on eligibility \u2013 for example entitlement to Medical and GP-Visit Cards and NCS subsidies are based on income and are assessed on a net basis. Therefore, any policy changes involving a change in social welfare rates of payment or income taxes will have a knock-on effect on entitlement to these schemes. While distributional analysis generally does not include valuations of these non-cash benefits in the definition of income it is possible to include such valuations, for example to examine the distribution of such benefits across the income distribution or to examine the impact such benefits may have on financial work incentives.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Model users are provided with \u2018benchmark\u2019 policy systems which simulate income tax and benefit entitlement under the actual tax-benefit policies in place at a given time. These are provided in a more timely manner than the EUROMOD policy system. For example, a post-Budget release is provided before the end of each calendar year, containing a policy system for the following year. Another release (often based on a new wave of data) is provided during the summer, in the run-up to Budget preparations to ensure that SWITCH users within government Departments have timely access to the most recent data and policy systems. The policy systems provided can be copied and amended as the user wishes. The impact of changing eligibility information for fully simulated social welfare benefits can also be examined, for example by narrowing the age range for Child Benefit eligibility. Users can also simulate \u2018new\u2019 taxes or benefits as long as the liability/eligibility information is present in the input data.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The SWITCH model is a \u2018static\u2019 one in that it does not take account of behavioural reactions to policy changes that may occur. However, it can be linked to a labour supply model programmed in another statistical software (STATA) to estimate the labour supply effect of, for example, changes to income tax or benefit rates.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s3-1",
+                    "title": "3.1. Simulation of Tax Liabilities and Benefit Entitlements",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "The SWITCH model inherently assumes that people are tax compliant i.e. pay the income and property taxes due based on their income and property value levels. In general, for fully simulated benefits, the model also assumes that people avail of benefits to which they are entitled. Two entitlements can be adjusted for non-take-up based on research evidence indicating partial take-up. The first is the Working Family Payment \u2013 the in-work support for people with children on low pay. Take-up issues with this scheme have been highlighted over a number of decades and <a href=\"#bib22\">Gray and Rooney (2018)</a>, in a qualitative review of WFP recipients, indicate that take-up is still an issue. The SWITCH model therefore allows users to adjust take-up by simulating a random proportion of those eligible for the WFP to not avail of it. <a href=\"#bib28\">Keane et al. (2021)</a> estimated a non-take-up rate of 31 per cent for the means-tested public health insurance scheme, the Medical Card. The model therefore allows the user to set take-up rates for Medical and GP-Visit Cards to take account of the fact that not everyone eligible for one of these benefits actually avails of it.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s3-2",
+                    "title": "Tax Compliance and Benefit Non-Take-Up",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "At present the capabilities of the model include:<a href=\"#fn22\"><sup>22</sup></a>",
+                            "type": "paragraph"
+                        },
+                        {
+                            "items": [
+                                [
+                                    {
+                                        "text": "Estimation of the net budgetary cost of packages of tax and welfare changes. Alternative reform packages with the same budgetary cost can therefore be constructed.",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "Estimation of the pattern of gains and losses from a policy change. The numbers of families gaining and losing and the size of their gains and losses can be estimated, and the distribution of gains and losses across family types and income levels can be explored.<a href=\"#fn23\"><sup>23</sup></a>",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "Estimation of poverty and inequality measures before and after reform packages.",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "Estimation of the cost and distribution of non-cash benefits such as Medical Cards, GP Visit cards and childcare subsidies.",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "Estimation of the gender impact of policy changes at the individual level, assuming full income sharing between members of a couple",
+                                        "type": "paragraph"
+                                    }
+                                ]
+                            ],
+                            "prefix": "bullet",
+                            "type": "list"
+                        },
+                        {
+                            "text": "While the EUROMOD model allows users to analyse the output data of the model directly, this is not possible by external users of the SWITCH model due to the sensitivity of the underlying data provided by CSO Ireland.<a href=\"#fn24\"><sup>24</sup></a> The model is housed at the CSO Ireland due to this data sensitivity and departmental users access the model remotely. Instead of accessing the output data, an excel \u2018results\u2019 file is produced, containing all the result types just listed. This procedure is in place to ensure that the CSO Ireland\u2019s Statistical Disclosure Controls (SDC) are complied with. Each set of tables produced by the SWITCH model is automatically filtered to eliminate the risk of disclosing information on the survey respondents and to ensure that results are based on an adequate sample size.<a href=\"#fn25\"><sup>25</sup></a> In practice, this involves suppressing cells based on averages with fewer than 30 observations or based on percentages with a denominator below 100. While researchers wishing to access SILC data via the CSO Ireland\u2019s Virtual Desktop Interface (VDI) usually have to clear their results with a CSO Ireland statistician before using them, the automatic SDC in place in the SWITCH model allows users to access their results immediately. This ensures timely access to results and also ensures Budget secrecy. In addition, the provision of a standardised results file in excel means that users of the model do not have to be proficient in a statistical package such as STATA to make use of the model.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s3-3",
+                    "title": "3.2. Capabilities and Results",
+                    "type": "section"
+                }
+            ],
+            "id": "s3",
+            "title": "3. Model simulation, Capabilities and Results",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "The SWITCH model, along with the reweighting process described in Section 3.4, is compared to external benchmarks where possible. Doing so allows us to examine in detail how well the model represents the Irish population \u2013 a particular focus is on ensuring income levels and benefit recipient numbers compare well to external estimates as these characteristics will be key in determining tax and benefit liabilities and entitlements. This allows users of the model to produce credible results. Where possible, the external benchmarks used are taken from administrative data to ensure that the model results compare favourably to statistics representing the entire (non-survey based) population.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Comparing the total number of tax units in the SILC data when applying the original SILC weights to administrative data from Revenue we see that the total number of taxpayer units is considerably lower in SILC (see <a href=\"#table4\">Table 4</a>) \u2013 Revenue Commissioner administrative information shows 2.2 million taxpayer units in 2019 for annual incomes above \u20ac10,000 while SILC only shows 1.6 million.<a href=\"#fn26\"><sup>26</sup></a> This is likely to be due to the fact that, in addition to tax-paying benefit recipients, administrative statistics count all tax-units that worked over the calendar year, even for just a day. SILC, on the other hand, is in effect a snapshot of income and employment status in a given month (the interview month) and thus seasonal or temporal employment is not captured.",
+                    "type": "paragraph"
+                },
+                {
+                    "assets": [
+                        {
+                            "footnotes": [
+                                {
+                                    "text": [
+                                        {
+                                            "text": "Source: Office of the Revenue Commissioners available at <a href=\"https://www.revenue.ie/en/corporate/information-about-revenue/statistics/income-distributions/income-tax-distributions-interactive-tables.aspx\">https://www.revenue.ie/en/corporate/information-about-revenue/statistics/income-distributions/income-tax-distributions-interactive-tables.aspx</a>",
+                                            "type": "paragraph"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "id": "T4_FN2",
+                                    "label": "*",
+                                    "text": [
+                                        {
+                                            "text": "The last year for which data about the income distribution are available from Revenue is 2018. To align available information about income with the year of collection of the SWITCH input data, we forecasted the 2019 income distribution. The forecasted income distribution was created by applying the average annual change for years 2015 to 2018 to each income band to 2018\u2019s income distribution.",
+                                            "type": "paragraph"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "id": "T4_FN3",
+                                    "label": "\u2020",
+                                    "text": [
+                                        {
+                                            "text": "The weight used in this analysis is the one described in CSO SILC 2019 i.e., it is based on demographics (4 age groups by sex), household location (8 NNUTS3 regions) and household composition.",
+                                            "type": "paragraph"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "id": "T4_FN4",
+                                    "label": "\u2021",
+                                    "text": [
+                                        {
+                                            "text": "Statistics of lower statistical reliability due to low number of unweighted observations (30-50).",
+                                            "type": "paragraph"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "id": "table4",
+                            "label": "Table 4",
+                            "tables": [
+                                "<table><thead><tr><th align=\"left\">Gross Annual Income Range</th><th align=\"left\">2019 Admin Estimates<a href=\"#T4_FN2\">*</a></th><th align=\"left\" colspan=\"2\">SILC 2019 weight<a href=\"#T4_FN3\">\u2020</a></th><th align=\"left\" colspan=\"2\">SWITCH revised 2019 weight</th></tr><tr><th align=\"left\"/><th align=\"left\"/><th align=\"left\">N</th><th align=\"left\">Ratio to 2019 Admin</th><th align=\"left\">N</th><th align=\"left\">Ratio to 2019 Admin</th></tr></thead><tbody><tr><td align=\"left\">10000 - 12000</td><td align=\"left\">83,398</td><td align=\"left\">67,995</td><td align=\"left\">82%</td><td align=\"left\">83,398</td><td align=\"left\">100%</td></tr><tr><td align=\"left\">12000 - 15000</td><td align=\"left\">128,504</td><td align=\"left\">77,999</td><td align=\"left\">61%</td><td align=\"left\">128,504</td><td align=\"left\">100%</td></tr><tr><td align=\"left\">15000 - 17000</td><td align=\"left\">87,411</td><td align=\"left\">57,914</td><td align=\"left\">66%</td><td align=\"left\">87,411</td><td align=\"left\">100%</td></tr><tr><td align=\"left\">17000 - 20000</td><td align=\"left\">132,041</td><td align=\"left\">93,864</td><td align=\"left\">71%</td><td align=\"left\">132,040</td><td align=\"left\">100%</td></tr><tr><td align=\"left\">20000 - 25000</td><td align=\"left\">222,622</td><td align=\"left\">148,259</td><td align=\"left\">67%</td><td align=\"left\">222,622</td><td align=\"left\">100%</td></tr><tr><td align=\"left\">25000 - 27000</td><td align=\"left\">90,614</td><td align=\"left\">60,305</td><td align=\"left\">67%</td><td align=\"left\">90,614</td><td align=\"left\">100%</td></tr><tr><td align=\"left\">27000 - 30000</td><td align=\"left\">128,098</td><td align=\"left\">81,699</td><td align=\"left\">64%</td><td align=\"left\">128,098</td><td align=\"left\">100%</td></tr><tr><td align=\"left\">30000 - 35000</td><td align=\"left\">197,218</td><td align=\"left\">124,738</td><td align=\"left\">63%</td><td align=\"left\">197,218</td><td align=\"left\">100%</td></tr><tr><td align=\"left\">35000 - 40000</td><td align=\"left\">175,005</td><td align=\"left\">120,624</td><td align=\"left\">69%</td><td align=\"left\">175,005</td><td align=\"left\">100%</td></tr><tr><td align=\"left\">40000 - 50000</td><td align=\"left\">246,907</td><td align=\"left\">169,937</td><td align=\"left\">69%</td><td align=\"left\">246,907</td><td align=\"left\">100%</td></tr><tr><td align=\"left\">50000 - 60000</td><td align=\"left\">176,301</td><td align=\"left\">150,004</td><td align=\"left\">85%</td><td align=\"left\">176,301</td><td align=\"left\">100%</td></tr><tr><td align=\"left\">60000 - 70000</td><td align=\"left\">129,339</td><td align=\"left\">100,134</td><td align=\"left\">77%</td><td align=\"left\">129,339</td><td align=\"left\">100%</td></tr><tr><td align=\"left\">70000 - 75000</td><td align=\"left\">52,152</td><td align=\"left\">34,144</td><td align=\"left\">65%</td><td align=\"left\">52,152</td><td align=\"left\">100%</td></tr><tr><td align=\"left\">75000 - 80000</td><td align=\"left\">44,201</td><td align=\"left\">31,987</td><td align=\"left\">72%</td><td align=\"left\">44,201</td><td align=\"left\">100%</td></tr><tr><td align=\"left\">80000 - 90000</td><td align=\"left\">69,282</td><td align=\"left\">64,746</td><td align=\"left\">93%</td><td align=\"left\">69,283</td><td align=\"left\">100%</td></tr><tr><td align=\"left\">90000 - 100000</td><td align=\"left\">51,727</td><td align=\"left\">76,357</td><td align=\"left\">148%</td><td align=\"left\">51,726</td><td align=\"left\">100%</td></tr><tr><td align=\"left\">100000 - 150000</td><td align=\"left\">118,559</td><td align=\"left\">121,949</td><td align=\"left\">103%</td><td align=\"left\">118,559</td><td align=\"left\">100%</td></tr><tr><td align=\"left\">150000 - 200000</td><td align=\"left\">33,656</td><td align=\"left\">33,653</td><td align=\"left\">100%</td><td align=\"left\">33,656</td><td align=\"left\">100%</td></tr><tr><td align=\"left\">200000 - 275000</td><td align=\"left\">17,014</td><td align=\"left\">13,797<a href=\"#T4_FN4\">\u2021</a></td><td align=\"left\">81%</td><td align=\"left\">17,014<a href=\"#T4_FN4\">\u2021</a></td><td align=\"left\">100%</td></tr><tr><td align=\"left\">Over - 275000</td><td align=\"left\">16,264</td><td align=\"left\">10,380<a href=\"#T4_FN4\">\u2021</a></td><td align=\"left\">64%</td><td align=\"left\">16,264<a href=\"#T4_FN4\">\u2021</a></td><td align=\"left\">100%</td></tr></tbody></table>"
+                            ],
+                            "title": "Number of Taxpayer Units by Income Bands - Employees and Self Employed",
+                            "type": "table"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "text": "The income distribution of tax units also differs substantially. If left unchanged, these factors would have serious implications for the accuracy of the modelling \u2013 for example, in estimating the exchequer impact of income tax liabilities. The reweighting carried out addresses this issue by ensuring that the total number of taxpayer units increases substantially (hitting the target of 2.2 million on incomes above \u20ac10,000) and that the income distribution of these taxpayer units matches those of Revenue. We do not control for numbers in the lowest income band (\u20ac0 \u2013 \u20ac10,000). Doing so would present difficulties as the weighting process is arrived at based on employment and self-employment income. Those with zero employment/self-employment income are unlikely to show up in Revenue numbers (as they have no income, therefore no tax liability). This lowest income band may also contain people receiving taxable benefits (i.e., non-employment income) income. In theory most benefits are taxable, but it is unlikely they actually incur a tax liability as an individual\u2019s tax credits will usually cover any liability. Those for whom benefits are their sole income source may therefore also not show up in Revenue numbers. It is usually only those individuals who have an alternative income source (for example rental income or occupational pensions) that will incur a tax liability on benefits received. These issues mean that the numbers in the low-income band as recorded by Revenue will differ from the actual number of low-income individuals in the population, therefore an appropriate, comparable control total does not exist for this income group. This has implications for the simulation of some means-tested benefits, as discussed later in this section.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "We also compare how the original SILC data and SWITCH model compares to administrative data on benefit receipt, all for the year 2019. In the reweighting procedure we control for benefit recipients in the input data (i.e., based on the benefit receipt data provided by the DSP in the SILC data) so we provide a comparison of both the input data and the simulated output data to administrative information on benefit receipt.<a href=\"#fn27\"><sup>27</sup></a> This is an additional validation of the policy simulation in the model as, if the benefit recipient numbers in the output data were radically different to the input data, it might suggest an error in the simulation of benefit entitlements in SWITCH. There can be valid reasons, however, why an individual is simulated as receiving a benefit or entitlement but does not report actually receiving it \u2013 for example they may be eligible but not take up their entitlement.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "We find that, in most schemes, the existing CSO Ireland weight already performs rather well in terms of benefit recipient numbers (<a href=\"#table5\">Table 5</a>, column (2)). Excluding Maternity Benefit, the original SILC weight captures 90% - 122% of the administrative numbers reported on each scheme (column (1)).<a href=\"#fn28\"><sup>28</sup></a> Regarding Maternity Benefit, some recipients do not receive the payment directly but opt to have it paid directly to their employer, who may top them up to their full pay. These individuals will not be captured in the DSP data linked to SILC. The numbers receiving Jobseeker\u2019s Allowance and Jobseeker\u2019s Benefit appear high in the SILC data using the original 2019 weight when compared to administrative numbers, reflecting the higher number of unemployed people in the SILC data when using the original 2019 weight. Recipient numbers simulated by SWITCH using the original 2019 weight (column (3)) are close to the numbers shown in the SILC (input) data which reassures us that the simulation processes in the model are accurately modelling benefit entitlements.",
+                    "type": "paragraph"
+                },
+                {
+                    "assets": [
+                        {
+                            "footnotes": [
+                                {
+                                    "id": "T5_FN1",
+                                    "label": "*",
+                                    "text": [
+                                        {
+                                            "text": "Source 2019 SISWS file: <a href=\"https://www.gov.ie/en/publication/02f594-annual-sws-statistical-information-report/\">https://www.gov.ie/en/publication/02f594-annual-sws-statistical-information-report/</a>",
+                                            "type": "paragraph"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "id": "T5_FN2",
+                                    "label": "\u2020",
+                                    "text": [
+                                        {
+                                            "text": "Source: EUROMOD Country Report Ireland 2018-2021, Table 4.7. Recipient numbers are rounded to the nearest thousand.",
+                                            "type": "paragraph"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "id": "T5_FN3",
+                                    "label": "\u2021",
+                                    "text": [
+                                        {
+                                            "text": "SISWS 2019 figures adjusted to exclude recipients living outside the state and those living in long-term residential care.",
+                                            "type": "paragraph"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "id": "T5_FN4",
+                                    "label": "\u00a7",
+                                    "text": [
+                                        {
+                                            "text": "Statistics are disclosed due to small sample sizes to ensure adherence to CSO Statistical Disclosure Control rules.",
+                                            "type": "paragraph"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "id": "T5_FN5",
+                                    "label": "\u00b6",
+                                    "text": [
+                                        {
+                                            "text": "Lower statistical reliability due to a small number of unweighted observations.",
+                                            "type": "paragraph"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "id": "T5_FN6",
+                                    "label": "**",
+                                    "text": [
+                                        {
+                                            "text": "Child benefit is reported at a child level in the SILC data but at a recipient (i.e. parental) level in SWITCH and in administrative data, so the SILC input observations are excluded due to non-comparability.",
+                                            "type": "paragraph"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "id": "table5",
+                            "label": "Table 5",
+                            "tables": [
+                                "<table><thead><tr><th align=\"left\"/><th align=\"left\"/><th align=\"left\">(1)</th><th align=\"left\" colspan=\"2\">(2)</th><th align=\"left\" colspan=\"2\">(3)</th><th align=\"left\" colspan=\"2\">(4)</th><th align=\"left\" colspan=\"2\">(5)</th><th align=\"left\" colspan=\"2\">(6)</th></tr><tr><th align=\"left\">Scheme type</th><th align=\"left\">Scheme Name</th><th align=\"left\">2019 Admin*</th><th align=\"left\" colspan=\"2\">EUROMOD 2019\u2020</th><th align=\"left\" colspan=\"2\">SWITCH revised 2019 weight (output data)</th><th align=\"left\" colspan=\"2\">SWITCH revised 2019 weight (input data)</th><th align=\"left\" colspan=\"2\">SILC 2019 weight (output data)</th><th align=\"left\" colspan=\"2\">SILC 2019 weight (input data)</th></tr><tr><th align=\"left\"/><th align=\"left\"/><th align=\"left\"/><th align=\"left\">N</th><th align=\"left\">Ratio to 2019 Admin</th><th align=\"left\">N</th><th align=\"left\">Ratio to 2019 Admin</th><th align=\"left\">N</th><th align=\"left\">Ratio to 2019 Admin</th><th align=\"left\">N</th><th align=\"left\">Ratio to 2019 Admin</th><th align=\"left\">N</th><th align=\"left\">Ratio 2019 to Admin</th></tr></thead><tbody><tr><td align=\"left\" rowspan=\"4\"><b><i>Pensions</i></b></td><td align=\"left\">State Pension (Contributory)\u2021</td><td align=\"left\">367,133</td><td align=\"left\">358,098</td><td align=\"left\">98%</td><td align=\"left\">356,998</td><td align=\"left\">97%</td><td align=\"left\">367,133</td><td align=\"left\">100%</td><td align=\"left\">365,237</td><td align=\"left\">99%</td><td align=\"left\">634,000</td><td align=\"left\">173%</td></tr><tr><td align=\"left\">State Pension (Non-Contributory)</td><td align=\"left\">94,854</td><td align=\"left\">89,117</td><td align=\"left\">94%</td><td align=\"left\">86,122</td><td align=\"left\">91%</td><td align=\"left\">94,954</td><td align=\"left\">100%</td><td align=\"left\">84,846</td><td align=\"left\">89%</td><td align=\"left\">71,000</td><td align=\"left\">75%</td></tr><tr><td align=\"left\">Widow\u2019s Pension (Contributory)\u2021</td><td align=\"left\">115,152</td><td align=\"left\">128,898</td><td align=\"left\">112%</td><td align=\"left\">128,898</td><td align=\"left\">112%</td><td align=\"left\">115,152</td><td align=\"left\">100%</td><td align=\"left\">115,152</td><td align=\"left\">100%</td><td align=\"left\">31,000</td><td align=\"left\">27%</td></tr><tr><td align=\"left\">Widow\u2019s Pension (Non-Contributory)\u2021</td><td align=\"left\">1,373</td><td align=\"left\">\u00a7</td><td align=\"left\">\u00a7</td><td align=\"left\">\u00a7</td><td align=\"left\">\u00a7</td><td align=\"left\">\u00a7</td><td align=\"left\">\u00a7</td><td align=\"left\">\u00a7</td><td align=\"left\">\u00a7</td><td align=\"left\">9,000</td><td align=\"left\">655%</td></tr><tr><td align=\"left\" rowspan=\"5\"><b><i>Working age income support</i></b></td><td align=\"left\">Supplementary Welfare Allowance</td><td align=\"left\">15,770</td><td align=\"left\">16,302\u00b6</td><td align=\"left\">103%</td><td align=\"left\">\u00a7</td><td align=\"left\">\u00a7</td><td align=\"left\">15,770\u00b6</td><td align=\"left\">100%</td><td align=\"left\">\u00a7</td><td align=\"left\">\u00a7</td><td align=\"left\">0</td><td align=\"left\">0%</td></tr><tr><td align=\"left\">Jobseeker\u2019s Allowance</td><td align=\"left\">123,633</td><td align=\"left\">164,390</td><td align=\"left\">133%</td><td align=\"left\">148,097</td><td align=\"left\">120%</td><td align=\"left\">123,633</td><td align=\"left\">100%</td><td align=\"left\">85,139</td><td align=\"left\">68%</td><td align=\"left\">231,000</td><td align=\"left\">187%</td></tr><tr><td align=\"left\">Jobseeker\u2019s Benefit</td><td align=\"left\">34,141</td><td align=\"left\">41,523</td><td align=\"left\">122%</td><td align=\"left\">41,523</td><td align=\"left\">122%</td><td align=\"left\">34,141</td><td align=\"left\">100%</td><td align=\"left\">34,141</td><td align=\"left\">100%</td><td align=\"left\">112,000</td><td align=\"left\">328%</td></tr><tr><td align=\"left\">One Parent Family Payment</td><td align=\"left\">39,533</td><td align=\"left\">37,405</td><td align=\"left\">95%</td><td align=\"left\">42,389</td><td align=\"left\">107%</td><td align=\"left\">39,533</td><td align=\"left\">100%</td><td align=\"left\">46,006</td><td align=\"left\">116%</td><td align=\"left\">107,000</td><td align=\"left\">271%</td></tr><tr><td align=\"left\">Maternity Benefit</td><td align=\"left\">21,279</td><td align=\"left\">18,184 \u00b6</td><td align=\"left\">85%</td><td align=\"left\">37,681</td><td align=\"left\">177%</td><td align=\"left\">20,209 \u00b6</td><td align=\"left\">95%</td><td align=\"left\">37,964</td><td align=\"left\">178%</td><td align=\"left\">16,000</td><td align=\"left\">75%</td></tr><tr><td align=\"left\" rowspan=\"5\"><b><i>Illness, Disability &amp; Caring</i></b></td><td align=\"left\">Carer\u2019s Allowance</td><td align=\"left\">84,028</td><td align=\"left\">98,877</td><td align=\"left\">118%</td><td align=\"left\">97,998</td><td align=\"left\">117%</td><td align=\"left\">87,559</td><td align=\"left\">104%</td><td align=\"left\">85,148</td><td align=\"left\">101%</td><td align=\"left\">n/a</td><td align=\"left\">n/a</td></tr><tr><td align=\"left\">Illness Benefit</td><td align=\"left\">49,313</td><td align=\"left\">48,142</td><td align=\"left\">98%</td><td align=\"left\">46,958</td><td align=\"left\">95%</td><td align=\"left\">49,313</td><td align=\"left\">100%</td><td align=\"left\">47,811</td><td align=\"left\">97%</td><td align=\"left\">4,000</td><td align=\"left\">8%</td></tr><tr><td align=\"left\">Invalidity Pension</td><td align=\"left\">58,168</td><td align=\"left\">53,025</td><td align=\"left\">91%</td><td align=\"left\">53,025</td><td align=\"left\">91%</td><td align=\"left\">58,168</td><td align=\"left\">100%</td><td align=\"left\">58,168</td><td align=\"left\">100%</td><td align=\"left\">197,000</td><td align=\"left\">339%</td></tr><tr><td align=\"left\">Disability Allowance</td><td align=\"left\">146,755</td><td align=\"left\">178,104</td><td align=\"left\">121%</td><td align=\"left\">166,664</td><td align=\"left\">114%</td><td align=\"left\">146,755</td><td align=\"left\">100%</td><td align=\"left\">136,431</td><td align=\"left\">93%</td><td align=\"left\">157,000</td><td align=\"left\">107%</td></tr><tr><td align=\"left\">Injury Benefit</td><td align=\"left\">1,314</td><td align=\"left\">\u00a7</td><td align=\"left\">\u00a7</td><td align=\"left\">\u00a7</td><td align=\"left\">\u00a7</td><td align=\"left\">\u00a7</td><td align=\"left\">\u00a7</td><td align=\"left\">\u00a7</td><td align=\"left\">\u00a7</td><td align=\"left\">5,000</td><td align=\"left\">381%</td></tr><tr><td align=\"left\" rowspan=\"2\"><b><i>Child-related payments</i></b></td><td align=\"left\">Working Family Payment</td><td align=\"left\">53,104</td><td align=\"left\">47,564</td><td align=\"left\">90%</td><td align=\"left\">54,243</td><td align=\"left\">102%</td><td align=\"left\">53,104</td><td align=\"left\">100%</td><td align=\"left\">58,066</td><td align=\"left\">106%</td><td align=\"left\">15,000</td><td align=\"left\">28%</td></tr><tr><td align=\"left\">Child Benefit</td><td align=\"left\">637,007</td><td align=\"left\"><a href=\"#T5_FN6\">**</a></td><td align=\"left\"/><td align=\"left\">695,878</td><td align=\"left\">109%</td><td align=\"left\"><a href=\"#T5_FN6\">**</a></td><td align=\"left\"/><td align=\"left\">675,319</td><td align=\"left\">106%</td><td align=\"left\">688,000</td><td align=\"left\">108%</td></tr></tbody></table>"
+                            ],
+                            "title": "Benefit Recipient Numbers Comparison, 2019",
+                            "type": "table"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "text": "To examine the impact of the reweighting process, we compare the benefit recipient numbers simulated by SWITCH with the original and the revised weights to the official statistics. By design, as the reweighting method ensures that the administrative numbers used as targets/control totals are met exactly, our reweighting process results in the weighted number of recipients in the input data (column (4)) matching the administrative numbers. Examining the ratios to administrative statistics using the SWITCH output data (column (5)) again provides strong reassurance that the model is simulating benefit entitlements correctly as the ratio of recipients in the output data using the revised weight remain close to 100% for most schemes. Simulated Maternity Benefit numbers are higher than those actually reported in the input data and may reflect the fact that some people opt to have the benefit paid directly to their employer, therefore SWITCH simulates higher numbers of eligible individuals. Simulated Working Family Payment (WFP) recipient numbers are 15% higher than administrative estimates. SWITCH incorporates a take-up adjustment for WFP based on an estimated take-up rate of 33% (see <a href=\"#bib7\">Callan and Keane, 2008</a>). The gap suggests that take-up may have changed since these estimates. Simulated numbers on Supplementary Welfare Allowance (SWA) are too low to report but this reflects the fact that some SWA recipients are individuals with little or no income who are awaiting the processing of a claim for a different social welfare benefit and may receive SWA as an emergency measure in the meantime. The SWITCH model assumes people receive benefits as soon as they are entitled to them, therefore processing delays are likely to explain this gap.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Remaining gaps tend to be small and more frequent in means tested (non-contributory) benefits such as the State Pension (non-contributory), Jobseeker\u2019s Allowance and Disability Allowance. This may reflect improvements in some recipient\u2019s financial situation as the SWITCH model assesses the person based on their current income/means \u2013 some recipients may have qualified for one of these payments at the point of application but may have experienced an improvement in their financial circumstances so that they are no longer eligible for the payment based on their current income levels. Alternatively, in the case of Jobseekers\u2019 Allowance, for example, SWITCH may simulate the person in receipt as eligible for a different payment, such as the One-Parent Family payment (if they appear from the data to be a lone parent) or the Working Families payment (if they are only part-time unemployed).<a href=\"#fn29\"><sup>29</sup></a> Lastly, as the administrative figures we use in the reweighting process do not contain those who pay no tax, we do not reweight the lowest band of the income distribution (\u20ac0-10,000). This is likely to result in an underestimation of the number of tax-units in this income band as SILC estimates a lower population of tax units in general. This has repercussions for the simulation of means-tested benefits in general, with estimates of such benefits likely to come in below administrative figures for receipt and amount.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Finally, we also compare benefit recipient numbers as simulated by the Irish component of EUROMOD to administrative statistics. Much larger discrepancies are found here \u2013 in fact only two schemes fall within 10% of administrative numbers. While the reweighting process used in SWITCH explains part of these discrepancies, the differences are much larger than when using SWITCH estimates and the original CSO Ireland weight. Therefore, these differences are also driven by input data and modelling issues. The use of the more detailed RMF data in the SWITCH model, as opposed to the UDB data in EUROMOD, results in significantly more precise eligibility simulation in SWITCH compared to EUROMOD. For example, the aggregation of benefits in the UDB makes it more difficult to identify precisely eligibility for benefits that use receipt in the input data to identify eligibility (i.e. part-simulated benefits). In addition, the UDB records the total amount received in benefits in the last year but not whether the benefit is currently being received. The DSP register data indicating current receipt of benefits (at a dis-aggregated level) present in the RMF thus allows SWITCH to identify exactly what benefit a person is currently receiving. The resulting part-simulated benefit recipient numbers are significantly more precise. The focus on current incomes in SWITCH, as opposed to annual incomes in EUROMOD, will also play a role in better identifying current entitlements to means-tested benefits.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "In addition to examining benefit recipient numbers, we also compare how the SWITCH model performs in terms of annual benefits\u2019 expenditure using the original and revised weight (<a href=\"#table6\">Table 6</a>). Doing so helps to highlight potential modelling errors, for example incorrect benefit payment rates in the model. It also allows us to examine if the model is representative not just of the total number of recipients of each benefit but also the distribution of people within benefits \u2013 for example if the model simulates a similar number of actual benefit recipient numbers but vastly over or underestimates the expenditure on a scheme it may suggest that the model simulates too many higher/lower rate recipients of, say, a means tested benefit. It is worth bearing in mind, however, that administrative statistics on the expenditure per scheme and SWITCH estimates may not be fully comparable due to a \u2018stock\u2019 versus \u2018flow\u2019 issue \u2013 the administrative recipient numbers show the \u2018stock\u2019 of recipients at a point in time (as at 31<sup>st</sup> of December 2019) rather than the total number of people (or \u2018flow\u2019) who received the benefit during the year. SWITCH numbers also show the \u2018stock\u2019 of people eligible for a benefit at the point of interview.<a href=\"#fn30\"><sup>30</sup></a> While this may not match exactly the people eligible as at December 31st it is significantly more comparable than comparing to the flow of all recipients throughout the year, particularly for benefits that have shorter term receipt, such as Jobseeker\u2019s or Maternity Benefit. Expenditure numbers, however, capture all expenditure on a benefit over the entire year while the SWITCH expenditure estimate is generally calculated by annualising (i.e. multiplying by 52) the weekly amount received by those unemployed and in receipt of one of these payments at the point of interview.<a href=\"#fn31\"><sup>31</sup></a> Therefore, we would expect more divergence between SWITCH and administrative values for benefits that are received for a shorter period of time or that experience large month to month changes in recipient numbers.",
+                    "type": "paragraph"
+                },
+                {
+                    "assets": [
+                        {
+                            "footnotes": [
+                                {
+                                    "id": "T6_FN1",
+                                    "label": "*",
+                                    "text": [
+                                        {
+                                            "text": "Source 2019 SISWS file: <a href=\"https://www.gov.ie/en/publication/02f594-annual-sws-statistical-information-report/\">https://www.gov.ie/en/publication/02f594-annual-sws-statistical-information-report/</a>",
+                                            "type": "paragraph"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "id": "T6_FN2",
+                                    "label": "\u2020",
+                                    "text": [
+                                        {
+                                            "text": "source: EUROMOD Country Report Ireland 2018-2021, Table 4.8.",
+                                            "type": "paragraph"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "id": "T6_FN3",
+                                    "label": "\u2021",
+                                    "text": [
+                                        {
+                                            "text": "SISWS 2019 figures adjusted to exclude recipients living outside the state and those living in long-term residential care",
+                                            "type": "paragraph"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "id": "T6_FN4",
+                                    "label": "\u00a7",
+                                    "text": [
+                                        {
+                                            "text": "Statistics are disclosed due to Secondary Disclosure Controls.",
+                                            "type": "paragraph"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "id": "table6",
+                            "label": "Table 6",
+                            "tables": [
+                                "<table><thead><tr><th align=\"left\"/><th align=\"left\"/><th align=\"left\">(1)</th><th align=\"left\" colspan=\"2\">(2)</th><th align=\"left\" colspan=\"2\">(3)</th><th align=\"left\" colspan=\"2\">(4)</th></tr><tr><th align=\"left\">Scheme type</th><th align=\"left\">Scheme Name</th><th align=\"left\">2019 Admin Numbers<a href=\"#T6_FN1\">*</a></th><th align=\"left\" colspan=\"2\">SILC 2019 weight (output data)</th><th align=\"left\" colspan=\"2\">SWITCH revised 2019 weight (output data)</th><th align=\"left\" colspan=\"2\">EUROMOD 2019<a href=\"#T6_FN2\">\u2020</a></th></tr><tr><th align=\"left\"/><th align=\"left\"/><th align=\"left\"/><th align=\"left\">Expenditure</th><th align=\"left\">Ratio to 2019 Admin</th><th align=\"left\">Expenditure</th><th align=\"left\">Ratio to 2019 Admin</th><th align=\"left\">Expenditure</th><th align=\"left\">Ratio to 2019 Admin</th></tr></thead><tbody><tr><td align=\"left\" rowspan=\"4\"><b><i>Pensions</i></b></td><td align=\"left\">State Pension (Contributory)\u2021</td><td align=\"left\">5,603</td><td align=\"left\">4,959</td><td align=\"left\">89%</td><td align=\"left\">5,052</td><td align=\"left\">90%</td><td align=\"left\">9,137</td><td align=\"left\">163%</td></tr><tr><td align=\"left\">State Pension (Non-Contributory)</td><td align=\"left\">1,043</td><td align=\"left\">1,021</td><td align=\"left\">98%</td><td align=\"left\">994</td><td align=\"left\">95%</td><td align=\"left\">894</td><td align=\"left\">86%</td></tr><tr><td align=\"left\">Widow\u2019s Pension (Contributory)\u2021</td><td align=\"left\">1559</td><td align=\"left\">1,685</td><td align=\"left\">108%</td><td align=\"left\">1,489</td><td align=\"left\">96%</td><td align=\"left\">356</td><td align=\"left\">23%</td></tr><tr><td align=\"left\">Widow\u2019s Pension (Non-Contributory) \u2021</td><td align=\"left\">14</td><td align=\"left\">\u00a7</td><td align=\"left\">\u00a7</td><td align=\"left\">\u00a7</td><td align=\"left\">\u00a7</td><td align=\"left\">72</td><td align=\"left\">516%</td></tr><tr><td align=\"left\" rowspan=\"5\"><b><i>Working age income support</i></b></td><td align=\"left\">Supplementary Welfare Allowance</td><td align=\"left\">120</td><td align=\"left\">\u00a7</td><td align=\"left\">\u00a7</td><td align=\"left\">\u00a7</td><td align=\"left\">\u00a7</td><td align=\"left\">1</td><td align=\"left\">1%</td></tr><tr><td align=\"left\">Jobseeker\u2019s Allowance</td><td align=\"left\">1,629</td><td align=\"left\">1,643</td><td align=\"left\">101%</td><td align=\"left\">931</td><td align=\"left\">57%</td><td align=\"left\">1,501</td><td align=\"left\">92%</td></tr><tr><td align=\"left\">Jobseeker\u2019s Benefit</td><td align=\"left\">348</td><td align=\"left\">351</td><td align=\"left\">101%</td><td align=\"left\">280</td><td align=\"left\">80%</td><td align=\"left\">400</td><td align=\"left\">115%</td></tr><tr><td align=\"left\">One Parent Family Payment</td><td align=\"left\">533</td><td align=\"left\">497</td><td align=\"left\">93%</td><td align=\"left\">485</td><td align=\"left\">91%</td><td align=\"left\">1,329</td><td align=\"left\">249%</td></tr><tr><td align=\"left\">Maternity Benefit</td><td align=\"left\">267</td><td align=\"left\">174</td><td align=\"left\">65%</td><td align=\"left\">163</td><td align=\"left\">61%</td><td align=\"left\">113</td><td align=\"left\">42%</td></tr><tr><td align=\"left\" rowspan=\"5\"><b><i>Illness, Disability &amp; Caring</i></b></td><td align=\"left\">Carer\u2019s Allowance</td><td align=\"left\">863</td><td align=\"left\">1,032</td><td align=\"left\">120%</td><td align=\"left\">900</td><td align=\"left\">104%</td><td align=\"left\">n/a</td><td align=\"left\">n/a</td></tr><tr><td align=\"left\">Illness Benefit</td><td align=\"left\">607</td><td align=\"left\">575</td><td align=\"left\">95%</td><td align=\"left\">561</td><td align=\"left\">92%</td><td align=\"left\">27</td><td align=\"left\">4%</td></tr><tr><td align=\"left\">Invalidity Pension</td><td align=\"left\">728</td><td align=\"left\">692</td><td align=\"left\">95%</td><td align=\"left\">773</td><td align=\"left\">106%</td><td align=\"left\">2,540</td><td align=\"left\">349%</td></tr><tr><td align=\"left\">Disability Allowance</td><td align=\"left\">1,706</td><td align=\"left\">1,957</td><td align=\"left\">115%</td><td align=\"left\">1,530</td><td align=\"left\">90%</td><td align=\"left\">1,799</td><td align=\"left\">105%</td></tr><tr><td align=\"left\">Injury Benefit</td><td align=\"left\">14</td><td align=\"left\">\u00a7</td><td align=\"left\">\u00a7</td><td align=\"left\">\u00a7</td><td align=\"left\">\u00a7</td><td align=\"left\">41</td><td align=\"left\">301%</td></tr><tr><td align=\"left\" rowspan=\"2\"><b><i>Child-related payments</i></b></td><td align=\"left\">Working Family Payment</td><td align=\"left\">397</td><td align=\"left\">260</td><td align=\"left\">66%</td><td align=\"left\">232</td><td align=\"left\">58%</td><td align=\"left\">80</td><td align=\"left\">20%</td></tr><tr><td align=\"left\">Child Benefit</td><td align=\"left\">2,103</td><td align=\"left\">2,067</td><td align=\"left\">98%</td><td align=\"left\">1,992</td><td align=\"left\">95%</td><td align=\"left\">2,034</td><td align=\"left\">97%</td></tr><tr><td align=\"left\"/><td align=\"left\"/><td align=\"left\"/><td align=\"left\"/><td align=\"left\"/><td align=\"left\"/><td align=\"left\"/><td align=\"left\"/><td align=\"left\"/></tr></tbody></table>"
+                            ],
+                            "title": "Benefit Expenditure Comparison, 2019 (\u20ac, thousands)",
+                            "type": "table"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "text": "Examining the estimated expenditure of the benefits as simulated by SWITCH when applying the revised weights (column (3)), we see that the total expenditure estimated by SWITCH using the revised weight compares favourably to administrative statistics (column (1)) for the most part - capturing between 90% to -106% of the administrative numbers on all but four schemes. The costs for Jobseeker\u2019s Allowance, Jobseeker\u2019s Benefit, Maternity Benefit and Working Family Payment are underestimated (capturing 57% to 80% of their administrative cost) \u2013 in fact the expenditure numbers using the original weight (column (2)) for these four schemes are actually closer to the administrative total. Despite this, it is still more likely the case that the SWITCH estimates using the revised weight are more accurate in capturing total expenditure at a point in time, given the fact that simulated recipient numbers on these four schemes compare well to administrative statistics, as shown in <a href=\"#table5\">Table 5</a>. Instead, seasonal variations in unemployment and the stock/flow issue described above help explain the discrepancies between SWITCH and administrative expenditure numbers on Jobseekers Allowance and Benefit as receipt of these benefits tends to be short-term so that considerable turnover on these schemes will occur. Maternity Benefit is only payable for 26 weeks; therefore it is not surprising that the administrative figure (capturing total expenditure on the scheme for all recipients during the year) is double that of SWITCH (which is calculated by multiplying the weekly simulated entitlement of those eligible for Maternity Benefit at the point of interview by the 26 week entitlement).",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Finally, we look at how non-cash benefit recipients (Medical Card and GP-Visit cardholders as well as beneficiaries of ECCE and NCS) are captured in SWITCH with the original and the revised weights compared to administrative data. These schemes do not compare as well to administrative numbers as cash benefits, using either the original CSO Ireland weights or the revised weight as shown in <a href=\"#table7\">Table 7</a> \u2013 in fact the comparison to administrative numbers worsens once the revised weights are used. Possible reasons for these discrepancies are discussed below.",
+                    "type": "paragraph"
+                },
+                {
+                    "assets": [
+                        {
+                            "footnotes": [
+                                {
+                                    "id": "T7_FN1",
+                                    "label": "*",
+                                    "text": [
+                                        {
+                                            "text": "source: <a href=\"https://www.hse.ie/eng/staff/pcrs/pcrs-publications/annual-report-2019.pdf\">https://www.hse.ie/eng/staff/pcrs/pcrs-publications/annual-report-2019.pdf</a> p.16-17.",
+                                            "type": "paragraph"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "id": "T7_FN2",
+                                    "label": "\u2020",
+                                    "text": [
+                                        {
+                                            "text": "source: data for 2017 from DCEDIY.",
+                                            "type": "paragraph"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "id": "T7_FN3",
+                                    "label": "\u2021",
+                                    "text": [
+                                        {
+                                            "text": "source: administrative numbers for the monthly average participants between 2019-2020 from DCEDIY.",
+                                            "type": "paragraph"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "id": "table7",
+                            "label": "Table 7",
+                            "tables": [
+                                "<table><thead><tr><th align=\"left\">Non-cash Benefit</th><th align=\"left\">2019 Admin Numbers</th><th align=\"left\" colspan=\"2\">SILC 2019 weight (output data)</th><th align=\"left\" colspan=\"2\">SWITCH revised 2019 weight (output data)</th></tr><tr><th align=\"left\"/><th align=\"left\"/><th align=\"left\">N</th><th align=\"left\">Ratio to 2019 Admin</th><th align=\"left\">N</th><th align=\"left\">Ratio to 2019 Admin</th></tr></thead><tbody><tr><td align=\"left\">Medical Card</td><td align=\"left\">1,544,374<a href=\"#T7_FN1\">*</a></td><td align=\"left\">1,389,272</td><td align=\"left\">90%</td><td align=\"left\">1,004,881</td><td align=\"left\">65%</td></tr><tr><td align=\"left\">GP Visit Card</td><td align=\"left\">524,494<a href=\"#T7_FN1\">*</a></td><td align=\"left\">573,932</td><td align=\"left\">109%</td><td align=\"left\">659,999</td><td align=\"left\">126%</td></tr><tr><td align=\"left\">Early Childhood Care &amp; Education Scheme</td><td align=\"left\">118,896<a href=\"#T7_FN2\">\u2020</a></td><td align=\"left\">71,656</td><td align=\"left\">60%</td><td align=\"left\">75,635</td><td align=\"left\">64%</td></tr><tr><td align=\"left\">National Childcare Scheme</td><td align=\"left\">62,686<a href=\"#T7_FN3\">\u2021</a></td><td align=\"left\">154,926</td><td align=\"left\">247%</td><td align=\"left\">5,441</td><td align=\"left\">264%</td></tr></tbody></table>"
+                            ],
+                            "title": "Non-Cash Benefits Comparison",
+                            "type": "table"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "text": "Regarding Medical and GP-Visit Cards there is evidence of substantial non-take-up of these cards, particularly for the latter, with <a href=\"#bib28\">Keane et al. (2021)</a> estimating a non-take-up rate of Medical Cards of 31% and 90% for means-tested GP-Visit cards (<a href=\"#bib27\">Keane, 2018</a>). Take-up of public healthcare entitlements amongst the eligible population is seldom universal in countries without universal healthcare coverage such as Ireland and the U.S. (<a href=\"#bib2\">Baicker et al., 2013</a>). This issue can help explain why SWITCH estimates may differ substantially from administrative figures as the numbers shown are based on the numbers eligible (therefore assumed to be availing of the entitlement). The SWITCH model does have the option to specify a take-up rate for these cards and therefore model random non-take-up. Non-take-up helps explain why SWITCH overestimates entitlement to GP-Visit Cards.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The SWITCH estimate for Medical Cards is, however, lower than administrative figures. A number of reasons can help explain this. Some individuals hold a card who are not currently eligible based on their means. These can be categorised into three distinct groups. First, discretionary cards (i.e. cards awarded to those above the income limit) account for around 10% of administrative numbers (see <a href=\"#bib34\">Prior et al. (2019)</a>) and these cannot be modelled by SWITCH as there is no identifiable criteria for a card on this basis.<a href=\"#fn32\"><sup>32</sup></a> Second, card holders can retain their card for three years after returning to employment after a spell of long-term unemployment. SWITCH cannot model retained cards as longitudinal information on benefit receipt is not available in the SILC data. There is no administrative information relating to how many retained cards there are in the total figure. Third, cards are issued on a three-year basis \u2013 the obligation is on cardholders to report if their means have increased since the initial granting of the card but some may not do so and still hold the card despite an increase in income. Simulation of means for the purposes of the cards may also not be exact in the SWITCH model \u2013 while the underlying data in the model contains the vast majority of information needed to calculate an individual\u2019s means for Medical and GP-Visit card purposes it does not contain information on travel to work costs which are allowed against income in the means calculation. Therefore, the model may overestimate means, and therefore underestimate the numbers entitled to the card. Robustness checks carried out which included in the model average travel to work costs for individuals did not, however, significantly impact the numbers modelled as eligible for the cards (see <a href=\"#bib28\">Keane et al., 2021</a>).",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "ECCE beneficiaries are underrepresented with both weights, accounting for 60% and 64% of the administrative data when the original CSO Ireland and the revised weights are respectively applied whereas the beneficiaries of NCS are overrepresented - accounting for 247% and 264% of the administrative data beneficiaries respectively. ECCE eligibility is based on age (children must be between 2 years 8 months and 5 years, 6 months old and not in primary school) and the input data (applying the revised weight) compares favourably to administrative population statistics overall matching nearly exactly the total number of 2-5 year olds in the population. However, simulation of ECCE entitlement is also linked to reported childcare use with the subsidy only awarded to those who signal that their child in in a childcare setting for at least 15 hours a week (the pre-school entitlement). This reporting of childcare usage may be somewhat inaccurate as it is framed as \u201cusual hours\u201d per week of childcare. The ECCE scheme is only provided for 38 weeks of the year with a break over the summer months. Parents interviewed during the summer months may, therefore, report zero hours (and therefore the model will not simulate them as availing of the ECCE scheme) even if their child attends pre-school during the academic year.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Regarding the NCS scheme, a number of reasons may account for the difference in the number of beneficiaries. Firstly, the NCS was only introduced in 2019, with a number of legacy schemes operating in parallel for the first year. Entitlement to these legacy schemes is complicated and not possible to simulate as the SILC data does not contain all the eligibility information needed, therefore it is not possible to identify how many people may be eligible for the NCS but remain under the old legacy scheme. The available administrative data for the first year of the scheme rollout may, therefore, not be capturing fully the number of NCS beneficiaries as people take time to transition to the new scheme. Possible take-up issues might also arise from the fact that this was the first year that the scheme was operational and thus people eligible may not have been aware of its existence or that they were eligible for a subsidy. Another possible reason could be the way that participation in the scheme is captured in SWITCH. Administrative data captures the average number of beneficiaries throughout the year, accounting for potential lower participation in the scheme during summer. In SWITCH, we assume that the weekly hours of participation (based on the reported \u2018usual\u2019 weekly hours used of formal childcare at the date of interview) are the same throughout the year, which is likely to overestimate average participation.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "While larger discrepancies occur between the non-cash benefits modelled in SWITCH compared to administrative statistics it is important to bear in mind the more limited impact of this than if large discrepancies occurred between SWITCH and administrative numbers on cash benefits. As these are non-cash benefits, no monetary value is generally placed on them, so these discrepancies have no impact on the estimated (cash) income of a household and therefore any model results estimating distributional impacts, poverty and inequality rates. The main advantage of simulating eligibility for these schemes is to allow policymakers and government users of the model to estimate the impact of changes to tax-benefit rules or to parameters of these schemes, such as the means test on the numbers eligible for them. It is also likely that comparisons to administrative numbers may improve over time \u2013 for example if the take-up rates of Medical or GP-Visit cards improves and as the NCS becomes more established.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s4",
+            "title": "4. Validation",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "The SWITCH model has been used by researchers and policy makers to simulate the effect of policy changes in Ireland for three decades. Recently, the model was updated by harmonising the modelling platform, modelling language and simulation engine with that of EUROMOD, the European Union\u2019s microsimulation model.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "While the model runs on the EUROMOD platform, SWITCH presents some advantages compared to the Irish component of EUROMOD. First, it is linked to more detailed register data which is reweighted to better represent the reference year population. This also allows the simulation of extra policies, such as non-cash benefits. Second, SWITCH is updated in a more timely manner than EUROMOD, in line with the Irish budgetary cycle. The more up to date nature of SWITCH is essential due to the fact that the model is provided to users across a variety of government departments and allows results from the model to feed into the annual Budget process, for example by allowing the analysis of the cost and distributional impact of tax-benefit changes to take place before the changes are actually implemented. The harmonisation of SWITCH with the European microsimulation model also presents an opportunity for researchers by facilitating cross-country research.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "This paper provides information on how the input data for the SWITCH model is prepared and verified. It also details why, and how, reweighting of the input data is carried out and how the data is adjusted to be representative of the current population through the use of uprating. A description of how the impact of the COVID pandemic labour market shock is implemented is also provided.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The model is extensively validated against external administrative sources. The reweighting process helps ensure that the underlying data in the model represents to a much greater extent the labour force, income distribution and cash benefit recipiency population which greatly improves the accuracy of the model and provides users with additional faith in results from the model. While discrepancies occur between model estimates of entitlements to in-kind benefits the fact that such benefits do not carry a monetary value means that such discrepancies have no impact on the main results of the model as they are based on cash incomes. Some comparability issues with administrative statistics for these non-cash benefits have also been highlighted and help explain why such discrepancies exist.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s5",
+            "title": "5. Conclusions",
+            "type": "section"
+        },
+        {
+            "id": "footnotes",
+            "title": "Footnotes",
+            "type": "section",
+            "content": [
+                {
+                    "content": [
+                        {
+                            "text": "Specifically, those in the Departments funding the ESRI\u2019s Tax, Welfare and Pensions Research Programme.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "fn1",
+                    "title": "1.",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "The EUROMOD 2019 input data for 10 countries (AT, BE, BG, CZ, ES, FR, HR, HU, MT, NL) is based on the EUROMOD SILC database (EMSD) generated by Eurostat. The extension to the remaining countries expected for the coming years. The EMSD includes all UDB (User Database) variables, as well as national SILC data supplied by National Statistical Institutes and EUROMOD variables created and imputed by Eurostat because of restricted data access or in-house knowledge. For more information on the EUROMOD model and project see <a href=\"https://euromod-web.jrc.ec.europa.eu/overview/what-is-euromod\">https://euromod-web.jrc.ec.europa.eu/overview/what-is-euromod</a> and <a href=\"#bib36\">Sutherland and Figari (2013)</a>.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "fn2",
+                    "title": "2.",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "See <a href=\"https://euromod-web.jrc.ec.europa.eu/overview/country-by-country/detail?id=11\">https://euromod-web.jrc.ec.europa.eu/overview/country-by-country/detail?id=11</a> for more detail.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "fn3",
+                    "title": "3.",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "See <a href=\"https://www.microsimulation.ac.uk/euromod/models/soresi/\">https://www.microsimulation.ac.uk/euromod/models/soresi/ and https://euromod-web.jrc.ec.europa.eu/euromod-jrc-interface</a>",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "fn4",
+                    "title": "4.",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "<a href=\"https://ec.europa.eu/jrc/sites/default/files/workshop_-_04_-_antoine_bozio_-_taxipp_2.0_microsimulation_based_on_french_administrative_data_-_ok.pdf\">https://ec.europa.eu/jrc/sites/default/files/workshop_-_04_-_antoine_bozio_-_taxipp_2.0_microsimulation_based_on_french_administrative_data_-_ok.pdf</a>",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "fn5",
+                    "title": "5.",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "The Revenue Commissioners, often referred to as \u2018Revenue\u2019 is the Irish Government agency responsible for customs, excise, and taxation.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "fn6",
+                    "title": "6.",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "Currently, 96 percent of employee income information comes from administrative data. The CSO revert to data collected from the questionnaire for cases that cannot be matched to administrative data.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "fn7",
+                    "title": "7.",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "This distinction is important as Jobseekers Benefit is not means tested, therefore the full rate of the payment will be received by the individual regardless of other income/their partners income while Jobseekers Assistance is means tested and therefore will be reduced, or not received at all, depending on other/partner\u2019s income.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "fn8",
+                    "title": "8.",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "E.g. a property value worth \u20ac100m or a pension receipt coded as 999,999,999. Values such as 99,999 or 999,999,999 are used by the CSO Ireland to indicate a missing value.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "fn9",
+                    "title": "9.",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "The majority of households provide an estimate for the value of their property which can then be used to identify property tax liability \u2013 for those without estimates the property can be valued in a number of ways \u2013 either by applying a premium to the insured value of the property (as insured values are generally lower as they exclude the land value) or using results from a hedonic regression run on those who do provide a property value \u2013 basically the characteristics of the property and its location allow us estimate a property value.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "fn10",
+                    "title": "10.",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "For instance, imputing current education involves combining information on age, hours of preschool attendance, and current education activity. If an individual is under 6 years old and has 0 hours of preschool attendance, we can categorise that individual as \u201cnot in education\u201d. Similarly, if a child is under 13 and is not yet in education nor in pre-school, they are categorised as a primary school student, or lower secondary if they are between 13 and 16. Individuals aged 18 or under whose current education activity is \u201cin education\u201d are categorised as upper secondary.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "fn11",
+                    "title": "11.",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "See <a href=\"https://data.cso.ie/\">LRW16 - Number of Persons on the Live Register, in receipt of the PUP and supported by the TWSS or EWSS (cso.ie)</a>",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "fn12",
+                    "title": "12.",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "See <a href=\"https://revenue.ie/en/corporate/information-about-revenue/statistics/number-of-taxpayers-and-returns/covid-19-support-schemes-statistics.aspx\">https://revenue.ie/en/corporate/information-about-revenue/statistics/number-of-taxpayers-and-returns/covid-19-support-schemes-statistics.aspx</a>",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "fn13",
+                    "title": "13.",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "The description of CSO\u2019s weighting process is a summary of the Background Notes Of CSO\u2019s <i>Survey on Income and Living Conditions (SILC) 2019</i> found at <a href=\"https://www.cso.ie/en/releasesandpublications/ep/p-silc/surveyonincomeandlivingconditionssilc2019/backgroundnotes/\">https://www.cso.ie/en/releasesandpublications/ep/p-silc/surveyonincomeandlivingconditionssilc2019/backgroundnotes/</a>.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "fn14",
+                    "title": "14.",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "No up-to-date administrative numbers of employed/unemployed persons are available for 2019 as the latest Census data covers 2016.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "fn15",
+                    "title": "15.",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "The LFS is carried out quarterly, we take the average employment/unemployment numbers for all four quarters of 2019 for use in the reweighting process.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "fn16",
+                    "title": "16.",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "The benefits for which we calibrated recipient numbers are: State Pension (Contributory and Non-Contributory), Widow\u2019s pensions (Contributory and Non-Contributory), Jobseeker\u2019s Benefit, Jobseeker\u2019s Allowance, Illness Benefit, Disability Allowance, One-Parent Family Payment, Working Families Payment and Supplementary Welfare Allowance. The weight is calculated based on receipt of these benefits in the underlying SILC data. Some are not controlled for as the original weight already did a good job at matching administrative information or as doing so results in the STATA reweighting process failing to converge (this was the case mainly for smaller schemes as very few unweighted observations existed in the survey data).",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "fn17",
+                    "title": "17.",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "The forecasted income distribution was created by applying the average annual change for years 2015 to 2018 to each income band to the 2018 income distribution.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "fn18",
+                    "title": "18.",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "As the last Census available is from 2016, \u2018projected Census\u2019 figures are provided by the CSO based on Census 2016 figures and incorporating assumptions around fertility, mortality, and migration. It is these projected figures (for 2019) that are used in our reweighting and validation process.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "fn19",
+                    "title": "19.",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "An additional STATA based model, developed jointly with the Department of Finance, based on the Household Budget Survey -ITsim- estimates the indirect taxes (VAT and excise duties, including carbon taxes) paid by Irish households on the basis of their reported expenditure, collected by the CSO\u2019s nationally representative Household Budget Survey (HBS). ITSIM has been used in conjunction with SWITCH in order to examine the distributional impacts of direct tax and welfare and indirect tax changes.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "fn20",
+                    "title": "20.",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "A small proportion of Medical Card recipients are granted a card on a discretionary basis i.e. their means are above the relevant limit but they have certain medical needs that would place \u2018undue hardship\u2019 on them financially in the absence of the card. As such cards are granted on a discretionary basis with no particular rule on how they are granted it is not possible to simulate entitlement to these cards.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "fn21",
+                    "title": "21.",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "Work is currently underway to incorporate the calculation of financial incentives to work in the model.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "fn22",
+                    "title": "22.",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "Income is equivalised in the model to take account of the fact that needs of a household or family grow as the household gets larger but economies of scale in consumption mean that they do not increase in a proportional fashion for example, housing or heating costs do not increase two or threefold as a household grows from 1 to 2 to 3 people. We use the CSO equivalence scale to calculate equivalised household size. The national scale attributes a weight of 1 to the first adult, 0.66 to each subsequent adult (aged 14+ living in the household), and 0.33 to each child aged less than 14.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "fn23",
+                    "title": "23.",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "ESRI researchers, who develop and maintain the SWITCH model, can generate additional outputs for model development purposes \u2013 for example to check the feasibility of such outputs. Additional outputs can then be added to the SWITCH results file (with the appropriate SDC rules put in place) for external users.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "fn24",
+                    "title": "24.",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "The RMFs do not contain any direct identifiers but a risk of disclosure may occur due to indirect information.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "fn25",
+                    "title": "25.",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "Married couples are generally counted as one tax unit.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "fn26",
+                    "title": "26.",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "For the simulation we use the benefit rules in place in 2019 to match the data year.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "fn27",
+                    "title": "27.",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "The numbers shown by SILC/SWITCH will not always be directly comparable to the information provided in the Social Welfare Statistical Report as the SILC/SWITCH figures provided will capture the (weighted) number of recipients at the point of interview while the administrative numbers tend to capture the recipient numbers as at 31/12/2019.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "fn28",
+                    "title": "28.",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "Jobseekers supports are available, not just to those fully unemployed, but also to those who are unemployed for 4 in 7 consecutive days. If, however, an individual works part-time but spread over four or more days, they are not entitled to part-time unemployment supports. We are unable to distinguish between these two states of unemployment using SILC data.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "fn29",
+                    "title": "29.",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "Interviews occur throughout the calendar year.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "fn30",
+                    "title": "30.",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "As Maternity benefit has a maximum duration of 26 weeks this benefit is annualised by multiplying the current amount an individual receives by 26 weeks.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "fn31",
+                    "title": "31.",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "Rather individuals must provide a letter from their GP outlining the medical need for a card and provide information on expenditures on health related items.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "fn32",
+                    "title": "32.",
+                    "type": "section"
+                }
+            ]
+        }
+    ],
+    "references": [
+        {
+            "articleTitle": "The impact of COVID-19 on households\u00b4 income in the EU",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Almeida, V",
+                        "preferred": "V Almeida"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Barrios, S",
+                        "preferred": "S Barrios"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Christl, M",
+                        "preferred": "M Christl"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "De Poli, S",
+                        "preferred": "S De Poli"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Tumino, A",
+                        "preferred": "A Tumino"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "van der Wielen, W",
+                        "preferred": "W van der Wielen"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2021",
+            "doi": "10.1007/s10888-021-09485-8",
+            "id": "bib1",
+            "journal": "Journal of Economic Inequality",
+            "pages": {
+                "first": "413",
+                "last": "431",
+                "range": "413\u2013431"
+            },
+            "pmid": 34093098,
+            "type": "journal",
+            "volume": "19"
+        },
+        {
+            "articleTitle": "The Oregon experiment--effects of Medicaid on clinical outcomes",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Baicker, K",
+                        "preferred": "K Baicker"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Taubman, SL",
+                        "preferred": "SL Taubman"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Allen, HL",
+                        "preferred": "HL Allen"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Bernstein, M",
+                        "preferred": "M Bernstein"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Gruber, JH",
+                        "preferred": "JH Gruber"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Newhouse, JP",
+                        "preferred": "JP Newhouse"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Schneider, EC",
+                        "preferred": "EC Schneider"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Wright, BJ",
+                        "preferred": "BJ Wright"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Zaslavsky, AM",
+                        "preferred": "AM Zaslavsky"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Finkelstein, AN",
+                        "preferred": "AN Finkelstein"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": "Oregon Health Study Group",
+                    "type": "group"
+                }
+            ],
+            "date": "2013",
+            "doi": "10.1056/NEJMsa1212321",
+            "id": "bib2",
+            "journal": "New England Journal of Medicine",
+            "pages": {
+                "first": "1713",
+                "last": "1722",
+                "range": "1713\u20131722"
+            },
+            "type": "journal",
+            "volume": "368"
+        },
+        {
+            "articleTitle": "Analysing the effects of tax-benefit reforms on income distribution: a decomposition approach",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Bargain, O",
+                        "preferred": "O Bargain"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Callan, T",
+                        "preferred": "T Callan"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2010",
+            "doi": "10.1007/s10888-008-9101-4",
+            "id": "bib38",
+            "journal": "The Journal of Economic Inequality",
+            "pages": {
+                "first": "1",
+                "last": "21",
+                "range": "1\u201321"
+            },
+            "type": "journal",
+            "volume": "8"
+        },
+        {
+            "articleTitle": "Changes in income distributions and the role of Tax-Benefit policy during the great recession: an international perspective",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Bargain, O",
+                        "preferred": "O Bargain"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Callan, T",
+                        "preferred": "T Callan"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Doorley, K",
+                        "preferred": "K Doorley"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Keane, C",
+                        "preferred": "C Keane"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2017",
+            "doi": "10.1111/1475-5890.12113",
+            "id": "bib3",
+            "journal": "Fiscal Studies",
+            "pages": {
+                "first": "559",
+                "last": "585",
+                "range": "559\u2013585"
+            },
+            "type": "journal",
+            "volume": "38"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Bargain, O",
+                        "preferred": "O Bargain"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Doorley, K",
+                        "preferred": "K Doorley"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2011",
+            "details": "307\u2013339, In-Work Transfers in Good Times and Bad: Simulations for Ireland, In:, Research in Labor Economics (Research in Labor Economics), Vol, 33, Emerald Group Publishing Limited, pp",
+            "id": "bib4",
+            "title": "Research in Labor Economics (Research in Labor Economics)",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Ben Jelloul, M",
+                        "preferred": "M Ben Jelloul"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Bozio, A",
+                        "preferred": "A Bozio"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Douenne, T",
+                        "preferred": "T Douenne"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Fabre, B",
+                        "preferred": "B Fabre"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Leroy, C",
+                        "preferred": "C Leroy"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2017",
+            "details": "1\u201352",
+            "id": "bib5",
+            "title": "Le mod\u00e8le de microsimulation TAXIPP \u2013 version 1.0, guide Methodologique IPP, Septemberr 2019",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Boyle, C",
+                        "preferred": "C Boyle"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2018",
+            "id": "bib6",
+            "title": "Spending review 2018: analysis of replacement rates",
+            "type": "web",
+            "uri": "https://igees.gov.ie/wp-content/uploads/2018/08/13.-An-Analysis-of-Replacement-Rates.pdf"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Callan, T",
+                        "preferred": "T Callan"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Coleman, K",
+                        "preferred": "K Coleman"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Walsh, J",
+                        "preferred": "J Walsh"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "Micro-Simulation in Action",
+            "date": "2006",
+            "id": "bib8",
+            "publisher": {
+                "name": [
+                    "Emerald Group Publishing Limited"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Callan, T",
+                        "preferred": "T Callan"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Keane, C",
+                        "preferred": "C Keane"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2008",
+            "id": "bib7",
+            "title": "Non-take-up of means-tested benefits: national report for Ireland",
+            "type": "web",
+            "uri": "http://www.iser.essex.ac.uk/files/msu/emod/aim-ap/deliverables/AIM-AP2.11.pdf"
+        },
+        {
+            "articleTitle": "Ireland\u2019s economic adjustment: from crisis to recovery",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Callan, T",
+                        "preferred": "T Callan"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Keane, C",
+                        "preferred": "C Keane"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Savage, M",
+                        "preferred": "M Savage"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Walsh, JR",
+                        "preferred": "JR Walsh"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Colgan, B",
+                        "preferred": "B Colgan"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2014",
+            "discriminator": "a",
+            "doi": "10.1007/s10272-014-0514-y",
+            "id": "bib10",
+            "journal": "Inter Economics",
+            "pages": {
+                "first": "300",
+                "last": "322",
+                "range": "300\u2013322"
+            },
+            "type": "journal",
+            "volume": "49"
+        },
+        {
+            "articleTitle": "Crisis, response and distributional impact: the case of Ireland",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Callan, T",
+                        "preferred": "T Callan"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Nolan, B",
+                        "preferred": "B Nolan"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Keane, C",
+                        "preferred": "C Keane"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Savage, M",
+                        "preferred": "M Savage"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Walsh, JR",
+                        "preferred": "JR Walsh"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2014",
+            "discriminator": "b",
+            "doi": "10.1186/2193-9012-3-9",
+            "id": "bib9",
+            "journal": "IZA Journal of European Labor Studies",
+            "pages": "9",
+            "type": "journal",
+            "volume": "3"
+        },
+        {
+            "articleTitle": "The impact of comparable policies in European countries: Microsimulation approaches",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Callan, T",
+                        "preferred": "T Callan"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Sutherland, H",
+                        "preferred": "H Sutherland"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1997",
+            "doi": "10.1016/S0014-2921(97)00006-8",
+            "id": "bib11",
+            "journal": "European Economic Review",
+            "pages": {
+                "first": "627",
+                "last": "633",
+                "range": "627\u2013633"
+            },
+            "type": "journal",
+            "volume": "41"
+        },
+        {
+            "authors": [
+                {
+                    "name": "CSO",
+                    "type": "group"
+                }
+            ],
+            "date": "2020",
+            "id": "bib12",
+            "title": "Standard report on methods and quality for the 2019 survey on income and living conditions (EU-SILC)",
+            "type": "web",
+            "uri": "https://www.cso.ie/en/media/csoie/methods/surveyonincomeandlivingconditions/PR_700162_Standard_Report_on_Methods_and_Quality_for_the_2019_Survey_and_Income_and_Living_conditions_(EU-SILC)_(19).pdf"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Darvas, ZM",
+                        "preferred": "ZM Darvas"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "The unequal inequality impact of the COVID-19 pandemic (no.2021/06)",
+            "date": "2021",
+            "id": "bib13",
+            "publisher": {
+                "name": [
+                    "Bruegel Working Paper"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "authors": [
+                {
+                    "name": "Department of Social Protection",
+                    "type": "group"
+                }
+            ],
+            "date": "2021",
+            "details": "1\u201334",
+            "id": "bib14",
+            "title": "TTax strategy group social protection budget package \u2013 budget 2022 issues",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": "Department of Social Protection",
+                    "type": "group"
+                }
+            ],
+            "date": "2022",
+            "id": "bib15",
+            "title": "Social impact assessment of the welfare and income tax measures in budget 2022",
+            "type": "web",
+            "uri": "https://assets.gov.ie/198269/850edcdb-1f8d-4821-94da-aca1b41da4b1.pdf"
+        },
+        {
+            "articleTitle": "Calibration estimators in survey sampling",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Deville, J-C",
+                        "preferred": "J-C Deville"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "S\u00e4rndal, C-E",
+                        "preferred": "C-E S\u00e4rndal"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1992",
+            "doi": "10.1080/01621459.1992.10475217",
+            "id": "bib16",
+            "journal": "Journal of the American Statistical Association",
+            "pages": {
+                "first": "376",
+                "last": "382",
+                "range": "376\u2013382"
+            },
+            "type": "journal",
+            "uri": "https://doi.org/10.2307/2290268",
+            "volume": "87"
+        },
+        {
+            "articleTitle": "Demographic change and the European income distribution",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Dolls, M",
+                        "preferred": "M Dolls"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Doorley, K",
+                        "preferred": "K Doorley"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Paulus, A",
+                        "preferred": "A Paulus"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Schneider, H",
+                        "preferred": "H Schneider"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Sommer, E",
+                        "preferred": "E Sommer"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2019",
+            "doi": "10.1007/s10888-019-09411-z",
+            "id": "bib18",
+            "journal": "The Journal of Economic Inequality",
+            "pages": {
+                "first": "337",
+                "last": "357",
+                "range": "337\u2013357"
+            },
+            "type": "journal",
+            "volume": "17"
+        },
+        {
+            "articleTitle": "Automatic stabilizers and economic crisis: US vs",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Dolls, M",
+                        "preferred": "M Dolls"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Fuest, C",
+                        "preferred": "C Fuest"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Peichl, A",
+                        "preferred": "A Peichl"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2012",
+            "id": "bib17",
+            "journal": "Europe,\" Journal of Public Economics, Elsevier",
+            "pages": {
+                "first": "279",
+                "last": "294",
+                "range": "279\u2013294"
+            },
+            "type": "journal",
+            "volume": "96"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Doorley, K",
+                        "preferred": "K Doorley"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Callan, T",
+                        "preferred": "T Callan"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Savage, M",
+                        "preferred": "M Savage"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "What drove income inequality in EU crisis countries during the Great Recession",
+            "date": "2021",
+            "doi": "10.1111/1475-5890.12250",
+            "id": "bib19",
+            "pages": {
+                "first": "319",
+                "last": "343",
+                "range": "319\u2013343"
+            },
+            "publisher": {
+                "name": [
+                    "Fiscal Studies"
+                ]
+            },
+            "type": "book",
+            "volume": "42"
+        },
+        {
+            "articleTitle": "Role of Distributional impact assessment",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Fiorio, C",
+                        "preferred": "C Fiorio"
+                    },
+                    "type": "person"
+                }
+            ],
+            "conference": {
+                "name": [
+                    "Presentation to Conference on Addressing Economic Inequalities organised by the European Commission"
+                ]
+            },
+            "date": "2021",
+            "id": "bib20",
+            "type": "conference-proceeding"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Giannarelli, L",
+                        "preferred": "L Giannarelli"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Morton, J",
+                        "preferred": "J Morton"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Wheaton, L",
+                        "preferred": "L Wheaton"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "Estimating the anti-poverty effects of changes in taxes and benefits with the TRIM3 microsimulation model",
+            "date": "2007",
+            "id": "bib21",
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "Washington, DC"
+                        ]
+                    },
+                    "formatted": [
+                        "Washington, DC"
+                    ]
+                },
+                "name": [
+                    "Urban Institute"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Gray, J",
+                        "preferred": "J Gray"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Rooney, C",
+                        "preferred": "C Rooney"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "Supporting low income working families: Enabling resilience",
+            "date": "2018",
+            "id": "bib22",
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "s.l"
+                        ]
+                    },
+                    "formatted": [
+                        "s.l"
+                    ]
+                },
+                "name": [
+                    "MUSSI Working Paper Series"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Immervoll, H",
+                        "preferred": "H Immervoll"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Barber, D",
+                        "preferred": "D Barber"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "Can Parents Afford to Work? Childcare Costs, Tax-Benefit Policies and Work Incentives, IZA Discussion Papers, No.1932",
+            "date": "2006",
+            "id": "bib23",
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "Bonn"
+                        ]
+                    },
+                    "formatted": [
+                        "Bonn"
+                    ]
+                },
+                "name": [
+                    "Institute for the Study of Labor (IZA)"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "articleTitle": "Trends in income inequality, pro-poor income growth, and income mobility",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Jenkins, SP",
+                        "preferred": "SP Jenkins"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Van Kerm, P",
+                        "preferred": "P Van Kerm"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2006",
+            "doi": "10.1093/oep/gpl014",
+            "id": "bib25",
+            "journal": "Oxford Economic Papers",
+            "pages": {
+                "first": "531",
+                "last": "548",
+                "range": "531\u2013548"
+            },
+            "type": "journal",
+            "volume": "58"
+        },
+        {
+            "articleTitle": "Assessing individual income growth",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Jenkins, SP",
+                        "preferred": "SP Jenkins"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Van Kerm, P",
+                        "preferred": "P Van Kerm"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2016",
+            "doi": "10.1111/ecca.12205",
+            "id": "bib24",
+            "journal": "Economica",
+            "pages": {
+                "first": "679",
+                "last": "703",
+                "range": "679\u2013703"
+            },
+            "type": "journal",
+            "volume": "83"
+        },
+        {
+            "articleTitle": "Irish public finances through the financial crisis",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Keane, C",
+                        "preferred": "C Keane"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2015",
+            "doi": "10.1111/j.1475-5890.2015.12077",
+            "id": "bib26",
+            "journal": "Fiscal Studies",
+            "pages": {
+                "first": "475",
+                "last": "497",
+                "range": "475\u2013497"
+            },
+            "type": "journal",
+            "volume": "36"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Keane, C",
+                        "preferred": "C Keane"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2018",
+            "details": "Powerpoint presentation, https://www.youtube.com/watch?v=NXR6q8WbYdw, Accessed,  January 2022",
+            "id": "bib27",
+            "title": "The Take-up of medical and GP-Visit cards in Ireland",
+            "type": "unknown",
+            "uri": "https://www.youtube.com/watch?v=NXR6q8WbYdw"
+        },
+        {
+            "articleTitle": "Failure to take-up public healthcare entitlements: evidence from the medical card system in Ireland",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Keane, C",
+                        "preferred": "C Keane"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Regan, M",
+                        "preferred": "M Regan"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Walsh, B",
+                        "preferred": "B Walsh"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2021",
+            "doi": "10.1016/j.socscimed.2021.114069",
+            "id": "bib28",
+            "journal": "Social Science & Medicine",
+            "pages": "114069",
+            "type": "journal",
+            "volume": "281"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "McQuade, P",
+                        "preferred": "P McQuade"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Riscado, S",
+                        "preferred": "S Riscado"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Santacroce, S",
+                        "preferred": "S Santacroce"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2017",
+            "details": "Personal Income Tax in Ireland: The Future of the Universal Social Charge, In:, European Economy - Economic Briefs 028, Directorate General Economic and Financial Affairs (DG ECFIN), European Commission",
+            "id": "bib29",
+            "title": "European Economy - Economic Briefs 028, Directorate General Economic and Financial Affairs (DG ECFIN), European Commission",
+            "type": "unknown"
+        },
+        {
+            "articleTitle": "Modelling the Distributional impact of the COVID-19 crisis",
+            "authors": [
+                {
+                    "name": {
+                        "index": "O'Donoghue, C",
+                        "preferred": "C O'Donoghue"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Sologon, DM",
+                        "preferred": "DM Sologon"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Kyzyma, I",
+                        "preferred": "I Kyzyma"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "McHale, J",
+                        "preferred": "J McHale"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2020",
+            "doi": "10.1111/1475-5890.12231",
+            "id": "bib30",
+            "journal": "Fiscal Studies",
+            "pages": {
+                "first": "321",
+                "last": "336",
+                "range": "321\u2013336"
+            },
+            "type": "journal",
+            "volume": "41"
+        },
+        {
+            "articleTitle": "Sreweight: a Stata command to Reweight survey data to external Totals",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Pacifico, D",
+                        "preferred": "D Pacifico"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2014",
+            "doi": "10.1177/1536867X1401400103",
+            "id": "bib33",
+            "journal": "The Stata Journal: Promoting communications on statistics and Stata",
+            "pages": {
+                "first": "4",
+                "last": "21",
+                "range": "4\u201321"
+            },
+            "type": "journal",
+            "volume": "14"
+        },
+        {
+            "articleTitle": "Indexing out of poverty? fiscal drag and benefit erosion in Cross\u2010National perspective",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Paulus, A",
+                        "preferred": "A Paulus"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Sutherland, H",
+                        "preferred": "H Sutherland"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Tasseva, I",
+                        "preferred": "I Tasseva"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2020",
+            "doi": "10.1111/roiw.12413",
+            "id": "bib31",
+            "journal": "Review of Income and Wealth",
+            "pages": {
+                "first": "311",
+                "last": "333",
+                "range": "311\u2013333"
+            },
+            "type": "journal",
+            "volume": "66"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Paulus, A",
+                        "preferred": "A Paulus"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Tasseva, I",
+                        "preferred": "I Tasseva"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2017",
+            "details": "Decomposition of changes in the EU income distribution in 2007-2011, In:, EUROMOD Working Papers EM9/17, EUROMOD at the Institute for Social and Economic Research",
+            "id": "bib32",
+            "title": "EUROMOD Working Papers EM9/17, EUROMOD at the Institute for Social and Economic Research",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Prior, S",
+                        "preferred": "S Prior"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Duff, N",
+                        "preferred": "N Duff"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Scott, R",
+                        "preferred": "R Scott"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2019",
+            "details": "1\u201336",
+            "id": "bib34",
+            "title": "SSpending review 2019 costing framework for the expansion of GP care",
+            "type": "unknown"
+        },
+        {
+            "articleTitle": "Accounting for differences in income inequality across countries: tax-benefit policy, labour market structure, returns and demographics",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Sologon, DM",
+                        "preferred": "DM Sologon"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Van Kerm, P",
+                        "preferred": "P Van Kerm"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Li, J",
+                        "preferred": "J Li"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "O\u2019Donoghue, C",
+                        "preferred": "C O\u2019Donoghue"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2021",
+            "doi": "10.1007/s10888-020-09454-7",
+            "id": "bib35",
+            "journal": "The Journal of Economic Inequality",
+            "pages": {
+                "first": "13",
+                "last": "43",
+                "range": "13\u201343"
+            },
+            "type": "journal",
+            "volume": "19"
+        },
+        {
+            "articleTitle": "EUROMOD: the European Union tax-benefit microsimulation model",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Sutherland, H",
+                        "preferred": "H Sutherland"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Figari, F",
+                        "preferred": "F Figari"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2013",
+            "id": "bib36",
+            "journal": "International Journal of Microsimulation",
+            "pages": {
+                "first": "1",
+                "last": "24",
+                "range": "1\u201324"
+            },
+            "type": "journal"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Watson, D",
+                        "preferred": "D Watson"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Ma\u00eetre, B",
+                        "preferred": "B Ma\u00eetre"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Russell, H",
+                        "preferred": "H Russell"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2015",
+            "details": "Technical Paper on the Measurement of Household Joblessness in SILC and QNHS, 2004-2012: An Analysis of the Central Statistics Office (CSO) Survey of Income and Living Conditions (SILC) and the Quarterly National Household Survey (QNHS, Social Inclusion Technical Paper no.6, Dublin, Department of Social Protection",
+            "id": "bib37",
+            "title": "Technical Paper on the Measurement of Household Joblessness in SILC and QNHS, 2004-2012: An Analysis of the Central Statistics Office (CSO) Survey of Income and Living Conditions (SILC) and the Quarterly National Household Survey (QNHS",
+            "type": "unknown"
+        }
+    ],
+    "appendices": [
+        {
+            "content": [
+                {
+                    "content": [
+                        {
+                            "text": "While SWITCH uses the EUROMOD platform the two models can be seen as two distinct entities. The main differences are briefly summarised below:",
+                            "type": "paragraph"
+                        },
+                        {
+                            "items": [
+                                [
+                                    {
+                                        "text": "Different datasets: The EUROMOD model is based on the SILC UDB while SWITCH is based on the SILC RMF. Modelling of benefits is therefore more precise in SWITCH as more detail is present in the RMF and information on the exact benefit (currently) received is present while benefits are aggregated in the UDB with no information on current receipt.",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "Additional policies: Due to the more detailed nature of the RMF, additional policies are modelled in SWITCH compared to EUROMOD such as non-cash-benefits e.g. entitlement to Medical and GP cards (plus the ability to include values of such benefits) and childcare subsidy entitlement.",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "Annual v current focus: The SWITCH model focusses on current employment income and current benefit entitlement while the EUROMOD model focuses on annual incomes with the previous year providing the reference period. SWITCH, therefore, is more precise in calculating means for means-tested benefits as these are generally based on current income.",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "Reweighting: The EUROMOD model uses the original weight constructed by the CSO while the SWITCH model reweights the data to ensure it is representative, not just on demographic grounds, but also in terms of employment status, income levels and benefit recipiency. This results in a more accurate depiction of the income distribution (with knock on effects for estimates for income taxes etc.) and benefit recipient population.",
+                                        "type": "paragraph"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "Results file: Both models provide (slightly different) detailed, standardised excel results file. SWITCH provides some extra results such as the gender impact of policy changes. In SWITCH, CSO SDC rules are implemented in the results file which ensures any results based on small sample sizes are not displayed. This ensures timely access to results as the file does not have to be cleared by a CSO statistician. It also removes the risk of a user inadvertently breaching SDC rules.",
+                                        "type": "paragraph"
+                                    }
+                                ]
+                            ],
+                            "prefix": "bullet",
+                            "type": "list"
+                        }
+                    ],
+                    "id": "s7",
+                    "title": "Box 1. EUROMOD/SWITCH comparison",
+                    "type": "section"
+                }
+            ],
+            "id": "A1",
+            "title": "Appendix"
+        }
+    ],
+    "acknowledgements": [
+        {
+            "text": "We are grateful to the CSO for facilitating access to the Survey of Income and Living Conditions (SILC) Research Microdata File used to construct the database for the SWITCH tax-benefit model. SWITCH is based on the EUROMOD platform. Originally maintained, developed and managed by the Institute for Social and Economic Research (ISER), since 2021 EUROMOD is maintained, developed and managed by the Joint Research Centre (JRC) of the European Commission, in collaboration with EUROSTAT and national teams from the EU countries. We are indebted to the many people who have contributed to the development of EUROMOD.",
+            "type": "paragraph"
+        }
+    ],
+    "-meta": {
+        "patched": true
+    },
+    "stage": "published"
+}
