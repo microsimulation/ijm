@@ -323,7 +323,7 @@ final class AboutController extends Controller
             ArticleSection::basic('Forthcoming special issues', 2, $this->render(
                 new Paragraph('For more information, or if you are interested in editing a special issue, please <a href="mailto:matteo.richiardi@essex.ac.uk">contact the Editor</a>.')
                 )),
-            ArticleSection::basic('Workshop "Tax and Benefit Microsimulation in an Inflationary Environment: Applications and Methodological Issues", Bank of Italy, Rome, 16 June, 2023', 2, $this->render(
+            ArticleSection::basic('"Tax and Benefit Microsimulation in an Inflationary Environment: Applications and Methodological Issues"', 2, $this->render(
                 new Paragraph('Guest editors: Marco Sevegnago and Nicola Curci'),
                 new Paragraph('The deadline for submission of manuscripts for this special issue is 30 September 2023.')
                 )),
