@@ -47,6 +47,7 @@ final class AboutController extends Controller
 
         $arguments['body'] = [
             new Paragraph('The International Journal of Microsimulation (IJM) is the official online peer-reviewed journal of the <a href="https://microsimulation.org">International Microsimulation Association</a>.'),
+            new Paragraph('The journal is published 3 times per year, with a Spring, Summer and Winter issues.'),
             new Paragraph('The IJM covers research in all aspects of microsimulation modelling. It publishes high quality contributions making use of microsimulation models to address specific research questions in all scientific areas, as well as methodological and technical issues.'),
             new Paragraph('In particular, the IJM invites submission of five types of contributions: research articles, research notes, data watch, book reviews, and software reviews.'),
             new Paragraph('<strong>Research articles</strong> of interest to the IJM concern:'),
@@ -75,8 +76,10 @@ final class AboutController extends Controller
                 'The journal ranking page can be accessed from <a href="https://ideas.repec.org/top/top.series.simple.html#repec:ijm:journl">here</a>.',
             ], 'bullet'),
             new Paragraph('---'),
+            new Paragraph('<strong>Publisher:</strong>'),
             new Paragraph('International Microsimulation Association'),
             new Paragraph('11 Porte Des Sciences, Esch-Sur-Alzette L-4366, Luxembourg.'),
+            new Paragraph('<a href="https://www.microsimulation.org/board/">Contact information</a>'),
         ];
 
         return new Response($this->get('templating')->render('::about.html.twig', $arguments));
@@ -320,7 +323,7 @@ final class AboutController extends Controller
             ArticleSection::basic('Forthcoming special issues', 2, $this->render(
                 new Paragraph('For more information, or if you are interested in editing a special issue, please <a href="mailto:matteo.richiardi@essex.ac.uk">contact the Editor</a>.')
                 )),
-            ArticleSection::basic('Workshop "Tax and Benefit Microsimulation in an Inflationary Environment: Applications and Methodological Issues", Bank of Italy, Rome, 16 June, 2023', 2, $this->render(
+            ArticleSection::basic('"Tax and Benefit Microsimulation in an Inflationary Environment: Applications and Methodological Issues"', 2, $this->render(
                 new Paragraph('Guest editors: Marco Sevegnago and Nicola Curci'),
                 new Paragraph('The deadline for submission of manuscripts for this special issue is 30 September 2023.')
                 )),
