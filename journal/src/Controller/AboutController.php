@@ -79,7 +79,7 @@ final class AboutController extends Controller
             new Paragraph('<strong>Publisher:</strong>'),
             new Paragraph('International Microsimulation Association'),
             new Paragraph('11 Porte Des Sciences, Esch-Sur-Alzette L-4366, Luxembourg.'),
-            new Paragraph('<a href="https://www.microsimulation.org/board/">Contact information</a>'),
+            new Paragraph('<a href="https://www.microsimulation.org/contact/">Contact information</a>'),
         ];
 
         return new Response($this->get('templating')->render('::about.html.twig', $arguments));
