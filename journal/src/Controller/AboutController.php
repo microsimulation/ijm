@@ -150,7 +150,7 @@ final class AboutController extends Controller
         return new Response($this->get('templating')->render('::about.html.twig', $arguments));
     }
 
-    public function submissionPolicyAction(Request $request) : Response
+    public function editorialPolicyAction(Request $request) : Response
     {
         $arguments = $this->aboutPageArguments($request);
 
@@ -352,7 +352,7 @@ final class AboutController extends Controller
         $menuItems = [
             'Aims and scope' => $this->get('router')->generate('about'),
             'Editorial board' => $this->get('router')->generate('about-board'),
-            'Editorial policy' => $this->get('router')->generate('about-submission'),
+            'Editorial policy' => $this->get('router')->generate('about-editorial-policy'),
             'Notes for reviewers' => $this->get('router')->generate('about-reviewers'),
             'Call for papers' => $this->get('router')->generate('call-for-papers'),
         ];
