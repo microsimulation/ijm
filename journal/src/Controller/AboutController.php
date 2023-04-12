@@ -123,6 +123,7 @@ final class AboutController extends Controller
                 'Prof Luc Savard (Universit&eacute de Sherbrooke, Canada)',
                 'Dr Agathe Simon (ESRI - Economic and Social Research Institute, Ireland)',
                 'Prof Deborah Schofield (University of Sydney, Australia)',
+                'Dr Eric Silverman (University of Glasgow, United Kingdom)',
                 'Dr Sven Stöwhase (Fraunhofer FIT, Germany)',
                 'Prof Eveline van Leeuwen (Wageningen University, The Netherlands)',
                 'Dr Gerlinde Verbist (Antwerp University, Belgium)',
@@ -336,7 +337,7 @@ final class AboutController extends Controller
                 new Paragraph('Guest editor: Deborah Schofield'),
                 new Paragraph('This special issue will be comprised by solicited submissions only.')
                 )),
-            ArticleSection::basic('Gunnar Eliasson: "My life through microsimulation and economic theory"', 2, $this->render(
+            ArticleSection::basic('Gunnar Eliasson: "Modelling the Experimentally Organized Economy"', 2, $this->render(
                 new Paragraph('Guest editor: Gunnar Eliasson')
             )),
         ];      
