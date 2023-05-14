@@ -106,6 +106,7 @@ final class AboutController extends Controller
             new Paragraph('<strong>Associate Editors</strong>'),
             Listing::unordered([
                 'Prof Federico Belotti (University of Rome Tor Vergata, Italy)',
+                'Dr Corinna Elsembroich (University of Glasgow, United Kingdom)',
                 'Prof Francesco Figari (Università dell\'Insubria, Italy)',
                 'Prof Amadeo Fuenmayor (University of Valencia, Spain)',
                 'Dr Benedikt Goderis (SCP - Netherlands Institute for Social Research, The Netherlands)',
@@ -120,6 +121,7 @@ final class AboutController extends Controller
                 'Dr Chrysa Leventi (JRC - Joint Research Centre, Spain)',
                 'Dr Sophie Pennec (Institut National d\'Etudes Démographiques, France)',
                 'Dr Azizur Rahman (Charles Sturt University, Australia)',
+                'Dr Mary Ryan (Teagasc - Agriculture and Food Development Authority, Ireland)',
                 'Prof Luc Savard (Universit&eacute de Sherbrooke, Canada)',
                 'Dr Agathe Simon (ESRI - Economic and Social Research Institute, Ireland)',
                 'Prof Deborah Schofield (University of Sydney, Australia)',
@@ -133,19 +135,15 @@ final class AboutController extends Controller
             new Paragraph('<strong>Scientific Committee</strong>'),
             Listing::unordered([
                 'Prof Rolf Aaberge (Statistics Norway)',
-                'Prof Jakub Bijak (Univesity of Southampton, UK)',
-                'Prof Francesco Billari (Bocconi University, IT)',
+                'Prof Jakub Bijak (Univesity of Southampton, United Kingdom)',
                 'Prof Ugo Colombino (University of Torino, Italy)',
                 'Prof John Creedy (University of Wellington, New Zealand)',
                 'Prof André Decoster (University of Leuven, Belgium)',
                 'Dr Gijs Dekkers (Federal Panning Bureau, Belgium)',
                 'Prof Lennart Flood (University of Gothenburg, Sweden)',
+                'Prof Nora Lustig (University of Tulane, United States)',
                 'Prof Cathal O\'Donoghue (Teagasc, Ireland)',
-                'Prof Andreas Peichl (University of Mannheim, Germany)',
-                'Prof Nicole Saam (Erlangen University, Germany)',
-                'Prof Holly Sutherland (University of Essex, UK)',
-                'Prof Leigh Tesfatsion (Iowa State University, USA)',
-                'Prof Michael Wolfson (University of Ottawa, Canada)',
+                'Prof Leigh Tesfatsion (Iowa State University, United States)',
             ], 'bullet'),
         ];
 
