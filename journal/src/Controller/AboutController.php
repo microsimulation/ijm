@@ -129,6 +129,7 @@ final class AboutController extends Controller
                 'Dr Eric Silverman (University of Glasgow, United Kingdom)',
                 'Dr Sven Stöwhase (Fraunhofer FIT, Germany)',
                 'Prof Javier Torres Gomez (Universidad del Pacífico, Peru)',
+                'Prof Bryan Tysinger (University of Southern California, United States)',
                 'Dr Gerlinde Verbist (Antwerp University, Belgium)',
                 'Jürgen Wiemers (IAB - Institute for Employment Research, Germany)',
                 'Dr Jesse Wiki (University of Auckland, New Zeland)',
