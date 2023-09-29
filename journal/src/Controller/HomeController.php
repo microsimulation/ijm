@@ -50,7 +50,8 @@ final class HomeController extends Controller
                             'registered-report',
                             'scientific-correspondence',
                             'short-report',
-                            'tools-resources'
+                            'tools-resources',
+                            'feature'
                         )
                         ->sortBy('date')
                 )

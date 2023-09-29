@@ -43,6 +43,10 @@ final class ModelName
             'singular' => 'Issue',
             'plural' => 'Issues',
         ],
+        'feature' => [
+            'singular' => 'Feature article',
+            'plural' => 'Feature articles',
+        ],
     ];
 
     private function __construct()
