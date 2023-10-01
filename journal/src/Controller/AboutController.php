@@ -333,10 +333,6 @@ final class AboutController extends Controller
                 new Paragraph('Guest editor: Thor Olav Thoresen'),
                 new Paragraph('The deadline for submission of manuscripts to this special issue is 30 September 2023.')
                 )),
-            ArticleSection::basic('Tribute to the life and work of Ann Harding', 2, $this->render(
-                new Paragraph('Guest editor: Deborah Schofield'),
-                new Paragraph('This special issue will be comprised by solicited submissions only.')
-                )),
             ArticleSection::basic('Gunnar Eliasson: "Modelling the Experimentally Organized Economy"', 2, $this->render(
                 new Paragraph('Guest editor: Gunnar Eliasson')
             )),
