@@ -33,20 +33,18 @@ jobs:
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         ECR_REPOSITORY: ijm-api
-        IMAGE_TAG: ${IMAGE_TAG}
       run: |
-        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -f api/Dockerfile ./api;
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:${{ env.IMAGE_TAG }} -f api/Dockerfile ./api;
 
     - name: Journal image build
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         ECR_REPOSITORY: ijm-journal
-        IMAGE_TAG: ${IMAGE_TAG}
       run: |
         docker build --build-arg app_env=${{ secrets.env }} \
           --build-arg api_url=${{ secrets.api_url }}} \
           --build-arg api_url_public=${{ secrets.API_URL_PUBLIC }} \
-          --build-arg api_key=${{ secrets.api_key }} -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -f journal/Dockerfile ./journal;
+          --build-arg api_key=${{ secrets.api_key }} -t $ECR_REGISTRY/$ECR_REPOSITORY:${{ env.IMAGE_TAG }} -f journal/Dockerfile ./journal;
 
 
     #-- TEST
@@ -93,12 +91,11 @@ jobs:
       if: github.ref == 'refs/heads/master'
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        IMAGE_TAG: ${IMAGE_TAG}
       run: |
         echo "IIIF_HOST=${{ secrets.API_URL_PUBLIC }}" > .env
         echo "API_HOST=${{ secrets.API_URL_PUBLIC }}" >> .env
-        echo "API_IMAGE=$ECR_REGISTRY/ijm-api:$IMAGE_TAG" >> .env
-        echo "JOURNAL_IMAGE=$ECR_REGISTRY/ijm-journal:$IMAGE_TAG" >> .env
+        echo "API_IMAGE=$ECR_REGISTRY/ijm-api:${{ env.IMAGE_TAG }} >> .env
+        echo "JOURNAL_IMAGE=$ECR_REGISTRY/ijm-journal:${{ env.IMAGE_TAG }} >> .env
         echo "${{ secrets.JKS_STORE }}" > cacerts_enc
         base64 -d cacerts_enc > cacerts
         rm -rf cacerts_enc
@@ -107,11 +104,10 @@ jobs:
       if: github.ref == 'refs/heads/master'
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        IMAGE_TAG: ${IMAGE_TAG}
       run: |
         echo "Test results output - ${{ steps.test-res.outputs.TEST_RESULTS }}"
-        docker push $ECR_REGISTRY/ijm-api:$IMAGE_TAG
-        docker push $ECR_REGISTRY/ijm-journal:$IMAGE_TAG
+        docker push $ECR_REGISTRY/ijm-api:${{ env.IMAGE_TAG }}
+        docker push $ECR_REGISTRY/ijm-journal:${{ env.IMAGE_TAG }}
 
     - name: Publish env
       if: github.ref == 'refs/heads/master'
