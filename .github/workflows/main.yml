@@ -6,6 +6,9 @@ on:
       - assets/**
   workflow_dispatch:
 
+env:
+  IMAGE_TAG: ${{ github.sha }}
+
 jobs:
   main:
     runs-on: ubuntu-latest
@@ -30,7 +33,7 @@ jobs:
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         ECR_REPOSITORY: ijm-api
-        IMAGE_TAG: ${{ github.sha }}
+        IMAGE_TAG: ${IMAGE_TAG}
       run: |
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -f api/Dockerfile ./api;
 
@@ -38,7 +41,7 @@ jobs:
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         ECR_REPOSITORY: ijm-journal
-        IMAGE_TAG: ${{ github.sha }}
+        IMAGE_TAG: ${IMAGE_TAG}
       run: |
         docker build --build-arg app_env=${{ secrets.env }} \
           --build-arg api_url=${{ secrets.api_url }}} \
@@ -90,7 +93,7 @@ jobs:
       if: github.ref == 'refs/heads/master'
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        IMAGE_TAG: ${{ github.sha }}
+        IMAGE_TAG: ${IMAGE_TAG}
       run: |
         echo "IIIF_HOST=${{ secrets.API_URL_PUBLIC }}" > .env
         echo "API_HOST=${{ secrets.API_URL_PUBLIC }}" >> .env
@@ -104,7 +107,7 @@ jobs:
       if: github.ref == 'refs/heads/master'
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        IMAGE_TAG: ${{ github.sha }}
+        IMAGE_TAG: ${IMAGE_TAG}
       run: |
         echo "Test results output - ${{ steps.test-res.outputs.TEST_RESULTS }}"
         docker push $ECR_REGISTRY/ijm-api:$IMAGE_TAG
