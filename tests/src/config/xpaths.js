@@ -1,5 +1,5 @@
 export default {
-    "Linked volume": "//*[@id='maincontent']/header/div[5]/div/a",
+    "Linked volume": "//*[@id='maincontent']/header//a[starts-with(.,'Volume')]",
     "First article": "//*[@id='listing']/li[1]/div/header/h4/a",
     "Second article": "//*[@id='listing']/li[2]/div/header/h4/a",
     "List of articles": "//*[@id='listing']/li",
