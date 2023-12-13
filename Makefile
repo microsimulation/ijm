@@ -1,5 +1,5 @@
 
-local_ip = $(shell hostname -I | awk '{print $$1}')
+local_ip = $(shell ip addr | grep 'state UP' -A2 | tail -n1 | grep -oP '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}(?:/)' | sed 's/.$$//')
 
 .PHONY: build dev test
 
