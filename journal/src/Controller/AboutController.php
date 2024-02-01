@@ -124,7 +124,6 @@ final class AboutController extends Controller
                 'Dr Azizur Rahman (Charles Sturt University, Australia)',
                 'Dr Mary Ryan (Teagasc - Agriculture and Food Development Authority, Ireland)',
                 'Prof Luc Savard (Universit&eacute de Sherbrooke, Canada)',
-                'Prof Deborah Schofield (Macquarie University, Australia)',
                 'Prof Rupendra Shresta (Macquarie University, Australia)',
                 'Dr Agathe Simon (ESRI - Economic and Social Research Institute, Ireland)',
                 'Dr Eric Silverman (University of Glasgow, United Kingdom)',
@@ -146,6 +145,7 @@ final class AboutController extends Controller
                 'Prof Lennart Flood (University of Gothenburg, Sweden)',
                 'Prof Nora Lustig (University of Tulane, United States)',
                 'Prof Cathal O\'Donoghue (Teagasc, Ireland)',
+                'Prof Deborah Schofield (Macquarie University, Australia)',                
                 'Prof Leigh Tesfatsion (Iowa State University, United States)',
             ], 'bullet'),
         ];
@@ -327,12 +327,10 @@ final class AboutController extends Controller
                 new Paragraph('For more information, or if you are interested in editing a special issue, please <a href="mailto:matteo.richiardi@essex.ac.uk">contact the Editor</a>.')
                 )),
             ArticleSection::basic('"Tax and Benefit Microsimulation in an Inflationary Environment: Applications and Methodological Issues"', 2, $this->render(
-                new Paragraph('Guest editors: Marco Sevegnago and Nicola Curci'),
-                new Paragraph('The deadline for submission of manuscripts for this special issue is 30 September 2023.')
+                new Paragraph('Guest editors: Emanuele Dicarlo, Nicola Curci, Marco Sevegnago and Antonella Tomasi')
                 )),
             ArticleSection::basic('Workshop "Celebrating tax-benefit modeling: 50 years with LOTTE", Statistics Norway, Oslo, 15-16 June 2023', 2, $this->render(
-                new Paragraph('Guest editor: Thor Olav Thoresen'),
-                new Paragraph('The deadline for submission of manuscripts to this special issue is 30 September 2023.')
+                new Paragraph('Guest editor: Thor Olav Thoresen')
                 )),
             ArticleSection::basic('Gunnar Eliasson: "Modelling the Experimentally Organized Economy"', 2, $this->render(
                 new Paragraph('Guest editor: Gunnar Eliasson')
