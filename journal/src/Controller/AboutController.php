@@ -288,6 +288,10 @@ final class AboutController extends Controller
                 'Patent and trademark rights and rights to any process or procedure described in the Contribution.',
                 'The right to proper attribution and credit for the published work.',
             ], 'bullet'),
+			ArticleSection::basic('Publication schedule', 2,
+			    $this->render(new Paragraph('Issues are finalised on April 30 (Spring), August 31 (Summer) and December 31 (Winter) of each year. Issues may be listed on the journal website in advance of their scheduled date, containing articles that have already completed the editorial process (forthcoming).')
+			    )
+			),			
             ArticleSection::basic('Disclaimer', 2,
                 $this->render(new Paragraph('The International Microsimulation Association (IMA) and the International Journal of Microsimulation (IJM) and make every effort to ensure the accuracy of all the information contained in our publications. It however, makes no representations or warranties whatsoever as to the accuracy, completeness, or suitability for any purpose of the published work. Any opinions and views expressed in this publication are the opinions and views of the Authors, and are not necessarily the view of the Editors or the Journal.')
                 )
