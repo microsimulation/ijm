@@ -66,7 +66,11 @@ final class AboutController extends Controller
             new Paragraph('<strong>Data watch</strong> refers to short research notes that describe (newly) available datasets and how they can be exploited for microsimulation studies.'),
             new Paragraph('<strong>Book reviews</strong> offer a discussion of recent books that might be of interest to the microsimulation community, or present a critical assessment in retrospect of the impact of "classic" contributions.'),
             new Paragraph('<strong>Software reviews</strong> are short contributions that describe advances in software development that are likely to be of interest to the journal readership, with a particular attention to open source software.'),
-            new Paragraph('If in doubt concerning the suitability of a particular manuscript, or if interested in editing a Special thematic issue, please 
+			new Paragraph('The journal also publishes thematic special issues containing historically relevant work for the microsimulation community, previously unpublished in journal or book form, such as documentation of landmark models. 
+			Occasionally, the journal might also republish relevant chapters from edited volumes, with permission from the original publisher, to facilitate access to important early microsimulation work.
+			The original source of publication is always clearly indicated in the published articles. 		
+			<strong>Software reviews</strong> are short contributions that describe advances in software development that are likely to be of interest to the journal readership, with a particular attention to open source software.'),			
+			new Paragraph('If in doubt concerning the suitability of a particular manuscript, or if interested in editing a Special thematic issue, please 
             <a href="mailto:matteo.richiardi@essex.ac.uk">contact the editor</a> for further advice'),
             Listing::unordered([
                 'The IJM is listed in EBSCOhost, EconLit, RePEc, Scopus.',
@@ -184,7 +188,6 @@ final class AboutController extends Controller
                     ], 'bullet'),
                     new Paragraph('<strong>Tables, Figures and Algorithms</strong>'),
                     Listing::unordered([
-                        'Submissions must be in English, with a style adequate to a scientific journal. A submission may be rejected solely because typographical errors and imprecise definitions make it hard to understand.',
                         'Tables, figures and algorithms are the only accepted floats, to be referred as such in the text, with capital letter.',
                         'Tables, figures and algorithms should be preceded by one blank line (or equivalent spacing).',
                         'Labels should commence with word "Table/Figure/Algorithm", followed by a sequential number (separate for the three floats), a colon, and the title. Labels should be placed on the line immediately preceding the float.',
@@ -205,7 +208,11 @@ final class AboutController extends Controller
             ArticleSection::basic('Review process', 2,
                 $this->render(
                     new Paragraph('Submissions should be made using the <a href="https://www.epress.ac.uk/ijm/webforms/author.php">online submission management system</a>. Authors will receive an acknowledgement of their submission.'),
-                    new Paragraph('As a general rule, submitted research notes and research articles will be subject to peer review by at least two independent reviewers appointed by the Editor. Other items will be accepted for publication subject to review by at least two members of the editorial board. The identity of the reviewers and the handling editors will not be communicated to authors. On the other hand, reviewers will be communicated the names and affiliations of the authors (single-blind review process).'),
+					new Paragraph('Regular submissions are either managed directly by the Chief Editor, or assigned by the Chief Editor to an Associate Editor, provided that the Associate Editor is not in conflict of interest. 
+					Whenever the Chief Editor is in conflict of interest regarding a specific submission (for instance being an author, or a close collaborator of one of the authors), he or she will not manage the submission directly, but assign it to an Associate Editor who is not in conflict of interest.'), 
+					new Paragraph('Submissions for special issues are managed by the Guest Editors of the special issue.
+					Whenever any of the Guest Editors is in conflict of interest regarding a specific submission (for instance being an author, or a close collaborator of one of the authors), the submission will be managed by the Chief Editor, following the rules described above.'),                   
+					new Paragraph('As a general rule, submitted research notes and research articles will be subject to peer review by at least two independent reviewers appointed by the Editor. Other items will be accepted for publication subject to review by at least two members of the editorial board. The identity of the reviewers and the handling editors will not be communicated to authors. On the other hand, reviewers will be communicated the names and affiliations of the authors (single-blind review process).'),
                     new Paragraph('However, some contributions might be desk-rejected by the Editor without providing detailed reports. This is intended to save authors from waiting for an extended period, especially when it is apparent that the contribution is unsuitable, and to conserve the scarce resource of reviewers. Desk-rejection may occur when the contribution has evident errors or is too poorly written to assess its accuracy. Additionally, it may happen when the contribution falls outside the scope of the journal.'),
                     new Paragraph('In addition to guaranteeing the novelty, significance, and accuracy of the published work, the editorial team endeavours to minimize the time taken to publish it. Usually, we aim to send a first decision to authors within 2-3 months from submission, although some papers may take longer. Desk rejections are generally communicated to authors in a matter of days from submission.'),
                     new Paragraph('Manuscripts may be rejected, returned for revisions (major or minor), or accepted. Articles rarely go beyond three rounds of revisions. Unless otherwise stated by the Editor, conditional acceptance should not be presumed. An invitation to revise a paper remains valid for 12 months following the decision. The Editor may grant extensions to authors, but such requests must be made within the initial 12-month period. The decision letter sent to authors regarding revisions contains as much information as the Editor can provide. It is advisable for authors to refrain from contacting the Editor for additional guidance, except if seeking clarification on the decision letter.'),
@@ -260,9 +267,15 @@ final class AboutController extends Controller
                     new Paragraph('All submitted manuscripts containing research which involves human participants and/or animal experimentation - however unlikely this is given the scope of the journal - must include a statement confirming that the research was carried out in accordance with the principles embodied in the <a href="https://www.wma.net/policies-post/wma-declaration-of-helsinki-ethical-principles-for-medical-research-involving-human-subjects/"> Declaration of Helsinki</a> and all relevant guidelines and institutional policies, giving the name of the institutional and/or national research ethics committee that approved the research, along with the approval number/ID.'),
                     new Paragraph('All submitted manuscripts containing research which involves identifiable human subjects must include a statement confirming that consent was obtained for all identifiable individuals and that any identifiable individuals are aware of intended publication. In order to protect participant anonymity, authors do not need to send proof of this consent to the IJM.')
                 )
-            ),            
+            ),       
+			ArticleSection::basic('Reprinted material', 2,
+			    $this->render(
+			        new Paragraph('Occasionally, the journal might publish historically relevant older articles, either remained unpublished in journal or book form, or already published as part of edited volumes (see the <a href="https://microsimulation.pub/about">Aims and Scope</a> section.). The choice of such articles always rests on a decision by the Chief Editor, subject to the acquisition of the relevant publishing rights. Republished articles are clearly identified in the Ackknowledgement section, with the original source of publication duly reported.'),
+			    )
+			),      			
             ArticleSection::basic('Copyright', 2,
-                $this->render(new Paragraph('All IJM articles, unless otherwise stated, are published under the terms of the Creative Commons Attribution (CC BY) License which permits use, distribution and reproduction in any medium, provided the work is properly attributed back to the original author and publisher. Copyright on any research article in the International Journal ofMicrosimulation(IJM) is retained by the Authors. Authors grant IJM a license to publish the article and identify itself as the original publisher. Authors cannot revoke these freedoms as long as the Journal follows the license terms. Authors should not submit any paper unless they agree with this policy. The full text of the CC BY 4.0 license can be found <a href="https://creativecommons.org/licenses/by/4.0/">here</a>. Special exemptions and other licensing arrangement can be made on a case by case basis, by writing a motivated request to the Editor.')
+                $this->render(new Paragraph('All IJM articles, unless otherwise stated, are published under the terms of the Creative Commons Attribution (CC BY) License which permits use, distribution and reproduction in any medium, provided the work is properly attributed back to the original author and publisher. Copyright on any research article in the International Journal ofMicrosimulation(IJM) is retained by the Authors. Authors grant IJM a license to publish the article and identify itself as the original publisher. Authors cannot revoke these freedoms as long as the Journal follows the license terms. Authors should not submit any paper unless they agree with this policy. 
+				Submission implies full acceptance of the above terms by all co-authors, with the corresponding author responsible for providing a written acknowledgement signed by all co-authors. The full text of the CC BY 4.0 license can be found <a href="https://creativecommons.org/licenses/by/4.0/">here</a>. Special exemptions and other licensing arrangement can be made on a case by case basis, by writing a motivated request to the Editor.')
                 )
             ),
             ArticleSection::basic('Authors rights <div id="authors_rights"></div>', 2,
@@ -332,9 +345,6 @@ final class AboutController extends Controller
             ArticleSection::basic('Workshop "Celebrating tax-benefit modeling: 50 years with LOTTE", Statistics Norway, Oslo, 15-16 June 2023', 2, $this->render(
                 new Paragraph('Guest editor: Thor Olav Thoresen')
                 )),
-            ArticleSection::basic('Gunnar Eliasson: "Modelling the Experimentally Organized Economy"', 2, $this->render(
-                new Paragraph('Guest editor: Gunnar Eliasson')
-            )),
         ];      
         
         return new Response($this->get('templating')->render('::about.html.twig', $arguments));
