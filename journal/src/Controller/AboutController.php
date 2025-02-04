@@ -263,7 +263,7 @@ final class AboutController extends Controller
             ),       
 			ArticleSection::basic('Reprinted material', 2,
 			    $this->render(
-			        new Paragraph('Occasionally, the journal might publish historically relevant older articles, either remained unpublished in journal or book form, or already published as part of edited volumes (see the <a href="https://microsimulation.pub/about">Aims and Scope</a> section.). The choice of such articles always rests on a decision by the Chief Editor, subject to the acquisition of the relevant publishing rights. Republished articles are clearly identified in the Acknowledgement section, with the original source of publication duly reported.')
+			        new Paragraph('Occasionally, the journal might publish thematic special issues containing historically relevant work for the microsimulation community, previously unpublished in journal or book form, such as documentation of landmark models (see the <a href="https://microsimulation.pub/about">Aims and Scope</a> section). The choice of such articles always rests on a decision by the Chief Editor, subject to the acquisition of the relevant publishing rights. Republished articles are clearly identified in the Acknowledgements section, with the original source of publication duly reported.')
 			    )
 			),      			
             ArticleSection::basic('Copyright', 2,
@@ -337,9 +337,6 @@ final class AboutController extends Controller
                 )),
             ArticleSection::basic('"Tax and Benefit Microsimulation in an Inflationary Environment: Applications and Methodological Issues"', 2, $this->render(
                 new Paragraph('Guest editors: Emanuele Dicarlo, Nicola Curci, Marco Sevegnago and Antonella Tomasi')
-                )),
-            ArticleSection::basic('Workshop "Celebrating tax-benefit modeling: 50 years with LOTTE", Statistics Norway, Oslo, 15-16 June 2023', 2, $this->render(
-                new Paragraph('Guest editor: Thor Olav Thoresen')
                 )),
         ];      
         
