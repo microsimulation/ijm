@@ -4,6 +4,8 @@ COPY composer.json \
     composer.lock \
     ./
 
+COPY patches patches
+
 RUN composer --no-interaction install --no-dev --ignore-platform-reqs --no-autoloader --no-suggest --prefer-dist
 
 COPY src/ src/
