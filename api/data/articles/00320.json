@@ -1,0 +1,2691 @@
+{
+    "status": "vor",
+    "id": "00320",
+    "version": 1,
+    "type": "research-article",
+    "doi": "10.34196/ijm.00320",
+    "authorLine": "Tanja Kirn et al.",
+    "title": "SWISSMOD \u2013 A New Tax-Benefit Model of Switzerland",
+    "published": "2025-06-04T00:00:00Z",
+    "versionDate": "2025-06-04T00:00:00Z",
+    "statusDate": "2025-06-04T00:00:00Z",
+    "volume": 18,
+    "issue": 2,
+    "fpage": 1,
+    "lpage": 20,
+    "elocationId": "1-20",
+    "pdf": "http://web:8082/00320/ijm-00320.pdf",
+    "subjects": [
+        {
+            "id": "taxes-benefits",
+            "name": "Taxes and benefits"
+        }
+    ],
+    "abstract": {
+        "content": [
+            {
+                "text": "This article presents SWISSMOD, a new microsimulation model of the Swiss Tax and Transfer System (TTS) built on the EUROMOD platform. The significant variations in tax burden and transfer payments due to subnational fiscal autonomy make the Swiss TTS\u2014and thus SWISSMOD\u2014particularly intriguing for economic analyses. We focus on three core aspects of SWISSMOD. First, we provide an overview of EUROMOD-based and Swiss microsimulation models, followed by an introduction to the Swiss TTS, highlighting its fiscal autonomy, wealth taxation, joint taxation types, and the administration of social assistance at the subnational level, leading to substantial variation in transfer payments. Second, we provide insights into the Swiss SILC dataset, which forms the database of our model. Given the dataset\u2019s lack of information on cantonal residence and wealth, we outline our approach to imputing this missing data using the Swiss Household Panel. Third, we present the results of the micro- and macro-validation. The micro-validation indicates that the model accurately represents the existing TTS. The results of the macro-validation confirm a high degree of fiscal precision at the aggregated level of income taxation. However, certain limitations exist concerning wealth taxation, driven by the lack of information on wealth. Overall, the model provides reliable results concerning the Swiss TTS.",
+                "type": "paragraph"
+            }
+        ]
+    },
+    "copyright": {
+        "license": "CC-BY-4.0",
+        "holder": "Kirn et al.",
+        "statement": "This article is distributed under the terms of the <a href=\"http://creativecommons.org/licenses/by/4.0/\">Creative Commons Attribution License</a>, which permits unrestricted use and redistribution provided that the original author and source are credited."
+    },
+    "authors": [
+        {
+            "affiliations": [
+                {
+                    "address": {
+                        "components": {
+                            "country": "Germany",
+                            "locality": [
+                                "Freiburg"
+                            ]
+                        },
+                        "formatted": [
+                            "Freiburg",
+                            "Germany"
+                        ]
+                    },
+                    "name": [
+                        "University of Liechtenstein, Albert-Ludwigs-Universit\u00e4t Freiburg"
+                    ]
+                }
+            ],
+            "emailAddresses": [
+                "tanja.kirn@uni.li"
+            ],
+            "name": {
+                "index": "Kirn, Tanja",
+                "preferred": "Tanja Kirn"
+            },
+            "orcid": "0000-0003-0881-786X",
+            "type": "person"
+        },
+        {
+            "affiliations": [
+                {
+                    "address": {
+                        "components": {
+                            "country": "Germany",
+                            "locality": [
+                                "Freiburg"
+                            ]
+                        },
+                        "formatted": [
+                            "Freiburg",
+                            "Germany"
+                        ]
+                    },
+                    "name": [
+                        "FRIBIS, Albert-Ludwigs-Universit\u00e4t Freiburg"
+                    ]
+                }
+            ],
+            "name": {
+                "index": "Oschwald, Patrick",
+                "preferred": "Patrick Oschwald"
+            },
+            "orcid": "0009-0007-0438-0679",
+            "type": "person"
+        },
+        {
+            "affiliations": [
+                {
+                    "address": {
+                        "components": {
+                            "country": "Germany",
+                            "locality": [
+                                "Freiburg"
+                            ]
+                        },
+                        "formatted": [
+                            "Freiburg",
+                            "Germany"
+                        ]
+                    },
+                    "name": [
+                        "FRIBIS, Albert-Ludwigs-Universit\u00e4t Freiburg"
+                    ]
+                }
+            ],
+            "name": {
+                "index": "Anderl, Robin",
+                "preferred": "Robin Anderl"
+            },
+            "orcid": "0009-0006-7332-0314",
+            "type": "person"
+        }
+    ],
+    "funding": {
+        "statement": "This research was supported by the Erasmus+ Programme of the European Union (ecoMOD Project, project number: 2023-1-LI01-KA220-HED-000157594), by the Freiburg Institute for Basic Income Studies (FRIBIS) at Albert-Ludwigs-Universit\u00e4t Freiburg, and by the Forschungsf\u00f6rderungsfond (FFF) of the University of Liechtenstein. The authors gratefully acknowledge the generous support from all these organizations."
+    },
+    "dataSets": {
+        "availability": [
+            {
+                "text": "The Swiss Statistics on Income and Living Conditions (SILC)-data is available at the website of the Swiss Federal Statistical Office (FSO): <a href=\"https://www.bfs.admin.ch/bfs/de/home/statistiken/wirtschaftliche-soziale-situation-bevoelkerung/erhebungen/silc.html\">https://www.bfs.admin.ch/bfs/de/home/statistiken/wirtschaftliche-soziale-situation-bevoelkerung/erhebungen/silc.html</a>The Swiss Household Panel (SHP) data is available upon request at the website of FORS: <a href=\"https://forscenter.ch/projects/swiss-household-panel/data/\">https://forscenter.ch/projects/swiss-household-panel/data/</a>Please contact the authors for information on code availability.",
+                "type": "paragraph"
+            }
+        ]
+    },
+    "keywords": [
+        "static microsimulation",
+        "EUROMOD",
+        "SWISSMOD",
+        "tax",
+        "social security",
+        "wealth",
+        "Switzerland"
+    ],
+    "body": [
+        {
+            "content": [
+                {
+                    "text": "In this article, we introduce SWISSMOD, a newly developed microsimulation model which is built on the EUROMOD software platform. Since the Swiss tax and transfer system (TTS) is characterized by a high degree of subnational fiscal autonomy, EUROMOD is the optimal platform due to its flexibility and structure. As the high fiscal autonomy leads to considerable differences in the tax burden and transfer payments, the Swiss TTS - and thus SWISSMOD - is particularly intriguing for economic analyses.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Within the framework of the article, we focus on three core aspects of SWISSMOD. First, we provide an overview about the landscape of EUROMOD based microsimulation models as well as Swiss microsimulation models. Then we give a brief introduction to the Swiss tax and transfer system, as it is interesting concerning the high degree of fiscal autonomy; the taxation of wealth, different types of joint taxation, as well as social assistance which is administered by cantons and municipalities, therefore leading to substantial differences in transfer payments.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Second, we provide insights into the databases used to set up the model. We utilize the Swiss SILC (Statistics on Income and Living Conditions) data to ensure the comparability of results. Since the CH-SILC dataset lacks information on cantonal residence and wealth, we provide an overview of how we have imputed the missing data by using the Swiss Household Panel (SHP).",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Third, we focus on the aspects of micro- and macro-validation of the model. We adhered to the recommendations of the <a href=\"#bib47\">JRC-EUROMOD Team (2023)</a> to achieve the highest possible levels of accuracy and transparency in our simulation results. The micro-validation results indicate that the model accurately represents the existing tax and transfer system, achieving a high level of detail, particularly in simulating income tax across different jurisdictions. This accuracy is further corroborated by the macro-validation, which demonstrates a high degree of fiscal precision at the aggregated level. However, certain limitations exist regarding the level of detail in the data, such as the absence of wealth information. Despite these limitations, the model provides reliable and precise results concerning the Swiss tax and transfer system.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "SWISSMOD is an interesting addition to the models on the EUROMOD platform. Its uniqueness lies in the high degree of fiscal autonomy at the cantonal and municipal levels in Switzerland, which results in significant variations in tax burdens and transfers. This makes the Swiss Tax and Transfer System - and consequently SWISSMOD - particularly valuable for empirical research. The model\u2019s utility is further enhanced by the diverse forms of spousal taxation across different cantons. Moreover, the inclusion of the wealth tax, which is rare globally, offers a unique area for analysis.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The remainder of the article is structured as follows: Section 2 provides a brief overview of EUROMOD and Swiss microsimulation models. Section 3 outlines the institutional background of the Swiss tax and transfer system. Section 4 details the simulation of social security benefits and transfers. Section 6 describes the simulation of taxes. Section 7 presents the simulation results and microvalidation outcomes. Section 8 discusses aspects of macrovalidation, and Section 9 concludes the article.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s1",
+            "title": "1. Introduction",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "SWISSMOD is built on the EUROMOD software platform, a multi-country tax-benefit microsimulation model based on representative household microdata (<a href=\"#bib46\">Sutherland and Figari, 2013</a>). Initiated in 1996, EUROMOD was designed to address policy questions consistently over time and across an increasing number of EU countries. Developed by the Institute for Social and Economic Research (ISER) at the University of Essex, EUROMOD has been maintained and further developed since 2021 by the Joint Research Centre (JRC) of the European Commission, in collaboration with Eurostat and national teams from EU countries. As an open-source tool, EUROMOD is utilized by hundreds of researchers across Europe and beyond.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The model operates at a micro level, focusing on individuals and households. To simulate the effects of policy changes, EUROMOD uses microdata and applies predefined tax and benefit policy rules to calculate the impact on household income. EUROMOD also includes statistical software that can analyze and compare different policy changes, focusing on their impact on budget and distribution, such as poverty and inequality.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Thanks to its flexibility and transparency, EUROMOD can be adapted to shortcut the process of building tax-benefit models with potentially comparable outputs for any country or region. Thus, besides the EU countries, over 40 national models have been developed using the EUROMOD software platform. Beyond EUROMOD, the model families SOUTHMOD (covering Ethiopia, Ghana, Mozambique, Rwanda, Tanzania, Uganda, Zambia, Ecuador, and Viet Nam) and LATINMOD (covering Argentina, Bolivia, Colombia, Ecuador, Uruguay, and Venezuela) have been created (<a href=\"#bib2\">Arancibia et al., 2019</a>; <a href=\"#bib23\">Lastunen et al., 2024</a>). Additional models include those for South Africa (SAMOD, PITMOD) and Namibia (NAMOD) (<a href=\"#bib40\">Steyn et al., 2021</a>; <a href=\"#bib43\">Wilkinson, 2009</a>; <a href=\"#bib44\">Wright et al., 2014</a>), Mexico (<a href=\"#bib9\">Caamal-Olvera et al., 2022</a>; <a href=\"#bib17\">Huesca et al., 2021</a>), Indonesia (<a href=\"#bib45\">Wright et al., 2021</a>), Russia (<a href=\"#bib29\">Popova, 2012</a>), Serbia (<a href=\"#bib31\">Ran\u0111elovi\u0107 and Raki\u0107, 2012</a>), Australia (<a href=\"#bib16\">Hayes and Redmond, 2014</a>), and the UK (UKMOD), which originates from the UK component of EUROMOD (<a href=\"#bib34\">Richiardi et al., 2021</a>).",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Examples of personal income tax (PIT) models that are wholly or partially based on administrative data, but do not use the EUROMOD software, include those from France (<a href=\"#bib19\">Jelloul et al., 2019</a>), Germany (<a href=\"#bib13\">Flory and St\u00f6whase, 2012</a>), Italy (<a href=\"#bib27\">Miola and Manzo, 2021</a>), Spain (<a href=\"#bib7\">Bover et al., 2017</a>), and Liechtenstein (<a href=\"#bib22\">Kirn and Thierbach, 2020</a>; <a href=\"#bib41\">van den Bosch et al., 2024</a>).",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "For Switzerland, the landscape for microsimulation models is relatively scarce. On the side of static models, there is the SWISS Taxometer (<a href=\"#bib8\">Brandt et al., 2024</a>), but its technical specifications as well as the model itself are currently not available to the public. A dynamic microsimulation model of Switzerland is MIDAS_CH (<a href=\"#bib20\">Kirn and Dekkers, 2023</a>). It is a discrete-time, longitudinal-ageing type model. This model has been used to explore the future gender pension gap (<a href=\"#bib10\">Dekkers et al., 2022</a>; <a href=\"#bib20\">Kirn and Dekkers, 2023</a>) and the redistributive elements within the 1<sup>st</sup> and 2<sup>nd</sup> pillars (<a href=\"#bib21\">Kirn and Dekkers, 2024</a>).",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s2",
+            "title": "2. SWISSMOD within the landscape of (Swiss) microsimulation models",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "Switzerland\u2019s tax and social assistance system is deeply influenced by the country\u2019s federal structure, which allows for significant cantonal variation and local autonomy. Income tax is levied at the federal, cantonal and municipal levels, wealth tax is levied at the cantonal and municipal levels, with each canton setting its allowances and rates. Due to this fiscal autonomy at the subnational level, the tax burden varies considerably depending on the place of residence.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Similarly, the social security system exhibits a high degree of subnational autonomy. While social insurance (e.g., unemployment insurance, old-age security) is uniformly regulated at the federal level, social assistance is administered by cantons and municipalities, resulting in substantial differences in transfer payments. Within the next sections we summarize the income tax, wealth tax, social security and transfer system to provide an overview about the characteristics of the Swiss TTS.",
+                    "type": "paragraph"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "The income tax, or earnings tax, is levied at the federal, cantonal, and municipal levels. The federal government imposes a uniform income tax, whereas the cantons set their own tax allowances and tax rates and municipalities set a multiplier to the cantonal tax to determine the municipal tax. This federal system allows cantons and municipalities to tailor their tax policies to local needs and conditions, resulting in a high degree of heterogeneity in tax burdens within Switzerland.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The income tax system operates on the residence principle, meaning that individuals who are tax residents in Switzerland are taxed on their worldwide income.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "At both the federal and cantonal levels, tax laws establish the principle of comprehensive net income taxation, whereby the taxable person\u2019s recurring and one-time income is subject to tax (Art. 16 para. 1 DBG and Art. 7 para. 1 StHG).",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Income tax is a direct tax levied according to the ability-to-pay principle. The concept of income is determined by the net wealth access theory, which posits that the totality of economic goods flowing to an individual during the tax period, and usable for current needs without diminishing wealth, is subject to taxation (<a href=\"#bib39\">SSK, 2024</a>).",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Following the objective net principle, expenses and general deductions are subtracted from the total taxable income to determine the net income (Art. 25 DBG and Art. 9 para. 1 StHG). Subsequently, social deductions can be claimed (Art. 35 DBG and Art. 9 para. 4 StHG). This follows the subjective net principle, which considers circumstances exclusively within the private sphere of the taxpayer and allows for the deduction of subsistence expenses (basic allowance, special expenses, extraordinary burdens). The StHG does not impose any restrictions on social deductions, granting the cantons considerable freedom in their design.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s3-1",
+                    "title": "3.1. Income tax",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "Switzerland is one of the few countries levying a wealth tax, set at the cantonal and municipal levels. Historically developed, the wealth tax dominated the 19th-century cantonal tax system, with earned income taxed only as a supplement. However, as the wealth tax could not meet the cantons\u2019 growing financial needs, taxation evolved towards a general income tax with a supplementary wealth tax which included a reduction in the wealth tax and an increase in the income tax rates (<a href=\"#bib25\">Marantelli and Bigler, 2015</a>).",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "It is often debated whether it is justified to use wealth as an independent measure of ability to pay, given that net returns on financial assets are already taxed at the federal, cantonal and municipal level. Against this background, there is a consensus that wealth taxes are justified if the taxable wealth is not depleted by the tax itself (<a href=\"#bib38\">SSK, 2021</a>).",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Like the income tax, the wealth tax follows the objective net principle. The tax object of the wealth tax is the net wealth, i.e., assets reduced by liabilities. Wealth includes monetary rights to (movable and immovable) property, claims, and participations. Capital insurance of occupational pension schemes (2<sup>nd</sup> pillar) and tied private pension schemes (pillar 3a) are exempt from the wealth tax. Assets are to be valued at market value, with exceptions for insurance, securities, and real estate. To account for actual ability to pay, social deductions are subtracted from the net wealth (objective net principle).",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s3-2",
+                    "title": "3.2. Wealth tax",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "Switzerland employs a joint taxation system for families, where married couples are taxed together on their income and wealth. For federal income tax, distinct tariffs are applied to singles and married couples, with families benefiting from additional tax deductions.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "At cantonal level, three different methods are applied. Most cantons (SZ, NW, GL, FR, SO, BL, SH, AI, SG, GR, AG, TG, NE, VD and GE) use either a full or partial splitting method.<sup><a href=\"#fn1\">1</a></sup> Some cantons (ZH, BE, LU, ZG, BS, AR, TI, JU) have different rates for married couples and individuals assessed separately.<sup><a href=\"#fn2\">2</a></sup> Exceptions include the cantons of Obwalden (OW), Uri (UR), and Valais (VS). OW and UR apply the same rate for jointly assessed married couples and singles, but higher deduction amounts or a tax rebate on the final tax bill are available for married couples. Similarly, in the canton of VS, a multi-stage indexation is implemented, where taxable income is adjusted yearly based on inflation. After indexation, the same tax schedule is applied for singles and married couples, with a special deduction for married couples.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Those different types of joint taxation can result in a higher tax burden for married couples compared to individuals assessed separately. The primary cause of this marriage penalty is the progressive nature of the tax code. This issue arises in cantons where a double tariff is applied and the two tariffs do not align, or in cantons where a splitting method is used but the splitting factor is less than 2, leading to higher taxable income under joint taxation compared to individual taxation (<a href=\"#bib28\">Myohl, 2024</a>).",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s3-3",
+                    "title": "3.3. Joint taxation",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "Social security is organized at the federal level through the Federal Social Insurance Office (FSIO) and based on three-pillars to provide support across various life situations. The Old-Age and Survivors\u2019 Insurance (OASI) provides pensions to retirees and financial support to survivors of deceased insured persons. Disability Insurance (DI) offers financial support and rehabilitation services to individuals who are unable to work due to disability. Health and Accident Insurance (AI) covers medical expenses and compensation for loss of income due to illness or accidents, with health insurance being mandatory for all residents. Unemployment Insurance (UB) provides financial support to individuals who lose their jobs and helps them reintegrate into the labour market. Income Compensation Allowances (MB) include compensation for loss of earnings during military service, maternity, and paternity leave. Family Allowances (FA) are financial benefits provided to families to help cover the costs of raising children. Each of these insurances is funded through contributions from both employers and employees, as well as through taxes and government subsidies.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Unemployment insurance (UB) is administered by unemployment funds. This system provides financial support to individuals who lose their employment and facilitates their reintegration into the labour market. All employees are mandatorily insured against unemployment, whereas self-employed individuals are excluded from this coverage. Contributions to the UB are equally divided between employers and employees. The contribution rate is set at 2.2% of the OASI-liable salary, with a maximum annual salary cap of 148,200 CHF.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Switzerland\u2019s health insurance system is based on a universal healthcare model. All residents are required to have basic health insurance, which is provided by over 60 government-approved non-profit insurers. This mandatory insurance covers essential medical services, ensuring that everyone has access to necessary healthcare. Unlike some countries with public healthcare systems, Switzerland does not offer free healthcare. Instead, individuals must pay for their own insurance premiums, which can vary depending on the provider and the policyholder\u2019s place of residence. Additionally, while the basic insurance is standardized, residents can also purchase supplementary insurance for additional coverage ( <a href=\"#bib18\">Hummer, 2020</a>).",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s3-4",
+                    "title": "3.4. Social Security System",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "Social assistance in Switzerland is a means-tested safety net. Social assistance law falls within the competence of the 26 cantons and is implemented at the local level. The cantons largely follow the so-called SKOS guidelines (<a href=\"#bib37\">SKOS, 2023</a>) as well as the case law of the cantonal courts and the Federal Supreme Court.<sup><a href=\"#fn3\">3</a></sup>",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Social assistance has a dual mandate. On the one hand, it consists of the basic right to a secure livelihood (Art. 12 BV) and should enable all people affected by poverty to lead a dignified existence (<a href=\"#bib37\">SKOS, 2023</a>). On the other hand, it commits the members of these households to rapid reintegration to achieve an economically independent lifestyle (<a href=\"#bib6\">Bochsler and Borrelli, 2023</a>).",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The legal framework is designed following this mandate. The means test ensures that only those who have exhausted all upstream resources, such as social insurance benefits (e.g. unemployment or disability insurance) or their own financial reserves, are granted access to this support. Incentive benefits (integration allowance and income allowance) and the reduction of individual benefits for young adults (such as the basic subsistence allowance) are intended to create incentives to work. A distinction is therefore made between needs-based and activity-based benefits.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s3-5",
+                    "title": "3.5. Social assistance",
+                    "type": "section"
+                }
+            ],
+            "id": "s3",
+            "title": "3. Institutional background",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "content": [
+                        {
+                            "text": "The Swiss SILC 2020 dataset, which is collected by the Swiss Federal Statistical Office (Bundesamt f\u00fcr Statistik, BFS) is used as basic input dataset for the first version of SWISSMOD. Since EUROMOD input data is derived from EU-SILC data, this makes the Swiss SILC data the natural candidate for SWISSMOD. The use of SILC data also enhances the international comparability of the results, as the at-risk-of-poverty threshold is also determined based on SILC data.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The Swiss SILC data is a survey collected by the Swiss Federal Statistical Office (FSO, in German Bundesamt f\u00fcr Statistik, BFS) according to the guidelines of Statistical Office of the European Union (Eurostat) in terms of methodology and naming conventions.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "We utilize cross-sectional data from the 2020 wave, collected from January to June 2020, which surveys income for the reference period of 2019. The non-response rate for this wave was recorded at 36.8% (<a href=\"#bib5\">BFS, 2023</a>). Overall, there are 8,156 households in the sample, covering a total of 18,215 individuals. The sample is drawn from the sample register of the FSO which is based on the official population registers of cantons and municipalities (<a href=\"#bib5\">BFS, 2023</a>). The raw data provided by the FSO has been modified to be compatible with SWISSMOD, with no information being lost in the process and a preliminary input dataset is derived.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Given that a wealth tax is levied in all 26 Swiss cantons at both the cantonal and municipal levels, data on personal wealth is essential for accurately simulating the Swiss policy landscape and precisely estimating tax revenue. However, the CH-SILC dataset lacks information on cantonal residence and personal wealth, necessitating imputation. The missing data is imputed from the Swiss Household Panel (SHP) wave 2020. The SHP, is a household-based survey like CH-SILC. In 2020, 10,073 household interviews were conducted, covering 24,724 individuals. The overall sample comprises four different panels, each initiated in a different year starting from 1999 (<a href=\"#bib36\">SHP, 2023</a>; <a href=\"#bib42\">Voorpostel et al., 2021</a>). The SHP 2020 dataset includes many of the same socio-economic and demographic indicators as CH-SILC 2020, with the added advantage of containing variables on cantonal residence, household wealth, and mortgages, which are lacking in CH-SILC.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s4-1",
+                    "title": "4.1. General Description",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "Minor adjustments have been made to the raw data, primarily to eliminate inconsistencies or unclear household assignments of individuals. These adjustments were of minimal significance, resulting in the exclusion of only a handful of observations. The monetary variables in CH-SILC are recorded in CHF and have not been converted to EUR; thus, all monetary values simulated by SWISSMOD are entirely in CHF.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Since all monetary values in the input dataset refer to the income year 2019, the data has been uprated to the year 2023, to account for the resulting time inconsistency. Uprating adjustments are only made to monetary values of non-simulated variables. Different uprating indices have been employed to accurately effect different developments over time. Any possible change in distribution is not considered, so uprated variables still reflect the distribution of the base year.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s4-2",
+                    "title": "4.2. Data Adjustment and Uprating",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "The CH-SILC 2020 dataset provides regional information about household residences at the NUTS-2 level, which divides Switzerland into seven major regions.<sup><a href=\"#fn4\">4</a></sup> However, except for Ticino and Z\u00fcrich, these regions encompass multiple cantons. This granularity is insufficient for applying accurate cantonal and municipal tax rates, which require precise cantonal residence data.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The SHP 2020 dataset, on the other hand, records the cantonal residence for all households in its sample. To impute the cantonal residence in the CH-SILC 2020 dataset, we merged both datasets and created subsets for each NUTS-2 region, retaining household identifiers and original dataset markers. For Ticino and Z\u00fcrich, no further action was necessary as these NUTS-2 regions correspond to single cantons.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "In the other subsets, we identified socio-economic and demographic indicators common to both datasets, such as age, income, civil status, education, and occupation. Using these indicators, we imputed the missing cantonal residence values for CH-SILC observations via multinomial logistic regression, a method well-suited for imputing categorical data (<a href=\"#bib30\">Raghunatan et al., 2001</a>).",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "After completing the imputation for each subset, we removed the SHP observations and recombined the subsets, now augmented with a variable indicating cantonal residence. <a href=\"#fig1\">Figure 1</a> illustrates the distribution of the imputed values compared to those in the donor set.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "fig1",
+                                    "image": {
+                                        "alt": "",
+                                        "uri": "%iiif_uri%/00320%2Fijm-00320-fig001.tif",
+                                        "size": {
+                                            "width": 2205,
+                                            "height": 1554
+                                        },
+                                        "source": {
+                                            "mediaType": "image/jpeg",
+                                            "uri": "%iiif_uri%/00320%2Fijm-00320-fig001.tif/full/full/0/default.jpg",
+                                            "filename": "ijm-00320-fig001.jpg"
+                                        }
+                                    },
+                                    "label": "Figure 1",
+                                    "title": "Comparison of observations per canton in SILC (imputed) and SHP, own calculations based on SILC (2020) and SHP (2020) data.",
+                                    "type": "image"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "text": "To impute missing data on household wealth and mortgages in the input dataset for SWISSMOD, we employ a weighted predictive mean matching (<a href=\"#bib24\">Little, 1988</a>). For this, we proceed in several steps. First, the CH-SILC dataset is augmented with all relevant observations from the SHP dataset. Common wealth indicators are identified and retained in the extended dataset, along with household and original dataset identifiers. A total wealth variable is created by combining all wealth variables present in the SHP dataset, which naturally has missing values for all CH-SILC observations. Similarly, a mortgage variable is created, which is also empty for CH-SILC observations. Subsequently, a weighted predictive mean matching is performed. Each CH-SILC observation is matched to its closest counterpart and assigned the corresponding monetary amount of wealth recorded for that match. The same procedure is applied to the mortgage data from the SHP dataset. After the matching process, SHP observations are removed, and the imputed wealth is assigned to the household head. Mortgages are also aggregated. As a last step, for all individuals under 18, wealth is recoded to zero, as their wealth is already included in household wealth and, by law, assigned to their legal guardian.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "<a href=\"#fig2\">Figure 2</a> compares the distribution of total wealth in the SHP dataset with the resulting distribution in SILC after the imputation process, for total wealth up to 4 million CHF. Both distributions are heavily right-skewed, with the first three quartiles containing fortunes under 1 million CHF. The medians are 324,5000 CHF for SILC and 427,863 CHF for SHP, respectively. However, the mean wealth in SILC is approximately 591,600 CHF, while in SHP it is around 982,000 CHF. This indicates an overrepresentation of smaller fortunes in the imputed SILC dataset and a lack of the typically \u201cthick tail\u201d in wealth distributions (<a href=\"#bib3\">Benhabib and Bisin, 2018</a>).",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "fig2",
+                                    "image": {
+                                        "alt": "",
+                                        "uri": "%iiif_uri%/00320%2Fijm-00320-fig002.tif",
+                                        "size": {
+                                            "width": 2205,
+                                            "height": 1507
+                                        },
+                                        "source": {
+                                            "mediaType": "image/jpeg",
+                                            "uri": "%iiif_uri%/00320%2Fijm-00320-fig002.tif/full/full/0/default.jpg",
+                                            "filename": "ijm-00320-fig002.jpg"
+                                        }
+                                    },
+                                    "label": "Figure 2",
+                                    "title": "Distribution of total wealth variable, own calculations based on SILC (2020) and SHP (2020) data.",
+                                    "type": "image"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "text": "Despite this, predictive mean matching provided the best results in terms of similarity, especially when compared to the alternative approach of Mahalanobis distance matching (<a href=\"#bib35\">Rubin, 1980</a>), which further overestimated small fortunes. Therefore, we selected the predictive mean matching to create the input dataset for this version of SWISSMOD.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "In general, the SHP survey employs a rather simplified approach to recording wealth, with only two to three questions dedicated to housing and other assets. This results in a high estimate of housing wealth but relatively low values for financial wealth, and it does not correct for underreporting at the top end of the wealth distribution (<a href=\"#bib32\">Ravazzini et al., 2019</a>). However, a close evaluation of actual Swiss tax data reveals that wealth is particularly concentrated in the highest percentiles, which are underrepresented in our dataset (<a href=\"#bib26\">Mart\u00ednez, 2022</a>). These limitations must be considered in further analyses and are areas for future improvement.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s4-3",
+                    "title": "4.3. Data Imputation and Matching",
+                    "type": "section"
+                }
+            ],
+            "id": "s4",
+            "title": "4. Data",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "The Swiss social security system is divided into five areas: Old-age and Survivors' insurance (OASI),<sup><a href=\"#fn5\">5</a></sup> disability insurance (DI),<sup><a href=\"#fn6\">6</a></sup> compensation for mandatory work and maternity (MB),<sup><a href=\"#fn7\">7</a></sup> unemployment insurance (UI),<sup><a href=\"#fn8\">8</a></sup> and family/educational allowances (FA/EA).<sup><a href=\"#fn9\">9</a></sup> Above a certain income threshold, it becomes mandatory to pay contributions into an occupational pension insurance scheme (OP).<sup><a href=\"#fn10\">10</a></sup> These insurances protect by paying benefits such as pensions, income replacement and family allowances, or by meeting the costs of sickness and accidents. <a href=\"#table1\">Table 1</a> presents an overview of simulated contributions, benefits, and transfer payments",
+                    "type": "paragraph"
+                },
+                {
+                    "assets": [
+                        {
+                            "id": "table1",
+                            "label": "Table 1",
+                            "tables": [
+                                "<table><thead><tr><th align=\"left\">Policy</th><th align=\"left\" colspan=\"2\">Simulated: Yes (Y) or No (N)</th></tr></thead><tbody><tr><td align=\"left\"/><td align=\"left\"><b>Contributions</b></td><td align=\"left\"><b>Benefits</b></td></tr><tr><td align=\"left\">Old-Age Insurance (OASI)</td><td align=\"left\">Y</td><td align=\"left\">N</td></tr><tr><td align=\"left\">Disability Insurance (DI)</td><td align=\"left\">Y</td><td align=\"left\">N</td></tr><tr><td align=\"left\">Compensation for mandatory work and maternity (MB)</td><td align=\"left\">Y</td><td align=\"left\">Y (maternity benefit)</td></tr><tr><td align=\"left\">Occupational pension (OP)</td><td align=\"left\">Y</td><td align=\"left\">N</td></tr><tr><td align=\"left\">Accident insurance (AI)</td><td align=\"left\">Y</td><td align=\"left\">N</td></tr><tr><td align=\"left\">Unemployment insurance (UB)</td><td align=\"left\">Y</td><td align=\"left\">Y</td></tr><tr><td align=\"left\">Family Allowance (FA)</td><td align=\"left\">Y</td><td align=\"left\">Y</td></tr><tr><td align=\"left\">Educational Allowance (EA)</td><td align=\"left\">Y</td><td align=\"left\">Y</td></tr><tr><td align=\"left\">Social Assistance</td><td align=\"left\">non-contributory</td><td align=\"left\">Y (partially)</td></tr><tr><td align=\"left\">Maternity Benefit</td><td align=\"left\">Y (part of MB)</td><td align=\"left\">Y</td></tr><tr><td align=\"left\">Supplementary Benefits (SB)</td><td align=\"left\">non-contributory</td><td align=\"left\">Y</td></tr><tr><td align=\"left\">Bridging Benefits (BB)</td><td align=\"left\">non-contributory</td><td align=\"left\">Y</td></tr></tbody></table>"
+                            ],
+                            "title": "Overview of simulated benefits and social insurance contributions in SWISSMOD.",
+                            "type": "table"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "Anyone who lives or works in Switzerland is compulsorily insured with the OASI, the DI and the MB (income compensation for military service and maternity). OASI/DI/MB is a Beveridge-type social insurance scheme, making all members of society, except children, liable to pay contributions (<a href=\"#bib11\">Ebbinghaus, 2021</a>). Persons in gainful employment start paying contributions from January 1 after their 17<sup>th</sup> birthday; the obligation to pay contributions ends when they give up gainful employment. If a person drops out of the labour force before reaching the regular retirement age, they are liable to pay contributions as persons not in gainful employment, with reduced rates.<sup><a href=\"#fn11\">11</a></sup> If people remain in gainful employment beyond retirement age, they are still liable to pay contributions but can benefit from an allowance. The total contribution rate into OASI/DI/MB is 10.6%, consisting of 8.7% into OASI, 1.4% into DI and 0.5% into the MB fund. Employers deduct half of the contribution (5.3 %) from the employee\u2019s salary and transfer it to the compensation fund together with the employer\u2019s contribution (also 5.3 %).",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The 2<sup>nd</sup> pillar pension is a funded, defined contributions system (<a href=\"#bib20\">Kirn and Dekkers, 2023</a>). Individuals with an annual income above 22,050 CHF are mandatorily insured in an occupational pension (OP) scheme. Contributions are equally shared between employee and employer, with rates depending on age varying between 7-18% of the so-called \u201ccoordinated wage\u201d depending on age. A maximum yearly wage of 88,200 CHF is insured under the OP scheme (<i>Obligatorium</i>), but employees can opt into additional pension plans offered by their occupational pension provider (<i>\u00dcberobligatorium</i>). We simulate these voluntary payments with a uniform rate of 3.5%, based on calculations by the Swiss Federal Tax Administration (<a href=\"#bib12\">ESTV, 2021</a>).",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Contributions to accident insurance (AI) are also shared between employer and employee. Employers are responsible for paying contributions to insurance covering job-related accidents (during work hours and on-site), while employees pay for insurance covering non-job-related accidents. Rates vary depending on the field of work and the associated risk of accidents. To simulate contributions, we apply standard rates based on the social contribution rates of the Canton of Zurich: 0.1240% for occupational accidents and 0.3865% for non-occupational accidents.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The unemployment insurance (UB) premiums are generally calculated as 2.2% of yearly income, with a ceiling of 148,200 CHF after which contributions are capped. The burden is equally shared between employer and employee. For non-employed individuals, contributions are calculated based on replacement income and assets.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Family Allowances (FA) are financed by contributions which are only borne by the respective employer. The contribution rate varies depending on the canton in which the employer is based.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s5-1",
+                    "title": "5.1. Social Security Contributions",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "Unemployment benefits (UB) are disbursed if contributions have been made to the unemployment insurance system. Consequently, eligibility and benefit amounts are contingent upon the amount and duration of these contributions. Additionally, the duration of benefit payments and the replacement rate are influenced by the beneficiary\u2019s age and the number of dependents.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The benefit amounts to 70% of the previous insured earnings for individuals without children (up to a maximum of 148,200 CHF per year) and 80% for individuals with at least one child, or if their insured earnings do not exceed 3,797 CHF per month. If entitlement to unemployment benefits ends before the individual can re-enter the labor market, they are disenrolled. Disenrollment results in the loss of financial support from unemployment insurance.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "In such cases, disenrolled individuals must rely on personal savings, support from close relatives, or, in rare instances, bridging benefits for the elderly unemployed (BB). In the absence of these resources, municipal social assistance may be required.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "To simulate UB, we utilize information in the SILC data, including the duration of unemployment, work history, and current receipt of unemployment benefits. Eligibility criteria and benefit amounts are approximated in accordance with the EUROMOD Modelling Conventions (JRC-EUROMOD Team, 2022).",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Family allowances (FA) are designed to partially offset the costs incurred by parents in raising their children. All cantons provide a minimum child allowance of CHF 200 for children up to the age of 16, or until they qualify for an education allowance. Additionally, an education allowance of CHF 250 is provided for young people in post-compulsory education, starting from age 15 up to age 25.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "All employees, self-employed individuals, non-employed persons with modest incomes, and unemployed mothers receiving maternity benefits (MB) are entitled to FA without any income limit. This universality simplifies the simulation in SWISSMOD. For this version of SWISSMOD, we further simplify by disregarding cantonal variations.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Maternity benefits (MB) are provided to any mother who is compulsorily insured under the Old Age and Survivors Insurance (OASI) scheme, starting immediately after childbirth. The duration of the benefit is limited to 98 days, and it is calculated as a daily amount equivalent to 80% of the mother\u2019s previous income, with a maximum of 220 CHF per day, regardless of whether the mother was employed or self-employed. For mothers eligible for unemployment benefits, the maternity benefit serves as a substitute during its eligibility period.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The SILC data does not record the age of a dependent child in weeks but provides the month of birth. This allows us to determine the age of a child younger than one year in weeks by the end of the reference period in the data. Consequently, we can accurately simulate the MB for any child born within the reference period.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Social Assistance is the safety net of last resort for individuals in need of assistance during a period of need and in economically disadvantaged situations. It is generally provided by the municipality of residence and consists of several benefits: Basic subsistence needs, housing costs, basic medical care and situation-related benefits. Depending on individual circumstances, allowances for integration and certain income allowances are granted additionally. The amounts granted for these Individuals eligible for an Old Age and Survivors Insurance (OASI) or Disability Insurance (DI) pension that is insufficient to fully cover their basic needs or the costs of their inpatient care can apply for supplementary benefits (SB). These benefits are restricted to individuals who are eligible for an OASI/DI pension, thus limiting them to those who have reached retirement age, are disabled, or are widowed.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The assessment unit for SB is the individual household. Creditable expenses are calculated based on household size, number of dependent children, housing and medical care costs according to regional specifications, and costs of inpatient care. These expenses are then weighed against any income received by the household. If the income is less than the creditable expenses and net wealth is below a certain threshold, the difference is paid out as SB.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Due to a lack of data in the SILC on individuals receiving inpatient care, our simulation of SBs is limited in that we cannot attribute any creditable expenses for inpatient care to the individuals in our sample. Additionally, we simplify the creditable yearly housing costs by using those of a medium-sized city, as we do not have data on exact municipal residence and housing costs, which scale according to the size of the municipality.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Bridging benefits (BB) are closely related to supplementary benefits (SB) and are designed for elderly unemployed individuals (aged 60 and above) who exit the unemployment insurance system without sufficient wealth to support themselves until they reach retirement age. The means test for BB is similar to that of SB, where creditable expenses are weighed against any income. The wealth threshold for BB is lower compared to SB, and one of the requirements for receiving BB is ineligibility for any old-age or disability pension. Consequently, only a very small number of individuals receive BB. For instance, in 2023, only 1,236 individuals across Switzerland received bridging benefits (<a href=\"#bib48\">BSV, 2024</a>).",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Social assistance (SA) serves as the safety net of last resort for individuals experiencing economic hardship and in need of support. It is provided by the municipality of residence and encompasses several benefits: basic subsistence needs, housing costs, basic medical care, and situation-related benefits. Depending on individual circumstances, additional allowances for integration and certain income allowances may be granted.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The amounts allocated for these benefits vary between cantons, which we account for when simulating basic subsistence needs and basic medical care. Due to the variability of housing costs across municipalities, we simplify by using the housing costs for the city of Z\u00fcrich as a standard for all of Switzerland. SA is means-tested against any other income and wealth, making it a highly restrictive benefit.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s5-2",
+                    "title": "5.2. Social Security Benefits",
+                    "type": "section"
+                }
+            ],
+            "id": "s5",
+            "title": "5. Simulation of Social Security Benefits and Transfers",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "We simulate income taxes at the federal, cantonal, and municipal levels, as well as wealth taxes at the cantonal and municipal levels, in accordance with the current legal framework. The present version of SWISSMOD does not include simulations of indirect taxes, such as the Value Added Tax (VAT), and is restricted to direct taxation. <a href=\"#table2\">Table 2</a> provides a comprehensive overview of all the taxes simulated in SWISSMOD.",
+                    "type": "paragraph"
+                },
+                {
+                    "assets": [
+                        {
+                            "id": "table2",
+                            "label": "Table 2",
+                            "tables": [
+                                "<table><thead><tr><th align=\"left\">Tax</th><th align=\"left\">Simulated: Yes (Y), No (N), Partially (PS)</th><th align=\"left\">Comments</th></tr></thead><tbody><tr><td align=\"left\">Personal Income Tax (Federal)</td><td align=\"left\">Y</td><td align=\"left\"/></tr><tr><td align=\"left\">Individual assessment</td><td align=\"left\">Y</td><td align=\"left\"/></tr><tr><td align=\"left\">Joint assessment</td><td align=\"left\">Y</td><td align=\"left\"/></tr><tr><td align=\"left\">Personal Income Tax (Cantonal)</td><td align=\"left\">Y</td><td align=\"left\"/></tr><tr><td align=\"left\">Individual assessment</td><td align=\"left\">Y</td><td align=\"left\"/></tr><tr><td align=\"left\">Joint Assessment</td><td align=\"left\">Y</td><td align=\"left\"/></tr><tr><td align=\"left\">Personal Income Tax (Municipal)</td><td align=\"left\">PS</td><td align=\"left\">Restricted to cantonal capital</td></tr><tr><td align=\"left\">Individual assessment</td><td align=\"left\">PS</td><td align=\"left\">Restricted to cantonal capital</td></tr><tr><td align=\"left\">Joint assessment</td><td align=\"left\">PS</td><td align=\"left\">Restricted to cantonal capital</td></tr><tr><td align=\"left\"/><td align=\"left\"/><td align=\"left\"/></tr><tr><td align=\"left\">Personal Wealth Tax (Cantonal)</td><td align=\"left\">Y</td><td align=\"left\"/></tr><tr><td align=\"left\">Individual assessment</td><td align=\"left\">Y</td><td align=\"left\"/></tr><tr><td align=\"left\">Joint assessment</td><td align=\"left\">Y</td><td align=\"left\"/></tr><tr><td align=\"left\">Personal Wealth Tax (Municipal)</td><td align=\"left\">PS</td><td align=\"left\">Restricted to cantonal capital</td></tr><tr><td align=\"left\">Individual assessment</td><td align=\"left\">PS</td><td align=\"left\">Restricted to cantonal capital</td></tr><tr><td align=\"left\">Joint assessment</td><td align=\"left\">PS</td><td align=\"left\">Restricted to cantonal capital</td></tr><tr><td align=\"left\"/><td align=\"left\"/><td align=\"left\"/></tr><tr><td align=\"left\">Value added tax</td><td align=\"left\">N</td><td align=\"left\"/></tr></tbody></table>"
+                            ],
+                            "title": "Overview of simulated taxes in SWISSMOD.",
+                            "type": "table"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "In defining the tax base, both the federal and cantonal levels adhere to the principles of objective and subjective ability to pay. In the first step, expenses and general deductions are subtracted from the gross income to determine the net income. In the second step, social deductions are subtracted from the net income to calculate the taxable income, which is crucial for tax computation.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The category of <i>expenses</i> includes the production costs for the self-employed (e.g., depreciation and provisions) and those for employees (e.g., necessary costs for commuting between home and workplace and the additional necessary costs for meals away from home). <i>General deductions</i> refer to deductions that are not directly related to specific income. Since they were introduced by the legislature for social policy reasons, the same rules apply at both the federal and cantonal levels. General deductions include private interest on debt, maintenance contributions, contributions to social security (OASI/DI/MB, 2<sup>nd</sup> pillar, tied private pension provision (pillar 3a)), childcare costs, medical expenses, as well as deductions from the earned income of the second-earning spouse.<sup><a href=\"#fn10\">10</a></sup> <i>Social deductions</i> are intended to take into account the personal and economic circumstances of taxpayers (marital status, number of children, support obligations, age, etc.) when assessing the tax burden, in order to better reflect their financial capacity. Their granting and amount are regulated very differently in the tax laws of the federal government and the cantons.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Due to the similarities at the federal and cantonal levels, the general procedure is described in the section on federal taxes (section 6.1.1.), while the cantonal peculiarities are highlighted in the section on cantonal income taxes (section 6.1.2.).",
+                            "type": "paragraph"
+                        },
+                        {
+                            "content": [
+                                {
+                                    "text": "At the federal level, several deductions are applied in SWISSMOD before assessing the tax burden, following federal tax legislation. Starting from gross income, after deducting social insurance contributions, deductions for commuting costs, meals away from home, and other professional expenses are considered. Additionally, deductions for payments into private pension funds and insurance are applicable for both adults and dependent children within the tax unit. Furthermore, costs for third-party childcare are deductible. For married individuals where both spouses are gainfully employed, a second-earner deduction is applied to the lower salary. The final deductions at the federal level are social deductions, which depend on marital status, number of children, and/or supported persons.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "Given the numerous allowances within the Swiss income tax regime, each with varying deduction or allowance values, it is not feasible to comprehensively simulate all of them due to limitations in the available input data. Consequently, in certain cases, only the maximum allowance amounts are assumed. This approach aligns with the methodology used by the ESTV tax calculator (<a href=\"#bib12\">ESTV, 2021</a>).",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "After deductions are applied, the tax burden is calculated based on marital status. The Swiss Confederation employs two distinct tax schedules: one for individually assessed persons and another for the joint assessment of spouses, aimed at reducing the tax burden on married couples. Federal income taxes are progressive, increasing with taxable income, and reach a maximum rate of 13.2% for individuals and 13% for jointly assessed persons. In SWISSMOD, these schedules are applied separately to individual and joint taxable incomes.",
+                                    "type": "paragraph"
+                                }
+                            ],
+                            "id": "s6-1-1",
+                            "title": "6.1.1. Simulation of Personal Income Tax at the Federal Level",
+                            "type": "section"
+                        },
+                        {
+                            "content": [
+                                {
+                                    "text": "Taxable income at the cantonal level is simulated based on the previously defined gross federal income, with specific cantonal allowances and deductions applied. While the general deductions are consistent across federal and cantonal levels, cantons have the autonomy to set their own allowance levels. This autonomy makes the simulation of the cantonal income tax burden more complex than that of the federal income tax. For instance, social deductions vary across cantons, as the StHG imposes no restrictions, allowing cantons significant freedom in their structuring.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "In principle, each canton applies its own tax schedule to cantonal taxable income to calculate the so-called simple cantonal income tax. The applied rates and income brackets vary widely, resulting in different cantonal income tax burdens depending on the place of residence. For jointly assessed individuals, there are three approaches to calculating the simple joint tax burden. The cantons of OW and UR apply the same schedule to jointly assessed persons as to individually assessed persons. Some cantons (ZH, BE, LU, ZG, BS, AR, TI, JU) apply a second tax schedule for married individuals which reduces the burden. Lastly, the cantons of SZ, NW, GL, FR, SO, BL, SH, AI, SG, GR, AG, TG, NE, VD and GE apply full or partial splitting. In addition to that, the canton of VS performs a multi-step indexation of taxable income by a factor determined yearly according to the development of inflation. After indexation, the same tax schedule is applied for single and married people, with a special deduction for married couples.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "The simple cantonal income tax is then multiplied by an additional cantonal tax rate to determine the full tax liability. This applies to all cantons except BL and VS, where the simple tax is already equal to the income tax owed. These additional rates also differ between cantons.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "SWISSMOD simulates the cantonal tax burden separately for each canton, enabling comparative analysis. Moreover, it allows for the simulation of the impact of small tax reforms at the cantonal level in terms of distributional and budgetary effects.",
+                                    "type": "paragraph"
+                                }
+                            ],
+                            "id": "s6-1-2",
+                            "title": "6.1.2. Simulation of Personal Income Tax at the Cantonal Level",
+                            "type": "section"
+                        },
+                        {
+                            "content": [
+                                {
+                                    "text": "In addition to the Confederation and the Cantons, Swiss municipalities are also authorized to levy an additional income tax. The design of the municipal income tax is straightforward, as it involves multiplying the simple cantonal tax by an additional municipal tax rate. Only in the canton of TI the municipal tax rate is multiplied by the full cantonal income tax burden. Each Swiss municipality sets a specific tax rate for its residents.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "Due to the large number of municipalities in Switzerland and the lack of detailed municipal residence information in SILC, we do not simulate every municipality\u2019s tax rate in SWISSMOD. Instead, we apply the tax rates for the capital of each canton. The municipal income tax rates do not differ between individually and jointly taxed persons. However, in SWISSMOD, we simulate the individual municipal tax burden separately from the joint municipal income tax burden due to the calculation method of the simple cantonal income tax burden.",
+                                    "type": "paragraph"
+                                }
+                            ],
+                            "id": "s6-1-3",
+                            "title": "6.1.3. Simulation of Personal Income Tax at the Municipal Level",
+                            "type": "section"
+                        }
+                    ],
+                    "id": "s6-1",
+                    "title": "6.1. Simulation of Personal Income Tax",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "As mentioned in Section 4, gross wealth in SWISSMOD is imputed into the SILC dataset from the SHP dataset, which records values for personal wealth. Since personal wealth is not categorized by specific functions in the dataset and investments in the second and third pillars are recorded separately, we assume that the variable representing gross wealth sufficiently accounts for these exemptions. To determine an individual\u2019s net wealth, all current debts and liabilities are deducted from the gross wealth. All cantons apply some form of debt/liability deduction. As debts are not comprehensively captured by the SILC dataset, we approximate them using the imputed value of mortgages.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "content": [
+                                {
+                                    "text": "Each canton applies social deductions to net wealth to determine taxable wealth, with the amounts of these deductions varying between cantons. There are three types of social deductions for wealth: individual, married, and child. All cantons, except Z\u00fcrich, apply at least one of these social deductions. The child deduction is set per child and accumulates with each child in the tax unit. All cantonal social deductions are accurately simulated in SWISSMOD.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "After determining taxable wealth, each canton applies its own tax schedule to calculate the simple cantonal wealth tax burden. While most cantons use a progressive rate, the cantons of LU, UR, SZ, OW, NW, AI, SG, and TG apply a proportional rate. Similar to income taxation, after calculating the simple wealth tax burden, most cantons apply an additional cantonal wealth tax rate to determine the full wealth tax liability. Only the cantons of BL, FR, GR, UR, and VS do not apply this additional rate and instead levy only the simple wealth tax. With regard to the tariff, there are two special cases. The canton of VS applies a progressive rate, but the wealth bracket in which an individual\u2019s taxable wealth falls determines the rate applied to the entire taxable wealth. In all other cantons, wealth is taxed at different rates according to the respective brackets. The canton of GE uses two different schedules for wealth taxation, combining the resulting tax burdens and then multiplying the sum by the additional cantonal tax rate.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "In most cantons, the same wealth tax schedule applies to both individually and jointly assessed persons. However, the cantons of BS, VD, and ZH use a different schedule to reduce the jointly assessed wealth tax burden. The canton of NE applies the same tax schedule but performs a partial splitting before calculating the tax burden, which also lowers the relative tax burden for couples.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "We simulate the individually and jointly assessed cantonal wealth tax burdens according to each canton\u2019s schedule separately in SWISSMOD, aiming to provide a comprehensive picture of the decentralized Swiss tax system and create a robust platform for simulating potential reforms.",
+                                    "type": "paragraph"
+                                }
+                            ],
+                            "id": "s6-2-1",
+                            "title": "6.2.1. Simulation of Wealth Tax at the Cantonal Level",
+                            "type": "section"
+                        },
+                        {
+                            "content": [
+                                {
+                                    "text": "As with income taxation, Swiss municipalities levy the wealth tax as a surcharge on the cantonal wealth tax. This means that the simple cantonal wealth tax is calculated and then multiplied by an additional municipal tax rate. This municipal tax rate is set individually by each municipality, with some cantons imposing legal upper and lower limits on these rates. Consequently, the amount of wealth tax varies significantly depending on the place of residence.",
+                                    "type": "paragraph"
+                                },
+                                {
+                                    "text": "Due to the lack of detailed data on municipal residency, we simulate the wealth tax burden using the tax rates of each canton\u2019s capital. The municipal wealth tax rates do not differ between individually and jointly taxed persons, similar to the municipal income tax. However, in SWISSMOD, we calculate the individual municipal tax burden separately from the joint municipal tax burden due to the method used to simulate the simple cantonal wealth tax burden.",
+                                    "type": "paragraph"
+                                }
+                            ],
+                            "id": "s6-2-2",
+                            "title": "6.2.2. Simulation of Wealth Tax at the Municipal Level",
+                            "type": "section"
+                        }
+                    ],
+                    "id": "s6-2",
+                    "title": "6.2. Simulation of Wealth Tax",
+                    "type": "section"
+                }
+            ],
+            "id": "s6",
+            "title": "6. Simulation of Income and Wealth Taxes",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "To verify the accuracy and reliability of SWISSMOD at a granular level, we adhere to the EUROMOD Modelling Conventions (JRC-EUROMOD Team, 2022). Accordingly, our microvalidation involves several steps. Initially, we verify simulated values at the micro-level by randomly selecting cases and cross-checking their accuracy against the tax and transfer rules stipulated by Swiss legislation for 2023.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Next, to ensure the accurate simulation of various tax rates, we plot the tax burden as a function of taxable income. This process includes analyzing the tax rate progressions for jointly and individually assessed individuals, for both wealth and income taxes, at the federal and cantonal levels. Graphical representations help identify inconsistencies in the simulation, such as \u201cbreaks\u201d in the tax rate progression. <a href=\"#fig3\">Figure 3</a> illustrates the different tax schedules for individually and jointly assessed persons. The curve plotting taxable income against tax burden is slightly flatter for jointly assessed persons, reflecting the decreased tax burden for married individuals.",
+                    "type": "paragraph"
+                },
+                {
+                    "assets": [
+                        {
+                            "id": "fig3",
+                            "image": {
+                                "alt": "",
+                                "uri": "%iiif_uri%/00320%2Fijm-00320-fig003.tif",
+                                "size": {
+                                    "width": 2205,
+                                    "height": 746
+                                },
+                                "source": {
+                                    "mediaType": "image/jpeg",
+                                    "uri": "%iiif_uri%/00320%2Fijm-00320-fig003.tif/full/full/0/default.jpg",
+                                    "filename": "ijm-00320-fig003.jpg"
+                                }
+                            },
+                            "label": "Figure 3",
+                            "title": "Comparison of individual and joint federal income tax burden, simulated with SWISSMOD version 1.0.",
+                            "type": "image"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "text": "To illustrate the differences in cantonal income tax burdens, <a href=\"#fig4\">Figure 4</a> compares the monthly tax burdens of three cantons: Geneva, Ticino, and Zug, representing high, medium, and low tax burdens, respectively. The diverging curves are distinctly visible and become more pronounced with increasing income levels. Furthermore, the overall tax burden is consistently lower for jointly assessed individuals.",
+                    "type": "paragraph"
+                },
+                {
+                    "assets": [
+                        {
+                            "id": "fig4",
+                            "image": {
+                                "alt": "",
+                                "uri": "%iiif_uri%/00320%2Fijm-00320-fig004.tif",
+                                "size": {
+                                    "width": 2205,
+                                    "height": 743
+                                },
+                                "source": {
+                                    "mediaType": "image/jpeg",
+                                    "uri": "%iiif_uri%/00320%2Fijm-00320-fig004.tif/full/full/0/default.jpg",
+                                    "filename": "ijm-00320-fig004.jpg"
+                                }
+                            },
+                            "label": "Figure 4",
+                            "title": "Comparison of individual and joint cantonal income tax burden, simulated with SWISSMOD version 1.0.",
+                            "type": "image"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "text": "Interestingly, this established order changes when we examine the additional municipal tax burden in the cantonal capitals. In Bellinzona, the capital of Ticino, the municipal tax burden is higher than in Geneva-City, as shown in <a href=\"#fig5\">Figure 5</a>. This highlights the significant variance within the Swiss tax system and underscores the numerous potential anchor points for reforms.",
+                    "type": "paragraph"
+                },
+                {
+                    "assets": [
+                        {
+                            "id": "fig5",
+                            "image": {
+                                "alt": "",
+                                "uri": "%iiif_uri%/00320%2Fijm-00320-fig005.tif",
+                                "size": {
+                                    "width": 2205,
+                                    "height": 743
+                                },
+                                "source": {
+                                    "mediaType": "image/jpeg",
+                                    "uri": "%iiif_uri%/00320%2Fijm-00320-fig005.tif/full/full/0/default.jpg",
+                                    "filename": "ijm-00320-fig005.jpg"
+                                }
+                            },
+                            "label": "Figure 5",
+                            "title": "Comparison of individual and joint municipal income tax burden, simulated with SWISSMOD version 1.0",
+                            "type": "image"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "text": "Differences in cantonal wealth taxation also manifest in varying tax burdens. Since wealth is assessed annually and no monthly deductions are made, we examine the yearly tax burden. As shown in <a href=\"#fig6\">Figure 6</a>, significant differences are evident among cantons with low, medium, and high wealth tax rates. Similar to income taxation, the computed values have been verified to accurately reflect the actual tax schedules.",
+                    "type": "paragraph"
+                },
+                {
+                    "assets": [
+                        {
+                            "id": "fig6",
+                            "image": {
+                                "alt": "",
+                                "uri": "%iiif_uri%/00320%2Fijm-00320-fig006.tif",
+                                "size": {
+                                    "width": 2205,
+                                    "height": 776
+                                },
+                                "source": {
+                                    "mediaType": "image/jpeg",
+                                    "uri": "%iiif_uri%/00320%2Fijm-00320-fig006.tif/full/full/0/default.jpg",
+                                    "filename": "ijm-00320-fig006.jpg"
+                                }
+                            },
+                            "label": "Figure 6",
+                            "title": "Comparison of Individual and joint cantonal wealth tax burden, simulated with <i>SWISSMOD</i> version1.0.",
+                            "type": "image"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "text": "To ensure consistency at the micro level, we also compare the simulated yearly tax burden distribution with the one observed in the SILC data. <a href=\"#fig7\">Figure 7</a> illustrates the two distributions, encompassing all federal, cantonal and municipal taxes on a household level. We generally observe a good fit, with medians for SILC and SWISSMOD being 10,000 CHF and 10,330 CHF, respectively. Mean values of approximately 16,000 CHF for SILC and 19,000 CHF for SWISSMOD also emphasize this result. Slight discrepancies might stem from the fact that homeowners in Switzerland have to report a \u201chypothetical rent payment\u201d that they save due to being owners, as taxable income. This additional income is not yet considered in SWISSMOD. Furthermore, not all deductions are simulated due to a lack of information in the data, or are only approximated by assuming an average amount or even the largest deductible amount, e.g., the deduction for meals away from home.",
+                    "type": "paragraph"
+                },
+                {
+                    "assets": [
+                        {
+                            "id": "fig7",
+                            "image": {
+                                "alt": "",
+                                "uri": "%iiif_uri%/00320%2Fijm-00320-fig007.tif",
+                                "size": {
+                                    "width": 2205,
+                                    "height": 1510
+                                },
+                                "source": {
+                                    "mediaType": "image/jpeg",
+                                    "uri": "%iiif_uri%/00320%2Fijm-00320-fig007.tif/full/full/0/default.jpg",
+                                    "filename": "ijm-00320-fig007.jpg"
+                                }
+                            },
+                            "label": "Figure 7",
+                            "title": "Comparison of household tax burden, based on Swiss SILC (2020) data and simulations performed by SWISSMOD version 1.0.",
+                            "type": "image"
+                        }
+                    ],
+                    "type": "figure"
+                }
+            ],
+            "id": "s7",
+            "title": "7. Simulation Results and Microvalidation",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "To ensure the external validity of our simulation, we compare the aggregated simulated results with external statistics provided by Swiss government agencies. Unfortunately, not all aggregate statistics for 2023 are available, so for certain taxes and benefits, we relied on official records from 2022 and 2021 (<a href=\"#bib48\">BSV, 2024</a>; <a href=\"#bib49\">EFV, 2023</a>; <a href=\"#bib50\">EFV, 2024a</a>; <a href=\"#bib51\">EFV, 2024b</a>).",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "<a href=\"#table3\">Table 3</a> provides a comparison of the simulated taxes, benefits and social security contributions (column 2) and external aggregate data (column 3). The reported ratios, which reflect the accuracy of the simulation (column 4) are comparable to simulations for countries included in EUROMOD.",
+                    "type": "paragraph"
+                },
+                {
+                    "assets": [
+                        {
+                            "id": "table3",
+                            "label": "Table 3",
+                            "tables": [
+                                "<table><thead><tr><th align=\"left\">Simulated Tax/Benefit/SIC</th><th align=\"left\">Baseline Values (million CHF)</th><th align=\"left\">External Values (million CHF, year in brackets)</th><th align=\"left\">Simulated/External Ratio</th></tr></thead><tbody><tr><td align=\"left\"><b>Taxes</b></td><td align=\"left\"/><td align=\"left\"/><td align=\"left\"/></tr><tr><td align=\"left\">Federal Income Tax</td><td align=\"left\">11,354</td><td align=\"left\">13,306 (<i>2023</i>)</td><td align=\"left\"><b>0.85</b></td></tr><tr><td align=\"left\">Cantonal Income Tax</td><td align=\"left\">27,244</td><td align=\"left\">28,285 (<i>2022</i>)</td><td align=\"left\"><b>0.96</b></td></tr><tr><td align=\"left\">Municipal Income Tax</td><td align=\"left\">20,157</td><td align=\"left\">19,226 (<i>2021</i>)</td><td align=\"left\"><b>1.05</b></td></tr><tr><td align=\"left\">Cantonal Wealth Tax</td><td align=\"left\">3,672</td><td align=\"left\">5,535 (<i>2022</i>)</td><td align=\"left\"><b>0.66</b></td></tr><tr><td align=\"left\">Municipal Wealth Tax</td><td align=\"left\">2,871</td><td align=\"left\">3,410 (<i>2021</i>)</td><td align=\"left\"><b>0.84</b></td></tr><tr><td align=\"left\"><b>Benefits</b></td><td align=\"left\"/><td align=\"left\"/><td align=\"left\"/></tr><tr><td align=\"left\">Social Assistance (including Housing Benefits)</td><td align=\"left\">2,651</td><td align=\"left\">2,509 (<i>2022</i>)</td><td align=\"left\"><b>1.06</b></td></tr><tr><td align=\"left\">Supplementary Benefits</td><td align=\"left\">2,729</td><td align=\"left\">3,044 (<i>2023</i>)</td><td align=\"left\"><b>0.90</b></td></tr><tr><td align=\"left\">Bridging Benefits</td><td align=\"left\">110</td><td align=\"left\">26 (<i>2023</i>)</td><td align=\"left\"><b>4.22</b></td></tr><tr><td align=\"left\">Maternity Benefit</td><td align=\"left\">1,245</td><td align=\"left\">1,104 (<i>2023</i>)</td><td align=\"left\"><b>1.13</b></td></tr><tr><td align=\"left\">Unemployment Benefit</td><td align=\"left\">4,307</td><td align=\"left\">4,013 (<i>2023</i>)</td><td align=\"left\"><b>1.07</b></td></tr><tr><td align=\"left\">Family Allowance</td><td align=\"left\">3,126</td><td align=\"left\">4,500 (<i>2022</i>)</td><td align=\"left\"><b>0.69</b></td></tr><tr><td align=\"left\">Educational Allowance</td><td align=\"left\">1,541</td><td align=\"left\">1,800 (<i>2022</i>)</td><td align=\"left\"><b>0.86</b></td></tr><tr><td align=\"left\"><b>Social Insurance Contributions</b></td><td align=\"left\"/><td align=\"left\"/><td align=\"left\"/></tr><tr><td align=\"left\">Total Employee SIC</td><td align=\"left\">42,087</td><td align=\"left\">58,210 (<i>2022/2023</i>)</td><td align=\"left\"><b>0.72</b></td></tr><tr><td align=\"left\">Total Employer SIC</td><td align=\"left\">44,568</td><td align=\"left\">62,719 (<i>2022/2023</i>)</td><td align=\"left\"><b>0.71</b></td></tr></tbody></table>"
+                            ],
+                            "title": "SWISSMOD Macrovalidation Table, calculations based on 2023 tax-benefit policies in Switzerland.",
+                            "type": "table"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "text": "For simulated income taxes, our aggregate values align relatively well with external aggregate data from 2021-2023 across federal, cantonal, and municipal levels. The ratios produced by SWISSMOD are comparable to those by EUROMOD versions of neighboring countries like Austria (<a href=\"#bib14\">Fuchs et al., 2024</a>) or France (<a href=\"#bib4\">Bouvard, 2024</a>). However, a different picture emerges when examining wealth taxation, where SWISSMOD underestimates revenues at both cantonal and municipal levels. This discrepancy can be attributed to data issues. As mentioned in section 4, the imputation of wealth data has led to an underestimation of large fortunes, which make up a sizable part of the overall wealth distribution in Switzerland (<a href=\"#bib26\">Mart\u00ednez, 2022</a>). There may be room for improvement in the imputation of wealth data into the SILC dataset, however, the issue likely also stems from underreporting in the donor dataset (<a href=\"#bib32\">Ravazzini et al., 2019</a>). A possible solution would be to use tax data as the basis for the simulation, which proves to be very accurate regarding the documentation of wealth (<a href=\"#bib26\">Mart\u00ednez, 2022</a>). We did not choose this approach because tax data is not accessible for all cantons. Further, since the wealth tax burden is not explicitly included in the Swiss SILC data, we cannot simply include the burden in our output dataset, like in, e.g., the Spanish version of EUROMOD (<a href=\"#bib33\">Recio Alcaide et al., 2024</a>). Future iterations of SWISSMOD will address these issues to enable a more accurate aggregate analysis of wealth taxation.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The underestimation of supplementary benefits could be attributed to the very strict eligibility criteria regarding age, income, and wealth, which might lead to underrepresentation in the data. Conversely, the higher values for bridging benefits are most likely due to data flaws. As previously mentioned, the actual number of recipients in 2023 was only 1,236 individuals across Switzerland (<a href=\"#bib48\">BSV, 2024</a>), making accurate representation in our dataset very challenging. The underestimation of family allowances is likely caused by our simplified simulation approach, which assumes a relatively low uniform benefit rate across all cantons, neglecting regional variations. This issue will be addressed in future versions of SWISSMOD to accurately reflect the cantonal differences in family and educational allowances.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The external aggregate values for employee and employer social insurance contributions are based on several external statistics and include only those SICs simulated in SWISSMOD. While all components are slightly underestimated, the overall underestimation is primarily driven by contributions to the occupational pension schemes. These contributions, above the mandatory bracket, are approximated by a fixed value provided by the Swiss tax authorities (<a href=\"#bib12\">ESTV, 2021</a>). Since this value does not seem to yield accurate simulation results, it may require adjustment in future developments of SWISSMOD.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "In summary, it can be concluded that the simulation model provides reliable results for income tax simulation. Significant discrepancies exist in the simulation of wealth tax due to inadequate data and the underrepresentation of high wealth, leading to an underestimation of tax revenues. Overall, however, the model delivers consistent results, allowing for the testing of various reform options.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "However, if a reform of the wealth tax is to be analyzed, it is recommended to use cantonal tax data as the basis to increase the model\u2019s accuracy. This approach should also be taken when conducting simulations for individual municipalities, as the current model version only simulates municipal taxes based on the cantonal capital.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s8",
+            "title": "8. Macrovalidation",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "This article introduces SWISSMOD, a new microsimulation model based on the EUROMOD software platform. Given the significant subnational fiscal autonomy in the Swiss tax and transfer system (TTS), the EUROMOD software platform is an ideal choice due to its structure and flexibility.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The high degree of fiscal autonomy at the cantonal and municipal levels leads to significant variation in tax burdens and transfers, making the Swiss TTS \u2014and thus SWISSMOD \u2014particularly valuable for empirical analyses. This heterogeneity is further amplified by the different forms of spousal taxation applied in various cantons. Additionally, the wealth tax, which is levied in only a few countries, presents an interesting field of analysis.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The complex tax system, however, places high demands on the data basis of the model. We use the Swiss SILC dataset to ensure the international comparability of the results. However, since the SILC dataset lacks information on cantonal residence and wealth, we have imputed the missing data using the Swiss Household Panel (SHP).",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "This imputation allows us to simulate the wealth tax. However, the results of the macro-validation show that the aggregated revenue deviates significantly from the actual tax revenue due to the underrepresentation of wealth in the data used. Better aggregated results could be achieved by using cantonal tax data. However, since these are not available for all cantons, this article relies on the combination of SILC and SHP data. Regarding the aggregated income tax revenue, the model achieves very precise results.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "This precision with regard to individual taxation is also evident in the results of the micro-validation. Through the detailed simulation of various tax bases, rates, and surcharges, SWISSMOD enables comprehensive and precise analyses of the effective and marginal tax burden. Consequently, the model can be utilized to examine differences in the tax burden at both the federal and cantonal levels. Additionally, it is well-suited for analyzing the transition to individual taxation, a reform for which the Federal Council of Switzerland has already established the framework.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "We plan to continuously develop and update SWISSMOD to ensure an accurate depiction of Swiss tax-benefit policies and to implement improvements. Eventually, we aim to make SWISSMOD available to other researchers. We have identified key aspects to improve, particularly in the taxation of wealth and aggregate analysis.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "We also plan to conduct analyses of potential or planned tax-benefit policy reforms in Switzerland, investigating their fiscal and distributional impacts. Due to its roots and integration in EUROMOD, SWISSMOD is well-suited for cross-country analysis with EU27 countries, facilitating previously scarce comparisons with Switzerland.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Additionally, we plan to integrate wider functionality into SWISSMOD by extending existing functions and implementing a tool for indirect taxation, similar to what has been done for EUROMOD (<a href=\"#bib1\">Ako\u011fuz et al., 2020</a>). Extending SWISSMOD with a tool for indirect taxation would greatly enhance our understanding of the Swiss tax system and provide a robust foundation for future studies.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The overarching goal of SWISSMOD is to facilitate more microsimulation studies for Switzerland and make tax-benefit analysis more accessible. We encourage other researchers to cooperate and aim for a collaborative research to advance our understanding of tax-benefit policies.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s9",
+            "title": "9. Conclusion and Outlook",
+            "type": "section"
+        },
+        {
+            "id": "footnotes",
+            "title": "Footnotes",
+            "type": "section",
+            "content": [
+                {
+                    "content": [
+                        {
+                            "text": "Schwyz (SZ), Nidwalden (NW), Glarus (GL), Fribourg (FR), Solothurn (SO), Basel-Landschaft (BL), Schaffhausen (SH), Appenzell Innerrhoden (AI), St. Gallen (SG), Graub\u00fcnden (GR), Aargau (AG), Thurgau (TG), Neuch\u00e2tel (NE), Vaud (VD), Geneva (GE).",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "fn1",
+                    "title": "1.",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "Zurich (ZH), Bern (BE), Lucerne (LU), Zug (ZG), Basel-Stadt (BS), Appenzell Ausserrhoden (AR), Ticino (TI), Jura (JU).",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "fn2",
+                    "title": "2.",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "The Swiss Conference for Social Welfare (SKOS) is a voluntary association of cantons, municipalities, federal offices and associations that makes recommendations for the coordination and harmonization of social welfare but has no legally binding authority to set standards.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "fn3",
+                    "title": "3.",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "The seven major regions are the Lake Geneva region (includes the cantons of VD, VS, and GE), Espace Mittelland (BE, FR, SO, NE, and JU), Northwestern Switzerland (BS, BL, and AG), Zurich, Eastern Switzerland (GL, SH, AR, AI, SG, GR, and TG), Central Switzerland (LU, UR, SZ, OW, NW, and ZG), and Ticino.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "fn4",
+                    "title": "4.",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "In German: Alters- und Hinterlassenenversicherung (AHV)",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "fn5",
+                    "title": "5.",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "Invalidenversicherung (IV)",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "fn6",
+                    "title": "6.",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "Erwerbsersatzordnung (EO)",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "fn7",
+                    "title": "7.",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "Arbeitslosenversicherung (ALV)",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "fn8",
+                    "title": "8.",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "Familien- und Ausbildungszulagen (FZ/AZ)",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "fn9",
+                    "title": "9.",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "Deductions from the earned income of the second-earning spouse are not applied in the canton TG.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "fn10",
+                    "title": "10.",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "Married individuals without earnings are also liable to pay contributions. However, their contribution is deemed to have been paid if the employed spouse pays at least twice the minimum OASI/DI contribution on their income. The same applies to insured persons who work in their spouse\u2019s business without receiving a cash salary.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "fn11",
+                    "title": "11.",
+                    "type": "section"
+                }
+            ]
+        }
+    ],
+    "references": [
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Ako\u011fuz, EC",
+                        "preferred": "EC Ako\u011fuz"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Cap\u00e9au, B",
+                        "preferred": "B Cap\u00e9au"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Decoster, A",
+                        "preferred": "A Decoster"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Sadeleer, L",
+                        "preferred": "L Sadeleer"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "G\u00fcner, D",
+                        "preferred": "D G\u00fcner"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Manios, K",
+                        "preferred": "K Manios"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Paulus, A",
+                        "preferred": "A Paulus"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Vanheukelom, T",
+                        "preferred": "T Vanheukelom"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2020",
+            "details": "A new indirect tax tool for EUROMOD: final report, JRC Technical Report 2",
+            "id": "bib1",
+            "title": "A new indirect tax tool for EUROMOD: final report",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Arancibia, C",
+                        "preferred": "C Arancibia"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Dondo, M",
+                        "preferred": "M Dondo"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Jara, HX",
+                        "preferred": "HX Jara"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Macas, D",
+                        "preferred": "D Macas"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Oliva, N",
+                        "preferred": "N Oliva"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Riella, R",
+                        "preferred": "R Riella"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Rodr\u00edguez, D",
+                        "preferred": "D Rodr\u00edguez"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Urraburu, J",
+                        "preferred": "J Urraburu"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2019",
+            "details": "WIDER Working Paper, 2019, 10.35188/UNU-WIDER/2019/635-7",
+            "id": "bib2",
+            "title": "Income redistribution in Latin America",
+            "type": "unknown"
+        },
+        {
+            "articleTitle": "Skewed Wealth Distributions: Theory and Empirics",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Benhabib, J",
+                        "preferred": "J Benhabib"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Bisin, A",
+                        "preferred": "A Bisin"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2018",
+            "doi": "10.1257/jel.20161390",
+            "id": "bib3",
+            "journal": "Journal of Economic Literature",
+            "pages": {
+                "first": "1261",
+                "last": "1291",
+                "range": "1261\u20131291"
+            },
+            "type": "journal",
+            "volume": "56"
+        },
+        {
+            "authors": [
+                {
+                    "name": "BFS",
+                    "type": "group"
+                }
+            ],
+            "date": "2023",
+            "details": "Erhebung \u00fcber die Einkommen und Lebensbedingungen (SILC, Bundesamt F\u00fcr Statistik (BFS), https://www.bfs.admin.ch/bfs/de/home/statistiken/wirtschaftliche-soziale-situation-bevoelkerung/erhebungen/silc.assetdetail.24486989.html",
+            "id": "bib5",
+            "title": "Erhebung \u00fcber die Einkommen und Lebensbedingungen (SILC",
+            "type": "unknown",
+            "uri": "https://www.bfs.admin.ch/bfs/de/home/statistiken/wirtschaftliche-soziale-situation-bevoelkerung/erhebungen/silc.assetdetail.24486989.html"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Bochsler, Y",
+                        "preferred": "Y Bochsler"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Borrelli, LM",
+                        "preferred": "LM Borrelli"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2023",
+            "details": "Die \u00f6ffentliche Sozialhilfe zwischen Existenzsicherung, Integration und der Produktion von Ausschluss, Soziale Arbeit Und Integrationspolitik in Der Schweiz. Professionelle Positionsbestimmungen, 10.33058/seismo.30886",
+            "id": "bib6",
+            "title": "Soziale Arbeit Und Integrationspolitik in Der Schweiz. Professionelle Positionsbestimmungen",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Bouvard, L",
+                        "preferred": "L Bouvard"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2024",
+            "details": "Publications Office Luxembourg, No, JRC138016, EUROMOD Country Report - France, https://data.europa.eu/doi/10.2760/526594",
+            "id": "bib4",
+            "title": "Publications Office Luxembourg",
+            "type": "unknown",
+            "uri": "https://data.europa.eu/doi/10.2760/526594"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Bover, O",
+                        "preferred": "O Bover"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Casado, JM",
+                        "preferred": "JM Casado"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Garc\u00eda-Miralles, E",
+                        "preferred": "E Garc\u00eda-Miralles"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Labeaga Azcona, JM",
+                        "preferred": "JM Labeaga Azcona"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Ramos Magdaleno, R",
+                        "preferred": "R Ramos Magdaleno"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2017",
+            "details": "Microsimulation Tools for the Evaluation of Fiscal Policy Reforms at the Banco De Espa\u00f1a, Banco de Espana Occasional Paper, 1707",
+            "id": "bib7",
+            "title": "Microsimulation Tools for the Evaluation of Fiscal Policy Reforms at the Banco De Espa\u00f1a",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Brandt, P.",
+                        "preferred": "P. Brandt"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Mosler, M.",
+                        "preferred": "M. Mosler"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Schaltegger, C. A.",
+                        "preferred": "C. A. Schaltegger"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2024",
+            "details": "IWP Policy Papers, 14",
+            "id": "bib8",
+            "title": "Swiss Taxometer: Mikrosimulationsmodell zum Steuer-, Abgaben- und Transfersystem",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": "BSV",
+                    "type": "group"
+                }
+            ],
+            "date": "2024",
+            "id": "bib48",
+            "title": "Schweizerische Sozialversicherungsstatistik (SVS)",
+            "type": "web",
+            "uri": "https://www.bsv.admin.ch/bsv/de/home/sozialversicherungen/ueberblick/grsv/statistik.html"
+        },
+        {
+            "articleTitle": "Universal basic income: A feasible alternative to move people out of poverty in Mexico?",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Caamal-Olvera, CG",
+                        "preferred": "CG Caamal-Olvera"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Huesca, L",
+                        "preferred": "L Huesca"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Llamas, L",
+                        "preferred": "L Llamas"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2022",
+            "doi": "10.1016/j.jpolmod.2022.07.005",
+            "id": "bib9",
+            "journal": "Journal of Policy Modeling",
+            "pages": {
+                "first": "1077",
+                "last": "1093",
+                "range": "1077\u20131093"
+            },
+            "type": "journal",
+            "volume": "44"
+        },
+        {
+            "articleTitle": "How do gendered labour market trends and the pay gap translate into the projected gender pension gap? A comparative analysis of five countries with low, middle and high GPGs",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Dekkers, G",
+                        "preferred": "G Dekkers"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Van den Bosch, K",
+                        "preferred": "K Van den Bosch"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Barslund, M",
+                        "preferred": "M Barslund"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Kirn, T",
+                        "preferred": "T Kirn"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Baumann, N",
+                        "preferred": "N Baumann"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Kump, N",
+                        "preferred": "N Kump"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Li\u00e9geois, P",
+                        "preferred": "P Li\u00e9geois"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Moreira, A",
+                        "preferred": "A Moreira"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Stropnik, N",
+                        "preferred": "N Stropnik"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2022",
+            "doi": "10.3390/socsci11070304",
+            "id": "bib10",
+            "journal": "Social Sciences",
+            "pages": "304",
+            "type": "journal",
+            "volume": "11"
+        },
+        {
+            "articleTitle": "Inequalities and poverty risks in old age across Europe: The double\u2010edged income effect of pension systems",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Ebbinghaus, B",
+                        "preferred": "B Ebbinghaus"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2021",
+            "doi": "10.1111/spol.12683",
+            "id": "bib11",
+            "journal": "Social Policy & Administration",
+            "pages": {
+                "first": "440",
+                "last": "455",
+                "range": "440\u2013455"
+            },
+            "type": "journal",
+            "volume": "55"
+        },
+        {
+            "authors": [
+                {
+                    "name": "Eidgen\u00f6ssische Finanzverwaltung (EFV)",
+                    "type": "group"
+                }
+            ],
+            "date": "2024",
+            "discriminator": "b",
+            "id": "bib51",
+            "title": "Standardauswertungen Gemeinden",
+            "type": "web",
+            "uri": "https://www.efv.admin.ch/efv/de/home/themen/finanzstatistik/daten.html"
+        },
+        {
+            "authors": [
+                {
+                    "name": "Eidgen\u00f6ssische Finanzverwaltung (EFV)",
+                    "type": "group"
+                }
+            ],
+            "date": "2024",
+            "discriminator": "a",
+            "id": "bib50",
+            "title": "Standardauswertung Kantone insgesamt",
+            "type": "web",
+            "uri": "https://www.efv.admin.ch/efv/de/home/themen/finanzstatistik/daten.html"
+        },
+        {
+            "authors": [
+                {
+                    "name": "Eidgen\u00f6ssische Finanzverwaltung (EFV)",
+                    "type": "group"
+                }
+            ],
+            "date": "2023",
+            "id": "bib49",
+            "title": "Band 1 \u2013 Bericht zum Voranschlag 2024 mit IAFP 2025-2027",
+            "type": "web",
+            "uri": "https://www.efv.admin.ch/efv/de/home/finanzberichterstattung/finanzberichte/budget.html"
+        },
+        {
+            "authors": [
+                {
+                    "name": "ESTV",
+                    "type": "group"
+                }
+            ],
+            "date": "2021",
+            "details": "Erl\u00e4uterungen zu den Steuerberechnungen, Eidgen\u00f6ssische Steuerverwaltung, https://www.estv.admin.ch /dam/estv/de/dokumente/allgemein/steuerrechner/Dokument1.pdf",
+            "id": "bib12",
+            "title": "Erl\u00e4uterungen zu den Steuerberechnungen",
+            "type": "unknown",
+            "uri": "https://www.estv.admin.ch%20/dam/estv/de/dokumente/allgemein/steuerrechner/Dokument1.pdf"
+        },
+        {
+            "articleTitle": "MIKMOD-ESt: A Static Microsimulation Model of Personal Income Taxation in Germany",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Flory, J",
+                        "preferred": "J Flory"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "St\u00f6whase, S",
+                        "preferred": "S St\u00f6whase"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2012",
+            "doi": "10.34196/ijm.00073",
+            "id": "bib13",
+            "journal": "International Journal of Microsimulation",
+            "pages": {
+                "first": "66",
+                "last": "73",
+                "range": "66\u201373"
+            },
+            "type": "journal",
+            "volume": "5"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Fuchs, M",
+                        "preferred": "M Fuchs"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Geyer, L",
+                        "preferred": "L Geyer"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Wohlgemuth, F",
+                        "preferred": "F Wohlgemuth"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Mazzon, A.",
+                        "preferred": "A. Mazzon"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2024",
+            "details": "EUROMOD Country Report - Austria, Mazzon, Publications Office, Luxembourg",
+            "id": "bib14",
+            "title": "EUROMOD Country Report - Austria, Mazzon",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Hayes, P",
+                        "preferred": "P Hayes"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Redmond, G",
+                        "preferred": "G Redmond"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2014",
+            "details": "Could A universal family payment improve gender equity and reduce child poverty in Australia? A microsimulation analysis, EUROMOD Working Papers, EM3/14, Article EM3/14, https://ideas.repec.org//p/ese/emodwp/em3-14.html",
+            "id": "bib16",
+            "title": "Could A universal family payment improve gender equity and reduce child poverty in Australia? A microsimulation analysis",
+            "type": "unknown",
+            "uri": "https://ideas.repec.org//p/ese/emodwp/em3-14.html"
+        },
+        {
+            "articleTitle": "The impact of the COVID-19 pandemic on poverty and inequality in Mexico",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Huesca, L",
+                        "preferred": "L Huesca"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Llamas, L",
+                        "preferred": "L Llamas"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Jara, HX",
+                        "preferred": "HX Jara"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Vargas T\u00e9llez, CO",
+                        "preferred": "CO Vargas T\u00e9llez"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Rodr\u00edguez, D",
+                        "preferred": "D Rodr\u00edguez"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2021",
+            "doi": "10.21919/remef.v16i3.633",
+            "id": "bib17",
+            "journal": "Revista Mexicana de Econom\u00eda y Finanzas",
+            "pages": {
+                "first": "1",
+                "last": "19",
+                "range": "1\u201319"
+            },
+            "type": "journal",
+            "volume": "16"
+        },
+        {
+            "articleTitle": "Access to social protection by immigrants, emigrants and resident nationals in Switzerland",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Hummer, B-W",
+                        "preferred": "B-W Hummer"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2020",
+            "doi": "10.1007/978-3-030-51237-8_20",
+            "id": "bib18",
+            "journal": "Migration and Social Protection in Europe and Beyond (Volume 3) A Focus on Non-EU Sending States",
+            "pages": {
+                "first": "335",
+                "last": "346",
+                "range": "335\u2013346"
+            },
+            "type": "journal"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Jelloul, MB",
+                        "preferred": "MB Jelloul"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Bozio, A",
+                        "preferred": "A Bozio"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Douenne, T",
+                        "preferred": "T Douenne"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Fabre, B",
+                        "preferred": "B Fabre"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Leroy, C",
+                        "preferred": "C Leroy"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2019",
+            "details": "37, The 2019 French Budget: Impacts on Households, IPP Policy Briefs, p",
+            "id": "bib19",
+            "title": "The 2019 French Budget: Impacts on Households",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": "JRC-EUROMOD Team",
+                    "type": "group"
+                }
+            ],
+            "date": "2023",
+            "details": "European Commission, JRC132843",
+            "id": "bib47",
+            "title": "European Commission",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Kirn, T",
+                        "preferred": "T Kirn"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Thierbach, K",
+                        "preferred": "K Thierbach"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2020",
+            "details": "Project MIGAPE: Work Package 2: Results of the Standard Simulations for Liechtenstein. Mimeo University of Liechtenstein, Deliverable D2.1/D2.2 of the MIGAPE project",
+            "id": "bib22",
+            "title": "Project MIGAPE: Work Package 2: Results of the Standard Simulations for Liechtenstein. Mimeo University of Liechtenstein, Deliverable D2.1/D2.2 of the MIGAPE project",
+            "type": "unknown"
+        },
+        {
+            "articleTitle": "The projected development of the gender pension gap in switzerland: introducing MIDAS_CH",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Kirn, T",
+                        "preferred": "T Kirn"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Dekkers, G",
+                        "preferred": "G Dekkers"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2023",
+            "doi": "10.34196/IJM.00290",
+            "id": "bib20",
+            "journal": "International Journal of Microsimulation",
+            "pages": {
+                "first": "100",
+                "last": "129",
+                "range": "100\u2013129"
+            },
+            "type": "journal",
+            "volume": "16"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Kirn, T",
+                        "preferred": "T Kirn"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Dekkers, G",
+                        "preferred": "G Dekkers"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2024",
+            "details": "Forthcoming",
+            "id": "bib21",
+            "title": "Forthcoming",
+            "type": "unknown"
+        },
+        {
+            "articleTitle": "Microsimulation of tax-benefit systems in the Global South: A comparative assessment",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Lastunen, J",
+                        "preferred": "J Lastunen"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Mahieu, A de",
+                        "preferred": "A de Mahieu"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Gasior, K",
+                        "preferred": "K Gasior"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Jara, HX",
+                        "preferred": "HX Jara"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Pirttil\u00e4, J",
+                        "preferred": "J Pirttil\u00e4"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2024",
+            "id": "bib23",
+            "journal": "WIDER Working Paper",
+            "pages": "35",
+            "type": "journal",
+            "uri": "https://doi.org/10.35188/UNU-WIDER/2024/439-9",
+            "volume": "2024"
+        },
+        {
+            "articleTitle": "Missing-data adjustments in large surveys",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Little, RJA",
+                        "preferred": "RJA Little"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1988",
+            "doi": "10.1080/07350015.1988.10509663",
+            "id": "bib24",
+            "journal": "Journal of Business & Economic Statistics",
+            "pages": {
+                "first": "287",
+                "last": "296",
+                "range": "287\u2013296"
+            },
+            "type": "journal",
+            "volume": "6"
+        },
+        {
+            "articleTitle": "Kurz\u00fcberblick \u00fcber die schweizerische Verm\u00f6genssteuer",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Marantelli, A",
+                        "preferred": "A Marantelli"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Bigler, S",
+                        "preferred": "S Bigler"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2015",
+            "id": "bib25",
+            "journal": "Ecolex-Fachzeitschrift F\u00fcr Wirtschaftsrecht",
+            "pages": {
+                "first": "180",
+                "last": "184",
+                "range": "180\u2013184"
+            },
+            "type": "journal",
+            "volume": "3"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Mart\u00ednez, IZ",
+                        "preferred": "IZ Mart\u00ednez"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2022",
+            "details": "Evidence from Unique Swiss Tax Data on the Composition and Joint Distribution of Income and Wealth, Measuring Distribution and Mobility of Income and Wealth, University of Chicago Press, 10.7208/chicago/9780226816043.003.0005",
+            "id": "bib26",
+            "title": "Measuring Distribution and Mobility of Income and Wealth",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Miola, E",
+                        "preferred": "E Miola"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Manzo, M",
+                        "preferred": "M Manzo"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2021",
+            "details": "Ministry of Economy and Finance, Department of Finance Working Papers, 10, https://EconPapers.repec.org/RePEc:ahg:wpaper:wp2021-10",
+            "id": "bib27",
+            "title": "A Tax-Benefit Microsimulation Model for Personal Income Taxation in Italy",
+            "type": "unknown",
+            "uri": "https://EconPapers.repec.org/RePEc:ahg:wpaper:wp2021-10"
+        },
+        {
+            "articleTitle": "Till taxes keep us apart? The impact of the marriage tax on the marriage rate",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Myohl, N",
+                        "preferred": "N Myohl"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2024",
+            "doi": "10.1007/s10797-023-09784-y",
+            "id": "bib28",
+            "journal": "International Tax and Public Finance",
+            "pages": {
+                "first": "552",
+                "last": "592",
+                "range": "552\u2013592"
+            },
+            "type": "journal",
+            "volume": "31"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Popova, D",
+                        "preferred": "D Popova"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2012",
+            "details": "EUROMOD Working Papers, https://ideas.repec.org//p/ese/emodwp/em7-12.html",
+            "id": "bib29",
+            "title": "Constructing the tax-benefit microsimulation Model for Russia\u2014RUSMOD",
+            "type": "unknown",
+            "uri": "https://ideas.repec.org//p/ese/emodwp/em7-12.html"
+        },
+        {
+            "articleTitle": "A Multivariate Technique for Multiply Imputing Missing Values Using A Sequence of Regression Models",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Raghunatan, TE",
+                        "preferred": "TE Raghunatan"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Lepkowski, JM",
+                        "preferred": "JM Lepkowski"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Hoewyk, J",
+                        "preferred": "J Hoewyk"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Solenberger, P",
+                        "preferred": "P Solenberger"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2001",
+            "id": "bib30",
+            "journal": "Survey Methodology",
+            "pages": {
+                "first": "85",
+                "last": "95",
+                "range": "85\u201395"
+            },
+            "type": "journal",
+            "volume": "27"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Ran\u0111elovi\u0107, S",
+                        "preferred": "S Ran\u0111elovi\u0107"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Raki\u0107, J\u017d",
+                        "preferred": "J\u017d Raki\u0107"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2012",
+            "details": "EUROMOD Working Paper, https://hdl.handle.net/10419/91656",
+            "id": "bib31",
+            "title": "Improving work incentives: Evaluation of tax policy reform using SRMOD",
+            "type": "unknown",
+            "uri": "https://hdl.handle.net/10419/91656"
+        },
+        {
+            "articleTitle": "Comparison of survey data on wealth in Switzerland",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Ravazzini, L",
+                        "preferred": "L Ravazzini"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Kuhn, U",
+                        "preferred": "U Kuhn"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Brul\u00e9, G",
+                        "preferred": "G Brul\u00e9"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Suter, C",
+                        "preferred": "C Suter"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2019",
+            "doi": "10.3233/JEM-190461",
+            "id": "bib32",
+            "journal": "Journal of Economic and Social Measurement",
+            "pages": {
+                "first": "25",
+                "last": "55",
+                "range": "25\u201355"
+            },
+            "type": "journal",
+            "volume": "44"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Recio Alcaide, A",
+                        "preferred": "A Recio Alcaide"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Frutos Ibor, R",
+                        "preferred": "R Frutos Ibor"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Navas Rom\u00e1n, M",
+                        "preferred": "M Navas Rom\u00e1n"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Cruces, H",
+                        "preferred": "H Cruces"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2024",
+            "details": "EUROMOD Country Report - Spain, Publications Office, Luxembourg, 2024",
+            "id": "bib33",
+            "title": "EUROMOD Country Report - Spain",
+            "type": "unknown"
+        },
+        {
+            "articleTitle": "UKMOD \u2013 A new tax-benefit model for the four nations of the UK",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Richiardi, M",
+                        "preferred": "M Richiardi"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Collado, D",
+                        "preferred": "D Collado"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Popova, D",
+                        "preferred": "D Popova"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2021",
+            "doi": "10.34196/IJM.00231",
+            "id": "bib34",
+            "journal": "International Journal of Microsimulation",
+            "pages": {
+                "first": "92",
+                "last": "101",
+                "range": "92\u2013101"
+            },
+            "type": "journal",
+            "volume": "14"
+        },
+        {
+            "articleTitle": "Bias Reduction Using Mahalanobis-Metric Matching",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Rubin, DB",
+                        "preferred": "DB Rubin"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "1980",
+            "doi": "10.2307/2529981",
+            "id": "bib35",
+            "journal": "Biometrics",
+            "pages": "293",
+            "type": "journal",
+            "volume": "36"
+        },
+        {
+            "authors": [
+                {
+                    "name": "SHP",
+                    "type": "group"
+                }
+            ],
+            "date": "2023",
+            "id": "bib36",
+            "title": "Living in Switzerland Waves 1-23 + Covid 19 data [Dataset], FORS - Swiss Centre of Expertise in the Social Sciences. Financed by the Swiss National Science Foundation, distributed by FORS, Lausanne, 2023 [Dataset]",
+            "type": "web",
+            "uri": "https://doi.org/10.48573/1nav-wy98"
+        },
+        {
+            "authors": [
+                {
+                    "name": "SKOS",
+                    "type": "group"
+                }
+            ],
+            "date": "2023",
+            "id": "bib37",
+            "title": "Richtlinien f\u00fcr die Ausgestaltung und Bemessung der Sozialhilfe, Version vom 1. Januar 2024 (6. Ausgabe, 1. Etappe)",
+            "type": "web",
+            "uri": "https://rl.skos.ch/lexoverview-home/lex-RL_A_1"
+        },
+        {
+            "authors": [
+                {
+                    "name": "SSK",
+                    "type": "group"
+                }
+            ],
+            "date": "2024",
+            "id": "bib39",
+            "title": "Dossier Steuerinformationen herausgegeben von der Schweizer Steuerkonferenz SSK",
+            "type": "web",
+            "uri": "https://www.estv.admin.ch/estv/de/home/die-estv/steuersystem-schweiz/dossier-steuerinformationen.html"
+        },
+        {
+            "authors": [
+                {
+                    "name": "SSK",
+                    "type": "group"
+                }
+            ],
+            "date": "2021",
+            "details": "Verm\u00f6genssteuer nat\u00fcrlicher Personen, herausgegeben von der Schweizer Steuerkonferenz (SSK, Bern",
+            "id": "bib38",
+            "title": "Verm\u00f6genssteuer nat\u00fcrlicher Personen, herausgegeben von der Schweizer Steuerkonferenz (SSK",
+            "type": "unknown"
+        },
+        {
+            "articleTitle": "Simulating personal income tax in South Africa using administrative data and survey data:: A Comparison of PITMOD and SAMOD for Tax Year 2018",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Steyn, W",
+                        "preferred": "W Steyn"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Sithole, A",
+                        "preferred": "A Sithole"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Ngobeni, W",
+                        "preferred": "W Ngobeni"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Muwanga-Zake, E",
+                        "preferred": "E Muwanga-Zake"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Barnes, H",
+                        "preferred": "H Barnes"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Noble, M",
+                        "preferred": "M Noble"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "McLennan, D",
+                        "preferred": "D McLennan"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Wright, G",
+                        "preferred": "G Wright"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Gasior, K",
+                        "preferred": "K Gasior"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2021",
+            "doi": "10.35188/UNU-WIDER/2021/060-3",
+            "id": "bib40",
+            "journal": "WIDER Working Paper",
+            "pages": "120",
+            "type": "journal",
+            "volume": "2021"
+        },
+        {
+            "articleTitle": "EUROMOD: the European Union tax-benefit microsimulation model",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Sutherland, H",
+                        "preferred": "H Sutherland"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Figari, F",
+                        "preferred": "F Figari"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2013",
+            "doi": "10.34196/ijm.00075",
+            "id": "bib46",
+            "journal": "International Journal of Microsimulation",
+            "pages": {
+                "first": "4",
+                "last": "26",
+                "range": "4\u201326"
+            },
+            "type": "journal",
+            "volume": "6"
+        },
+        {
+            "articleTitle": "The impact of taking up care tasks on pensions: Results of typical-case simulations for several European countries",
+            "authors": [
+                {
+                    "name": {
+                        "index": "van den Bosch, K",
+                        "preferred": "K van den Bosch"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Kirn, T",
+                        "preferred": "T Kirn"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Kump, N",
+                        "preferred": "N Kump"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Li\u00e9geois, P",
+                        "preferred": "P Li\u00e9geois"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Moreira, A",
+                        "preferred": "A Moreira"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Stropnik, N",
+                        "preferred": "N Stropnik"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Barslund, M",
+                        "preferred": "M Barslund"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Vergnat, V",
+                        "preferred": "V Vergnat"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Dekkers, G",
+                        "preferred": "G Dekkers"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2024",
+            "doi": "10.1177/13882627231221045",
+            "id": "bib41",
+            "journal": "European Journal of Social Security",
+            "pages": {
+                "first": "44",
+                "last": "63",
+                "range": "44\u201363"
+            },
+            "type": "journal",
+            "volume": "26"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Voorpostel, M",
+                        "preferred": "M Voorpostel"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Tillmann, R",
+                        "preferred": "R Tillmann"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Lebert, F",
+                        "preferred": "F Lebert"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Kuhn, U",
+                        "preferred": "U Kuhn"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Lipps, O",
+                        "preferred": "O Lipps"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Ryser, V-A",
+                        "preferred": "V-A Ryser"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Antal, E",
+                        "preferred": "E Antal"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Dasoki, N",
+                        "preferred": "N Dasoki"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Wernli, B",
+                        "preferred": "B Wernli"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2021",
+            "details": "Swiss Household Panel Userguide (1999-2020), Wave 22, March 2023, FORS",
+            "id": "bib42",
+            "title": "Swiss Household Panel Userguide (1999-2020), Wave 22, March 2023",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Wilkinson, K",
+                        "preferred": "K Wilkinson"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2009",
+            "id": "bib43",
+            "title": "Adapting EUROMOD for use in a developing country: The case of South Africa and SAMOD. EUROMOD Working Paper, 2009(EM5/09",
+            "type": "web",
+            "uri": "https://hdl.handle.net/10419/64902"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Wright, G",
+                        "preferred": "G Wright"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Noble, M",
+                        "preferred": "M Noble"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Barnes, H",
+                        "preferred": "H Barnes"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2014",
+            "id": "bib44",
+            "title": "NAMOD: A Namibian tax-benefit microsimulation model. EUROMOD Working Paper, 2014(EM7/14)",
+            "type": "web",
+            "uri": "https://hdl.handle.net/10419/113341"
+        },
+        {
+            "articleTitle": "Estimating the Distributional Impacts of the COVID-19 Pandemic and the Remedial Tax and Benefit Policies in Indonesia",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Wright, G",
+                        "preferred": "G Wright"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Noble, M",
+                        "preferred": "M Noble"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Barnes, H",
+                        "preferred": "H Barnes"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Moechtar, A",
+                        "preferred": "A Moechtar"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "McLennan, D",
+                        "preferred": "D McLennan"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Yusuf, AA",
+                        "preferred": "AA Yusuf"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Gasior, K",
+                        "preferred": "K Gasior"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2021",
+            "doi": "10.34196/IJM.00236",
+            "id": "bib45",
+            "journal": "International Journal of Microsimulation",
+            "pages": {
+                "first": "50",
+                "last": "80",
+                "range": "50\u201380"
+            },
+            "type": "journal",
+            "volume": "14"
+        }
+    ],
+    "acknowledgements": [
+        {
+            "text": "We are deeply grateful for the support provided by Fidel Picos and the team at the JRC in Seville, who were instrumental in creating the dataset. We also extend our sincere thanks to the European Commission for offering training opportunities in static microsimulation models, providing access to research infrastructure, and fostering international collaboration. An earlier version of this study was presented at the 9<sup>th</sup> World Congress of the International Microsimulation Association at the University of Vienna in 2024. We appreciate the valuable comments and suggestions from the participants at this event. We thank Bernhard Neum\u00e4rker, Tobias M\u00fcller and Justin Van De Ven for the professional exchange and helpful advice. Special thanks go to Martha Brinkmann for her excellent research assistance.",
+            "type": "paragraph"
+        }
+    ],
+    "-meta": {
+        "patched": true
+    },
+    "stage": "published"
+}
