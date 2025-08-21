@@ -1,0 +1,1160 @@
+{
+    "status": "vor",
+    "id": "00322",
+    "version": 1,
+    "type": "research-article",
+    "doi": "10.34196/ijm.00322",
+    "authorLine": "Lucas Heger et al.",
+    "title": "Can a Mayor Change the Course of a Pandemic? An Agent-Based Study on the COVID Spread on Local Level in Germany",
+    "published": "2025-08-20T00:00:00Z",
+    "versionDate": "2025-08-20T00:00:00Z",
+    "statusDate": "2025-08-20T00:00:00Z",
+    "volume": 18,
+    "issue": 2,
+    "fpage": 70,
+    "lpage": 78,
+    "elocationId": "70-78",
+    "pdf": "http://web:8082/00322/ijm-00322.pdf",
+    "abstract": {
+        "content": [
+            {
+                "text": "During the COVID-19 pandemic, a large variance of incidence rates on local level, e.g. cities and districts, within one country have been observed, while the same non-pharmaceutical measures have been taken to control the spread of the virus. This variance in incidence rates triggered the question, if the spread of incidence rates can be explained only by statistical processes and the local population statistics or if indeed other factors, e.g. local information campaigns, have to be considered. Within this paper we study the expected spread of incidence rates in the German State of Rhineland Palatinate during the second COVID-19 wave using an agent based simulation. We find that our agent-based model is able to replicate the observed incidence rates per district by only considering state-wide policies. While this does not imply that local policies or specific local political circumstances have no impact on local infection rates, it suggests that the dominant factors driving the distribution of infection rates across a state are primarily statistical effects, demographics, and state-wide policies.",
+                "type": "paragraph"
+            }
+        ]
+    },
+    "copyright": {
+        "license": "CC-BY-4.0",
+        "holder": "Kirn et al.",
+        "statement": "This article is distributed under the terms of the <a href=\"http://creativecommons.org/licenses/by/4.0/\">Creative Commons Attribution License</a>, which permits unrestricted use and redistribution provided that the original author and source are credited."
+    },
+    "authors": [
+        {
+            "affiliations": [
+                {
+                    "address": {
+                        "components": {
+                            "country": "Germany",
+                            "locality": [
+                                "Mainz"
+                            ]
+                        },
+                        "formatted": [
+                            "Mainz",
+                            "Germany"
+                        ]
+                    },
+                    "name": [
+                        "Institute of Physics, Johannes Gutenberg University"
+                    ]
+                }
+            ],
+            "name": {
+                "index": "Heger, Lucas",
+                "preferred": "Lucas Heger"
+            },
+            "orcid": "0009-0002-3196-7516",
+            "type": "person"
+        },
+        {
+            "affiliations": [
+                {
+                    "address": {
+                        "components": {
+                            "country": "Germany",
+                            "locality": [
+                                "Mainz"
+                            ]
+                        },
+                        "formatted": [
+                            "Mainz",
+                            "Germany"
+                        ]
+                    },
+                    "name": [
+                        "Institute of Physics, Johannes Gutenberg University"
+                    ]
+                }
+            ],
+            "name": {
+                "index": "Akdogan, Kerem",
+                "preferred": "Kerem Akdogan"
+            },
+            "type": "person"
+        },
+        {
+            "affiliations": [
+                {
+                    "address": {
+                        "components": {
+                            "country": "Germany",
+                            "locality": [
+                                "Mainz"
+                            ]
+                        },
+                        "formatted": [
+                            "Mainz",
+                            "Germany"
+                        ]
+                    },
+                    "name": [
+                        "Institute of Physics, Johannes Gutenberg University"
+                    ]
+                }
+            ],
+            "name": {
+                "index": "Huwer, Friedemann",
+                "preferred": "Friedemann Huwer"
+            },
+            "orcid": "0000-0002-3819-2453",
+            "type": "person"
+        },
+        {
+            "affiliations": [
+                {
+                    "address": {
+                        "components": {
+                            "country": "Germany",
+                            "locality": [
+                                "Bonn"
+                            ]
+                        },
+                        "formatted": [
+                            "Bonn",
+                            "Germany"
+                        ]
+                    },
+                    "name": [
+                        "Physikalisches Institut, Rheinische Friedrich-Wilhelms-University"
+                    ]
+                }
+            ],
+            "emailAddresses": [
+                "mschott@cern.ch"
+            ],
+            "name": {
+                "index": "Schott, Matthias",
+                "preferred": "Matthias Schott"
+            },
+            "orcid": "0000-0002-4235-7265",
+            "type": "person"
+        }
+    ],
+    "funding": {
+        "statement": "This work has been supported by the Johannes Gutenberg Startup Research Fund of the University of Mainz."
+    },
+    "dataSets": {
+        "availability": [
+            {
+                "text": "The simulation code is available at <a href=\"https://github.com/fneuhaus/JUNE_germany/\">https://github.com/fneuhaus/JUNE_germany/</a>",
+                "type": "paragraph"
+            },
+            {
+                "text": "<a href=\"https://github.com/lheger6626/june_mayors\">https://github.com/lheger6626/june_mayors</a> The underlying data is available at <a href=\"https://www.corona-datenplattform.de\">https://www.corona-datenplattform.de</a>.",
+                "type": "paragraph"
+            }
+        ]
+    },
+    "body": [
+        {
+            "content": [
+                {
+                    "text": "Amidst the global COVID-19 pandemic, nations took various measures to curb the virus\u2019s spread. These encompassed extensive lockdowns, movement restrictions, social distancing guidelines, quarantine procedures, mask mandates, and robust testing and contact tracing initiatives. Travel restrictions were enforced, while remote work and online education were promoted. Most measures have been taken at state- or national wide level, however, still a significant variance on the actual infection rates on local level, e.g. districts or cities has been observed. This triggered the assumption, mainly in media, that some kind of special local circumstances, e.g. the impact of local politics, testing- or information campaigns might cause this variance (<a href=\"#bib1\">STERN, 2021</a>; <a href=\"#bib2\">Zeitung, 2020</a>).",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Within this study we want to test if it is possible to model the observed local variations on incident rates with an ABM model, that considers only statistical and demographic facts as well as state policies during the pandemic, but not any form of dedicated local voluntary campaigns. We have chosen the state of Rhineland Palatinate as a testing environment for this hypothesis. Given that Rhineland Palatinate is a medium sized state within Germany with 4.1 million inhabitants, including larger cities and more rural areas, we would argue that the general conclusion should stay largely valid for the whole of Germany. It should be noted that legal restrictions in Germany during the COVID-19 pandemic could only be issued on national or state-level, e.g. for the whole of Rhineland Palatinate. Local or regional measures within the state of Rhineland Palatinate where only on recommendation basis without any legal implications.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Mathematical simulations and forecasts for epidemic or pandemic evolution commonly rely on compartmental models or agent-based models. Compartmental models categorise the population into compartments (e.g., susceptible, exposed, infected, recovered) and employ differential equations to depict transitions between these states (e.g., SIR model (<a href=\"#bib3\">Wang et al., 2016</a>; <a href=\"#bib4\">Roda et al., 2020</a>)). In contrast, agent-based models simulate individual agents with specific characteristics and behaviours, providing a more intricate representation of interactions and spatial dynamics (<a href=\"#bib5\">Bullock, 2021</a>; <a href=\"#bib6\">Pillai et al., 2023</a>; <a href=\"#bib7\">Vyklyuk et al., 2021</a>). We chose the latter modelling approach for our study, given that agent based models can describe detailed population statistics and the interaction between agents as well as their commuting behaviour.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The agent-based simulation, which is used for our study is briefly described in Section 2, followed by a summary of the predictive power of the framework within RLP during the second COVID-19 wave between October 2020 and February 2021 (Section 3). The observed statistical spread of infection incidences is discussed and interpreted in Section 4, followed by a brief conclusion.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s1",
+            "title": "1. Introduction",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "The June framework, introduced by Bullock et al. in 2021 (<a href=\"#bib5\">Bullock, 2021</a>), is an agent-based model designed to simulate epidemics in a population, specifically focusing on the initial and subsequent waves of the COVID-19 pandemic. Notably, this model incorporates detailed geographic and sociological data for England. June has demonstrated its ability to accurately forecast the geographical and sociological dynamics of COVID-19 transmission, as discussed in detail in the original publication (<a href=\"#bib5\">Bullock, 2021</a>).",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Building upon the success of June, June-Germany (<a href=\"#bib8\">Akdogan et al., 2023</a>) adapts the framework for application in Germany. The underlying modelling approach for the different aspects of the epidemic simulation, such as contact patterns, infection processes, sociodemographic population representation or governmental policies is not changed. However, June-Germany allows for the modelling of different virus strains as well as vaccination campaigns. Like its predecessor, it is implemented in Python and structured primarily into four interconnected layers:",
+                    "type": "paragraph"
+                },
+                {
+                    "items": [
+                        [
+                            {
+                                "text": "<b>Population Layer:</b> This layer details individual agents, their static social environments (e.g., households, workplaces), and demographics across hierarchical geographic layers. Agents follow daily routines in discrete time-steps, associated with specific households, schools, and workplaces.",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "<b>Interaction Layer:</b> Captures daily routines such as commuting and leisure activities. Social contact networks define interactions, and disease transmission during public transportation is considered. Age-dependent social interaction matrices model contact frequency and intensity in various settings.",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "<b>Disease Layer:</b> Models disease transmission and effects, utilising probabilistic infection modelling that considers factors like transmissive probability, susceptibility, and exposure time. Health impacts range from asymptomatic cases to ICU admission and potentially lethal outcomes.",
+                                "type": "paragraph"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "<b>Policy Layer:</b> Incorporates government policies for pandemic mitigation at localised levels, considering geographical regions and social interactions. This allows for the modelling of essential workers\u2019 activities and general population compliance, with agent compliance influenced by social and demographic parameters.",
+                                "type": "paragraph"
+                            }
+                        ]
+                    ],
+                    "prefix": "bullet",
+                    "type": "list"
+                },
+                {
+                    "text": "While the interaction layer is not changed, we expanded desease layer of the June-Germany framework to allow for the modelling of different virus strains as well as vaccination campaigns. Moreover, the underlying data for the population and policy layer has been adapted. In particular, the policy layer includes all policies that have been introduced at various stages during the course of the pandemic by either the local state or the federal government. This includes for example the closure of schools and universities, as well as selected companies or industrial branches. When necessary, the active workforce has been reduced as well as changes in leisure activities are considered to reflect the contact restrictions.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The geographical model is based on German administrative areas, featuring three layers: states, districts, and municipalities, with detailed demographic data from the 2011 Census (<a href=\"#bib9\">Zensus, 2011</a>), which provides informa- tion in the age groups 0-4, 5-14, 15-34, 35-59, and \u2265 60. Population densities vary based on age and sex distribution, considering age as a significant risk factor for severe COVID-19 cases.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Household compositions are also derived from the 2011 Census data, categorised by the number of adults and children in each household. The simulation includes 14,502 primary schools (average 204 students per school) and 13,068 secondary schools (average 506 students per school). A teacher-to-student ratio of 0.12 and class sizes between 20 and 30 students are assumed. Agents are distributed to simulated schools based on their home addresses.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Jobs are classified by sector using the International Standard Industrial Classification, with companies modelled in each district based on the average number of employees for a sector. Workplace assignments during population generation consider mobility data.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Social activities and interactions are modelled similarly in both June and June-Germany. Agents\u2019 weekday routines involve work/school, shopping, leisure, and staying at home. Beyond working hours, social activities include visits to cinemas, theatres, pubs, and restaurants, contingent on current state regulations and individual compliance. Commuting is represented by a directed network graph, accounting for both short-distance and long-distance travels.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The modelling of COVID-19 as well as the typical interactions of agents are assumed to be unchanged compared to the UK in the original June model.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s2",
+            "title": "2. The June-Germany Framework",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "We utilised June-Germany to model the second wave of the Covid-19 Pandemic in the German state of Rhine-land-Palatinate spanning from October 2020 to February 2021. The cumulative deaths in the age groups 0-4, 5-14, 15-34, 35-59, and  \u2265 60 from October 1, 2020, to December 14, 2021, served as the basis for determining optimal model parameters. Of particular significance were the cumulative deaths in the age group above 35, as minimal deaths were reported for the younger population. The chosen age groups reflect the reported age groups from the official government data used to fit the model.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Given the intricacy of the JUNE simulator, characterised by a substantial dimension in both input parameters and output space, we employed emulation and history matching (<a href=\"#bib10\">Andrianakis et al., 2017</a>; <a href=\"#bib11\">Bower et al., 2010</a>) to identify suitable matches to the data. The underlying problem is the large dimensionality of the input space, and the significant required computing time to predict one output distribution for a given set of input parameters. History matching is a (pre)calibration technique that has proven successful with complex deterministic models and can identify the subset of the input space that could give rise to acceptable matches between model output and measured data. It relies on a Bayes Linear approach, meaning simplifying the underlying model and thus being able to identify potentially interesting regions in phase space, which have to be considered further in the full simulation, yielding a significant improvement in computing time. To facilitate this process, we utilised the in-development R package hmer (<a href=\"#bib12\">Iskauskas et al., 2022</a>), designed to streamline emulator construction and the generation of representative parameter sets for subsequent iterations of emulation and history matching. This package has been employed successfully for parameter estimation in other epidemiological scenarios. The emulation and history matching framework presents several advantages over traditional parameter estimation methods, with a notable benefit being the requirement of relatively few evaluations from the computationally expensive simulator to train an emulator. Following the optimisation of model parameters using data up to December 14, 2021, we projected the entire second wave until February 22, 2022.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The comparison of the hospitalisation rate for the last 7 days is depicted in <a href=\"#fig1\">Figure 1</a>, revealing good agreement, albeit with the simulation predicting a faster decline of the wave than observed in the data.<sup><a href=\"#fn1\">1</a></sup> The total number of predicted hospitalised patients during the entire second wave is 5181, compared to the official number of 5638. Notably, a less precise prediction is evident for the incidence rate. Although the number of infections is accurately described for the age group \u2265 60, discrepancies by a factor of about three emerge for the age groups 14-34 and 35-59, indicating a number of unreported cases. This ratio increases significantly for the 5-14 age group. While a general trend toward unreported cases is anticipated, the extent of the observed underreporting appears surprising. A comprehensive discussion can be found in <a href=\"#bib8\">Akdogan et al. (2023)</a>.",
+                    "type": "paragraph"
+                },
+                {
+                    "assets": [
+                        {
+                            "id": "fig1",
+                            "image": {
+                                "alt": "",
+                                "uri": "%iiif_uri%/00322%2Fijm-00322-fig001.tif",
+                                "size": {
+                                    "width": 3531,
+                                    "height": 1104
+                                },
+                                "source": {
+                                    "mediaType": "image/jpeg",
+                                    "uri": "%iiif_uri%/00322%2Fijm-00322-fig001.tif/full/full/0/default.jpg",
+                                    "filename": "ijm-00322-fig001.jpg"
+                                }
+                            },
+                            "label": "Figure 1",
+                            "title": "Hospitalization rate of the last 7 days (red line) for the age group 35-59 (left) and \u2265 60 (right), together with the June-Germany simulation with the best fitting parameters (blue line), its statistical uncertainty (shaded blue) and the simulated curves of alternative sets of model parameters tested during the fitting procedure (gray). The vertical line indicates the date until when the data was fitted.",
+                            "type": "image"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "text": "In order to test the effect of state-wide policies on the simulated events, we performed several additional studies. Exemplary we discuss, the overall hospitalisation rate for the last 7 days across all age groups, when no policies would have been applied, as well as when no school closing policies are enforced. As shown in <a href=\"#fig2\">Figure 2</a>, the total number hospitalisations over the simulation period increases drastically in comparison to the observed value, when no policies are applied. In fact, nearly all inhabitants get infected in this scenario. When repeating the fits to data, without assuming any school closing measures, we find an increase by a factor of 2.5\u00b10.05 on the incidence rate. The smallest observed increase was a factor of 2.4, the largest observed increase a factor of 2.7 among 30 studied scenarios. The increase on the hospitalisation rate and death rate is consistent, yielding factors of 2.6\u00b10.2 and 2.6\u00b10.1. Further details are discussed in <a href=\"#bib13\">Heger et al. (2023)</a>. The effects of the policies in the ABM simulation are therefore imminent. To further improve and validate our model in the future we foresee use public data on mobility as well as by considering recent work on ensemble-based data assimilation (<a href=\"#bib14\">Cocucci et al., 2022</a>; <a href=\"#bib15\">Aleta et al., 2022</a>; <a href=\"#bib16\">Chang et al., 2021</a>).",
+                    "type": "paragraph"
+                },
+                {
+                    "assets": [
+                        {
+                            "id": "fig2",
+                            "image": {
+                                "alt": "",
+                                "uri": "%iiif_uri%/00322%2Fijm-00322-fig002.tif",
+                                "size": {
+                                    "width": 3546,
+                                    "height": 1103
+                                },
+                                "source": {
+                                    "mediaType": "image/jpeg",
+                                    "uri": "%iiif_uri%/00322%2Fijm-00322-fig002.tif/full/full/0/default.jpg",
+                                    "filename": "ijm-00322-fig002.jpg"
+                                }
+                            },
+                            "label": "Figure 2",
+                            "title": "Comparison of plausible simulations of the hospitalisation rate with and without any state policies (left) as well as with and without any schools closing policies (right). The hospitalisations are averaged over a seven day window.",
+                            "type": "image"
+                        }
+                    ],
+                    "type": "figure"
+                }
+            ],
+            "id": "s3",
+            "title": "3. Simulation of the COVID-19 Pandemic in the State of Rhineland Palatinate",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "Given the observed mismatch between the reported incidence rate and the simulated incidence rate, we first scale the simulated incidence rate to the observed rate with the same global factor across the full population statistics and districts. The relative spread in incidence rates is therefore not affected, however, it simplifies the comparison to the reported data.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Rhineland Palatinate is structured in 36 districts (Landkreis) and cities. The smallest district is Zwei-br\u00fccken with 34k inhabitants, the largest is the city of Mainz as capital with 220k inhabitants. It is important to note, that the optimisation of model parameters is based solely on the overall cumulative deaths rate over all districts and cities and no separate local information has been used. The resulting predictions on the variance among the 36 districts is therefore unbiased.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The overall number of reported infections between October 2020 and February 2021 in each of the 36 districts and cities is shown in <a href=\"#fig3\">Figure 3</a>. The uncertainty on the reported numbers is assumed to follow Poisson statistics. Also shown are the simulated numbers of June-Germany. The indicated uncertainties corresponds to 1 <math id=\"inf1\"><mi>\u03c3</mi></math> (i.e. 68%) confidence intervals and have a statistical and a systematic component. The statistical uncertainties are estimated by rerunning the simulation with varying the number as well as the location of agents that are treated infected at the beginning. The resulting distribution of infected agents for each simulation at each time-step is gaussian and the 1 <math id=\"inf2\"><mi>\u03c3</mi></math> interval is taken as statistical uncertainty. The systematic uncertainties are due to uncertainties on modelling parameters after the fitting procedure to data. The uncertainties of parameters, that are not fitted, are taken from the original June publication and are either based on other studies or based on expert evaluations. A summary of the most important model parameters, their central values as well as their 95% confidence interval is given in <a href=\"#table1\">Table 1</a>. The simulation was rerun several hundert times, where the model parameters were varied randomly within their associated uncertainties, where it was assumed that each model parameter is gaussian distributed around its initial values and the 95%confidence interval corresponds to a variation of 2 <math id=\"inf3\"><mi>\u03c3</mi></math>, i.e. two standard deviations. As expected, districts and cities with larger population have more cases than those with smaller populations. This also explains the good description of the simulated values and the reported values.",
+                    "type": "paragraph"
+                },
+                {
+                    "assets": [
+                        {
+                            "id": "fig3",
+                            "image": {
+                                "alt": "",
+                                "uri": "%iiif_uri%/00322%2Fijm-00322-fig003.tif",
+                                "size": {
+                                    "width": 2322,
+                                    "height": 1041
+                                },
+                                "source": {
+                                    "mediaType": "image/jpeg",
+                                    "uri": "%iiif_uri%/00322%2Fijm-00322-fig003.tif/full/full/0/default.jpg",
+                                    "filename": "ijm-00322-fig003.jpg"
+                                }
+                            },
+                            "label": "Figure 3",
+                            "title": "Overall number of infections for all 36 districts of Rhineland Palatinate between October 2020 and February 2021, once for the official reported cases and once by the June-Germany simulation.",
+                            "type": "image"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "assets": [
+                        {
+                            "id": "table1",
+                            "label": "Table 1",
+                            "tables": [
+                                "<table><thead><tr><th align=\"left\">Contact intensity parameter</th><th align=\"left\">Mean-Value</th><th align=\"left\">95% CL interval</th><th align=\"left\">Contact intensity parameter</th><th align=\"left\">Mean-Value</th><th align=\"left\">95% CL interval</th></tr></thead><tbody><tr><td align=\"left\">care home</td><td align=\"left\">0.28</td><td align=\"left\">[0.16,0.40]</td><td align=\"left\">hospital</td><td align=\"left\">0.19</td><td align=\"left\">[0.11,0.27]</td></tr><tr><td align=\"left\">care visits</td><td align=\"left\">6.13</td><td align=\"left\">[3.60,8.66]</td><td align=\"left\">household</td><td align=\"left\">0.30</td><td align=\"left\">[0.42,0.18]</td></tr><tr><td align=\"left\">cinema</td><td align=\"left\">0.52</td><td align=\"left\">[0.30,0.73]</td><td align=\"left\">household visits</td><td align=\"left\">0.55</td><td align=\"left\">[0.32,0.78]</td></tr><tr><td align=\"left\">city transport</td><td align=\"left\">0.17</td><td align=\"left\">[0.10,0.24]</td><td align=\"left\">inter city transport</td><td align=\"left\">0.17</td><td align=\"left\">[0.10,0.24]</td></tr><tr><td align=\"left\">company</td><td align=\"left\">0.32</td><td align=\"left\">[0.19,0.45]</td><td align=\"left\">pub</td><td align=\"left\">0.42</td><td align=\"left\">[0.24,0.60]</td></tr><tr><td align=\"left\">grocery</td><td align=\"left\">0.48</td><td align=\"left\">[0.28,0.67]</td><td align=\"left\">school</td><td align=\"left\">0.32</td><td align=\"left\">[0.19,0.45]</td></tr><tr><td align=\"left\">gym</td><td align=\"left\">0.40</td><td align=\"left\">[0.23,0.57]</td><td align=\"left\">university</td><td align=\"left\">0.17</td><td align=\"left\">[0.10,0.24]</td></tr></tbody></table>"
+                            ],
+                            "title": "Overview of the most relevant contact intensity parameter of June framework. Together with the infectiousness of the infectors at given time t, the susceptibility of the potential infectee as well as the exposure time interval when two or more agents meet in the simulation, they build the basis for the probability that an agent gets infected. Technical details on the implementation are discussed in <a href=\"#bib5\">Bullock (2021)</a>. In addition, their central values used in the final simulation as well as their 95% CL interval are given.",
+                            "type": "table"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "text": "Hence it is more instructive to compare the number of infections normalised to 10k inhabitants in each district or city, as shown in <a href=\"#fig4\">Figure 4</a>. Also here, a very good agreement can be seen. A Kolmogorov-Smirnov test on the simulated and observed distribution yields a value of 0.8, i.e. the null hypothesis that the simulated and observed distributions have the same underlying distribution, cannot be excluded. Moreover, a more rigorous analysis using the chi-squared between the simulated and observed distributions, while taken into account the correlations among the systematic uncertainties, yields a value of 44 for 35 degrees of freedom. This corresponds to a p-value of 0.15 and indicating a good agreement. Hence it is plausible to assume that a significant disagreement between the observed and simulated distributions can be excluded.",
+                    "type": "paragraph"
+                },
+                {
+                    "assets": [
+                        {
+                            "id": "fig4",
+                            "image": {
+                                "alt": "",
+                                "uri": "%iiif_uri%/00322%2Fijm-00322-fig004.tif",
+                                "size": {
+                                    "width": 2328,
+                                    "height": 1041
+                                },
+                                "source": {
+                                    "mediaType": "image/jpeg",
+                                    "uri": "%iiif_uri%/00322%2Fijm-00322-fig004.tif/full/full/0/default.jpg",
+                                    "filename": "ijm-00322-fig004.jpg"
+                                }
+                            },
+                            "label": "Figure 4",
+                            "title": "Normalized number of infections per 10k inhabitants for all 36 districts of Rhineland Palatinate between October 2020 and February 2021, once for the official reported cases and once by the June-Germany simulation.",
+                            "type": "image"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "text": "The distribution of the overall numbers infections as well as the normalized number of infections for the observed cases as well as the nominal simulation is shown in <a href=\"#fig5\">Figure 5</a>. Again, both distributions agree within their uncertainties. A Kolmogorov-Smirnov test on the simulated and observed distribution yields a value of 0.9 and 0.8, respectively, i.e. the null hypothesis that the simulated and observed distributions have the same underlying distribution, cannot be excluded. The better agreement for the overall number of infections (<a href=\"#fig5\">Figure 5a</a>) can be simply explained by the large correlation to the number of inhabitants in each district. The agreement between the two distributions does not significantly change, when ignoring all systematic uncertainties on the model parameters. This indicates, that the statistical uncertainties on the predicted values are dominant.",
+                    "type": "paragraph"
+                },
+                {
+                    "assets": [
+                        {
+                            "id": "fig5",
+                            "image": {
+                                "alt": "",
+                                "uri": "%iiif_uri%/00322%2Fijm-00322-fig005.tif",
+                                "size": {
+                                    "width": 2258,
+                                    "height": 762
+                                },
+                                "source": {
+                                    "mediaType": "image/jpeg",
+                                    "uri": "%iiif_uri%/00322%2Fijm-00322-fig005.tif/full/full/0/default.jpg",
+                                    "filename": "ijm-00322-fig005.jpg"
+                                }
+                            },
+                            "label": "Figure 5",
+                            "title": "Spread of the overall number of infections (<b>a</b>) and spread of the number of infections per 10k inhabitants (<b>b</b>) in all 36 districts of Rhineland Palatinate between October 2020 and February 2021, once for the official reported cases and once by the June-Germany simulation.",
+                            "type": "image"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "text": "While the observed mean of infections per 10k inhabitants is 261 \u00b1 9, the simulated mean is 256 \u00b1 9. Even more interestingly, also the spread of the distributions agree. Given that the underlying distributions might not be Gaussian, we take the root-mean-square (rms) value as a measure for the spread. The observed spread is rms=54 \u00b1 6, which agrees well with the simulated rms is 57 \u00b1 7, where the reported uncertainty is purely statistical.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "In order to understand if the spread of the distributions is only statistical or if social demographics have to be considered, it is illustrative to study the correlation between the observed and simulated numbers. <a href=\"#fig6\">Figure 6</a> shows the correlation of the overall number of infections per district as well as the number of infections per 10k inhabitants between October 2020 and February 2021. The districts differ by the number of inhabitants, by their socio-demographics as well as potential other factors such as local policies, available information at local level as well as different local behaviours. The size of the population in the different districts is accurately modelled and also the most important socio-demographic factors, such a population densities, house-hold sizes as well as age-distributions, as discussed in section 2.",
+                    "type": "paragraph"
+                },
+                {
+                    "assets": [
+                        {
+                            "id": "fig6",
+                            "image": {
+                                "alt": "",
+                                "uri": "%iiif_uri%/00322%2Fijm-00322-fig006.tif",
+                                "size": {
+                                    "width": 3520,
+                                    "height": 1101
+                                },
+                                "source": {
+                                    "mediaType": "image/jpeg",
+                                    "uri": "%iiif_uri%/00322%2Fijm-00322-fig006.tif/full/full/0/default.jpg",
+                                    "filename": "ijm-00322-fig006.jpg"
+                                }
+                            },
+                            "label": "Figure 6",
+                            "title": "Correlation between the observed and simulated overall number of infections per district (left) and the number of infections per 10k inhabitants between October 2020 and February 2021.",
+                            "type": "image"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "text": "A Pearson correlation of 0.8 \u00b1 0.1 is found for the overall number of infections (<a href=\"#fig6\">Figure 6a</a>) and is result of the strong correlation to number of inhabitants per districts, which is accurately modelled. However, a Pearson correlation coefficient of 0.5 \u00b1 0.1 is observed for the predicted and simulation number of infections normalized to 10k inhabitants (<a href=\"#fig6\">Figure 6b</a>), i.e. when the effect of the different population sizes has been removed. This significant correlation implies that pure statistical effects do not describe the observed variance among the districts, since a correlation coefficient consistent with 0 would be expected.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The observed correlation does not allow for a definitive statement about whether the infection rates across different districts in RLP are accurately described by the simulation. If no correlation would be observed, then it can only be concluded that the infection rates are based purely on random factors. The relevant question for our hypothesis is, if there are any districts that have a significantly larger or smaller infection rate by 10k inhabitants, compared to the expectation from the simulation. If that would be the case, then it can be concluded that there are factors playing a role, which are not modelled.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "However, <a href=\"#fig5\">Figure 5</a> demonstrates an accurate representation of the spread of incident rates, suggesting that the environmental conditions and statistical effects considered in the simulation are sufficient to reproduce the observed data. The agent based model June-Germany is therefore capable to describe the spread of infection numbers on local level, only using basic population statistics as well as common state-wide regulations without incooperating any specific local measures, such as information campaigns by the local authorities.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Does this imply that local authorities have no impact at all on the overall progression of the pandemic? To answer this question, it is important to note that the uncertainties in the reported infection numbers, as well as the limited number of districts studied in our simulation, do not allow for a definitive conclusion regarding the impact of local policies. To test a potential local effect, one could examine, for example, the outcome of a simulation in which only two-thirds of agents aged 5\u201314 in the district of Mainz adhere to the state-level school closure policy, while the remaining agents in this age group continue to meet in larger groups. This scenario results in a higher infection rate for the district of Mainz compared to the standard simulation setup. However, it would still be compatible with the observed spread across all districts within the 95%confidence level. Thus, local policies might still have an influence, however, the expected spread of infection rates due to statistical effects and population demographics is so large that many local measures are likely to be obscured by state-level trends and purely statistical factors.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s4",
+            "title": "4. Modelling of Regional Spreads",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "In this paper we use the June-Germany framework to predict the spread of infections within the German state of Rhineland Palatinate within the second COVID-19 wave from October 2020 and February 2021. The simulation was tuned on the overall number of confirmed COVID-19 death cases during October 2020 and mid of December 2021, however, no specific tuning on district level has been performed. We observe a good description of the spread of incidences per 10k inhabitants in all 36 districts and cities of Rhineland Palatinate. We observe a correlation coefficient of 0.5 between the simulated and measured incidences per 10k inhabitants. No specific local measures, such as dedicated informationcampaigns, special testing or tracing campaigns have been implemented in the simulation. Nevertheless, the observed incidence rates per district can be described by the simulation. This suggests that the incidence rates per district are primarily driven by statistical effects, population statistics and state-wide regulations.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s5",
+            "title": "5. Summary",
+            "type": "section"
+        },
+        {
+            "id": "footnotes",
+            "title": "Footnotes",
+            "type": "section",
+            "content": [
+                {
+                    "content": [
+                        {
+                            "text": "In fact, none of our simulations, nor variations in the assumed contact patterns or interplay between age groups could account for the deviations for the oldest age group between mid to end of January 2022. This deviation is not present in the raw infection data in this age group and shows only in the hospitalisation. However, we argue that this mismodelling has little effect on the actual test of our hypothesis, since the mismodelling is present in all local districts and cancels when comparing ratios to first order.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "fn1",
+                    "title": "1.",
+                    "type": "section"
+                }
+            ]
+        }
+    ],
+    "references": [
+        {
+            "articleTitle": "JUNE-Germany: An Agent-Based Epidemiology Simulation Including Multiple Virus Strains, Vaccinations and Testing Campaigns",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Akdogan, K",
+                        "preferred": "K Akdogan"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Heger, L",
+                        "preferred": "L Heger"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Iskauskas, A",
+                        "preferred": "A Iskauskas"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Neuhaus, F",
+                        "preferred": "F Neuhaus"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Schott, M",
+                        "preferred": "M Schott"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2023",
+            "doi": "10.48550/arXiv.2303.05742",
+            "id": "bib8",
+            "source": "arXiv:2303.05742",
+            "type": "preprint",
+            "uri": "https://doi.org/10.48550/arXiv.2303.05742"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Aleta, A",
+                        "preferred": "A Aleta"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Mart\u00edn-Corral, D",
+                        "preferred": "D Mart\u00edn-Corral"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "A.Bakker, M",
+                        "preferred": "M A.Bakker"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Pastore, A",
+                        "preferred": "A Pastore"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Piontti, MA",
+                        "preferred": "MA Piontti"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Litvinova, M",
+                        "preferred": "M Litvinova"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Chinazzi, M",
+                        "preferred": "M Chinazzi"
+                    },
+                    "type": "person"
+                }
+            ],
+            "authorsEtAl": true,
+            "date": "2022",
+            "details": "e2112182119, 26, 10.1073/pnas.2112182119",
+            "id": "bib15",
+            "title": "Quantifying the Importance and Location of SARS-CoV-2 Transmission Events in Large Metropolitan Areas.\u201dProceedings of the National Academy of Sciences119",
+            "type": "unknown"
+        },
+        {
+            "articleTitle": "History matching of a complex epidemiological model of human immunodeficiency virus transmission by using variance emulation",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Andrianakis, I",
+                        "preferred": "I Andrianakis"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Vernon, I",
+                        "preferred": "I Vernon"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "McCreesh, N",
+                        "preferred": "N McCreesh"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "McKinley, TJ",
+                        "preferred": "TJ McKinley"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Oakley, JE",
+                        "preferred": "JE Oakley"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Nsubuga, RN",
+                        "preferred": "RN Nsubuga"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Goldstein, M",
+                        "preferred": "M Goldstein"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "White, RG",
+                        "preferred": "RG White"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2017",
+            "doi": "10.1111/rssc.12198",
+            "id": "bib10",
+            "journal": "Journal of the Royal Statistical Society. Series C, Applied Statistics",
+            "pages": {
+                "first": "717",
+                "last": "740",
+                "range": "717\u2013740"
+            },
+            "pmid": 28781386,
+            "type": "journal",
+            "volume": "66"
+        },
+        {
+            "articleTitle": "Galaxy formation: A Bayesian uncertainty analysis",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Bower, RG",
+                        "preferred": "RG Bower"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Goldstein, M",
+                        "preferred": "M Goldstein"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Vernon, I",
+                        "preferred": "I Vernon"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2010",
+            "doi": "10.1214/10-BA524",
+            "id": "bib11",
+            "journal": "Bayesian Analysis",
+            "pages": {
+                "first": "619",
+                "last": "669",
+                "range": "619\u2013669"
+            },
+            "type": "journal",
+            "volume": "5"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Bullock, J",
+                        "preferred": "J Bullock"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "JUNE: Open-Source Individual-Based Epidemiology Simulation",
+            "date": "2021",
+            "id": "bib5",
+            "publisher": {
+                "name": [
+                    "Royal Society Open Science"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "articleTitle": "Mobility network models of COVID-19 explain inequities and inform reopening",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Chang, S",
+                        "preferred": "S Chang"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Pierson, E",
+                        "preferred": "E Pierson"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Koh, PW",
+                        "preferred": "PW Koh"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Gerardin, J",
+                        "preferred": "J Gerardin"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Redbird, B",
+                        "preferred": "B Redbird"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Grusky, D",
+                        "preferred": "D Grusky"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Leskovec, J",
+                        "preferred": "J Leskovec"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2021",
+            "doi": "10.1038/s41586-020-2923-3",
+            "id": "bib16",
+            "journal": "Nature",
+            "pages": {
+                "first": "82",
+                "last": "87",
+                "range": "82\u201387"
+            },
+            "pmid": 33171481,
+            "type": "journal",
+            "volume": "589"
+        },
+        {
+            "articleTitle": "Inference in epidemiological agent-based models using ensemble-based data assimilation",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Cocucci, TJ",
+                        "preferred": "TJ Cocucci"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Pulido, M",
+                        "preferred": "M Pulido"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Aparicio, JP",
+                        "preferred": "JP Aparicio"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Ru\u00edz, J",
+                        "preferred": "J Ru\u00edz"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Simoy, MI",
+                        "preferred": "MI Simoy"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Rosa, S",
+                        "preferred": "S Rosa"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2022",
+            "doi": "10.1371/journal.pone.0264892",
+            "id": "bib14",
+            "journal": "Plos One",
+            "pages": "e0264892",
+            "pmid": 35245337,
+            "type": "journal",
+            "volume": "17"
+        },
+        {
+            "articleTitle": "On the impact of school closures on COVID-19 transmission in Germany using an agent-based simulation",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Heger, L",
+                        "preferred": "L Heger"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Akdogan, K",
+                        "preferred": "K Akdogan"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Schott, M",
+                        "preferred": "M Schott"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2023",
+            "doi": "10.48550/arXiv.2312.11338",
+            "id": "bib13",
+            "source": "arXiv:2312.11338",
+            "type": "preprint",
+            "uri": "https://doi.org/10.48550/arXiv.2312.11338"
+        },
+        {
+            "articleTitle": "Emulation and history matching using the hmer package",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Iskauskas, A",
+                        "preferred": "A Iskauskas"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Vernon, I",
+                        "preferred": "I Vernon"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Goldstein, M",
+                        "preferred": "M Goldstein"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "McKinley, N",
+                        "preferred": "N McKinley"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Trevelyan, J",
+                        "preferred": "J Trevelyan"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "G.White, R",
+                        "preferred": "R G.White"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2022",
+            "doi": "10.48550/arXiv.2209.05265",
+            "id": "bib12",
+            "source": "arXiv:2209.05265",
+            "type": "preprint",
+            "uri": "https://doi.org/10.48550/arXiv.2209.05265"
+        },
+        {
+            "articleTitle": "Agent-based modeling of the Covid 19 Pandemic in Florida",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Pillai, AN",
+                        "preferred": "AN Pillai"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Toh, KB",
+                        "preferred": "KB Toh"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Perdomo, D",
+                        "preferred": "D Perdomo"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2023",
+            "doi": "10.48550/arXiv.2306.11003",
+            "id": "bib6",
+            "source": "arXiv:2306.11003",
+            "type": "preprint",
+            "uri": "https://doi.org/10.48550/arXiv.2306.11003"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Roda, W",
+                        "preferred": "W Roda"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Varughese, M",
+                        "preferred": "M Varughese"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Han, D",
+                        "preferred": "D Han"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Li, M",
+                        "preferred": "M Li"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2020",
+            "details": "10.1016/j.idm.2020.03.001",
+            "id": "bib4",
+            "title": "Why is it difficult to accurately pry is it difficult to accurately predict the COVID-19 epidemic?\u201dInfectious disease modelling5",
+            "type": "unknown"
+        },
+        {
+            "authors": [
+                {
+                    "name": "STERN",
+                    "type": "group"
+                }
+            ],
+            "date": "2021",
+            "details": "https://www.stern.de/wirtschaft/stunde-nullbuergermeister-von-rostock-erklaert\u2013warum-beiihm-die-inzidenz-so-niedrig-ist-30006730.html, Accessed, 23 November 2023",
+            "id": "bib1",
+            "title": "Warum hat rostock so wenig infizierte? der danische burgermeister erklart, was er anders macht",
+            "type": "unknown",
+            "uri": "https://www.stern.de/wirtschaft/stunde-nullbuergermeister-von-rostock-erklaert\u2013warum-beiihm-die-inzidenz-so-niedrig-ist-30006730.html"
+        },
+        {
+            "articleTitle": "Modeling and analysis of different scenarios for the spread of COVID-19 by using the modified multi-agent systems - Evidence from the selected countries",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Vyklyuk, Y",
+                        "preferred": "Y Vyklyuk"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Manylich, M",
+                        "preferred": "M Manylich"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "\u0160koda, M",
+                        "preferred": "M \u0160koda"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Radovanovi\u0107, MM",
+                        "preferred": "MM Radovanovi\u0107"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Petrovi\u0107, MD",
+                        "preferred": "MD Petrovi\u0107"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2021",
+            "doi": "10.1016/j.rinp.2020.103662",
+            "id": "bib7",
+            "journal": "Results in Physics",
+            "pages": "103662",
+            "pmid": 33318892,
+            "type": "journal",
+            "volume": "20"
+        },
+        {
+            "articleTitle": "Improved SIR epiDEM Model of Social Network Marketing Effectiveness and Experimental Simulation.\u201dSystems Engineering - Theory and Practice36",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Wang, Z",
+                        "preferred": "Z Wang"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Zhao, H",
+                        "preferred": "H Zhao"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Qin, X",
+                        "preferred": "X Qin"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2016",
+            "doi": "10.1016/j.rinp.2020.103662",
+            "id": "bib3",
+            "journal": "Results Phys",
+            "pages": "103662",
+            "pmid": 33318892,
+            "type": "journal"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Zeitung, FA",
+                        "preferred": "FA Zeitung"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2020",
+            "details": "https://www.faz.net/aktuell/politik/inland/umgang mit-corona-kann-deutschland-von-tuebingen lernen-17094239.html, Accessed, 23 November 2023",
+            "id": "bib2",
+            "title": "Kann deutschland von t\u00fcbingen lernen?",
+            "type": "unknown",
+            "uri": "https://www.faz.net/aktuell/politik/inland/umgang%20mit-corona-kann-deutschland-von-tuebingen%20lernen-17094239.html"
+        },
+        {
+            "authors": [
+                {
+                    "name": "Zensus",
+                    "type": "group"
+                }
+            ],
+            "date": "2011",
+            "id": "bib9",
+            "title": "statistische \u00c4mter stellen beim Zensus ein Team",
+            "type": "web",
+            "uri": "https://www.zensus2011.de/DE/Home/home_node.html"
+        }
+    ],
+    "acknowledgements": [
+        {
+            "text": "This work has been supported by the Johannes Gutenberg Startup Research Fund and would have not been possible with the ERC Grant LightAtLHC. Part of the simulations were conducted using the supercomputer Mogon II at Johannes Gutenberg University Mainz. The authors gratefully acknowledge the computing time granted on the supercomputer.",
+            "type": "paragraph"
+        }
+    ],
+    "-meta": {
+        "patched": true
+    },
+    "stage": "published"
+}
