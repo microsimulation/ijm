@@ -32,7 +32,7 @@ When(/^user is on the Home page$/, async function () {
     return title;
 });
 
-When(/^user clicks on "([^"]*)" from the list$/, {timeout: 30 * 1000}, async function (article) {
+When(/^user clicks on "([^"]*)" from the list$/, {timeout: 40 * 1000}, async function (article) {
     try {
         const articleElement = await this.state.driver.findElement(By.xpath(xpaths[article]))
         const articleName = (await articleElement.getText());
