@@ -27,7 +27,7 @@ test: build
 		--network="ijm_default" \
 		-v $(PWD)/tests/reports:/app/reports \
 		--env HEADLESS_MODE="true" \
-		--env WEB_URL="http://journal" \
+		--env WEB_URL="http://web" \  # <--- CHANGE THIS from "http://journal" to "http://web"
 		ijm-selenium-tests:latest || (docker compose logs && exit 1)
 	
 	docker compose stop
