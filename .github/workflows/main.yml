@@ -16,10 +16,14 @@ jobs:
 	#-- SETUP
 	- uses: actions/checkout@v2
 
-    - name: Link docker-compose
-      run: |
-        sudo ln -sf /usr/libexec/docker/cli-plugins/docker-compose /usr/local/bin/docker-compose
-        docker-compose version
+	- name: Link docker-compose
+		run: |
+	    # This finds where the docker-compose plugin is and links it to the standard path
+	    DOCKER_CONFIG=${DOCKER_CONFIG:-$HOME/.docker}
+	    mkdir -p $DOCKER_CONFIG/cli-plugins
+	    sudo ln -sf /usr/libexec/docker/cli-plugins/docker-compose /usr/local/bin/docker-compose
+	    # This confirms it works before we even try 'make test'
+	    docker-compose version
 
     - name: Configure AWS Access
       uses: aws-actions/configure-aws-credentials@v1
