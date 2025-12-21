@@ -21,3 +21,4 @@ ENV HEADLESS_MODE=true
 ENV WEB_URL=$APP_HOSTNAME
 
 ENTRYPOINT [ "npm", "run", "ci" ]
+

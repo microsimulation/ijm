@@ -22,3 +22,4 @@ test: build
 		--env WEB_URL="http://$(local_ip):8080/" \
 		ijm-selenium-tests:latest
 	docker compose stop
+ 
