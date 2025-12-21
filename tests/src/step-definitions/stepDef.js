@@ -27,18 +27,23 @@ Given(/^user navigates to "([^"]*)" page$/, {timeout: 50 * 1000}, async function
 //When section
 
 When(/^user is on the Home page$/, {timeout: 30 * 1000}, async function () {
+    // 1. Identify the URL being used
+    console.log("\n\n [DEBUG] The test is running against: " + config.url + "\n\n");
+    
     try {
+        // 2. Wait for the page to actually load a title
         await this.state.driver.wait(async (driver) => {
             const title = await driver.getTitle();
             return title && title.length > 0;
         }, 15000);
     } catch (e) {
-        // IF IT FAILS, PRINT THE SOURCE CODE TO THE LOGS
+        // 3. If it times out, tell us what the browser actually saw
         const html = await this.state.driver.getPageSource();
         console.log("CRITICAL DEBUG - Page Source on failure: " + html.substring(0, 1000));
         throw e;
     }
 
+    // 4. Final verification
     const title = await this.state.driver.getTitle();
     expect(title).to.contain("International Journal of Microsimulation");
 });
