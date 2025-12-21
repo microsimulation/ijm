@@ -9,19 +9,19 @@ dev: build
 	docker compose up
 
 test: build
+	# 1. Prepare the reports directory with full permissions
+	mkdir -p tests/reports
 	rm -f tests/reports/*.html
 	rm -f tests/reports/*.json
+	chmod -R 777 tests/reports
+	
 	docker build -t ijm-selenium-tests:latest ./tests
 	
-	# 1. Start Environment
 	LOCAL_IP=$(local_ip) docker compose -f docker-compose.yml -f docker-compose.test.yml up -d
 	
-	# 2. WAIT for Nginx/PHP to be fully ready
 	sleep 15
 	
-	# 3. Run Tests
-	# We use 'ijm_default' because your logs confirmed this is the network name.
-	# We use 'http://journal' because that is the service name in docker-compose.
+	# 2. Run Tests (Permissions fixed)
 	docker run \
 		-i --rm \
 		--network="ijm_default" \
