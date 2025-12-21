@@ -21,10 +21,11 @@ test: build
 	
 	sleep 15
 	
-	# 2. THE FIX: DNS SPOOFING
-	# Get the internal IP address of the Nginx container
+	# 2. DNS SPOOFING: Map the domain to the local container IP
+	# We grab the internal IP of the Nginx container (ijm-web-1)
+	# We use --add-host to map 'microsimulation.pub' to that internal IP
 	@WEB_IP=$$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' ijm-web-1); \
-	echo "Web Container IP: $$WEB_IP"; \
+	echo "Targeting Local IP: $$WEB_IP"; \
 	docker run \
 		-i --rm \
 		--network="ijm_default" \
