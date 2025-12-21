@@ -4,16 +4,16 @@ local_ip = $(shell ip addr | grep 'state UP' -A2 | tail -n1 | grep -oP '[0-9]{1,
 .PHONY: build dev test
 
 build:
-	docker-compose build
+	docker compose build
 
 dev: build
-	docker-compose up
+	docker compose up
 
 test: build
 	rm -f tests/reports/*.html
 	rm -f tests/reports/*.json
 	docker build -t ijm-selenium-tests:latest ./tests
-	LOCAL_IP=$(local_ip) docker-compose -f docker-compose.yml -f docker-compose.test.yml up -d
+	LOCAL_IP=$(local_ip) docker compose -f docker-compose.yml -f docker-compose.test.yml up -d
 	chmod 777 tests/reports
 	docker run \
 		-i --rm \
