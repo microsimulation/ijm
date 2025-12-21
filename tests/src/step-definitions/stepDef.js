@@ -26,19 +26,21 @@ Given(/^user navigates to "([^"]*)" page$/, {timeout: 50 * 1000}, async function
 
 //When section
 
-// Add {timeout: 30 * 1000} to the line below
 When(/^user is on the Home page$/, {timeout: 30 * 1000}, async function () {
-    // This wait is good, but it needs the Cucumber timeout above to allow it to run
-    await this.state.driver.wait(async (driver) => {
-        const title = await driver.getTitle();
-        return title && title.length > 0;
-    }, 15000);
+    try {
+        await this.state.driver.wait(async (driver) => {
+            const title = await driver.getTitle();
+            return title && title.length > 0;
+        }, 15000);
+    } catch (e) {
+        // IF IT FAILS, PRINT THE SOURCE CODE TO THE LOGS
+        const html = await this.state.driver.getPageSource();
+        console.log("CRITICAL DEBUG - Page Source on failure: " + html.substring(0, 1000));
+        throw e;
+    }
 
     const title = await this.state.driver.getTitle();
-    console.log("DEBUG: Actual Page Title is: " + title);
-    
     expect(title).to.contain("International Journal of Microsimulation");
-    return title;
 });
 
 When(/^user clicks on "([^"]*)" from the list$/, {timeout: 40 * 1000}, async function (article) {
