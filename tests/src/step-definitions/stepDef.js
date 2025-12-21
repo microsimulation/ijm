@@ -26,12 +26,13 @@ Given(/^user navigates to "([^"]*)" page$/, {timeout: 50 * 1000}, async function
 
 //When section
 
-When(/^user is on the Home page$/, async function () {
-    // This tells the driver to wait up to 10 seconds for the title to appear
+// Add {timeout: 30 * 1000} to the line below
+When(/^user is on the Home page$/, {timeout: 30 * 1000}, async function () {
+    // This wait is good, but it needs the Cucumber timeout above to allow it to run
     await this.state.driver.wait(async (driver) => {
         const title = await driver.getTitle();
         return title && title.length > 0;
-    }, 10000);
+    }, 15000);
 
     const title = await this.state.driver.getTitle();
     console.log("DEBUG: Actual Page Title is: " + title);
