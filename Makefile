@@ -4,10 +4,10 @@ local_ip = $(shell ip addr | grep 'state UP' -A2 | tail -n1 | grep -oP '[0-9]{1,
 .PHONY: build dev test
 
 build:
-	docker-compose build
+	docker compose build
 
 dev: build
-	docker-compose up
+	docker compose up
 
 test: build
 	rm -f tests/reports/*.html
