@@ -62,17 +62,18 @@ jobs:
         docker-compose up -d
         docker build -t ijm-selenium-tests:latest --build-arg APP_HOSTNAME="http://"$APP_IP":8080/" -f tests/Dockerfile ./tests
 
-    - name: Run Automation suite
-      run: |
-        CURR_PATH=$(pwd)
-        mkdir -p $CURR_PATH/reports && chmod 777 -R $CURR_PATH/reports
-        docker run -i --name ijm-selenium -v $CURR_PATH/reports:/app/reports ijm-selenium-tests:latest
+	- name: Run Automation suite
+	  run: |
+	  	CURR_PATH=$(pwd)
+		# Ensure the path includes 'tests/'
+		mkdir -p $CURR_PATH/tests/reports && chmod 777 -R $CURR_PATH/tests/reports
+		docker run -i --name ijm-selenium -v $CURR_PATH/tests/reports:/app/reports ijm-selenium-tests:latest
 
     - name: Get test results
       if: always()
       id: test-res
       run: |
-        RESULT=$(jq '[ .[].elements[].steps[].result.status ] | unique | tostring | test("failed")' reports/report.json)
+        RESULT=$(jq '[ .[].elements[].steps[].result.status ] | unique | tostring | test("failed")' tests/reports/report.json)
         echo "::set-output name=TEST_RESULTS::$RESULT"
         echo "Test results - $RESULT"
 
@@ -81,7 +82,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: selenium-test-report
-        path: reports/
+        path: tests/reports/
 
     - name: Examine test results
       if: ${{ steps.test-res.outputs.TEST_RESULTS == 'true' }}
