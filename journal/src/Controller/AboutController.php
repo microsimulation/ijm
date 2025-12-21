@@ -67,7 +67,7 @@ final class AboutController extends Controller
             new Paragraph('<strong>Book reviews</strong> offer a discussion of recent books that might be of interest to the microsimulation community, or present a critical assessment in retrospect of the impact of "classic" contributions.'),
             new Paragraph('<strong>Software reviews</strong> are short contributions that describe advances in software development that are likely to be of interest to the journal readership, with a particular attention to open source software.'),
 			new Paragraph('The journal also publishes thematic special issues containing historically relevant work for the microsimulation community, previously unpublished in journal or book form, such as documentation of landmark models. Occasionally, the journal might also republish relevant chapters from edited volumes, with permission from the original publisher, to facilitate access to important early microsimulation work. The original source of publication is always clearly indicated in the published articles.'),
-			new Paragraph('If in doubt concerning the suitability of a particular manuscript, or if interested in editing a Special thematic issue, please <a href="mailto:ijm-editor@microsimulation.org">contact the editor</a> for further advice'),
+			new Paragraph('If in doubt concerning the suitability of a particular manuscript, or if interested in editing a Special thematic issue, please <a href="mailto:ijm-editor@microsimulation.net">contact the editor</a> for further advice'),
             Listing::unordered([
                 'The IJM is listed in EBSCOhost, EconLit, RePEc, Scopus.',
                 'The ISSN of the journal is 1747-5864.',
@@ -80,7 +80,7 @@ final class AboutController extends Controller
             new Paragraph('International Microsimulation Association'),
             new Paragraph('11 Porte Des Sciences, Esch-Sur-Alzette L-4366, Luxembourg.'),
             new Paragraph('<a href="https://www.microsimulation.org/contact/">Contact information</a>'),
-			new Paragraph('For enquiries about the journal, write to <a href="mailto:ijm-enquiries@microsimulation.org">ijm-enquiries@microsimulation.org</a>'),
+			new Paragraph('For enquiries about the journal, write to <a href="mailto:ijm-enquiries@microsimulation.net">ijm-enquiries@microsimulation.net</a>'),
         ];
 
         return new Response($this->get('templating')->render('::about.html.twig', $arguments));
@@ -96,8 +96,8 @@ final class AboutController extends Controller
             '');
         $arguments['body'] = [
             new Paragraph('The editors, associate editors and editorial board of the International Journal of Microsimulation are appointed through the auspices of the International Microsimulation Association. All are appointed to serve for a two-year period, during which they commit themselves to (i) seeking out and encouraging submission of work likely to be of interest to the journal readership; (ii) undertaking reviews of submitted manuscripts; (iii) providing guidance to the editor on future directions for the journal. In addition, Associate Editors take responsibility for facilitating the review and editing of submitted manuscripts falling within their area of subject specialism.  Nominations for all of these posts are sought in the run-up to the biennial IMA General Conference via the IMA-NEWS email discussion list.'),
-            new Paragraph('<strong>Chief Editor</strong> - Prof Matteo Richiardi (University of Essex, UK), <a href="mailto:ijm-editor@microsimulation.org">ijm-editor@microsimulation.org</a>'),
-            new Paragraph('<strong>Managing Editor</strong> - Prof Michael Christl (Universidad Loyola Andalucia, Spain), <a href="mailto:ijm-managing@microsimulation.org">ijm-managing@microsimulation.org</a>')
+            new Paragraph('<strong>Chief Editor</strong> - Prof Matteo Richiardi (University of Essex, UK), <a href="mailto:ijm-editor@microsimulation.net">ijm-editor@microsimulation.net</a>'),
+            new Paragraph('<strong>Managing Editor</strong> - Prof Michael Christl (Universidad Loyola Andalucia, Spain), <a href="mailto:ijm-managing@microsimulation.net">ijm-managing@microsimulation.net</a>')
             new Paragraph('<strong>Assistant Editor</strong>'),
             Listing::unordered([
                 'Natasha Brooks (University of Essex, UK)'
@@ -289,7 +289,7 @@ final class AboutController extends Controller
                 )
             ),
             ArticleSection::basic('Contact information', 2,
-                $this->render(new Paragraph('For questions, please write to <a href="mailto:ijm-enquiries@microsimulation.org">ijm-enquiries@microsimulation.org</a>') 
+                $this->render(new Paragraph('For questions, please write to <a href="mailto:ijm-enquiries@microsimulation.net">ijm-enquiries@microsimulation.net</a>') 
                 )
             ),            
         ];
