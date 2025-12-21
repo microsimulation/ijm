@@ -16,18 +16,15 @@ test: build
 	# 1. Start Environment
 	LOCAL_IP=$(local_ip) docker compose -f docker-compose.yml -f docker-compose.test.yml up -d
 	
-	# 2. WAIT for Nginx to be ready
-	sleep 10
+	# 2. WAIT for Nginx/PHP to be fully ready
+	sleep 15
 	
-	# 3. Auto-detect the network name (Runtime calculation)
-	# We use $$() to tell Make to run this inside the shell, not at compile time.
-	# We look up the container ID for 'journal' service first to be safe.
-	@JOURNAL_ID=$$(docker compose ps -q journal); \
-	NETWORK_NAME=$$(docker inspect $$JOURNAL_ID -f '{{range .NetworkSettings.Networks}}{{.Name}}{{end}}'); \
-	echo "Detected Network Name: $$NETWORK_NAME"; \
+	# 3. Run Tests
+	# We use 'ijm_default' because your logs confirmed this is the network name.
+	# We use 'http://journal' because that is the service name in docker-compose.
 	docker run \
 		-i --rm \
-		--network="$$NETWORK_NAME" \
+		--network="ijm_default" \
 		-v $(PWD)/tests/reports:/app/reports \
 		--env HEADLESS_MODE="true" \
 		--env WEB_URL="http://journal" \
