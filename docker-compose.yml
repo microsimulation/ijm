@@ -32,18 +32,21 @@ services:
             - ./assets/files:/imageroot:ro
         ports:
             - 8081:8182
-    web:
-        image: nginx:1.15.5-alpine
-        volumes:
-            - ./journal/.docker/nginx.conf:/etc/nginx/conf.d/journal.conf
-            - ./assets/.docker/nginx.conf:/etc/nginx/conf.d/assets.conf
-            - public-journal:/app/journal/:ro
-            - ./assets/files:/app/assets:ro
-        ports:
-            - 8080:8080
-            - 8082:8082
-        depends_on:
-            - journal
+		web:
+		        image: nginx:1.15.5-alpine
+		        volumes:
+		            # ADD THIS LINE: This deletes the default config that causes the "Welcome" page
+		            - /dev/null:/etc/nginx/conf.d/default.conf
+		            - ./journal/.docker/nginx.conf:/etc/nginx/conf.d/journal.conf
+		            - ./assets/.docker/nginx.conf:/etc/nginx/conf.d/assets.conf
+		            - public-journal:/app/journal/:ro
+		            - ./assets/files:/app/assets:ro
+		        ports:
+		            - 80:80     # <--- ADD THIS LINE to expose the app on port 80
+		            - 8080:8080
+		            - 8082:8082
+		        depends_on:
+		            - journal
 
 volumes:
     public-journal:
