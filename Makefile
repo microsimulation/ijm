@@ -1,5 +1,5 @@
 
-local_ip = $(shell ip addr | grep 'state UP' -A2 | tail -n1 | grep -oP '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}(?:/)' | sed 's/.$$//')
+local_ip = 172.17.0.1
 
 .PHONY: build dev test
 
@@ -19,7 +19,7 @@ test: build
 		-i --rm \
 		-v $(PWD)/tests/reports:/app/reports \
 		--env HEADLESS_MODE="true" \
-		--env WEB_URL="http://172.17.0.1:8080/" \
+		--env WEB_URL="http://$(local_ip):8080/" \
 		ijm-selenium-tests:latest
 	docker compose stop
  
