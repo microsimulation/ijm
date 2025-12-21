@@ -9,7 +9,6 @@ dev: build
 	docker compose up
 
 test: build
-	# 1. Prepare the reports directory with full permissions
 	mkdir -p tests/reports
 	rm -f tests/reports/*.html
 	rm -f tests/reports/*.json
@@ -21,13 +20,12 @@ test: build
 	
 	sleep 15
 	
-	# 2. Run Tests (Permissions fixed)
 	docker run \
 		-i --rm \
 		--network="ijm_default" \
 		-v $(PWD)/tests/reports:/app/reports \
 		--env HEADLESS_MODE="true" \
-		--env WEB_URL="http://web" \  # <--- CHANGE THIS from "http://journal" to "http://web"
+		--env WEB_URL="http://web" \
 		ijm-selenium-tests:latest || (docker compose logs && exit 1)
 	
 	docker compose stop
