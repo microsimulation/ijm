@@ -12,19 +12,25 @@ test: build
 	rm -f tests/reports/*.html
 	rm -f tests/reports/*.json
 	docker build -t ijm-selenium-tests:latest ./tests
+	
+	# 1. Start Environment
 	LOCAL_IP=$(local_ip) docker compose -f docker-compose.yml -f docker-compose.test.yml up -d
-	chmod 777 tests/reports
 	
-	# FIX 1: Increase wait time to 45 seconds for slow CI runners
-	sleep 45
+	# 2. WAIT for Nginx to be ready
+	sleep 10
 	
-	# FIX 2: Use --network="host" so Selenium can see 'localhost'
-	# FIX 3: Change WEB_URL to localhost
+	# 3. Auto-detect the network name (Runtime calculation)
+	# We use $$() to tell Make to run this inside the shell, not at compile time.
+	# We look up the container ID for 'journal' service first to be safe.
+	@JOURNAL_ID=$$(docker compose ps -q journal); \
+	NETWORK_NAME=$$(docker inspect $$JOURNAL_ID -f '{{range .NetworkSettings.Networks}}{{.Name}}{{end}}'); \
+	echo "Detected Network Name: $$NETWORK_NAME"; \
 	docker run \
 		-i --rm \
-		--network="host" \
+		--network="$$NETWORK_NAME" \
 		-v $(PWD)/tests/reports:/app/reports \
 		--env HEADLESS_MODE="true" \
-		--env WEB_URL="http://localhost:8080/" \
-		ijm-selenium-tests:latest
+		--env WEB_URL="http://journal" \
+		ijm-selenium-tests:latest || (docker compose logs && exit 1)
+	
 	docker compose stop

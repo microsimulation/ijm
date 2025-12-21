@@ -5,7 +5,7 @@ const rootDir = path.normalize(path.join(__dirname, '../..'));
 module.exports = {
     rootDir,
     downloadDir: path.join(rootDir, 'downloads'),
-    url: process.env.WEB_URL || "http://localhost:8080",
+    url: process.env.WEB_URL || "http://journal",
     iiifPort: process.env.IIIF_PORT || 8081,
     headless: {
         mode: !!process.env.HEADLESS_MODE || false,
