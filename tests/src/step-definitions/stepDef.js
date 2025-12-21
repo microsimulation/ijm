@@ -27,8 +27,15 @@ Given(/^user navigates to "([^"]*)" page$/, {timeout: 50 * 1000}, async function
 //When section
 
 When(/^user is on the Home page$/, async function () {
+    // This tells the driver to wait up to 10 seconds for the title to appear
+    await this.state.driver.wait(async (driver) => {
+        const title = await driver.getTitle();
+        return title && title.length > 0;
+    }, 10000);
+
     const title = await this.state.driver.getTitle();
-    console.log("DEBUG: Actual Page Title is: " + title); // This will show up in GitHub logs
+    console.log("DEBUG: Actual Page Title is: " + title);
+    
     expect(title).to.contain("International Journal of Microsimulation");
     return title;
 });
