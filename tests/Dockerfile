@@ -1,12 +1,10 @@
-# 1. Use a modern version of Chrome and Selenium
-FROM selenium/standalone-chrome:4.1.2
+FROM selenium/standalone-chrome-debug:3@sha256:0c59037d0a095d7edb7b956e95a24573a6a441654a1acd2f7bebad048ef16e65
 
 USER seluser
 WORKDIR /app
 
-# 2. Update Node.js to a supported version (v18+)
-RUN sudo apt-get update && sudo apt-get install -y curl \
- && sudo curl -sL https://deb.nodesource.com/setup_18.x -o nodesource_setup.sh \
+# Using 12.x to match the original environment exactly
+RUN sudo curl -sL https://deb.nodesource.com/setup_12.x -o nodesource_setup.sh \
  && sudo bash nodesource_setup.sh \
  && sudo apt-get install -y nodejs jq moreutils \
  && sudo chown seluser:seluser /app \
@@ -15,7 +13,6 @@ RUN sudo apt-get update && sudo apt-get install -y curl \
 
 COPY --chown=seluser:seluser ./ /app/
 
-# 3. Install dependencies and build
 RUN npm install \
  && npm run build
 
