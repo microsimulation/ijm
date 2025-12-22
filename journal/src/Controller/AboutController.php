@@ -97,7 +97,7 @@ final class AboutController extends Controller
         $arguments['body'] = [
             new Paragraph('The editors, associate editors and editorial board of the International Journal of Microsimulation are appointed through the auspices of the International Microsimulation Association. All are appointed to serve for a two-year period, during which they commit themselves to (i) seeking out and encouraging submission of work likely to be of interest to the journal readership; (ii) undertaking reviews of submitted manuscripts; (iii) providing guidance to the editor on future directions for the journal. In addition, Associate Editors take responsibility for facilitating the review and editing of submitted manuscripts falling within their area of subject specialism.  Nominations for all of these posts are sought in the run-up to the biennial IMA General Conference via the IMA-NEWS email discussion list.'),
             new Paragraph('<strong>Chief Editor</strong> - Prof Matteo Richiardi (University of Essex, UK), <a href="mailto:ijm-editor@microsimulation.net">ijm-editor@microsimulation.net</a>'),
-            new Paragraph('<strong>Managing Editor</strong> - Prof Michael Christl (Universidad Loyola Andalucia, Spain), <a href="mailto:ijm-managing@microsimulation.net">ijm-managing@microsimulation.net</a>')
+            new Paragraph('<strong>Managing Editor</strong> - Prof Michael Christl (Universidad Loyola Andalucia, Spain), <a href="mailto:ijm-managing@microsimulation.net">ijm-managing@microsimulation.net</a>'),
             new Paragraph('<strong>Assistant Editor</strong>'),
             Listing::unordered([
                 'Natasha Brooks (University of Essex, UK)'
@@ -114,7 +114,7 @@ final class AboutController extends Controller
                 'Dr Philipp Harting (Bielefeld University, Germany)',
                 'Prof Nicolas Hérault (Bordeaux School of Economics, France)',
                 'Dr Jason Hilton (University of Southampton, United Kingdom)',
-                'Prof Seiichi Inagaki (International University of Health and Welfare, Japan)',                
+                'Prof Seiichi Inagaki (International University of Health and Welfare, Japan)',
                 'Prof Giulia Iori (City University, United Kingdom)',
                 'Dr Tanja Kirn (University of Liechtenstein, Liechtenstein)',
                 'Dr Daniel Kopasker (Glasgow University, United Kingdom)',
@@ -145,7 +145,7 @@ final class AboutController extends Controller
                 'Prof Lennart Flood (University of Gothenburg, Sweden)',
                 'Prof Nora Lustig (University of Tulane, United States)',
                 'Prof Cathal O\'Donoghue (Teagasc, Ireland)',
-                'Prof Deborah Schofield (Macquarie University, Australia)',                
+                'Prof Deborah Schofield (Macquarie University, Australia)',
                 'Prof Leigh Tesfatsion (Iowa State University, United States)',
             ], 'bullet'),
         ];
@@ -254,18 +254,18 @@ final class AboutController extends Controller
                     new Paragraph('If data or programs cannot be published in an openly accessible trusted data repository, authors must commit to preserving data and code for a period of no less than five years following publication of the manuscript, and to providing reasonable assistance to requests for clarification and replication.'),
                     new Paragraph('The journal encourages the use of open-source software and the publication of the source code.')
                 )
-            ),     
+            ),
             ArticleSection::basic('Participants and participant consent', 2,
                 $this->render(
                     new Paragraph('All submitted manuscripts containing research which involves human participants and/or animal experimentation - however unlikely this is given the scope of the journal - must include a statement confirming that the research was carried out in accordance with the principles embodied in the <a href="https://www.wma.net/policies-post/wma-declaration-of-helsinki-ethical-principles-for-medical-research-involving-human-subjects/"> Declaration of Helsinki</a> and all relevant guidelines and institutional policies, giving the name of the institutional and/or national research ethics committee that approved the research, along with the approval number/ID.'),
                     new Paragraph('All submitted manuscripts containing research which involves identifiable human subjects must include a statement confirming that consent was obtained for all identifiable individuals and that any identifiable individuals are aware of intended publication. In order to protect participant anonymity, authors do not need to send proof of this consent to the IJM.')
                 )
-            ),       
+            ),
 			ArticleSection::basic('Reprinted material', 2,
 			    $this->render(
 			        new Paragraph('Occasionally, the journal might publish thematic special issues containing historically relevant work for the microsimulation community, previously unpublished in journal or book form, such as documentation of landmark models (see the <a href="https://microsimulation.pub/about">Aims and Scope</a> section). The choice of such articles always rests on a decision by the Chief Editor, subject to the acquisition of the relevant publishing rights. Republished articles are clearly identified in the Acknowledgements section, with the original source of publication duly reported.')
 			    )
-			),      			
+			),
             ArticleSection::basic('Copyright', 2,
                 $this->render(new Paragraph('All IJM articles, unless otherwise stated, are published under the terms of the Creative Commons Attribution (CC BY) License which permits use, distribution and reproduction in any medium, provided the work is properly attributed back to the original author and publisher. Copyright on any research article in the International Journal ofMicrosimulation(IJM) is retained by the Authors. Authors grant IJM a license to publish the article and identify itself as the original publisher. Authors cannot revoke these freedoms as long as the Journal follows the license terms. Authors should not submit any paper unless they agree with this policy. Submission implies full acceptance of the above terms by all co-authors, with the corresponding author responsible for providing a written acknowledgement signed by all co-authors prior to publication. The full text of the CC BY 4.0 license can be found <a href="https://creativecommons.org/licenses/by/4.0/">here</a>. Special exemptions and other licensing arrangement can be made on a case by case basis, by writing a motivated request to the Editor.')
                 )
@@ -283,15 +283,15 @@ final class AboutController extends Controller
 			ArticleSection::basic('Publication schedule', 2,
 			    $this->render(new Paragraph('Issues are finalised on April 30 (Spring issue), August 31 (Summer issue) and December 31 (Winter issue) of each year. Issues may be listed on the journal website in advance of their scheduled date, containing articles assigned to those issues that have already completed the editorial process (forthcoming). New articles are added to the forthcoming issues as they become available, until the issue is finalised on the scheduled date.')
 			    )
-			),			
+			),
             ArticleSection::basic('Disclaimer', 2,
                 $this->render(new Paragraph('The International Microsimulation Association (IMA) and the International Journal of Microsimulation (IJM) and make every effort to ensure the accuracy of all the information contained in our publications. It however, makes no representations or warranties whatsoever as to the accuracy, completeness, or suitability for any purpose of the published work. Any opinions and views expressed in this publication are the opinions and views of the Authors, and are not necessarily the view of the Editors or the Journal.')
                 )
             ),
             ArticleSection::basic('Contact information', 2,
-                $this->render(new Paragraph('For questions, please write to <a href="mailto:ijm-enquiries@microsimulation.net">ijm-enquiries@microsimulation.net</a>') 
+                $this->render(new Paragraph('For questions, please write to <a href="mailto:ijm-enquiries@microsimulation.net">ijm-enquiries@microsimulation.net</a>')
                 )
-            ),            
+            ),
         ];
         return new Response($this->get('templating')->render('::about.html.twig', $arguments));
     }
@@ -323,13 +323,13 @@ final class AboutController extends Controller
 
         return new Response($this->get('templating')->render('::about.html.twig', $arguments));
     }
-    
+
     public function callForPapersAction(Request $request) : Response
     {
         $arguments = $this->aboutPageArguments($request);
-        
+
         $arguments['title'] = 'Special issues';
-        
+
         $arguments['contentHeader'] = new ContentHeader($arguments['title']);
         $arguments['body'] = [
             ArticleSection::basic('Forthcoming special issues', 2, $this->render(
@@ -340,11 +340,11 @@ final class AboutController extends Controller
                 new Paragraph('Guest editors: Emanuele Dicarlo, Nicola Curci, Marco Sevegnago and Antonella Tomasi')
                 )),
 				*/
-        ];      
-        
+        ];
+
         return new Response($this->get('templating')->render('::about.html.twig', $arguments));
     }
-    
+
     private function aboutPageArguments(Request $request) : array
     {
         $arguments = $this->defaultPageArguments($request);
@@ -370,5 +370,3 @@ final class AboutController extends Controller
         return $arguments;
     }
 }
-
-
