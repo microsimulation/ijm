@@ -289,7 +289,7 @@ final class AboutController extends Controller
                 )
             ),
             ArticleSection::basic('Contact information', 2,
-                $this->render(new Paragraph('For questions, please write to <a href="mailto:ijm-enquiries@microsimulation.org">ijm-enquiries@microsimulation.org</a>')
+                $this->render(new Paragraph('For questions, please write to <a href="mailto:ijm-enquiries@microsimulation.org">ijm-enquiries@microsimulation.org.</a>')
                 )
             ),
         ];
@@ -333,7 +333,7 @@ final class AboutController extends Controller
         $arguments['contentHeader'] = new ContentHeader($arguments['title']);
         $arguments['body'] = [
             ArticleSection::basic('Forthcoming special issues', 2, $this->render(
-                new Paragraph('For more information, or if you are interested in editing a special issue, please <a href="mailto:matteo.richiardi@essex.ac.uk">contact the Editor</a>.')
+                new Paragraph('For more information, or if you are interested in editing a special issue, please <a href="mailto:matteo.richiardi@essex.ac.uk">contact the Editor.</a>')
                 )),         
 			ArticleSection::basic('"Microsimulation in Government"', 2, $this->render(
 			    new Paragraph('Guest editor: Dave Pankhurst, Grant Tregonning')
