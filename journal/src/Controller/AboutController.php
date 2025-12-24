@@ -226,20 +226,28 @@ final class AboutController extends Controller
                     new Paragraph('<strong>Plagiarism:</strong> The journal takes plagiarism very seriously and follows the guidelines for handling plagiarism outlined by COPE. All submitted manuscripts are screened for plagiarism using appropriate software. If plagiarism is detected during the review process, the manuscript may be rejected. If plagiarism is detected in published work, a formal correction or retraction may be required.'),
                     new Paragraph('<strong>Post-Publication Corrections:</strong> The journal recognizes the importance of ensuring the accuracy and integrity of the scientific record. If errors or inaccuracies are discovered after publication, the journal will issue a correction or clarification, as appropriate. Authors are encouraged to notify the journal of any errors or inaccuracies as soon as possible.'),
                     new Paragraph('<strong>Retractions:</strong> In case of evidence of scientific misconduct or fraudulent behaviour, violation of ethical guidelines, copyright infringement, or significant errors that cannot be resolved through correction or clarification, the International Microsimulation Association holds the authority to retract articles. A panel consisting of the Editor, two Associate Editors, and the current President of the Association will be formed to evaluate and decide on the proposed retraction. Additional details regarding COPE retraction guidelines can be obtained <a href="https://publicationethics.org/files/retraction-guidelines-cope.pdf">here</a>. Any retracted articles will be prominently marked and removed from the journal`s website and other databases.'),
-                    new Paragraph('Overall, the journal is committed to upholding high ethical standards and promoting responsible scientific conduct.')
+                    new Paragraph('Overall, the journal is committed to upholding high ethical standards and promoting responsible scientific conduct.'),
+					new Paragraph('The following statements should be included - where relevant and as discussed below - in all submissions, either as a separate file, at the end of the submitted manuscript, or in the Acknoweledgements section, and are published in the Acknowledgements of each article:'),
+					Listing::unordered([
+						'<strong>Conflict of interest</strong> (Compulsory, even when no competing interests are present)',
+						'<strong>Data and code availability</strong> (Compulsory)',
+						'<strong>Participants and participant consent</strong> (Only if the research  involves human participants and/or animal experimentation)',
+						'<strong>Declaration of Generative AI Use </strong> (Not for use of basic tools for checking spelling, grammar, or punctuation)',
+		                ], 'bullet'),
                 )
             ),
             ArticleSection::basic('Conflict of interest', 2,
                 $this->render(
                     new Paragraph('All authors are requested to disclose any actual or potential conflict of interest. In particular, every author must disclose any financial interests or support, any in kind support – such as providing access to data – and any connection, - direct or indirect - that could potentially create bias in the reported work or the stated opinions, conclusions, or implications. This includes relevant commercial or funding sources for the authors, their associated departments or organizations, personal relationships, or direct academic competition. This also includes support or pressures of any kind by any interested party, defined as any individual, group, or organization that has a financial, ideological, or political stake related to the article. If the support in question comes with a non-disclosure obligation, that fact should be stated, along with as much information as the obligation permits.'),
                     new Paragraph('In order to determine whether or not a conflict of interest should be declared, authors should apply the following test: “Is there any arrangement that would be embarrassing for any of the authors if it were to come to light after publication and had not been disclosed?”'),
-                    new Paragraph('<strong>Implementation:</strong> A disclosure statement for each of the authors should be added at the end of the submitted manuscript. If authors fail to disclose pertinent information during the submission process, the acceptance decision may be reversed. In the event that the article has already been published, the journal retains the right to publish a notice on their website informing readers that the authors have violated the journal`s policy regarding disclosure. Further information and can be found in the <a href="https://publicationethics.org/guidance/Guidelines">COPE author guidelines</a>.')
+                    new Paragraph('A disclosure statement for each of the authors should be added at the end of the submitted manuscript. If authors fail to disclose pertinent information during the submission process, the acceptance decision may be reversed. In the event that the article has already been published, the journal retains the right to publish a notice on their website informing readers that the authors have violated the journal`s policy regarding disclosure. Further information and can be found in the <a href="https://publicationethics.org/guidance/Guidelines">COPE author guidelines</a>.')
                 )
             ),
             ArticleSection::basic('Data and code availability', 2,
                 $this->render(
                     new Paragraph('It is the policy of the IJM to publish papers only if the data and code used in the analysis are clearly and precisely documented and access to the data and code is non-exclusive to the authors.'),
-                    new Paragraph('Authors of accepted papers that contain empirical work, simulations, or experimental work must provide, prior to acceptance, information about the data, programs, and other details of the computations sufficient to permit replication, as well as information about access to data and programs. In particular, authors are required to report, for any data they use, which is the source and whether the data is:'),
+					new Paragraph('The journal encourages the use of open-source software and the publication of the source code.'),
+					new Paragraph('Authors of accepted papers that contain empirical work, simulations, or experimental work must provide, prior to acceptance, information about the data, programs, and other details of the computations sufficient to permit replication, as well as information about access to data and programs. In particular, authors are required to report, for any data they use, which is the source and whether the data is:'),
                     Listing::ordered([
                         'publicly available (specifying how the data can be accessed);',
                         'available for scientific research only upon registration;',
@@ -251,8 +259,7 @@ final class AboutController extends Controller
                         'proprietary, with executable available;',
                         'proprietary, with executable also not available.',
                     ], 'number'),
-                    new Paragraph('If data or programs cannot be published in an openly accessible trusted data repository, authors must commit to preserving data and code for a period of no less than five years following publication of the manuscript, and to providing reasonable assistance to requests for clarification and replication.'),
-                    new Paragraph('The journal encourages the use of open-source software and the publication of the source code.')
+                    new Paragraph('If data or programs cannot be published in an openly accessible trusted data repository, authors must commit to preserving data and code for a period of no less than five years following publication of the manuscript, and to providing reasonable assistance to requests for clarification and replication.')
                 )
             ),
             ArticleSection::basic('Participants and participant consent', 2,
