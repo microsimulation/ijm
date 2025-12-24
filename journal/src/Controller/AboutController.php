@@ -279,7 +279,7 @@ final class AboutController extends Controller
 					    'Authors’ salaries paid under standard employment contracts;',
 					    'General institutional infrastructure, such as office space, libraries, standard computing facilities, and internet access;',
 					    'Routine administrative or technical support not linked to a specific research award;',
-						'Voluntary or unfunded collaboration',
+						'Voluntary or unfunded collaboration.',
 					], 'bullet'),
 					new Paragraph('If the research received no specific funding, authors must explicitly state this. An example of an acceptable statement is:'),
 					new Paragraph('<em>This research benefited from no specific grant from any funding agency in the public, commercial, or not-for-profit sectors.</em>'),	
