@@ -240,8 +240,8 @@ final class AboutController extends Controller
 				$this->render(
 			    	new Paragraph('The following statements must be included in any submission to the journal, either as a separate document, at the end of the manuscript, or in the Acknowledgements section of the manuscript:'),
 					Listing::unordered([
-					    '<strong>Conflict of interest</strong> (compulsory, even if no competing interests are present);'
-						'<strong>Funding</strong> (compulsory, even if no external funding supported the research);'
+					    '<strong>Conflict of interest</strong> (compulsory, even if no competing interests are present);',
+						'<strong>Funding</strong> (compulsory, even if no external funding supported the research);',
 					    '<strong>Data and code availability</strong> (only if the manuscript is based on empirical and/or modelling work);',
 					    '<strong>Use of generative AI and AI-assisted technologies</strong> (beyond the use of basic tools for checking spelling, grammar, or punctuation);',
 						'<strong>Participants and participant consent</strong> (only if the research involves human participants and/or animal experimentation).',
@@ -328,9 +328,7 @@ final class AboutController extends Controller
 					], 'bullet'),		
 					new Paragraph('<strong>Figures, Images, and Artwork</strong>'),	
 					new Paragraph('The use of generative AI to create or alter primary research images, data visualizations, or graphical abstracts is strictly prohibited unless the research itself is about generative AI.'),
-					new Paragraph('Any permitted use of AI for visual content must be explicitly authorized by the Editor and documented in the Methods section.'),	
-					new Paragraph('<strong>Peer Review Confidentiality</strong>'),	
-					new Paragraph('<strong>Authors and reviewers are strictly prohibited from uploading manuscripts or confidential peer-review data into generative AI tools. This is considered a breach of confidentiality and intellectual property rights.</strong>')
+					new Paragraph('Any permitted use of AI for visual content must be explicitly authorized by the Editor and documented in the Methods section.')
 			    )
 			),			
             ArticleSection::basic('Participants and participant consent', 2,
@@ -397,9 +395,9 @@ final class AboutController extends Controller
             ], 'bullet'),
             new Paragraph('If revision prior to publication or resubmission is recommended, reviewers are asked to provide a list of points that the submitting author(s) should be asked to address.'),
             new Paragraph('In order to allow for timely publication, reviewers are asked to provide comments on submitted items within the agreed review deadline (normally four weeks after receipt of item).'),
-
+			new Paragraph('<strong>Peer Review Confidentiality</strong>'),	
+			new Paragraph('Authors and reviewers are strictly prohibited from uploading manuscripts or confidential peer-review data into generative AI tools. This is considered a breach of confidentiality and intellectual property rights.')
         ];
-
         return new Response($this->get('templating')->render('::about.html.twig', $arguments));
     }
 
