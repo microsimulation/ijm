@@ -221,10 +221,17 @@ final class AboutController extends Controller
             ArticleSection::basic('Ethics in publishing', 2,
                 $this->render(
                     new Paragraph('The IJM supports the ethical principles set out by the <a href="http://publicationethics.org/resources/guidelines">Committee on Publication Ethics (COPE)</a> and the <a href="https://www.icmje.org/index.html">International Committee of Medical Journal Editors (ICMJE)</a>.'),
-                    new Paragraph('<strong>Authorship:</strong> The journal adheres to the principles of responsible authorship as outlined by COPE. All authors are expected to have made substantial contributions to the research presented in their manuscript and to have approved the final version of the manuscript prior to submission. In addition, all authors must disclose any conflicts of interest and financial support related to the research presented in their manuscript. Anyone who made major contributions to the writing of the manuscript should be listed as an author (e.g. "ghost writing" is prohibited by the Journal). Any other individuals who made less substantive contributions to the experiment or the writing of the manuscript should be listed in the acknowledgement section. Any change in authorship (including author order) after the initial manuscript submission must be approved in writing by all authors.'),
-                    new Paragraph('<strong>Authorship and "Umbrella" groups:</strong> Collaborative studies sometimes use a group name to represent all participants, and it is mandatory for each article to have at least one named author. If the authors want to acknowledge the umbrella group from which the work originate, they should first list the author(s) of the article and then add "on behalf of the GROUP NAME." If required, the names of the participants can be included in the Acknowledgements section.'),
-                    new Paragraph('<strong>Plagiarism:</strong> The journal takes plagiarism very seriously and follows the guidelines for handling plagiarism outlined by COPE. All submitted manuscripts are screened for plagiarism using appropriate software. If plagiarism is detected during the review process, the manuscript may be rejected. If plagiarism is detected in published work, a formal correction or retraction may be required.'),
-                    new Paragraph('<strong>Post-Publication Corrections:</strong> The journal recognizes the importance of ensuring the accuracy and integrity of the scientific record. If errors or inaccuracies are discovered after publication, the journal will issue a correction or clarification, as appropriate. Authors are encouraged to notify the journal of any errors or inaccuracies as soon as possible.'),
+                    new Paragraph('<strong>Authorship</strong>: The journal adheres to the principles of responsible authorship as outlined by COPE. All authors are expected to have made substantial contributions to the research presented in their manuscript and to have approved the final version of the manuscript prior to submission. In addition, all authors must disclose any conflicts of interest and financial support related to the research presented in their manuscript. Anyone who made major contributions to the writing of the manuscript should be listed as an author (e.g. "ghost writing" is prohibited by the Journal). Any other individuals who made less substantive contributions to the experiment or the writing of the manuscript should be listed in the acknowledgement section. Any change in authorship (including author order) after the initial manuscript submission must be approved in writing by all authors.'),
+                    new Paragraph('<strong>Authorship and "Umbrella" groups</strong>: Collaborative studies sometimes use a group name to represent all participants, and it is mandatory for each article to have at least one named author. If the authors want to acknowledge the umbrella group from which the work originate, they should first list the author(s) of the article and then add "on behalf of the GROUP NAME." If required, the names of the participants can be included in the Acknowledgements section.'),
+                    new Paragraph('<strong>Plagiarism</strong>: The journal takes plagiarism very seriously and follows the guidelines for handling plagiarism outlined by COPE. All submitted manuscripts are screened for plagiarism using appropriate software. If plagiarism is detected during the review process, the manuscript may be rejected. If plagiarism is detected in published work, a formal correction or retraction may be required.'),
+					new Paragraph('<strong>Accuracy, Originality, Confidentiality</strong>: Authors are responsible for ensuring:'),
+					Listing::unordered([
+					    'All content (text, tables, figures) is accurate, original, and properly attributed;',
+					    'All references, citations, or factual assertions are verified for accuracy and completeness;',
+					    '<strong>Use of generative AI and AI-assisted technologies</strong> (beyond the use of basic tools for checking spelling, grammar, or punctuation;)',
+						'<strong>Confidential or sensitive information is not inappropriately disclosed to third-party services.',
+					], 'bullet'),						
+					new Paragraph('<strong>Post-Publication Corrections:</strong> The journal recognizes the importance of ensuring the accuracy and integrity of the scientific record. If errors or inaccuracies are discovered after publication, the journal will issue a correction or clarification, as appropriate. Authors are encouraged to notify the journal of any errors or inaccuracies as soon as possible.'),
                     new Paragraph('<strong>Retractions:</strong> In case of evidence of scientific misconduct or fraudulent behaviour, violation of ethical guidelines, copyright infringement, or significant errors that cannot be resolved through correction or clarification, the International Microsimulation Association holds the authority to retract articles. A panel consisting of the Editor, two Associate Editors, and the current President of the Association will be formed to evaluate and decide on the proposed retraction. Additional details regarding COPE retraction guidelines can be obtained <a href="https://publicationethics.org/files/retraction-guidelines-cope.pdf">here</a>. Any retracted articles will be prominently marked and removed from the journal`s website and other databases.'),
                     new Paragraph('Overall, the journal is committed to upholding high ethical standards and promoting responsible scientific conduct.')
                 )
@@ -235,8 +242,8 @@ final class AboutController extends Controller
 					Listing::unordered([
 					    '<strong>Conflict of interest</strong> (compulsory, even if no competing interests are present);',
 					    '<strong>Data and code availability</strong> (only if the manuscript is based on empirical and/or modelling work);',
-					    '<strong>Use of generative AI and AI-assisted technologies</strong> (beyond the use of basic tools for checking spelling, grammar, or punctuation;)',
-						'<strong>Participants and participant consent</strong> (only if the research involves human participants and/or animal experimentation).)',
+					    '<strong>Use of generative AI and AI-assisted technologies</strong> (beyond the use of basic tools for checking spelling, grammar, or punctuation);',
+						'<strong>Participants and participant consent</strong> (only if the research involves human participants and/or animal experimentation).',
 					], 'bullet'),			        
 			        new Paragraph('The statements will be published in the Acnowledgements section of the article.'),
 					new Paragraph('If authors fail to disclose pertinent information during the submission process, the acceptance decision may be reversed. In the event that the article has already been published, the journal retains the right to publish a notice on their website informing readers that the authors have violated the journal`s policy regarding disclosure. Further information and can be found in the <a href="https://publicationethics.org/guidance/Guidelines">COPE author guidelines</a>.')
@@ -271,20 +278,20 @@ final class AboutController extends Controller
 			    $this->render(
 					new Paragraph('<strong>Authorship and accountability</strong>'),
 					new Paragraph('Generative AI and AI-assisted technologies (e.g., Large Language Models) cannot be listed or cited as an author or co-author of a manuscript submitted to the IJM. Authorship implies legal and ethical responsibilities—such as approving the final version and taking responsibility for its integrity—that can only be performed by humans.'),
-			        new Paragraph('Authors are fully responsible and accountable for the accuracy, integrity, and originality of the entire manuscript. This includes:')
+			        new Paragraph('Authors are fully responsible and accountable for the accuracy, integrity, and originality of the entire manuscript. This includes:'),
 					Listing::unordered([
-					    'verifying all AI-generated output for factual correctness (as AI can fabricate references or facts);',
-					    'ensuring the work does not infringe on third-party intellectual property or copyright.',
+					    'Verifying all AI-generated output for factual correctness (as AI can fabricate references or facts);',
+					    'Ensuring the work does not infringe on third-party intellectual property or copyright.',
 					], 'bullet'),	
 					new Paragraph('<strong>Disclosure in the Writing Process</strong>'),
 					new Paragraph('Use of generative AI tools to improve the readability, language, or structure of the manuscript must be disclosed upon submission, except for use of basic tools for checking spelling, grammar, or punctuation (e.g., standard Microsoft Word feature).'),	
 					new Paragraph('An example of an acceptable declaration is the following:'),
 					new Paragraph('<em>During the preparation of this work, the author(s) used [NAME OF TOOL/SERVICE, VERSION, AND PROVIDER] in order to [DESCRIBE PURPOSE, e.g., improve readability]. After using this tool/service, the author(s) reviewed and edited the content as needed and take(s) full responsibility for the content of the publication.</em>'),			
 					new Paragraph('<strong>Disclosure in the Research Process (Methods)</strong>'),
-					new Paragraph('Use of generative AI as part of the formal research design, such as for data collection and analysis must be described in detail within the Methods section of the manuscript. This description should include:')
+					new Paragraph('Use of generative AI as part of the formal research design, such as for data collection and analysis must be described in detail within the Methods section of the manuscript. This description should include:'),
 					Listing::unordered([
-					    'the specific model name and version;',
-					    'the exact prompts or parameters used (if necessary for reproducibility).',
+					    'The specific model name and version;',
+					    'The exact prompts or parameters used (if necessary for reproducibility).',
 					], 'bullet'),		
 					new Paragraph('<strong>Figures, Images, and Artwork</strong>'),	
 					new Paragraph('The use of generative AI to create or alter primary research images, data visualizations, or graphical abstracts is strictly prohibited unless the research itself is about generative AI.'),
