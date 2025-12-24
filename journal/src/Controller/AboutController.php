@@ -240,7 +240,8 @@ final class AboutController extends Controller
 				$this->render(
 			    	new Paragraph('The following statements must be included in any submission to the journal, either as a separate document, at the end of the manuscript, or in the Acknowledgements section of the manuscript:'),
 					Listing::unordered([
-					    '<strong>Conflict of interest</strong> (compulsory, even if no competing interests are present);',
+					    '<strong>Conflict of interest</strong> (compulsory, even if no competing interests are present);'
+						'<strong>Funding</strong> (compulsory, even if no external funding supported the research);'
 					    '<strong>Data and code availability</strong> (only if the manuscript is based on empirical and/or modelling work);',
 					    '<strong>Use of generative AI and AI-assisted technologies</strong> (beyond the use of basic tools for checking spelling, grammar, or punctuation);',
 						'<strong>Participants and participant consent</strong> (only if the research involves human participants and/or animal experimentation).',
@@ -256,6 +257,37 @@ final class AboutController extends Controller
 					new Paragraph('If the authors have no competing interests to declare, they should say so explicitly. An example of an acceptable statement is: <em>"The authors declare no conflicts of interest.</em>')
                 )
             ),
+			ArticleSection::basic('Funding', 2,
+			    $this->render(
+			        new Paragraph('To ensure transparency and accountability in research publishing, all submitted manuscripts must include a clear and accurate statement describing the sources of financial support for the work reported. Authors are required to disclose all sources of funding that directly or indirectly supported the research, including but not limited to:'),
+					Listing::unordered([
+					    'Research grants;',
+					    'Institutional or departmental funding;',
+					    'Governmental, charitable, or private-sector support;',
+						'In-kind contributions (e.g. data access, equipment, or software provided at no cost)',
+					], 'bullet'),
+					new Paragraph('Funding statements should:'),
+					Listing::unordered([
+					    'Identify the funding body or bodies by full official name;',
+					    'Include grant or award numbers, where applicable;',
+					    'Clearly associate funding sources with specific authors, if required by the funder.',
+					], 'bullet'),	
+					new Paragraph('An example of an acceptable funding statement for funded research is:'),	
+					new Paragraph('<em>This research was supported by [NAME OF FUNDING BODY] under the project "[PROJECT TITLE]" (grant number [GRANT ID]).</em>'),
+					new Paragraph('Authors are responsible for ensuring that their funding statements comply with the reporting requirements of their funding bodies, including open access mandates where applicable.'),	
+					new Paragraph('"Unfunded research refers to scholarly work that was conducted without receiving specific financial support apart from:'),
+					Listing::unordered([
+					    'Authors’ salaries paid under standard employment contracts;',
+					    'General institutional infrastructure, such as office space, libraries, standard computing facilities, and internet access;',
+					    'Routine administrative or technical support not linked to a specific research award;',
+						'Voluntary or unfunded collaboration',
+					], 'bullet'),
+					new Paragraph('If the research received no specific funding, authors must explicitly state this. An example of an acceptable statement is:'),
+					new Paragraph('<em>This research benefited from no specific grant from any funding agency in the public, commercial, or not-for-profit sectors.</em>'),	
+					new Paragraph('Authors are responsible for the accuracy and completeness of the funding information provided. Failure to disclose relevant funding may result in editorial action, including correction, retraction, or rejection of the manuscript.'),
+					new Paragraph('Disclosure of funding sources does not replace the requirement to submit a separate Conflict of Interest statement. Authors must ensure consistency between the funding statement and any declarations of competing interests.')									
+			    )
+			),			
             ArticleSection::basic('Data and code availability', 2,
                 $this->render(
 					new Paragraph('The journal encourages the use of open-source software and the publication of the source code.'),
