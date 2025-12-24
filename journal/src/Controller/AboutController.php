@@ -229,6 +229,13 @@ final class AboutController extends Controller
                     new Paragraph('Overall, the journal is committed to upholding high ethical standards and promoting responsible scientific conduct.')
                 )
             ),
+			ArticleSection::basic('Compulsory statements', 2,
+				$this->render(
+			    	new Paragraph('All authors are requested to disclose any actual or potential conflict of interest. In particular, every author must disclose any financial interests or support, any in kind support – such as providing access to data – and any connection, - direct or indirect - that could potentially create bias in the reported work or the stated opinions, conclusions, or implications. This includes relevant commercial or funding sources for the authors, their associated departments or organizations, personal relationships, or direct academic competition. This also includes support or pressures of any kind by any interested party, defined as any individual, group, or organization that has a financial, ideological, or political stake related to the article. If the support in question comes with a non-disclosure obligation, that fact should be stated, along with as much information as the obligation permits.'),
+			        new Paragraph('In order to determine whether or not a conflict of interest should be declared, authors should apply the following test: “Is there any arrangement that would be embarrassing for any of the authors if it were to come to light after publication and had not been disclosed?”'),
+			        new Paragraph('A disclosure statement for each of the authors should be added at the end of the submitted manuscript. If authors fail to disclose pertinent information during the submission process, the acceptance decision may be reversed. In the event that the article has already been published, the journal retains the right to publish a notice on their website informing readers that the authors have violated the journal`s policy regarding disclosure. Further information and can be found in the <a href="https://publicationethics.org/guidance/Guidelines">COPE author guidelines</a>.')
+				)
+			),			
             ArticleSection::basic('Conflict of interest', 2,
                 $this->render(
                     new Paragraph('All authors are requested to disclose any actual or potential conflict of interest. In particular, every author must disclose any financial interests or support, any in kind support – such as providing access to data – and any connection, - direct or indirect - that could potentially create bias in the reported work or the stated opinions, conclusions, or implications. This includes relevant commercial or funding sources for the authors, their associated departments or organizations, personal relationships, or direct academic competition. This also includes support or pressures of any kind by any interested party, defined as any individual, group, or organization that has a financial, ideological, or political stake related to the article. If the support in question comes with a non-disclosure obligation, that fact should be stated, along with as much information as the obligation permits.'),
@@ -238,8 +245,9 @@ final class AboutController extends Controller
             ),
             ArticleSection::basic('Data and code availability', 2,
                 $this->render(
+					new Paragraph('The journal encourages the use of open-source software and the publication of the source code.'),
                     new Paragraph('It is the policy of the IJM to publish papers only if the data and code used in the analysis are clearly and precisely documented and access to the data and code is non-exclusive to the authors.'),
-                    new Paragraph('Authors of accepted papers that contain empirical work, simulations, or experimental work must provide, prior to acceptance, information about the data, programs, and other details of the computations sufficient to permit replication, as well as information about access to data and programs. In particular, authors are required to report, for any data they use, which is the source and whether the data is:'),
+					new Paragraph('Authors of accepted papers that contain empirical work, simulations, or experimental work must provide, prior to acceptance, information about the data, programs, and other details of the computations sufficient to permit replication, as well as information about access to data and programs. In particular, authors are required to report, for any data they use, which is the source and whether the data is:'),
                     Listing::ordered([
                         'publicly available (specifying how the data can be accessed);',
                         'available for scientific research only upon registration;',
@@ -251,8 +259,7 @@ final class AboutController extends Controller
                         'proprietary, with executable available;',
                         'proprietary, with executable also not available.',
                     ], 'number'),
-                    new Paragraph('If data or programs cannot be published in an openly accessible trusted data repository, authors must commit to preserving data and code for a period of no less than five years following publication of the manuscript, and to providing reasonable assistance to requests for clarification and replication.'),
-                    new Paragraph('The journal encourages the use of open-source software and the publication of the source code.')
+                    new Paragraph('If data or programs cannot be published in an openly accessible trusted data repository, authors must commit to preserving data and code for a period of no less than five years following publication of the manuscript, and to providing reasonable assistance to requests for clarification and replication.')
                 )
             ),
             ArticleSection::basic('Participants and participant consent', 2,
@@ -263,7 +270,8 @@ final class AboutController extends Controller
             ),
 			ArticleSection::basic('Reprinted material', 2,
 			    $this->render(
-			        new Paragraph('Occasionally, the journal might publish thematic special issues containing historically relevant work for the microsimulation community, previously unpublished in journal or book form, such as documentation of landmark models (see the <a href="https://microsimulation.pub/about">Aims and Scope</a> section). The choice of such articles always rests on a decision by the Chief Editor, subject to the acquisition of the relevant publishing rights. Republished articles are clearly identified in the Acknowledgements section, with the original source of publication duly reported.')
+			        new Paragraph('Occasionally, the journal might publish thematic special issues containing historically relevant work for the microsimulation community, previously unpublished in journal or book form, such as documentation of landmark models (see the <a href="https://microsimulation.pub/about">Aims and Scope</a> section).'),
+					new Paragraph('The choice of such articles always rests on a decision by the Chief Editor, subject to the acquisition of the relevant publishing rights. Republished articles are clearly identified in the Acknowledgements section, with the original source of publication duly reported.')
 			    )
 			),
             ArticleSection::basic('Copyright', 2,
