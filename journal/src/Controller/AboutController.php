@@ -67,7 +67,7 @@ final class AboutController extends Controller
             new Paragraph('<strong>Book reviews</strong> offer a discussion of recent books that might be of interest to the microsimulation community, or present a critical assessment in retrospect of the impact of "classic" contributions.'),
             new Paragraph('<strong>Software reviews</strong> are short contributions that describe advances in software development that are likely to be of interest to the journal readership, with a particular attention to open source software.'),
 			new Paragraph('The journal also publishes thematic special issues containing historically relevant work for the microsimulation community, previously unpublished in journal or book form, such as documentation of landmark models. Occasionally, the journal might also republish relevant chapters from edited volumes, with permission from the original publisher, to facilitate access to important early microsimulation work. The original source of publication is always clearly indicated in the published articles.'),
-			new Paragraph('If in doubt concerning the suitability of a particular manuscript, or if interested in editing a Special thematic issue, please <a href="mailto:ijm-editor@microsimulation.net">contact the editor</a> for further advice'),
+			new Paragraph('If in doubt concerning the suitability of a particular manuscript, or if interested in editing a Special thematic issue, please <a href="mailto:ijm-editor@microsimulation.org">contact the editor</a> for further advice.'),
             Listing::unordered([
                 'The IJM is listed in EBSCOhost, EconLit, RePEc, Scopus.',
                 'The ISSN of the journal is 1747-5864.',
@@ -80,7 +80,7 @@ final class AboutController extends Controller
             new Paragraph('International Microsimulation Association'),
             new Paragraph('11 Porte Des Sciences, Esch-Sur-Alzette L-4366, Luxembourg.'),
             new Paragraph('<a href="https://www.microsimulation.org/contact/">Contact information</a>'),
-			new Paragraph('For enquiries about the journal, write to <a href="mailto:ijm-enquiries@microsimulation.net">ijm-enquiries@microsimulation.net</a>'),
+			new Paragraph('For enquiries about the journal, write to <a href="mailto:ijm-enquiries@microsimulation.org">ijm-enquiries@microsimulation.org</a>.'),
         ];
 
         return new Response($this->get('templating')->render('::about.html.twig', $arguments));
@@ -96,8 +96,8 @@ final class AboutController extends Controller
             '');
         $arguments['body'] = [
             new Paragraph('The editors, associate editors and editorial board of the International Journal of Microsimulation are appointed through the auspices of the International Microsimulation Association. All are appointed to serve for a two-year period, during which they commit themselves to (i) seeking out and encouraging submission of work likely to be of interest to the journal readership; (ii) undertaking reviews of submitted manuscripts; (iii) providing guidance to the editor on future directions for the journal. In addition, Associate Editors take responsibility for facilitating the review and editing of submitted manuscripts falling within their area of subject specialism.  Nominations for all of these posts are sought in the run-up to the biennial IMA General Conference via the IMA-NEWS email discussion list.'),
-            new Paragraph('<strong>Chief Editor</strong> - Prof Matteo Richiardi (University of Essex, UK), <a href="mailto:ijm-editor@microsimulation.net">ijm-editor@microsimulation.net</a>'),
-            new Paragraph('<strong>Managing Editor</strong> - Prof Michael Christl (Universidad Loyola Andalucia, Spain), <a href="mailto:ijm-managing@microsimulation.net">ijm-managing@microsimulation.net</a>'),
+            new Paragraph('<strong>Chief Editor</strong> - Prof Matteo Richiardi (University of Essex, UK), <a href="mailto:ijm-editor@microsimulation.org">ijm-editor@microsimulation.org</a>'),
+            new Paragraph('<strong>Managing Editor</strong> - Prof Michael Christl (Universidad Loyola Andalucia, Spain), <a href="mailto:ijm-managing@microsimulation.org">ijm-managing@microsimulation.org</a>'),
             new Paragraph('<strong>Assistant Editor</strong>'),
             Listing::unordered([
                 'Natasha Brooks (University of Essex, UK)'
@@ -296,18 +296,17 @@ final class AboutController extends Controller
 			    $this->render(new Paragraph('Issues are finalised on April 30 (Spring issue), August 31 (Summer issue) and December 31 (Winter issue) of each year. Issues may be listed on the journal website in advance of their scheduled date, containing articles assigned to those issues that have already completed the editorial process (forthcoming). New articles are added to the forthcoming issues as they become available, until the issue is finalised on the scheduled date.')
 			    )
 			),
-	        ArticleSection::basic('Disclaimer', 2,
-	            $this->render(new Paragraph('The International Microsimulation Association (IMA) and the International Journal of Microsimulation (IJM) make every effort to ensure the accuracy of all the information contained in our publications. It however, makes no representations or warranties whatsoever as to the accuracy, completeness, or suitability for any purpose of the published work. Any opinions and views expressed in this publication are the opinions and views of the Authors, and are not necessarily the view of the Editors or the Journal.')
-	            )
-	        ),
-	        ArticleSection::basic('Contact information', 2,
-	            $this->render(new Paragraph('For questions, please write to <a href="mailto:ijm-enquiries@microsimulation.net">ijm-enquiries@microsimulation.net</a>')
-	            )
-	        ),
-	    ];
-	    return new Response($this->get('templating')->render('::about.html.twig', $arguments));
-	}
-
+            ArticleSection::basic('Disclaimer', 2,
+                $this->render(new Paragraph('The International Microsimulation Association (IMA) and the International Journal of Microsimulation (IJM) and make every effort to ensure the accuracy of all the information contained in our publications. It however, makes no representations or warranties whatsoever as to the accuracy, completeness, or suitability for any purpose of the published work. Any opinions and views expressed in this publication are the opinions and views of the Authors, and are not necessarily the view of the Editors or the Journal.')
+                )
+            ),
+            ArticleSection::basic('Contact information', 2,
+                $this->render(new Paragraph('For questions, please write to <a href="mailto:ijm-enquiries@microsimulation.org">ijm-enquiries@microsimulation.org.</a>')
+                )
+            ),
+        ];
+        return new Response($this->get('templating')->render('::about.html.twig', $arguments));
+    }
 
     public function reviewerNotesAction(Request $request) : Response
     {
@@ -346,13 +345,11 @@ final class AboutController extends Controller
         $arguments['contentHeader'] = new ContentHeader($arguments['title']);
         $arguments['body'] = [
             ArticleSection::basic('Forthcoming special issues', 2, $this->render(
-                new Paragraph('For more information, or if you are interested in editing a special issue, please <a href="mailto:matteo.richiardi@essex.ac.uk">contact the Editor</a>.')
-                )),
-            /*
-			ArticleSection::basic('"Tax and Benefit Microsimulation in an Inflationary Environment: Applications and Methodological Issues"', 2, $this->render(
-                new Paragraph('Guest editors: Emanuele Dicarlo, Nicola Curci, Marco Sevegnago and Antonella Tomasi')
-                )),
-				*/
+                new Paragraph('For more information, or if you are interested in editing a special issue, please <a href="mailto:matteo.richiardi@essex.ac.uk">contact the Editor.</a>')
+                )),         
+			ArticleSection::basic('"Microsimulation in Government"', 2, $this->render(
+			    new Paragraph('Guest editor: Dave Pankhurst, Grant Tregonning')
+			    ))
         ];
 
         return new Response($this->get('templating')->render('::about.html.twig', $arguments));
