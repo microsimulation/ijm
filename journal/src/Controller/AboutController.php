@@ -267,6 +267,32 @@ final class AboutController extends Controller
                     new Paragraph('If data or programs cannot be published in an openly accessible trusted data repository, authors must commit to preserving data and code for a period of no less than five years following publication of the manuscript, and to providing reasonable assistance to requests for clarification and replication.')
                 )
             ),
+			ArticleSection::basic('Generative AI policy', 2,
+			    $this->render(
+					new Paragraph('<strong>Authorship and accountability</strong>'),
+					new Paragraph('Generative AI and AI-assisted technologies (e.g., Large Language Models) cannot be listed or cited as an author or co-author of a manuscript submitted to the IJM. Authorship implies legal and ethical responsibilities—such as approving the final version and taking responsibility for its integrity—that can only be performed by humans.'),
+			        new Paragraph('Authors are fully responsible and accountable for the accuracy, integrity, and originality of the entire manuscript. This includes:')
+					Listing::unordered([
+					    'verifying all AI-generated output for factual correctness (as AI can fabricate references or facts);',
+					    'ensuring the work does not infringe on third-party intellectual property or copyright.',
+					], 'bullet'),	
+					new Paragraph('<strong>Disclosure in the Writing Process</strong>'),
+					new Paragraph('Use of generative AI tools to improve the readability, language, or structure of the manuscript must be disclosed upon submission, except for use of basic tools for checking spelling, grammar, or punctuation (e.g., standard Microsoft Word feature).'),	
+					new Paragraph('An example of an acceptable declaration is the following:'),
+					new Paragraph('<em>During the preparation of this work, the author(s) used [NAME OF TOOL/SERVICE, VERSION, AND PROVIDER] in order to [DESCRIBE PURPOSE, e.g., improve readability]. After using this tool/service, the author(s) reviewed and edited the content as needed and take(s) full responsibility for the content of the publication.</em>'),			
+					new Paragraph('<strong>Disclosure in the Research Process (Methods)</strong>'),
+					new Paragraph('Use of generative AI as part of the formal research design, such as for data collection and analysis must be described in detail within the Methods section of the manuscript. This description should include:')
+					Listing::unordered([
+					    'the specific model name and version;',
+					    'the exact prompts or parameters used (if necessary for reproducibility).',
+					], 'bullet'),		
+					new Paragraph('<strong>Figures, Images, and Artwork</strong>'),	
+					new Paragraph('The use of generative AI to create or alter primary research images, data visualizations, or graphical abstracts is strictly prohibited unless the research itself is about generative AI.'),
+					new Paragraph('Any permitted use of AI for visual content must be explicitly authorized by the Editor and documented in the Methods section.'),	
+					new Paragraph('<strong>Peer Review Confidentiality</strong>'),	
+					new Paragraph('<strong>Authors and reviewers are strictly prohibited from uploading manuscripts or confidential peer-review data into generative AI tools. This is considered a breach of confidentiality and intellectual property rights.</strong>')
+			    )
+			),			
             ArticleSection::basic('Participants and participant consent', 2,
                 $this->render(
                     new Paragraph('All submitted manuscripts containing research which involves human participants and/or animal experimentation - however unlikely this is given the scope of the journal - must include a statement confirming that the research was carried out in accordance with the principles embodied in the <a href="https://www.wma.net/policies-post/wma-declaration-of-helsinki-ethical-principles-for-medical-research-involving-human-subjects/"> Declaration of Helsinki</a> and all relevant guidelines and institutional policies, giving the name of the institutional and/or national research ethics committee that approved the research, along with the approval number/ID.'),
