@@ -236,7 +236,7 @@ final class AboutController extends Controller
 					    '<strong>Conflict of interest</strong> (compulsory, even if no competing interests are present);',
 					    '<strong>Data and code availability</strong> (only if the manuscript is based on empirical and/or modelling work);',
 					    '<strong>Use of generative AI and AI-assisted technologies</strong> (beyond the use of basic tools for checking spelling, grammar, or punctuation;)',
-						'<strong>Participants and participant consent</strong> (only if the research involves human participants and/or animal experimentation.)',
+						'<strong>Participants and participant consent</strong> (only if the research involves human participants and/or animal experimentation).)',
 					], 'bullet'),			        
 			        new Paragraph('The statements will be published in the Acnowledgements section of the article.'),
 					new Paragraph('If authors fail to disclose pertinent information during the submission process, the acceptance decision may be reversed. In the event that the article has already been published, the journal retains the right to publish a notice on their website informing readers that the authors have violated the journal`s policy regarding disclosure. Further information and can be found in the <a href="https://publicationethics.org/guidance/Guidelines">COPE author guidelines</a>.')
