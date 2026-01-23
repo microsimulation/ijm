@@ -2,9 +2,9 @@ FROM selenium/standalone-chrome-debug:3@sha256:0c59037d0a095d7edb7b956e95a24573a
 
 USER seluser
 WORKDIR /app
-RUN sudo curl -sL https://deb.nodesource.com/setup_12.x -o nodesource_setup.sh \
- && sudo bash nodesource_setup.sh \
- && sudo apt-get install -y nodejs jq moreutils \
+RUN (curl -fsSL https://nodejs.org/dist/latest-v12.x/node-v12.22.12-linux-x64.tar.gz | sudo tar -xz -C /usr/local --strip-components=1) \
+ && sudo apt-get update \
+ && sudo apt-get install -y jq moreutils \
  && sudo chown seluser:seluser /app \
  && mkdir -p /app/downloads \
  && mkdir -p /app/screenshots
