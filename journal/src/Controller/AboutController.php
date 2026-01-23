@@ -102,7 +102,7 @@ final class AboutController extends Controller
             Listing::unordered([
                 'Natasha Brooks (University of Essex, UK)'
             ], 'bullet'),
-            new Paragraph('<strong>Book Review Editor</strong> - Dr Gijs Dekkers (Federal Planning Bureau, Belgium)'),
+            new Paragraph('<strong>Book Review Editor</strong> -  Prof Michael Christl (Universidad Loyola Andalucia, Spain)'),
             new Paragraph('<strong>Associate Editors</strong>'),
             Listing::unordered([
                 'Prof Federico Belotti (University of Rome Tor Vergata, Italy)',
@@ -440,3 +440,4 @@ final class AboutController extends Controller
         return $arguments;
     }
 }
+
