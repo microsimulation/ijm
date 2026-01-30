@@ -47,7 +47,7 @@ final class AboutController extends Controller
 
         $arguments['body'] = [
             new Paragraph('The International Journal of Microsimulation (IJM) is the official online peer-reviewed journal of the <a href="https://microsimulation.org">International Microsimulation Association</a>.'),
-            new Paragraph('The journal is published 3 times per year, with a Spring, Summer and Winter issues.'),
+			new Paragraph('The journal operates under a continuous publication model. Articles are published online as soon as they have successfully completed the peer-review and editorial process. Published articles are subsequently grouped into three issues per year for archival and indexing purposes, corresponding to Spring (April), Summer (August), and Winter (December).'),
             new Paragraph('The IJM covers research in all aspects of microsimulation modelling. It publishes high quality contributions making use of microsimulation models to address specific research questions in all scientific areas, as well as methodological and technical issues.'),
             new Paragraph('In particular, the IJM invites submission of five types of contributions: research articles, research notes, data watch, book reviews, and software reviews.'),
             new Paragraph('<strong>Research articles</strong> of interest to the IJM concern:'),
