@@ -238,7 +238,7 @@ final class AboutController extends Controller
 					    '<strong>Conflict of interest</strong> (compulsory, even if no competing interests are present);',
 						'<strong>Funding</strong> (compulsory, even if no external funding supported the research);',
 					    '<strong>Data and code availability</strong> (only if the manuscript is based on empirical and/or modelling work);',
-					    '<strong>Use of generative AI and AI-assisted technologies</strong> (beyond the use of basic tools for checking spelling, grammar, or punctuation);',
+					    '<strong>Use of generative AI and AI-assisted technologies</strong> (including for coding, analysis, and writing; but excluding the use of basic tools for checking spelling, grammar, or punctuation);',
 						'<strong>Participants and participant consent</strong> (only if the research involves human participants and/or animal experimentation).',
 					], 'bullet'),			        
 			        new Paragraph('The statements will be published in the Acnowledgements section of the article.'),
@@ -316,7 +316,7 @@ final class AboutController extends Controller
 					new Paragraph('An example of an acceptable declaration is the following:'),
 					new Paragraph('<em>During the preparation of this work, the author(s) used [NAME OF TOOL/SERVICE, VERSION, AND PROVIDER] in order to [DESCRIBE PURPOSE, e.g., improve readability]. After using this tool/service, the author(s) reviewed and edited the content as needed and take(s) full responsibility for the content of the publication.</em>'),			
 					new Paragraph('<strong>Disclosure in the Research Process (Methods)</strong>'),
-					new Paragraph('Use of generative AI as part of the formal research design, such as for data collection and analysis must be described in detail within the Methods section of the manuscript. This description should include:'),
+					new Paragraph('Use of generative AI as part of the formal research design, such as for coding and for data collection and analysis must be described in detail within the Methods section of the manuscript. This description should include:'),
 					Listing::unordered([
 					    'The specific model name and version;',
 					    'The exact prompts or parameters used (if necessary for reproducibility).',
@@ -440,4 +440,5 @@ final class AboutController extends Controller
         return $arguments;
     }
 }
+
 
