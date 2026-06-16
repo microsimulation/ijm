@@ -114,7 +114,6 @@ final class AboutController extends Controller
                 'Dr Philipp Harting (Côte d\'Azur University, Germany)',
                 'Prof Nicolas Hérault (Bordeaux School of Economics, France)',
                 'Dr Jason Hilton (University of Southampton, United Kingdom)',
-                'Prof Seiichi Inagaki (International University of Health and Welfare, Japan)',
                 'Prof Giulia Iori (City University, United Kingdom)',
                 'Dr Tanja Kirn (University of Liechtenstein, Liechtenstein)',
                 'Dr Daniel Kopasker (Glasgow University, United Kingdom)',
@@ -131,6 +130,7 @@ final class AboutController extends Controller
                 'Prof Bryan Tysinger (University of Southern California, United States)',
                 'Dr Gerlinde Verbist (Antwerp University, Belgium)',
                 'Jürgen Wiemers (IAB - Institute for Employment Research, Germany)',
+				' Dr Peng Zhan (Zhejiang University, China)',
             ], 'bullet'),
             new Paragraph('<strong>Scientific Committee</strong>'),
             Listing::unordered([
@@ -408,7 +408,7 @@ final class AboutController extends Controller
                 new Paragraph('For more information, or if you are interested in editing a special issue, please <a href="mailto:matteo.richiardi@essex.ac.uk">contact the Editor.</a>')
                 )),         
 			ArticleSection::basic('"Microsimulation in Government"', 2, $this->render(
-			    new Paragraph('Guest editor: Dave Pankhurst, Grant Tregonning')
+			    new Paragraph('Guest Editors: Dave Pankhurst, Grant Tregonning')
 			    ))
         ];
 
