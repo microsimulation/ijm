@@ -114,7 +114,6 @@ final class AboutController extends Controller
                 'Dr Philipp Harting (Côte d\'Azur University, Germany)',
                 'Prof Nicolas Hérault (Bordeaux School of Economics, France)',
                 'Dr Jason Hilton (University of Southampton, United Kingdom)',
-                'Prof Seiichi Inagaki (International University of Health and Welfare, Japan)',
                 'Prof Giulia Iori (City University, United Kingdom)',
                 'Dr Tanja Kirn (University of Liechtenstein, Liechtenstein)',
                 'Dr Daniel Kopasker (Glasgow University, United Kingdom)',
