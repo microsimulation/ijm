@@ -130,6 +130,7 @@ final class AboutController extends Controller
                 'Prof Bryan Tysinger (University of Southern California, United States)',
                 'Dr Gerlinde Verbist (Antwerp University, Belgium)',
                 'Jürgen Wiemers (IAB - Institute for Employment Research, Germany)',
+				' Dr Peng Zhan (Zhejiang University, China)',
             ], 'bullet'),
             new Paragraph('<strong>Scientific Committee</strong>'),
             Listing::unordered([
