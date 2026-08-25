@@ -1,0 +1,1354 @@
+{
+    "status": "vor",
+    "id": "00341",
+    "version": 1,
+    "type": "research-article",
+    "doi": "10.34196/ijm.00341",
+    "authorLine": "Jussi Tervola, Joonas Ollonqvist",
+    "title": "Refining the simulation of social assistance with monthly income data and calibration",
+    "published": "2026-08-25T00:00:00Z",
+    "versionDate": "2026-08-25T00:00:00Z",
+    "statusDate": "2026-08-25T00:00:00Z",
+    "volume": 19,
+    "issue": 2,
+    "fpage": 22,
+    "lpage": 36,
+    "elocationId": "22-36",
+    "pdf": "http://web:8082/00341/ijm-00341.pdf",
+    "subjects": [
+        {
+            "id": "taxes-benefits",
+            "name": "Taxes and benefits"
+        }
+    ],
+    "abstract": {
+        "content": [
+            {
+                "text": "As a last-resort benefit, social assistance can cushion the impact of cuts in other benefits on low-income households. Therefore, it may play a crucial role for the effects of benefit cuts on income distribution. Measurement errors in its simulation can significantly affect the estimated distributional indicators. At the same time, simulating social assistance is challenging because it is influenced by many factors, not all of which are typically observed in the data or captured with an existing simulation model. In this study, we refine the simulation of social assistance in the Finnish static tax-benefit model SISU by considering monthly fluctuations in household income. Moreover, we use regression-based calibration technique to account for oversimulation caused by, among other things, non-take-up and unobserved household wealth. Using the refined simulation model, we estimate that social assistance compensates the substantial cuts to housing and unemployment benefits in Finland 2024-2025 much less than without refinements. Based on the analysis, the reforms would increase the number of recipient households of social assistance by approximately 26,000 households \u2013 a substantial downward revision from the pre-refinement estimate of 50,000 households. At the same time, the benefit cuts are estimated to increase at-risk-of-poverty rates and income inequality more than without the refinements. The increase of the child at-risk-of-poverty rate are 60% larger than before refinements. Although demonstrated in a Finnish context, the results underline the importance of accounting both monthly income variation and oversimulation when simulating means-tested benefits also in other contexts.",
+                "type": "paragraph"
+            }
+        ]
+    },
+    "copyright": {
+        "license": "CC-BY-4.0",
+        "holder": "TervolaOllonqvist ",
+        "statement": "This article is distributed under the terms of the <a href=\"http://creativecommons.org/licenses/by/4.0/\">Creative Commons Attribution License</a>, which permits unrestricted use and redistribution provided that the original author and source are credited."
+    },
+    "authors": [
+        {
+            "affiliations": [
+                {
+                    "address": {
+                        "components": {
+                            "country": "Finland",
+                            "locality": [
+                                "Helsinki"
+                            ]
+                        },
+                        "formatted": [
+                            "Helsinki",
+                            "Finland"
+                        ]
+                    },
+                    "name": [
+                        "Finnish Institute for Health and Welfare (THL)"
+                    ]
+                }
+            ],
+            "emailAddresses": [
+                "jussi.tervola@thl.fi"
+            ],
+            "name": {
+                "index": "Tervola, Jussi",
+                "preferred": "Jussi Tervola"
+            },
+            "orcid": "0000-0003-2325-7434",
+            "type": "person"
+        },
+        {
+            "affiliations": [
+                {
+                    "address": {
+                        "components": {
+                            "country": "Finland",
+                            "locality": [
+                                "Helsinki"
+                            ]
+                        },
+                        "formatted": [
+                            "Helsinki",
+                            "Finland"
+                        ]
+                    },
+                    "name": [
+                        "Finnish Institute for Health and Welfare (THL)"
+                    ]
+                }
+            ],
+            "name": {
+                "index": "Ollonqvist, Joonas",
+                "preferred": "Joonas Ollonqvist"
+            },
+            "orcid": "0000-0001-9075-4049",
+            "type": "person"
+        }
+    ],
+    "funding": {
+        "statement": "INVEST Research Flagship (Research Council of Finland decision number: 345546)."
+    },
+    "dataSets": {
+        "availability": [
+            {
+                "text": "Code is available by request. Access to microdata requires pertinent data licenses from Finnish Social and Health Data Permit Authority (Findata).",
+                "type": "paragraph"
+            }
+        ]
+    },
+    "keywords": [
+        "social assistance",
+        "non-take-up",
+        "calibration",
+        "tax-benefit modelling",
+        "monthly data"
+    ],
+    "body": [
+        {
+            "content": [
+                {
+                    "text": "Distributional impact analyses provide important information to both decision-makers and citizens about the effects of policy measures, and in some cases, they may also influence which measures are ultimately adopted. The credibility of such assessments depends critically on the precision of the underlying evaluation methods. This is particularly important in the case of social assistance, as the benefit is targeted at the lowest-income households and inaccuracies in its simulation can substantially distort the estimated indicators.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Simulating social assistance is inherently challenging because, as a last-resort benefit, it is influenced by many factors that are not fully observed. Unlike many other social benefits, social assistance is typically granted month by month. Therefore, monthly-level data on household income is essential for accurate simulation. Precise simulation would also require information on household wealth, housing costs, and \u2013 depending on context \u2013 other reimbursed expenses, such as out-of-pocket payments for health care (OOP payments). Simulation is further complicated by the discretionary nature of social assistance, sanctioning practices, and non-take-up - i.e., cases where eligible individuals do not apply. Because these elements are not fully observed in microdata, simulation-based evaluations of social assistance and policy reforms inevitably involve uncertainty.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "These data limitations and modelling issues are widespread across countries and represent a broader methodological challenge in international tax\u2013benefit microsimulation. <a href=\"#bib2\">Almeida et al. (2025)</a> and <a href=\"#bib22\">Wiemers (2015)</a> have shown that considering oversimulation or non-take-up may significantly alter the results when assessing the role of social assistance in poverty reduction or different policy reforms.<a href=\"#fn1\"><sup>1</sup></a>",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "While prior literature has primarily focused on correcting oversimulation of social assistance based on aggregate outcomes, we argue that the micro-level accuracy of the simulation plays a crucial role for reliable policy evaluation. If eligible households are incorrectly classified as non-eligible, or non-eligible households are simulated as recipients, the estimated distributional effects of policy reforms may be distorted. The Finnish static microsimulation model SISU provides a useful case to illustrate this issue. Currently, the SISU model simulates social assistance for all households that appear eligible based on annual income (and housing expenses). Although, the simulated number of recipients corresponds quite well with the observed statistics in the data year, the micro-level accuracy of the simulation is poor: only about half of actual recipients are simulated as eligible, and roughly half of the simulated recipients did not receive support in reality.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "In recent years, administrative monthly income data have been added to the SISU data pool, enabling more precise allocation of income across months and their use in the simulation of housing benefits and social assistance. In this study, we use this new information to improve the simulation of social assistance.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Incorporating monthly income allows the model to detect short-term eligibility that would remain hidden in annual income data, thereby reducing undersimulation. At the same time, identifying short eligibility spells is likely to increase oversimulation in SISU at the aggregate level, because the simulated total expenditure already corresponds closely to observed expenditure in the baseline. To address this, we introduce a calibration procedure that corrects for oversimulation considering micro-level accuracy by removing simulated benefits from households with the highest predicted probability of not receiving the benefit.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "To illustrate the practical implications of these refinements, we analyse the 2024\u20132025 social security reforms in Finland, which include substantial cuts to housing and unemployment benefits. Previous studies have estimated a substantial increase in the utilization of social assistance (e.g. <a href=\"#bib13\">Hiilamo et al., 2023</a>). However, official statistics show only modest increase so far (<a href=\"#bib15\">Kela, 2025</a>), casting doubt on the earlier estimates.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The results show that improving the simulation of social assistance can substantially alter the estimated effects of such reforms. As shown in Section 6, accounting for monthly income variation and calibrating oversimulation leads to markedly different estimates of the increase in social assistance expenditure compared with the conventional annual-income simulation. At the same time, the increases of at-risk-of-poverty and income inequality indicators are estimated to be more pronounced than without the refinements.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "In the next section, we review earlier literature on the simulation of social assistance and outline the main sources of error, with a particular focus on the SISU model. Section 3 briefly describes Finnish social assistance legislation. Section 4 presents the refinements, including the construction of monthly income data and the calibration procedure. In Section 5, we assess how the refined model performs in the reference year compared with the official model. Section 6 examines how the reform estimates produced the refined model differ from those generated by the official model. Finally, Section 7 discusses the strengths and limitations of the refined model.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s1",
+            "title": "1. Introduction",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "The sources of simulation errors in social assistance can vary substantially between countries due to differences in data quality. Survey data, for example, may suffer from recall bias and misreporting of benefit receipt (<a href=\"#bib5\">Bruckmeier et al., 2021</a>), while administrative register data may have other issues such as under-reporting of emigration (<a href=\"#bib17\">Monti et al., 2020</a>). Also housing costs are often imperfectly measured, even with register data, creating substantial uncertainty in eligibility simulations (<a href=\"#bib3\">Bargain et al., 2012</a>). Differences in social assistance legislation play also role in errors. In some countries, OOP payments are not reimbursed through social assistance, whereas in others like Finland they may play a significant role (<a href=\"#bib1\">Aaltonen et al., 2023</a>). <a href=\"#bib21\">Tervola and Ollonqvist (2025)</a> showed that, in the Finnish context, accounting for such expenditures can reduce the undercoverage of simulated social assistance recipients by 20% while increasing the overcoverage by 29%.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Asset tests represent another important source of cross-country variation <a href=\"#bib16\">(Marchal et al. 2021)</a>. While Finland, for instance, applies a strict asset test that effectively disqualifies households with even modest savings, some other countries employ more flexible asset test, and its simulation is known to be prone to errors. In Germany and Austria, for instance, microsimulation models struggle to reflect the full complexity of asset rules due to limited information on household wealth in survey and EU-SILC data, often requiring approximations based on capital income and resulting in eligibility misclassification (<a href=\"#bib12\">Harnisch, 2019</a>; <a href=\"#bib10\">Fuchs et al., 2020</a>). These gaps can lead models to classify households as eligible even when they would not qualify in practice, resulting in systematic overcoverage of social assistance eligibility. Because these elements differ markedly across systems, findings on how to refine social assistance simulations are highly context-specific and not easily generalisable across countries.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Using EU-SILC data, <a href=\"#bib20\">Tervola et al. (2023)</a> found that simulations based on annual income resulted in extensive micro-level under- and overcoverage of simulated social assistance in both Finland and Sweden. Undercoverage was more common in Finland and was attributed particularly to the use of annual income. The potential role of annual income data in undersimulation of social assistance has been discussed also in other studies (e.g. <a href=\"#bib10\">Fuchs et al., 2020</a>; <a href=\"#bib2\">Almeida et al., 2025</a>).",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "<a href=\"#bib2\">Almeida et al. (2025)</a> developed a calibration approach for EUROMOD to address overcoverage in simulated social assistance. In the method, simulated benefit expenditures were aligned with observed nation-level expenditures. In countries where overcoverage was substantial, calibration significantly reduced the measured effects of social assistance on poverty, whereas in countries without overcoverage, it had no impact.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Most of the research on simulation of social assistance has focused on analysing non-take-up. Existing estimates suggest that non-take-up is substantial and widespread across Europe, typically affecting between one-third and more than half of those eligible for means-tested social assistance (<a href=\"#bib9\">Eurofound, 2015</a>; <a href=\"#bib10\">Fuchs et al., 2020</a>). Widespread non-take-up can distort policy evaluation significantly: if the baseline simulation misclassifies eligibility and benefit receipt, reform analyses may either overstate or understate the true effects of policy changes (e.g. <a href=\"#bib22\">Wiemers, 2015</a>; <a href=\"#bib10\">Fuchs et al., 2020</a>).",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "In Germany, studies have assessed the impact of reforms on non-take-up of social assistance. <a href=\"#bib6\">Bruckmeier and Wiemers (2012)</a> observed, using an instrumental variable approach, that the Hartz reforms significantly reduced non-take-up. <a href=\"#bib22\">Wiemers (2015)</a> incorporated these results into a microsimulation model and found that accounting for non-take-up could significantly reduce the estimated costs of reforms. He modelled the effects of hypothetical reforms on non-take-up using the previously observed causal relationship between simulated social assistance eligibility and the likelihood of underuse. <a href=\"#bib22\">Wiemers (2015)</a> also factored in the \u201csunk costs\u201d of applying benefit, meaning that the first-time applicants bear more effort to acquire knowledge on the application process and overcome the potential stigma.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Apart from <a href=\"#bib3\">Bargain et al. (2012)</a> and <a href=\"#bib20\">Tervola et al. (2023)</a>, earlier literature does not analyse micro-level accuracy nor quantify the undercoverage in the simulated social assistance. Instead, potential undersimulation is at most mentioned briefly and excluded from the analysis. Furthermore, overcoverage in simulation is often directly interpreted as non-take-up as such with the exception of <a href=\"#bib2\">Almeida et al. (2025)</a>. However, measuring non-take-up is sensitive to errors in both the simulated means test and the underlying microdata (<a href=\"#bib11\">Goedem\u00e9 and Janssens, 2020</a>). Studies comparing different data sources have found that non-take-up rates based on survey data are often significantly greater than estimates based on administrative data because of misreporting of benefit receipt or incomplete information on eligibility determinants (<a href=\"#bib8\">Doorley and Kakoulidou, 2024</a>; <a href=\"#bib5\">Bruckmeier et al., 2021</a>). Also, administrative data include measurement error, for example, regarding under-reporting of emigration (<a href=\"#bib17\">Monti et al., 2020</a>). As a result, part of what is classified as non-take-up in the literature may in fact reflect simulation error rather than genuine non-claiming. Because simulation error and non-take-up cannot be fully separated empirically, we refer to the resulting excess of simulated recipients as simulation overcoverage.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Drawing on the literature and our own assessment, <a href=\"#table1\">Table 1</a> presents a (non-exhaustive) list of simulation error sources in social assistance from the point of view of SISU model but pertaining also to other similar tax-benefit models. It distinguishes errors contributing to undersimulation and oversimulation and errors where the direction is unclear.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The refinements presented in this study do not attempt to solve all of these issues but focus particularly on the elements highlighted in bold in <a href=\"#table1\">Table 1</a>. Undersimulation is addressed by incorporating monthly income variation. Oversimulation is adjusted through calibration of recipient numbers, intended to account for both non-take-up and other modelling errors. Additionally, monthly income variation is considered in the simulation of general housing allowance, which should also improve the accuracy of simulation of the last-resort social assistance.",
+                    "type": "paragraph"
+                },
+                {
+                    "assets": [
+                        {
+                            "id": "table1",
+                            "label": "Table 1",
+                            "tables": [
+                                "<table><thead><tr><th align=\"left\">Undersimulation</th><th align=\"left\">Oversimulation</th><th align=\"left\">Indefinite</th></tr></thead><tbody><tr><td align=\"left\"><ul class=\"list list--bullet\"><li><p>Use of annual income</p></li></ul></td><td align=\"left\"><ul class=\"list list--bullet\"><li><p>Non-take-up</p></li></ul></td><td align=\"left\"><ul class=\"list list--bullet\"><li><p>Inaccuracies in simulating first-tier benefits</p></li></ul></td></tr><tr><td align=\"left\"><ul class=\"list list--bullet\"><li><p>Incomplete data on reimbursed costs and payments (e.g. OOP payments)</p></li></ul></td><td align=\"left\"><ul class=\"list list--bullet\"><li><p>Overcoverage of population registers (e.g. under-reported emigration)</p></li></ul></td><td align=\"left\"><ul class=\"list list--bullet\"><li><p>Discretionary decisions are not modelled</p></li></ul></td></tr><tr><td align=\"left\"><ul class=\"list list--bullet\"><li><p>Inaccurate consideration of the family unit definition in SA (e.g. adult children living in the same household)</p></li></ul></td><td align=\"left\"><ul class=\"list list--bullet\"><li><p>Incomplete asset data (esp. savings)</p></li></ul></td><td align=\"left\"><ul class=\"list list--bullet\"><li><p>Changes in household composition or housing costs during the year are not observed</p></li></ul></td></tr><tr><td align=\"left\"><ul class=\"list list--bullet\"><li><p>Priority treatment of garnished income not considered</p></li></ul></td><td align=\"left\"><ul class=\"list list--bullet\"><li><p>Tax refunds not included</p></li></ul></td><td align=\"left\"><ul class=\"list list--bullet\"><li><p>Survey-related biases such as sampling error, errors in survey design and recall bias</p></li></ul></td></tr><tr><td align=\"left\"><ul class=\"list list--bullet\"><li><p>Taxes simulated according to final taxation, not withholding taxation</p></li></ul></td><td align=\"left\"><ul class=\"list list--bullet\"><li><p>Sanctions not modelled</p></li></ul></td><td align=\"left\"/></tr><tr><td align=\"left\"><ul class=\"list list--bullet\"><li><p>No data on gifts and informal support</p></li></ul></td><td align=\"left\"/><td align=\"left\"/></tr></tbody></table>"
+                            ],
+                            "title": "Sources of error in simulating social assistance by the direction of the bias.",
+                            "type": "table"
+                        }
+                    ],
+                    "type": "figure"
+                }
+            ],
+            "id": "s2",
+            "title": "2. The sources for errors in the simulation of social assistance",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "Next, we provide a short overview of the role of social assistance in the Finnish social security system. Finland provides relatively extensive unemployment and housing benefits. Unemployment assistance can be paid to all active jobseekers regardless of their past contribution. Moreover, general housing allowance and other housing benefits cover extensively low-income population. Social assistance is commonly received as a top-up to these benefits if household has no wealth. Consequently, it is rather common to receive unemployment benefit, housing benefit and social assistance simultaneously. (<a href=\"#bib20\">Tervola et al., 2023</a>) When unemployment and housing benefits are cut, it is automatically compensated from social assistance to those who are eligible and receive social assistance.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Similar to other Western countries, social assistance in Finland is a last-resort, means-tested benefit designed to secure a minimum standard of living when all other income sources are insufficient. It is typically granted for one month at a time. If the acceptable expenses are higher than family\u2019s or person\u2019s net incomes, the difference is paid as social assistance. The acceptable expenses consist of a fixed basic amount covering ordinary living expenses and an additional part that reimburses necessary housing costs and OOP payments. The basic amount for lone dweller was \u20ac590 in 2024, second adult having 70% and children 63-70% of the amount. Single adults have an increase and multi-child families have decreases in the amount. A sum of \u20ac150 per month can be disregarded from earnings when calculating the benefit (abolished in 2026).",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Eligibility is determined at family level as defined in the Social Assistance Act. A \u201cfamily\u201d includes a single person, a married or cohabiting couple, or parents and their dependent children; adult children and other adults living in the same dwelling form separate family units.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The eligibility calculation takes into account nearly all disposable income and liquid assets, such as savings, shares, and other readily available wealth, which must be used before assistance is granted. Students are additionally required to take out the study loan before becoming eligible for social assistance. Compared to many European countries, the Finnish scheme applies a notably strict asset test with few disregards (e.g. <a href=\"#bib16\">Marchal et al., 2021</a>). In general, all income is means-tested at a one-to-one rate, meaning that each euro of income reduces the benefit by one euro, although some minor exemptions apply. Moreover, the behavioural requirements and sanctions are comparatively loose in Finland. If one does not follow the behavioural requirements, the benefit can be reduced but not rejected (<a href=\"#bib19\">Penttil\u00e4 and Hiilamo, 2017</a>).",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s3",
+            "title": "3. Social assistance in Finnish social security system",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "Our analysis is based on the static SISU microsimulation model and the 2022 SISU dataset which has been compiled from multiple administrative registers and covers a random sample of appr. 800,000 individuals (15%) from the Finnish population. In the version 25.00 of the SISU model, stock- and fund-based wealth can be incorporated in the simulation of both social assistance and the general housing allowance. However, major gaps remain in the wealth information, most notable the absence of savings account data. In addition, wealth is only observed at the end of the year, which limits its usefulness in monthly-level simulation. Treating any amount of end-of-year wealth as ground to disqualify a household from social assistance for the entire year would be too strict. For this reason, we tested various thresholds and found that the lowest misclassification rate was achieved when we assumed that households were ineligible for social assistance throughout the year if their stock/fund wealth exceeded \u20ac500 at year-end. This assumption is applied throughout the analysis.",
+                    "type": "paragraph"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "The main task is to modify the simulation of social assistance and general housing allowance from annual to monthly level. In the official SISU model, monthly-level data and simulation is readily available for unemployment benefits and for wages received during unemployment. For other benefits and taxes, we stick with the annual-level simulation but allocate the simulated benefits to monthly-level in order to enable the monthly-level simulation of social assistance and general housing allowance (see <a href=\"#table2\">Table 2</a> for the summary).",
+                            "type": "paragraph"
+                        },
+                        {
+                            "assets": [
+                                {
+                                    "id": "table2",
+                                    "label": "Table 2",
+                                    "tables": [
+                                        "<table><thead><tr><th align=\"left\">Income item</th><th align=\"left\">Allocation to monthly level</th></tr></thead><tbody><tr><td align=\"left\">Unemployment benefits</td><td align=\"left\">Observed at monthly level</td></tr><tr><td align=\"left\">Part-time labour income</td><td align=\"left\">Observed at monthly level</td></tr><tr><td align=\"left\">Study grants and loans</td><td align=\"left\">Estimated based on additional information</td></tr><tr><td align=\"left\">Sickness and parental benefits</td><td align=\"left\">Estimated based on additional information</td></tr><tr><td align=\"left\">Full-time labour income</td><td align=\"left\">Estimated based on additional information</td></tr><tr><td align=\"left\">Pensions</td><td align=\"left\">Estimated based on additional information</td></tr><tr><td align=\"left\">Child benefits</td><td align=\"left\">Estimated based on additional information</td></tr><tr><td align=\"left\">Capital income</td><td align=\"left\">Annual average (no allocation)</td></tr><tr><td align=\"left\">Taxes</td><td align=\"left\">Annual tax rate (applied to monthly income)</td></tr><tr><td align=\"left\">General housing allowance</td><td align=\"left\">Allocated through simulation</td></tr><tr><td align=\"left\">Social assistance</td><td align=\"left\">Allocated through simulation</td></tr></tbody></table>"
+                                    ],
+                                    "title": "Methods for monthly allocation by income item.",
+                                    "type": "table"
+                                }
+                            ],
+                            "type": "figure"
+                        },
+                        {
+                            "text": "The main principle in forming monthly allocation is that a person cannot receive risk-based social benefits (e.g. unemployment benefits, sickness benefits) simultaneously, and wage income can only be received concurrently with certain benefits, such as unemployment or study grants. Where auxiliary register information, e.g. study grants and parental allowances, is available, it is used to guide the monthly allocation of benefits.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Study grants (and loans) are allocated using information on enrolment during the spring and fall terms and the number of support months used during the year. Grant and loan months are first placed in the corresponding terms; any remaining months are assigned to the summer period.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Parental allowance is allocated based on the age of the youngest child. If the child was born in the data year, the mother\u2019s support period is assumed to start a month before birth and the father\u2019s allowance is aligned with the month of birth. If the child was born before the study year, the mother\u2019s allowance is assumed to occur at the start of the year, and the father\u2019s allowance following immediately thereafter.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Sickness allowance is placed at the beginning of the year in months where no other risk-based social benefit is present. For partial-year retirees, pension months are placed at the end of the year, assuming retirement is permanent. Universal child benefits (non-taxable and non-means-tested) are calculated on monthly basis according to children\u2019s ages.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Monthly labour income is directly observed only for periods of part-time unemployment. Otherwise, annual labour income is distributed evenly across months without a risk-based benefit. An exception is study grant months, for which we allocate 20% of monthly wages.<a href=\"#fn2\"><sup>2</sup></a> Sensitivity tests showed that this assumption has minimal impact on social assistance simulation, since students are rarely eligible for social assistance in Finland. Tax rates are simulated on annual level but applied to monthly income data.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "By law, garnished income is excluded from social assistance income. The SISU registers contain the amount of debt under garnishment at year-end, but no data on monthly garnishment amounts. Assuming that garnished individuals pay \u20ac200 per month minimized the misclassification error of the simulated social assistance. Although this assumption involves uncertainty, including garnishment in this way decreased the misclassification rate slightly \u2013 by 0.2 percentage points \u2013 and was therefore adopted in the refined model.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The estimated monthly income data are also used in the simulation of general housing allowance. Although the allowance is reviewed annually and temporary income fluctuations are not always considered, simulating the benefit using annual average income proved problematic: it underestimated benefit amounts and produced too many simulated social assistance recipients. Monthly income therefore provides a more accurate basis for simulation despite its limitations.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s4-1",
+                    "title": "4.1. Estimation of monthly income",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "Annual-income simulation in SISU underestimates the number of social assistance recipients by about 3%. The monthly simulation captures short-term eligibility more effectively and produces 27% more recipient households than observed. This overcoverage can reflect non-take-up as well as other simulation errors due to data limitations. For example, bank savings are missing in the registers, even though such assets disqualify households from social assistance. Since non-take-up and simulation errors cannot be fully separated, we refer to the resulting excess in simulated recipients as simulation overcoverage.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "To correct for oversimulation, we first estimated its extent under the legislation in force in the 2022 data year. We found that simulated recipient counts should be reduced by 26% and total benefit expenditure thereafter by 16%, to match observed data. These ratios correspond the situation in the reference year, and it is possible that the reform affects overcoverage rates in multiple ways. First, the non-take-up may be endogenous to benefit amounts as suggested by <a href=\"#bib22\">Wiemers (2015)</a>. Second, reforms expanding eligibility to higher-income households could increase overcoverage due to unobserved assets. On the other hand, current overcoverage partly reflects households with very low or no income and potentially under-reported emigration (e.g., <a href=\"#bib17\">Monti et al., 2020</a>), which are unlikely among higher-income groups.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Since these opposing effects may cancel out and modelling the change in overcoverage would be very difficult, we assume that overcoverage remains the same before and after the reform. To assess the sensitivity of this assumption, we run alternative reform scenarios in which the overcoverage rate would either increase or decrease by 20%. The scenario with a 20% increase reflects a situation where oversimulation becomes more prevalent, for example if eligibility expands to groups who possess more unobserved wealth than the recipients in the baseline. Conversely, a 20% reduction in the overcoverage rate reflects a scenario where take-up rate increases following the reform, for instance because benefit amounts increase, or because overcoverage related to population register inaccuracies is lower among the new potential recipients. The variation level (20%) was chosen to depict an extreme case: <a href=\"#bib6\">Bruckmeier and Wiemers (2012)</a> observed a 20% decline in the non-take-up rate after the Hartz reform.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "Rather than removing the simulated benefits at random, we aim to identify households with the highest likelihood of overcoverage and remove the simulated benefit from them. We estimate a logistic regression model to predict overcoverage probability per household. We calibrate the predicted probabilities to match the 26% reduction target. Trimming is restricted to households that did not receive social assistance in the data. This follows the idea that previous recipients have already incurred the \u201csunk costs\u201d of claiming (<a href=\"#bib22\">Wiemers, 2015</a>) and are therefore less likely to forgo benefits due to stigma or lack of information. Moreover, because they have received social assistance, we can be confident that these households were in fact eligible for the benefit.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "When modelling overcoverage we include variables from prior literature (e.g., <a href=\"#bib6\">Bruckmeier and Wiemers, 2012</a>) and factors capturing simulation or data inaccuracies in the Finnish context. Literature has linked non-take-up to benefit size, household composition, region, immigration status, and socioeconomic background. Since our model simulates on a monthly level, we include both duration (months of receipt) and depth (average monthly benefit) of benefit eligibility. To capture data-related sources of oversimulation, we include indicators for immigration during the year, institutional residence as well as unrealistically low recorded disposable income. These variables aim to identify households whose register information does not fully reflect their actual eligibility circumstances. Unobserved wealth is partly captured with an indicator for rental income and potentially also with other income variables. Together, these variables help distinguish households that are likely to be falsely classified as eligible. The full model and the coefficients is presented in <a href=\"#A1-T1\">Table A1</a>.",
+                            "type": "paragraph"
+                        },
+                        {
+                            "text": "The regression coefficients, shown in <a href=\"#A1-T1\">Table A1</a>, imply expectedly that the amount of social assistance as well as the number of months in receipt are negatively associated with non-take-up (or oversimulation). By including these variables in the regression, we can focus the calibration to those households with only short-term eligibility. This is a major advantage of proposed method in relation to a random elimination approach.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "s4-2",
+                    "title": "4.2. Calibration for oversimulation",
+                    "type": "section"
+                }
+            ],
+            "id": "s4",
+            "title": "4. Data and methods",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "The accuracy of the simulation can only be verified for those legislation years for which observed data are available. <a href=\"#fig1\">Figure 1</a> presents the accuracy indicators at different simulation stages from two perspectives: over- and undercoverage measures the extent of error in the number of households. Root mean square error (RMSE) measures the average error in the annual benefit amounts.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "In the official SISU model, the over- and undercoverage of social assistance simulation is as common as are correctly simulated cases (\u201ctrue positives\u201d). This corresponds to approximately 107,000 cases of overcoverage and 113,000 cases of undercoverage, together accounting for roughly 7.4% of all households in the data. Incorporating monthly income variation reduces undercoverage by approximately 34,000 households but increases overcoverage by around 52,000. As such, it does not improve the accuracy of the simulated recipient numbers, because overcoverage increases more significantly than undercoverage decreases. However, the rise in overcoverage is less problematic than undercoverage, since overcoverage is easier to correct retrospectively through e.g. calibration, whereas undercoverage represents missed eligibility that cannot be recovered retrospectively.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The official SISU model presents relatively high RMSE, around \u20ac4,800 per year. This is reduced by approximately \u20ac1,000 when the monthly incomes are incorporated. Calibration adjusts the simulated number of recipients to match the actual number by reducing overcoverage. After applying both monthly data and calibration, the misclassification rate of recipients, including both over- and undercoverage, decreases from 7.4% to 5.3% of households - a 29% reduction. RMSE also falls from \u20ac4,800 per year to \u20ac3,000, an improvement of 37%, which is an encouraging result.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "For the distributional analyses, it is essential that social assistance is correctly allocated across income distribution. <a href=\"#fig2\">Figure 2a</a> shows that simulation with the official model significantly overestimates the number of social assistance recipients in the lowest income decile, while underestimating them in upper deciles. The refined simulation reduces, but does not fully eliminate, this imbalance.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "<a href=\"#fig2\">Figure 2b</a> illustrates the distribution of social assistance recipient months. Using the official model leads to a simulation where support is received every month of the year, implying that social assistance offsets cuts to primary benefits in each month. In reality - and in the refined model - many individuals receive simulated support for fewer than 12 months, meaning social assistance only protects against benefit cuts for part of the year. However, also the refined model overestimates the number of benefit months compared to actual data. This is partly because wage income is still mainly based on annual income, and recipients are assumed to receive support in all months in which they are computationally eligible.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "<a href=\"#table3\">Table 3</a> compares total benefit expenditure and key income distribution indicators from the official model and the refined model with non-simulated data figures. The official model overestimates total social assistance expenditure while underestimating the number of recipients. The refined model matches the number of recipient households perfectly, but the number of individuals remains lower than in the data. This is because, in reality, social assistance tends to go to larger households than what is simulated.<a href=\"#fn3\"><sup>3</sup></a> The official model also underestimates the number of general housing allowance recipients. When using monthly income, this underestimation turns into a slight overestimation. However, the deviation from the observed number of recipients is relatively small, so we did not consider it necessary to adjust for overcoverage in the simulation of housing allowance.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "<a href=\"#table3\">Table 3</a> also shows that the distributional indicators produced by the refined model deviate typically less from the observed values than those produced by the official model. The official SISU model slightly underestimates, for example, the Gini coefficient, likely due to oversimulation of benefit amounts in the lowest income decile. The refined model narrows this gap.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The official model overestimates at-risk-of-poverty rates (at the 60% threshold) for both the total population and for children, because it fails to detect partial-year eligibility for social assistance (and housing benefits). In the official model, 7% of families with children are simulated to receive social assistance, whereas register data and the refined model produce prevalence of 8.4-8.6%. The refined model improves simulation for families with children, resulting in lower and more realistic at-risk-of-poverty rates.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Furthermore, the official model underestimates at-risk-of-poverty gaps, possibly because social assistance is simulated for all computationally eligible households. The refined model reduces this bias and produces larger, more consistent at-risk-of-poverty gaps in line with register data. Part of this improvement reflects the calibration step, which corrects for simulation overcoverage, including the fact that not all eligible households receive social assistance in practice.",
+                    "type": "paragraph"
+                },
+                {
+                    "assets": [
+                        {
+                            "id": "fig1",
+                            "image": {
+                                "alt": "",
+                                "uri": "%iiif_uri%/00341%2Fijm-00341-fig001.tif",
+                                "size": {
+                                    "width": 1498,
+                                    "height": 957
+                                },
+                                "source": {
+                                    "mediaType": "image/jpeg",
+                                    "uri": "%iiif_uri%/00341%2Fijm-00341-fig001.tif/full/full/0/default.jpg",
+                                    "filename": "ijm-00341-fig001.jpg"
+                                }
+                            },
+                            "label": "Figure 1",
+                            "title": "Over- and undercoverage of social assistance recipients using different simulation methods in 2022, and root mean square error compared to actual data.",
+                            "type": "image"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "assets": [
+                        {
+                            "id": "fig2",
+                            "image": {
+                                "alt": "",
+                                "uri": "%iiif_uri%/00341%2Fijm-00341-fig002.tif",
+                                "size": {
+                                    "width": 1915,
+                                    "height": 816
+                                },
+                                "source": {
+                                    "mediaType": "image/jpeg",
+                                    "uri": "%iiif_uri%/00341%2Fijm-00341-fig002.tif/full/full/0/default.jpg",
+                                    "filename": "ijm-00341-fig002.jpg"
+                                }
+                            },
+                            "label": "Figure 2",
+                            "title": "(<b>a-b</b>) Distribution of social assistance recipient households by income decile and number of benefit months according to data, simulation with official model, and simulation with refined model.",
+                            "type": "image"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "assets": [
+                        {
+                            "id": "table3",
+                            "label": "Table 3",
+                            "tables": [
+                                "<table><thead><tr><th align=\"center\" colspan=\"3\" rowspan=\"2\">Data</th><th align=\"left\" colspan=\"2\">Difference with data</th><th align=\"left\" rowspan=\"2\">Difference, calibrated vs. official model</th></tr><tr><th align=\"left\">Official model</th><th align=\"left\">Calibrated model</th></tr></thead><tbody><tr><td align=\"left\" rowspan=\"3\">Social assistance</td><td align=\"left\">Expenditure, M\u20ac</td><td align=\"right\">670</td><td align=\"right\">+38 %</td><td align=\"right\">0 %</td><td align=\"right\">-28 %</td></tr><tr><td align=\"left\">Households</td><td align=\"right\">231 000</td><td align=\"right\">-3 %</td><td align=\"right\">0 %</td><td align=\"right\">+2 %</td></tr><tr><td align=\"left\">Indiviudals</td><td align=\"right\">392 000</td><td align=\"right\">-14 %</td><td align=\"right\">-6 %</td><td align=\"right\">+9 %</td></tr><tr><td align=\"left\" rowspan=\"2\">General housing allowance</td><td align=\"right\">Expenditure, M\u20ac</td><td align=\"right\">1 576</td><td align=\"right\">-4 %</td><td align=\"right\">+3 %</td><td align=\"right\">+7 %</td></tr><tr><td align=\"left\">Households</td><td align=\"right\">504 000</td><td align=\"right\">-15 %</td><td align=\"right\">+2 %</td><td align=\"right\">+21 %</td></tr><tr><td align=\"left\" colspan=\"2\">Gini</td><td align=\"right\">29.2</td><td align=\"right\">-0.2</td><td align=\"right\">-0.1</td><td align=\"right\">+0.1</td></tr><tr><td align=\"left\" colspan=\"2\">Median income, eqv. \u20ac/yr</td><td align=\"right\">27 614</td><td align=\"right\">-202</td><td align=\"right\">-179</td><td align=\"right\">+23</td></tr><tr><td align=\"left\" colspan=\"2\">AROP rate (60), %</td><td align=\"right\">13.6</td><td align=\"right\">+0.4</td><td align=\"right\">+0.3</td><td align=\"right\">-0.1</td></tr><tr><td align=\"left\" colspan=\"2\">AROP rate (50), %</td><td align=\"right\">6.8</td><td align=\"right\">-0.2</td><td align=\"right\">0.0</td><td align=\"right\">+0.2</td></tr><tr><td align=\"left\" colspan=\"2\">AROP gap (60), %</td><td align=\"right\">16.7</td><td align=\"right\">-1.3</td><td align=\"right\">-0.6</td><td align=\"right\">+0.7</td></tr><tr><td align=\"left\" colspan=\"2\">AROP gap (50), %</td><td align=\"right\">21.2</td><td align=\"right\">-7.2</td><td align=\"right\">-5.5</td><td align=\"right\">+1.7</td></tr><tr><td align=\"left\" colspan=\"2\">AROP rate (60), age less than 18, %</td><td align=\"right\">11.9</td><td align=\"right\">+0.8</td><td align=\"right\">+0.2</td><td align=\"right\">-0.6</td></tr><tr><td align=\"left\" colspan=\"2\">AROP rate (60), age 65+, %</td><td align=\"right\">14.0</td><td align=\"right\">-0.2</td><td align=\"right\">-0.1</td><td align=\"right\">+0.1</td></tr><tr><td align=\"left\" colspan=\"2\">Income share of the 1st decile, %</td><td align=\"right\">3.5</td><td align=\"right\">+0.4</td><td align=\"right\">+0.2</td><td align=\"right\">-0.2</td></tr></tbody></table>"
+                            ],
+                            "title": "Differences between results from the refined model and the official model compared to data reference values in 2022.",
+                            "type": "table"
+                        }
+                    ],
+                    "type": "figure"
+                }
+            ],
+            "id": "s5",
+            "title": "5. Simulation accuracy in the data year",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "Next, we assess the impact of the 2024-2025 Finnish tax-benefit reforms on income distribution indicators and social assistance receipt using both the official and refined model. We simulate the tax and benefit legislation as it stands at the end of 2025, when all the proposed changes are fully in effect.<a href=\"#fn4\"><sup>4</sup></a> We compare it to a counterfactual 2025 scenario in which none of the 2024\u20132025 legislative changes been implemented. Behavioural responses to policy changes, e.g., changes in labour supply, are not modelled.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "<a href=\"#table4\">Table 4</a> shows that the refined model estimates more moderate changes in social assistance than the official model. For example, official model projects that social assistance expenditures will rise by \u20ac313 million (+34%), whereas the refined model produces an estimate of \u20ac182 million (+27%).",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The difference is even larger in recipient numbers. The official model projects 81,000 additional recipients (+25%), while the refined model estimates only 37,000 (+10%) - 54% fewer. This discrepancy is not solely attributable to the calibration step, which reduces the refined model\u2019s recipients by 26%, but also to the way the official model treats the number of months with benefit receipt. In the annual income model, recipients are assumed to receive social assistance for all 12 months of the year. The refined model accounts for partial-year support, meaning social assistance offsets the cuts only for part of the months.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The impacts of legislative changes on at-risk-of-poverty rates and the Gini coefficient are slightly larger in the refined model. The most notable difference concerns the child at-risk-of-poverty rate: it increases by 2.7 percentage points in the refined model, compared to 1.7 percentage points in the official model. This discrepancy reflects that the official model underestimates social assistance for families with children, incorrectly placing many of them below the at-risk-of-poverty threshold already in the baseline scenario (see Section 5). The refined model, in contrast, places these families slightly above the threshold, making them more vulnerable to falling below it due to benefit cuts.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The sensitivity test, presented in the right-side columns of <a href=\"#table4\">Table 4</a>, shows that assuming a substantial 20% increase or decrease in the overcoverage leads to considerable variation in the estimated changes in social assistance expenditure and recipient numbers. This is not surprising, as the parameter directly affects the number of households whose benefit is removed in the calibration process, which in turn influences the aggregate benefit expenditure. Nevertheless, all estimates of change in expenditure are still below the numbers of the official model. Moreover, the effects on distributional indicators seem very robust.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Finally, <a href=\"#fig3\">Figure 3</a> illustrates the relative impact on household disposable income by income decile. While the official model estimates a 5% drop in total disposable incomes of the lowest decile, the refined model produces an 8% decline - around 60% larger than the official model. This difference reflects the tendency of the official model to overestimate the protective role of social assistance by neglecting oversimulation arising from non-take-up, unobserved wealth and other issues. The monthly simulation of housing allowance is the main driver of slight income losses observed in deciles III-VI.",
+                    "type": "paragraph"
+                },
+                {
+                    "assets": [
+                        {
+                            "footnotes": [
+                                {
+                                    "text": [
+                                        {
+                                            "text": "Note: In the sensitivity analysis the overcoverage rate after the reform is assumed to be 20% higher or lower than in the reference-year calibration. The increased overcoverage reflects a scenario where oversimulation rises, for example due to unobserved wealth among new recipients, while the reduced overcoverage can reflect higher take-up if increased benefit amounts spur higher claiming probabilities.",
+                                            "type": "paragraph"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "id": "table4",
+                            "label": "Table 4",
+                            "tables": [
+                                "<table><thead><tr><th align=\"right\" colspan=\"3\" rowspan=\"2\">Official model</th><th align=\"left\" rowspan=\"2\">Refined model</th><th align=\"left\" colspan=\"2\">Sensitivity test:<br/>Change of overcoverage rate</th></tr><tr><th align=\"left\">+20%</th><th align=\"left\">-20%</th></tr></thead><tbody><tr><td align=\"left\" rowspan=\"3\">Social assistance</td><td align=\"left\">Expenditure, M\u20ac</td><td align=\"right\">+313</td><td align=\"right\">+182</td><td align=\"right\">+122</td><td align=\"right\">+242</td></tr><tr><td align=\"left\">Households (1000)</td><td align=\"right\">+50</td><td align=\"right\">+26</td><td align=\"right\">+8</td><td align=\"right\">+43</td></tr><tr><td align=\"left\">Individuals (1000)</td><td align=\"right\">+81</td><td align=\"right\">+37</td><td align=\"right\">+12</td><td align=\"right\">+62</td></tr><tr><td align=\"left\" rowspan=\"2\">Housing allowance</td><td align=\"right\">Expenditure, M\u20ac</td><td align=\"right\">-885</td><td align=\"right\">-972</td><td align=\"right\">-972</td><td align=\"right\">-972</td></tr><tr><td align=\"left\">Households (1000)</td><td align=\"right\">-218</td><td align=\"right\">-251</td><td align=\"right\">-251</td><td align=\"right\">-251</td></tr><tr><td align=\"left\" colspan=\"2\">Gini index</td><td align=\"right\">+0,4</td><td align=\"right\">+0,6</td><td align=\"right\">+0,6</td><td align=\"right\">+0,6</td></tr><tr><td align=\"left\" colspan=\"2\">Median income, \u20ac/yr</td><td align=\"right\">+292</td><td align=\"right\">+270</td><td align=\"right\">+269</td><td align=\"right\">+271</td></tr><tr><td align=\"left\" rowspan=\"4\">AROP rate, %</td><td align=\"right\">Total pop (60)</td><td align=\"right\">+1,7</td><td align=\"right\">+1,9</td><td align=\"right\">+2,0</td><td align=\"right\">+1,9</td></tr><tr><td align=\"left\">Total pop (50)</td><td align=\"right\">+1,3</td><td align=\"right\">+1,8</td><td align=\"right\">+1,9</td><td align=\"right\">+1,8</td></tr><tr><td align=\"left\">Age less than 18 (60)</td><td align=\"right\">+1,7</td><td align=\"right\">+2,7</td><td align=\"right\">+2,7</td><td align=\"right\">+2,6</td></tr><tr><td align=\"left\">Age 65+ (60)</td><td align=\"right\">+0,4</td><td align=\"right\">+0,4</td><td align=\"right\">+0,4</td><td align=\"right\">+0,4</td></tr><tr><td align=\"left\">AROP gap, %</td><td align=\"right\">Total pop (60)</td><td align=\"right\">+1,2</td><td align=\"right\">+2,6</td><td align=\"right\">+2,7</td><td align=\"right\">+2,5</td></tr><tr><td align=\"left\" colspan=\"2\">Income share of the 1st decile, %</td><td align=\"right\">-0,2</td><td align=\"right\">-0,3</td><td align=\"right\">-0,3</td><td align=\"right\">-0,3</td></tr></tbody></table>"
+                            ],
+                            "title": "The estimated effects of the reform on benefit expenditure and distributional indicators with the official and refined model.",
+                            "type": "table"
+                        }
+                    ],
+                    "type": "figure"
+                },
+                {
+                    "assets": [
+                        {
+                            "id": "fig3",
+                            "image": {
+                                "alt": "",
+                                "uri": "%iiif_uri%/00341%2Fijm-00341-fig003.tif",
+                                "size": {
+                                    "width": 1426,
+                                    "height": 820
+                                },
+                                "source": {
+                                    "mediaType": "image/jpeg",
+                                    "uri": "%iiif_uri%/00341%2Fijm-00341-fig003.tif/full/full/0/default.jpg",
+                                    "filename": "ijm-00341-fig003.jpg"
+                                }
+                            },
+                            "label": "Figure 3",
+                            "title": "The impact of the 2024-2025 reforms on total disposable income by income decile, simulated with the official and the refined model.",
+                            "type": "image"
+                        }
+                    ],
+                    "type": "figure"
+                }
+            ],
+            "id": "s6",
+            "title": "6. Implications for the simulation of a reform",
+            "type": "section"
+        },
+        {
+            "content": [
+                {
+                    "text": "Distributional impact analyses provide important information to both decision-makers and citizens about the effects of implemented policy measures, and in some cases, they also influence which measures are ultimately adopted. The credibility and legitimacy of such assessments depend on the precision of the underlying evaluation methods. In this study, we improved the precision of social assistance simulations in two ways: incorporating monthly data and calibration for oversimulation. Unlike previous studies to our knowledge, we considered also micro-level accuracy and undercoverage of simulated social assistance in addition to aggregate oversimulation.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "We demonstrated the implications of refinements with Finnish tax-benefit model SISU. In the data reference year, simulated number of social assistance recipients matches the statistics well, but the micro-level accuracy is poor, with both high undercoverage and overcoverage. We partially address undercoverage by incorporating monthly income variation, which reduces the number of households incorrectly simulated as non-eligible. We also consider micro-level accuracy when correcting for oversimulation. We use predicted probabilities of overcoverage to match the number of simulated recipients and expenditures with the official statistics. Monthly-level simulation enables us to exploit also the estimated length of benefit eligibility when predicting overcoverage of simulation (or non-take-up).",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Our empirical findings show that the refined model increases micro-level accuracy by 29 to 37%, measured with misclassification rate of recipiency and mean error of benefit levels. It also positions recipient households more accurately in the income distribution and captures better partial-year receipt.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The refinements affect not only the baseline estimation, but also the reform evaluation. The refined model produces 46% smaller increase in social assistance expenditure and 54% smaller increase in recipient households. Smaller compensating effect from social assistance causes larger increases in distributional indicators. The at-risk-of poverty rate of children increases almost 60% more and the poverty gap increases 117% more than estimated with the official model. However, the effects on at-risk-of-poverty among the employed or elderly, groups that are virtually unaffected by social assistance, are roughly the same in both models.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The differences in the estimated reform effects stem mainly from two issues. First, the monthly-level simulation captures that social assistance protects household incomes only in certain months. Second, applying the same calibration to correct oversimulation in the reform scenario automatically reduces the estimated reform effect. In our analysis, we employ fixed calibration parameters and assume that the oversimulation rate remains constant before and after reform. This may be a strong assumption, as oversimulation related to non-take-up is known to be endogenous to benefit amounts (<a href=\"#bib6\">Bruckmeier and Wiemers, 2012</a>). However, we have detected several other measurement errors causing oversimulation that are difficult to distinguish from actual non-take-up. Therefore, we refrain from modelling endogenous oversimulation explicitly. Instead, we run two sensitivity tests where overcoverage rate would decrease or increase substantially after the reform. Interestingly, while social assistance expenditure is highly affected, the poverty indicators remain robust.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "The introduction of monthly-level simulation and calibration improve the accuracy of simulated outcomes remarkably. Moreover, the Finnish case suggests that monthly-level simulation should be accompanied with calibration for oversimulation as using monthly income tends to increase oversimulation substantially. At the same time, applying calibration in contexts without macro-level oversimulation in the baseline may be challenging. However, because non-take-up and other errors causing oversimulation of social assistance are practically always present at micro level, neglecting calibration is likely to exaggerate the estimated effects on social assistance when simulating a reform (<a href=\"#bib2\">Almeida et al., 2025</a>).",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Incorrect targeting and overestimation of social assistance in the simulation model can also distort the estimation of work incentives and, consequently, employment effects. The official SISU model and other simulation models may underestimate the strength of work incentives in the lowest income decile if oversimulation of social assistance is not accounted for (see <a href=\"#bib7\">Bruckmeier and Wiemers, 2018</a>). Moreover, employment effects are typically evaluated using work incentive measures on an annual basis (e.g. <a href=\"#bib18\">Ollonqvist et al., 2024</a>), whereas a monthly-level model would allow for more precise assessments of these incentives.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "One challenge in incorporating monthly income data is its availability. The ideal input would be administrative register data providing a complete monthly income history over the year. Survey datasets, in turn, may contain information on income for some months, but rarely provide consistent month-by-month income observations for the entire year. In addition, when monthly income is collected retrospectively, it may be subject to recall error. If full year monthly income data are not available-as is the case, for example, in the EUROMOD model-monthly incomes could be imputed using other monthly information, such as months in different activities. A further challenge is that modelling benefits month-by-month increases run time and storage requirements. Therefore, test runs should generally be performed on smaller sample to ensure efficient work with monthly data.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "Although we accounted for monthly fluctuations in many benefits, for some incomes, most notably for full-time wages, we relied mainly on averages. If monthly variation in wage income could be incorporated more fully, the simulation would likely identify additional short benefit spells during temporary income dips. This would increase the simulated overcoverage rate leading also to higher calibration rate of social assistance. At the same time, more precise modelling of short benefit spells would reduce the average duration of simulated benefit receipt. Together, these mechanisms would likely lead to smaller estimated increases in social assistance expenditure and increased effects on poverty rates than those reported here.",
+                    "type": "paragraph"
+                },
+                {
+                    "text": "While the analysis is demonstrated in a Finnish context, the methodological advances introduced here are not only of domestic relevance: similar challenges arise in tax\u2013benefit microsimulations across Europe and beyond. The results highlight the importance of accounting for monthly income variation when simulating means-tested benefits. However, other inaccuracies of social assistance simulation, presented in <a href=\"#table1\">Table 1</a>, should not be forgotten either. The present study should be seen as a step forward, and future research should examine monthly income dynamics in greater detail.",
+                    "type": "paragraph"
+                }
+            ],
+            "id": "s7",
+            "title": "7. Discussion",
+            "type": "section"
+        },
+        {
+            "id": "footnotes",
+            "title": "Footnotes",
+            "type": "section",
+            "content": [
+                {
+                    "content": [
+                        {
+                            "text": "We use the term oversimulation to refer generally to situations where the simulation of a benefit exceeds real-world outcomes at macro or micro level. Overcoverage (of a simulated benefit) refers more specifically to a situation at micro level where household receives simulated benefit but not actual benefit. Analogously, undersimulation refers generally to underestimation of benefit outcomes at macro or micro level, while undercoverage denotes to households that are simulated incorrectly as non-recipient.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "fn1",
+                    "title": "1.",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "In Finland, the annual earnings limit for students depends on the number of months in which study grants are received. Students may earn income at any time of the year as long as their annual earnings do not exceed this limit.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "fn2",
+                    "title": "2.",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "This likely results from the SISU model\u2019s inadequate modelling of the family-unit concept used in social assistance \u2014 it does not take into account that adult children living with their parents and other adults outside the nuclear family form their own family units, meaning that parental income does not affect their eligibility. Accounting for this would likely shift simulated benefit receipt toward larger households.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "fn3",
+                    "title": "3.",
+                    "type": "section"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "Some of the policy changes take effect during the year. In our simulations, however, we assume that all reforms are in place from the beginning of 2025. Consequently, the analysis reflects the longer-term, full-year impact of the reforms rather than the actual situation in 2025.",
+                            "type": "paragraph"
+                        }
+                    ],
+                    "id": "fn4",
+                    "title": "4.",
+                    "type": "section"
+                }
+            ]
+        }
+    ],
+    "references": [
+        {
+            "articleTitle": "Analysing the effects of healthcare payment policies on poverty: A microsimulation study with real-world healthcare data",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Aaltonen, K",
+                        "preferred": "K Aaltonen"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Tervola, J",
+                        "preferred": "J Tervola"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Heino, P",
+                        "preferred": "P Heino"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2023",
+            "doi": "10.34196/IJM.00276",
+            "id": "bib1",
+            "journal": "International Journal of Microsimulation",
+            "pages": {
+                "first": "89",
+                "last": "107",
+                "range": "89\u2013107"
+            },
+            "type": "journal",
+            "volume": "16"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Almeida, V",
+                        "preferred": "V Almeida"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "De Poli, S",
+                        "preferred": "S De Poli"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Hern\u00e1ndez, A",
+                        "preferred": "A Hern\u00e1ndez"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2025",
+            "details": "Review of Income and Wealth, 71, 10.1111/roiw.12728",
+            "id": "bib2",
+            "title": "The role of minimum income schemes in poverty alleviation in the European Union",
+            "type": "unknown"
+        },
+        {
+            "articleTitle": "No claim, no pain. Measuring the non-take-up of social assistance using register data",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Bargain, O",
+                        "preferred": "O Bargain"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Immervoll, H",
+                        "preferred": "H Immervoll"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Viitam\u00e4ki, H",
+                        "preferred": "H Viitam\u00e4ki"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2012",
+            "doi": "10.1007/s10888-010-9158-8",
+            "id": "bib3",
+            "journal": "The Journal of Economic Inequality",
+            "pages": {
+                "first": "375",
+                "last": "395",
+                "range": "375\u2013395"
+            },
+            "type": "journal",
+            "volume": "10"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Bruckmeier, K",
+                        "preferred": "K Bruckmeier"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Wiemers, J",
+                        "preferred": "J Wiemers"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2012",
+            "details": "Empirical Economics, 43, 10.1007/s00181-011-0505-9",
+            "id": "bib6",
+            "title": "A new targeting: A new take-up? Non-take-up of social assistance in Germany after social policy reforms",
+            "type": "unknown"
+        },
+        {
+            "articleTitle": "Benefit take-up and labor supply incentives of interdependent means-tested benefit programs for low-income households",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Bruckmeier, K",
+                        "preferred": "K Bruckmeier"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Wiemers, J",
+                        "preferred": "J Wiemers"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2018",
+            "doi": "10.1057/s41294-017-0041-5",
+            "id": "bib7",
+            "journal": "Comparative Economic Studies",
+            "pages": {
+                "first": "583",
+                "last": "604",
+                "range": "583\u2013604"
+            },
+            "type": "journal",
+            "volume": "60"
+        },
+        {
+            "articleTitle": "Misreporting of program take-up in survey data and its consequences for measuring non-take-up: new evidence from linked administrative and survey data",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Bruckmeier, K",
+                        "preferred": "K Bruckmeier"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Riphahn, RT",
+                        "preferred": "RT Riphahn"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Wiemers, J",
+                        "preferred": "J Wiemers"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2021",
+            "doi": "10.1007/s00181-020-01921-4",
+            "id": "bib5",
+            "journal": "Empirical Economics",
+            "pages": {
+                "first": "1567",
+                "last": "1616",
+                "range": "1567\u20131616"
+            },
+            "type": "journal",
+            "volume": "61"
+        },
+        {
+            "articleTitle": "The Trouble with take-up",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Doorley, K",
+                        "preferred": "K Doorley"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Kakoulidou, T",
+                        "preferred": "T Kakoulidou"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2024",
+            "doi": "10.1515/bejeap-2023-0170",
+            "id": "bib8",
+            "journal": "The B.E. Journal of Economic Analysis & Policy",
+            "pages": {
+                "first": "673",
+                "last": "682",
+                "range": "673\u2013682"
+            },
+            "type": "journal",
+            "volume": "24"
+        },
+        {
+            "authors": [
+                {
+                    "name": "Eurofound",
+                    "type": "group"
+                }
+            ],
+            "bookTitle": "Access to Social Benefits: Reducing Non-Take-Up",
+            "date": "2015",
+            "id": "bib9",
+            "publisher": {
+                "name": [
+                    "Publications office of the European Union"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "articleTitle": "Falling through the social safety net? Analysing non\u2010take\u2010up of minimum income benefit and monetary social assistance in Austria",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Fuchs, M",
+                        "preferred": "M Fuchs"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Gasior, K",
+                        "preferred": "K Gasior"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Premrov, T",
+                        "preferred": "T Premrov"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Hollan, K",
+                        "preferred": "K Hollan"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Scoppetta, A",
+                        "preferred": "A Scoppetta"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2020",
+            "doi": "10.1111/spol.12581",
+            "id": "bib10",
+            "journal": "Social Policy & Administration",
+            "pages": {
+                "first": "827",
+                "last": "843",
+                "range": "827\u2013843"
+            },
+            "type": "journal",
+            "volume": "54"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Goedem\u00e9, T",
+                        "preferred": "T Goedem\u00e9"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Janssens, J",
+                        "preferred": "J Janssens"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "The Concept and Measurement of Non-Take-up. An Overview, with a Focus on the Non-Take-up of Social Benefits",
+            "date": "2020",
+            "id": "bib11",
+            "publisher": {
+                "name": [
+                    "Deliverable 9.2 Leuven, InGRID-2 project 730998 H, 2020"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Harnisch, M",
+                        "preferred": "M Harnisch"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2019",
+            "doi": "10.2139/ssrn.3352378",
+            "id": "bib12",
+            "publisher": {
+                "name": [
+                    "SSRN Electronic Journal"
+                ]
+            },
+            "source": "Non-Take-Up of Means-Tested Social Benefits in Germany",
+            "title": "Non-Take-Up of Means-Tested Social Benefits in Germany",
+            "type": "report",
+            "uri": "https://doi.org/10.2139/ssrn.3352378",
+            "volume": "Paper No. 1793"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Hiilamo, H",
+                        "preferred": "H Hiilamo"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Kivipelto, M",
+                        "preferred": "M Kivipelto"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Moisio, P",
+                        "preferred": "P Moisio"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Mukkila, S",
+                        "preferred": "S Mukkila"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Nyk\u00e4nen, E",
+                        "preferred": "E Nyk\u00e4nen"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Ollonqvist, J",
+                        "preferred": "J Ollonqvist"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Peltoniemi, J",
+                        "preferred": "J Peltoniemi"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Saikku, P",
+                        "preferred": "P Saikku"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Tervola, J",
+                        "preferred": "J Tervola"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Tuovinen, A-K",
+                        "preferred": "A-K Tuovinen"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Virrankari, L",
+                        "preferred": "L Virrankari"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "Hallitusohjelman Mukaisten Sosiaaliturvan Leikkausten Vaikutukset Vuoteen 2027. Ty\u00f6paperi 45/2023",
+            "date": "2023",
+            "id": "bib13",
+            "publisher": {
+                "address": {
+                    "components": {
+                        "locality": [
+                            "Helsinki"
+                        ]
+                    },
+                    "formatted": [
+                        "Helsinki"
+                    ]
+                },
+                "name": [
+                    "THL"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "authors": [
+                {
+                    "name": "Kela",
+                    "type": "group"
+                }
+            ],
+            "date": "2025",
+            "id": "bib15",
+            "title": "Perustoimeentulotuen saajam\u00e4\u00e4r\u00e4 nousi yli 150 000 kotitalouteen huhtikuussa",
+            "type": "web",
+            "uri": "https://tietotarjotin.fi/uutinen/1212849/perustoimeentulotuen-saajamaara-nousi-yli-150-000-kotitalouteen-huhtikuussa"
+        },
+        {
+            "articleTitle": "But what about that nice house you own? The impact of asset tests in minimum income schemes in Europe: An empirical exploration",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Marchal, S",
+                        "preferred": "S Marchal"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Kuypers, S",
+                        "preferred": "S Kuypers"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Marx, I",
+                        "preferred": "I Marx"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Verbist, G",
+                        "preferred": "G Verbist"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2021",
+            "doi": "10.1177/0958928720970134",
+            "id": "bib16",
+            "journal": "Journal of European Social Policy",
+            "pages": {
+                "first": "44",
+                "last": "61",
+                "range": "44\u201361"
+            },
+            "type": "journal",
+            "volume": "31"
+        },
+        {
+            "articleTitle": "Over-coverage in population registers leads to bias in demographic estimates",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Monti, A",
+                        "preferred": "A Monti"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Drefahl, S",
+                        "preferred": "S Drefahl"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Mussino, E",
+                        "preferred": "E Mussino"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "H\u00e4rk\u00f6nen, J",
+                        "preferred": "J H\u00e4rk\u00f6nen"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2020",
+            "doi": "10.1080/00324728.2019.1683219",
+            "id": "bib17",
+            "journal": "Population Studies",
+            "pages": {
+                "first": "451",
+                "last": "469",
+                "range": "451\u2013469"
+            },
+            "type": "journal",
+            "volume": "74"
+        },
+        {
+            "articleTitle": "Accounting for behavioral effects in microsimulation: A reduced form approach",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Ollonqvist, J",
+                        "preferred": "J Ollonqvist"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Tervola, J",
+                        "preferred": "J Tervola"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Pirttil\u00e4, J",
+                        "preferred": "J Pirttil\u00e4"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Thoresen, TO",
+                        "preferred": "TO Thoresen"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2024",
+            "doi": "10.34196/ijm.00311",
+            "id": "bib18",
+            "journal": "International Journal of Microsimulation",
+            "pages": {
+                "first": "44",
+                "last": "72",
+                "range": "44\u201372"
+            },
+            "type": "journal",
+            "volume": "17"
+        },
+        {
+            "articleTitle": "Toimeentulotuen saajien sanktiointi eurooppalaisessa vertailussa",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Penttil\u00e4, R",
+                        "preferred": "R Penttil\u00e4"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Hiilamo, H",
+                        "preferred": "H Hiilamo"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2017",
+            "id": "bib19",
+            "journal": "Yhteiskuntapolitiikka",
+            "pages": {
+                "first": "404",
+                "last": "416",
+                "range": "404\u2013416"
+            },
+            "type": "journal",
+            "volume": "82"
+        },
+        {
+            "articleTitle": "Smaller net or just fewer to catch? Disentangling the causes for the varying sizes of minimum income schemes",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Tervola, J",
+                        "preferred": "J Tervola"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Mesi\u00e4islehto, M",
+                        "preferred": "M Mesi\u00e4islehto"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Ollonqvist, J",
+                        "preferred": "J Ollonqvist"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2023",
+            "doi": "10.1111/ijsw.12553",
+            "id": "bib20",
+            "journal": "International Journal of Social Welfare",
+            "pages": {
+                "first": "133",
+                "last": "148",
+                "range": "133\u2013148"
+            },
+            "type": "journal",
+            "volume": "32"
+        },
+        {
+            "authors": [
+                {
+                    "name": {
+                        "index": "Tervola, J",
+                        "preferred": "J Tervola"
+                    },
+                    "type": "person"
+                },
+                {
+                    "name": {
+                        "index": "Ollonqvist, J",
+                        "preferred": "J Ollonqvist"
+                    },
+                    "type": "person"
+                }
+            ],
+            "bookTitle": "Muuttuuko Arvio Sosiaaliturvaleikkausten Vaikutuksista, Kun Toimeentulotuen Simulointia Tarkennetaan",
+            "date": "2025",
+            "id": "bib21",
+            "publisher": {
+                "name": [
+                    "INVEST Working Paper"
+                ]
+            },
+            "type": "book"
+        },
+        {
+            "articleTitle": "Endogenizing take-up of social assistance in a microsimulation model A case study for Germany",
+            "authors": [
+                {
+                    "name": {
+                        "index": "Wiemers, J",
+                        "preferred": "J Wiemers"
+                    },
+                    "type": "person"
+                }
+            ],
+            "date": "2015",
+            "doi": "10.34196/ijm.00115",
+            "id": "bib22",
+            "journal": "International Journal of Microsimulation",
+            "pages": {
+                "first": "4",
+                "last": "27",
+                "range": "4\u201327"
+            },
+            "type": "journal",
+            "volume": "8"
+        }
+    ],
+    "appendices": [
+        {
+            "content": [
+                {
+                    "assets": [
+                        {
+                            "id": "A1-T1",
+                            "label": "Table A1",
+                            "tables": [
+                                "<table><thead><tr><th align=\"left\"/><th align=\"center\"><i>\u03b2</i></th><th align=\"center\"><i>p</i></th></tr></thead><tbody><tr><td align=\"left\">Intercept</td><td align=\"left\">4.60</td><td align=\"left\">0.00</td></tr><tr><td align=\"left\">Simulated months of SA (1\u201312)</td><td align=\"left\">-0.12</td><td align=\"left\">0.00</td></tr><tr><td align=\"left\">SA as % of hh income, avg per month</td><td align=\"left\">-0.02</td><td align=\"left\">0.00</td></tr><tr><td align=\"left\" colspan=\"3\"><b>Socio-economic position (ref=unknown</b>)</td></tr><tr><td align=\"left\">\u2003Upper-level office workers</td><td align=\"left\">0.81</td><td align=\"left\">0.00</td></tr><tr><td align=\"left\">\u2003Lower-level office workers</td><td align=\"left\">0.23</td><td align=\"left\">0.00</td></tr><tr><td align=\"left\">\u2003Employees</td><td align=\"left\">-0.44</td><td align=\"left\">0.00</td></tr><tr><td align=\"left\">\u2003Students</td><td align=\"left\">0.44</td><td align=\"left\">0.25</td></tr><tr><td align=\"left\">\u2003Pensioners</td><td align=\"left\">-1.01</td><td align=\"left\">0.00</td></tr><tr><td align=\"left\">\u2003Other</td><td align=\"left\">-1.17</td><td align=\"left\">0.00</td></tr><tr><td align=\"left\"><b>Household life stage (ref=single parents</b>)</td><td align=\"left\"/><td align=\"left\"/></tr><tr><td align=\"left\">\u2003Single, less than 35 years</td><td align=\"left\">-0.14</td><td align=\"left\">0.00</td></tr><tr><td align=\"left\">\u2003Single, 35\u201364 years</td><td align=\"left\">0.45</td><td align=\"left\">0.00</td></tr><tr><td align=\"left\">\u2003Single, 65+ years</td><td align=\"left\">-0.20</td><td align=\"left\">0.00</td></tr><tr><td align=\"left\">\u2003Couple, less than 35 years</td><td align=\"left\">0.25</td><td align=\"left\">0.00</td></tr><tr><td align=\"left\">\u2003Couple 35\u201364 years</td><td align=\"left\">0.19</td><td align=\"left\">0.00</td></tr><tr><td align=\"left\">\u2003Couple, 65+ years</td><td align=\"left\">0.10</td><td align=\"left\">0.56</td></tr><tr><td align=\"left\">\u2003Family with 2 parents and children</td><td align=\"left\">-0.03</td><td align=\"left\">0.00</td></tr><tr><td align=\"left\">\u2003Other</td><td align=\"left\">-0.24</td><td align=\"left\">0.00</td></tr><tr><td align=\"left\" colspan=\"2\"><b>Disposable income (ref=more than 7500 \u20ac/year</b>)</td><td align=\"left\"/></tr><tr><td align=\"left\">\u2003Less than 1500 \u20ac</td><td align=\"left\">3.49</td><td align=\"left\">0.00</td></tr><tr><td align=\"left\">\u20031500\u20134500 \u20ac</td><td align=\"left\">0.24</td><td align=\"left\">0.00</td></tr><tr><td align=\"left\">\u20034500\u20137500 \u20ac</td><td align=\"left\">-1.00</td><td align=\"left\">0.00</td></tr><tr><td align=\"left\"><b>Income decile (ref=I</b>)</td><td align=\"left\"/><td align=\"left\"/></tr><tr><td align=\"left\">\u2003II</td><td align=\"left\">-0.46</td><td align=\"left\">0.00</td></tr><tr><td align=\"left\">\u2003III</td><td align=\"left\">-0.51</td><td align=\"left\">0.00</td></tr><tr><td align=\"left\">\u2003IV</td><td align=\"left\">-0.33</td><td align=\"left\">0.00</td></tr><tr><td align=\"left\">\u2003V-X</td><td align=\"left\">0.67</td><td align=\"left\">0.00</td></tr><tr><td align=\"left\">Migrated during the data year (0/1)</td><td align=\"left\">0.48</td><td align=\"left\">0.00</td></tr><tr><td align=\"left\">Institutionalized (0/1)</td><td align=\"left\">2.11</td><td align=\"left\">0.00</td></tr><tr><td align=\"left\">Debt for execution (0/1)</td><td align=\"left\">-0.69</td><td align=\"left\">0.00</td></tr><tr><td align=\"left\">Immigrant (0/1)</td><td align=\"left\">-0.50</td><td align=\"left\">0.00</td></tr><tr><td align=\"left\">Rental income (0/1)</td><td align=\"left\">2.38</td><td align=\"left\">0.00</td></tr><tr><td align=\"left\">Extra adults in the household (0/1)</td><td align=\"left\">-0.49</td><td align=\"left\">0.00</td></tr></tbody></table>"
+                            ],
+                            "title": "Coefficients of the logistic regression model analysing overcoverage (1/0) among the simulated social assistance (SA) recipients.",
+                            "type": "table"
+                        }
+                    ],
+                    "type": "figure"
+                }
+            ],
+            "id": "A1",
+            "title": "Appendix"
+        }
+    ],
+    "acknowledgements": [
+        {
+            "text": "The authors would like to thank Annakaisa Ritala for inspiring the statistical analysis approach as well as the participants of the European Meeting of the International Microsimulation Association 2025 and the anonymous referees for helpful comments and suggestions.",
+            "type": "paragraph"
+        }
+    ],
+    "-meta": {
+        "patched": true
+    },
+    "stage": "published"
+}
