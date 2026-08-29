@@ -249,6 +249,15 @@ final class ArticlesController extends Controller
                     );
                 }
 
+                /* overload getImpactStatement as a Conflict of Interest section */
+                if ($item instanceof ArticleVoR && $item->getImpactStatement()) {
+                    $infoSections[] = ArticleSection::basic(
+                        'Conflict of Interest',
+                        3,
+                        $this->render(new Paragraph($item->getImpactStatement()))
+                    );
+                }
+
                 if ($item->getEthics()->notEmpty()) {
                     $infoSections[] = ArticleSection::basic(
                         'Ethics',
