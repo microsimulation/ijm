@@ -47,7 +47,7 @@ final class AboutController extends Controller
 
         $arguments['body'] = [
             new Paragraph('The International Journal of Microsimulation (IJM) is the official online peer-reviewed journal of the <a href="https://microsimulation.org">International Microsimulation Association</a>.'),
-			new Paragraph('The journal operates under a continuous publication model. Articles are published online as soon as they have successfully completed the peer-review and editorial process. Published articles are subsequently grouped into three issues per year for archival and indexing purposes, corresponding to Spring (April), Summer (August), and Winter (December).'),
+            new Paragraph('The journal operates under a continuous publication model. Articles are published online as soon as they have successfully completed the peer-review and editorial process. Published articles are subsequently grouped into three issues per year for archival and indexing purposes, corresponding to Spring (April), Summer (August), and Winter (December).'),
             new Paragraph('The IJM covers research in all aspects of microsimulation modelling. It publishes high quality contributions making use of microsimulation models to address specific research questions in all scientific areas, as well as methodological and technical issues.'),
             new Paragraph('In particular, the IJM invites submission of five types of contributions: research articles, research notes, data watch, book reviews, and software reviews.'),
             new Paragraph('<strong>Research articles</strong> of interest to the IJM concern:'),
@@ -66,8 +66,8 @@ final class AboutController extends Controller
             new Paragraph('<strong>Data watch</strong> refers to short research notes that describe (newly) available datasets and how they can be exploited for microsimulation studies.'),
             new Paragraph('<strong>Book reviews</strong> offer a discussion of recent books that might be of interest to the microsimulation community, or present a critical assessment in retrospect of the impact of "classic" contributions.'),
             new Paragraph('<strong>Software reviews</strong> are short contributions that describe advances in software development that are likely to be of interest to the journal readership, with a particular attention to open source software.'),
-			new Paragraph('The journal also publishes thematic special issues containing historically relevant work for the microsimulation community, previously unpublished in journal or book form, such as documentation of landmark models. Occasionally, the journal might also republish relevant chapters from edited volumes, with permission from the original publisher, to facilitate access to important early microsimulation work. The original source of publication is always clearly indicated in the published articles.'),
-			new Paragraph('If in doubt concerning the suitability of a particular manuscript, or if interested in editing a Special thematic issue, please <a href="mailto:ijm-editor@microsimulation.org">contact the editor</a> for further advice.'),
+            new Paragraph('The journal also publishes thematic special issues, always clearly labelled. Special issues might contain historically relevant work for the microsimulation community, previously unpublished in journal or book form, such as documentation of landmark models. Occasionally, the journal might also republish relevant chapters from edited volumes, with permission from the original publisher, to facilitate access to important early microsimulation work. The original source of publication is always clearly indicated in the published articles.'),
+            new Paragraph('If in doubt concerning the suitability of a particular manuscript, or if interested in editing a Special thematic issue, please <a href="mailto:ijm-editor@microsimulation.org">contact the editor</a> for further advice.'),
             Listing::unordered([
                 'The IJM is listed in EBSCOhost, EconLit, RePEc, Scopus.',
                 'The ISSN of the journal is 1747-5864.',
@@ -80,7 +80,7 @@ final class AboutController extends Controller
             new Paragraph('International Microsimulation Association'),
             new Paragraph('11 Porte Des Sciences, Esch-Sur-Alzette L-4366, Luxembourg.'),
             new Paragraph('<a href="https://www.microsimulation.org/contact/">Contact information</a>'),
-			new Paragraph('For enquiries about the journal, write to <a href="mailto:ijm-enquiries@microsimulation.org">ijm-enquiries@microsimulation.org</a>.'),
+            new Paragraph('For enquiries about the journal, write to <a href="mailto:ijm-enquiries@microsimulation.org">ijm-enquiries@microsimulation.org</a>.'),
         ];
 
         return new Response($this->get('templating')->render('::about.html.twig', $arguments));
@@ -130,7 +130,7 @@ final class AboutController extends Controller
                 'Prof Bryan Tysinger (University of Southern California, United States)',
                 'Dr Gerlinde Verbist (Antwerp University, Belgium)',
                 'Jürgen Wiemers (IAB - Institute for Employment Research, Germany)',
-				' Dr Peng Zhan (Zhejiang University, China)',
+                ' Dr Peng Zhan (Zhejiang University, China)',
             ], 'bullet'),
             new Paragraph('<strong>Scientific Committee</strong>'),
             Listing::unordered([
@@ -200,9 +200,9 @@ final class AboutController extends Controller
             ArticleSection::basic('Review process', 2,
                 $this->render(
                     new Paragraph('Submissions should be made using the <a href="https://www.epress.ac.uk/ijm/webforms/author.php">online submission management system</a>. Authors will receive an acknowledgement of their submission.'),
-					new Paragraph('Regular submissions are either managed directly by the Chief Editor, or assigned by the Chief Editor to an Associate Editor, provided that the Associate Editor is not in conflict of interest. Whenever the Chief Editor is in conflict of interest regarding a specific submission (for instance being an author, or a close collaborator of one of the authors), he or she will not manage the submission directly, but assign it to an Associate Editor who is not in conflict of interest.'),
-					new Paragraph('Submissions for special issues are managed by the Guest Editors of the special issue. Whenever any of the Guest Editors is in conflict of interest regarding a specific submission (for instance being an author, or a close collaborator of one of the authors), the submission will be managed by the Chief Editor, following the rules described above.'),
-					new Paragraph('As a general rule, submitted research notes and research articles will be subject to peer review by at least two independent reviewers appointed by the Editor in charge. Other items will be accepted for publication subject to review by at least two members of the Editorial Board. The identity of the reviewers and the handling editors will not be communicated to authors. On the other hand, reviewers will be communicated the names and affiliations of the authors (single-blind review process).'),
+                    new Paragraph('Regular submissions are either managed directly by the Chief Editor, or assigned by the Chief Editor to an Associate Editor, provided that the Associate Editor is not in conflict of interest. Whenever the Chief Editor is in conflict of interest regarding a specific submission (for instance being an author, or a close collaborator of one of the authors), he or she will not manage the submission directly, but assign it to an Associate Editor who is not in conflict of interest.'),
+                    new Paragraph('Submissions for special issues are managed by the Guest Editors of the special issue. Guest Editors are chosen (and overseen) by the Chief Editor, who remains fully responsible for the content of the special issues. Special issue articles have the same editorial oversight as regular submissions. Whenever any of the Guest Editors is in conflict of interest regarding a specific submission (for instance being an author, or a close collaborator of one of the authors), the submission will be managed by the Chief Editor, following the rules described above. Articles submitted to a special issue by the Guest Editor(s) may not account for more than 25% of the total number of articles published in that issue.'),
+                    new Paragraph('As a general rule, submitted research notes and research articles will be subject to peer review by at least two independent reviewers appointed by the Editor in charge. Other items will be accepted for publication subject to review by at least two members of the Editorial Board. The identity of the reviewers and the handling editors will not be communicated to authors. On the other hand, authors can decide whether or not to reveal their identity to reviewers. If they choose not to, they have to submit a separate title page with the article title, full author names, institutional affiliations, and corresponding author contact details, and remove any information that could lead to identification in the manuscript.'),
                     new Paragraph('However, some contributions might be desk-rejected by the Editor in charge without providing detailed reports. This is intended to save authors from waiting for an extended period, especially when it is apparent that the contribution is unsuitable, and to conserve the scarce resource of reviewers. Desk-rejection may occur when the contribution has evident errors or is too poorly written to assess its accuracy. Additionally, it may happen when the contribution falls outside the scope of the journal, or is clearly not innovative enough for the standards of the journal.'),
                     new Paragraph('In addition to guaranteeing the novelty, significance, and accuracy of the published work, the editorial team endeavours to minimize the time taken to publish it. Usually, we aim to send a first decision to authors within 2-3 months from submission, although some papers may take longer. Desk rejections are generally communicated to authors in a matter of days from submission.'),
                     new Paragraph('Manuscripts may be rejected, returned for revisions (major or minor), or accepted. Articles rarely go beyond three rounds of revisions. Unless otherwise stated by the Editor, conditional acceptance should not be presumed. An invitation to revise a paper remains valid for 12 months following the decision. The Editor may grant extensions to authors, but such requests must be made within the initial 12-month period. The decision letter sent to authors regarding revisions contains as much information as the Editor can provide. It is advisable for authors to refrain from contacting the Editor for additional guidance, except if seeking clarification on the decision letter.'),
@@ -220,74 +220,74 @@ final class AboutController extends Controller
                     new Paragraph('<strong>Authorship</strong>: The journal adheres to the principles of responsible authorship as outlined by COPE. All authors are expected to have made substantial contributions to the research presented in their manuscript and to have approved the final version of the manuscript prior to submission. In addition, all authors must disclose any conflicts of interest and financial support related to the research presented in their manuscript. Anyone who made major contributions to the writing of the manuscript should be listed as an author (e.g. "ghost writing" is prohibited by the Journal). Any other individuals who made less substantive contributions to the experiment or the writing of the manuscript should be listed in the acknowledgement section. Any change in authorship (including author order) after the initial manuscript submission must be approved in writing by all authors.'),
                     new Paragraph('<strong>Authorship and "Umbrella" groups</strong>: Collaborative studies sometimes use a group name to represent all participants, and it is mandatory for each article to have at least one named author. If the authors want to acknowledge the umbrella group from which the work originate, they should first list the author(s) of the article and then add "on behalf of the GROUP NAME." If required, the names of the participants can be included in the Acknowledgements section.'),
                     new Paragraph('<strong>Plagiarism</strong>: The journal takes plagiarism very seriously and follows the guidelines for handling plagiarism outlined by COPE. All submitted manuscripts are screened for plagiarism using appropriate software. If plagiarism is detected during the review process, the manuscript may be rejected. If plagiarism is detected in published work, a formal correction or retraction may be required.'),
-					new Paragraph('<strong>Accuracy, Originality, Confidentiality</strong>: Authors are responsible for ensuring:'),
-					Listing::unordered([
-					    'All content (text, tables, figures) is accurate, original, and properly attributed;',
-					    'All references, citations, or factual assertions are verified for accuracy and completeness;',
-						'Confidential or sensitive information is not inappropriately disclosed to third-party services.',
-					], 'bullet'),						
-					new Paragraph('<strong>Post-Publication Corrections:</strong> The journal recognizes the importance of ensuring the accuracy and integrity of the scientific record. If errors or inaccuracies are discovered after publication, the journal will issue a correction or clarification, as appropriate. Authors are encouraged to notify the journal of any errors or inaccuracies as soon as possible.'),
+                    new Paragraph('<strong>Accuracy, Originality, Confidentiality</strong>: Authors are responsible for ensuring:'),
+                    Listing::unordered([
+                        'All content (text, tables, figures) is accurate, original, and properly attributed;',
+                        'All references, citations, or factual assertions are verified for accuracy and completeness;',
+                        'Confidential or sensitive information is not inappropriately disclosed to third-party services.',
+                    ], 'bullet'),
+                    new Paragraph('<strong>Post-Publication Corrections:</strong> The journal recognizes the importance of ensuring the accuracy and integrity of the scientific record. If errors or inaccuracies are discovered after publication, the journal will issue a correction or clarification, as appropriate. Authors are encouraged to notify the journal of any errors or inaccuracies as soon as possible.'),
                     new Paragraph('<strong>Retractions:</strong> In case of evidence of scientific misconduct or fraudulent behaviour, violation of ethical guidelines, copyright infringement, or significant errors that cannot be resolved through correction or clarification, the International Microsimulation Association holds the authority to retract articles. A panel consisting of the Editor, two Associate Editors, and the current President of the Association will be formed to evaluate and decide on the proposed retraction. Additional details regarding COPE retraction guidelines can be obtained <a href="https://publicationethics.org/files/retraction-guidelines-cope.pdf">here</a>. Any retracted articles will be prominently marked and removed from the journal`s website and other databases.'),
                     new Paragraph('Overall, the journal is committed to upholding high ethical standards and promoting responsible scientific conduct.')
                 )
             ),
-			ArticleSection::basic('Compulsory statements', 2,
-				$this->render(
-			    	new Paragraph('The following statements must be included in any submission to the journal, either as a separate document, at the end of the manuscript, or in the Acknowledgements section of the manuscript:'),
-					Listing::unordered([
-					    '<strong>Conflict of interest</strong> (compulsory, even if no competing interests are present);',
-						'<strong>Funding</strong> (compulsory, even if no external funding supported the research);',
-					    '<strong>Data and code availability</strong> (only if the manuscript is based on empirical and/or modelling work);',
-					    '<strong>Use of generative AI and AI-assisted technologies</strong> (including for coding, analysis, and writing; but excluding the use of basic tools for checking spelling, grammar, or punctuation);',
-						'<strong>Participants and participant consent</strong> (only if the research involves human participants and/or animal experimentation).',
-					], 'bullet'),			        
-			        new Paragraph('The statements will be published in the Acnowledgements section of the article.'),
-					new Paragraph('If authors fail to disclose pertinent information during the submission process, the acceptance decision may be reversed. In the event that the article has already been published, the journal retains the right to publish a notice on their website informing readers that the authors have violated the journal`s policy regarding disclosure. Further information and can be found in the <a href="https://publicationethics.org/guidance/Guidelines">COPE author guidelines</a>.')
-				)
-			),			
+            ArticleSection::basic('Compulsory statements', 2,
+                $this->render(
+                    new Paragraph('The following statements must be included in any submission to the journal, either as a separate document, at the end of the manuscript, or in the Acknowledgements section of the manuscript:'),
+                    Listing::unordered([
+                        '<strong>Conflict of interest</strong> (compulsory, even if no competing interests are present);',
+                        '<strong>Funding</strong> (compulsory, even if no external funding supported the research);',
+                        '<strong>Data and code availability</strong> (only if the manuscript is based on empirical and/or modelling work);',
+                        '<strong>Use of generative AI and AI-assisted technologies</strong> (including for coding, analysis, and writing; but excluding the use of basic tools for checking spelling, grammar, or punctuation);',
+                        '<strong>Participants and participant consent</strong> (only if the research involves human participants and/or animal experimentation).',
+                    ], 'bullet'),
+                    new Paragraph('The statements will be published in the Acnowledgements section of the article.'),
+                    new Paragraph('If authors fail to disclose pertinent information during the submission process, the acceptance decision may be reversed. In the event that the article has already been published, the journal retains the right to publish a notice on their website informing readers that the authors have violated the journal`s policy regarding disclosure. Further information and can be found in the <a href="https://publicationethics.org/guidance/Guidelines">COPE author guidelines</a>.')
+                )
+            ),
             ArticleSection::basic('Conflict of interest', 2,
                 $this->render(
                     new Paragraph('All authors are requested to disclose any actual or potential conflict of interest. In particular, every author must disclose any financial interests or support, any in kind support – such as providing access to data – and any connection, - direct or indirect - that could potentially create bias in the reported work or the stated opinions, conclusions, or implications. This includes relevant commercial or funding sources for the authors, their associated departments or organizations, personal relationships, or direct academic competition. This also includes support or pressures of any kind by any interested party, defined as any individual, group, or organization that has a financial, ideological, or political stake related to the article. If the support in question comes with a non-disclosure obligation, that fact should be stated, along with as much information as the obligation permits.'),
                     new Paragraph('In order to determine whether or not a conflict of interest should be declared, authors should apply the following test: <em>Is there any arrangement that would be embarrassing for any of the authors if it were to come to light after publication and had not been disclosed?</em>'),
-					new Paragraph('If the authors have no competing interests to declare, they should say so explicitly. An example of an acceptable statement is: <em>"The authors declare no conflicts of interest.</em>')
+                    new Paragraph('If the authors have no competing interests to declare, they should say so explicitly. An example of an acceptable statement is: <em>"The authors declare no conflicts of interest.</em>')
                 )
             ),
-			ArticleSection::basic('Funding', 2,
-			    $this->render(
-			        new Paragraph('To ensure transparency and accountability in research publishing, all submitted manuscripts must include a clear and accurate statement describing the sources of financial support for the work reported. Authors are required to disclose all sources of funding that directly or indirectly supported the research, including but not limited to:'),
-					Listing::unordered([
-					    'Research grants;',
-					    'Institutional or departmental funding;',
-					    'Governmental, charitable, or private-sector support;',
-						'In-kind contributions (e.g. data access, equipment, or software provided at no cost)',
-					], 'bullet'),
-					new Paragraph('Funding statements should:'),
-					Listing::unordered([
-					    'Identify the funding body or bodies by full official name;',
-					    'Include grant or award numbers, where applicable;',
-					    'Clearly associate funding sources with specific authors, if required by the funder.',
-					], 'bullet'),	
-					new Paragraph('An example of an acceptable funding statement for funded research is:'),	
-					new Paragraph('<em>This research was supported by [NAME OF FUNDING BODY] under the project "[PROJECT TITLE]" (grant number [GRANT ID]).</em>'),
-					new Paragraph('Authors are responsible for ensuring that their funding statements comply with the reporting requirements of their funding bodies, including open access mandates where applicable.'),	
-					new Paragraph('"Unfunded research refers to scholarly work that was conducted without receiving specific financial support apart from:'),
-					Listing::unordered([
-					    'Authors’ salaries paid under standard employment contracts;',
-					    'General institutional infrastructure, such as office space, libraries, standard computing facilities, and internet access;',
-					    'Routine administrative or technical support not linked to a specific research award;',
-						'Voluntary or unfunded collaboration.',
-					], 'bullet'),
-					new Paragraph('If the research received no specific funding, authors must explicitly state this. An example of an acceptable statement is:'),
-					new Paragraph('<em>This research benefited from no specific grant from any funding agency in the public, commercial, or not-for-profit sectors.</em>'),	
-					new Paragraph('Authors are responsible for the accuracy and completeness of the funding information provided. Failure to disclose relevant funding may result in editorial action, including correction, retraction, or rejection of the manuscript.'),
-					new Paragraph('Disclosure of funding sources does not replace the requirement to submit a separate Conflict of Interest statement. Authors must ensure consistency between the funding statement and any declarations of competing interests.')									
-			    )
-			),			
+            ArticleSection::basic('Funding', 2,
+                $this->render(
+                    new Paragraph('To ensure transparency and accountability in research publishing, all submitted manuscripts must include a clear and accurate statement describing the sources of financial support for the work reported. Authors are required to disclose all sources of funding that directly or indirectly supported the research, including but not limited to:'),
+                    Listing::unordered([
+                        'Research grants;',
+                        'Institutional or departmental funding;',
+                        'Governmental, charitable, or private-sector support;',
+                        'In-kind contributions (e.g. data access, equipment, or software provided at no cost)',
+                    ], 'bullet'),
+                    new Paragraph('Funding statements should:'),
+                    Listing::unordered([
+                        'Identify the funding body or bodies by full official name;',
+                        'Include grant or award numbers, where applicable;',
+                        'Clearly associate funding sources with specific authors, if required by the funder.',
+                    ], 'bullet'),
+                    new Paragraph('An example of an acceptable funding statement for funded research is:'),
+                    new Paragraph('<em>This research was supported by [NAME OF FUNDING BODY] under the project "[PROJECT TITLE]" (grant number [GRANT ID]).</em>'),
+                    new Paragraph('Authors are responsible for ensuring that their funding statements comply with the reporting requirements of their funding bodies, including open access mandates where applicable.'),
+                    new Paragraph('"Unfunded research refers to scholarly work that was conducted without receiving specific financial support apart from:'),
+                    Listing::unordered([
+                        'Authors’ salaries paid under standard employment contracts;',
+                        'General institutional infrastructure, such as office space, libraries, standard computing facilities, and internet access;',
+                        'Routine administrative or technical support not linked to a specific research award;',
+                        'Voluntary or unfunded collaboration.',
+                    ], 'bullet'),
+                    new Paragraph('If the research received no specific funding, authors must explicitly state this. An example of an acceptable statement is:'),
+                    new Paragraph('<em>This research benefited from no specific grant from any funding agency in the public, commercial, or not-for-profit sectors.</em>'),
+                    new Paragraph('Authors are responsible for the accuracy and completeness of the funding information provided. Failure to disclose relevant funding may result in editorial action, including correction, retraction, or rejection of the manuscript.'),
+                    new Paragraph('Disclosure of funding sources does not replace the requirement to submit a separate Conflict of Interest statement. Authors must ensure consistency between the funding statement and any declarations of competing interests.')
+                )
+            ),
             ArticleSection::basic('Data and code availability', 2,
                 $this->render(
-					new Paragraph('The journal encourages the use of open-source software and the publication of the source code.'),
+                    new Paragraph('The journal encourages the use of open-source software and the publication of the source code.'),
                     new Paragraph('It is the policy of the IJM to publish papers only if the data and code used in the analysis are clearly and precisely documented and access to the data and code is non-exclusive to the authors.'),
-					new Paragraph('Authors of accepted papers that contain empirical work, simulations, or experimental work must provide, prior to acceptance, information about the data, programs, and other details of the computations sufficient to permit replication, as well as information about access to data and programs. In particular, authors are required to report, for any data they use, which is the source and whether the data is:'),
+                    new Paragraph('Authors of accepted papers that contain empirical work, simulations, or experimental work must provide, prior to acceptance, information about the data, programs, and other details of the computations sufficient to permit replication, as well as information about access to data and programs. In particular, authors are required to report, for any data they use, which is the source and whether the data is:'),
                     Listing::ordered([
                         'publicly available (specifying how the data can be accessed);',
                         'available for scientific research only upon registration;',
@@ -302,44 +302,44 @@ final class AboutController extends Controller
                     new Paragraph('If data or programs cannot be published in an openly accessible trusted data repository, authors must commit to preserving data and code for a period of no less than five years following publication of the manuscript, and to providing reasonable assistance to requests for clarification and replication.')
                 )
             ),
-			ArticleSection::basic('Generative AI policy', 2,
-			    $this->render(
-					new Paragraph('<strong>Authorship and accountability</strong>'),
-					new Paragraph('Generative AI and AI-assisted technologies (e.g., Large Language Models) cannot be listed or cited as an author or co-author of a manuscript submitted to the IJM. Authorship implies legal and ethical responsibilities—such as approving the final version and taking responsibility for its integrity—that can only be performed by humans.'),
-			        new Paragraph('Authors are fully responsible and accountable for the accuracy, integrity, and originality of the entire manuscript. This includes:'),
-					Listing::unordered([
-					    'Verifying all AI-generated output for factual correctness (as AI can fabricate references or facts);',
-					    'Ensuring the work does not infringe on third-party intellectual property or copyright.',
-					], 'bullet'),	
-					new Paragraph('<strong>Disclosure in the Writing Process</strong>'),
-					new Paragraph('Use of generative AI tools to improve the readability, language, or structure of the manuscript must be disclosed upon submission, except for use of basic tools for checking spelling, grammar, or punctuation (e.g., standard Microsoft Word feature).'),	
-					new Paragraph('An example of an acceptable declaration is the following:'),
-					new Paragraph('<em>During the preparation of this work, the author(s) used [NAME OF TOOL/SERVICE, VERSION, AND PROVIDER] in order to [DESCRIBE PURPOSE, e.g., improve readability]. After using this tool/service, the author(s) reviewed and edited the content as needed and take(s) full responsibility for the content of the publication.</em>'),			
-					new Paragraph('<strong>Disclosure in the Research Process (Methods)</strong>'),
-					new Paragraph('Use of generative AI as part of the formal research design, such as for coding and for data collection and analysis must be described in detail within the Methods section of the manuscript. This description should include:'),
-					Listing::unordered([
-					    'The specific model name and version;',
-					    'The exact prompts or parameters used (if necessary for reproducibility).',
-					], 'bullet'),		
-					new Paragraph('<strong>Figures, Images, and Artwork</strong>'),	
-					new Paragraph('The use of generative AI to create or alter primary research images, data visualizations, or graphical abstracts is strictly prohibited unless the research itself is about generative AI.'),
-					new Paragraph('Any permitted use of AI for visual content must be explicitly authorized by the Editor and documented in the Methods section.')
-			    )
-			),			
+            ArticleSection::basic('Generative AI policy', 2,
+                $this->render(
+                    new Paragraph('<strong>Authorship and accountability</strong>'),
+                    new Paragraph('Generative AI and AI-assisted technologies (e.g., Large Language Models) cannot be listed or cited as an author or co-author of a manuscript submitted to the IJM. Authorship implies legal and ethical responsibilities—such as approving the final version and taking responsibility for its integrity—that can only be performed by humans.'),
+                    new Paragraph('Authors are fully responsible and accountable for the accuracy, integrity, and originality of the entire manuscript. This includes:'),
+                    Listing::unordered([
+                        'Verifying all AI-generated output for factual correctness (as AI can fabricate references or facts);',
+                        'Ensuring the work does not infringe on third-party intellectual property or copyright.',
+                    ], 'bullet'),
+                    new Paragraph('<strong>Disclosure in the Writing Process</strong>'),
+                    new Paragraph('Use of generative AI tools to improve the readability, language, or structure of the manuscript must be disclosed upon submission, except for use of basic tools for checking spelling, grammar, or punctuation (e.g., standard Microsoft Word feature).'),
+                    new Paragraph('An example of an acceptable declaration is the following:'),
+                    new Paragraph('<em>During the preparation of this work, the author(s) used [NAME OF TOOL/SERVICE, VERSION, AND PROVIDER] in order to [DESCRIBE PURPOSE, e.g., improve readability]. After using this tool/service, the author(s) reviewed and edited the content as needed and take(s) full responsibility for the content of the publication.</em>'),
+                    new Paragraph('<strong>Disclosure in the Research Process (Methods)</strong>'),
+                    new Paragraph('Use of generative AI as part of the formal research design, such as for coding and for data collection and analysis must be described in detail within the Methods section of the manuscript. This description should include:'),
+                    Listing::unordered([
+                        'The specific model name and version;',
+                        'The exact prompts or parameters used (if necessary for reproducibility).',
+                    ], 'bullet'),
+                    new Paragraph('<strong>Figures, Images, and Artwork</strong>'),
+                    new Paragraph('The use of generative AI to create or alter primary research images, data visualizations, or graphical abstracts is strictly prohibited unless the research itself is about generative AI.'),
+                    new Paragraph('Any permitted use of AI for visual content must be explicitly authorized by the Editor and documented in the Methods section.')
+                )
+            ),
             ArticleSection::basic('Participants and participant consent', 2,
                 $this->render(
                     new Paragraph('All submitted manuscripts containing research which involves human participants and/or animal experimentation - however unlikely this is given the scope of the journal - must include a statement confirming that the research was carried out in accordance with the principles embodied in the <a href="https://www.wma.net/policies-post/wma-declaration-of-helsinki-ethical-principles-for-medical-research-involving-human-subjects/"> Declaration of Helsinki</a> and all relevant guidelines and institutional policies, giving the name of the institutional and/or national research ethics committee that approved the research, along with the approval number/ID.'),
                     new Paragraph('All submitted manuscripts containing research which involves identifiable human subjects must include a statement confirming that consent was obtained for all identifiable individuals and that any identifiable individuals are aware of intended publication. In order to protect participant anonymity, authors do not need to send proof of this consent to the IJM.')
                 )
             ),
-			ArticleSection::basic('Reprinted material', 2,
-			    $this->render(
-			        new Paragraph('Occasionally, the journal might publish thematic special issues containing historically relevant work for the microsimulation community, previously unpublished in journal or book form, such as documentation of landmark models (see the <a href="https://microsimulation.pub/about">Aims and Scope</a> section).'),
-					new Paragraph('The choice of such articles always rests on a decision by the Chief Editor, subject to the acquisition of the relevant publishing rights. Republished articles are clearly identified in the Acknowledgements section, with the original source of publication duly reported.')
-			    )
-			),
+            ArticleSection::basic('Reprinted material', 2,
+                $this->render(
+                    new Paragraph('Occasionally, the journal might publish thematic special issues containing historically relevant work for the microsimulation community, previously unpublished in journal or book form, such as documentation of landmark models (see the <a href="https://microsimulation.pub/about">Aims and Scope</a> section).'),
+                    new Paragraph('The choice of such articles always rests on a decision by the Chief Editor, subject to the acquisition of the relevant publishing rights. Republished articles are clearly identified in the Acknowledgements section, with the original source of publication duly reported.')
+                )
+            ),
             ArticleSection::basic('Copyright', 2,
-                $this->render(new Paragraph('All IJM articles, unless otherwise stated, are published under the terms of the Creative Commons Attribution (CC BY) License which permits use, distribution and reproduction in any medium, provided the work is properly attributed back to the original author and publisher. Copyright on any research article in the International Journal ofMicrosimulation(IJM) is retained by the Authors. Authors grant IJM a license to publish the article and identify itself as the original publisher. Authors cannot revoke these freedoms as long as the Journal follows the license terms. Authors should not submit any paper unless they agree with this policy. Submission implies full acceptance of the above terms by all co-authors, with the corresponding author responsible for providing a written acknowledgement signed by all co-authors prior to publication. The full text of the CC BY 4.0 license can be found <a href="https://creativecommons.org/licenses/by/4.0/">here</a>. Special exemptions and other licensing arrangement can be made on a case by case basis, by writing a motivated request to the Editor.')
+                $this->render(new Paragraph('All IJM articles, unless otherwise stated, are published under the terms of the Creative Commons Attribution (CC BY) License which permits use, distribution and reproduction in any medium, provided the work is properly attributed back to the original author and publisher. Copyright on any research article in the International Journal of Microsimulation(IJM) is retained by the Authors. Authors grant IJM a license to publish the article and identify itself as the original publisher. Authors cannot revoke these freedoms as long as the Journal follows the license terms. Authors should not submit any paper unless they agree with this policy. Submission implies full acceptance of the above terms by all co-authors, with the corresponding author responsible for providing a written acknowledgement signed by all co-authors prior to publication. The full text of the CC BY 4.0 license can be found <a href="https://creativecommons.org/licenses/by/4.0/">here</a>. Special exemptions and other licensing arrangement can be made on a case by case basis, by writing a motivated request to the Editor. Licensing information is displayed or embedded in all versions of each article.')
                 )
             ),
             ArticleSection::basic('Authors rights <div id="authors_rights"></div>', 2,
@@ -352,10 +352,10 @@ final class AboutController extends Controller
                 'Patent and trademark rights and rights to any process or procedure described in the Contribution.',
                 'The right to proper attribution and credit for the published work.',
             ], 'bullet'),
-			ArticleSection::basic('Publication schedule', 2,
-			    $this->render(new Paragraph('Issues are finalised on April 30 (Spring issue), August 31 (Summer issue) and December 31 (Winter issue) of each year. Issues may be listed on the journal website in advance of their scheduled date, containing articles assigned to those issues that have already completed the editorial process (forthcoming). New articles are added to the forthcoming issues as they become available, until the issue is finalised on the scheduled date.')
-			    )
-			),
+            ArticleSection::basic('Publication schedule', 2,
+                $this->render(new Paragraph('Issues are finalised on April 30 (Spring issue), August 31 (Summer issue) and December 31 (Winter issue) of each year. Issues may be listed on the journal website in advance of their scheduled date, containing articles assigned to those issues that have already completed the editorial process (forthcoming). New articles are added to the forthcoming issues as they become available, until the issue is finalised on the scheduled date.')
+                )
+            ),
             ArticleSection::basic('Disclaimer', 2,
                 $this->render(new Paragraph('The International Microsimulation Association (IMA) and the International Journal of Microsimulation (IJM) and make every effort to ensure the accuracy of all the information contained in our publications. It however, makes no representations or warranties whatsoever as to the accuracy, completeness, or suitability for any purpose of the published work. Any opinions and views expressed in this publication are the opinions and views of the Authors, and are not necessarily the view of the Editors or the Journal.')
                 )
@@ -390,8 +390,21 @@ final class AboutController extends Controller
             ], 'bullet'),
             new Paragraph('If revision prior to publication or resubmission is recommended, reviewers are asked to provide a list of points that the submitting author(s) should be asked to address.'),
             new Paragraph('In order to allow for timely publication, reviewers are asked to provide comments on submitted items within the agreed review deadline (normally four weeks after receipt of item).'),
-			new Paragraph('<strong>Peer Review Confidentiality</strong>'),	
-			new Paragraph('Authors and reviewers are strictly prohibited from uploading manuscripts or confidential peer-review data into generative AI tools. This is considered a breach of confidentiality and intellectual property rights.')
+            new Paragraph('<strong>Use of Generative AI in Peer Review and Peer Review Confidentiality</strong>'),
+            new Paragraph('Reviewers may use generative artificial intelligence (AI) tools in a supporting role during the peer-review process, provided that their use does not compromise the confidentiality of submitted manuscripts and does not replace the reviewer\'s own expert judgement.'),
+            new Paragraph('Reviewers remain fully responsible for the content, accuracy, reasoning and recommendations contained in their review. Generative AI must not be used as a substitute for critically reading the manuscript, assessing its methods and findings, or forming an independent scientific judgement.'),
+            new Paragraph('To avoid a breach of confidentiality and intellectual property rights, reviewers must not upload or otherwise provide the manuscript, substantial extracts from it, tables, figures, data, supplementary material, or other confidential information to publicly accessible AI systems or to services that may retain, reuse or use such material for model training.'),
+            new Paragraph('Subject to these confidentiality requirements, AI tools may be used for supporting tasks such as:'),
+            Listing::unordered([
+                'Improving the clarity, structure, grammar or style of a review written by the reviewer',
+                'Translating text written by the reviewer',
+                'Relevance to journal readership',
+                'Assisting with literature searches or identifying potentially relevant references',
+                'Helping the reviewer organise or formulate comments based on their own assessment of the manuscript'
+            ], 'bullet'),
+            new Paragraph('Reviewers must independently verify any information, references or claims produced by AI tools. In particular, AI-generated references should not be relied upon without checking the original sources.'),
+            new Paragraph('Where generative AI has been used substantively in preparing a review, beyond routine spelling, grammar or language correction, reviewers should disclose this use to the Editor when submitting their report, briefly indicating how the tool was used.'),
+            new Paragraph('The Editor may disregard a review, or take other appropriate action, where the use of AI appears to have compromised manuscript confidentiality or replaced the independent scholarly assessment expected of a reviewer.')
         ];
         return new Response($this->get('templating')->render('::about.html.twig', $arguments));
     }
@@ -406,10 +419,10 @@ final class AboutController extends Controller
         $arguments['body'] = [
             ArticleSection::basic('Forthcoming special issues', 2, $this->render(
                 new Paragraph('For more information, or if you are interested in editing a special issue, please <a href="mailto:matteo.richiardi@essex.ac.uk">contact the Editor.</a>')
-                )),         
-			ArticleSection::basic('"Microsimulation in Government"', 2, $this->render(
-			    new Paragraph('Guest Editors: Dave Pankhurst, Grant Tregonning')
-			    ))
+                )),
+            ArticleSection::basic('"Microsimulation in Government"', 2, $this->render(
+                new Paragraph('Guest Editors: Dave Pankhurst, Grant Tregonning')
+                ))
         ];
 
         return new Response($this->get('templating')->render('::about.html.twig', $arguments));
