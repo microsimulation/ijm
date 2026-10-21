@@ -419,10 +419,33 @@ final class AboutController extends Controller
         $arguments['body'] = [
             ArticleSection::basic('Forthcoming special issues', 2, $this->render(
                 new Paragraph('For more information, or if you are interested in editing a special issue, please <a href="mailto:matteo.richiardi@essex.ac.uk">contact the Editor.</a>')
-                )),
+            )),
+            ArticleSection::basic('"EUROMOD turns 30"', 2, $this->render(
+                new Paragraph('<strong>Call for Papers</strong>'),
+                new Paragraph('Guest Editor: Chrysa Leventi (JRC, European Commission)'),
+                new Paragraph('<strong>Submission deadline:</strong> 31 December 2026'),
+                new Paragraph('<strong>Background</strong>'),
+                new Paragraph('<a href="https://euromod-web.jrc.ec.europa.eu/">EUROMOD</a>, the tax-benefit microsimulation model for the European Union, turned 30 in 2026. The anniversary was marked by the EUROMOD Annual Meeting and Research Workshop, held in Brussels from 23 to 25 September 2026 and organised by the EUROMOD team at the European Commission\'s Joint Research Centre (JRC). The workshop presented the role of the model in evidence-based policymaking and showcased the variety of its applications.'),
+                new Paragraph('Building on this momentum, the International Journal of Microsimulation invites contributions for a Special Issue on research that uses, extends or reflects on EUROMOD. The call is open to authors who presented at the workshop and to all other researchers working with EUROMOD.'),
+                new Paragraph('<strong>Who can submit</strong>'),
+                Listing::unordered([
+                    'Researchers who presented a paper at the EUROMOD Research Workshop 2026 are warmly invited to submit a full version of their work.',
+                    'Researchers who did not take part in the workshop are equally welcome, provided the paper is related to EUROMOD.',
+                ], 'bullet'),
+                new Paragraph('All submissions go through the same peer-review process, and presenting at the workshop does not guarantee acceptance.'),
+                new Paragraph('<strong>Submission guidelines</strong>'),
+                Listing::unordered([
+                    '<strong>Article types.</strong> Research articles. Word limits follow the <a href="'.$this->get('router')->generate('about-editorial-policy').'">IJM author guidelines</a>.',
+                    '<strong>Originality.</strong> Papers must be original and not under consideration elsewhere.',
+                    '<strong>Transparency.</strong> Authors should state the EUROMOD version, input data and policy year(s) used, and are encouraged to share code, parameter changes and replication material where data access rules allow.',
+                    '<strong>Format and portal.</strong> Please follow the <a href="'.$this->get('router')->generate('about-editorial-policy').'">IJM author guidelines</a> and submit through the journal\'s <a href="https://www.epress.ac.uk/ijm/webforms/author.php">online submission system</a>. Select the special issue "EUROMOD turns 30" when submitting.',
+                ], 'bullet'),
+                new Paragraph('<strong>Review process</strong>'),
+                new Paragraph('All submissions are peer reviewed by at least two independent referees in line with IJM\'s standard <a href="'.$this->get('router')->generate('about-editorial-policy').'">editorial policy</a>. Guest editors may desk-reject papers outside the scope of the call.')
+            )),
             ArticleSection::basic('"Microsimulation in Government"', 2, $this->render(
                 new Paragraph('Guest Editors: Dave Pankhurst, Grant Tregonning')
-                ))
+            ))
         ];
 
         return new Response($this->get('templating')->render('::about.html.twig', $arguments));
