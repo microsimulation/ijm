@@ -444,7 +444,7 @@ final class AboutController extends Controller
                 new Paragraph('All submissions are peer reviewed by at least two independent referees in line with IJM\'s standard <a href="'.$this->get('router')->generate('about-editorial-policy').'">editorial policy</a>. The Guest Editor may desk-reject papers outside the scope of the call.')
             )),
             ArticleSection::basic('"Microsimulation in Government"', 2, $this->render(
-                new Paragraph('Guest Editor: Dave Pankhurst (Department for Work and Pensions (DWP), UK Government, United Kingdom)')
+                new Paragraph('Guest Editor: Dave Pankhurst (Department for Work and Pensions (DWP), UK Government, United Kingdom)'),
                 new Paragraph('More information will be provided soon.')
             ))
         ];
