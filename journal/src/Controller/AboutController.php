@@ -438,13 +438,14 @@ final class AboutController extends Controller
                     '<strong>Article types.</strong> Research articles. Word limits follow the <a href="'.$this->get('router')->generate('about-editorial-policy').'">IJM author guidelines</a>.',
                     '<strong>Originality.</strong> Papers must be original and not under consideration elsewhere.',
                     '<strong>Transparency.</strong> Authors should state the EUROMOD version, input data and policy year(s) used, and are encouraged to share code, parameter changes and replication material where data access rules allow.',
-                    '<strong>Format and portal.</strong> Please follow the <a href="'.$this->get('router')->generate('about-editorial-policy').'">IJM author guidelines</a> and submit through the journal\'s <a href="https://www.epress.ac.uk/ijm/webforms/author.php">online submission system</a>. Select the special issue "EUROMOD turns 30" when submitting.',
+                    '<strong>Format and portal.</strong> Please follow the <a href="'.$this->get('router')->generate('about-editorial-policy').'">IJM author guidelines</a> and submit through the journal\'s <a href="https://www.epress.ac.uk/ijm/webforms/author.php">online submission system</a>. Please mention the special issue "EUROMOD turns 30" in the Letter to the Editor when submitting.',
                 ], 'bullet'),
                 new Paragraph('<strong>Review process</strong>'),
                 new Paragraph('All submissions are peer reviewed by at least two independent referees in line with IJM\'s standard <a href="'.$this->get('router')->generate('about-editorial-policy').'">editorial policy</a>. The Guest Editor may desk-reject papers outside the scope of the call.')
             )),
             ArticleSection::basic('"Microsimulation in Government"', 2, $this->render(
-                new Paragraph('Guest Editors: Dave Pankhurst, Grant Tregonning')
+                new Paragraph('Guest Editor: Dave Pankhurst (Department for Work and Pensions (DWP), UK Government, United Kingdom)'),
+                new Paragraph('More information will be provided soon.')
             ))
         ];
 
