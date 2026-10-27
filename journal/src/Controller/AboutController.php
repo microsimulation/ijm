@@ -140,7 +140,7 @@ final class AboutController extends Controller
                 'Prof John Creedy (University of Wellington, New Zealand)',
                 'Prof André Decoster (University of Leuven, Belgium)',
                 'Prof Nora Lustig (University of Tulane, United States)',
-                'Prof Cathal O\'Donoghue (Teagasc, Ireland)',
+                'Prof Cathal O\'Donoghue (University of Galway, Ireland)',
                 'Prof Deborah Schofield (Macquarie University, Australia)',
                 'Prof Leigh Tesfatsion (Iowa State University, United States)',
             ], 'bullet'),
